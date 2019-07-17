@@ -33,3 +33,8 @@ phpunit.phar
 
 # vagrant runtime
 /.vagrant
+
+# config
+/frontend/config
+/backend/config
+/commoon/config
