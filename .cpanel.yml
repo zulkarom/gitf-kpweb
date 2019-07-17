@@ -1,0 +1,5 @@
+---
+deployment:
+ tasks:
+ - export DEPLOYPATH=/home/fkp2018/public_html/testgit/
+ - /bin/cp -R /home/fkp2018/repositories/pro01 $DEPLOYPATH
