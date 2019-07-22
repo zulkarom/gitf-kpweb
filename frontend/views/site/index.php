@@ -11,7 +11,7 @@ $this->title= 'FKP';
 $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@frontend/views/myasset');
 ?>
 
-	<div id="jssor_1" style="position:relative;margin:0 auto;top:0px;left:0px;width:1300px;height:450px;overflow:hidden;visibility:hidden;">
+	<div id="jssor_1" style="position:relative;margin:0 auto;top:0px;left:0px;width:1300px;height:500px;overflow:hidden;visibility:hidden;">
         <!-- Loading Screen -->
         <div data-u="loading" class="jssorl-009-spin" style="position:absolute;top:0px;left:0px;width:100%;height:100%;text-align:center;background-color:rgba(0,0,0,0.7);">
             <img style="margin-top:-19px;position:relative;top:50%;width:38px;height:38px;" src="../svg/loading/static-svg/spin.svg" />
@@ -19,14 +19,26 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@frontend/views/myas
         <div data-u="slides" style="cursor:default;position:relative;top:0px;left:0px;width:1300px;height:500px;overflow:hidden;">
 		
 		<div>
-                <a href="<?=$directoryAsset ?>/document/MIF.pdf" target="_blank"><img data-u="image" src="<?=$directoryAsset ?>/img/slider/5.jpg" /></a>
+                <a href="<?=$directoryAsset ?>/document/MIF.pdf" target="_blank"><img data-u="image" src="<?=$directoryAsset ?>/img/slider/dr-dzul.jpg" /></a>
+				
+            </div>
+			
+			<div>
+                <a href="<?=$directoryAsset ?>/document/MIF.pdf" target="_blank"><img data-u="image" src="<?=$directoryAsset ?>/img/slider/dr-shah.jpg" /></a>
 				
             </div>
 		
 		<div>
-                <a href="<?=$directoryAsset ?>/document/MOF.pdf" target="_blank"><img data-u="image" src="<?=$directoryAsset ?>/img/slider/4.jpg" /></a>
+                <a href="<?=$directoryAsset ?>/document/MIF.pdf" target="_blank"><img data-u="image" src="<?=$directoryAsset ?>/img/slider/drshella.jpg" /></a>
 				
             </div>
+		
+		<div>
+                <a href="<?=$directoryAsset ?>/document/MIF.pdf" target="_blank"><img data-u="image" src="<?=$directoryAsset ?>/img/slider/thanks.jpg" /></a>
+				
+            </div>
+		
+		
 			
             
 		
@@ -70,7 +82,19 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@frontend/views/myas
 			</div>
 			<div class="row">
 			<?php 
+			$i = 1;
+			$number = count($upcoming);
+				if ($number % 2 == 0) {
+				  $even = true;
+				}else{
+					$even = false;
+				}
 			foreach($upcoming as $upevent){
+				
+				if($i == $number and $even == false){
+					echo '<div class="col-md-3"></div>';
+				}
+				
 				?>
 				
 				<div class="col-md-6 event-item">
@@ -88,6 +112,7 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@frontend/views/myas
 					</div>
 				</div>
 				<?php
+			$i++;
 			}
 			?>
 			

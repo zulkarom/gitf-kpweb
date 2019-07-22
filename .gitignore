@@ -18,7 +18,7 @@ nbproject
 Thumbs.db
 
 # composer vendor dir
-#/vendor
+/vendor
 
 # composer itself is not needed
 composer.phar
@@ -37,4 +37,12 @@ phpunit.phar
 # config
 /frontend/config
 /backend/config
-/commoon/config
+/common/config
+
+# web
+/backend/web
+/frontend/web
+
+#uploaded
+
+/frontend/uploaded
