@@ -19,6 +19,16 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@frontend/views/myas
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-144386179-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-144386179-1');
+</script>
+
 	<title>FAKULTI KEUSAHAWANAN DAN PERNIAGAAN</title>
 	<meta charset="UTF-8">
 	<meta name="description" content="Faculty of Entrepreneurship and Business">
