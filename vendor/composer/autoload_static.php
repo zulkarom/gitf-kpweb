@@ -44,6 +44,10 @@ class ComposerStaticInit7be813d9b220b4033447515b05537c8e
         array (
             'phpDocumentor\\Reflection\\' => 25,
         ),
+        'o' => 
+        array (
+            'oonne\\sortablegrid\\' => 19,
+        ),
         'n' => 
         array (
             'nterms\\mailqueue\\' => 17,
@@ -211,6 +215,10 @@ class ComposerStaticInit7be813d9b220b4033447515b05537c8e
             0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
             1 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
             2 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
+        ),
+        'oonne\\sortablegrid\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/oonne/yii2-sortable-grid-view',
         ),
         'nterms\\mailqueue\\' => 
         array (

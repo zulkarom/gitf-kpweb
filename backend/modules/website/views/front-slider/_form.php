@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
-use common\models\Upload;
+use common\models\UploadFile;
 
 $model->file_controller = 'front-slider';
 
@@ -29,18 +29,20 @@ $model->file_controller = 'front-slider';
 </div>
 
 	<div class="row">
-<div class="col-md-3">
+<div class="col-md-9"><?= $form->field($model, 'slide_url')->textInput(['maxlength' => true])->label('Slide Url (if any)') ?></div>
 
-<?= $form->field($model, 'slide_order')->textInput() ?>
+
+
 </div>
 
-</div>
+
 
    
 
 <?php 
 if($model->id){
-	echo Upload::fileInput($model, 'image');
+	echo UploadFile::fileInput($model, 'image');
+	echo '<p>Max File Size: 1MB, Best Dimensions (px):1300 x 450</p> <br />';
 	$btn = 'Update';
 }else{
 	$btn = 'Next';

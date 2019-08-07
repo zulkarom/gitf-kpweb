@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
-use backend\modules\jeb\models\Journal;
 use yii\widgets\ActiveForm;
 
 
@@ -18,28 +17,21 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@frontend/views/myas
         </div>
         <div data-u="slides" style="cursor:default;position:relative;top:0px;left:0px;width:1300px;height:500px;overflow:hidden;">
 		
-		<div>
-                <a href="<?=$directoryAsset ?>/document/MIF.pdf" target="_blank"><img data-u="image" src="<?=$directoryAsset ?>/img/slider/dr-dzul.jpg" /></a>
+		<?php 
+		if($slides){
+			foreach($slides as $slide){
+				echo '<div>
+                <a href="'.$slide->slide_url .'" target="_blank"><img data-u="image" src="' . Url::to(['front-slider/download', 'attr' => 'image','id'=> $slide->id]) . '" /></a>
 				
-            </div>
-			
-			<div>
-                <a href="<?=$directoryAsset ?>/document/MIF.pdf" target="_blank"><img data-u="image" src="<?=$directoryAsset ?>/img/slider/dr-shah.jpg" /></a>
-				
-            </div>
+            </div>';
+			}
+		}
 		
-		<div>
-                <a href="<?=$directoryAsset ?>/document/MIF.pdf" target="_blank"><img data-u="image" src="<?=$directoryAsset ?>/img/slider/drshella.jpg" /></a>
-				
-            </div>
-		
-		<div>
-                <a href="<?=$directoryAsset ?>/document/MIF.pdf" target="_blank"><img data-u="image" src="<?=$directoryAsset ?>/img/slider/thanks.jpg" /></a>
-				
-            </div>
+		?>
 		
 		
 			
+		
             
 		
           

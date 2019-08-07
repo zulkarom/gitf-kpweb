@@ -21,6 +21,7 @@ return array(
     'richardfan\\widget\\' => array($vendorDir . '/richardfan1126/yii2-js-register'),
     'raoul2000\\workflow\\' => array($vendorDir . '/raoul2000/yii2-workflow/src'),
     'phpDocumentor\\Reflection\\' => array($vendorDir . '/phpdocumentor/reflection-common/src', $vendorDir . '/phpdocumentor/reflection-docblock/src', $vendorDir . '/phpdocumentor/type-resolver/src'),
+    'oonne\\sortablegrid\\' => array($vendorDir . '/oonne/yii2-sortable-grid-view'),
     'nterms\\mailqueue\\' => array($vendorDir . '/nterms/yii2-mailqueue'),
     'mdm\\admin\\' => array($vendorDir . '/mdmsoft/yii2-admin'),
     'limion\\jqueryfileupload\\' => array($vendorDir . '/limion/yii2-jquery-fileupload-widget/src'),

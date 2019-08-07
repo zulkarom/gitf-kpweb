@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\GridView;
+use oonne\sortablegrid\SortableGridView;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -19,23 +20,56 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="box">
 <div class="box-header"></div>
-<div class="box-body"><?= GridView::widget([
+<div class="box-body">
+
+<?= SortableGridView::widget([
         'dataProvider' => $dataProvider,
+		'sortableAction' => ['/website/front-slider/sort'],
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-            'slide_name',
+
+			
 			[
-				'label' => 'Slide',
+				'label' => '',
+				'format' => 'html',
+				'value' => function(){
+					return '<span class="glyphicon glyphicon-move"></span>';
+				},
+				'contentOptions' => ['class' => 'sortable-handle'],
+			]
+			,
+            [
+				'label' => 'Information',
 				'format' => 'html',
 				'value' => function($model){
-					return '<img src="'.Url::to(['/website/front-slider/download-file', 'attr' => 'image','id' => $model->id]).'" width="100px" />';
+						$lbl = 'NO';
+						$col = 'danger';
+					if($model->is_publish == 1){
+						$lbl = 'YES';
+						$col = 'success';
+					}
+					$pub = '<span class="label label-'.$col.'">'.$lbl.'</span>';
+					return '
+					<div>Name: ' . $model->slide_name . '</div>
+					<div>Publish: ' . $pub . '</div>
+		
+					<div>Created by: ' . $model->createdBy->fullname . '</div>
+					<div>Created at: ' . date('d.m.Y', strtotime($model->created_at)) . '</div>
+					<div>Updated at: ' . date('d.m.Y', strtotime($model->updated_at)) . '</div>
+					';
+				}
+			
+			],
+			[
+				'label' => 'Image',
+				'format' => 'html',
+				'value' => function($model){
+					return '<img src="'.Url::to(['/website/front-slider/download-file', 'attr' => 'image','id' => $model->id]).'" width="300px" />';
 				}
 			],
-            'slide_order',
             
 ['class' => 'yii\grid\ActionColumn',
                  'contentOptions' => ['style' => 'width: 13%'],
-                'template' => '{update} {delete}',
+                'template' => '<div class="form-group">{update}</div><div class="form-group">{delete}</div>',
                 //'visible' => false,
                 'buttons'=>[
                     'update'=>function ($url, $model) {

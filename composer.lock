@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "182c076828608bf3cd3e269eb3354dad",
+    "content-hash": "f16f14f9285659cbba9a36d9a9309ee8",
     "packages": [
         {
             "name": "2amigos/yii2-chartjs-widget",
@@ -188,12 +188,12 @@
             "version": "v2.4.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/almasaeed2010/AdminLTE.git",
+                "url": "https://github.com/ColorlibHQ/AdminLTE.git",
                 "reference": "b3acb63ac56b13eb45b36e628b384a9a2507b50e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/almasaeed2010/AdminLTE/zipball/b3acb63ac56b13eb45b36e628b384a9a2507b50e",
+                "url": "https://api.github.com/repos/ColorlibHQ/AdminLTE/zipball/b3acb63ac56b13eb45b36e628b384a9a2507b50e",
                 "reference": "b3acb63ac56b13eb45b36e628b384a9a2507b50e",
                 "shasum": ""
             },
@@ -231,7 +231,7 @@
             "version": "v3.14.0",
             "source": {
                 "type": "git",
-                "url": "git@github.com:blueimp/JavaScript-Canvas-to-Blob.git",
+                "url": "https://github.com/blueimp/JavaScript-Canvas-to-Blob.git",
                 "reference": "9f3deb2e710d39c72a988559609d9dc9a319de0b"
             },
             "dist": {
@@ -270,7 +270,7 @@
             "version": "v2.17.0",
             "source": {
                 "type": "git",
-                "url": "git@github.com:blueimp/Gallery.git",
+                "url": "https://github.com/blueimp/Gallery.git",
                 "reference": "8336bb5934cb623608808601129db3fbf9201a09"
             },
             "dist": {
@@ -300,7 +300,7 @@
             "version": "v3.11.0",
             "source": {
                 "type": "git",
-                "url": "git@github.com:blueimp/JavaScript-Templates.git",
+                "url": "https://github.com/blueimp/JavaScript-Templates.git",
                 "reference": "da7647cb93fff2030e73a701db22c66de76a9919"
             },
             "dist": {
@@ -376,7 +376,7 @@
             "version": "v1.3.6",
             "source": {
                 "type": "git",
-                "url": "git@github.com:bernii/gauge.js.git",
+                "url": "https://github.com/bernii/gauge.js.git",
                 "reference": "df79eb699ae33529509fee5e14914c4d4186b00f"
             },
             "dist": {
@@ -454,7 +454,7 @@
             "version": "v1.3.2",
             "source": {
                 "type": "git",
-                "url": "git@github.com:bestiejs/punycode.js.git",
+                "url": "https://github.com/bestiejs/punycode.js.git",
                 "reference": "38c8d3131a82567bfef18da09f7f4db68c84f8a3"
             },
             "dist": {
@@ -2803,6 +2803,49 @@
             "time": "2017-03-20T13:38:05+00:00"
         },
         {
+            "name": "oonne/yii2-sortable-grid-view",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/oonne/yii2-sortable-grid-view.git",
+                "reference": "eb48314f5946c8f0ba2e2803fc0f610d6dfc10fe"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/oonne/yii2-sortable-grid-view/zipball/eb48314f5946c8f0ba2e2803fc0f610d6dfc10fe",
+                "reference": "eb48314f5946c8f0ba2e2803fc0f610d6dfc10fe",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "*",
+                "yiisoft/yii2-jui": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "oonne\\sortablegrid\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "JAY",
+                    "homepage": "https://www.oonne.com"
+                }
+            ],
+            "description": "Yii2 GridView widget base on jQuery UI sortable widget",
+            "keywords": [
+                "gridview",
+                "sortable",
+                "widget",
+                "yii2"
+            ],
+            "time": "2017-07-19T12:24:19+00:00"
+        },
+        {
             "name": "paragonie/random_compat",
             "version": "v2.0.17",
             "source": {
@@ -4795,6 +4838,7 @@
                 "mock",
                 "xunit"
             ],
+            "abandoned": true,
             "time": "2017-06-30T09:13:00+00:00"
         },
         {

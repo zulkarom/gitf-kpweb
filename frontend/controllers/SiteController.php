@@ -7,6 +7,8 @@ use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Controller;
 use backend\modules\website\models\Event;
+use backend\modules\website\models\FrontSlider;
+use common\models\Upload;
 
 
 /**
@@ -34,10 +36,12 @@ class SiteController extends Controller
     {
 		$upcoming = Event::upcomingEvent();
 		$news = Event::latestNews();
+		$slides = FrontSlider::find()->where(['is_publish' => 1])->orderBy('slide_order DESC')->all();
 		
 		return $this->render('index', [
 			'upcoming' => $upcoming,
-			'news' => $news
+			'news' => $news,
+			'slides' => $slides
 		]);
         
     }

@@ -429,4 +429,13 @@ return array (
       '@richardfan/widget' => $vendorDir . '/richardfan1126/yii2-js-register',
     ),
   ),
+  'oonne/yii2-sortable-grid-view' => 
+  array (
+    'name' => 'oonne/yii2-sortable-grid-view',
+    'version' => '1.0.0.0',
+    'alias' => 
+    array (
+      '@oonne/sortablegrid' => $vendorDir . '/oonne/yii2-sortable-grid-view',
+    ),
+  ),
 );

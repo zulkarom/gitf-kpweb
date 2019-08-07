@@ -9,9 +9,10 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use common\models\Upload;
+use common\models\UploadFile;
 use yii\helpers\Json;
 use yii\db\Expression;
+use oonne\sortablegrid\SortableGridAction;
 
 
 /**
@@ -38,6 +39,16 @@ class FrontSliderController extends Controller
             ],
         ];
     }
+	
+	public function actions()
+	{
+		return [
+			'sort' => [
+				'class' => SortableGridAction::className(),
+				'modelName' => FrontSlider::className(),
+			],
+		];
+	}
 
 
     /**
@@ -47,7 +58,7 @@ class FrontSliderController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => FrontSlider::find()->orderBy('slide_order ASC'),
+            'query' => FrontSlider::find()->orderBy('slide_order DESC'),
         ]);
 
         return $this->render('index', [
@@ -66,7 +77,10 @@ class FrontSliderController extends Controller
         $model = new FrontSlider();
 		$model->scenario = 'create';
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+			$model->created_by = Yii::$app->user->identity->id;
+			$model->created_at = new Expression('NOW()');
+			$model->save();
             return $this->redirect(['update', 'id' => $model->id]);
         }
 
@@ -87,7 +101,9 @@ class FrontSliderController extends Controller
         $model = $this->findModel($id);
 		$model->scenario = 'update';
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+			$model->updated_at = new Expression('NOW()');
+			$model->save();
             return $this->redirect(['index']);
         }
 
@@ -138,7 +154,7 @@ class FrontSliderController extends Controller
         $model = $this->findModel($id);
         $model->file_controller = 'front-slider';
 
-        return Upload::upload($model, $attr, 'updated_at');
+        return UploadFile::upload($model, $attr, 'updated_at');
 
     }
 
@@ -194,7 +210,7 @@ class FrontSliderController extends Controller
         
         
         
-        Upload::download($model, $attr, $filename);
+        UploadFile::download($model, $attr, $filename);
     }
 
 }

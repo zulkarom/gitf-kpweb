@@ -3,6 +3,8 @@
 namespace backend\modules\website\models;
 
 use Yii;
+use common\models\User;
+use oonne\sortablegrid\SortableGridBehavior;
 
 /**
  * This is the model class for table "web_front_slider".
@@ -23,6 +25,16 @@ class FrontSlider extends \yii\db\ActiveRecord
     {
         return 'web_front_slider';
     }
+	
+	public function behaviors()
+{
+    return [
+        'sort' => [
+            'class' => SortableGridBehavior::className(),
+            'sortableAttribute' => 'slide_order'
+        ],
+    ];
+}
 
     /**
      * @inheritdoc
@@ -30,9 +42,9 @@ class FrontSlider extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['slide_name', 'slide_order', 'is_publish'], 'required', 'on' => 'create'],
+            [['slide_name', 'is_publish'], 'required', 'on' => 'create'],
 			[['image_file', 'slide_name', 'slide_order'], 'required', 'on' => 'update'],
-            [['image_file', 'caption'], 'string'],
+            [['image_file', 'caption', 'slide_url'], 'string'],
 			
 			[['slide_order', 'is_publish'], 'integer'],
 			[['updated_at'], 'safe'],
@@ -57,4 +69,10 @@ class FrontSlider extends \yii\db\ActiveRecord
             'caption' => 'Caption',
         ];
     }
+	
+	public function getCreatedBy(){
+        return $this->hasOne(User::className(), ['id' => 'created_by']);
+    }
+	
+
 }
