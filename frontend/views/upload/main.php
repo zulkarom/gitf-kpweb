@@ -157,6 +157,8 @@ $('#remove_$unique ').click(function(e, data){
 			link.attr('disabled', false);
 		}else if(result.good == 2){
 			$('#fileupload-container-$unique ').remove();
+		}else{
+			console.log(result);
 		}
 	}
   });

@@ -13,6 +13,9 @@ use Yii;
  */
 class FrontSlider extends \yii\db\ActiveRecord
 {
+	public $image_instance;
+	public $file_controller;
+
     /**
      * @inheritdoc
      */
@@ -27,8 +30,17 @@ class FrontSlider extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['image_file', 'caption'], 'required'],
+            [['slide_name', 'slide_order', 'is_publish'], 'required', 'on' => 'create'],
+			[['image_file', 'slide_name', 'slide_order'], 'required', 'on' => 'update'],
             [['image_file', 'caption'], 'string'],
+			
+			[['slide_order', 'is_publish'], 'integer'],
+			[['updated_at'], 'safe'],
+			
+			[['image_file'], 'required', 'on' => 'image_upload'],
+            [['image_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg, png', 'maxSize' => 1000000],
+            [['updated_at'], 'required', 'on' => 'image_delete'],
+
         ];
     }
 
@@ -39,7 +51,9 @@ class FrontSlider extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'image_file' => 'Image File',
+            'image_file' => 'Slide File',
+			 'is_publish' => 'Publish',
+			  'slide_order' => 'Order',
             'caption' => 'Caption',
         ];
     }
