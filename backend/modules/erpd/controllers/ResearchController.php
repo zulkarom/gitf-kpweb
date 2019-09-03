@@ -8,6 +8,7 @@ use yii\db\Expression;
 use backend\modules\erpd\models\Research;
 use backend\modules\erpd\models\Researcher;
 use backend\modules\erpd\models\ResearchSearch;
+use backend\modules\erpd\models\ResearchAllSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
@@ -53,6 +54,21 @@ class ResearchController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+	
+	/**
+     * Lists all Research models.
+     * @return mixed
+     */
+    public function actionAll()
+    {
+        $searchModel = new ResearchAllSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('all', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
 
     /**
      * Displays a single Research model.
@@ -64,6 +80,28 @@ class ResearchController extends Controller
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
+        ]);
+    }
+	
+	public function actionViewVerify($id)
+    {
+		$model = $this->findModel($id);
+		if ($model->load(Yii::$app->request->post())) {
+			$model->reviewed_at = new Expression('NOW()');
+			$model->reviewed_by = Yii::$app->user->identity->id;
+			$status = Yii::$app->request->post('wfaction');
+			if($status == 'correction'){
+				$model->status = 10;
+			}else if($status == 'verify'){
+				$model->status = 50;
+			}
+			if($model->save()){
+				Yii::$app->session->addFlash('success', "Data Updated");
+			}
+		}
+		
+        return $this->render('view-verify', [
+            'model' => $model,
         ]);
     }
 
@@ -270,7 +308,12 @@ class ResearchController extends Controller
 		$model->scenario = 'submit';
 		
 		if ($model->load(Yii::$app->request->post())) {
-			$model->status = 20;//submit
+			if($model->status == 10){
+				$model->status = 30;//updated
+			}else{
+				$model->status = 20;//submit
+			}
+			
 			if($model->save()){
 				Yii::$app->session->addFlash('success', "Your research has been successfully submitted.");
 				return $this->redirect('index');

@@ -55,6 +55,13 @@ table.detail-view th {
 				}
 				
 			],
+			[
+				'label' => 'Research File',
+				'format' => 'raw',
+				'value' => function($model){
+					return Html::a('<span class="glyphicon glyphicon-download-alt"></span> File',['research/download-file', 'attr'=>'res', 'id' => $model->id], ['target' => '_blank']);
+				}
+			]
 
 			
 			

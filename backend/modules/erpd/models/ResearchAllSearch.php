@@ -10,15 +10,16 @@ use backend\modules\erpd\models\Research;
 /**
  * ResearchSearch represents the model behind the search form of `backend\modules\erpd\models\Research`.
  */
-class ResearchSearch extends Research
+class ResearchAllSearch extends Research
 {
+	public $duration;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'res_staff', 'res_progress', 'res_grant', 'reminder', 'status'], 'integer'],
+            [['id', 'res_staff', 'res_progress', 'res_grant', 'reminder', 'status', 'duration'], 'integer'],
 			
             [['res_title', 'date_start', 'date_end', 'res_grant_others', 'res_source', 'res_file', 'modified_at', 'created_at'], 'safe'],
 			
@@ -44,8 +45,7 @@ class ResearchSearch extends Research
      */
     public function search($params)
     {
-        $query = Research::find();
-		$query->joinWith(['researchers']);
+        $query = Research::find()->where(['>','status',10]);
 
         // add conditions that should always apply here
 
@@ -53,7 +53,7 @@ class ResearchSearch extends Research
             'query' => $query,
 			'sort'=> ['defaultOrder' => ['status'=>SORT_ASC, 'date_start' =>SORT_DESC]],
 			'pagination' => [
-					'pageSize' => 100,
+					'pageSize' => 50,
 				],
         ]);
 
@@ -67,11 +67,21 @@ class ResearchSearch extends Research
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'rp_researcher.staff_id' => Yii::$app->user->identity->staff->id,
+            'status' => $this->status,
+			'res_grant' => $this->res_grant
+			
         ]);
+		
+		 $query->andFilterWhere(['<=', 'YEAR(date_start)', $this->duration]);
+		 $query->andFilterWhere(['>=', 'YEAR(date_end)', $this->duration]);
 
         $query->andFilterWhere(['like', 'res_title', $this->res_title]);
+		
+		$dataProvider->sort->attributes['duration'] = [
+        'asc' => ['date_start' => SORT_ASC],
+        'desc' => ['date_start' => SORT_DESC],
+        ]; 
+
 
 
         return $dataProvider;

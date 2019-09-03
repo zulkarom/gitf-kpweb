@@ -27,6 +27,8 @@ class Research extends \yii\db\ActiveRecord
 {
 	public $res_instance;
 	public $file_controller;
+	public $year_start;
+	public $year_end;
 	
     /**
      * @inheritdoc
@@ -91,6 +93,45 @@ class Research extends \yii\db\ActiveRecord
         return $this->hasMany(Researcher::className(), ['res_id' => 'id'])->orderBy('res_order ASC');
     }
 	
+	public function getLeader(){
+		$result = Researcher::find()
+		->where(['res_id' => $this->id])
+		->orderBy('res_order ASC')
+		->one();
+		if($result){
+			if($result->staff_id == 0){
+				return $result->ext_name;
+			}else{
+				return $result->staff->user->fullname;
+			}
+		}
+	}
+	
+	public function listGrants(){
+		$list = ResearchGrant::find()->all();
+		return ArrayHelper::map($list, 'id', 'gra_abbr');
+	}
+	
+	public function listYears(){
+		$array = [];
+		$start = self::find()->select('YEAR(date_start) as year_start')->distinct()->all();
+		$arr_start = ArrayHelper::map($start, 'year_start', 'year_start');
+		
+		$end = self::find()->select('YEAR(date_end) as year_end')->distinct()->all();
+		$arr_end = ArrayHelper::map($end, 'year_end', 'year_end');
+		
+		$all =  array_unique(array_merge($arr_start, $arr_end));
+		arsort($all);
+		
+		if($all){
+			foreach($all as $y){
+				$array[$y] = $y;
+			}
+		}
+		
+		return $array;
+	}
+	
 	public function flashError(){
         if($this->getErrors()){
             foreach($this->getErrors() as $error){
@@ -112,6 +153,10 @@ class Research extends \yii\db\ActiveRecord
 		$list = Status::find()->where(['user_show' => 1])->all();
 		return ArrayHelper::map($list, 'status_code', 'status_name');
 	}
+	public function statusListAdmin(){
+		$list = Status::find()->where(['admin_show' => 1])->all();
+		return ArrayHelper::map($list, 'status_code', 'status_name');
+	}
 	
 	public function getStatusInfo(){
         return $this->hasOne(Status::className(), ['status_code' => 'status']);
@@ -124,7 +169,13 @@ class Research extends \yii\db\ActiveRecord
 	
 	public function showProgress(){
 		$arr = $this->progressArr();
-		return $arr[$this->res_progress];
+		if($this->res_progress == 0){
+			$color = 'info';
+		}else{
+			$color = 'success';
+		}
+		return '<span class="label label-'.$color .'">'.strtoupper($arr[$this->res_progress]) .'</span>';
+		
 	}
 	
 	public function progressArr(){

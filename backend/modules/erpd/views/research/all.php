@@ -8,21 +8,16 @@ use yii\grid\GridView;
 /* @var $searchModel backend\modules\erpd\models\ResearchSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Researches';
+$this->title = 'All Researches';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="research-index">
-
-
-    <p>
-        <?= Html::a('Create Research', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
 
   <div class="box">
 <div class="box-header"></div>
 <div class="box-body">  <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        //'filterModel' => $searchModel,
+        'filterModel' => $searchModel,
 		'options' => [ 'style' => 'table-layout:fixed;' ],
 		
         'columns' => [
@@ -40,20 +35,37 @@ $this->params['breadcrumbs'][] = $this->title;
 			[
                 'attribute' => 'res_title',
 				'label' => 'Title',
-                'format' => 'ntext',
-                'contentOptions' => [ 'style' => 'width: 60%;' ],
+                'format' => 'html',
+                'contentOptions' => [ 'style' => 'width: 50%;' ],
+				'value' => function($model){
+					return '<i>' . $model->res_title . '<br />' . '<span class="fa fa-user"></span> ' . $model->leader . '</i>';
+				}
             ],
 			[
-				'attribute' => 'res_grant',
-				'label' => 'Grant',
+				'attribute' => 'duration',
+				'filter' => Html::activeDropDownList($searchModel, 'duration', $searchModel->listYears(),['class'=> 'form-control','prompt' => 'All']),
+				'label' => 'Duration',
+				'format' => 'html',
 				'value' => function($model){
-					return $model->researchGrant->gra_abbr;
+					return date('d/m/Y', strtotime($model->date_start)) . '<br />' . date('d/m/Y', strtotime($model->date_end));
 				}
 				
 			],
-
+			[
+				'attribute' => 'res_grant',
+				'filter' => Html::activeDropDownList($searchModel, 'res_grant', $searchModel->listGrants(),['class'=> 'form-control','prompt' => 'All']),
+				'label' => 'Grant',
+				'value' => function($model){
+					if($model->researchGrant){
+						return $model->researchGrant->gra_abbr . ' RM' . number_format($model->res_amount,2);
+					}
+					
+				}
+				
+			],
 			[
 				'attribute' => 'res_progress',
+				'filter' => Html::activeDropDownList($searchModel, 'res_grant', $searchModel->progressArr(),['class'=> 'form-control','prompt' => 'All']),
 				'format' => 'html',
 				'value' => function($model){
 					return $model->showProgress();
@@ -62,7 +74,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
 				'attribute' => 'status',
                 'format' => 'html',
-				'filter' => Html::activeDropDownList($searchModel, 'status', $searchModel->statusList(),['class'=> 'form-control','prompt' => 'All']),
+				'filter' => Html::activeDropDownList($searchModel, 'status', $searchModel->statusListAdmin(),['class'=> 'form-control','prompt' => 'All']),
 				'value' => function($model){
 					return $model->showStatus();
 				}
@@ -74,10 +86,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 //'visible' => false,
                 'buttons'=>[
                     'update'=>function ($url, $model) {
-						if($model->status > 10){
-							return Html::a('<span class="glyphicon glyphicon-pencil"></span> VIEW',['/erpd/research/view', 'id' => $model->id],['class'=>'btn btn-default btn-sm']);
+						if($model->status < 50){
+							return Html::a('<span class="glyphicon glyphicon-eye-open"></span> VERIFY',['/erpd/research/view-verify', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
 						}else{
-							return Html::a('<span class="glyphicon glyphicon-pencil"></span> UPDATE',['/erpd/research/update', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
+							return Html::a('<span class="glyphicon glyphicon-pencil"></span> VIEW',['/erpd/research/view-verify', 'id' => $model->id],['class'=>'btn btn-default btn-sm']);
 						}
                         
                     }
@@ -89,3 +101,5 @@ $this->params['breadcrumbs'][] = $this->title;
     ]); ?></div>
 </div>
 </div>
+
+

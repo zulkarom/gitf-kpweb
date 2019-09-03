@@ -162,7 +162,7 @@ use backend\modules\jeb\models\Menu as JebMenu;
 						
 				['label' => 'Dashboard', 'icon' => 'dashboard', 'url' => ['/erpd'],],
 				
-				['label' => 'Research', 'icon' => 'book', 'url' => ['/erpd/research'],],
+				['label' => 'Research', 'icon' => 'book', 'url' => ['/erpd/research/all'],],
 				
 				['label' => 'Publication', 'icon' => 'send', 'url' => ['/erpd/publication/all'],],
 				
