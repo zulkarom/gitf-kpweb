@@ -3,6 +3,7 @@
 namespace backend\modules\erpd\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "research".
@@ -10,7 +11,7 @@ use Yii;
  * @property int $id
  * @property string $res_title
  * @property int $res_leader
- * @property int $res_status 1=finish,0 = ongoing
+ * @property int $res_progress 1=finish,0 = ongoing
  * @property string $date_start
  * @property string $date_end
  * @property int $res_grant
@@ -24,6 +25,9 @@ use Yii;
  */
 class Research extends \yii\db\ActiveRecord
 {
+	public $res_instance;
+	public $file_controller;
+	
     /**
      * @inheritdoc
      */
@@ -40,6 +44,10 @@ class Research extends \yii\db\ActiveRecord
         return [
             [['res_title', 'res_staff', 'res_progress', 'date_start', 'date_end', 'res_grant', 'res_source', 'res_amount', 'created_at'], 'required', 'on' => 'res_entry'],
 			
+			[['res_file'], 'required', 'on' => 'submit'],
+			
+			[['res_title', 'res_staff', 'res_progress', 'date_start', 'date_end', 'res_grant', 'res_source', 'res_amount', 'modified_at'], 'required', 'on' => 'res_update'],
+			
             [['res_staff', 'res_progress', 'res_grant', 'reminder', 'status'], 'integer'],
 			
             [['date_start', 'date_end', 'modified_at', 'created_at'], 'safe'],
@@ -48,6 +56,10 @@ class Research extends \yii\db\ActiveRecord
             [['res_title'], 'string', 'max' => 600],
 			
             [['res_grant_others', 'res_source', 'res_file'], 'string', 'max' => 200],
+			
+			[['res_file'], 'required', 'on' => 'res_upload'],
+            [['res_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
+            [['modified_at'], 'required', 'on' => 'res_delete'],
         ];
     }
 
@@ -60,7 +72,7 @@ class Research extends \yii\db\ActiveRecord
             'id' => 'Res ID',
             'res_title' => 'Research Title',
             'res_staff' => 'Res Staff',
-            'res_progress' => 'Status',
+            'res_progress' => 'Progress',
             'date_start' => 'Date Start',
             'date_end' => 'Date End',
             'res_grant' => 'Research Grant',
@@ -76,7 +88,64 @@ class Research extends \yii\db\ActiveRecord
 	
 	public function getResearchers()
     {
-        return $this->hasMany(Researcher::className(), ['res_id' => 'id']);
+        return $this->hasMany(Researcher::className(), ['res_id' => 'id'])->orderBy('res_order ASC');
     }
+	
+	public function flashError(){
+        if($this->getErrors()){
+            foreach($this->getErrors() as $error){
+                if($error){
+                    foreach($error as $e){
+                        Yii::$app->session->addFlash('error', $e);
+                    }
+                }
+            }
+        }
+
+    }
+	
+	public function getResearchGrant(){
+        return $this->hasOne(ResearchGrant::className(), ['id' => 'res_grant']);
+    }
+	
+	public function statusList(){
+		$list = Status::find()->where(['user_show' => 1])->all();
+		return ArrayHelper::map($list, 'status_code', 'status_name');
+	}
+	
+	public function getStatusInfo(){
+        return $this->hasOne(Status::className(), ['status_code' => 'status']);
+    }
+	
+	public function showStatus(){
+		$status = $this->statusInfo;
+		return '<span class="label label-'.$status->status_color .'">'.$status->status_name .'</span>';
+	}
+	
+	public function showProgress(){
+		$arr = $this->progressArr();
+		return $arr[$this->res_progress];
+	}
+	
+	public function progressArr(){
+		return [0 => 'On Going', 1 => 'Complete'];
+	}
+	
+	public function stringResearchers(){
+		$string ="";
+		$researchers = $this->researchers;
+		if($researchers){
+			foreach($researchers as $researcher){
+				if($researcher->staff_id == 0){
+					$string .= $researcher->ext_name . '<br />';
+				}else{
+					$string .= '<span class="glyphicon glyphicon-ok"></span> ' . $researcher->staff->user->fullname . '<br />';
+				}
+				
+			}
+		}
+		return $string;
+	}
+
 
 }

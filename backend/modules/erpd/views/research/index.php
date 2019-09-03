@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
@@ -27,12 +28,31 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 			[
+				'label' => '',
+				'format' => 'raw',
+				'contentOptions' => [ 'style' => 'width: 1%;' ],
+				'value' => function($model){
+					
+					return '<a href="'.Url::to(['download-file', 'attr' => 'res', 'id' => $model->id]).'" target="_blank"><i class="fa fa-file-pdf-o"></i></a>';
+				}
+				
+			],
+			[
                 'attribute' => 'res_title',
+				'label' => 'Title',
                 'format' => 'ntext',
                 'contentOptions' => [ 'style' => 'width: 60%;' ],
             ],
 			[
-				'attribute' => 'res_status',
+				'attribute' => 'res_grant',
+				'label' => 'Grant',
+				'value' => function($model){
+					return $model->researchGrant->gra_abbr;
+				}
+				
+			],
+			[
+				'attribute' => 'res_progress',
 				'value' => function($model){
 					if($model->res_progress == 1){
 						return 'Completed';
@@ -41,16 +61,27 @@ $this->params['breadcrumbs'][] = $this->title;
 					}
 				}
 			],
-            
-            'date_start',
-            'date_end',
+            [
+				'attribute' => 'status',
+                'format' => 'html',
+				'filter' => Html::activeDropDownList($searchModel, 'status', $searchModel->statusList(),['class'=> 'form-control','prompt' => 'All']),
+				'value' => function($model){
+					return $model->showStatus();
+				}
+			],
+       
             ['class' => 'yii\grid\ActionColumn',
                  'contentOptions' => ['style' => 'width: 8.7%'],
                 'template' => '{update}',
                 //'visible' => false,
                 'buttons'=>[
                     'update'=>function ($url, $model) {
-                        return Html::a('<span class="glyphicon glyphicon-pencil"></span> UPDATE',['/erpd/research/update', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
+						if($model->status > 10){
+							return Html::a('<span class="glyphicon glyphicon-pencil"></span> VIEW',['/erpd/research/view', 'id' => $model->id],['class'=>'btn btn-default btn-sm']);
+						}else{
+							return Html::a('<span class="glyphicon glyphicon-pencil"></span> UPDATE',['/erpd/research/update', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
+						}
+                        
                     }
                 ],
             

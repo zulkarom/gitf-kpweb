@@ -3,6 +3,7 @@
 namespace backend\modules\erpd\models;
 
 use Yii;
+use backend\modules\staff\models\Staff;
 
 /**
  * This is the model class for table "researchers".
@@ -51,4 +52,23 @@ class Researcher extends \yii\db\ActiveRecord
             'ext_name' => 'External Researcher',
         ];
     }
+	
+	public function flashError(){
+        if($this->getErrors()){
+            foreach($this->getErrors() as $error){
+                if($error){
+                    foreach($error as $e){
+                        Yii::$app->session->addFlash('error', $e);
+                    }
+                }
+            }
+        }
+
+    }
+	
+	public function getStaff(){
+        return $this->hasOne(Staff::className(), ['id' => 'staff_id']);
+    }
+
+
 }

@@ -22,6 +22,34 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@frontend/views/myas
 			
 			<div class="row">
 				<!-- course item -->
+				
+				<div class="col-lg-3 col-md-6 course-item">
+				<a href="http://fkp.umk.edu.my/caknawan/2019-Jan-Jun" target="_blank">
+					<div class="course-thumb">
+						<img src="<?=$directoryAsset ?>/img/caknawan/jan-jun-2019x.jpg" alt="">
+					
+					</div>
+					<div class="course-info">
+					
+						<h4> JAN - JAN 2019</h4>
+
+					</div>
+					</a>
+				</div>
+			
+				<div class="col-lg-3 col-md-6 course-item">
+				<a href="http://fkp.umk.edu.my/caknawan/2018-Jul-Dis" target="_blank">
+					<div class="course-thumb">
+						<img src="<?=$directoryAsset ?>/img/caknawan/jul-dis-2018x.jpg" alt="">
+					
+					</div>
+					<div class="course-info">
+					
+						<h4> JUL - DIS 2018</h4>
+
+					</div>
+					</a>
+				</div>
 				<div class="col-lg-3 col-md-6 course-item">
 				<a href="http://fkp.umk.edu.my/caknawan/2018-Jan-Jun" target="_blank">
 					<div class="course-thumb">

@@ -147,7 +147,7 @@ class Staff extends \yii\db\ActiveRecord
 		return self::find()
 		->select('staff.id, user.fullname as staff_name, user.id as user_id')
 		->innerJoin('user', 'user.id = staff.user_id')
-		->where(['staff.staff_active' => 1, 'staff.trash' => 0])
+		->where(['staff.staff_active' => 1, 'staff.trash' => 0])->orderBy('user.fullname ASC')
 		->all();
 	}
 	

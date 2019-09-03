@@ -14,12 +14,12 @@ use yii\jui\JuiAsset;
 /* @var $model backend\modules\erpd\models\Research */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-
+<?php $form = ActiveForm::begin(['id' => 'dynamic-form']); ?>
 <div class="box">
 <div class="box-header"></div>
 <div class="box-body"><div class="research-form">
 
-<?php $form = ActiveForm::begin(['id' => 'dynamic-form']); ?>
+
 
     <?= $form->field($model, 'res_title')->textarea(['rows' => '2']) ?>
 	
@@ -85,7 +85,7 @@ use yii\jui\JuiAsset;
                     <?php
                         // necessary for update action.
                         if (! $researcher->isNewRecord) {
-                            echo Html::activeHiddenInput($researcher, "[{$indexRes}]resr_id");
+                            echo Html::activeHiddenInput($researcher, "[{$indexRes}]id");
                         }
                     ?>
                     <?= $form->field($researcher, "[{$indexRes}]staff_id")->dropDownList(ArrayHelper::map(Staff::activeStaff(),'id', 'staff_name'), ['prompt' => 'Please Select' ])->label(false) ?>
@@ -172,7 +172,7 @@ use yii\jui\JuiAsset;
     
 <div class="row">
 <div class="col-md-6"><?= $form->field($model, 'res_grant')->dropDownList(
-        ArrayHelper::map(ResearchGrant::find()->all(),'gra_id', 'gra_abbr'), ['prompt' => 'Please Select' ]
+        ArrayHelper::map(ResearchGrant::find()->all(),'id', 'gra_abbr'), ['prompt' => 'Please Select' ]
     )
  ?></div>
  
@@ -206,27 +206,37 @@ if($other_show){
 <div class="col-md-3"><?= $form->field($model, 'res_amount', [
     'addon' => ['prepend' => ['content'=>'RM']]
 ]); ?></div>
+
+</div>
+
+<div class="row">
 <div class="col-md-3"><?php 
-	$st = [0 => 'On Going', 1 => 'Complete'];
+	$st = $model->progressArr();
 	
-	echo $form->field($model, 'res_status')->dropDownList(
+	echo $form->field($model, 'res_progress')->dropDownList(
         $st, ['prompt' => 'Please Select' ]
     ) 
  ?></div>
 </div>
 	
 
- 
+ </div>
+</div>
+</div>
 
     <div class="form-group">
-        <?= Html::submitButton('<i class="fa fa-save"></i> Save Research', ['class' => 'btn btn-success']) ?>
+		
+		<?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> SAVE AS DRAFT', ['class' => 'btn btn-default', 'name' => 'wfaction', 'value' => 'save']) ?> 
+		
+		
+		
+		 <?= Html::submitButton('NEXT <span class="glyphicon glyphicon-arrow-right"></span>', ['class' => 'btn btn-warning', 'name' => 'wfaction', 'value' => 'next']) ?> 
+		 
     </div>
 
     <?php ActiveForm::end(); ?>
 
-</div>
-</div>
-</div>
+
 
 <?php
 $js = <<<'EOD'
@@ -238,11 +248,11 @@ function configIsStaffSelect(){
 	var val = $(this).val();
 	//alert(val);
 	if(val == 0){
-		$('.field-researchers-' + arr[1]  + '-staff_id').hide();
-		$('.field-researchers-' + arr[1]  + '-ext_name').parent().show();
+		$('.field-researcher-' + arr[1]  + '-staff_id').hide();
+		$('.field-researcher-' + arr[1]  + '-ext_name').parent().show();
 	}else{
-		$('.field-researchers-' + arr[1]  + '-staff_id').show();
-		$('.field-researchers-' + arr[1]  + '-ext_name').parent().hide();
+		$('.field-researcher-' + arr[1]  + '-staff_id').show();
+		$('.field-researcher-' + arr[1]  + '-ext_name').parent().hide();
 	}
 	
 

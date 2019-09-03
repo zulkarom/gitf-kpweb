@@ -127,7 +127,7 @@ use backend\modules\jeb\models\Menu as JebMenu;
 		;
 		
 		$erpd = [
-                        'label' => 'e-RPD Menus',
+                        'label' => 'e-RPD Menu',
                         'icon' => 'list-ul',
                         'url' => '#',
                         'items' => [
@@ -137,6 +137,34 @@ use backend\modules\jeb\models\Menu as JebMenu;
 				['label' => 'Research', 'icon' => 'book', 'url' => ['/erpd/research'],],
 				
 				['label' => 'Publication', 'icon' => 'send', 'url' => ['/erpd/publication'],],
+				
+				
+				
+				['label' => 'Membership', 'icon' => 'pencil', 'url' => ['/erpd/membership'],],
+				
+				['label' => 'Award', 'icon' => 'book', 'url' => ['/erpd/award'],],
+				
+				['label' => 'Consultation', 'icon' => 'book', 'url' => ['/erpd/consultation'],],
+				
+				['label' => 'Knowledge Transfer', 'icon' => 'book', 'url' => ['/erpd/knowledge-transfer'],],
+
+
+                 ]
+                    ]
+		
+		;
+		
+		$erpd_admin = [
+                        'label' => 'e-RPD Admin',
+                        'icon' => 'list-ul',
+                        'url' => '#',
+                        'items' => [
+						
+				['label' => 'Dashboard', 'icon' => 'dashboard', 'url' => ['/erpd'],],
+				
+				['label' => 'Research', 'icon' => 'book', 'url' => ['/erpd/research'],],
+				
+				['label' => 'Publication', 'icon' => 'send', 'url' => ['/erpd/publication/all'],],
 				
 				
 				
@@ -213,6 +241,7 @@ use backend\modules\jeb\models\Menu as JebMenu;
 			
 			case 'erpd':
 			$focus = $erpd;
+			$admin_focus = $erpd_admin;
 			break;
 			
 			case 'staff':

@@ -58,10 +58,14 @@ class Publication extends \yii\db\ActiveRecord
 			[['pubupload_file'], 'required', 'on' => 'submit'],
 			
 			
-            [['staff_id', 'pub_type', 'pub_year', 'has_file'], 'integer'],
-            [['modified_at', 'created_at'], 'safe'],
+            [['staff_id', 'pub_type', 'pub_year', 'has_file', 'reviewed_by'], 'integer'],
+			
+            [['modified_at', 'created_at', 'reviewed_at'], 'safe'],
+			
             [['pub_title', 'pub_journal', 'pub_page', 'pub_city', 'pub_state', 'pub_publisher', 'pub_inbook', 'pub_month'], 'string', 'max' => 500],
+			
             [['pub_volume', 'pub_issue', 'pub_day', 'pub_date'], 'string', 'max' => 100],
+			
             [['pub_isbn', 'pub_organizer', 'pub_index'], 'string', 'max' => 200],
 			
 			[['pubupload_file'], 'required', 'on' => 'pubupload_upload'],
@@ -136,6 +140,10 @@ class Publication extends \yii\db\ActiveRecord
 	
 	public function getPubType(){
         return $this->hasOne(PubType::className(), ['id' => 'pub_type']);
+    }
+	
+	public function getStatusInfo(){
+        return $this->hasOne(Status::className(), ['status_code' => 'status']);
     }
 	
 	public function getAuthors()
@@ -379,6 +387,8 @@ class Publication extends \yii\db\ActiveRecord
 	
 	public function stringSingleAuthor($input){
 		//cari ada comma tak
+		$lastname = '';
+		$stringnotlast = '';
 		$splitcomma = explode(",", $input);
 		$kira = count($splitcomma);
 		if($kira==2){
@@ -461,11 +471,13 @@ class Publication extends \yii\db\ActiveRecord
 	return $string_au.$bb;
 	}
 	
+	public function statusList(){
+		$list = Status::find()->where(['user_show' => 1])->all();
+		return ArrayHelper::map($list, 'status_code', 'status_name');
+	}
 	public function showStatus(){
-		$arr = [0 => 'DRAFT' , 10 => 'SUBMITTED', 20 => 'VERIFIED'];
-		$color = [0 => 'warning' , 10 => 'info', 20 => 'success'];
-		$str = $arr[$this->status];
-		return '<span class="label label-'.$color[$this->status].'">'.$str.'</span>';
+		$status = $this->statusInfo;
+		return '<span class="label label-'.$status->status_color .'">'.$status->status_name .'</span>';
 	}
 	
 	public function myUniqueYear(){

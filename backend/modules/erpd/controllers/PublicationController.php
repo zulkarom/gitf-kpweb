@@ -8,6 +8,7 @@ use backend\modules\erpd\models\Author;
 use backend\modules\erpd\models\PubTag;
 use backend\modules\erpd\models\Editor;
 use backend\modules\erpd\models\PublicationSearch;
+use backend\modules\erpd\models\PublicationAllSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use common\models\Model;
@@ -60,6 +61,27 @@ class PublicationController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+	
+	/**
+     * Lists all Publication models.
+     * @return mixed
+     */
+    public function actionAll()
+    {
+        $searchModel = new PublicationAllSearch();
+        
+		$r = Yii::$app->request->queryParams;
+		if(!array_key_exists('PublicationAllSearch', $r)){
+			$searchModel->pub_year = date('Y');
+		}
+		
+		$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+		
+        return $this->render('all', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
 
     /**
      * Displays a single Publication model.
@@ -71,6 +93,34 @@ class PublicationController extends Controller
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
+        ]);
+    }
+	
+	/**
+     * Displays a single Publication model.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionViewVerify($id)
+    {
+		$model = $this->findModel($id);
+		if ($model->load(Yii::$app->request->post())) {
+			$model->reviewed_at = new Expression('NOW()');
+			$model->reviewed_by = Yii::$app->user->identity->id;
+			$status = Yii::$app->request->post('wfaction');
+			if($status == 'correction'){
+				$model->status = 10;
+			}else if($status == 'verify'){
+				$model->status = 50;
+			}
+			if($model->save()){
+				Yii::$app->session->addFlash('success', "Data Updated");
+			}
+		}
+		
+        return $this->render('view-verify', [
+            'model' => $model,
         ]);
     }
 
@@ -233,7 +283,7 @@ class PublicationController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-		if($model->status > 0 ){
+		if($model->status > 10 ){
 			return $this->redirect(['view', 'id' => $id]);
 		}
 		
@@ -390,13 +440,13 @@ class PublicationController extends Controller
 	
 	public function actionUpload($id){
 		$model = $this->findModel($id);
-		if($model->status > 0 ){
+		if($model->status > 10 ){
 			return $this->redirect(['view', 'id' => $id]);
 		}
 		$model->scenario = 'submit';
 		
 		if ($model->load(Yii::$app->request->post())) {
-			$model->status = 10;//submit
+			$model->status = 20;//submit
 			if($model->save()){
 				Yii::$app->session->addFlash('success', "Your publication has been successfully submitted.");
 				return $this->redirect('index');

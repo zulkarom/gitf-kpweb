@@ -18,7 +18,7 @@ class ResearchSearch extends Research
     public function rules()
     {
         return [
-            [['id', 'res_staff', 'res_progress', 'res_grant', 'reminder'], 'integer'],
+            [['id', 'res_staff', 'res_progress', 'res_grant', 'reminder', 'status'], 'integer'],
 			
             [['res_title', 'date_start', 'date_end', 'res_grant_others', 'res_source', 'res_file', 'modified_at', 'created_at'], 'safe'],
 			

@@ -10,7 +10,7 @@ use backend\modules\erpd\models\Publication;
 /**
  * PublicationSearch represents the model behind the search form of `backend\modules\erpd\models\Publication`.
  */
-class PublicationSearch extends Publication
+class PublicationAllSearch extends Publication
 {
     /**
      * @inheritdoc
@@ -42,8 +42,7 @@ class PublicationSearch extends Publication
      */
     public function search($params)
     {
-        $query = Publication::find();
-		$query->joinWith(['myPubTags']);
+        $query = Publication::find()->where(['<>', 'status', 0 ]);
 
         // add conditions that should always apply here
 
@@ -51,7 +50,7 @@ class PublicationSearch extends Publication
             'query' => $query,
 			'sort'=> ['defaultOrder' => ['status'=>SORT_ASC, 'pub_year' =>SORT_DESC, 'pub_type' => SORT_ASC]],
 			'pagination' => [
-					'pageSize' => 100,
+					'pageSize' => 50,
 				],
 
         ]);

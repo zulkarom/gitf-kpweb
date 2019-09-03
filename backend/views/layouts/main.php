@@ -17,7 +17,7 @@ dmstr\web\AdminLteAsset::register($this);
         <meta charset="<?= Yii::$app->charset ?>"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <?= Html::csrfMetaTags() ?>
-        <title>FKP PORTAL | <?= Html::encode($this->title) ?></title>
+        <title>FKP STAFF PORTAL :: <?= strtoupper(Html::encode($this->title)) ?></title>
         <?php $this->head() ?>
     </head>
     <body class="hold-transition skin-blue sidebar-mini">
