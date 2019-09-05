@@ -9,6 +9,7 @@ use frontend\models\ArchiveSearch;
 use backend\modules\jeb\models\Journal;
 
 
+
 /**
  * Page controller
  */
@@ -81,6 +82,8 @@ class PageController extends Controller
             'dataProvider' => $dataProvider,
         ]);
 	}
+	
+	
 	
 	
 }

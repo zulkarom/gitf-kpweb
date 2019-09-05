@@ -8,6 +8,7 @@ use backend\modules\erpd\models\MembershipSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * MembershipController implements the CRUD actions for Membership model.
@@ -17,17 +18,21 @@ class MembershipController extends Controller
     /**
      * @inheritdoc
      */
-    public function behaviors()
+	public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
                 ],
             ],
         ];
     }
+
 
     /**
      * Lists all Membership models.
@@ -52,9 +57,7 @@ class MembershipController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+
     }
 
     /**
@@ -93,8 +96,15 @@ class MembershipController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+			if(Yii::$app->request->post('check-end')){
+				$model->date_end = '0000-00-00';
+			}
+
+			if($model->save()){
+				return $this->redirect(['index']);
+			}
+            
         }
 
         return $this->render('update', [

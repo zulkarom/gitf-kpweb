@@ -16,14 +16,42 @@ use kartik\date\DatePicker;
 
 	
 	<div class="row">
-<div class="col-md-8"> <?= $form->field($model, 'msp_body')->dropDownList($model->membershipBodySample()) ?></div>
+<div class="col-md-8"> 
+
+<?php 
+
+if($model->id){
+	echo $form->field($model, 'msp_body', ['template' => '{label}<div id="con-body">{input}</div>{error}'])->textInput();
+}else{
+	echo $form->field($model, 'msp_body', ['template' => '{label}<div id="con-body">{input}</div>{error}'])->dropDownList($model->membershipBodySample());
+}
+
+
+?>
+
+
+</div>
 
 
 
 </div>
 
 <div class="row">
-<div class="col-md-4"><?= $form->field($model, 'msp_type')->dropDownList($model->membershipTypeSample()) ?>
+<div class="col-md-4">
+
+<?php 
+
+if($model->id){
+	echo $form->field($model, 'msp_type', ['template' => '{label}<div id="con-type">{input}</div>{error}'])->textInput();
+}else{
+	echo $form->field($model, 'msp_type', ['template' => '{label}<div id="con-type">{input}</div>{error}'])->dropDownList($model->membershipTypeSample());
+}
+
+
+
+?>
+
+
 </div>
 
 </div>
@@ -54,7 +82,16 @@ use kartik\date\DatePicker;
 
 
 </div>
-<div class="col-md-2">
+<?php 
+$check = 'checked';
+$hide = 'style="display:none"';
+if($model->date_end != '0000-00-00'){
+	$check = '';
+	$hide = '"';
+} 
+?>
+
+<div class="col-md-2" id="con-end" <?=$hide?>>
  <?=$form->field($model, 'date_end')->widget(DatePicker::classname(), [
     'removeButton' => false,
     'pluginOptions' => [
@@ -67,8 +104,9 @@ use kartik\date\DatePicker;
     
 ]);
 ?>
-
 </div>
+
+<div class="col-md-2"><div class="form-group">&nbsp;</div> <div class="form-group"><label><input id="check-end" type="checkbox" name="check-end" value="1" <?=$check?> /> No End</label></div></div>
 
 </div>
 
@@ -90,3 +128,39 @@ use kartik\date\DatePicker;
     </div>
 
  <?php ActiveForm::end(); ?>
+ 
+ <?php
+$js = <<<'EOD'
+
+$('#membership-msp_body').change(function(){
+	var val = $(this).val();
+	if(val == 999){
+		var html = '<input type="text" id="membership-msp_body" placeholder="Please specify" class="form-control" name="Membership[msp_body]" / >';
+		$("#con-body").html(html);
+		
+	}
+});
+
+$('#membership-msp_type').change(function(){
+	var val = $(this).val();
+	if(val == 999){
+		var html = '<input type="text" id="membership-msp_type" placeholder="Please specify" class="form-control" name="Membership[msp_type]" / >';
+		$("#con-type").html(html);
+		
+	}
+});
+
+$('#check-end').click(function(){
+	if($(this).is(':checked')){
+		$('#con-end').hide(100);
+	}else{
+		$('#con-end').show(100);
+	}
+	
+});
+
+
+EOD;
+
+$this->registerJs($js);
+?>

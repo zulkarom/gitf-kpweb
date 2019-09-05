@@ -73,7 +73,7 @@ class Membership extends \yii\db\ActiveRecord
 			"Malaysian Institute of Accountant",
 			"Malaysian Bar Council",
 			"Association of Chartered Certified Accountants (ACCA)",
-			"Chartered Institute of Procurement &amp; Supply (CIPS)",
+			"Chartered Institute of Procurement and Supply (CIPS)",
 			"Institution of Hospitality (IH)"
 			];
 		$arr = [];
