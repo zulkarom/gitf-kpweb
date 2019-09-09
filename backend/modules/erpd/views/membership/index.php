@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
@@ -23,6 +24,16 @@ $this->params['breadcrumbs'][] = $this->title;
         //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
+			[
+				'label' => '',
+				'format' => 'raw',
+				'contentOptions' => [ 'style' => 'width: 1%;' ],
+				'value' => function($model){
+					
+					return '<a href="'.Url::to(['download-file', 'attr' => 'msp', 'id' => $model->id]).'" target="_blank"><i class="fa fa-file-pdf-o"></i></a>';
+				}
+				
+			],
             'msp_body',
             'msp_type',
 			[
@@ -39,7 +50,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 //'visible' => false,
                 'buttons'=>[
                     'update'=>function ($url, $model) {
-                        return Html::a('<span class="glyphicon glyphicon-pencil"></span> UPDATE',['membership/update/', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
+						if($model->status > 10){
+							return Html::a('<span class="glyphicon glyphicon-pencil"></span> VIEW',['/erpd/membership/view', 'id' => $model->id],['class'=>'btn btn-default btn-sm']);
+						}else{
+							return Html::a('<span class="glyphicon glyphicon-pencil"></span> UPDATE',['/erpd/membership/update', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
+						}
+                        
                     }
                 ],
             

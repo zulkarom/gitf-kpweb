@@ -124,7 +124,13 @@ if($model->date_end != '0000-00-00'){
 </div>
 
     <div class="form-group">
-        <?= Html::submitButton('Save as Draft', ['class' => 'btn btn-success']) ?>
+		
+		<?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> SAVE AS DRAFT', ['class' => 'btn btn-default', 'name' => 'wfaction', 'value' => 'save']) ?> 
+		
+		
+		
+		 <?= Html::submitButton('NEXT <span class="glyphicon glyphicon-arrow-right"></span>', ['class' => 'btn btn-warning', 'name' => 'wfaction', 'value' => 'next']) ?> 
+		 
     </div>
 
  <?php ActiveForm::end(); ?>

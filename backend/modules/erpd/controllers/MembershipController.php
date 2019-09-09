@@ -9,6 +9,9 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use common\models\Upload;
+use yii\helpers\Json;
+use yii\db\Expression;
 
 /**
  * MembershipController implements the CRUD actions for Membership model.
@@ -57,7 +60,9 @@ class MembershipController extends Controller
      */
     public function actionView($id)
     {
-
+		return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
     }
 
     /**
@@ -102,7 +107,13 @@ class MembershipController extends Controller
 			}
 
 			if($model->save()){
-				return $this->redirect(['index']);
+				$action = Yii::$app->request->post('wfaction');
+				if($action == 'save'){
+					Yii::$app->session->addFlash('success', "Data saved");
+					return $this->redirect(['/erpd/membership/update', 'id' => $model->id]);
+				}else if($action == 'next'){
+					return $this->redirect(['/erpd/membership/upload', 'id' => $model->id]);
+				}
 			}
             
         }
@@ -140,5 +151,93 @@ class MembershipController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+	
+	public function actionUpload($id){
+		$model = $this->findModel($id);
+		if($model->status > 20 ){
+			return $this->redirect(['view', 'id' => $id]);
+		}
+		$model->scenario = 'submit';
+		
+		if ($model->load(Yii::$app->request->post())) {
+			if($model->status == 10){
+				$model->status = 30;//updated
+			}else{
+				$model->status = 20;//submit
+			}
+			
+			if($model->save()){
+				Yii::$app->session->addFlash('success', "Your membership has been successfully submitted.");
+				return $this->redirect('index');
+			}else{
+				$model->flashError();
+			}
+		}
+		
+		 return $this->render('upload', [
+            'model' => $model,
+        ]);
+	}
+	
+	public function actionUploadFile($attr, $id){
+        $attr = $this->clean($attr);
+        $model = $this->findModel($id);
+        $model->file_controller = 'membership';
+
+        return Upload::upload($model, $attr, 'modified_at');
+
+    }
+
+	protected function clean($string){
+		$allowed = ['msp'];
+		
+		foreach($allowed as $a){
+			if($string == $a){
+				return $a;
+			}
+		}
+		
+		throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+	public function actionDeleteFile($attr, $id)
+    {
+        $attr = $this->clean($attr);
+        $model = $this->findModel($id);
+        $attr_db = $attr . '_file';
+        
+        $file = Yii::getAlias('@upload/' . $model->{$attr_db});
+        
+        $model->scenario = $attr . '_delete';
+        $model->{$attr_db} = '';
+        $model->modified_at = new Expression('NOW()');
+        if($model->save()){
+            if (is_file($file)) {
+                unlink($file);
+                
+            }
+            
+            return Json::encode([
+                        'good' => 1,
+                    ]);
+        }else{
+            return Json::encode([
+                        'errors' => $model->getErrors(),
+                    ]);
+        }
+        
+
+
+    }
+
+	public function actionDownloadFile($attr, $id, $identity = true){
+        $attr = $this->clean($attr);
+        $model = $this->findModel($id);
+        $filename = strtoupper($attr) . ' ' . Yii::$app->user->identity->fullname;
+        
+        
+        
+        Upload::download($model, $attr, $filename);
     }
 }

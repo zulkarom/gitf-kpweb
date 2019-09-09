@@ -18,6 +18,9 @@ use Yii;
  */
 class Award extends \yii\db\ActiveRecord
 {
+	public $awd_instance;
+	public $file_controller;
+	
     /**
      * @inheritdoc
      */
@@ -32,11 +35,16 @@ class Award extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['awd_staff', 'awd_name', 'awd_level', 'awd_type', 'awd_by', 'awd_date', 'awd_file'], 'required'],
+            [['awd_staff', 'awd_name', 'awd_level', 'awd_type', 'awd_by', 'awd_date'], 'required'],
             [['awd_staff', 'awd_level'], 'integer'],
             [['awd_date'], 'safe'],
             [['awd_name', 'awd_by'], 'string', 'max' => 300],
             [['awd_type', 'awd_file'], 'string', 'max' => 100],
+			
+			[['awd_file'], 'required', 'on' => 'awd_upload'],
+            [['awd_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
+            [['modified_at'], 'required', 'on' => 'awd_delete'],
+			
         ];
     }
 
@@ -110,4 +118,17 @@ class Award extends \yii\db\ActiveRecord
 		$arr = $this->listLevel();
 		return $arr[$this->awd_level];
 	}
+	
+	public function flashError(){
+        if($this->getErrors()){
+            foreach($this->getErrors() as $error){
+                if($error){
+                    foreach($error as $e){
+                        Yii::$app->session->addFlash('error', $e);
+                    }
+                }
+            }
+        }
+
+    }
 }

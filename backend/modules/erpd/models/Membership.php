@@ -18,6 +18,11 @@ use Yii;
  */
 class Membership extends \yii\db\ActiveRecord
 {
+	public $msp_instance;
+	public $file_controller;
+	public $year_start;
+	public $year_end;
+	
     /**
      * @inheritdoc
      */
@@ -34,12 +39,27 @@ class Membership extends \yii\db\ActiveRecord
         return [
             [['msp_staff', 'msp_body', 'msp_type', 'msp_level', 'date_start', 'date_end',], 'required', 'on' => 'save'],
 			
+			[['msp_file'], 'required', 'on' => 'submit'],
+			
             [['msp_staff', 'msp_level'], 'integer'],
             [['date_start', 'date_end'], 'safe'],
             [['msp_body', 'msp_type'], 'string', 'max' => 500],
             [['msp_file'], 'string', 'max' => 100],
+			
+			[['msp_file'], 'required', 'on' => 'msp_upload'],
+            [['msp_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
+            [['modified_at'], 'required', 'on' => 'msp_delete'],
         ];
     }
+	
+	public function getStatusInfo(){
+        return $this->hasOne(Status::className(), ['status_code' => 'status']);
+    }
+	
+	public function showStatus(){
+		$status = $this->statusInfo;
+		return '<span class="label label-'.$status->status_color .'">'.$status->status_name .'</span>';
+	}
 
     /**
      * @inheritdoc

@@ -8,20 +8,52 @@ use kartik\date\DatePicker;
 /* @var $model backend\modules\erpd\models\Award */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-
+    <?php $form = ActiveForm::begin(); ?>
 <div class="box">
 <div class="box-header"></div>
 <div class="box-body"><div class="award-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+
 	
 	<div class="row">
-<div class="col-md-8"><?= $form->field($model, 'awd_name')->dropDownList($model->awardNameSample())?></div>
+<div class="col-md-8">
+
+
+<?php 
+
+if($model->id){
+	echo $form->field($model, 'awd_name', ['template' => '{label}<div id="con-name">{input}</div>{error}'])->textInput();
+}else{
+	echo $form->field($model, 'awd_name',  ['template' => '{label}<div id="con-name">{input}</div>{error}'])->dropDownList($model->awardNameSample());
+}
+
+
+?>
+
+
+
+</div>
 
 </div>
 
 <div class="row">
-<div class="col-md-8"> <?= $form->field($model, 'awd_by')->dropDownList($model->awardedBySample()) ?></div>
+<div class="col-md-8"> 
+
+<?php 
+
+if($model->id){
+	echo $form->field($model, 'awd_by', ['template' => '{label}<div id="con-by">{input}</div>{error}'])->textInput();
+}else{
+	
+	echo $form->field($model, 'awd_by', ['template' => '{label}<div id="con-by">{input}</div>{error}'])->dropDownList($model->awardedBySample());
+}
+
+
+?>
+
+
+
+</div>
 
 </div>
 
@@ -57,21 +89,52 @@ use kartik\date\DatePicker;
 
     
 
-    
-
-   
-
-   
 
     
+
+</div>
+</div>
+</div>
 
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+		
+		<?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> SAVE AS DRAFT', ['class' => 'btn btn-default', 'name' => 'wfaction', 'value' => 'save']) ?> 
+		
+		
+		
+		 <?= Html::submitButton('NEXT <span class="glyphicon glyphicon-arrow-right"></span>', ['class' => 'btn btn-warning', 'name' => 'wfaction', 'value' => 'next']) ?> 
+		 
     </div>
 
-    <?php ActiveForm::end(); ?>
 
-</div>
-</div>
-</div>
+
+<?php ActiveForm::end(); ?>
+
+ <?php
+$js = <<<'EOD'
+
+$('#award-awd_name').change(function(){
+	var val = $(this).val();
+	if(val == 999){
+		var html = '<input type="text" id="award-awd_name" placeholder="Please specify" class="form-control" name="Award[awd_name]" / >';
+		$("#con-name").html(html);
+		
+	}
+});
+
+
+$('#award-awd_by').change(function(){
+	var val = $(this).val();
+	if(val == 999){
+		var html = '<input type="text" id="award-awd_by" placeholder="Please specify" class="form-control" name="Award[awd_by]" / >';
+		$("#con-by").html(html);
+		
+	}
+});
+
+
+EOD;
+
+$this->registerJs($js);
+?>
