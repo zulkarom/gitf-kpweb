@@ -3,6 +3,7 @@
 namespace backend\modules\erpd\models;
 
 use Yii;
+use backend\modules\staff\models\Staff;
 
 /**
  * This is the model class for table "rp_knowledge_transfer_member".
@@ -14,6 +15,8 @@ use Yii;
  */
 class KnowledgeTransferMember extends \yii\db\ActiveRecord
 {
+	public $is_staff;
+	
     /**
      * @inheritdoc
      */
@@ -28,7 +31,7 @@ class KnowledgeTransferMember extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['ktp_id', 'staff_id', 'ext_name'], 'required'],
+            [['is_staff'], 'required'],
             [['ktp_id', 'staff_id'], 'integer'],
             [['ext_name'], 'string', 'max' => 200],
         ];
@@ -45,5 +48,22 @@ class KnowledgeTransferMember extends \yii\db\ActiveRecord
             'staff_id' => 'Staff ID',
             'ext_name' => 'Ext Name',
         ];
+    }
+	
+	public function getStaff(){
+        return $this->hasOne(Staff::className(), ['id' => 'staff_id']);
+    }
+	
+	public function flashError(){
+        if($this->getErrors()){
+            foreach($this->getErrors() as $error){
+                if($error){
+                    foreach($error as $e){
+                        Yii::$app->session->addFlash('error', $e);
+                    }
+                }
+            }
+        }
+
     }
 }

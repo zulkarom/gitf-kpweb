@@ -73,6 +73,13 @@ use yii\jui\JuiAsset;
           
                     
                      <?php
+				$ex_style = 'style="display:none"';
+			$ex_staff = '';
+			if($researcher->staff_id == 0 and ! $researcher->isNewRecord){
+				$researcher->is_staff = 0;
+				$ex_style = '';
+				$ex_staff = 'style="display:none"';
+			}
 
 					 echo $form->field($researcher, "[{$indexRes}]is_staff")->dropDownList(
         [1=> 'Yes', 0 => 'No'], ['class' => "form-control is-staff"]
@@ -87,12 +94,16 @@ use yii\jui\JuiAsset;
                         if (! $researcher->isNewRecord) {
                             echo Html::activeHiddenInput($researcher, "[{$indexRes}]id");
                         }
+						
+						
                     ?>
+					<div class="con-staff" <?=$ex_staff?>>
                     <?= $form->field($researcher, "[{$indexRes}]staff_id")->dropDownList(ArrayHelper::map(Staff::activeStaff(),'id', 'staff_name'), ['prompt' => 'Please Select' ])->label(false) ?>
+					</div>
 					
 					
 					
-					<div class="con-ext" style="display:none">
+					<div class="con-ext" <?=$ex_style?>>
 					<?= $form->field($researcher, "[{$indexRes}]ext_name")->label(false) ?>
 					</div>
 					
@@ -102,7 +113,7 @@ use yii\jui\JuiAsset;
          
        
 
-                <td class="text-center vcenter" style="width: 90px; verti">
+                <td class="text-center vcenter" style="width: 90px;">
                     <button type="button" class="remove-researcher btn btn-default btn-sm"><span class="fa fa-remove"></span></button>
                 </td>
             </tr>
@@ -248,10 +259,11 @@ function configIsStaffSelect(){
 	var val = $(this).val();
 	//alert(val);
 	if(val == 0){
-		$('.field-researcher-' + arr[1]  + '-staff_id').hide();
+		$('#researcher-' + arr[1]  + '-staff_id').val('');
+		$('.field-researcher-' + arr[1]  + '-staff_id').parent().hide();
 		$('.field-researcher-' + arr[1]  + '-ext_name').parent().show();
 	}else{
-		$('.field-researcher-' + arr[1]  + '-staff_id').show();
+		$('.field-researcher-' + arr[1]  + '-staff_id').parent().show();
 		$('.field-researcher-' + arr[1]  + '-ext_name').parent().hide();
 	}
 	

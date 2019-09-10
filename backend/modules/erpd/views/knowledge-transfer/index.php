@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
@@ -20,12 +21,30 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="box-header"></div>
 <div class="box-body"><?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+        //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
+			[
+				'label' => '',
+				'format' => 'raw',
+				'contentOptions' => [ 'style' => 'width: 1%;' ],
+				'value' => function($model){
+					
+					return '<a href="'.Url::to(['download-file', 'attr' => 'ktp', 'id' => $model->id]).'" target="_blank"><i class="fa fa-file-pdf-o"></i></a>';
+				}
+				
+			],
             'ktp_title',
 			'ktp_source',
 			'ktp_community',
+			
+			[
+				'attribute' => 'status',
+                'format' => 'html',
+				'value' => function($model){
+					return $model->showStatus();
+				}
+			],
 
             ['class' => 'yii\grid\ActionColumn',
                  'contentOptions' => ['style' => 'width: 8.7%'],
@@ -33,7 +52,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 //'visible' => false,
                 'buttons'=>[
                     'update'=>function ($url, $model) {
-                        return Html::a('<span class="glyphicon glyphicon-pencil"></span> UPDATE',['knowledge-transfer/update/', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
+						if($model->status > 10){
+							return Html::a('<span class="glyphicon glyphicon-pencil"></span> VIEW',['/erpd/knowledge-transfer/view', 'id' => $model->id],['class'=>'btn btn-default btn-sm']);
+						}else{
+							return Html::a('<span class="glyphicon glyphicon-pencil"></span> UPDATE',['/erpd/knowledge-transfer/update', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
+						}
+                        
                     }
                 ],
             

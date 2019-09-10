@@ -7,11 +7,11 @@ use common\models\Upload;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\erpd\models\Publication */
 
-$this->title = 'Research: Upload File';
-$this->params['breadcrumbs'][] = ['label' => 'Publications', 'url' => ['index']];
+$this->title = 'Knowledge Transfer: Upload File';
+$this->params['breadcrumbs'][] = ['label' => 'Knowledge Transfer', 'url' => ['index']];
 $this->params['breadcrumbs'][] = 'Upload';
 
-$model->file_controller = 'research';
+$model->file_controller = 'knowledge-transfer';
 
 ?>
 
@@ -28,7 +28,7 @@ $model->file_controller = 'research';
 </div>
 <div class="box-body">
 
-<?=Upload::fileInput($model, 'res')?>
+<?=Upload::fileInput($model, 'ktp')?>
 
 <?=$form->field($model, 'modified_at')->hiddenInput(['value' => time()])->label(false)?>
 
@@ -37,9 +37,9 @@ $model->file_controller = 'research';
 
 <div class="form-group">
 
-<?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Back', ['/erpd/research/update', 'id' => $model->id], ['class' => 'btn btn-default']) ?> 
+<?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Back', ['/erpd/knowledge-transfer/update', 'id' => $model->id], ['class' => 'btn btn-default']) ?> 
         
-<?= Html::submitButton('Submit Research', ['class' => 'btn btn-primary']) ?>
+<?= Html::submitButton('Submit Knowledge Transfer', ['class' => 'btn btn-primary']) ?>
     </div>
 
 

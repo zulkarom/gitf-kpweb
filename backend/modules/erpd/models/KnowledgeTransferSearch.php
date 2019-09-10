@@ -19,7 +19,7 @@ class KnowledgeTransferSearch extends KnowledgeTransfer
     {
         return [
             [['id', 'staff_id', 'reminder'], 'integer'],
-            [['ktp_title', 'date_start', 'date_end', 'ktp_research', 'ktp_community', 'ktp_source', 'ktp_description', 'ktp_file', 'created_at', 'updated_at'], 'safe'],
+            [['ktp_title', 'date_start', 'date_end', 'ktp_research', 'ktp_community', 'ktp_source', 'ktp_description', 'ktp_file', 'created_at', 'modified_at'], 'safe'],
             [['ktp_amount'], 'number'],
         ];
     }
@@ -43,11 +43,16 @@ class KnowledgeTransferSearch extends KnowledgeTransfer
     public function search($params)
     {
         $query = KnowledgeTransfer::find();
+		$query->joinWith(['members']);
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+			'sort'=> ['defaultOrder' => ['status'=>SORT_ASC, 'date_start' =>SORT_DESC]],
+			'pagination' => [
+					'pageSize' => 100,
+				],
         ]);
 
         $this->load($params);
@@ -61,21 +66,11 @@ class KnowledgeTransferSearch extends KnowledgeTransfer
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'staff_id' => $this->staff_id,
-            'date_start' => $this->date_start,
-            'date_end' => $this->date_end,
-            'ktp_amount' => $this->ktp_amount,
-            'reminder' => $this->reminder,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+			'rp_knowledge_transfer_member.staff_id' => Yii::$app->user->identity->staff->id,
+
         ]);
 
-        $query->andFilterWhere(['like', 'ktp_title', $this->ktp_title])
-            ->andFilterWhere(['like', 'ktp_research', $this->ktp_research])
-            ->andFilterWhere(['like', 'ktp_community', $this->ktp_community])
-            ->andFilterWhere(['like', 'ktp_source', $this->ktp_source])
-            ->andFilterWhere(['like', 'ktp_description', $this->ktp_description])
-            ->andFilterWhere(['like', 'ktp_file', $this->ktp_file]);
+        $query->andFilterWhere(['like', 'ktp_title', $this->ktp_title]);
 
         return $dataProvider;
     }

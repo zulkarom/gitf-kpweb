@@ -20,33 +20,23 @@ table.detail-view th {
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-			'res_title:ntext',
+			'ktp_title:ntext',
 			[
-				'label' => 'Researchers',
+				'label' => 'Members',
 				'format' => 'html',
 				'value' => function($model){
-					return $model->stringResearchers();
+					return $model->stringMembers();
 				}
 				
 			],
 			'date_start:date',
 			'date_end:date',
-			[
-				'attribute' => 'res_grant',
-				'value' => function($model){
-					return $model->researchGrant->gra_abbr;
-				}
-			],
-			'res_source',
-			'res_amount:currency',
-			[
-				'attribute' => 'res_progress',
-				'format' => 'html',
-				'value' => function($model){
-					return $model->showProgress();
-				}
-				
-			],
+			'ktp_source',
+			'ktp_research',
+			'ktp_community',
+			'ktp_description:ntext',
+			'ktp_amount:currency',
+
 			[
 				'attribute' => 'status',
 				'format' => 'html',

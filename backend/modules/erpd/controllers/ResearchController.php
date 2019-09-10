@@ -136,12 +136,15 @@ class ResearchController extends Controller
                 $transaction = Yii::$app->db->beginTransaction();
                 try {
                     if ($flag = $model->save(false)) {
-                        
+                        $me = false;
                         foreach ($researchers as $indexAu => $researcher) {
-                            
+                            if($researcher->staff_id == Yii::$app->user->identity->staff->id){
+								$me = true;
+							}
                             if ($flag === false) {
                                 break;
                             }
+							
                             //do not validate this in model
                             $researcher->res_id = $model->id;
 
@@ -150,10 +153,17 @@ class ResearchController extends Controller
                             }else{
 								$researcher->flashError();
 							}
+							
                         }
+						
+						if($me == false){
+							Yii::$app->session->addFlash('error', "You must include yourself as one of the researchers.");
+							$flag = false;
+						}
 
                     }else{
 						$model->flashError();
+						$flag = false;
 					}
 
                     if ($flag) {
@@ -227,8 +237,12 @@ class ResearchController extends Controller
                         if (! empty($deletedResearcherIDs)) {
                             Researcher::deleteAll(['id' => $deletedResearcherIDs]);
                         }
-                        
+                        $me = false;
                         foreach ($researchers as $indexAu => $researcher) {
+                            
+							if($researcher->staff_id == Yii::$app->user->identity->staff->id){
+								$me = true;
+							}
                             
                             if ($flag === false) {
                                 break;
@@ -240,6 +254,11 @@ class ResearchController extends Controller
                                 break;
                             }
                         }
+						
+						if($me == false){
+							Yii::$app->session->addFlash('error', "You must include yourself as one of the researchers.");
+							$flag = false;
+						}
 
                     }
 
