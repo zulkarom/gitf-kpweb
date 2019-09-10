@@ -3,6 +3,7 @@
 namespace backend\modules\erpd\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "rp_consultation".
@@ -19,6 +20,9 @@ use Yii;
  */
 class Consultation extends \yii\db\ActiveRecord
 {
+	public $csl_instance;
+	public $file_controller;
+	
     /**
      * @inheritdoc
      */
@@ -33,12 +37,21 @@ class Consultation extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['csl_staff', 'csl_title', 'csl_funder', 'csl_amount', 'csl_level', 'date_start', 'date_end'], 'required'],
+            [['csl_staff', 'csl_title', 'csl_funder', 'csl_level', 'date_start', 'date_end'], 'required'],
+			
+			[['csl_file'], 'required', 'on' => 'submit'],
+			
             [['csl_staff', 'csl_level'], 'integer'],
             [['csl_amount'], 'number'],
             [['date_start', 'date_end'], 'safe'],
             [['csl_title', 'csl_funder'], 'string', 'max' => 500],
             [['csl_file'], 'string', 'max' => 100],
+			
+			[['csl_file'], 'required', 'on' => 'csl_upload'],
+            [['csl_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
+            [['modified_at'], 'required', 'on' => 'csl_delete'],
+			
+			
         ];
     }
 
@@ -67,5 +80,19 @@ class Consultation extends \yii\db\ActiveRecord
 	public function getLevelName(){
 		$arr = $this->listLevel();
 		return $arr[$this->csl_level];
+	}
+	
+	public function statusList(){
+		$list = Status::find()->where(['user_show' => 1])->all();
+		return ArrayHelper::map($list, 'status_code', 'status_name');
+	}
+	
+	public function getStatusInfo(){
+        return $this->hasOne(Status::className(), ['status_code' => 'status']);
+    }
+	
+	public function showStatus(){
+		$status = $this->statusInfo;
+		return '<span class="label label-'.$status->status_color .'">'.$status->status_name .'</span>';
 	}
 }

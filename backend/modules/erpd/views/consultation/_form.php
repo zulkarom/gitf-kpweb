@@ -9,11 +9,13 @@ use kartik\date\DatePicker;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
+<?php $form = ActiveForm::begin(); ?>
+
 <div class="box">
 <div class="box-header"></div>
 <div class="box-body"><div class="consultation-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    
 	
 <div class="row">
 <div class="col-md-9"><?= $form->field($model, 'csl_title')->textInput(['maxlength' => true]) ?></div>
@@ -68,22 +70,22 @@ use kartik\date\DatePicker;
 </div>
 </div>
 
-    
-
-    
-
-    
    
+    
 
-   
+</div>
+</div>
+</div>
 
 
-    <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+<div class="form-group">
+		
+		<?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> SAVE AS DRAFT', ['class' => 'btn btn-default', 'name' => 'wfaction', 'value' => 'save']) ?> 
+		
+		
+		
+		 <?= Html::submitButton('NEXT <span class="glyphicon glyphicon-arrow-right"></span>', ['class' => 'btn btn-warning', 'name' => 'wfaction', 'value' => 'next']) ?> 
+		 
     </div>
 
-    <?php ActiveForm::end(); ?>
-
-</div>
-</div>
-</div>
+<?php ActiveForm::end(); ?>
