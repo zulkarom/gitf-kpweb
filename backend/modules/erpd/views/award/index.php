@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="box-header"></div>
 <div class="box-body"><?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+        //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'awd_name',
@@ -31,7 +31,15 @@ $this->params['breadcrumbs'][] = $this->title;
 				}
 			],
             'awd_by',
-            'awd_date',
+            'awd_date:date',
+			[
+				'attribute' => 'status',
+                'format' => 'html',
+				'filter' => Html::activeDropDownList($searchModel, 'status', $searchModel->statusList(),['class'=> 'form-control','prompt' => 'All']),
+				'value' => function($model){
+					return $model->showStatus();
+				}
+			],
 
             ['class' => 'yii\grid\ActionColumn',
                  'contentOptions' => ['style' => 'width: 8.7%'],
@@ -39,7 +47,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 //'visible' => false,
                 'buttons'=>[
                     'update'=>function ($url, $model) {
-                        return Html::a('<span class="glyphicon glyphicon-pencil"></span> UPDATE',['award/update/', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
+						if($model->status > 10){
+							return Html::a('<span class="glyphicon glyphicon-pencil"></span> VIEW',['/erpd/award/view', 'id' => $model->id],['class'=>'btn btn-default btn-sm']);
+						}else{
+							return Html::a('<span class="glyphicon glyphicon-pencil"></span> UPDATE',['/erpd/award/update', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
+						}
+                        
                     }
                 ],
             

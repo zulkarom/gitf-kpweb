@@ -3,6 +3,7 @@
 namespace backend\modules\erpd\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "rp_membership".
@@ -59,6 +60,11 @@ class Membership extends \yii\db\ActiveRecord
 	public function showStatus(){
 		$status = $this->statusInfo;
 		return '<span class="label label-'.$status->status_color .'">'.$status->status_name .'</span>';
+	}
+	
+	public function statusList(){
+		$list = Status::find()->where(['user_show' => 1])->all();
+		return ArrayHelper::map($list, 'status_code', 'status_name');
 	}
 
     /**

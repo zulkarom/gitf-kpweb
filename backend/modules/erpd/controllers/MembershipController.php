@@ -77,8 +77,16 @@ class MembershipController extends Controller
         if ($model->load(Yii::$app->request->post())) {
 			$model->msp_staff = Yii::$app->user->identity->staff->id;
 			
+			
+			
 			if($model->save()){
-				 return $this->redirect('index');
+				 $action = Yii::$app->request->post('wfaction');
+				if($action == 'save'){
+					Yii::$app->session->addFlash('success', "Data saved");
+					return $this->redirect(['/erpd/membership/update', 'id' => $model->id]);
+				}else if($action == 'next'){
+					return $this->redirect(['/erpd/membership/upload', 'id' => $model->id]);
+				}
 			}else{
 				$model->flashError();
 			}

@@ -7,7 +7,10 @@ use backend\modules\erpd\models\Award;
 use backend\modules\erpd\models\AwardSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+use common\models\Upload;
+use yii\helpers\Json;
+use yii\db\Expression;
 
 /**
  * AwardController implements the CRUD actions for Award model.
@@ -17,17 +20,23 @@ class AwardController extends Controller
     /**
      * @inheritdoc
      */
-    public function behaviors()
+    
+
+	public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
                 ],
             ],
         ];
     }
+
 
     /**
      * Lists all Award models.
@@ -71,7 +80,13 @@ class AwardController extends Controller
 			$model->awd_staff = Yii::$app->user->identity->staff->id;
 			
 			if($model->save()){
-				 return $this->redirect('index');
+				 $action = Yii::$app->request->post('wfaction');
+				if($action == 'save'){
+					Yii::$app->session->addFlash('success', "Data saved");
+					return $this->redirect(['/erpd/award/update', 'id' => $model->id]);
+				}else if($action == 'next'){
+					return $this->redirect(['/erpd/award/upload', 'id' => $model->id]);
+				}
 			}else{
 				$model->flashError();
 			}
@@ -93,8 +108,18 @@ class AwardController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+			
+			if($model->save()){
+				$action = Yii::$app->request->post('wfaction');
+				if($action == 'save'){
+					Yii::$app->session->addFlash('success', "Data saved");
+					return $this->redirect(['/erpd/award/update', 'id' => $model->id]);
+				}else if($action == 'next'){
+					return $this->redirect(['/erpd/award/upload', 'id' => $model->id]);
+				}
+			}
+            
         }
 
         return $this->render('update', [
@@ -147,7 +172,7 @@ class AwardController extends Controller
 			}
 			
 			if($model->save()){
-				Yii::$app->session->addFlash('success', "Your membership has been successfully submitted.");
+				Yii::$app->session->addFlash('success', "Your award has been successfully submitted.");
 				return $this->redirect('index');
 			}else{
 				$model->flashError();

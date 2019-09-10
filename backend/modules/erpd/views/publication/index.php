@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="box-body">   <?= GridView::widget([
         'dataProvider' => $dataProvider,
 		'options' => [ 'style' => 'table-layout:fixed;' ],
-        'filterModel' => $searchModel,
+        //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 			[

@@ -43,6 +43,15 @@ $this->params['breadcrumbs'][] = $this->title;
 				}
 			]
             ,
+			
+			[
+				'attribute' => 'status',
+                'format' => 'html',
+				'filter' => Html::activeDropDownList($searchModel, 'status', $searchModel->statusList(),['class'=> 'form-control','prompt' => 'All']),
+				'value' => function($model){
+					return $model->showStatus();
+				}
+			],
 
             ['class' => 'yii\grid\ActionColumn',
                  'contentOptions' => ['style' => 'width: 8.7%'],

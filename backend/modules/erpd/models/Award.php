@@ -3,6 +3,7 @@
 namespace backend\modules\erpd\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "rp_award".
@@ -36,6 +37,9 @@ class Award extends \yii\db\ActiveRecord
     {
         return [
             [['awd_staff', 'awd_name', 'awd_level', 'awd_type', 'awd_by', 'awd_date'], 'required'],
+			
+			[['awd_file'], 'required', 'on' => 'submit'],
+			
             [['awd_staff', 'awd_level'], 'integer'],
             [['awd_date'], 'safe'],
             [['awd_name', 'awd_by'], 'string', 'max' => 300],
@@ -131,4 +135,18 @@ class Award extends \yii\db\ActiveRecord
         }
 
     }
+	
+	public function statusList(){
+		$list = Status::find()->where(['user_show' => 1])->all();
+		return ArrayHelper::map($list, 'status_code', 'status_name');
+	}
+	
+	public function getStatusInfo(){
+        return $this->hasOne(Status::className(), ['status_code' => 'status']);
+    }
+	
+	public function showStatus(){
+		$status = $this->statusInfo;
+		return '<span class="label label-'.$status->status_color .'">'.$status->status_name .'</span>';
+	}
 }

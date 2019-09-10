@@ -1,41 +1,21 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\DetailView;
+use yii\widgets\ActiveForm;
+use common\models\Upload;
 
 /* @var $this yii\web\View */
-/* @var $model backend\modules\erpd\models\Award */
+/* @var $model backend\modules\erpd\models\Publication */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Awards', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = 'View Membership';
+$this->params['breadcrumbs'][] = ['label' => 'Research', 'url' => ['index']];
+$this->params['breadcrumbs'][] = 'View';
+
 ?>
-<div class="award-view">
 
 
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
+<?=$this->render('_view_all', [
+			'model' => $model
+	])?>
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'awd_staff',
-            'awd_name',
-            'awd_level',
-            'awd_type',
-            'awd_by',
-            'awd_date',
-            'awd_file',
-        ],
-    ]) ?>
 
-</div>
