@@ -111,6 +111,8 @@ class AwardController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
 			
+			$model->created_at = new Expression('NOW()');
+			
 			$model->awd_staff = Yii::$app->user->identity->staff->id;
 			
 			if($model->save()){
@@ -143,7 +145,7 @@ class AwardController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())) {
-			
+			$model->modified_at = new Expression('NOW()');
 			if($model->save()){
 				$action = Yii::$app->request->post('wfaction');
 				if($action == 'save'){
@@ -199,6 +201,7 @@ class AwardController extends Controller
 		$model->scenario = 'submit';
 		
 		if ($model->load(Yii::$app->request->post())) {
+			$model->modified_at = new Expression('NOW()');
 			if($model->status == 10){
 				$model->status = 30;//updated
 			}else{

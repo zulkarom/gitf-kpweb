@@ -134,7 +134,7 @@ class PublicationController extends Controller
         $model = new Publication();
 		
 		if ($model->load(Yii::$app->request->post())) {
-			
+			$model->created_at = new Expression('NOW()');
 							
 			
 			$model->staff_id = Yii::$app->user->identity->staff->id;
@@ -291,6 +291,7 @@ class PublicationController extends Controller
 		$editors = $model->editors;
 
         if ($model->load(Yii::$app->request->post())) {
+			$model->modified_at = new Expression('NOW()');
 		
 
 			
@@ -446,6 +447,7 @@ class PublicationController extends Controller
 		$model->scenario = 'submit';
 		
 		if ($model->load(Yii::$app->request->post())) {
+			$model->modified_at = new Expression('NOW()');
 			$model->status = 20;//submit
 			if($model->save()){
 				Yii::$app->session->addFlash('success', "Your publication has been successfully submitted.");

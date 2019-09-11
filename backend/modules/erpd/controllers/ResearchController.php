@@ -327,6 +327,7 @@ class ResearchController extends Controller
 		$model->scenario = 'submit';
 		
 		if ($model->load(Yii::$app->request->post())) {
+			$model->modified_at = new Expression('NOW()');
 			if($model->status == 10){
 				$model->status = 30;//updated
 			}else{

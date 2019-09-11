@@ -111,6 +111,7 @@ class ConsultationController extends Controller
 
         if ($model->load(Yii::$app->request->post()) ) {
 			$model->csl_staff = Yii::$app->user->identity->staff->id;
+			$model->created_at = new Expression('NOW()');
 			if($model->save()){
 				$action = Yii::$app->request->post('wfaction');
 				if($action == 'save'){
@@ -140,7 +141,7 @@ class ConsultationController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())) {
-			
+			$model->modified_at = new Expression('NOW()');
 			if($model->save()){
 				$action = Yii::$app->request->post('wfaction');
 				if($action == 'save'){
@@ -195,6 +196,7 @@ class ConsultationController extends Controller
 		$model->scenario = 'submit';
 		
 		if ($model->load(Yii::$app->request->post())) {
+			$model->modified_at = new Expression('NOW()');
 			if($model->status == 10){
 				$model->status = 30;//updated
 			}else{
