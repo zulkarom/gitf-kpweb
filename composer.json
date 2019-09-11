@@ -41,7 +41,8 @@
 		"2amigos/yii2-chartjs-widget": "~2.0",
 		"glagola/yii2-gauge.js": "@dev",
 		"richardfan1126/yii2-js-register": "*",
-		"oonne/yii2-sortable-grid-view": "*"
+		"oonne/yii2-sortable-grid-view": "*",
+		"kartik-v/yii2-export": "@dev"
 		
 	},
 	"require-dev" : {

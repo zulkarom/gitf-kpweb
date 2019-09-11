@@ -77,6 +77,28 @@ class AwardController extends Controller
             'model' => $this->findModel($id),
         ]);
     }
+	
+	public function actionViewVerify($id)
+    {
+		$model = $this->findModel($id);
+		if ($model->load(Yii::$app->request->post())) {
+			$model->reviewed_at = new Expression('NOW()');
+			$model->reviewed_by = Yii::$app->user->identity->id;
+			$status = Yii::$app->request->post('wfaction');
+			if($status == 'correction'){
+				$model->status = 10;
+			}else if($status == 'verify'){
+				$model->status = 50;
+			}
+			if($model->save()){
+				Yii::$app->session->addFlash('success', "Data Updated");
+			}
+		}
+		
+        return $this->render('view-verify', [
+            'model' => $model,
+        ]);
+    }
 
     /**
      * Creates a new Award model.
