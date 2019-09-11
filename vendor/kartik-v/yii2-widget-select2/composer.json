@@ -13,12 +13,11 @@
         }
     ],
     "require": {
-        "kartik-v/yii2-krajee-base": ">=1.9",
-        "select2/select2": ">=4.0"
+        "kartik-v/yii2-krajee-base": "~1.7"
     },
     "autoload": {
         "psr-4": {
-            "kartik\\select2\\": "src"
+            "kartik\\select2\\": ""
         }
     },
     "extra": {

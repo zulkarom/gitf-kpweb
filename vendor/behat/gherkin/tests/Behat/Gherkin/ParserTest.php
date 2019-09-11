@@ -85,7 +85,7 @@ FEATURE
                     'background'       => 'Предыстория',
                     'scenario'         => 'Сценарий',
                     'scenario_outline' => 'Структура сценария',
-                    'examples'         => 'Примеры',
+                    'examples'         => 'Значения',
                     'given'            => 'Допустим',
                     'when'             => 'То',
                     'then'             => 'Если',

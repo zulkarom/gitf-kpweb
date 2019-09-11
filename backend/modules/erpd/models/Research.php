@@ -174,40 +174,17 @@ class Research extends \yii\db\ActiveRecord
 		return [0 => 'On Going', 1 => 'Complete'];
 	}
 	
-	public function strProgress(){
-		$arr = $this->progressArr();
-		return strtoupper($arr[$this->res_progress]);
-	}
-	
 	public function stringResearchers(){
 		$string ="";
 		$researchers = $this->researchers;
 		if($researchers){
 			foreach($researchers as $researcher){
 				if($researcher->staff_id == 0){
-					$string .= $researcher->ext_name . '*<br />';
+					$string .= $researcher->ext_name . '<br />';
 				}else{
-					$string .= $researcher->staff->user->fullname . '<br />';
+					$string .= '<span class="glyphicon glyphicon-ok"></span> ' . $researcher->staff->user->fullname . '<br />';
 				}
 				
-			}
-		}
-		return $string;
-	}
-	
-	public function plainResearchers(){
-		$string ="";
-		$researchers = $this->researchers;
-		if($researchers){
-			$i = 0;
-			foreach($researchers as $researcher){
-				$br = $i == 0 ? "" : "\n";
-				if($researcher->staff_id == 0){
-					$string .= $br .$researcher->ext_name . "*";
-				}else{
-					$string .= $br .$researcher->staff->user->fullname ;
-				}
-			$i++;
 			}
 		}
 		return $string;

@@ -6,7 +6,7 @@ ChartJs Widget
 [![Build Status](https://img.shields.io/travis/2amigos/yii2-chartjs-widget/master.svg?style=flat-square)](https://travis-ci.org/2amigos/yii2-chartjs-widget)
 [![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/2amigos/yii2-chartjs-widget.svg?style=flat-square)](https://scrutinizer-ci.com/g/2amigos/yii2-chartjs-widget/code-structure)
 [![Quality Score](https://img.shields.io/scrutinizer/g/2amigos/yii2-chartjs-widget.svg?style=flat-square)](https://scrutinizer-ci.com/g/2amigos/yii2-chartjs-widget)
-[![Total Downloads](https://poser.pugx.org/2amigos/yii2-chartjs-widget/downloads)](https://packagist.org/packages/2amigos/yii2-chartjs-widget) 
+[![Total Downloads](https://img.shields.io/packagist/dt/2amigos/yii2-chartjs-widget.svg?style=flat-square)](https://packagist.org/packages/2amigos/yii2-chartjs-widget) 
 [![StyleCI](https://styleci.io/repos/16515084/shield?branch=master)](https://styleci.io/repos/16515084)
 
 Renders a [ChartJs plugin](http://www.chartjs.org/docs/) widget
@@ -40,11 +40,7 @@ The following types are supported:
 - Radar 
 - Polar 
 - Pie 
-- Doughnut 
-- Bubble 
-- Scatter 
-- Area 
-- Mixed
+- Doughnut
 
 The following example is using the `Line` type of chart. Please, check [ChartJs plugin](http://www.chartjs.org/docs/) 
 documentation for the different types supported by the plugin.
@@ -86,91 +82,6 @@ use dosamigos\chartjs\ChartJs;
 ]);
 ?>
 ```
-Plugins usage example (displaying percentages on the Pie Chart):
-```
-echo ChartJs::widget([
-    'type' => 'pie',
-    'id' => 'structurePie',
-    'options' => [
-        'height' => 200,
-        'width' => 400,
-    ],
-    'data' => [
-        'radius' =>  "90%",
-        'labels' => ['Label 1', 'Label 2', 'Label 3'], // Your labels
-        'datasets' => [
-            [
-                'data' => ['35.6', '17.5', '46.9'], // Your dataset
-                'label' => '',
-                'backgroundColor' => [
-                        '#ADC3FF',
-                        '#FF9A9A',
-                    'rgba(190, 124, 145, 0.8)'
-                ],
-                'borderColor' =>  [
-                        '#fff',
-                        '#fff',
-                        '#fff'
-                ],
-                'borderWidth' => 1,
-                'hoverBorderColor'=>["#999","#999","#999"],                
-            ]
-        ]
-    ],
-    'clientOptions' => [
-        'legend' => [
-            'display' => false,
-            'position' => 'bottom',
-            'labels' => [
-                'fontSize' => 14,
-                'fontColor' => "#425062",
-            ]
-        ],
-        'tooltips' => [
-            'enabled' => true,
-            'intersect' => true
-        ],
-        'hover' => [
-            'mode' => false
-        ],
-        'maintainAspectRatio' => false,
-
-    ],
-    'plugins' =>
-        new \yii\web\JsExpression('
-        [{
-            afterDatasetsDraw: function(chart, easing) {
-                var ctx = chart.ctx;
-                chart.data.datasets.forEach(function (dataset, i) {
-                    var meta = chart.getDatasetMeta(i);
-                    if (!meta.hidden) {
-                        meta.data.forEach(function(element, index) {
-                            // Draw the text in black, with the specified font
-                            ctx.fillStyle = 'rgb(0, 0, 0)';
-
-                            var fontSize = 16;
-                            var fontStyle = 'normal';
-                            var fontFamily = 'Helvetica';
-                            ctx.font = Chart.helpers.fontString(fontSize, fontStyle, fontFamily);
-
-                            // Just naively convert to string for now
-                            var dataString = dataset.data[index].toString()+'%';
-
-                            // Make sure alignment settings are correct
-                            ctx.textAlign = 'center';
-                            ctx.textBaseline = 'middle';
-
-                            var padding = 5;
-                            var position = element.tooltipPosition();
-                            ctx.fillText(dataString, position.x, position.y - (fontSize / 2) - padding);
-                        });
-                    }
-                });
-            }
-        }]')
-])
-```
-
 
 Further Information
 -------------------

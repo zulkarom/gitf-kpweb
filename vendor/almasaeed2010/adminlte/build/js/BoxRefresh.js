@@ -35,7 +35,7 @@
   var BoxRefresh = function (element, options) {
     this.element  = element;
     this.options  = options;
-    this.$overlay = $(options.overlayTemplate);
+    this.$overlay = $(options.overlay);
 
     if (options.source === '') {
       throw new Error('Source url was not defined. Please specify a url in your BoxRefresh source option.');
@@ -51,7 +51,7 @@
 
     $.get(this.options.source, this.options.params, function (response) {
       if (this.options.loadInContent) {
-        $(this.element).find(this.options.content).html(response);
+        $(this.options.content).html(response);
       }
       this.options.onLoadDone.call($(this), response);
       this._removeOverlay();
@@ -61,7 +61,7 @@
   // Private
 
   BoxRefresh.prototype._setUpListeners = function () {
-    $(this.element).on('click', this.options.trigger, function (event) {
+    $(this.element).on('click', Selector.trigger, function (event) {
       if (event) event.preventDefault();
       this.load();
     }.bind(this));
@@ -72,7 +72,7 @@
   };
 
   BoxRefresh.prototype._removeOverlay = function () {
-    $(this.$overlay).remove();
+    $(this.element).remove(this.$overlay);
   };
 
   // Plugin Definition

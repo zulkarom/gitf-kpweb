@@ -12,8 +12,8 @@
 namespace Symfony\Component\BrowserKit;
 
 use Symfony\Component\DomCrawler\Crawler;
-use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\DomCrawler\Link;
+use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\Process\PhpProcess;
 
 /**
@@ -30,7 +30,7 @@ abstract class Client
 {
     protected $history;
     protected $cookieJar;
-    protected $server = [];
+    protected $server = array();
     protected $internalRequest;
     protected $request;
     protected $internalResponse;
@@ -42,7 +42,7 @@ abstract class Client
 
     private $maxRedirects = -1;
     private $redirectCount = 0;
-    private $redirects = [];
+    private $redirects = array();
     private $isMainRequest = true;
 
     /**
@@ -50,7 +50,7 @@ abstract class Client
      * @param History   $history   A History instance to store the browser history
      * @param CookieJar $cookieJar A CookieJar instance to store the cookies
      */
-    public function __construct(array $server = [], History $history = null, CookieJar $cookieJar = null)
+    public function __construct(array $server = array(), History $history = null, CookieJar $cookieJar = null)
     {
         $this->setServerParameters($server);
         $this->history = $history ?: new History();
@@ -78,7 +78,7 @@ abstract class Client
     }
 
     /**
-     * Sets the maximum number of redirects that crawler can follow.
+     * Sets the maximum number of requests that crawler can follow.
      *
      * @param int $maxRedirects
      */
@@ -89,7 +89,7 @@ abstract class Client
     }
 
     /**
-     * Returns the maximum number of redirects that crawler can follow.
+     * Returns the maximum number of requests that crawler can follow.
      *
      * @return int
      */
@@ -121,9 +121,9 @@ abstract class Client
      */
     public function setServerParameters(array $server)
     {
-        $this->server = array_merge([
+        $this->server = array_merge(array(
             'HTTP_USER_AGENT' => 'Symfony BrowserKit',
-        ], $server);
+        ), $server);
     }
 
     /**
@@ -141,9 +141,9 @@ abstract class Client
      * Gets single server parameter for specified key.
      *
      * @param string $key     A key of the parameter to get
-     * @param mixed  $default A default value when key is undefined
+     * @param string $default A default value when key is undefined
      *
-     * @return mixed A value of the parameter
+     * @return string A value of the parameter
      */
     public function getServerParameter($key, $default = '')
     {
@@ -252,7 +252,7 @@ abstract class Client
      *
      * @return Crawler
      */
-    public function submit(Form $form, array $values = [])
+    public function submit(Form $form, array $values = array())
     {
         $form->setValues($values);
 
@@ -272,7 +272,7 @@ abstract class Client
      *
      * @return Crawler
      */
-    public function request($method, $uri, array $parameters = [], array $files = [], array $server = [], $content = null, $changeHistory = true)
+    public function request($method, $uri, array $parameters = array(), array $files = array(), array $server = array(), $content = null, $changeHistory = true)
     {
         if ($this->isMainRequest) {
             $this->redirectCount = 0;
@@ -280,17 +280,11 @@ abstract class Client
             ++$this->redirectCount;
         }
 
-        $originalUri = $uri;
-
         $uri = $this->getAbsoluteUri($uri);
 
         $server = array_merge($this->server, $server);
 
-        if (!empty($server['HTTP_HOST']) && null === parse_url($originalUri, PHP_URL_HOST)) {
-            $uri = preg_replace('{^(https?\://)'.preg_quote($this->extractHost($uri)).'}', '${1}'.$server['HTTP_HOST'], $uri);
-        }
-
-        if (isset($server['HTTPS']) && null === parse_url($originalUri, PHP_URL_SCHEME)) {
+        if (isset($server['HTTPS'])) {
             $uri = preg_replace('{^'.parse_url($uri, PHP_URL_SCHEME).'}', $server['HTTPS'] ? 'https' : 'http', $uri);
         }
 
@@ -359,9 +353,8 @@ abstract class Client
         if (file_exists($deprecationsFile)) {
             $deprecations = file_get_contents($deprecationsFile);
             unlink($deprecationsFile);
-            foreach ($deprecations ? unserialize($deprecations) : [] as $deprecation) {
+            foreach ($deprecations ? unserialize($deprecations) : array() as $deprecation) {
                 if ($deprecation[0]) {
-                    // unsilenced on purpose
                     trigger_error($deprecation[1], E_USER_DEPRECATED);
                 } else {
                     @trigger_error($deprecation[1], E_USER_DEPRECATED);
@@ -435,7 +428,7 @@ abstract class Client
     protected function createCrawlerFromContent($uri, $content, $type)
     {
         if (!class_exists('Symfony\Component\DomCrawler\Crawler')) {
-            return null;
+            return;
         }
 
         $crawler = new Crawler(null, $uri);
@@ -453,7 +446,7 @@ abstract class Client
     {
         do {
             $request = $this->history->back();
-        } while (\array_key_exists(serialize($request), $this->redirects));
+        } while (array_key_exists(serialize($request), $this->redirects));
 
         return $this->requestFromRequest($request, false);
     }
@@ -467,7 +460,7 @@ abstract class Client
     {
         do {
             $request = $this->history->forward();
-        } while (\array_key_exists(serialize($request), $this->redirects));
+        } while (array_key_exists(serialize($request), $this->redirects));
 
         return $this->requestFromRequest($request, false);
     }
@@ -504,9 +497,9 @@ abstract class Client
 
         $request = $this->internalRequest;
 
-        if (\in_array($this->internalResponse->getStatus(), [301, 302, 303])) {
+        if (in_array($this->internalResponse->getStatus(), array(301, 302, 303))) {
             $method = 'GET';
-            $files = [];
+            $files = array();
             $content = null;
         } else {
             $method = $request->getMethod();
@@ -516,7 +509,7 @@ abstract class Client
 
         if ('GET' === strtoupper($method)) {
             // Don't forward parameters for GET request as it should reach the redirection URI
-            $parameters = [];
+            $parameters = array();
         } else {
             $parameters = $request->getParameters();
         }

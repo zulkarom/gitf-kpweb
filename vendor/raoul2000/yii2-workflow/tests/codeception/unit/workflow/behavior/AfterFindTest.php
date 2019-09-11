@@ -13,7 +13,6 @@ use tests\codeception\unit\fixtures\ItemFixture04;
 class AfterFindTest extends DbTestCase
 {
 	use \Codeception\Specify;
-	use \Codeception\AssertThrows;
 
 	public function fixtures()
 	{
@@ -46,15 +45,8 @@ class AfterFindTest extends DbTestCase
 		});
 
 		$this->specify('item2 cannot be read from db (invalid status)', function() {
-
-			$this->assertThrowsWithMessage(
-				'raoul2000\workflow\base\WorkflowException' ,
-				"Not a valid status id : incorrect status local id format in 'Item04Workflow/NOT_FOUND'",
-				function() {
-					$this->items('item2');
-				}
-			);
-		});
+			$this->items('item2');
+		},['throws' => 'raoul2000\workflow\base\WorkflowException']);
 
 		$this->specify('item3 can be read from db : short name', function() {
 			$this->items('item3');

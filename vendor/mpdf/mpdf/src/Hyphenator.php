@@ -10,37 +10,34 @@ class Hyphenator
 	 */
 	private $mpdf;
 
-	private $patterns;
+	private $SHYpatterns;
 
-	private $dictionary;
+	private $SHYdictionary;
 
-	private $words;
+	private $SHYdictionaryWords;
 
-	private $loadedPatterns;
+	private $loadedSHYpatterns;
 
-	/**
-	 * @var bool
-	 */
-	private $dictionaryLoaded;
+	private $loadedSHYdictionary;
 
 	public function __construct(Mpdf $mpdf)
 	{
 		$this->mpdf = $mpdf;
 
-		$this->dictionaryLoaded = false;
+		$this->loadedSHYdictionary = false;
 
-		$this->patterns = [];
-		$this->dictionary = [];
-		$this->words = [];
+		$this->SHYpatterns = [];
+		$this->SHYdictionary = [];
+		$this->SHYdictionaryWords = [];
 	}
 
 	/**
-	 * @param string $word
-	 * @param int $currptr
+	 * @param $word
+	 * @param $currptr
 	 *
 	 * @return int
 	 */
-	public function hyphenateWord($word, $currptr)
+	function hyphenateWord($word, $currptr)
 	{
 		// Do everything inside this function in utf-8
 		// Don't hyphenate web addresses
@@ -50,7 +47,7 @@ class Hyphenator
 
 		$ptr = -1;
 
-		if (!$this->dictionaryLoaded) {
+		if (!$this->loadedSHYdictionary) {
 			$this->loadDictionary();
 		}
 
@@ -89,8 +86,8 @@ class Hyphenator
 		$success = false;
 		$preprelen = mb_strlen($prepre);
 
-		if (isset($this->words[mb_strtolower($word)])) {
-			foreach ($this->words[mb_strtolower($word)] as $i) {
+		if (isset($this->SHYdictionaryWords[mb_strtolower($word)])) {
+			foreach ($this->SHYdictionaryWords[mb_strtolower($word)] as $i) {
 				if (($i + $preprelen) >= $currptr) {
 					break;
 				}
@@ -120,18 +117,18 @@ class Hyphenator
 			];
 
 			for ($position = 0; $position <= ($word_length - $this->mpdf->SHYcharmin); $position++) {
-				$maxwins = min($word_length - $position, $this->mpdf->SHYcharmax);
+				$maxwins = min(($word_length - $position), $this->mpdf->SHYcharmax);
 				for ($win = $this->mpdf->SHYcharmin; $win <= $maxwins; $win++) {
-					if (isset($this->patterns[mb_substr($text_word, $position, $win, 'UTF-8')])) {
-						$pattern = $this->patterns[mb_substr($text_word, $position, $win, 'UTF-8')];
+					if (isset($this->SHYpatterns[mb_substr($text_word, $position, $win, 'UTF-8')])) {
+						$pattern = $this->SHYpatterns[mb_substr($text_word, $position, $win, 'UTF-8')];
 						$digits = 1;
 						$pattern_length = mb_strlen($pattern, 'UTF-8');
 
 						for ($i = 0; $i < $pattern_length; $i++) {
 							$char = $pattern[$i];
 							if (isset($numbers[$char])) {
-								$zero = $i === 0 ? $position - 1 : $position + $i - $digits;
-								if (!isset($hyphenated_word[$zero]) || $hyphenated_word[$zero] !== $char) {
+								$zero = ($i == 0) ? $position - 1 : $position + $i - $digits;
+								if (!isset($hyphenated_word[$zero]) || $hyphenated_word[$zero] != $char) {
 									$hyphenated_word[$zero] = $char;
 								}
 								$digits++;
@@ -142,7 +139,7 @@ class Hyphenator
 			}
 
 			for ($i = $this->mpdf->SHYleftmin; $i <= (mb_strlen($word, 'UTF-8') - $this->mpdf->SHYrightmin); $i++) {
-				if (isset($hyphenated_word[$i]) && $hyphenated_word[$i] % 2 !== 0) {
+				if (isset($hyphenated_word[$i]) && $hyphenated_word[$i] % 2 != 0) {
 					if (($i + $preprelen) > $currptr) {
 						break;
 					}
@@ -156,7 +153,7 @@ class Hyphenator
 
 	private function patternsLoaded()
 	{
-		return !(count($this->patterns) < 1 || ($this->loadedPatterns && $this->loadedPatterns !== $this->mpdf->SHYlang));
+		return !(count($this->SHYpatterns) < 1 || ($this->loadedSHYpatterns && $this->loadedSHYpatterns != $this->mpdf->SHYlang));
 	}
 
 	private function loadPatterns()
@@ -165,21 +162,20 @@ class Hyphenator
 		$patterns = explode(' ', $patterns);
 
 		$new_patterns = [];
-		$patternCount = count($patterns);
-		for ($i = 0; $i < $patternCount; $i++) {
+		for ($i = 0; $i < count($patterns); $i++) {
 			$value = $patterns[$i];
 			$new_patterns[preg_replace('/[0-9]/', '', $value)] = $value;
 		}
 
-		$this->patterns = $new_patterns;
-		$this->loadedPatterns = $this->mpdf->SHYlang;
+		$this->SHYpatterns = $new_patterns;
+		$this->loadedSHYpatterns = $this->mpdf->SHYlang;
 	}
 
 	private function loadDictionary()
 	{
 		if (file_exists($this->mpdf->hyphenationDictionaryFile)) {
-			$this->dictionary = file($this->mpdf->hyphenationDictionaryFile, FILE_SKIP_EMPTY_LINES);
-			foreach ($this->dictionary as $entry) {
+			$this->SHYdictionary = file($this->mpdf->hyphenationDictionaryFile, FILE_SKIP_EMPTY_LINES);
+			foreach ($this->SHYdictionary as $entry) {
 				$entry = trim($entry);
 				$poss = [];
 				$offset = 0;
@@ -195,13 +191,13 @@ class Hyphenator
 					$offset = $p + 1;
 				}
 				if (count($poss)) {
-					$this->words[str_replace('/', '', mb_strtolower($entry))] = $poss;
+					$this->SHYdictionaryWords[str_replace('/', '', mb_strtolower($entry))] = $poss;
 				}
 			}
 		} elseif ($this->mpdf->debug) {
 			throw new \Mpdf\MpdfException(sprintf('Unable to open hyphenation dictionary "%s"', $this->mpdf->hyphenationDictionaryFile));
 		}
 
-		$this->dictionaryLoaded = true;
+		$this->loadedSHYdictionary = true;
 	}
 }

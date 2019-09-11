@@ -49,11 +49,6 @@ class Client extends Component
      * XML format
      */
     const FORMAT_XML = 'xml';
-    /**
-     * CURL format
-     * @since 2.0.9
-     */
-    const FORMAT_CURL = 'curl';
 
     /**
      * @var string base request URL.
@@ -110,7 +105,6 @@ class Client extends Component
 
     /**
      * @return Transport HTTP message transport instance.
-     * @throws \yii\base\InvalidConfigException
      */
     public function getTransport()
     {
@@ -125,7 +119,6 @@ class Client extends Component
      * @param string $format format name.
      * @return FormatterInterface formatter instance.
      * @throws InvalidParamException on invalid format name.
-     * @throws \yii\base\InvalidConfigException
      */
     public function getFormatter($format)
     {
@@ -140,7 +133,6 @@ class Client extends Component
                 'encodingType' => PHP_QUERY_RFC3986
             ],
             self::FORMAT_XML => 'yii\httpclient\XmlFormatter',
-            self::FORMAT_CURL => 'yii\httpclient\CurlFormatter',
         ];
 
         if (!isset($this->formatters[$format])) {
@@ -162,7 +154,6 @@ class Client extends Component
      * @param string $format format name
      * @return ParserInterface parser instance.
      * @throws InvalidParamException on invalid format name.
-     * @throws \yii\base\InvalidConfigException
      */
     public function getParser($format)
     {
@@ -189,7 +180,6 @@ class Client extends Component
 
     /**
      * @return Request request instance.
-     * @throws \yii\base\InvalidConfigException
      */
     public function createRequest()
     {
@@ -206,7 +196,6 @@ class Client extends Component
      * @param string $content raw content
      * @param array $headers headers list.
      * @return Response request instance.
-     * @throws \yii\base\InvalidConfigException
      */
     public function createResponse($content = null, array $headers = [])
     {
@@ -226,7 +215,6 @@ class Client extends Component
      * @param Request $request request to be sent.
      * @return Response response instance.
      * @throws Exception on failure.
-     * @throws \yii\base\InvalidConfigException
      */
     public function send($request)
     {
@@ -251,8 +239,6 @@ class Client extends Component
      *
      * @param Request[] $requests requests to perform.
      * @return Response[] responses list.
-     * @throws Exception
-     * @throws \yii\base\InvalidConfigException
      */
     public function batchSend(array $requests)
     {
@@ -405,9 +391,8 @@ class Client extends Component
      * @param array $headers
      * @param array $options
      * @return Request request instance.
-     * @throws \yii\base\InvalidConfigException
      */
-    protected function createRequestShortcut($method, $url, $data, $headers, $options)
+    private function createRequestShortcut($method, $url, $data, $headers, $options)
     {
         $request = $this->createRequest()
             ->setMethod($method)

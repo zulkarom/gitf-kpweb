@@ -1,6 +1,6 @@
 {
     "name": "bootstrap-checkbox-x",
-    "version": "1.5.5",
+    "version": "1.5.4",
     "homepage": "https://github.com/kartik-v/bootstrap-checkbox-x",
     "authors": [
         "Kartik Visweswaran <kartikv2@gmail.com>"
@@ -21,7 +21,7 @@
     ],
     "dependencies": {
         "jquery": ">= 1.9.0",
-        "bootstrap": ">= 3.0.0"
+        "bootstrap": "~3"
     },
     "ignore": [
         "**/.*",
@@ -32,5 +32,5 @@
         "test",
         "tests"
     ],
-    "license": "BSD-3-Clause"
+    "license": "BSD-3"
 }

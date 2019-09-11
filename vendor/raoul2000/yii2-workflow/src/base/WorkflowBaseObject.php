@@ -1,8 +1,11 @@
 <?php
 namespace raoul2000\workflow\base;
 
-use yii\base\BaseObject;
+use yii\base\Object;
 use yii\base\InvalidConfigException;
+use yii\base\InvalidCallException;
+use yii\base\InvalidParamException;
+use yii\base\UnknownPropertyException;
 use raoul2000\workflow\source\IWorkflowSource;
 
 
@@ -13,7 +16,7 @@ use raoul2000\workflow\source\IWorkflowSource;
  * declare them in the class definition. Theses properties are called **metadata** and stored into
  * an array. They can be accessed like regular class properties.
  */
-abstract class WorkflowBaseObject extends BaseObject
+abstract class WorkflowBaseObject extends Object
 {
 	/**
 	 * @var array optional Meatadata are user defined properties where array key is the property name 

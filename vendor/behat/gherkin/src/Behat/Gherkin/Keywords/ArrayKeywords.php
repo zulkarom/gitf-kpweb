@@ -31,7 +31,7 @@ namespace Behat\Gherkin\Keywords;
  *         'background'       => 'Предыстория',
  *         'scenario'         => 'Сценарий',
  *         'scenario_outline' => 'Структура сценария',
- *         'examples'         => 'Примеры',
+ *         'examples'         => 'Значения',
  *         'given'            => 'Допустим',
  *         'when'             => 'Если',
  *         'then'             => 'То',

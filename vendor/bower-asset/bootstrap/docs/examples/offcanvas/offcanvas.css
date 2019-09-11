@@ -1,5 +1,3 @@
-/* stylelint-disable property-no-vendor-prefix */
-
 /*
  * Style tweaks
  * --------------------------------------------------
@@ -23,8 +21,8 @@ footer {
   .row-offcanvas {
     position: relative;
     -webkit-transition: all .25s ease-out;
-    -o-transition: all .25s ease-out;
-    transition: all .25s ease-out;
+         -o-transition: all .25s ease-out;
+            transition: all .25s ease-out;
   }
 
   .row-offcanvas-right {
@@ -35,11 +33,13 @@ footer {
     left: 0;
   }
 
-  .row-offcanvas-right .sidebar-offcanvas {
+  .row-offcanvas-right
+  .sidebar-offcanvas {
     right: -50%; /* 6 columns */
   }
 
-  .row-offcanvas-left .sidebar-offcanvas {
+  .row-offcanvas-left
+  .sidebar-offcanvas {
     left: -50%; /* 6 columns */
   }
 

@@ -9,7 +9,6 @@ class Metadata
     protected $name;
     protected $filename;
     protected $feature;
-    protected $index;
 
     protected $params = [
         'env' => [],
@@ -125,22 +124,6 @@ class Metadata
     public function getFilename()
     {
         return $this->filename;
-    }
-
-    /**
-     * @param mixed $index
-     */
-    public function setIndex($index)
-    {
-        $this->index = $index;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getIndex()
-    {
-        return $this->index;
     }
 
     /**

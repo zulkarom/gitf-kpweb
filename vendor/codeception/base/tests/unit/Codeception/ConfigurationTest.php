@@ -1,7 +1,7 @@
 <?php
 
 
-class ConfigurationTest extends \PHPUnit\Framework\TestCase
+class ConfigurationTest extends \PHPUnit_Framework_TestCase
 {
 
     public function setUp()
@@ -65,8 +65,5 @@ class ConfigurationTest extends \PHPUnit\Framework\TestCase
 
         $commandsConfig = $defaultConfig['extensions'];
         $this->assertArrayHasKey('commands', $commandsConfig);
-
-        $this->assertArrayHasKey('extends', $defaultConfig);
-        $this->assertNull($defaultConfig['extends']);
     }
 }

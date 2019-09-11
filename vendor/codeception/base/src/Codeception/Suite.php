@@ -4,7 +4,7 @@ namespace Codeception;
 use Codeception\Test\Descriptor;
 use Codeception\Test\Interfaces\Dependent;
 
-class Suite extends \PHPUnit\Framework\TestSuite
+class Suite extends \PHPUnit_Framework_TestSuite
 {
     protected $modules;
     protected $baseName;
@@ -34,7 +34,7 @@ class Suite extends \PHPUnit\Framework\TestSuite
             return [$test];
         }
         $tests = [];
-        foreach ($test->fetchDependencies() as $requiredTestName) {
+        foreach ($test->getDependencies() as $requiredTestName) {
             $required = $this->findMatchedTest($requiredTestName);
             if (!$required) {
                 continue;

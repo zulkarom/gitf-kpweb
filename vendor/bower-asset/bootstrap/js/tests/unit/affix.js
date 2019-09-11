@@ -26,7 +26,7 @@ $(function () {
 
   QUnit.test('should return jquery collection containing the element', function (assert) {
     assert.expect(2)
-    var $el = $('<div/>').appendTo('#qunit-fixture')
+    var $el = $('<div/>')
     var $affix = $el.bootstrapAffix()
     assert.ok($affix instanceof $, 'returns jquery collection')
     assert.strictEqual($affix[0], $el[0], 'collection contains element')
@@ -34,21 +34,12 @@ $(function () {
 
   QUnit.test('should exit early if element is not visible', function (assert) {
     assert.expect(1)
-    var $affix = $('<div style="display: none"/>')
-      .appendTo('#qunit-fixture')
-      .bootstrapAffix()
-
+    var $affix = $('<div style="display: none"/>').bootstrapAffix()
     $affix.data('bs.affix').checkPosition()
     assert.ok(!$affix.hasClass('affix'), 'affix class was not added')
   })
 
   QUnit.test('should trigger affixed event after affix', function (assert) {
-    // Disable for iOS because of: https://bugs.webkit.org/show_bug.cgi?id=172854
-    if (window.navigator.userAgent.match(/iPhone/i)) {
-      assert.expect(0)
-      return
-    }
-
     assert.expect(2)
     var done = assert.async()
 
@@ -75,22 +66,15 @@ $(function () {
       })
 
     setTimeout(function () {
-      window.scrollTo(0, document.body.scrollHeight - 5)
+      window.scrollTo(0, document.body.scrollHeight)
 
-      // for testing in a browser
       setTimeout(function () {
         window.scroll(0, 0)
-      }, 150)
+      }, 16) // for testing in a browser
     }, 0)
   })
 
   QUnit.test('should affix-top when scrolling up to offset when parent has padding', function (assert) {
-    // Disable for iOS because of: https://bugs.webkit.org/show_bug.cgi?id=172854
-    if (window.navigator.userAgent.match(/iPhone/i)) {
-      assert.expect(0)
-      return
-    }
-
     assert.expect(1)
     var done = assert.async()
 
@@ -113,11 +97,11 @@ $(function () {
       })
 
     setTimeout(function () {
-      window.scrollTo(0, document.body.scrollHeight - 5)
+      window.scrollTo(0, document.body.scrollHeight)
 
       setTimeout(function () {
         window.scroll(0, 119)
       }, 250)
-    }, 0)
+    }, 250)
   })
 })

@@ -8,7 +8,6 @@
 namespace yii\authclient;
 
 use yii\base\BaseObject;
-use yii\helpers\ArrayHelper;
 
 /**
  * Token represents OAuth token.
@@ -50,17 +49,6 @@ class OAuthToken extends BaseObject
      */
     private $_params = [];
 
-
-    public function __construct(array $config = [])
-    {
-        if (array_key_exists('tokenParamKey', $config)) {
-            $this->tokenParamKey = ArrayHelper::remove($config, 'tokenParamKey');
-        }
-        if (array_key_exists('tokenSecretParamKey', $config)) {
-            $this->tokenSecretParamKey = ArrayHelper::remove($config, 'tokenSecretParamKey');
-        }
-        parent::__construct($config);
-    }
 
     /**
      * {@inheritdoc}

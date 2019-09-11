@@ -1,5 +1,3 @@
-/* stylelint-disable selector-no-qualifying-type, property-no-vendor-prefix */
-
 body {
   padding-top: 40px;
   padding-bottom: 40px;
@@ -16,14 +14,14 @@ body {
   margin-bottom: 10px;
 }
 .form-signin .checkbox {
-  font-weight: 400;
+  font-weight: normal;
 }
 .form-signin .form-control {
   position: relative;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
   height: auto;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
   padding: 10px;
   font-size: 16px;
 }

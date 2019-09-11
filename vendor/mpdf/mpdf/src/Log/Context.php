@@ -17,6 +17,4 @@ class Context
 
 	const CSS_SIZE_CONVERSION = 'css_size_conversion';
 
-	const HTML_MARKUP = 'html_markup';
-
 }

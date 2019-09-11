@@ -15,13 +15,13 @@ use raoul2000\workflow\base\WorkflowInterface;
 class StatusObjectTest extends TestCase
 {
 	use\Codeception\Specify;
-
+	
 	protected function setUp()
 	{
 		parent::setUp();
 		$this->src = new WorkflowFileSource();
 	}
-
+	
 	public function testStatusCreationSuccess()
 	{
 		$this->specify('create a status instance', function ()
@@ -74,7 +74,7 @@ class StatusObjectTest extends TestCase
 	{
 		$this->specify('status creation fails when no id is provided', function ()
 		{
-			$this->expectException('raoul2000\workflow\base\WorkflowException');
+			$this->setExpectedException('raoul2000\workflow\base\WorkflowException');
 
 			$s = new Status([
 				'id' => 'draft',
@@ -93,7 +93,7 @@ class StatusObjectTest extends TestCase
 	{
 		$this->specify('status creation fails when no id is provided', function ()
 		{
-			$this->expectException('yii\base\InvalidConfigException');
+			$this->setExpectedException('yii\base\InvalidConfigException');
 
 			new Status([
 				'workflowId' => 'workflow1'
@@ -105,10 +105,8 @@ class StatusObjectTest extends TestCase
 	{
 		$this->specify('status creation fails when empty id is provided', function ()
 		{
-			$this->expectException(
-				'yii\base\InvalidConfigException'
-			);
-			$this->expectExceptionMessage(
+			$this->setExpectedException(
+				'yii\base\InvalidConfigException',
 				'missing status id'
 			);
 
@@ -123,10 +121,8 @@ class StatusObjectTest extends TestCase
 	{
 		$this->specify('create a status instance with no workflow id', function ()
 		{
-			$this->expectException(
-				'yii\base\InvalidConfigException'
-			);
-			$this->expectExceptionMessage(
+			$this->setExpectedException(
+				'yii\base\InvalidConfigException',
 				'missing workflow id'
 			);
 			new Status([
@@ -138,10 +134,8 @@ class StatusObjectTest extends TestCase
 	{
 		$this->specify('create a status instance with empty workflow id', function ()
 		{
-			$this->expectException(
-				'yii\base\InvalidConfigException'
-			);
-			$this->expectExceptionMessage(
+			$this->setExpectedException(
+				'yii\base\InvalidConfigException',
 				'missing workflow id'
 			);
 			new Status([
@@ -150,7 +144,7 @@ class StatusObjectTest extends TestCase
 			]);
 		});
 	}
-
+	
 	public function testCreateWithSourceSuccess()
 	{
 		$this->specify('create a status instance with source component', function ()
@@ -158,7 +152,7 @@ class StatusObjectTest extends TestCase
 			$src = Yii::createObject([
 				'class' => WorkflowFileSource::className()
 			]);
-
+			
 			$start = new Status([
 				'id' => 'draft',
 				'workflowId' => 'workflow1',
@@ -174,31 +168,35 @@ class StatusObjectTest extends TestCase
 		$this->specify('create a status instance with an invalid source component', function ()
 		{
 			$src = new \stdClass();
-
-			$this->expectException('yii\base\InvalidConfigException');
-			$this->expectExceptionMessage('The "source" property must implement interface raoul2000\workflow\source\IWorkflowSource');
+			
+			$this->setExpectedException(
+				'yii\base\InvalidConfigException',
+				'The "source" property must implement interface raoul2000\workflow\source\IWorkflowSource'
+			);				
 			$start = new Status([
 				'id' => 'draft',
 				'workflowId' => 'workflow1',
 				'source' => $src
 			]);
-		});
+		});		
 	}
-
+	
 	public function testCreateWithSourceFails2()
 	{
 		$this->specify('create a status instance with an invalid source component', function ()
 		{
-			$this->expectException('yii\base\InvalidConfigException');
-			$this->expectExceptionMessage('The "source" property must implement interface raoul2000\workflow\source\IWorkflowSource');
+			$this->setExpectedException(
+				'yii\base\InvalidConfigException',
+				'The "source" property must implement interface raoul2000\workflow\source\IWorkflowSource'
+			);
 			new Status([
 				'id' => 'draft',
 				'workflowId' => 'workflow1',
 				'source' => ''
 			]);
 		});
-	}
-
+	}	
+	
 	public function testStatusAccessorSuccess()
 	{
 		$this->src->addWorkflowDefinition('wid', [
@@ -214,69 +212,71 @@ class StatusObjectTest extends TestCase
 		]);
 		$w = $this->src->getWorkflow('wid');
 		verify_that($w != null);
-
+		 
 		$this->specify('transitions can be obtained through status',function() {
-
+	
 			$status = $this->src->getStatus('wid/A');
-
+	
 			expect_that($status != null);
-
+	
 			$tr = $status->getTransitions();
-
+	
 			expect_that(is_array($tr));
 			expect(count($tr))->equals(2);
-
+	
 			$keys = array_keys($tr);
-
+			
 			expect($keys)->equals(['wid/B','wid/C']);
 			expect_that( $tr['wid/B'] instanceof TransitionInterface);
 			expect_that( $tr['wid/C'] instanceof TransitionInterface);
 		});
-
+		
 		$this->specify('parent workflow can be obtained through status',function() {
-
+		
 			$status = $this->src->getStatus('wid/A');
-
+		
 			expect_that($status != null);
-
+		
 			$wrk = $status->getWorkflow();
-
+		
 			expect_that($wrk != null);
 			verify_that( $wrk instanceof WorkflowInterface);
 			verify($wrk->getId())->equals('wid');
-		});
-	}
-
+		});		
+	}		
+	
 	public function testStatusAccessorFails()
 	{
 		$st = new Status([
 			'id' => 'draft',
 			'workflowId' => 'workflow1'
 		]);
-
+		
 		$this->specify('Failed to get transitions when no source is configured', function () use($st)
 		{
-			$this->expectException('raoul2000\workflow\base\WorkflowException');
-			$this->expectExceptionMessage('no workflow source component available');
+			$this->setExpectedException(
+				'raoul2000\workflow\base\WorkflowException',
+				'no workflow source component available'
+			);
 			$st->getTransitions();
 		});
-
+	
 		$this->specify('Failed to get workflow object when no source is configured', function () use($st)
 		{
-			$this->expectException('raoul2000\workflow\base\WorkflowException');
-			$this->expectExceptionMessage('no workflow source component available');
-			$st->getWorkflow();
-		});
-
-		$this->specify('Failed to call isInitialStatus when no source is configured', function () use($st)
-		{
-			$this->expectException(
-				'raoul2000\workflow\base\WorkflowException'
-			);
-			$this->expectExceptionMessage(
+			$this->setExpectedException(
+				'raoul2000\workflow\base\WorkflowException',
 				'no workflow source component available'
 			);
 			$st->getWorkflow();
-		});
-	}
+		});		
+		
+		$this->specify('Failed to call isInitialStatus when no source is configured', function () use($st)
+		{
+			$this->setExpectedException(
+				'raoul2000\workflow\base\WorkflowException',
+				'no workflow source component available'
+			);
+			$st->getWorkflow();
+		});		
+	}	
 }

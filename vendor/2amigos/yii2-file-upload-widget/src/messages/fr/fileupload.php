@@ -25,5 +25,4 @@ return [
     'Error' => 'Erreur',
     'Delete' => 'Supprimer',
     'Processing' => 'Chargement',
-    'Select file...' => 'Sélectionner un fichier...',
 ];

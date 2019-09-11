@@ -62,9 +62,6 @@ NAR;
 
         $filter = new RoleFilter('*user');
         $this->assertTrue($filter->isFeatureMatch($feature));
-        
-        $filter = new RoleFilter('[\w\s]+user');
-        $this->assertFalse($filter->isFeatureMatch($feature));
 
         $filter = new RoleFilter('American User');
         $this->assertTrue($filter->isFeatureMatch($feature));

@@ -9,9 +9,9 @@
  * https://opensource.org/licenses/MIT
  */
 
-/* global define, module, require */
+/* global define */
 
-;(function(factory) {
+;(function (factory) {
   'use strict'
   if (typeof define === 'function' && define.amd) {
     // Register as an anonymous AMD module:
@@ -22,12 +22,12 @@
     // Browser globals:
     factory(window.loadImage)
   }
-})(function(loadImage) {
+}(function (loadImage) {
   'use strict'
 
   var originalTransform = loadImage.transform
 
-  loadImage.transform = function(img, options, callback, file, data) {
+  loadImage.transform = function (img, options, callback, file, data) {
     originalTransform.call(
       loadImage,
       loadImage.scale(img, options, data),
@@ -41,12 +41,14 @@
   // Transform image coordinates, allows to override e.g.
   // the canvas orientation based on the orientation option,
   // gets canvas, options passed as arguments:
-  loadImage.transformCoordinates = function() {}
+  loadImage.transformCoordinates = function () {
+    return
+  }
 
   // Returns transformed options, allows to override e.g.
   // maxWidth, maxHeight and crop options based on the aspectRatio.
   // gets img, options passed as arguments:
-  loadImage.getTransformedOptions = function(img, options) {
+  loadImage.getTransformedOptions = function (img, options) {
     var aspectRatio = options.aspectRatio
     var newOptions
     var i
@@ -57,7 +59,7 @@
     }
     newOptions = {}
     for (i in options) {
-      if (Object.prototype.hasOwnProperty.call(options, i)) {
+      if (options.hasOwnProperty(i)) {
         newOptions[i] = options[i]
       }
     }
@@ -75,7 +77,7 @@
   }
 
   // Canvas render method, allows to implement a different rendering algorithm:
-  loadImage.renderImageToCanvas = function(
+  loadImage.renderImageToCanvas = function (
     canvas,
     img,
     sourceX,
@@ -87,24 +89,22 @@
     destWidth,
     destHeight
   ) {
-    canvas
-      .getContext('2d')
-      .drawImage(
-        img,
-        sourceX,
-        sourceY,
-        sourceWidth,
-        sourceHeight,
-        destX,
-        destY,
-        destWidth,
-        destHeight
-      )
+    canvas.getContext('2d').drawImage(
+      img,
+      sourceX,
+      sourceY,
+      sourceWidth,
+      sourceHeight,
+      destX,
+      destY,
+      destWidth,
+      destHeight
+    )
     return canvas
   }
 
   // Determines if the target image should be a canvas element:
-  loadImage.hasCanvasOption = function(options) {
+  loadImage.hasCanvasOption = function (options) {
     return options.canvas || options.crop || !!options.aspectRatio
   }
 
@@ -113,13 +113,11 @@
   // Returns a canvas object if the browser supports canvas
   // and the hasCanvasOption method returns true or a canvas
   // object is passed as image, else the scaled image:
-  loadImage.scale = function(img, options, data) {
-    // eslint-disable-next-line no-param-reassign
+  loadImage.scale = function (img, options, data) {
     options = options || {}
     var canvas = document.createElement('canvas')
-    var useCanvas =
-      img.getContext ||
-      (loadImage.hasCanvasOption(options) && canvas.getContext)
+    var useCanvas = img.getContext ||
+                    (loadImage.hasCanvasOption(options) && canvas.getContext)
     var width = img.naturalWidth || img.width
     var height = img.naturalHeight || img.height
     var destWidth = width
@@ -135,10 +133,7 @@
     var pixelRatio
     var downsamplingRatio
     var tmp
-    /**
-     * Scales up image dimensions
-     */
-    function scaleUp() {
+    function scaleUp () {
       var scale = Math.max(
         (minWidth || destWidth) / destWidth,
         (minHeight || destHeight) / destHeight
@@ -148,10 +143,7 @@
         destHeight *= scale
       }
     }
-    /**
-     * Scales down image dimensions
-     */
-    function scaleDown() {
+    function scaleDown () {
       var scale = Math.min(
         (maxWidth || destWidth) / destWidth,
         (maxHeight || destHeight) / destHeight
@@ -162,7 +154,6 @@
       }
     }
     if (useCanvas) {
-      // eslint-disable-next-line no-param-reassign
       options = loadImage.getTransformedOptions(img, options, data)
       sourceX = options.left || 0
       sourceY = options.top || 0
@@ -194,12 +185,12 @@
       destHeight = maxHeight
       tmp = sourceWidth / sourceHeight - maxWidth / maxHeight
       if (tmp < 0) {
-        sourceHeight = (maxHeight * sourceWidth) / maxWidth
+        sourceHeight = maxHeight * sourceWidth / maxWidth
         if (options.top === undefined && options.bottom === undefined) {
           sourceY = (height - sourceHeight) / 2
         }
       } else if (tmp > 0) {
-        sourceWidth = (maxWidth * sourceHeight) / maxHeight
+        sourceWidth = maxWidth * sourceHeight / maxHeight
         if (options.left === undefined && options.right === undefined) {
           sourceX = (width - sourceWidth) / 2
         }
@@ -227,12 +218,8 @@
         canvas.getContext('2d').scale(pixelRatio, pixelRatio)
       }
       downsamplingRatio = options.downsamplingRatio
-      if (
-        downsamplingRatio > 0 &&
-        downsamplingRatio < 1 &&
-        destWidth < sourceWidth &&
-        destHeight < sourceHeight
-      ) {
+      if (downsamplingRatio > 0 && downsamplingRatio < 1 &&
+            destWidth < sourceWidth && destHeight < sourceHeight) {
         while (sourceWidth * downsamplingRatio > destWidth) {
           canvas.width = sourceWidth * downsamplingRatio
           canvas.height = sourceHeight * downsamplingRatio
@@ -252,7 +239,6 @@
           sourceY = 0
           sourceWidth = canvas.width
           sourceHeight = canvas.height
-          // eslint-disable-next-line no-param-reassign
           img = document.createElement('canvas')
           img.width = sourceWidth
           img.height = sourceHeight
@@ -272,7 +258,10 @@
       }
       canvas.width = destWidth
       canvas.height = destHeight
-      loadImage.transformCoordinates(canvas, options)
+      loadImage.transformCoordinates(
+        canvas,
+        options
+      )
       return loadImage.renderImageToCanvas(
         canvas,
         img,
@@ -290,4 +279,4 @@
     img.height = destHeight
     return img
   }
-})
+}))

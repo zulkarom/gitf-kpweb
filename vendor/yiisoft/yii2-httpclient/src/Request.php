@@ -53,14 +53,6 @@ class Request extends Message
      * @see prepare()
      */
     private $isPrepared = false;
-    /**
-     * @var resource The file that the transfer should be written to.
-     */
-    private $_outputFile;
-    /**
-     * @var array Stores map (alias => name) of the content parameters
-     */
-    private $_contentMap = [];
 
 
     /**
@@ -87,16 +79,14 @@ class Request extends Message
 
     /**
      * Sets full target URL.
-     * This method can be used during request formatting and preparation.
+     * This method can be use during request formatting and preparation.
      * Do not use it for the target URL specification, use [[setUrl()]] instead.
      * @param string $fullUrl full target URL.
-     * @return $this self reference.
      * @since 2.0.3
      */
     public function setFullUrl($fullUrl)
     {
         $this->_fullUrl = $fullUrl;
-        return $this;
     }
 
     /**
@@ -224,9 +214,7 @@ class Request extends Message
             $multiPartContent = [];
         }
         $options['content'] = $content;
-        $alias = $this->generateContentAlias($name);
-        $this->addAliasToContentMap($name, $alias);
-        $multiPartContent[$alias] = $options;
+        $multiPartContent[$name] = $options;
         $this->setContent($multiPartContent);
         return $this;
     }
@@ -240,7 +228,6 @@ class Request extends Message
      *  - fileName - string, base name of the uploading file, if not set it base name of the source file will be used.
      *  - mimeType - string, file mime type, if not set it will be determine automatically from source file.
      * @return $this
-     * @throws \yii\base\InvalidConfigException
      */
     public function addFile($name, $fileName, $options = [])
     {
@@ -357,7 +344,6 @@ class Request extends Message
         // process content parts :
         foreach ($content as $name => $contentParams) {
             $headers = [];
-            $name = $this->getNameByAlias($name);
             $name = str_replace($disallowedChars, '_', $name);
             $contentDisposition = 'Content-Disposition: form-data; name="' . $name . '"';
             if (isset($contentParams['fileName'])) {
@@ -429,7 +415,6 @@ class Request extends Message
     /**
      * Sends this request.
      * @return Response response instance.
-     * @throws Exception
      */
     public function send()
     {
@@ -499,69 +484,9 @@ class Request extends Message
 
     /**
      * @return FormatterInterface message formatter instance.
-     * @throws \yii\base\InvalidConfigException
      */
     private function getFormatter()
     {
         return $this->client->getFormatter($this->getFormat());
-    }
-
-    /**
-     * Gets the outputFile property
-     * @return resource
-     * @since 2.0.9
-     */
-    public function getOutputFile()
-    {
-        return $this->_outputFile;
-    }
-
-    /**
-     * Used with [[CurlTransport]] to set the file that the transfer should be written to
-     * @see CURLOPT_FILE
-     * @param resource $file
-     * @return $this self reference.
-     * @since 2.0.9
-     */
-    public function setOutputFile($file)
-    {
-        $this->_outputFile = $file;
-
-        return $this;
-    }
-
-    /**
-     * Generates unique alias for the content
-     * @param $name string
-     * @return string
-     */
-    private function generateContentAlias($name)
-    {
-        $alias = $name;
-        while ($this->hasContent($alias)) {
-            $alias = uniqid($name . '_');
-        }
-
-        return $alias;
-    }
-
-    /**
-     * Adds alias to the content map
-     * @param $name string
-     * @param $alias string
-     */
-    private function addAliasToContentMap($name, $alias)
-    {
-        $this->_contentMap[$alias] = $name;
-    }
-
-    /**
-     * Returns name by alias from the content map
-     * @param $alias string
-     * @return string
-     */
-    private function getNameByAlias($alias)
-    {
-        return isset($this->_contentMap[$alias]) ? $this->_contentMap[$alias] : $alias;
     }
 }

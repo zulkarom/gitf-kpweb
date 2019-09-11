@@ -16,7 +16,6 @@ use raoul2000\workflow\base\Workflow;
 class WorkflowTest extends TestCase
 {
 	use \Codeception\Specify;
-	use \Codeception\AssertThrows;
 
 	public $src;
 
@@ -64,7 +63,7 @@ class WorkflowTest extends TestCase
 	/**
 	 * @expectedException raoul2000\workflow\base\WorkflowValidationException
 	 * @expectedExceptionMessageRegExp #No status definition found#
-	 */
+	 */	
 	public function testAddInvalidWorkflowDefinition()
 	{
 		$this->src->addWorkflowDefinition('wid', ['initialStatusId' => 'A']);
@@ -73,45 +72,20 @@ class WorkflowTest extends TestCase
     public function testFailToLoadWorkflowClass()
     {
     	$this->specify('incorrect status id format', function () {
-				$this->assertThrowsWithMessage(
-					'raoul2000\workflow\base\WorkflowException' ,
-					"Not a valid status id format: failed to get workflow id - status = 'id'",
-					function() {
-						$this->src->getStatus('id');
-					}
-				);
-    	});
+    		$this->src->getStatus('id');
+    	},['throws' => 'raoul2000\workflow\base\WorkflowException']);
 
     	$this->specify('empty provider fails to load workflow from non-existant workflow class', function () {
-				$this->assertThrowsWithMessage(
-					'raoul2000\workflow\base\WorkflowException' ,
-					"failed to load workflow definition : Class app\models\id does not exist",
-					function() {
-						$this->src->getWorkflow('id');
-					}
-				);
-    	});
+    		$this->src->getWorkflow('id');
+    	},['throws' => 'raoul2000\workflow\base\WorkflowException']);
 
     	$this->specify('empty provider fails to load status from non-existant workflow class', function () {
-				$this->assertThrowsWithMessage(
-					'raoul2000\workflow\base\WorkflowException' ,
-					"failed to load workflow definition : Class app\models\w does not exist",
-					function() {
-						$this->src->getStatus('w/s');
-					}
-				);
-    	});
+    		$this->src->getStatus('w/s');
+    	},['throws' => 'raoul2000\workflow\base\WorkflowException']);
 
     	$this->specify('empty provider fails to load transition from non-existant workflow class', function ()  {
-				$this->assertThrowsWithMessage(
-					'raoul2000\workflow\base\WorkflowException' ,
-					"failed to load workflow definition : Class app\models\w does not exist",
-					function() {
-						$this->src->getStatus('w/s');
-						$this->src->getTransitions('w/s');
-					}
-				);
-    	});
+    		$this->src->getTransitions('w/s');
+    	},['throws' => 'raoul2000\workflow\base\WorkflowException']);
     }
 
     public function testLoadMinimalWorkflowSuccess()
@@ -121,7 +95,7 @@ class WorkflowTest extends TestCase
     		'initialStatusId' => 'A',
     		'status' => ['A']
     	]);
-
+    	
     	$this->specify('can load workflow', function () use ($src) {
     		$w = $src->getWorkflow('wid');
     		verify('a Workflow instance is returned', get_class($w) )->equals('raoul2000\workflow\base\Workflow');

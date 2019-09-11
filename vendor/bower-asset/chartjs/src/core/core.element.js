@@ -42,7 +42,7 @@ function interpolate(start, view, model, ease) {
 						continue;
 					}
 				}
-			} else if (helpers.isFinite(origin) && helpers.isFinite(target)) {
+			} else if (type === 'number' && isFinite(origin) && isFinite(target)) {
 				view[key] = origin + (target - origin) * ease;
 				continue;
 			}

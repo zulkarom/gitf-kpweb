@@ -42,8 +42,10 @@ class TransitionObjectTest extends TestCase
 	{
 		$this->specify('create transition with NULL start status fails', function ()
 		{
-			$this->expectException('yii\base\InvalidConfigException');
-			$this->expectExceptionMessage('missing start status');
+			$this->setExpectedException(
+				'yii\base\InvalidConfigException',
+				'missing start status'
+			);
 			new Transition([
 				'start' => null,
 				'end'   => new Status([
@@ -58,10 +60,8 @@ class TransitionObjectTest extends TestCase
 
 		$this->specify('create transition with no start status provided fails ', function ()
 		{
-			$this->expectException(
-				'yii\base\InvalidConfigException'
-			);
-			$this->expectExceptionMessage(
+			$this->setExpectedException(
+				'yii\base\InvalidConfigException',
 				'missing start status'
 			);
 			new Transition([
@@ -77,10 +77,8 @@ class TransitionObjectTest extends TestCase
 
 		$this->specify('create transition with start status not Status instance fails ', function ()
 		{
-			$this->expectException(
-				'raoul2000\workflow\base\WorkflowException'
-			);
-			$this->expectExceptionMessage(
+			$this->setExpectedException(
+				'raoul2000\workflow\base\WorkflowException',
 				'Start status object must implement raoul2000\workflow\base\StatusInterface'
 			);
 			new Transition([
@@ -92,10 +90,8 @@ class TransitionObjectTest extends TestCase
 	{
 		$this->specify('create transition with no end status provided fails', function ()
 		{
-			$this->expectException(
-				'yii\base\InvalidConfigException'
-			);
-			$this->expectExceptionMessage(
+			$this->setExpectedException(
+				'yii\base\InvalidConfigException',
 				'missing end status'
 			);
 			new Transition([
@@ -111,10 +107,8 @@ class TransitionObjectTest extends TestCase
 	{
 		$this->specify('create transition with empty end status fails', function ()
 		{
-			$this->expectException(
-				'yii\base\InvalidConfigException'
-			);
-			$this->expectExceptionMessage(
+			$this->setExpectedException(
+				'yii\base\InvalidConfigException',
 				'missing end status'
 			);
 			new Transition([
@@ -131,10 +125,8 @@ class TransitionObjectTest extends TestCase
 
 		$this->specify('create transition with end status not Status instance fails ', function ()
 		{
-			$this->expectException(
-				'raoul2000\workflow\base\WorkflowException'
-			);
-			$this->expectExceptionMessage(
+			$this->setExpectedException(
+				'raoul2000\workflow\base\WorkflowException',
 				'End status object must implement raoul2000\workflow\base\StatusInterface'
 			);
 			new Transition([

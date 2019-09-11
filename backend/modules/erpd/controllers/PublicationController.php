@@ -134,8 +134,8 @@ class PublicationController extends Controller
         $model = new Publication();
 		
 		if ($model->load(Yii::$app->request->post())) {
+			
 							
-			$model->created_at = new Expression('NOW()');
 			
 			$model->staff_id = Yii::$app->user->identity->staff->id;
             
@@ -292,8 +292,9 @@ class PublicationController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
 		
+
+			
 			$model->staff_id = Yii::$app->user->identity->staff->id;
-			$model->modified_at = new Expression('NOW()');
 			
 			$oldAuthorIDs = ArrayHelper::map($authors, 'id', 'id');
 			

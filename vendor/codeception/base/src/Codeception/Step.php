@@ -2,10 +2,8 @@
 namespace Codeception;
 
 use Codeception\Lib\ModuleContainer;
-use Codeception\Step\Argument\FormattedOutput;
 use Codeception\Step\Meta as MetaStep;
 use Codeception\Util\Locator;
-use PHPUnit\Framework\MockObject\MockObject;
 
 abstract class Step
 {
@@ -155,9 +153,7 @@ abstract class Step
                 }
             }
         } elseif (is_object($argument)) {
-            if ($argument instanceof FormattedOutput) {
-                $argument = $argument->getOutput();
-            } elseif (method_exists($argument, '__toString')) {
+            if (method_exists($argument, '__toString')) {
                 $argument = (string)$argument;
             } elseif (get_class($argument) == 'Facebook\WebDriver\WebDriverBy') {
                 $argument = Locator::humanReadableString($argument);
@@ -165,16 +161,15 @@ abstract class Step
                 $argument = $this->getClassName($argument);
             }
         }
-        $arg_str = json_encode($argument, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-        $arg_str = str_replace('\"', '"', $arg_str);
-        return $arg_str;
+
+        return json_encode($argument, JSON_UNESCAPED_UNICODE);
     }
 
     protected function getClassName($argument)
     {
         if ($argument instanceof \Closure) {
             return 'Closure';
-        } elseif ($argument instanceof MockObject && isset($argument->__mocked)) {
+        } elseif ((isset($argument->__mocked))) {
             return $this->formatClassName($argument->__mocked);
         }
 
@@ -246,7 +241,7 @@ abstract class Step
         $text = preg_replace('/([A-Z]+)([A-Z][a-z])/', '\\1 \\2', $text);
         $text = preg_replace('/([a-z\d])([A-Z])/', '\\1 \\2', $text);
         $text = preg_replace('~\bdont\b~', 'don\'t', $text);
-        return mb_strtolower($text, 'UTF-8');
+        return strtolower($text);
     }
 
     public function run(ModuleContainer $container = null)
@@ -308,11 +303,6 @@ abstract class Step
 
             // pageobjects or other classes should not be included with "I"
             if (!in_array('Codeception\Actor', class_parents($step['class']))) {
-                if (isset($step['object'])) {
-                    $this->metaStep->setPrefix(get_class($step['object']) . ':');
-                    return;
-                }
-
                 $this->metaStep->setPrefix($step['class'] . ':');
             }
             return;

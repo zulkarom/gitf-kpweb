@@ -2,13 +2,13 @@
 namespace raoul2000\workflow\source\file;
 
 use Yii;
-use yii\base\BaseObject;
+use yii\base\Object;
 use yii\base\InvalidConfigException;
 /**
  * The WorkflowDefinitionLoader is the base class for all implementations of workflow definition
  * loaders.
  */
-abstract class WorkflowDefinitionLoader extends BaseObject
+abstract class WorkflowDefinitionLoader extends Object
 {
 	/**
 	 * The parser component.

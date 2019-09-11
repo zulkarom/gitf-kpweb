@@ -13,6 +13,8 @@ nbproject
 .buildpath
 .project
 .settings
+composer.json
+composer.lock
 
 # windows thumbnail cache
 Thumbs.db

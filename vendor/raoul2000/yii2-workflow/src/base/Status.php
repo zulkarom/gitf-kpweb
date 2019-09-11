@@ -2,6 +2,7 @@
 namespace raoul2000\workflow\base;
 
 use Yii;
+use yii\base\Object;
 use yii\base\InvalidConfigException;
 
 /**

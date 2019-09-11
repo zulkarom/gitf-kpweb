@@ -109,9 +109,7 @@ class MembershipController extends Controller
         $model = new Membership();
 
         if ($model->load(Yii::$app->request->post())) {
-			
 			$model->msp_staff = Yii::$app->user->identity->staff->id;
-			$model->created_at = new Expression('NOW()');
 			
 			
 			
@@ -146,7 +144,6 @@ class MembershipController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())) {
-			$model->modified_at = new Expression('NOW()');
 			if(Yii::$app->request->post('check-end')){
 				$model->date_end = '0000-00-00';
 			}

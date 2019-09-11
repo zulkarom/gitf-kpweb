@@ -8,6 +8,7 @@ describe('Title block tests', function() {
 			fullWidth: true,
 			weight: 2000,
 			fontStyle: 'bold',
+			lineHeight: 1.2,
 			padding: 10,
 			text: ''
 		});

@@ -3,8 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use backend\modules\erpd\models\PubType;
-use kartik\grid\GridView;
-use kartik\export\ExportMenu;
+use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\modules\erpd\models\PublicationSearch */
@@ -12,9 +11,16 @@ use kartik\export\ExportMenu;
 
 $this->title = 'All Publications';
 $this->params['breadcrumbs'][] = $this->title;
+?>
+<div class="publication-index">
 
-
-$gridColumns = [
+ <div class="box">
+<div class="box-header"></div>
+<div class="box-body">   <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+		'options' => [ 'style' => 'table-layout:fixed;' ],
+        'filterModel' => $searchModel,
+        'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 			[
 				'attribute' => 'pub_year',
@@ -64,112 +70,7 @@ $gridColumns = [
             
             ],
 
-        ];
-
-$exportColumns = [
-
-['class' => 'yii\grid\SerialColumn'],
-			[
-				'attribute' => 'pub_year',
-				'contentOptions' => [ 'style' => 'width: 10%;' ],
-				
-			],
-            [
-				'attribute' => 'pub_type',
-				
-				'value' => function($model){
-					return $model->pubType->type_name;
-				},
-				'label' => 'Type'
-			],
-			'pub_title',
-			[
-				'label' => 'Authors',
-				'value' => function($model){
-					return $model->stringAuthorsPlain("\n");
-				}
-			],
-			
-			'pub_journal',
-			'pub_volume',
-			'pub_issue',
-			'pub_page',
-			'pub_index',
-			'pub_isbn',
-			'pub_inbook',
-			'pub_city',
-			'pub_state',
-			'pub_publisher',
-			[
-				'label' => 'Editors',
-				'value' => function($model){
-					return $model->stringEditorsPlain("\n");
-				}
-			],
-			'pub_organizer',
-			'pub_month',
-			'pub_day',
-			'pub_date',
-			[
-				'label' => 'Tag Staff',
-				'value' => function($model){
-					return $model->getTagStaffNames("\n");
-				}
-			],
-			[
-                'label' => 'Summary',
-                'format' => 'html',
-				'value' => function($model){
-					return $model->showApaStyle();
-				},
-            ],
-			
-			[
-				'attribute' => 'status',
-                'format' => 'html',
-				
-				'value' => function($model){
-					return $model->showStatus();
-				}
-			],
-			'created_at',
-			'modified_at',
-			'reviewed_at'
-
-            ,
-
-            
-
-];
-?>
-<div class="publication-index">
-
-
-<div class="form-group"><?=ExportMenu::widget([
-    'dataProvider' => $dataProvider,
-    'columns' => $exportColumns,
-	'filename' => 'PUBLICATION_DATA_' . date('Y-m-d'),
-	'onRenderSheet'=>function($sheet, $grid){
-		$sheet->getStyle('A2:'.$sheet->getHighestColumn().$sheet->getHighestRow())
-		->getAlignment()->setWrapText(true);
-		
-	},
-	'exportConfig' => [
-    \kartik\export\ExportMenu::FORMAT_PDF => [
-        'pdfConfig' => [
-            'orientation' => 'L',
         ],
-    ],
-],
-]);?></div>
-
- <div class="box">
-<div class="box-header"></div>
-<div class="box-body">   <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-		'options' => [ 'style' => 'table-layout:fixed;' ],
-        'filterModel' => $searchModel,
-        'columns' => $gridColumns,
     ]); ?></div>
 </div>
 

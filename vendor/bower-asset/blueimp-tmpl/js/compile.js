@@ -10,10 +10,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-/* eslint-disable strict */
-/* eslint-disable no-console */
-
-;(function() {
+;(function () {
   'use strict'
   var path = require('path')
   var tmpl = require(path.join(__dirname, 'tmpl.js'))
@@ -31,7 +28,7 @@
   var list = []
   var code
   // Extend the Templating engine with a print method for the generated functions:
-  tmpl.print = function(str) {
+  tmpl.print = function (str) {
     // Only add helper functions if they are used inside of the template:
     var helper = helperRegexp.test(str) ? tmpl.helper : ''
     var body = str.replace(tmpl.regexp, tmpl.func)
@@ -49,7 +46,7 @@
     )
   }
   // Loop through the command line arguments:
-  process.argv.forEach(function(file, index) {
+  process.argv.forEach(function (file, index) {
     var listLength = list.length
     var stats
     var content
@@ -63,7 +60,6 @@
         return
       }
       content = fs.readFileSync(file, 'utf8')
-      // eslint-disable-next-line no-constant-condition
       while (true) {
         // Find templates in script tags:
         result = regexp.exec(content)

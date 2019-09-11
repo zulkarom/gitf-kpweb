@@ -16,9 +16,11 @@ use Symfony\Component\DomCrawler\Image;
 
 class ImageTest extends TestCase
 {
+    /**
+     * @expectedException \LogicException
+     */
     public function testConstructorWithANonImgTag()
     {
-        $this->expectException('LogicException');
         $dom = new \DOMDocument();
         $dom->loadHTML('<html><div><div></html>');
 
@@ -39,9 +41,9 @@ class ImageTest extends TestCase
 
     public function getGetUriTests()
     {
-        return [
-            ['/foo.png', 'http://localhost/bar/foo/', 'http://localhost/foo.png'],
-            ['foo.png', 'http://localhost/bar/foo/', 'http://localhost/bar/foo/foo.png'],
-        ];
+        return array(
+            array('/foo.png', 'http://localhost/bar/foo/', 'http://localhost/foo.png'),
+            array('foo.png', 'http://localhost/bar/foo/', 'http://localhost/bar/foo/foo.png'),
+        );
     }
 }

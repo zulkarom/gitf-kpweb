@@ -181,6 +181,20 @@ abstract class OAuth2 extends BaseOAuth
     }
 
     /**
+     * Composes default [[returnUrl]] value.
+     * @return string return URL.
+     */
+    protected function defaultReturnUrl()
+    {
+        $params = Yii::$app->getRequest()->getQueryParams();
+        unset($params['code']);
+        unset($params['state']);
+        $params[0] = Yii::$app->controller->getRoute();
+
+        return Yii::$app->getUrlManager()->createAbsoluteUrl($params);
+    }
+
+    /**
      * Generates the auth state value.
      * @return string auth state value.
      * @since 2.1

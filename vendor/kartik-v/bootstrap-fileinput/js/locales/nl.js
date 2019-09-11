@@ -19,15 +19,12 @@
         removeTitle: 'Verwijder geselecteerde bestanden',
         cancelLabel: 'Annuleren',
         cancelTitle: 'Annuleer upload',
-        pauseLabel: 'Pause',
-        pauseTitle: 'Pause ongoing upload',
         uploadLabel: 'Upload',
         uploadTitle: 'Upload geselecteerde bestanden',
         msgNo: 'Nee',
         msgNoFilesSelected: '',
-        msgPaused: 'Paused',
         msgCancelled: 'Geannuleerd',
-        msgPlaceholder: 'Selecteer {files}...',
+        msgPlaceholder: 'Select {files}...',
         msgZoomModalHeading: 'Gedetailleerd voorbeeld',
         msgFileRequired: 'U moet een bestand kiezen om te uploaden.',
         msgSizeTooSmall: 'Bestand "{name}" (<b>{size} KB</b>) is te klein en moet groter zijn dan <b>{minSize} KB</b>.',
@@ -56,11 +53,8 @@
         msgUploadThreshold: 'Verwerken...',
         msgUploadBegin: 'Initialiseren...',
         msgUploadEnd: 'Gedaan',
-        msgUploadResume: 'Resuming upload...',
         msgUploadEmpty: 'Geen geldige data beschikbaar voor upload.',
-        msgUploadError: 'Upload Error',
-        msgDeleteError: 'Delete Error',
-        msgProgressError: 'Error',
+        msgUploadError: 'Error',
         msgValidationError: 'Bevestiging fout',
         msgLoading: 'Bestanden laden {index} van de {files} &hellip;',
         msgProgress: 'Bestanden laden {index} van de {files} - {name} - {percent}% compleet.',
@@ -74,10 +68,6 @@
         msgImageResizeException: 'Fout bij het verkleinen van de foto.<pre>{errors}</pre>',
         msgAjaxError: 'Er ging iets mis met de {operation} actie. Gelieve later opnieuw te proberen!',
         msgAjaxProgressError: '{operation} mislukt',
-        msgDuplicateFile: 'File "{name}" of same size "{size} KB" has already been selected earlier. Skipping duplicate selection.',
-        msgResumableUploadRetriesExceeded:  'Upload aborted beyond <b>{max}</b> retries for file <b>{file}</b>! Error Details: <pre>{error}</pre>',
-        msgPendingTime: '{time} remaining',
-        msgCalculatingTime: 'calculating time remaining',
         ajaxOperations: {
             deleteThumb: 'bestand verwijderen',
             uploadThumb: 'bestand uploaden',
@@ -89,23 +79,22 @@
         fileActionSettings: {
             removeTitle: 'Verwijder bestand',
             uploadTitle: 'bestand uploaden',
-            uploadRetryTitle: 'Opnieuw uploaden',
+            uploadRetryTitle: 'Retry upload',
             downloadTitle: 'Download file',
             zoomTitle: 'Bekijk details',
-            dragTitle: 'Verplaatsen / herindelen',
+            dragTitle: 'Move / Rearrange',
             indicatorNewTitle: 'Nog niet geupload',
             indicatorSuccessTitle: 'geupload',
             indicatorErrorTitle: 'fout uploaden',
-            indicatorPausedTitle: 'Upload Paused',
-            indicatorLoadingTitle:  'uploaden ...'
+            indicatorLoadingTitle: 'uploaden ...'
         },
         previewZoomButtonTitles: {
             prev: 'Toon vorig bestand',
             next: 'Toon volgend bestand',
             toggleheader: 'Toggle header',
-            fullscreen: 'Toggle volledig scherm',
-            borderless: 'Toggle randloze modus',
-            close: 'Sluit gedetailleerde weergave'
+            fullscreen: 'Toggle full screen',
+            borderless: 'Toggle borderless mode',
+            close: 'Close detailed preview'
         }
     };
 })(window.jQuery);

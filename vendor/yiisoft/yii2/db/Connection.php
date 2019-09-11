@@ -15,11 +15,11 @@ use yii\base\NotSupportedException;
 use yii\caching\CacheInterface;
 
 /**
- * Connection represents a connection to a database via [PDO](https://secure.php.net/manual/en/book.pdo.php).
+ * Connection represents a connection to a database via [PDO](http://php.net/manual/en/book.pdo.php).
  *
  * Connection works together with [[Command]], [[DataReader]] and [[Transaction]]
  * to provide data access to various DBMS in a common set of APIs. They are a thin wrapper
- * of the [PDO PHP extension](https://secure.php.net/manual/en/book.pdo.php).
+ * of the [PDO PHP extension](http://php.net/manual/en/book.pdo.php).
  *
  * Connection supports database replication and read-write splitting. In particular, a Connection component
  * can be configured with multiple [[masters]] and [[slaves]]. It will do load balancing and failover by choosing
@@ -118,17 +118,16 @@ use yii\caching\CacheInterface;
  * master available. This property is read-only.
  * @property PDO $masterPdo The PDO instance for the currently active master connection. This property is
  * read-only.
- * @property QueryBuilder $queryBuilder The query builder for the current DB connection. Note that the type of
- * this property differs in getter and setter. See [[getQueryBuilder()]] and [[setQueryBuilder()]] for details.
+ * @property QueryBuilder $queryBuilder The query builder for the current DB connection. This property is
+ * read-only.
  * @property Schema $schema The schema information for the database opened by this connection. This property
  * is read-only.
- * @property string $serverVersion Server version as a string. This property is read-only.
  * @property Connection $slave The currently active slave connection. `null` is returned if there is no slave
  * available and `$fallbackToMaster` is false. This property is read-only.
  * @property PDO $slavePdo The PDO instance for the currently active slave connection. `null` is returned if
  * no slave connection is available and `$fallbackToMaster` is false. This property is read-only.
- * @property Transaction|null $transaction The currently active transaction. Null if no active transaction.
- * This property is read-only.
+ * @property Transaction $transaction The currently active transaction. Null if no active transaction. This
+ * property is read-only.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
@@ -136,28 +135,28 @@ use yii\caching\CacheInterface;
 class Connection extends Component
 {
     /**
-     * @event yii\base\Event an event that is triggered after a DB connection is established
+     * @event Event an event that is triggered after a DB connection is established
      */
     const EVENT_AFTER_OPEN = 'afterOpen';
     /**
-     * @event yii\base\Event an event that is triggered right before a top-level transaction is started
+     * @event Event an event that is triggered right before a top-level transaction is started
      */
     const EVENT_BEGIN_TRANSACTION = 'beginTransaction';
     /**
-     * @event yii\base\Event an event that is triggered right after a top-level transaction is committed
+     * @event Event an event that is triggered right after a top-level transaction is committed
      */
     const EVENT_COMMIT_TRANSACTION = 'commitTransaction';
     /**
-     * @event yii\base\Event an event that is triggered right after a top-level transaction is rolled back
+     * @event Event an event that is triggered right after a top-level transaction is rolled back
      */
     const EVENT_ROLLBACK_TRANSACTION = 'rollbackTransaction';
 
     /**
      * @var string the Data Source Name, or DSN, contains the information required to connect to the database.
-     * Please refer to the [PHP manual](https://secure.php.net/manual/en/pdo.construct.php) on
+     * Please refer to the [PHP manual](http://php.net/manual/en/pdo.construct.php) on
      * the format of the DSN string.
      *
-     * For [SQLite](https://secure.php.net/manual/en/ref.pdo-sqlite.connection.php) you may use a [path alias](guide:concept-aliases)
+     * For [SQLite](http://php.net/manual/en/ref.pdo-sqlite.connection.php) you may use a [path alias](guide:concept-aliases)
      * for specifying the database path, e.g. `sqlite:@app/data/db.sql`.
      *
      * @see charset
@@ -174,7 +173,7 @@ class Connection extends Component
     /**
      * @var array PDO attributes (name => value) that should be set when calling [[open()]]
      * to establish a DB connection. Please refer to the
-     * [PHP manual](https://secure.php.net/manual/en/pdo.setattribute.php) for
+     * [PHP manual](http://php.net/manual/en/pdo.setattribute.php) for
      * details about available attributes.
      */
     public $attributes;
@@ -265,8 +264,8 @@ class Connection extends Component
     public $tablePrefix = '';
     /**
      * @var array mapping between PDO driver names and [[Schema]] classes.
-     * The keys of the array are PDO driver names while the values are either the corresponding
-     * schema class names or configurations. Please refer to [[Yii::createObject()]] for
+     * The keys of the array are PDO driver names while the values the corresponding
+     * schema class name or configuration. Please refer to [[Yii::createObject()]] for
      * details on how to specify a configuration.
      *
      * This property is mainly used by [[getSchema()]] when fetching the database schema information.
@@ -293,45 +292,19 @@ class Connection extends Component
     /**
      * @var string the class used to create new database [[Command]] objects. If you want to extend the [[Command]] class,
      * you may configure this property to use your extended version of the class.
-     * Since version 2.0.14 [[$commandMap]] is used if this property is set to its default value.
      * @see createCommand
      * @since 2.0.7
-     * @deprecated since 2.0.14. Use [[$commandMap]] for precise configuration.
      */
     public $commandClass = 'yii\db\Command';
-    /**
-     * @var array mapping between PDO driver names and [[Command]] classes.
-     * The keys of the array are PDO driver names while the values are either the corresponding
-     * command class names or configurations. Please refer to [[Yii::createObject()]] for
-     * details on how to specify a configuration.
-     *
-     * This property is mainly used by [[createCommand()]] to create new database [[Command]] objects.
-     * You normally do not need to set this property unless you want to use your own
-     * [[Command]] class or support DBMS that is not supported by Yii.
-     * @since 2.0.14
-     */
-    public $commandMap = [
-        'pgsql' => 'yii\db\Command', // PostgreSQL
-        'mysqli' => 'yii\db\Command', // MySQL
-        'mysql' => 'yii\db\Command', // MySQL
-        'sqlite' => 'yii\db\sqlite\Command', // sqlite 3
-        'sqlite2' => 'yii\db\sqlite\Command', // sqlite 2
-        'sqlsrv' => 'yii\db\Command', // newer MSSQL driver on MS Windows hosts
-        'oci' => 'yii\db\Command', // Oracle driver
-        'mssql' => 'yii\db\Command', // older MSSQL driver on MS Windows hosts
-        'dblib' => 'yii\db\Command', // dblib drivers on GNU/Linux (and maybe other OSes) hosts
-        'cubrid' => 'yii\db\Command', // CUBRID
-    ];
     /**
      * @var bool whether to enable [savepoint](http://en.wikipedia.org/wiki/Savepoint).
      * Note that if the underlying DBMS does not support savepoint, setting this property to be true will have no effect.
      */
     public $enableSavepoint = true;
     /**
-     * @var CacheInterface|string|false the cache object or the ID of the cache application component that is used to store
+     * @var CacheInterface|string the cache object or the ID of the cache application component that is used to store
      * the health status of the DB servers specified in [[masters]] and [[slaves]].
      * This is used only when read/write splitting is enabled or [[masters]] is not empty.
-     * Set boolean `false` to disabled server status caching.
      */
     public $serverStatusCache = 'cache';
     /**
@@ -441,14 +414,6 @@ class Connection extends Component
      * @var array query cache parameters for the [[cache()]] calls
      */
     private $_queryCacheInfo = [];
-    /**
-     * @var string[] quoted table name cache for [[quoteTableName()]] calls
-     */
-    private $_quotedTableNames;
-    /**
-     * @var string[] quoted column name cache for [[quoteColumnName()]] calls
-     */
-    private $_quotedColumnNames;
 
 
     /**
@@ -649,7 +614,7 @@ class Connection extends Component
         }
 
         if ($this->pdo !== null) {
-            Yii::debug('Closing DB connection: ' . $this->dsn, __METHOD__);
+            Yii::trace('Closing DB connection: ' . $this->dsn, __METHOD__);
             $this->pdo = null;
             $this->_schema = null;
             $this->_transaction = null;
@@ -706,9 +671,7 @@ class Connection extends Component
     {
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         if ($this->emulatePrepare !== null && constant('PDO::ATTR_EMULATE_PREPARES')) {
-            if ($this->driverName !== 'sqlsrv') {
-                $this->pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, $this->emulatePrepare);
-            }
+            $this->pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, $this->emulatePrepare);
         }
         if ($this->charset !== null && in_array($this->getDriverName(), ['pgsql', 'mysql', 'mysqli', 'cubrid'], true)) {
             $this->pdo->exec('SET NAMES ' . $this->pdo->quote($this->charset));
@@ -724,23 +687,18 @@ class Connection extends Component
      */
     public function createCommand($sql = null, $params = [])
     {
-        $driver = $this->getDriverName();
-        $config = ['class' => 'yii\db\Command'];
-        if ($this->commandClass !== $config['class']) {
-            $config['class'] = $this->commandClass;
-        } elseif (isset($this->commandMap[$driver])) {
-            $config = !is_array($this->commandMap[$driver]) ? ['class' => $this->commandMap[$driver]] : $this->commandMap[$driver];
-        }
-        $config['db'] = $this;
-        $config['sql'] = $sql;
         /** @var Command $command */
-        $command = Yii::createObject($config);
+        $command = new $this->commandClass([
+            'db' => $this,
+            'sql' => $sql,
+        ]);
+
         return $command->bindValues($params);
     }
 
     /**
      * Returns the currently active transaction.
-     * @return Transaction|null the currently active transaction. Null if no active transaction.
+     * @return Transaction the currently active transaction. Null if no active transaction.
      */
     public function getTransaction()
     {
@@ -847,17 +805,6 @@ class Connection extends Component
     }
 
     /**
-     * Can be used to set [[QueryBuilder]] configuration via Connection configuration array.
-     *
-     * @param array $value the [[QueryBuilder]] properties to be configured.
-     * @since 2.0.14
-     */
-    public function setQueryBuilder($value)
-    {
-        Yii::configure($this->getQueryBuilder(), $value);
-    }
-
-    /**
      * Obtains the schema information for the named table.
      * @param string $name table name.
      * @param bool $refresh whether to reload the table schema even if it is found in the cache.
@@ -872,7 +819,7 @@ class Connection extends Component
      * Returns the ID of the last inserted row or sequence value.
      * @param string $sequenceName name of the sequence object (required by some DBMS)
      * @return string the row ID of the last row inserted, or the last value retrieved from the sequence object
-     * @see https://secure.php.net/manual/en/pdo.lastinsertid.php
+     * @see http://php.net/manual/en/pdo.lastinsertid.php
      */
     public function getLastInsertID($sequenceName = '')
     {
@@ -884,7 +831,7 @@ class Connection extends Component
      * Note that if the parameter is not a string, it will be returned without change.
      * @param string $value string to be quoted
      * @return string the properly quoted string
-     * @see https://secure.php.net/manual/en/pdo.quote.php
+     * @see http://php.net/manual/en/pdo.quote.php
      */
     public function quoteValue($value)
     {
@@ -901,10 +848,7 @@ class Connection extends Component
      */
     public function quoteTableName($name)
     {
-        if (isset($this->_quotedTableNames[$name])) {
-            return $this->_quotedTableNames[$name];
-        }
-        return $this->_quotedTableNames[$name] = $this->getSchema()->quoteTableName($name);
+        return $this->getSchema()->quoteTableName($name);
     }
 
     /**
@@ -917,10 +861,7 @@ class Connection extends Component
      */
     public function quoteColumnName($name)
     {
-        if (isset($this->_quotedColumnNames[$name])) {
-            return $this->_quotedColumnNames[$name];
-        }
-        return $this->_quotedColumnNames[$name] = $this->getSchema()->quoteColumnName($name);
+        return $this->getSchema()->quoteColumnName($name);
     }
 
     /**
@@ -972,16 +913,6 @@ class Connection extends Component
     public function setDriverName($driverName)
     {
         $this->_driverName = strtolower($driverName);
-    }
-
-    /**
-     * Returns a server version as a string comparable by [[\version_compare()]].
-     * @return string server version as a string.
-     * @since 2.0.14
-     */
-    public function getServerVersion()
-    {
-        return $this->getSchema()->getServerVersion();
     }
 
     /**
@@ -1042,7 +973,7 @@ class Connection extends Component
     public function getMaster()
     {
         if ($this->_master === false) {
-            $this->_master = $this->shuffleMasters
+            $this->_master = ($this->shuffleMasters)
                 ? $this->openFromPool($this->masters, $this->masterConfig)
                 : $this->openFromPoolSequentially($this->masters, $this->masterConfig);
         }

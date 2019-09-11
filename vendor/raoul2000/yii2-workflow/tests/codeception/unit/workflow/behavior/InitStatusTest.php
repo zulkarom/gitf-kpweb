@@ -21,7 +21,7 @@ class InitStatusTest extends TestCase
 			'definitionLoader' => [
 				'class' => 'raoul2000\workflow\source\file\PhpClassLoader',
 				'namespace' => 'tests\codeception\unit\models'
-			]
+			]			
 		]);
 
 	}
@@ -53,10 +53,8 @@ class InitStatusTest extends TestCase
     	$this->specify('status initialisation fails when status not found', function(){
     		$model = new Item01();
     		$model->status = 'Workflow1/X';
-    		$this->expectException(
-    			'raoul2000\workflow\base\WorkflowException'
-    		);
-    		$this->expectExceptionMessage(
+    		$this->setExpectedException(
+    			'raoul2000\workflow\base\WorkflowException', 
     			'No status found with id Workflow1/X'
     		);
     		$model->attachBehavior('workflow', [
@@ -100,7 +98,7 @@ class InitStatusTest extends TestCase
     		verify('current model status is "B"',$model->getWorkflowStatus()->getId())->equals('Workflow1/B');
     	});
     }
-
+    
     public function testInitStatusAfterFindFails()
     {
     	$this->specify('status initialisation success when saving model', function(){
@@ -112,10 +110,8 @@ class InitStatusTest extends TestCase
     		$model->status = 'Workflow1/X';
     		$model->save(false);
 
-    		$this->expectException(
-    			'raoul2000\workflow\base\WorkflowException'
-    		);
-    		$this->expectExceptionMessage(
+    		$this->setExpectedException(
+    			'raoul2000\workflow\base\WorkflowException', 
     			'No status found with id Workflow1/X'
     		);
 
@@ -123,20 +119,20 @@ class InitStatusTest extends TestCase
 
     	});
     }
-
+    
 //     public function testAutoInsertSuccess()
 //     {
 //     	$this->specify('autoInsert feature works ok', function() {
-
+    
 //     		$model = new Item01();
 //     		$model->attachBehavior('workflow', [
 //     				'class' => SimpleWorkflowBehavior::className(),
 //     				'defaultWorkflowId' => 'Workflow1',
 //     				'autoInsert' => true
 //     		]);
-
+    
 //     		expect('', $model->hasWorkflowStatus())->false();
 //     		expect_that(' status attribute is not null', $model->status != null);
 //     	});
-//     }
+//     }    
 }

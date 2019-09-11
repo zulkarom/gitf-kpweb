@@ -1,8 +1,4 @@
-parserOptions:
-  ecmaVersion: 5 # don't rely on default, since its changed by env: es6
-
 env:
-  es6: true # also changes default ecmaVersion to 6
   jasmine: true
 
 globals:
@@ -11,7 +7,7 @@ globals:
   moment: true
   waitForResize: true
 
-# https://eslint.org/docs/rules/
+# http://eslint.org/docs/rules/
 rules:
   # Best Practices
   complexity: 0

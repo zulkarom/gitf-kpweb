@@ -148,9 +148,6 @@
 		}, {
 			title: 'Point style',
 			path: 'legend/point-style.html'
-		}, {
-			title: 'Callbacks',
-			path: 'legend/callbacks.html'
 		}]
 	}, {
 		title: 'Tooltip',
@@ -179,23 +176,8 @@
 	}, {
 		title: 'Scriptable',
 		items: [{
-			title: 'Bar Chart',
-			path: 'scriptable/bar.html'
-		}, {
 			title: 'Bubble Chart',
 			path: 'scriptable/bubble.html'
-		}, {
-			title: 'Pie Chart',
-			path: 'scriptable/pie.html'
-		}, {
-			title: 'Line Chart',
-			path: 'scriptable/line.html'
-		}, {
-			title: 'Polar Area Chart',
-			path: 'scriptable/polar.html'
-		}, {
-			title: 'Radar Chart',
-			path: 'scriptable/radar.html'
 		}]
 	}, {
 		title: 'Advanced',
@@ -203,8 +185,8 @@
 			title: 'Progress bar',
 			path: 'advanced/progress-bar.html'
 		}, {
-			title: 'Content Security Policy',
-			path: 'advanced/content-security-policy.html'
+			title: 'Data labelling (plugin)',
+			path: 'advanced/data-labelling.html'
 		}]
 	}];
 

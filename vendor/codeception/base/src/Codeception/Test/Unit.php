@@ -11,7 +11,7 @@ use Codeception\TestInterface;
 /**
  * Represents tests from PHPUnit compatible format.
  */
-class Unit extends \PHPUnit\Framework\TestCase implements
+class Unit extends \PHPUnit_Framework_TestCase implements
     Interfaces\Reported,
     Interfaces\Dependent,
     TestInterface
@@ -130,7 +130,7 @@ class Unit extends \PHPUnit\Framework\TestCase implements
         ];
     }
 
-    public function fetchDependencies()
+    public function getDependencies()
     {
         $names = [];
         foreach ($this->getMetadata()->getDependencies() as $required) {
@@ -148,7 +148,7 @@ class Unit extends \PHPUnit\Framework\TestCase implements
      */
     public function handleDependencies()
     {
-        $dependencies = $this->fetchDependencies();
+        $dependencies = $this->getDependencies();
         if (empty($dependencies)) {
             return true;
         }

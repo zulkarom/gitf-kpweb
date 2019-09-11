@@ -1,7 +1,7 @@
 <?php
 /**
  * @link https://github.com/2amigos/yii2-gallery-widget
- * @copyright Copyright (c) 2013-2015 2amigOS! Consulting Group LLC
+ * @copyright Copyright (c) 2013-2016 2amigOS! Consulting Group LLC
  * @license http://opensource.org/licenses/BSD-3-Clause
  */
 
@@ -71,7 +71,8 @@ class Carousel extends Gallery
         $id = $this->options['id'];
         $options = Json::encode($this->clientOptions);
         $items = $this->json ? Json::encode($this->items) : "$('#$id').find('a.gallery-item').hide()";
-        $js = "blueimp.Gallery($items, $options);";
+        $js = "blueimp_galleries = ( typeof blueimp_galleries != 'undefined' && blueimp_galleries instanceof Array ) ? blueimp_galleries : [];";
+        $js .= "blueimp_galleries['$id']=blueimp.Gallery($items, $options);";
         $view->registerJs($js);
     }
 }

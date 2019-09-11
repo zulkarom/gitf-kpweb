@@ -1,18 +1,7 @@
-<h1 align="center">
-    <a href="http://demos.krajee.com" title="Krajee Demos" target="_blank">
-        <img src="http://kartik-v.github.io/bootstrap-fileinput-samples/samples/krajee-logo-b.png" alt="Krajee Logo"/>
-    </a>
-    <br>
-    yii2-widget-fileinput
-    <hr>
-    <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DTP3NZQ6G2AYU"
-       title="Donate via Paypal" target="_blank">
-        <img src="http://kartik-v.github.io/bootstrap-fileinput-samples/samples/donate.png" alt="Donate"/>
-    </a>
-</h1>
+yii2-widget-fileinput
+=====================
 
-[![Stable Version](https://poser.pugx.org/kartik-v/yii2-widget-fileinput/v/stable)](https://packagist.org/packages/kartik-v/yii2-widget-fileinput)
-[![Unstable Version](https://poser.pugx.org/kartik-v/yii2-widget-fileinput/v/unstable)](https://packagist.org/packages/kartik-v/yii2-widget-fileinput)
+[![Latest Stable Version](https://poser.pugx.org/kartik-v/yii2-widget-fileinput/v/stable)](https://packagist.org/packages/kartik-v/yii2-widget-fileinput)
 [![License](https://poser.pugx.org/kartik-v/yii2-widget-fileinput/license)](https://packagist.org/packages/kartik-v/yii2-widget-fileinput)
 [![Total Downloads](https://poser.pugx.org/kartik-v/yii2-widget-fileinput/downloads)](https://packagist.org/packages/kartik-v/yii2-widget-fileinput)
 [![Monthly Downloads](https://poser.pugx.org/kartik-v/yii2-widget-fileinput/d/monthly)](https://packagist.org/packages/kartik-v/yii2-widget-fileinput)
@@ -49,7 +38,9 @@ or add
 
 to the ```require``` section of your `composer.json` file.
 
-Refer the [CHANGE LOG](https://github.com/kartik-v/yii2-widget-fileinput/blob/master/CHANGE.md) for details of release wise changes.
+## Latest Release
+
+> NOTE: The latest version of the module is v1.0.6. Refer the [CHANGE LOG](https://github.com/kartik-v/yii2-widget-fileinput/blob/master/CHANGE.md) for details.
 
 ## Demo
 
@@ -76,4 +67,4 @@ echo FileInput::widget([
 
 ## License
 
-**yii2-widget-fileinput** is released under the BSD-3-Clause License. See the bundled `LICENSE.md` for details.
+**yii2-widget-fileinput** is released under the BSD 3-Clause License. See the bundled `LICENSE.md` for details.

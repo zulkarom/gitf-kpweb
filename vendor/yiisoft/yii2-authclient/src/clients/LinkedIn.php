@@ -54,15 +54,17 @@ class LinkedIn extends OAuth2
     /**
      * {@inheritdoc}
      */
-    public $apiBaseUrl = 'https://api.linkedin.com/v2';
+    public $apiBaseUrl = 'https://api.linkedin.com/v1';
     /**
      * @var array list of attribute names, which should be requested from API to initialize user attributes.
      * @since 2.0.4
      */
     public $attributeNames = [
         'id',
-        'firstName',
-        'lastName',
+        'email-address',
+        'first-name',
+        'last-name',
+        'public-profile-url',
     ];
 
 
@@ -74,7 +76,7 @@ class LinkedIn extends OAuth2
         parent::init();
         if ($this->scope === null) {
             $this->scope = implode(' ', [
-                'r_liteprofile',
+                'r_basicprofile',
                 'r_emailaddress',
             ]);
         }
@@ -86,12 +88,9 @@ class LinkedIn extends OAuth2
     protected function defaultNormalizeUserAttributeMap()
     {
         return [
-            'first_name' => function ($attributes) {
-                return array_values($attributes['firstName']['localized'])[0];
-            },
-            'last_name' => function ($attributes) {
-                return array_values($attributes['lastName']['localized'])[0];
-            },
+            'email' => 'email-address',
+            'first_name' => 'first-name',
+            'last_name' => 'last-name',
         ];
     }
 
@@ -100,18 +99,7 @@ class LinkedIn extends OAuth2
      */
     protected function initUserAttributes()
     {
-        $attributes = $this->api('me?projection=(' . implode(',', $this->attributeNames) . ')', 'GET');
-
-        $scopes = explode(' ', $this->scope);
-        if (in_array('r_emailaddress', $scopes, true)) {
-            $emails = $this->api('emailAddress?q=members&projection=(elements*(handle~))', 'GET');
-            if (isset($emails['elements'][0]['handle~']['emailAddress'])) {
-                $attributes['email'] = $emails['elements'][0]['handle~']['emailAddress'];
-            }
-
-        }
-
-        return $attributes;
+        return $this->api('people/~:(' . implode(',', $this->attributeNames) . ')', 'GET');
     }
 
     /**

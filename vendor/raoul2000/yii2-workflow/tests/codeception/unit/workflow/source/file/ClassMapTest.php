@@ -16,35 +16,31 @@ use raoul2000\workflow\base\Workflow;
 class ClassMapTest extends TestCase
 {
 	use \Codeception\Specify;
-
+	
 	public function testConstructFails1()
 	{
 		$this->specify('Workflow source construct fails if classMap is not an array',function (){
-
-			$this->expectException(
-				'yii\base\InvalidConfigException'
-			);
-			$this->expectExceptionMessage(
+	
+			$this->setExpectedException(
+				'yii\base\InvalidConfigException',
 				'Invalid property type : \'classMap\' must be a non-empty array'
 			);
-
+	
 			new WorkflowFileSource([
 				'classMap' => null
 			]);
 		});
 	}
-
+	
 	public function testConstructFails2()
 	{
 		$this->specify('Workflow source construct fails if classMap is an empty array',function (){
-
-			$this->expectException(
-				'yii\base\InvalidConfigException'
-			);
-			$this->expectExceptionMessage(
+	
+			$this->setExpectedException(
+				'yii\base\InvalidConfigException',
 				'Invalid property type : \'classMap\' must be a non-empty array'
 			);
-
+	
 			new WorkflowFileSource([
 				'classMap' => null
 			]);
@@ -53,14 +49,12 @@ class ClassMapTest extends TestCase
 	public function testConstructFails3()
 	{
 		$this->specify('Workflow source construct fails if a class entry is missing',function (){
-
-			$this->expectException(
-				'yii\base\InvalidConfigException'
-			);
-			$this->expectExceptionMessage(
+	
+			$this->setExpectedException(
+				'yii\base\InvalidConfigException',
 				'Invalid class map value : missing class for type workflow'
 			);
-
+	
 			new WorkflowFileSource([
 				'classMap' =>  [
 					'workflow'   => null,
@@ -68,11 +62,11 @@ class ClassMapTest extends TestCase
 					'transition' => 'raoul2000\workflow\base\Transition'
 				]
 			]);
-
-
+	
+	
 		});
 	}
-
+	
 	public function testClassMapStatus()
 	{
 		$this->specify('Replace default status class with custom one',function (){
@@ -80,7 +74,7 @@ class ClassMapTest extends TestCase
 				'definitionLoader' => [
 					'class' => 'raoul2000\workflow\source\file\PhpClassLoader',
 					'namespace' => 'tests\codeception\unit\models'
-				],
+				],				
 				'classMap' =>  [
 					WorkflowFileSource::TYPE_STATUS     => 'tests\codeception\unit\models\MyStatus',
 				]

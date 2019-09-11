@@ -2,14 +2,17 @@
 namespace raoul2000\workflow\source\file;
 
 use Yii;
-use yii\base\BaseObject;
+use yii\base\Object;
 use yii\base\InvalidConfigException;
 use yii\helpers\Inflector;
 use yii\helpers\VarDumper;
 use raoul2000\workflow\base\Status;
+use raoul2000\workflow\base\Transition;
 use raoul2000\workflow\base\Workflow;
 use raoul2000\workflow\base\WorkflowException;
 use raoul2000\workflow\source\IWorkflowSource;
+use yii\helpers\ArrayHelper;
+use raoul2000\workflow\base\WorkflowValidationException;
 
 
 /**
@@ -19,7 +22,7 @@ use raoul2000\workflow\source\IWorkflowSource;
  * attribute.
  *
  */
-class WorkflowFileSource extends BaseObject implements IWorkflowSource
+class WorkflowFileSource extends Object implements IWorkflowSource
 {
 	/**
 	 *	The regular expression used to validate status and workflow Ids.

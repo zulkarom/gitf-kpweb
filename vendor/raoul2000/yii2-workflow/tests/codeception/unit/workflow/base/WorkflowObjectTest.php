@@ -31,10 +31,8 @@ class WorkflowObjectTest extends TestCase
     public function testMissingIdFails()
     {
     	$this->specify('create a workflow instance with no id', function () {
-    		$this->expectException(
-    			'yii\base\InvalidConfigException'
-    		);
-    		$this->expectExceptionMessage(
+    		$this->setExpectedException(
+    			'yii\base\InvalidConfigException',
     			'missing workflow id'
     		);
     		new Workflow([
@@ -46,10 +44,8 @@ class WorkflowObjectTest extends TestCase
     public function testEmptyIdFails()
     {
     	$this->specify('create a workflow instance with invalid id', function () {
-    		$this->expectException(
-    			'yii\base\InvalidConfigException'
-    		);
-    		$this->expectExceptionMessage(
+    		$this->setExpectedException(
+    			'yii\base\InvalidConfigException',
     			'missing workflow id'
     		);
     		new Workflow([
@@ -62,10 +58,8 @@ class WorkflowObjectTest extends TestCase
     public function testMissingInitialStatusIdFails()
     {
     	$this->specify('create a workflow instance with no initial status id', function () {
-    		$this->expectException(
-    			'yii\base\InvalidConfigException'
-    		);
-    		$this->expectExceptionMessage(
+    		$this->setExpectedException(
+    			'yii\base\InvalidConfigException',
     			'missing initial status id'
     		);
     		new Workflow([
@@ -76,10 +70,8 @@ class WorkflowObjectTest extends TestCase
     public function testEmptyInitialStatusIdFails()
     {
     	$this->specify('create a workflow instance with empty initial status id', function () {
-    		$this->expectException(
-    			'yii\base\InvalidConfigException'
-    		);
-    		$this->expectExceptionMessage(
+    		$this->setExpectedException(
+    			'yii\base\InvalidConfigException',
     			'missing initial status id'
     		);
     		new Workflow([
@@ -88,37 +80,33 @@ class WorkflowObjectTest extends TestCase
     		]);
     	});
     }
-
+    
     public function testAccessorFails()
     {
     	// creating a Workflow with 'new' will not allow to use some accessors
-
+    	
     	$w = new Workflow([
     		'id' => 'wid',
     		'initialStatusId' => 'A'
     	]);
-
+    	
     	$this->specify('fails to get initial status if no source component is available', function () use ($w) {
-    		$this->expectException(
-    			'raoul2000\workflow\base\WorkflowException'
-    		);
-    		$this->expectExceptionMessage(
+    		$this->setExpectedException(
+    			'raoul2000\workflow\base\WorkflowException',
     			'no workflow source component available'
     		);
     		$w->getInitialStatus();
-    	});
-
+    	});    	
+    	
     	$this->specify('fails to get all statues if no source component is available', function () use ($w) {
-    		$this->expectException(
-    			'raoul2000\workflow\base\WorkflowException'
-    		);
-    		$this->expectExceptionMessage(
+    		$this->setExpectedException(
+    			'raoul2000\workflow\base\WorkflowException',
     			'no workflow source component available'
     		);
     		$w->getAllStatuses();
     	});
     }
-
+        
     public function testWorkflowAccessorSuccess()
     {
     	$src = new WorkflowFileSource();
@@ -135,22 +123,22 @@ class WorkflowObjectTest extends TestCase
     	]);
     	$w = $src->getWorkflow('wid');
     	verify_that($w != null);
-
+    		
     	$this->specify('initial status can be obtained through workflow',function() use($w) {
-
+    
     		expect_that($w->getInitialStatus() instanceof StatusInterface);
     		expect_that($w->getInitialStatus()->getId() == $w->getInitialStatusId());
 
-    	});
-
+    	});    	
+    	
     	$this->specify('all statuses can be obtained through workflow',function() use($w) {
-
+    
     		$statuses = $w->getAllStatuses();
-
+    		
     		expect_that(is_array($statuses) && count($statuses) == 3);
     		expect_that($statuses['wid/A'] instanceof StatusInterface );
     		expect_that($statuses['wid/B'] instanceof StatusInterface );
-    		expect_that($statuses['wid/C'] instanceof StatusInterface );
+    		expect_that($statuses['wid/C'] instanceof StatusInterface );    		
     	});
-    }
+    }        
 }

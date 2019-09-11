@@ -165,15 +165,6 @@
             bitrateInterval: 500,
             // By default, uploads are started automatically when adding files:
             autoUpload: true,
-            // By default, duplicate file names are expected to be handled on
-            // the server-side. If this is not possible (e.g. when uploading
-            // files directly to Amazon S3), the following option can be set to
-            // an empty object or an object mapping existing filenames, e.g.:
-            // { "image.jpg": true, "image (1).jpg": true }
-            // If it is set, all files will be uploaded with unique filenames,
-            // adding increasing number suffixes if necessary, e.g.:
-            // "image (2).jpg"
-            uniqueFilenames: undefined,
 
             // Error and info messages:
             messages: {
@@ -269,9 +260,6 @@
 
             // Callback for dragover events of the dropZone(s):
             // dragover: function (e) {}, // .bind('fileuploaddragover', func);
-
-            // Callback before the start of each chunk upload request (before form data initialization):
-            // chunkbeforesend: function (e, data) {}, // .bind('fileuploadchunkbeforesend', func);
 
             // Callback for the start of each chunk upload request:
             // chunksend: function (e, data) {}, // .bind('fileuploadchunksend', func);
@@ -446,33 +434,9 @@
             }
         },
 
-        _deinitProgressListener: function (options) {
-            var xhr = options.xhr ? options.xhr() : $.ajaxSettings.xhr();
-            if (xhr.upload) {
-                $(xhr.upload).unbind('progress');
-            }
-        },
-
         _isInstanceOf: function (type, obj) {
             // Cross-frame instanceof check
             return Object.prototype.toString.call(obj) === '[object ' + type + ']';
-        },
-
-        _getUniqueFilename: function (name, map) {
-            name = String(name);
-            if (map[name]) {
-                name = name.replace(
-                    /(?: \(([\d]+)\))?(\.[^.]+)?$/,
-                    function (_, p1, p2) {
-                        var index = p1 ? Number(p1) + 1 : 1;
-                        var ext = p2 || '';
-                        return ' (' + index + ')' + ext;
-                    }
-                );
-                return this._getUniqueFilename(name, map);
-            }
-            map[name] = true;
-            return name;
         },
 
         _initXHRData: function (options) {
@@ -536,18 +500,11 @@
                             // dummy objects:
                             if (that._isInstanceOf('File', file) ||
                                     that._isInstanceOf('Blob', file)) {
-                                var fileName = file.uploadName || file.name;
-                                if (options.uniqueFilenames) {
-                                    fileName = that._getUniqueFilename(
-                                        fileName,
-                                        options.uniqueFilenames
-                                    );
-                                }
                                 formData.append(
                                     ($.type(options.paramName) === 'array' &&
                                         options.paramName[index]) || paramName,
                                     file,
-                                    fileName
+                                    file.uploadName || file.name
                                 );
                             }
                         });
@@ -809,8 +766,6 @@
                 // Expose the chunk bytes position range:
                 o.contentRange = 'bytes ' + ub + '-' +
                     (ub + o.chunkSize - 1) + '/' + fs;
-                // Trigger chunkbeforesend to allow form data to be updated for this chunk
-                that._trigger('chunkbeforesend', null, o);
                 // Process the upload data (the blob and potential form data):
                 that._initXHRData(o);
                 // Add progress listeners for this chunk upload:
@@ -857,9 +812,6 @@
                             o.context,
                             [jqXHR, textStatus, errorThrown]
                         );
-                    })
-                    .always(function () {
-                        that._deinitProgressListener(o);
                     });
             };
             this._enhancePromise(promise);
@@ -961,7 +913,6 @@
                     }).fail(function (jqXHR, textStatus, errorThrown) {
                         that._onFail(jqXHR, textStatus, errorThrown, options);
                     }).always(function (jqXHRorResult, textStatus, jqXHRorError) {
-                        that._deinitProgressListener(options);
                         that._onAlways(
                             jqXHRorResult,
                             textStatus,

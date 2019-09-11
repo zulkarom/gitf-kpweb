@@ -128,7 +128,7 @@ function computeBoundary(source) {
 			return target;
 		}
 
-		if (helpers.isFinite(target)) {
+		if (typeof target === 'number' && isFinite(target)) {
 			horizontal = scale.isHorizontal();
 			return {
 				x: horizontal ? target : null,
