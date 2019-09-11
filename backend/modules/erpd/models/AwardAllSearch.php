@@ -22,7 +22,9 @@ class AwardAllSearch extends Award
     {
         return [
             [['id', 'awd_staff', 'awd_level', 'duration', 'status'], 'integer'],
+			
 			[['staff_search'], 'string'],
+			
             [['awd_name', 'awd_type', 'awd_by', 'awd_date', 'awd_file'], 'safe'],
         ];
     }
@@ -75,7 +77,8 @@ class AwardAllSearch extends Award
 			'rp_award.status' => $this->status
         ]);
 
-        $query->andFilterWhere(['like', 'awd_name', $this->awd_name]);
+        $query->andFilterWhere(['like', 'awd_name', $this->awd_name])
+		->andFilterWhere(['like', 'user.fullname', $this->staff_search]);
 		
 		$dataProvider->sort->attributes['duration'] = [
         'asc' => ['awd_date' => SORT_ASC],

@@ -10,17 +10,21 @@ use backend\modules\erpd\models\Consultation;
 /**
  * ConsultationSearch represents the model behind the search form of `backend\modules\erpd\models\Consultation`.
  */
-class ConsultationSearch extends Consultation
+class ConsultationAllSearch extends Consultation
 {
+	public $duration;
+	public $staff_search;
+	
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'csl_staff', 'csl_level'], 'integer'],
-            [['csl_title', 'csl_funder', 'date_start', 'date_end', 'csl_file'], 'safe'],
-            [['csl_amount'], 'number'],
+            [['csl_level', 'duration', 'status'], 'integer'],
+			
+			[['staff_search', 'csl_title'], 'string'],
+			
         ];
     }
 
@@ -43,11 +47,18 @@ class ConsultationSearch extends Consultation
     public function search($params)
     {
         $query = Consultation::find();
+		
+		 $query = Consultation::find()->where(['>','rp_consultation.status',10]);
+		$query->joinWith(['staff.user']);
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+			'sort'=> ['defaultOrder' => ['status'=>SORT_ASC, 'date_start' =>SORT_DESC]],
+			'pagination' => [
+					'pageSize' => 100,
+				],
         ]);
 
         $this->load($params);
@@ -60,17 +71,22 @@ class ConsultationSearch extends Consultation
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'csl_staff' => Yii::$app->user->identity->staff->id,
-            'csl_amount' => $this->csl_amount,
             'csl_level' => $this->csl_level,
-            'date_start' => $this->date_start,
-            'date_end' => $this->date_end,
+			'rp_consultation.status' => $this->status
         ]);
 
         $query->andFilterWhere(['like', 'csl_title', $this->csl_title])
-            ->andFilterWhere(['like', 'csl_funder', $this->csl_funder])
-            ->andFilterWhere(['like', 'csl_file', $this->csl_file]);
+		->andFilterWhere(['like', 'user.fullname', $this->staff_search]);
+		
+		$dataProvider->sort->attributes['duration'] = [
+        'asc' => ['date_start' => SORT_ASC],
+        'desc' => ['date_start' => SORT_DESC],
+        ]; 
+		
+		$dataProvider->sort->attributes['staff_search'] = [
+        'asc' => ['user.fullname' => SORT_ASC],
+        'desc' => ['user.fullname' => SORT_DESC],
+        ]; 
 
         return $dataProvider;
     }

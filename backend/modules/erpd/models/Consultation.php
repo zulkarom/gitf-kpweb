@@ -4,6 +4,7 @@ namespace backend\modules\erpd\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
+use backend\modules\staff\models\Staff;
 
 /**
  * This is the model class for table "rp_consultation".
@@ -87,6 +88,11 @@ class Consultation extends \yii\db\ActiveRecord
 		return ArrayHelper::map($list, 'status_code', 'status_name');
 	}
 	
+	public function statusListAdmin(){
+		$list = Status::find()->where(['admin_show' => 1])->all();
+		return ArrayHelper::map($list, 'status_code', 'status_name');
+	}
+	
 	public function getStatusInfo(){
         return $this->hasOne(Status::className(), ['status_code' => 'status']);
     }
@@ -95,4 +101,8 @@ class Consultation extends \yii\db\ActiveRecord
 		$status = $this->statusInfo;
 		return '<span class="label label-'.$status->status_color .'">'.$status->status_name .'</span>';
 	}
+	
+	public function getStaff(){
+        return $this->hasOne(Staff::className(), ['id' => 'csl_staff']);
+    }
 }
