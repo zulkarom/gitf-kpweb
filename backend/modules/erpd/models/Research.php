@@ -159,6 +159,11 @@ class Research extends \yii\db\ActiveRecord
 		return '<span class="label label-'.$status->status_color .'">'.$status->status_name .'</span>';
 	}
 	
+	public function stringStatus(){
+		$status = $this->statusInfo;
+		return $status->status_name;
+	}
+	
 	public function showProgress(){
 		$arr = $this->progressArr();
 		if($this->res_progress == 0){
@@ -195,7 +200,7 @@ class Research extends \yii\db\ActiveRecord
 		return $string;
 	}
 	
-		public function plainResearchers(){
+	public function plainResearchers(){
 		$string ="";
 		$researchers = $this->researchers;
 		if($researchers){

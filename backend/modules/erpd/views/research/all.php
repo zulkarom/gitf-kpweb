@@ -35,7 +35,7 @@ $exportColumns = [
 		
 	],
 	'res_source',
-	'res_amount:currency',
+	'res_amount',
 	
 	[
 		'attribute' => 'res_progress',
@@ -50,39 +50,14 @@ $exportColumns = [
 			return $model->showStatus();
 		}
 	],
+	'created_at',
+	'modified_at',
+	'reviewed_at'
 	
 	
 ];
 
-
-?>
-<div class="research-index">
-
-<div class="form-group"><?=ExportMenu::widget([
-    'dataProvider' => $dataProvider,
-    'columns' => $exportColumns,
-	'filename' => 'RESEARCH_DATA_' . date('Y-m-d'),
-	'onRenderSheet'=>function($sheet, $grid){
-		$sheet->getStyle('C2:'.$sheet->getHighestColumn().$sheet->getHighestRow())
-		->getAlignment()->setWrapText(true);
-	},
-	'exportConfig' => [
-    \kartik\export\ExportMenu::FORMAT_PDF => [
-        'pdfConfig' => [
-            'orientation' => 'L',
-        ],
-    ],
-],
-]);?></div>
-
-  <div class="box">
-<div class="box-header"></div>
-<div class="box-body">  <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-		'options' => [ 'style' => 'table-layout:fixed;' ],
-		
-        'columns' => [
+$colums = [
             ['class' => 'yii\grid\SerialColumn'],
 			[
 				'label' => '',
@@ -159,7 +134,37 @@ $exportColumns = [
             
             ],
 
+        ];
+
+
+?>
+<div class="research-index">
+
+<div class="form-group"><?=ExportMenu::widget([
+    'dataProvider' => $dataProvider,
+    'columns' => $exportColumns,
+	'filename' => 'RESEARCH_DATA_' . date('Y-m-d'),
+	'onRenderSheet'=>function($sheet, $grid){
+		$sheet->getStyle('A2:'.$sheet->getHighestColumn().$sheet->getHighestRow())
+		->getAlignment()->setWrapText(true);
+	},
+	'exportConfig' => [
+    \kartik\export\ExportMenu::FORMAT_PDF => [
+        'pdfConfig' => [
+            'orientation' => 'L',
         ],
+    ],
+],
+]);?></div>
+
+  <div class="box">
+<div class="box-header"></div>
+<div class="box-body">  <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+		'options' => [ 'style' => 'table-layout:fixed;' ],
+		
+        'columns' => $colums,
     ]); ?></div>
 </div>
 </div>
