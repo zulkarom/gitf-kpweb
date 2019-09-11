@@ -5,12 +5,12 @@ namespace backend\modules\erpd\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\modules\erpd\models\Consultation;
+use backend\modules\erpd\models\KnowledgeTransfer;
 
 /**
- * ConsultationSearch represents the model behind the search form of `backend\modules\erpd\models\Consultation`.
+ * KnowledgeTransferSearch represents the model behind the search form of `backend\modules\erpd\models\KnowledgeTransfer`.
  */
-class ConsultationAllSearch extends Consultation
+class KnowledgeTransferAllSearch extends KnowledgeTransfer
 {
 	public $duration;
 	public $staff_search;
@@ -21,9 +21,9 @@ class ConsultationAllSearch extends Consultation
     public function rules()
     {
         return [
-            [['csl_level', 'duration', 'status'], 'integer'],
+            [['duration', 'status'], 'integer'],
 			
-			[['staff_search', 'csl_title'], 'string'],
+			[['staff_search', 'ktp_title', 'ktp_community'], 'string'],
 			
         ];
     }
@@ -47,8 +47,8 @@ class ConsultationAllSearch extends Consultation
     public function search($params)
     {
 		
-		 $query = Consultation::find()->where(['>','rp_consultation.status',10]);
-		$query->joinWith(['staff.user']);
+		$query = KnowledgeTransfer::find()->where(['>','rp_knowledge_transfer.status',10]);
+		$query->joinWith(['members', 'staff.user']);
 
         // add conditions that should always apply here
 
@@ -70,11 +70,13 @@ class ConsultationAllSearch extends Consultation
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'csl_level' => $this->csl_level,
-			'rp_consultation.status' => $this->status
+            'id' => $this->id,
+			'rp_knowledge_transfer.status' => $this->status
+
         ]);
 
-        $query->andFilterWhere(['like', 'csl_title', $this->csl_title])
+        $query->andFilterWhere(['like', 'ktp_title', $this->ktp_title])
+		->andFilterWhere(['like', 'ktp_community', $this->ktp_community])
 		->andFilterWhere(['like', 'user.fullname', $this->staff_search]);
 		
 		$query->andFilterWhere(['<=', 'YEAR(date_start)', $this->duration]);

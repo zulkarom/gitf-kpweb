@@ -6,6 +6,7 @@ use Yii;
 use backend\modules\erpd\models\KnowledgeTransfer;
 use backend\modules\erpd\models\KnowledgeTransferMember;
 use backend\modules\erpd\models\KnowledgeTransferSearch;
+use backend\modules\erpd\models\KnowledgeTransferAllSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
@@ -50,6 +51,17 @@ class KnowledgeTransferController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+	
+	public function actionAll()
+    {
+        $searchModel = new KnowledgeTransferAllSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('all', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);

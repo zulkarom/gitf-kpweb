@@ -3,6 +3,8 @@
 namespace backend\modules\erpd\models;
 
 use Yii;
+use backend\modules\staff\models\Staff;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "rp_knowledge_transfer".
@@ -75,7 +77,7 @@ class KnowledgeTransfer extends \yii\db\ActiveRecord
             'date_start' => 'Date Start',
             'date_end' => 'Date End',
             'ktp_research' => 'Related Research',
-            'ktp_community' => 'Knowledge Transfer Community',
+            'ktp_community' => 'Community',
             'ktp_source' => 'Organizer/ Sponsor/ Funder / Collaborator	',
             'ktp_amount' => 'Amount',
             'ktp_description' => 'Description',
@@ -137,5 +139,21 @@ class KnowledgeTransfer extends \yii\db\ActiveRecord
         }
 
     }
+	
+	public function getStaff(){
+        return $this->hasOne(Staff::className(), ['id' => 'staff_id']);
+    }
+	
+	public function listYears(){
+		$array = [];
+		$year_end = date('Y');
+		$year_start = $year_end - 7;
+		
+		for($y=$year_end;$y>=$year_start;$y--){
+			$array[$y] = $y;
+		}
+		
+		return $array;
+	}
 
 }
