@@ -51,9 +51,16 @@ $this->params['breadcrumbs'][] = $this->title;
 				}
 			]
             ,
-            //'date_start',
-            //'date_end',
-            //'csl_file',
+            [
+				'attribute' => 'duration',
+				'filter' => Html::activeDropDownList($searchModel, 'duration', $searchModel->listYears(),['class'=> 'form-control','prompt' => 'All']),
+				'label' => 'Duration',
+				'format' => 'html',
+				'value' => function($model){
+					return date('d/m/Y', strtotime($model->date_start)) . '<br />' . date('d/m/Y', strtotime($model->date_end));
+				}
+				
+			],
 			
 			[
 				'attribute' => 'status',

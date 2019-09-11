@@ -105,4 +105,16 @@ class Consultation extends \yii\db\ActiveRecord
 	public function getStaff(){
         return $this->hasOne(Staff::className(), ['id' => 'csl_staff']);
     }
+	
+	public function listYears(){
+		$array = [];
+		$year_end = date('Y');
+		$year_start = $year_end - 7;
+		
+		for($y=$year_end;$y>=$year_start;$y--){
+			$array[$y] = $y;
+		}
+		
+		return $array;
+	}
 }

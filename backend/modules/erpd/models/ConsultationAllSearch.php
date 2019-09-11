@@ -78,6 +78,9 @@ class ConsultationAllSearch extends Consultation
         $query->andFilterWhere(['like', 'csl_title', $this->csl_title])
 		->andFilterWhere(['like', 'user.fullname', $this->staff_search]);
 		
+		$query->andFilterWhere(['<=', 'YEAR(date_start)', $this->duration]);
+		 $query->andFilterWhere(['>=', 'YEAR(date_end)', $this->duration]);
+		
 		$dataProvider->sort->attributes['duration'] = [
         'asc' => ['date_start' => SORT_ASC],
         'desc' => ['date_start' => SORT_DESC],
