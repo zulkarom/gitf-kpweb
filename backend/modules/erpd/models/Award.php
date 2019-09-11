@@ -4,6 +4,7 @@ namespace backend\modules\erpd\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
+use backend\modules\staff\models\Staff;
 
 /**
  * This is the model class for table "rp_award".
@@ -61,10 +62,10 @@ class Award extends \yii\db\ActiveRecord
             'id' => 'ID',
             'awd_staff' => 'Awd Staff',
             'awd_name' => 'Award Name',
-            'awd_level' => 'Award Level',
+            'awd_level' => 'Level',
             'awd_type' => 'Award Type',
             'awd_by' => 'Awarded By',
-            'awd_date' => 'Award Date',
+            'awd_date' => 'Date',
             'awd_file' => 'Award PDF File',
         ];
     }
@@ -140,6 +141,10 @@ class Award extends \yii\db\ActiveRecord
 		$list = Status::find()->where(['user_show' => 1])->all();
 		return ArrayHelper::map($list, 'status_code', 'status_name');
 	}
+	public function statusListAdmin(){
+		$list = Status::find()->where(['admin_show' => 1])->all();
+		return ArrayHelper::map($list, 'status_code', 'status_name');
+	}
 	
 	public function getStatusInfo(){
         return $this->hasOne(Status::className(), ['status_code' => 'status']);
@@ -148,5 +153,21 @@ class Award extends \yii\db\ActiveRecord
 	public function showStatus(){
 		$status = $this->statusInfo;
 		return '<span class="label label-'.$status->status_color .'">'.$status->status_name .'</span>';
+	}
+	
+	public function getStaff(){
+        return $this->hasOne(Staff::className(), ['id' => 'awd_staff']);
+    }
+	
+	public function listYears(){
+		$array = [];
+		$year_end = date('Y');
+		$year_start = $year_end - 7;
+		
+		for($y=$year_end;$y>=$year_start;$y--){
+			$array[$y] = $y;
+		}
+		
+		return $array;
 	}
 }

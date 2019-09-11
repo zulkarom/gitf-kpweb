@@ -114,19 +114,11 @@ class Research extends \yii\db\ActiveRecord
 	
 	public function listYears(){
 		$array = [];
-		$start = self::find()->select('YEAR(date_start) as year_start')->distinct()->all();
-		$arr_start = ArrayHelper::map($start, 'year_start', 'year_start');
+		$year_end = date('Y');
+		$year_start = $year_end - 7;
 		
-		$end = self::find()->select('YEAR(date_end) as year_end')->distinct()->all();
-		$arr_end = ArrayHelper::map($end, 'year_end', 'year_end');
-		
-		$all =  array_unique(array_merge($arr_start, $arr_end));
-		arsort($all);
-		
-		if($all){
-			foreach($all as $y){
-				$array[$y] = $y;
-			}
+		for($y=$year_end;$y>=$year_start;$y--){
+			$array[$y] = $y;
 		}
 		
 		return $array;

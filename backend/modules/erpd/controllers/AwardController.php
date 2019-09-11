@@ -5,6 +5,7 @@ namespace backend\modules\erpd\controllers;
 use Yii;
 use backend\modules\erpd\models\Award;
 use backend\modules\erpd\models\AwardSearch;
+use backend\modules\erpd\models\AwardAllSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
@@ -48,6 +49,17 @@ class AwardController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+	
+	public function actionAll()
+    {
+        $searchModel = new AwardAllSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('all', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
