@@ -85,23 +85,23 @@ class Publication extends \yii\db\ActiveRecord
         return [
             'id' => 'Pub ID',
             'staff_id' => 'Staff ID',
-            'pub_type' => 'TYPE OF PUBLICATION',
+            'pub_type' => 'Type of Publication',
             'pub_year' => 'Year',
             'pub_title' => 'Title',
             'pub_journal' => 'Journal',
             'pub_volume' => 'Volume',
             'pub_issue' => 'Issue',
             'pub_page' => 'Page(s)',
+			'pub_index' => 'Index',
+			'pub_inbook' => 'Proceedings/Book/Newspaper/Magazine',
+			'pub_isbn' => 'ISSN/ISBN',
+			'pub_publisher' => 'Publisher',
             'pub_city' => 'City',
             'pub_state' => 'State',
-            'pub_publisher' => 'Publisher',
-            'pub_isbn' => 'ISSN/ISBN',
-            'pub_organizer' => 'Organizer',
-            'pub_inbook' => 'Inbook',
+            'pub_organizer' => 'Organizer',      
             'pub_month' => 'Month',
             'pub_day' => 'Day',
             'pub_date' => 'Date',
-            'pub_index' => 'Index',
             'has_file' => 'Has File',
             'pubupload_file' => 'Publication PDF File',
             'modified_at' => 'Modified At',
@@ -161,12 +161,15 @@ class Publication extends \yii\db\ActiveRecord
         return $this->hasMany(PubTag::className(), ['pub_id' => 'id']);
     }
 	
-	public function getTagStaffNames(){
+	public function getTagStaffNames($break = "<br />"){
 		$tags = $this->pubTags;
 		$str = '';
 		if($tags){
+			$i = 0;
 			foreach($tags as $tag){
-				$str .= $tag->staff->user->fullname . '<br />';
+				$br = $i == 0 ? "" : $break;
+				$str .= $br.$tag->staff->user->fullname;
+			$i++;
 			}
 		}
 		return $str;
@@ -338,13 +341,31 @@ class Publication extends \yii\db\ActiveRecord
 	return str_replace("`","'",$list);
 	}
 	
-	public function stringAuthorsPlain(){
+	public function stringAuthorsPlain($break = "<br />"){
 		$string_au ="";
 		$authors = $this->authors;
 		if($authors){
 		$result_au = ArrayHelper::map($authors, 'id', 'au_name');
+			$i = 0;
 			foreach($result_au as $row_au){
-				$string_au .= $row_au . '<br />';
+				$br = $i == 0 ? "" : $break;
+				$string_au .= $br.$row_au ;
+			$i++;
+			}
+		}
+		return $string_au;
+	}
+	
+	public function stringEditorsPlain($break = "<br />"){
+		$string_au ="";
+		$authors = $this->editors;
+		if($authors){
+		$result_au = ArrayHelper::map($authors, 'id', 'edit_name');
+			$i = 0;
+			foreach($result_au as $row_au){
+				$br = $i == 0 ? "" : $break;
+				$string_au .= $br.$row_au ;
+			$i++;
 			}
 		}
 		return $string_au;
