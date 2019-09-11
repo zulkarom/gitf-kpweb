@@ -2,7 +2,8 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\grid\GridView;
+use kartik\grid\GridView;
+use kartik\export\ExportMenu;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\modules\erpd\models\ResearchSearch */
@@ -11,17 +12,15 @@ use yii\grid\GridView;
 $this->title = 'All Researches';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
+
+
 <div class="research-index">
 
-  <div class="box">
-<div class="box-header"></div>
-<div class="box-body">  <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-		'options' => [ 'style' => 'table-layout:fixed;' ],
-		
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+<?php 
+
+$gridColumns = [
+    ['class' => 'yii\grid\SerialColumn'],
 			[
 				'label' => '',
 				'format' => 'raw',
@@ -96,8 +95,78 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             
             ],
+];
 
+$exportColumns = [
+    ['class' => 'yii\grid\SerialColumn'],
+	'res_title',
+	[
+		'label' => 'Researchers',
+		'value' => function($model){
+			return $model->plainResearchers();
+		}
+	],
+	'date_start:date',
+	'date_end:date',
+	[
+		'attribute' => 'res_grant',
+		'label' => 'Grant',
+		'value' => function($model){
+			if($model->researchGrant){
+				return $model->researchGrant->gra_abbr;
+			}
+			
+		}
+		
+	],
+	'res_source',
+	'res_amount:currency',
+	
+	[
+		'attribute' => 'res_progress',
+		'value' => function($model){
+			return $model->strProgress();
+		}
+	],
+	[
+		'attribute' => 'status',
+		'format' => 'html',
+		'value' => function($model){
+			return $model->showStatus();
+		}
+	],
+	
+	
+];
+
+
+?>
+<div class="form-group"><?=ExportMenu::widget([
+    'dataProvider' => $dataProvider,
+    'columns' => $exportColumns,
+	'filename' => 'RESEARCH_DATA_' . date('Y-m-d'),
+	'onRenderSheet'=>function($sheet, $grid){
+		$sheet->getStyle('C2:'.$sheet->getHighestColumn().$sheet->getHighestRow())
+		->getAlignment()->setWrapText(true);
+	},
+	'exportConfig' => [
+    \kartik\export\ExportMenu::FORMAT_PDF => [
+        'pdfConfig' => [
+            'orientation' => 'L',
         ],
+    ],
+],
+]);?></div>
+
+
+  <div class="box">
+<div class="box-header"></div>
+<div class="box-body">  <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+		'options' => [ 'style' => 'table-layout:fixed;' ],
+		
+        'columns' => $gridColumns
     ]); ?></div>
 </div>
 </div>

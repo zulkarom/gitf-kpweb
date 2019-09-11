@@ -40,6 +40,7 @@ class Console implements EventSubscriberInterface
         Events::TEST_ERROR         => 'testError',
         Events::TEST_INCOMPLETE    => 'testIncomplete',
         Events::TEST_SKIPPED       => 'testSkipped',
+        Events::TEST_WARNING       => 'testWarning',
         Events::TEST_FAIL_PRINT    => 'printFail',
         Events::RESULT_PRINT_AFTER => 'afterResult',
     ];
@@ -74,14 +75,15 @@ class Console implements EventSubscriberInterface
     protected $chars = ['success' => '+', 'fail' => 'x', 'of' => ':'];
 
     protected $options = [
-        'debug'     => false,
-        'ansi'      => false,
-        'steps'     => true,
-        'verbosity' => 0,
-        'xml'       => null,
-        'html'      => null,
-        'tap'       => null,
-        'json'      => null,
+        'debug'       => false,
+        'ansi'        => false,
+        'steps'       => true,
+        'verbosity'   => 0,
+        'xml'         => null,
+        'phpunit-xml' => null,
+        'html'        => null,
+        'tap'         => null,
+        'json'        => null,
     ];
 
     /**
@@ -104,7 +106,7 @@ class Console implements EventSubscriberInterface
             $this->chars['fail'] = '✖';
         }
 
-        foreach (['html', 'xml', 'tap', 'json'] as $report) {
+        foreach (['html', 'xml', 'phpunit-xml', 'tap', 'json'] as $report) {
             if (!$this->options[$report]) {
                 continue;
             }
@@ -236,6 +238,16 @@ class Console implements EventSubscriberInterface
         $this->printedTest = null;
     }
 
+    public function testWarning(TestEvent $e)
+    {
+        if ($this->isDetailed($e->getTest())) {
+            $this->message('WARNING')->center(' ')->style('pending')->append("\n")->writeln();
+
+            return;
+        }
+        $this->writelnFinishedTest($e, $this->message('W')->style('pending'));
+    }
+
     public function testFail(FailEvent $e)
     {
         if ($this->isDetailed($e->getTest())) {
@@ -362,7 +374,7 @@ class Console implements EventSubscriberInterface
 
     public function printException($e, $cause = null)
     {
-        if ($e instanceof \PHPUnit_Framework_SkippedTestError or $e instanceof \PHPUnit_Framework_IncompleteTestError) {
+        if ($e instanceof \PHPUnit\Framework\SkippedTestError or $e instanceof \PHPUnit\Framework_IncompleteTestError) {
             if ($e->getMessage()) {
                 $this->message(OutputFormatter::escape($e->getMessage()))->prepend("\n")->writeln();
             }
@@ -370,7 +382,7 @@ class Console implements EventSubscriberInterface
             return;
         }
 
-        $class = $e instanceof \PHPUnit_Framework_ExceptionWrapper
+        $class = $e instanceof \PHPUnit\Framework\ExceptionWrapper
             ? $e->getClassname()
             : get_class($e);
 
@@ -381,16 +393,16 @@ class Console implements EventSubscriberInterface
         $this->output->writeln('');
         $message = $this->message(OutputFormatter::escape($e->getMessage()));
 
-        if ($e instanceof \PHPUnit_Framework_ExpectationFailedException) {
+        if ($e instanceof \PHPUnit\Framework\ExpectationFailedException) {
             $comparisonFailure = $e->getComparisonFailure();
             if ($comparisonFailure) {
                 $message->append($this->messageFactory->prepareComparisonFailureMessage($comparisonFailure));
             }
         }
 
-        $isFailure = $e instanceof \PHPUnit_Framework_AssertionFailedError
-            || $class === 'PHPUnit_Framework_ExpectationFailedException'
-            || $class === 'PHPUnit_Framework_AssertionFailedError';
+        $isFailure = $e instanceof \PHPUnit\Framework\AssertionFailedError
+            || $class === 'PHPUnit\Framework\ExpectationFailedException'
+            || $class === 'PHPUnit\Framework\AssertionFailedError';
 
         if (!$isFailure) {
             $message->prepend("[$class] ")->block('error');
@@ -423,28 +435,28 @@ class Console implements EventSubscriberInterface
 
             return;
         }
-        if (!$fail instanceof \PHPUnit_Framework_AssertionFailedError) {
+        if (!$fail instanceof \PHPUnit\Framework\AssertionFailedError) {
             $this->printExceptionTrace($fail);
 
             return;
         }
     }
 
-    public function printExceptionTrace(\Exception $e)
+    public function printExceptionTrace($e)
     {
         static $limit = 10;
 
-        if ($e instanceof \PHPUnit_Framework_SkippedTestError or $e instanceof \PHPUnit_Framework_IncompleteTestError) {
+        if ($e instanceof \PHPUnit\Framework\SkippedTestError or $e instanceof \PHPUnit\Framework_IncompleteTestError) {
             return;
         }
 
         if ($this->rawStackTrace) {
-            $this->message(OutputFormatter::escape(\PHPUnit_Util_Filter::getFilteredStacktrace($e, true, false)))->writeln();
+            $this->message(OutputFormatter::escape(\PHPUnit\Util\Filter::getFilteredStacktrace($e, true, false)))->writeln();
 
             return;
         }
 
-        $trace = \PHPUnit_Util_Filter::getFilteredStacktrace($e, false);
+        $trace = \PHPUnit\Util\Filter::getFilteredStacktrace($e, false);
 
         $i = 0;
         foreach ($trace as $step) {
@@ -555,10 +567,10 @@ class Console implements EventSubscriberInterface
     }
 
     /**
-     * @param \PHPUnit_Framework_SelfDescribing $test
+     * @param \PHPUnit\Framework\SelfDescribing $test
      * @param bool                              $inProgress
      */
-    protected function writeCurrentTest(\PHPUnit_Framework_SelfDescribing $test, $inProgress = true)
+    protected function writeCurrentTest(\PHPUnit\Framework\SelfDescribing $test, $inProgress = true)
     {
         $prefix = ($this->output->isInteractive() and !$this->isDetailed($test) and $inProgress) ? '- ' : '';
 

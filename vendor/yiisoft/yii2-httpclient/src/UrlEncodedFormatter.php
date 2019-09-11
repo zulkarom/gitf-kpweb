@@ -62,6 +62,10 @@ class UrlEncodedFormatter extends BaseObject implements FormatterInterface
             $request->setContent($content);
         }
 
+        if (!isset($content) && !isset($request->getOptions()[CURLOPT_INFILE])) {
+            $request->getHeaders()->set('Content-Length', '0');
+        }
+
         return $request;
     }
 }

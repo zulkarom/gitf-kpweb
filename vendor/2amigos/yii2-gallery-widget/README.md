@@ -140,58 +140,6 @@ to the `require` section of your `composer.json` file.
 // ...
 ```
 
-
-## Multiple Carousel instances on one page
-```
-// on your view
-<?php $items = [
-    [
-        'title' => 'Sintel',
-        'href' => 'http://media.w3.org/2010/05/sintel/trailer.mp4',
-        'type' => 'video/mp4',
-        'poster' => 'http://media.w3.org/2010/05/sintel/poster.png'
-    ],
-    [
-        'title' => 'Big Buck Bunny',
-        'href' => 'http://upload.wikimedia.org/wikipedia/commons/7/75/Big_Buck_Bunny_Trailer_400p.ogg',
-        'type' => 'video/ogg',
-        'poster' => 'http://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Big.Buck.Bunny.-.Opening.Screen.png/' .
-            '800px-Big.Buck.Bunny.-.Opening.Screen.png'
-    ],
-    [
-        'title' => 'Elephants Dream',
-        'href' => 'http://upload.wikimedia.org/wikipedia/commons/transcoded/8/83/Elephants_Dream_%28high_quality%29.ogv/' .
-            'Elephants_Dream_%28high_quality%29.ogv.360p.webm',
-        'type' => 'video/webm',
-        'poster' => 'http://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Elephants_Dream_s1_proog.jpg/' .
-            '800px-Elephants_Dream_s1_proog.jpg'
-    ]
-];?>
-<?= dosamigos\gallery\Carousel::widget([
-    'items' => $items, 'json' => true,
-    'templateOptions' => ['id'=>'gallery_1'],
-    'clientOptions' => ['container'=>'#gallery_1'],
-    'options' => ['id'=>'gallery_1'],
-]);
-
-<?= dosamigos\gallery\Carousel::widget([
-    'items' => $items, 'json' => true,
-    'templateOptions' => ['id'=>'gallery_2'],
-    'clientOptions' => ['container'=>'#gallery_2'],
-    'options' => ['id'=>'gallery_2'],
-]);
-?>  
-```
-
-### You can access to different instances in JS now
-
-```
-blueimp_galleries['gallery_1'].initSlides();
-blueimp_galleries['gallery_1'].next();
-```
-
-
-
 ## Testing
 
 ```bash
@@ -204,6 +152,8 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ## Credits
 
+- [Antonio Ramirez](https://github.com/tonydspaniard)
+- [Alexander Kochetov](https://github.com/creocoder)
 - [All Contributors](https://github.com/2amigos/yii2-selectize-widget/graphs/contributors)
 
 ## License
@@ -212,6 +162,6 @@ The BSD License (BSD). Please see [License File](LICENSE.md) for more informatio
 
 <blockquote>
     <a href="http://www.2amigos.us"><img src="http://www.gravatar.com/avatar/55363394d72945ff7ed312556ec041e0.png"></a><br>
-    <i>web, mobile development & design</i><br>
-    <i><a href="http://www.2amigos.us">www.2amigos.us</a></i>
+    <i>web development has never been so fun</i><br>
+    <a href="http://www.2amigos.us">www.2amigos.us</a>
 </blockquote>

@@ -1,7 +1,18 @@
-yii2-checkbox-x
-=================
+<h1 align="center">
+    <a href="http://demos.krajee.com" title="Krajee Demos" target="_blank">
+        <img src="http://kartik-v.github.io/bootstrap-fileinput-samples/samples/krajee-logo-b.png" alt="Krajee Logo"/>
+    </a>
+    <br>
+    yii2-checkbox-x
+    <hr>
+    <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DTP3NZQ6G2AYU"
+       title="Donate via Paypal" target="_blank">
+        <img src="http://kartik-v.github.io/bootstrap-fileinput-samples/samples/donate.png" alt="Donate"/>
+    </a>
+</h1>
 
-[![Latest Stable Version](https://poser.pugx.org/kartik-v/yii2-checkbox-x/v/stable)](https://packagist.org/packages/kartik-v/yii2-checkbox-x)
+[![Stable Version](https://poser.pugx.org/kartik-v/yii2-widget-checkbox-x/v/stable)](https://packagist.org/packages/kartik-v/yii2-widget-checkbox-x)
+[![Unstable Version](https://poser.pugx.org/kartik-v/yii2-widget-checkbox-x/v/unstable)](https://packagist.org/packages/kartik-v/yii2-widget-checkbox-x)
 [![License](https://poser.pugx.org/kartik-v/yii2-checkbox-x/license)](https://packagist.org/packages/kartik-v/yii2-checkbox-x)
 [![Total Downloads](https://poser.pugx.org/kartik-v/yii2-checkbox-x/downloads)](https://packagist.org/packages/kartik-v/yii2-checkbox-x)
 [![Monthly Downloads](https://poser.pugx.org/kartik-v/yii2-checkbox-x/d/monthly)](https://packagist.org/packages/kartik-v/yii2-checkbox-x)
@@ -36,8 +47,8 @@ with any other markup.
 ### Demo
 You can see detailed [documentation and examples](http://demos.krajee.com/checkbox-x) on usage of the extension.
 
-### Latest Release
-The latest version of the extension is release v1.0.4. Refer the [CHANGE LOG](https://github.com/kartik-v/yii2-checkbox-x/blob/master/CHANGE.md) for details of various releases.
+### Release Changes
+Refer the [CHANGE LOG](https://github.com/kartik-v/yii2-checkbox-x/blob/master/CHANGE.md) for details on changes to various releases.
 
 ## Installation
 
@@ -77,4 +88,4 @@ echo CheckboxX::widget([
 
 ## License
 
-**yii2-checkbox-x** is released under the BSD 3-Clause License. See the bundled `LICENSE.md` for details.
+**yii2-checkbox-x** is released under the BSD-3-Clause License. See the bundled `LICENSE.md` for details.

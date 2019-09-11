@@ -32,7 +32,7 @@ class ChangeStatusExtendedEventTest extends DbTestCase
 					'namespace' => 'tests\codeception\unit\models'
 				]
 		]);
-		
+
 		Yii::$app->set('eventSequence',[
 			'class'=> 'raoul2000\workflow\events\ExtendedEventSequence',
 		]);
@@ -67,14 +67,19 @@ class ChangeStatusExtendedEventTest extends DbTestCase
 
     	$this->model->enterWorkflow();
     	verify('current status is set',$this->model->hasWorkflowStatus())->true();
-    	expect('event handler handlers have been called', count($this->eventsBefore) == 1 &&   count($this->eventsAfter) == 1)->true();
+
+			// NOTE: Since Yii v2.0.14 it is possible to specify event name as a wildcard pattern
+			// This causes handler to be called twice because the ExtendedEventSequence includes events name
+			// that contains the '*' character : beforeEnterWorkflow{*}, beforeEnterStatus{*}
+			//
+    	expect('event handler handlers have been called', count($this->eventsBefore) == 2 &&   count($this->eventsAfter) == 2)->true();
 
     	$this->model->status = 'Item04Workflow/B';
     	verify('save succeeds',$this->model->save())->true();
 
     	expect('model has changed to status B',$this->model->getWorkflowStatus()->getId())->equals('Item04Workflow/B');
-    	expect('beforeChangeStatus handler has been called',count($this->eventsBefore))->equals(2);
-    	expect('afterChangeStatus handler has been called',count($this->eventsAfter))->equals(2);
+    	expect('beforeChangeStatus handler has been called',count($this->eventsBefore))->equals(4);
+    	expect('afterChangeStatus handler has been called',count($this->eventsAfter))->equals(4);
     }
 
     public function testChangeStatusEventOnSaveFails()

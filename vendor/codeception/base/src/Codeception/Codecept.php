@@ -7,14 +7,14 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class Codecept
 {
-    const VERSION = "2.3.8";
+    const VERSION = "2.5.6";
 
     /**
      * @var \Codeception\PHPUnit\Runner
      */
     protected $runner;
     /**
-     * @var \PHPUnit_Framework_TestResult
+     * @var \PHPUnit\Framework\TestResult
      */
     protected $result;
 
@@ -42,6 +42,7 @@ class Codecept
         'steps'           => false,
         'html'            => false,
         'xml'             => false,
+        'phpunit-xml'     => false,
         'json'            => false,
         'tap'             => false,
         'report'          => false,
@@ -73,7 +74,7 @@ class Codecept
 
     public function __construct($options = [])
     {
-        $this->result = new \PHPUnit_Framework_TestResult;
+        $this->result = new \PHPUnit\Framework\TestResult;
         $this->dispatcher = new EventDispatcher();
         $this->extensionLoader = new ExtensionLoader($this->dispatcher);
 
@@ -185,7 +186,9 @@ class Codecept
     {
         $suiteManager = new SuiteManager($this->dispatcher, $suite, $settings);
         $suiteManager->initialize();
+        srand($this->options['seed']);
         $suiteManager->loadTests($test);
+        srand();
         $suiteManager->run($this->runner, $this->result, $this->options);
         return $this->result;
     }
@@ -207,7 +210,7 @@ class Codecept
     }
 
     /**
-     * @return \PHPUnit_Framework_TestResult
+     * @return \PHPUnit\Framework\TestResult
      */
     public function getResult()
     {
