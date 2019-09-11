@@ -4,6 +4,7 @@ namespace backend\modules\erpd\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
+use backend\modules\staff\models\Staff;
 
 /**
  * This is the model class for table "rp_membership".
@@ -62,6 +63,11 @@ class Membership extends \yii\db\ActiveRecord
 		return '<span class="label label-'.$status->status_color .'">'.$status->status_name .'</span>';
 	}
 	
+	public function statusListAdmin(){
+		$list = Status::find()->where(['admin_show' => 1])->all();
+		return ArrayHelper::map($list, 'status_code', 'status_name');
+	}
+	
 	public function statusList(){
 		$list = Status::find()->where(['user_show' => 1])->all();
 		return ArrayHelper::map($list, 'status_code', 'status_name');
@@ -74,7 +80,7 @@ class Membership extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'msp_staff' => 'Msp Staff',
+            'msp_staff' => 'Staff',
             'msp_body' => 'Membership Body',
             'msp_type' => 'Membership Type',
             'msp_level' => 'Level',
@@ -138,5 +144,21 @@ class Membership extends \yii\db\ActiveRecord
         }
 
     }
+	
+	public function getStaff(){
+        return $this->hasOne(Staff::className(), ['id' => 'msp_staff']);
+    }
+	
+	public function listYears(){
+		$array = [];
+		$year_end = date('Y');
+		$year_start = $year_end - 7;
+		
+		for($y=$year_end;$y>=$year_start;$y--){
+			$array[$y] = $y;
+		}
+		
+		return $array;
+	}
 
 }

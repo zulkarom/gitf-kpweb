@@ -5,6 +5,7 @@ namespace backend\modules\erpd\controllers;
 use Yii;
 use backend\modules\erpd\models\Membership;
 use backend\modules\erpd\models\MembershipSearch;
+use backend\modules\erpd\models\MembershipAllSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -47,6 +48,17 @@ class MembershipController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+	
+    public function actionAll()
+    {
+        $searchModel = new MembershipAllSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('all', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);

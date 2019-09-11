@@ -168,13 +168,13 @@ use backend\modules\jeb\models\Menu as JebMenu;
 				
 				
 				
-				['label' => 'Membership', 'icon' => 'pencil', 'url' => ['/erpd/membership'],],
+				['label' => 'Membership', 'icon' => 'pencil', 'url' => ['/erpd/membership/all'],],
 				
-				['label' => 'Award', 'icon' => 'book', 'url' => ['/erpd/award'],],
+				['label' => 'Award', 'icon' => 'book', 'url' => ['/erpd/award/all'],],
 				
-				['label' => 'Consultation', 'icon' => 'book', 'url' => ['/erpd/consultation'],],
+				['label' => 'Consultation', 'icon' => 'book', 'url' => ['/erpd/consultation/all'],],
 				
-				['label' => 'Knowledge Transfer', 'icon' => 'book', 'url' => ['/erpd/knowledge-transfer'],],
+				['label' => 'Knowledge Transfer', 'icon' => 'book', 'url' => ['/erpd/knowledge-transfer/all'],],
 
 
                  ]

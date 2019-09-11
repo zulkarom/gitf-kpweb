@@ -28,7 +28,7 @@ use yii\helpers\Url;
 				<div class="col-sm-6 col-lg-3 footer-widget">
 					<h6 class="fw-title">CONTACT</h6>
 					<ul class="contact">
-						<li><p><i class="fa fa-map-marker"></i> Kampus Kota, Karung Berkunci 36, 
+						<li><p><i class="fa fa-map-marker"></i> Kampus Kota,
 Pengkalan Chepa, 16100 Kota Bharu, 
 Kelantan, Malaysia</p></li>
 						<li><p><i class="fa fa-phone"></i> 609 771 7131
@@ -50,7 +50,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> Facul
 
 <br /><br />
 
-Template by <a href="https://colorlib.com" target="_blank" >Colorlib</a> | Credited to <a href="http://skyhint.com" target="_blank">Skyhint Design</a>
+Made by <a href="http://skyhint.com" target="_blank">Skyhint Design</a> | Template by <a href="https://colorlib.com" target="_blank" >Colorlib</a>
 
 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
 			</div>		
