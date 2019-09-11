@@ -24,7 +24,12 @@ table.detail-view th {
 			'msp_type:ntext',
 			'date_start:date',
 			'date_end:date',
-			
+			[
+				'attribute' => 'msp_level',
+				'value' => function($model){
+					return $model->levelName;
+				}
+			],
 
 			[
 				'attribute' => 'status',
