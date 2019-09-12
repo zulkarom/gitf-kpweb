@@ -84,7 +84,7 @@ class KnowledgeTransfer extends \yii\db\ActiveRecord
             'ktp_file' => 'Knowledge Transfer PDF File',
             'reminder' => 'Reminder',
             'created_at' => 'Created At',
-            'modified_at' => 'Updated At',
+            'modified_at' => 'Modified At',
         ];
     }
 	

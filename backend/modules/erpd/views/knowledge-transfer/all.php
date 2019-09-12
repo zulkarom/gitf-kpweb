@@ -2,7 +2,8 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\grid\GridView;
+use kartik\grid\GridView;
+use kartik\export\ExportMenu;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\modules\erpd\models\KnowledgeTransferSearch */
@@ -10,8 +11,65 @@ use yii\grid\GridView;
 
 $this->title = 'All Knowledge Transfers';
 $this->params['breadcrumbs'][] = $this->title;
+
+$exportColumns = [
+		['class' => 'yii\grid\SerialColumn'],
+			[
+				'attribute' => 'staff_search',
+				'label' => 'Staff',
+				'value' => function($model){
+					if($model->staff){
+						return $model->staff->user->fullname . ' ('.$model->staff->staff_no .')';
+					}
+					
+				}
+				
+			],
+            'ktp_title',
+			'ktp_research',
+			'ktp_source',
+			'ktp_amount',
+			'ktp_community',
+			'date_start:date',
+			'date_end:date',
+			'ktp_description',
+			
+			[
+				'attribute' => 'status',
+                'format' => 'html',
+				'value' => function($model){
+					return $model->showStatus();
+				}
+			],
+			'created_at',
+		'modified_at',
+		'reviewed_at'
+
+
+];
+
+
+
 ?>
 <div class="knowledge-transfer-index">
+
+<div class="form-group"><?=ExportMenu::widget([
+    'dataProvider' => $dataProvider,
+    'columns' => $exportColumns,
+	'filename' => 'KNOWLEDGE_TRANSFER_DATA_' . date('Y-m-d'),
+	'onRenderSheet'=>function($sheet, $grid){
+		$sheet->getStyle('A2:'.$sheet->getHighestColumn().$sheet->getHighestRow())
+		->getAlignment()->setWrapText(true);
+		
+	},
+	'exportConfig' => [
+    \kartik\export\ExportMenu::FORMAT_PDF => [
+        'pdfConfig' => [
+            'orientation' => 'L',
+        ],
+    ],
+],
+]);?></div>
 
     <div class="box">
 <div class="box-header"></div>
