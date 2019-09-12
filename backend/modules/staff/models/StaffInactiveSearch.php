@@ -10,7 +10,7 @@ use backend\modules\staff\models\Staff;
 /**
  * StaffSearch represents the model behind the search form of `backend\modules\staff\models\Staff`.
  */
-class StaffSearch extends Staff
+class StaffInactiveSearch extends Staff
 {
 	public $staff_name;
     /**
@@ -45,7 +45,7 @@ class StaffSearch extends Staff
      */
     public function search($params)
     {
-        $query = Staff::find()->where(['staff_active' => 1]);
+        $query = Staff::find()->where(['staff_active' => 0]);
 		$query->joinWith(['user']);
 
         // add conditions that should always apply here

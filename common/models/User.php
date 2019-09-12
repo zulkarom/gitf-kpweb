@@ -76,6 +76,8 @@ class User extends ActiveRecord implements IdentityInterface
 			
 			[['email', 'fullname'], 'required', 'on' => 'update_external'],
 			
+			[['email', 'fullname', 'password_hash', 'status', 'confirmed_at', 'created_at','updated_at'], 'required', 'on' => 'staff_create'],
+			
 			//[['username', 'password_hash', 'email', 'created_at', 'updated_at', 'status', 'block_at', 'confirmed_at', 'last_login_at'], 'required', 'on' => 'reload'],
 			
 			[['updated_at'], 'required', 'on' => 'reload'],

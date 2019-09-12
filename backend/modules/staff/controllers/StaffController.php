@@ -5,11 +5,15 @@ namespace backend\modules\staff\controllers;
 use Yii;
 use backend\modules\staff\models\Staff;
 use backend\modules\staff\models\StaffSearch;
+use backend\modules\staff\models\StaffInactiveSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\models\User;
 use common\models\Upload;
+use common\models\UploadFile;
+use yii\helpers\Json;
+use yii\db\Expression;
 
 /**
  * StaffController implements the CRUD actions for Staff model.
@@ -41,6 +45,17 @@ class StaffController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+	
+	public function actionInactive()
+    {
+        $searchModel = new StaffInactiveSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('inactive', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -115,13 +130,47 @@ class StaffController extends Controller
     public function actionCreate()
     {
         $model = new Staff();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->staff_id]);
+		$user = new User;
+		$user->scenario = 'staff_create';
+	
+        if ($model->load(Yii::$app->request->post()) && $user->load(Yii::$app->request->post())) {
+			
+			$transaction = Yii::$app->db->beginTransaction();
+			try {
+				$random = rand(30,30000);
+				$user->password_hash = \Yii::$app->security->generatePasswordHash($random);
+				
+				$user->status = 10;
+				$user->confirmed_at = time();
+				$user->created_at = time();
+				$user->updated_at = time();
+				if($user->save()){
+					$model->user_id = $user->id;
+					if($model->save()){
+						$transaction->commit();
+						Yii::$app->session->addFlash('success', "Data Updated");
+						return $this->redirect(['update', 'id' => $model->id]);
+					}else{
+						$model->flashError();
+					}
+				}else{
+					$user->flashError();
+					$transaction->rollBack();
+				}
+				
+				
+			}
+			catch (Exception $e) 
+			{
+				$transaction->rollBack();
+				Yii::$app->session->addFlash('error', $e->getMessage());
+			}
+            
         }
 
         return $this->render('create', [
             'model' => $model,
+			'user' => $user
         ]);
     }
 
@@ -135,15 +184,32 @@ class StaffController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+		$user = $model->user;
+		$user->scenario = 'update_external';
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->staff_id]);
+        if ($model->load(Yii::$app->request->post()) && $user->load(Yii::$app->request->post())) {
+			
+			if($user->save() && $model->save()){
+				Yii::$app->session->addFlash('success', "Data Updated");
+				return $this->redirect(['index']);
+			}
+            
         }
 
         return $this->render('update', [
             'model' => $model,
+			'user' => $user
         ]);
     }
+	
+	public function actionRestore($id){
+		$model = $this->findModel($id);
+		$model->staff_active = 1;
+		if($model->save()){
+			return $this->redirect(['index']);
+		}
+		
+	}
 
     /**
      * Deletes an existing Staff model.
@@ -175,12 +241,13 @@ class StaffController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 	
+	
 	public function actionImage(){
 		$id = Yii::$app->user->identity->id;
         $model = $this->findModel(['user_id' => $id]);
 		
-		if($model->staff_img){
-			$file = Yii::getAlias('@upload/profile/' . $model->staff_img);
+		if($model->image_file){
+			$file = Yii::getAlias('@upload/profile/' . $model->image_file);
 		}else{
 			$file = Yii::getAlias('@img') . '/user.png';
 		}
@@ -197,4 +264,70 @@ class StaffController extends Controller
 			}
 		
 	}
+	
+	
+
+	public function actionUploadFile($attr, $id){
+        $attr = $this->clean($attr);
+        $model = $this->findModel($id);
+        $model->file_controller = 'staff';
+
+        return UploadFile::upload($model, $attr, 'updated_at');
+
+    }
+
+	protected function clean($string){
+        $allowed = ['image'];
+        
+        foreach($allowed as $a){
+            if($string == $a){
+                return $a;
+            }
+        }
+        
+        throw new NotFoundHttpException('Invalid Attribute');
+
+    }
+
+	public function actionDeleteFile($attr, $id)
+    {
+        $attr = $this->clean($attr);
+        $model = $this->findModel($id);
+        $attr_db = $attr . '_file';
+        
+        $file = Yii::getAlias('@upload/' . $model->{$attr_db});
+        
+        $model->scenario = $attr . '_delete';
+        $model->{$attr_db} = '';
+        $model->updated_at = new Expression('NOW()');
+        if($model->save()){
+            if (is_file($file)) {
+                unlink($file);
+                
+            }
+            
+            return Json::encode([
+                        'good' => 1,
+                    ]);
+        }else{
+            return Json::encode([
+                        'errors' => $model->getErrors(),
+                    ]);
+        }
+        
+
+
+    }
+
+	public function actionDownloadFile($attr, $id, $identity = true){
+        $attr = $this->clean($attr);
+        $model = $this->findModel($id);
+        $filename = strtoupper($attr) . ' ' . Yii::$app->user->identity->fullname;
+        
+        
+        
+        UploadFile::download($model, $attr, $filename);
+    }
+
+
 }

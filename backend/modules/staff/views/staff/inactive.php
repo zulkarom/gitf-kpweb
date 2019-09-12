@@ -9,15 +9,11 @@ use backend\modules\staff\models\StaffPosition;
 /* @var $searchModel backend\modules\staff\models\StaffSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Staff';
+$this->title = 'Inactive Staff';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="staff-index">
 
-
-    <p>
-        <?= Html::a('Create Staff', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
 
     <div class="box">
 <div class="box-header"></div>
@@ -54,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 //'visible' => false,
                 'buttons'=>[
                     'update'=>function ($url, $model) {
-                        return Html::a('<span class="glyphicon glyphicon-pencil"></span> UPDATE',['/staff/staff/update/', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
+                        return Html::a('RESTORE',['/staff/staff/restore/', 'id' => $model->id],['class'=>'btn btn-danger btn-sm']);
                     }
                 ],
             

@@ -11,11 +11,7 @@ use common\models\User;
  * @property int $id
  * @property int $user_id
  * @property string $staff_no
- * @property string $user_name
- * @property string $user_password_hash
- * @property string $staff_email
  * @property string $staff_name
- * @property string $staff_name_pub
  * @property string $staff_title
  * @property string $staff_edu
  * @property int $is_academic
@@ -39,7 +35,7 @@ use common\models\User;
  * @property string $personal_email
  * @property string $ofis_location
  * @property string $staff_cv
- * @property string $staff_img
+ * @property string $image_file
  * @property int $teach_pg
  * @property int $staff_level
  * @property string $staff_interest
@@ -53,6 +49,11 @@ use common\models\User;
 class Staff extends \yii\db\ActiveRecord
 {
 	public $staff_name;
+	public $email;
+	
+	public $image_instance;
+	public $file_controller;
+
 	
     /**
      * @inheritdoc
@@ -68,9 +69,15 @@ class Staff extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['staff_no', 'user_id', 'user_name', 'user_password_hash', 'staff_title', 'is_academic', 'position_id', 'position_status', 'working_status'], 'required'],
+            [['staff_no', 'user_id', 'staff_title', 'is_academic', 'position_id', 'position_status', 'working_status'], 'required'],
 			
 			[['user_id'], 'required', 'on' => 'reload'],
+			
+			[['email'], 'email'],
+			
+			['staff_no', 'unique', 'targetClass' => '\backend\modules\staff\models\Staff', 'message' => 'This staff no has already been taken'],
+			
+			//['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email has already been taken'],
 			
 			
             [['user_id', 'is_academic', 'position_id', 'position_status', 'working_status', 'teach_pg', 'staff_level', 'staff_department', 'trash', 'publish', 'staff_active', 'user_token_at'], 'integer'],
@@ -79,15 +86,20 @@ class Staff extends \yii\db\ActiveRecord
             [['leave_note', 'staff_interest'], 'string'],
 			
             [['staff_no'], 'string', 'max' => 10],
-            [['user_name', 'staff_img'], 'string', 'max' => 50],
-            [['user_password_hash', 'user_token'], 'string', 'max' => 255],
             [['staff_note', 'personal_email', 'ofis_location'], 'string', 'max' => 100],
-            [['staff_name_pub'], 'string', 'max' => 200],
             [['staff_title', 'officephone', 'handphone1', 'handphone2'], 'string', 'max' => 20],
 			
             [['staff_edu', 'staff_expertise', 'staff_cv'], 'string', 'max' => 300],
+			
             [['rotation_post', 'staff_gscholar'], 'string', 'max' => 500],
+			
             [['staff_ic'], 'string', 'max' => 15],
+			
+			[['image_file'], 'required', 'on' => 'image_upload'],
+            [['image_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg, png, bmp, gif', 'maxSize' => 1000000],
+            [['updated_at'], 'required', 'on' => 'image_delete'],
+
+
         ];
     }
 
@@ -100,13 +112,10 @@ class Staff extends \yii\db\ActiveRecord
             'id' => 'ID',
             'user_id' => 'User ID',
             'staff_no' => 'Staff No',
-            'user_name' => 'User Name',
-            'user_password_hash' => 'User Password Hash',
-            'staff_name_pub' => 'Staff Name Pub',
             'staff_title' => 'Staff Title',
-            'staff_edu' => 'Staff Edu',
-            'is_academic' => 'Is Academic',
-            'position_id' => 'Position ID',
+            'staff_edu' => 'Staff Education (abbr.)',
+            'is_academic' => 'Type',
+            'position_id' => 'Position',
             'position_status' => 'Position Status',
             'working_status' => 'Working Status',
             'leave_start' => 'Leave Start',
@@ -114,19 +123,19 @@ class Staff extends \yii\db\ActiveRecord
             'leave_note' => 'Leave Note',
             'rotation_post' => 'Rotation Post',
             'staff_expertise' => 'Staff Expertise',
-            'staff_gscholar' => 'Staff Gscholar',
-            'officephone' => 'Officephone',
+            'staff_gscholar' => 'Staff Google Scholar',
+            'officephone' => 'Office Phone',
             'handphone1' => 'Handphone1',
             'handphone2' => 'Handphone2',
-            'staff_ic' => 'Staff Ic',
-            'staff_dob' => 'Staff Dob',
-            'date_begin_umk' => 'Date Begin Umk',
+            'staff_ic' => 'Staff NRIC',
+            'staff_dob' => 'Staff D.O.B',
+            'date_begin_umk' => 'Date Begin UMK',
             'date_begin_service' => 'Date Begin Service',
             'staff_note' => 'Staff Note',
             'personal_email' => 'Personal Email',
-            'ofis_location' => 'Ofis Location',
-            'staff_cv' => 'Staff Cv',
-            'staff_img' => 'Staff Img',
+            'ofis_location' => 'Office Location',
+            'staff_cv' => 'Staff CV',
+            'image_file' => 'Staff Image',
             'teach_pg' => 'Teach Pg',
             'staff_level' => 'Staff Level',
             'staff_interest' => 'Staff Interest',
@@ -138,6 +147,16 @@ class Staff extends \yii\db\ActiveRecord
             'user_token_at' => 'User Token At',
         ];
     }
+	
+	public function getListTitles(){
+		$array = ['Encik','Cik' ,'Dr.', 'Prof. Madya', 'Prof.'];
+		$return = [];
+		foreach($array as $a){
+			$return[$a] = $a;
+		}
+		$return[999] = 'Others (Please specify...)';
+		return $return;
+	}
 	
 	public function getStaffPosition(){
 		return $this->hasOne(StaffPosition::className(), ['position_id' => 'position_id']);
@@ -163,4 +182,18 @@ class Staff extends \yii\db\ActiveRecord
 	public function getUser(){
 		return $this->hasOne(User::className(), ['id' => 'user_id']);
 	}
+	
+	public function flashError(){
+        if($this->getErrors()){
+            foreach($this->getErrors() as $error){
+                if($error){
+                    foreach($error as $e){
+                        Yii::$app->session->addFlash('error', $e);
+                    }
+                }
+            }
+        }
+
+    }
+
 }

@@ -6,22 +6,49 @@ use yii\helpers\ArrayHelper;
 use backend\modules\staff\models\StaffPosition;
 use backend\modules\staff\models\StaffPositionStatus;
 use backend\modules\staff\models\StaffWorkingStatus;
+use common\models\UploadFile;
+use kartik\date\DatePicker;
+use richardfan\widget\JSRegister;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\staff\models\Staff */
 /* @var $form yii\widgets\ActiveForm */
+
+$model->file_controller = 'staff';
 ?>
 
 <div class="box">
 <div class="box-header"></div>
 <div class="box-body"><div class="staff-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+ <?php $form = ActiveForm::begin(); ?>
+
+
+<?php 
+
+if($model->id){
+	echo UploadFile::fileInput($model, 'image', true);
+}
+
+
+
+?>
+
 	
 	<div class="row">
-<div class="col-md-3"><?= $form->field($model, 'staff_title')->textInput(['maxlength' => true]) ?></div>
+<div class="col-md-3">
+<?= $form
+            ->field($model, 'staff_title', ['template' => '{label}<div id="con-title">{input}</div>{error}']
+)
+            ->label('Title')
+            ->dropDownList($model->listTitles) ?>
+</div>
 
-<div class="col-md-7"><?= $form->field($model, 'staff_name')->textInput(['maxlength' => true]) ?>
+<div class="col-md-7">
+<?= $form->field($user, 'fullname', ['template' => '{label}{input}<i style="font-size:small">*Capitalise Each Word. e.g. Muhammad Alif Bin Mohd Satar</i>{error}'])->textInput(['maxlength' => true])->label('Staff Name')?>
+
+
+
 </div>
 
 </div>
@@ -29,7 +56,8 @@ use backend\modules\staff\models\StaffWorkingStatus;
 <div class="row">
 <div class="col-md-3"><?= $form->field($model, 'staff_no')->textInput(['maxlength' => true]) ?></div>
 
-<div class="col-md-7"><?= $form->field($model, 'staff_email')->textInput(['maxlength' => true]) ?>
+<div class="col-md-7"><?= $form->field($user, 'email')->textInput(['maxlength' => true]) ?>
+
 </div>
 
 </div>
@@ -62,7 +90,11 @@ use backend\modules\staff\models\StaffWorkingStatus;
 </div>
 
 <div class="row">
-<div class="col-md-6"><?= $form->field($model, 'staff_edu')->textInput(['maxlength' => true]) ?></div>
+<div class="col-md-6">
+
+<?= $form->field($model, 'staff_edu', ['template' => '{label}{input}<i style="font-size:small">*e.g. PhD (Salford, Manchester, UK), MSc, BSc (UPM)</i>{error}'])->textInput(['maxlength' => true]) ?>
+
+</div>
 
 <div class="col-md-6"><?= $form->field($model, 'staff_gscholar')->textInput(['maxlength' => true]) ?>
 </div>
@@ -98,9 +130,39 @@ use backend\modules\staff\models\StaffWorkingStatus;
 </div>
 
    <div class="row">
-<div class="col-md-6"><?= $form->field($model, 'date_begin_umk')->textInput() ?></div>
+<div class="col-md-3">
 
-<div class="col-md-6"> <?= $form->field($model, 'date_begin_service')->textInput() ?>
+
+
+ <?=$form->field($model, 'date_begin_umk')->widget(DatePicker::classname(), [
+    'removeButton' => false,
+    'pluginOptions' => [
+        'autoclose'=>true,
+        'format' => 'yyyy-mm-dd',
+        'todayHighlight' => true,
+        
+    ],
+    
+    
+]);
+?>
+
+</div>
+<div class="col-md-3">
+
+ <?=$form->field($model, 'date_begin_service')->widget(DatePicker::classname(), [
+    'removeButton' => false,
+    'pluginOptions' => [
+        'autoclose'=>true,
+        'format' => 'yyyy-mm-dd',
+        'todayHighlight' => true,
+        
+    ],
+    
+    
+]);
+?>
+
 </div>
 
 </div> 
@@ -113,6 +175,11 @@ use backend\modules\staff\models\StaffWorkingStatus;
 
 </div>
 
+<div class="row">
+<div class="col-md-3"><?= $form->field($model, 'staff_active', ['template' => '{label}{input}<i style="font-size:small">*NO value will put this staff in Inactive page</i>{error}'])->dropDownList( [1 => 'YES' , 0 => 'NO'] ) ?></div>
+
+</div>
+
 
 
 <?= $form->field($model, 'staff_note')->textarea(['rows' => '6']) ?>
@@ -120,7 +187,7 @@ use backend\modules\staff\models\StaffWorkingStatus;
 
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Save Staff Data', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
@@ -128,3 +195,16 @@ use backend\modules\staff\models\StaffWorkingStatus;
 </div>
 </div>
 </div>
+
+
+<?php JSRegister::begin(); ?>
+<script>
+$("#staff-staff_title").change(function(){
+	var val = $(this).val();
+	if(val == 999){
+		var html = '<input type="text" id="staff-staff_title" placeholder="Please specify" class="form-control" name="staff[title]" / >';
+		$("#con-title").html(html);
+	}
+});
+</script>
+<?php JSRegister::end(); ?>

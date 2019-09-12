@@ -132,7 +132,7 @@ use backend\modules\jeb\models\Menu as JebMenu;
                         'url' => '#',
                         'items' => [
 						
-				['label' => 'Dashboard', 'icon' => 'dashboard', 'url' => ['/erpd'],],
+				//['label' => 'Dashboard', 'icon' => 'dashboard', 'url' => ['/erpd'],],
 				
 				['label' => 'Research', 'icon' => 'book', 'url' => ['/erpd/research'],],
 				
@@ -183,16 +183,18 @@ use backend\modules\jeb\models\Menu as JebMenu;
 		;
 		
 		$staff = [
-                        'label' => 'Staff Menus',
+                        'label' => 'Staff Menu',
                         'icon' => 'list-ul',
                         'url' => '#',
                         'items' => [
 						
-				['label' => 'Staff Dashboard', 'icon' => 'dashboard', 'url' => ['/jeb']],
+				//['label' => 'Staff Dashboard', 'icon' => 'dashboard', 'url' => ['/staff']],
 				
 				['label' => 'New Staff', 'icon' => 'plus', 'url' => ['/staff/staff/create']],
 				
-				['label' => 'Staff List', 'icon' => 'list', 'url' => ['/staff/staff']],
+				['label' => 'Staff List', 'icon' => 'user', 'url' => ['/staff/staff']],
+				
+				['label' => 'Inactive', 'icon' => 'user', 'url' => ['/staff/staff/inactive']],
 				
 
                  ]
@@ -219,11 +221,11 @@ use backend\modules\jeb\models\Menu as JebMenu;
                         'url' => '#',
                         'items' => [
 						
-				['label' => 'eSiap Dashboard', 'icon' => 'dashboard', 'url' => ['/esiap']],
+				//['label' => 'eSiap Dashboard', 'icon' => 'dashboard', 'url' => ['/esiap']],
 				
-				['label' => 'Program List', 'icon' => 'list', 'url' => ['/esiap/program']],
+				['label' => 'Program List', 'icon' => 'book', 'url' => ['/esiap/program']],
 				
-				['label' => 'Course List', 'icon' => 'list', 'url' => ['/esiap/course']],
+				['label' => 'Course List', 'icon' => 'book', 'url' => ['/esiap/course']],
 				
 
                  ]
@@ -260,41 +262,32 @@ use backend\modules\jeb\models\Menu as JebMenu;
 		}
 		
 		
-		$modules = [
-                        'label' => 'Modules',
-                        'icon' => 'th-large',
-                        'url' => '#',
-                        'items' => [
-                            
-							['label' => 'e-RPD', 'icon' => 'flask', 'url' => ['/erpd'],],
-							
-							['label' => 'e-SIAP', 'icon' => 'book', 'url' => ['/esiap'],],
-							
-							['label' => 'JEB', 'icon' => 'book', 'url' => ['/jeb'],],
-							
-							['label' => 'STAFF', 'icon' => 'user', 'url' => ['/staff/staff/index'],],
-							
-							['label' => 'WEBSITE', 'icon' => 'tv', 'url' => ['/website'],],
-							
-
-                        ],
-                    ];
-		
 		?>
 
         <?=common\models\Menu::widget(
             [
                 'options' => ['class' => 'sidebar-menu tree', 'data-widget'=> 'tree'],
                 'items' => [
-                    ['label' => 'Main Menu', 'options' => ['class' => 'header']],
-					
+                    ['label' => 'MAIN MENU', 'options' => ['class' => 'header']],
+					['label' => 'Dashboard', 'icon' => 'dashboard', 'url' => ['/site']],
 					$course_focus,
 					
-					['label' => 'Dashboard', 'icon' => 'dashboard', 'url' => ['/site']],
+					
 					
 					$focus,
 					$admin_focus,
-					$modules,
+					//$modules,
+					
+					['label' => 'MODULES', 'options' => ['class' => 'header']],
+					['label' => 'STAFF', 'icon' => 'user', 'url' => ['/staff/staff/index'],],
+					
+					['label' => 'e-SIAP', 'icon' => 'mortar-board', 'url' => ['/esiap/course'],],
+					
+					['label' => 'e-RPD', 'icon' => 'flask', 'url' => ['/erpd'],],	
+					
+					['label' => 'JEB JOURNAL', 'icon' => 'book', 'url' => ['/jeb'],],
+					
+					['label' => 'WEBSITE', 'icon' => 'tv', 'url' => ['/website'],],
 					
 					
 					[
