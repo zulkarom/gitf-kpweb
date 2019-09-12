@@ -2,7 +2,8 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\grid\GridView;
+use kartik\grid\GridView;
+use kartik\export\ExportMenu;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\modules\erpd\models\ConsultationSearch */
@@ -10,8 +11,74 @@ use yii\grid\GridView;
 
 $this->title = 'All Consultations';
 $this->params['breadcrumbs'][] = $this->title;
+
+$exportColumns = [
+			['class' => 'yii\grid\SerialColumn'],
+			['attribute' => 'staff_search',
+			'label' => 'Staff',
+			'value' => function($model){
+				if($model->staff){
+					return $model->staff->user->fullname . ' ('.$model->staff->staff_no .')';
+				}
+				
+			}
+			
+		],
+            'csl_title',
+			'csl_funder',
+			
+			[
+				'attribute' => 'csl_amount',
+				'label' => 'Value of Sponsorship',
+				'value' => function($model){
+					return $model->csl_amount;
+				}
+				
+			],
+			
+			[
+				'attribute' => 'csl_level',
+				'value' => function($model){
+					return $model->levelName;
+				}
+			]
+            ,
+			'date_start:date',
+			'date_end:date',
+			
+			[
+				'attribute' => 'status',
+                'format' => 'html',
+				'value' => function($model){
+					return $model->showStatus();
+				}
+			],
+			'created_at',
+		'modified_at',
+		'reviewed_at'
+];
+
+
 ?>
 <div class="consultation-index">
+
+<div class="form-group"><?=ExportMenu::widget([
+    'dataProvider' => $dataProvider,
+    'columns' => $exportColumns,
+	'filename' => 'CONSULTATION_DATA_' . date('Y-m-d'),
+	'onRenderSheet'=>function($sheet, $grid){
+		$sheet->getStyle('A2:'.$sheet->getHighestColumn().$sheet->getHighestRow())
+		->getAlignment()->setWrapText(true);
+		
+	},
+	'exportConfig' => [
+    \kartik\export\ExportMenu::FORMAT_PDF => [
+        'pdfConfig' => [
+            'orientation' => 'L',
+        ],
+    ],
+],
+]);?></div>
 
    <div class="box">
 <div class="box-header"></div>

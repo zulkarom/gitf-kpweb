@@ -19,7 +19,7 @@ $exportColumns = [
 				'label' => 'Staff',
 				'value' => function($model){
 					if($model->staff){
-						return $model->staff->user->fullname;
+						return $model->staff->user->fullname . ' ('.$model->staff->staff_no .')';
 					}
 					
 				}

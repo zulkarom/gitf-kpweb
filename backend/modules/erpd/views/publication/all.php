@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 use backend\modules\erpd\models\PubType;
 use kartik\grid\GridView;
@@ -117,6 +118,16 @@ $exportColumns = [
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
+			[
+				'label' => '',
+				'format' => 'raw',
+				'contentOptions' => [ 'style' => 'width: 1%;' ],
+				'value' => function($model){
+					
+					return '<a href="'.Url::to(['download-file', 'attr' => 'awd', 'id' => $model->id]).'" target="_blank"><i class="fa fa-file-pdf-o"></i></a>';
+				}
+				
+			],
 			[
 				'attribute' => 'pub_year',
 				'contentOptions' => [ 'style' => 'width: 10%;' ],
