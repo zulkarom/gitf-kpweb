@@ -19,10 +19,7 @@ $fieldOptions2 = [
 ];
 ?>
 
-<div class="login-box">
-    <div class="login-logo">
-        OFFICIAL <br /><b>FKP PORTAL</b>
-    </div>
+
     <!-- /.login-logo -->
     <div class="login-box-body">
         <p class="login-box-msg">Sign in to start your session</p>
@@ -59,4 +56,4 @@ $fieldOptions2 = [
 
     </div>
     <!-- /.login-box-body -->
-</div><!-- /.login-box -->
+<!-- /.login-box -->
