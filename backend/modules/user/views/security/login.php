@@ -70,7 +70,7 @@ $fieldOptions2 = [
                <?= $form
             ->field($model, 'login', $fieldOptions1)
             ->label(false)
-            ->textInput(['placeholder' => $model->getAttributeLabel('username')]) ;?>
+            ->textInput(['placeholder' => 'Staff No.']) ;?>
                     
 
 			<?= $form
