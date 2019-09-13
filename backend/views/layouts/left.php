@@ -20,7 +20,7 @@ use backend\modules\jeb\models\Menu as JebMenu;
 		
 		
 		
-		  $str = Yii::$app->user->identity->staff->staff_name;
+		  $str = Yii::$app->user->identity->staff->user->fullname;
 		  if (strlen($str) > 10)
 		$str = substr($str, 0, 17) . '...';
 		  echo $str;
@@ -160,7 +160,7 @@ use backend\modules\jeb\models\Menu as JebMenu;
                         'url' => '#',
                         'items' => [
 						
-				['label' => 'Dashboard', 'icon' => 'dashboard', 'url' => ['/erpd'],],
+				//['label' => 'Dashboard', 'icon' => 'dashboard', 'url' => ['/erpd'],],
 				
 				['label' => 'Research', 'icon' => 'book', 'url' => ['/erpd/research/all'],],
 				
@@ -283,7 +283,7 @@ use backend\modules\jeb\models\Menu as JebMenu;
 					
 					['label' => 'e-SIAP', 'icon' => 'mortar-board', 'url' => ['/esiap/course'],],
 					
-					['label' => 'e-RPD', 'icon' => 'flask', 'url' => ['/erpd'],],	
+					['label' => 'e-RPD', 'icon' => 'flask', 'url' => ['/erpd/research'],],	
 					
 					['label' => 'JEB JOURNAL', 'icon' => 'book', 'url' => ['/jeb'],],
 					

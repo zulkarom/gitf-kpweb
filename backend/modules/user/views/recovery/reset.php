@@ -21,17 +21,7 @@ use yii\widgets\ActiveForm;
 $this->title = Yii::t('user', 'Reset your password');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div style="margin-top:20px">
-
-		<div class="container">
-
-			<br /><div class="row">
-    <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
-            </div>
-            <div class="panel-body">
+  <p class="login-box-msg"><?= Html::encode($this->title) ?></p>
                 <?php $form = ActiveForm::begin([
                     'id' => 'password-recovery-form',
                     'enableAjaxValidation' => true,
@@ -40,11 +30,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?= $form->field($model, 'password')->passwordInput() ?>
 
-                <?= Html::submitButton(Yii::t('user', 'Finish'), ['class' => 'btn btn-success btn-block']) ?><br>
+                <?= Html::submitButton(Yii::t('user', 'Finish'), ['class' => 'btn btn-primary btn-block']) ?><br>
 
                 <?php ActiveForm::end(); ?>
-            </div>
-        </div>
-    </div>
-</div>			</div>
-</div>

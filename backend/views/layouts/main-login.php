@@ -6,6 +6,8 @@ use dmstr\widgets\Alert;
 /* @var $content string */
 
 dmstr\web\AdminLteAsset::register($this);
+backend\assets\AppAsset::register($this);
+$dirAsset = Yii::$app->assetManager->getPublishedUrl('@backend/views/myasset');
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -21,17 +23,24 @@ dmstr\web\AdminLteAsset::register($this);
 	.login-box-body{
 		border-radius: 15px 50px 15px; 
 		padding:28px;
+		opacity: 0.95;
+  filter: alpha(opacity=95); 
 		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	}
+	.login-page {
+		background-image: url('<?=$dirAsset?>/img/bg.jpg');
+		background-repeat: no-repeat;
+		background-size: cover; 
 	}
 </style>
 </head>
-<body class="login-page" style="background-image: url('images/bg.jpg')">
+<body class="login-page">
 
 <?php $this->beginBody() ?>
 
-
-
 <div class="login-box">
+<div class="login-box-body">
+
     <div class="login-logo" style="font-family:verdana">
         <b>OFFICIAL FKP</b><br /><span style="font-size:28px">STAFF PORTAL</span>
     </div>
@@ -46,7 +55,7 @@ dmstr\web\AdminLteAsset::register($this);
 		<?= Html::a('Log In Page', ['/user/login']) ?></div>
 </div>
 
-
+</div>
     
 
 <?php $this->endBody() ?>

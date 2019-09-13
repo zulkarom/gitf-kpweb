@@ -4,9 +4,10 @@ use yii\helpers\Html;
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-    
-backend\assets\AppAsset::register($this);
-dmstr\web\AdminLteAsset::register($this);
+
+    backend\assets\AppAsset::register($this);
+
+    dmstr\web\AdminLteAsset::register($this);
 
     $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@vendor/almasaeed2010/adminlte/dist');
     ?>
@@ -17,7 +18,7 @@ dmstr\web\AdminLteAsset::register($this);
         <meta charset="<?= Yii::$app->charset ?>"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <?= Html::csrfMetaTags() ?>
-        <title>FKP STAFF PORTAL :: <?= strtoupper(Html::encode($this->title)) ?></title>
+        <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
     </head>
     <body class="hold-transition skin-blue sidebar-mini">

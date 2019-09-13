@@ -13,7 +13,7 @@ class LoginForm extends BaseLoginForm
     {
         $rules = parent::rules();
 		
-		$rules['loginLength']  = ['login', 'email'];
+		$rules['loginLength']  = ['login', 'string'];
 
         return $rules;
     }
@@ -21,7 +21,7 @@ class LoginForm extends BaseLoginForm
 	public function attributeLabels()
     {
 		$labels = parent::attributeLabels();
-		$labels['login'] = 'Email';
+		$labels['login'] = 'Staff No.';
         return $labels;
     }
 	

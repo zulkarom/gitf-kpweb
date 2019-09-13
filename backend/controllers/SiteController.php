@@ -10,6 +10,7 @@ use common\models\Product;
 use backend\models\Customer;
 use backend\modules\staff\models\Staff;
 use common\models\User;
+use common\models\Dashboard;
 
 /**
  * Site controller
@@ -64,7 +65,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-		
+		$dashboard = new Dashboard;
         return $this->render('index', [
 
 		'customer' => 33
