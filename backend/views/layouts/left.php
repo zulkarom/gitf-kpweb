@@ -140,13 +140,13 @@ use backend\modules\jeb\models\Menu as JebMenu;
 				
 				
 				
-				['label' => 'Membership', 'icon' => 'pencil', 'url' => ['/erpd/membership'],],
+				['label' => 'Membership', 'icon' => 'users', 'url' => ['/erpd/membership'],],
 				
-				['label' => 'Award', 'icon' => 'book', 'url' => ['/erpd/award'],],
+				['label' => 'Award', 'icon' => 'trophy', 'url' => ['/erpd/award'],],
 				
-				['label' => 'Consultation', 'icon' => 'book', 'url' => ['/erpd/consultation'],],
+				['label' => 'Consultation', 'icon' => 'microphone', 'url' => ['/erpd/consultation'],],
 				
-				['label' => 'Knowledge Transfer', 'icon' => 'book', 'url' => ['/erpd/knowledge-transfer'],],
+				['label' => 'Knowledge Transfer', 'icon' => 'truck', 'url' => ['/erpd/knowledge-transfer'],],
 
 
                  ]
@@ -168,13 +168,13 @@ use backend\modules\jeb\models\Menu as JebMenu;
 				
 				
 				
-				['label' => 'Membership', 'icon' => 'pencil', 'url' => ['/erpd/membership/all'],],
+				['label' => 'Membership', 'icon' => 'users', 'url' => ['/erpd/membership/all'],],
 				
-				['label' => 'Award', 'icon' => 'book', 'url' => ['/erpd/award/all'],],
+				['label' => 'Award', 'icon' => 'trophy', 'url' => ['/erpd/award/all'],],
 				
-				['label' => 'Consultation', 'icon' => 'book', 'url' => ['/erpd/consultation/all'],],
+				['label' => 'Consultation', 'icon' => 'microphone', 'url' => ['/erpd/consultation/all'],],
 				
-				['label' => 'Knowledge Transfer', 'icon' => 'book', 'url' => ['/erpd/knowledge-transfer/all'],],
+				['label' => 'Knowledge Transfer', 'icon' => 'truck', 'url' => ['/erpd/knowledge-transfer/all'],],
 
 
                  ]

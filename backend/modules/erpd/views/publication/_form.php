@@ -36,8 +36,6 @@ use kartik\select2\Select2;
 
 
 ?>
-<hr />
-
 <div class="field-publication-pub_author">
 <div class="row"><div class="col-md-3" align="right"><label class="control-label" for="publication-pub_author">Author(s)</label>:</div><div class="col-md-8">
 
@@ -283,7 +281,7 @@ use kartik\select2\Select2;
                      //   'tag' => false, // Don't wrap with "form-group" div
                     ]])->textInput()?>
 					
-				<hr />
+				
 					
 <div class="field-publication-pub_tag">
 <div class="row"><div class="col-md-3" align="right"><label class="control-label" for="publication-pub_tag">Tagged Staff</label>:</div><div class="col-md-8">
