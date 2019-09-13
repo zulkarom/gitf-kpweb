@@ -230,6 +230,21 @@ use backend\modules\jeb\models\Menu as JebMenu;
 
                  ]
                     ];	
+		$esiap_admin = [
+                        'label' => 'eSIAP Admin',
+                        'icon' => 'list-ul',
+                        'url' => '#',
+                        'items' => [
+						
+				//['label' => 'eSiap Dashboard', 'icon' => 'dashboard', 'url' => ['/esiap']],
+				
+				['label' => 'Program List', 'icon' => 'book', 'url' => ['/esiap/program-admin']],
+				
+				['label' => 'Course List', 'icon' => 'book', 'url' => ['/esiap/course-admin']],
+				
+
+                 ]
+                    ];	
 					
 		$my = [];
 		$focus = [];
@@ -256,6 +271,7 @@ use backend\modules\jeb\models\Menu as JebMenu;
 			
 			case 'esiap':
 			$focus = $esiap;
+			$admin_focus = $esiap_admin;
 			break;
 			
 
@@ -270,6 +286,27 @@ use backend\modules\jeb\models\Menu as JebMenu;
                 'items' => [
                     ['label' => 'MAIN MENU', 'options' => ['class' => 'header']],
 					['label' => 'Dashboard', 'icon' => 'dashboard', 'url' => ['/site']],
+					[
+                        'label' => 'My Profile',
+                        'icon' => 'user',
+                        'url' => '#',
+                        'items' => [
+							
+							['label' => 'Update Profile', 'icon' => 'pencil', 'url' => ['/user/create'],],
+						
+							['label' => 'Change Password', 'icon' => 'lock', 'url' => ['/user/assignment'],],
+							
+						
+                            ['label' => 'My Education', 'icon' => 'mortar-board', 'url' => ['/admin/role'],],
+							
+							['label' => 'Log Out', 'icon' => 'arrow-left', 'url' => ['/admin/role'],],
+							
+							
+	
+							
+
+                        ],
+                    ],
 					$course_focus,
 					
 					
