@@ -26,7 +26,7 @@ use yii\filters\AccessControl;
 /**
  * CourseController implements the CRUD actions for Course model.
  */
-class CourseController extends Controller
+class CourseAdminController extends Controller
 {
     /**
      * @inheritdoc
@@ -62,7 +62,23 @@ class CourseController extends Controller
         ]);
     }
 	
-	
+	 /**
+     * Lists all CourseVersion models.
+     * @return mixed
+     */
+    public function actionCourseVersion($course)
+    {
+        $searchModel = new CourseVersionSearch();
+        $dataProvider = $searchModel->search($course, Yii::$app->request->queryParams);
+		
+		$courseModel = $this->findModel($course);
+
+        return $this->render('../course-version/index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+			'course' => $courseModel
+        ]);
+    }
 	
 	/**
      * Creates a new CourseVersion model.

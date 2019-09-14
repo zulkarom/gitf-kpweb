@@ -222,10 +222,8 @@ use backend\modules\jeb\models\Menu as JebMenu;
                         'items' => [
 						
 				//['label' => 'eSiap Dashboard', 'icon' => 'dashboard', 'url' => ['/esiap']],
-				
-				['label' => 'Program List', 'icon' => 'book', 'url' => ['/esiap/program']],
-				
-				['label' => 'Course List', 'icon' => 'book', 'url' => ['/esiap/course']],
+
+				['label' => 'Course', 'icon' => 'book', 'url' => ['/esiap/course']],
 				
 
                  ]
@@ -300,10 +298,7 @@ use backend\modules\jeb\models\Menu as JebMenu;
                             ['label' => 'My Education', 'icon' => 'mortar-board', 'url' => ['/admin/role'],],
 							
 							['label' => 'Log Out', 'icon' => 'arrow-left', 'url' => ['/admin/role'],],
-							
-							
-	
-							
+
 
                         ],
                     ],
