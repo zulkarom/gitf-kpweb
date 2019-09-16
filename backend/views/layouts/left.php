@@ -127,7 +127,7 @@ use backend\modules\jeb\models\Menu as JebMenu;
 		;
 		
 		$erpd = [
-                        'label' => 'e-RPD Menu',
+                        'label' => 'Course PIC',
                         'icon' => 'list-ul',
                         'url' => '#',
                         'items' => [
@@ -216,8 +216,8 @@ use backend\modules\jeb\models\Menu as JebMenu;
                     ];
 					
 		$esiap = [
-                        'label' => 'eSIAP Menu',
-                        'icon' => 'list-ul',
+                        'label' => 'Course PIC',
+                        'icon' => 'book',
                         'url' => '#',
                         'items' => [
 						
@@ -236,7 +236,7 @@ use backend\modules\jeb\models\Menu as JebMenu;
 						
 				//['label' => 'eSiap Dashboard', 'icon' => 'dashboard', 'url' => ['/esiap']],
 				
-				['label' => 'Program List', 'icon' => 'book', 'url' => ['/esiap/program-admin']],
+				['label' => 'Program List', 'icon' => 'book', 'url' => ['/esiap/program']],
 				
 				['label' => 'Course List', 'icon' => 'book', 'url' => ['/esiap/course-admin']],
 				
@@ -313,7 +313,7 @@ use backend\modules\jeb\models\Menu as JebMenu;
 					['label' => 'MODULES', 'options' => ['class' => 'header']],
 					['label' => 'STAFF', 'icon' => 'user', 'url' => ['/staff/staff/index'],],
 					
-					['label' => 'e-SIAP', 'icon' => 'mortar-board', 'url' => ['/esiap/course'],],
+					['label' => 'e-SIAP', 'icon' => 'mortar-board', 'url' => ['/esiap'],],
 					
 					['label' => 'e-RPD', 'icon' => 'flask', 'url' => ['/erpd/research'],],	
 					

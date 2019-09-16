@@ -277,6 +277,20 @@ class User extends ActiveRecord implements IdentityInterface
 			}
 		}
 	}
+	
+	public static function listFullnameArray(){
+		$users = self::find()
+		->joinWith('staff')
+		->where(['staff.staff_active' => 1])
+		->orderBy('fullname ASC')
+		->all();
+		$array = [];
+		foreach($users as $user){
+			$array[$user->id] = ucwords(strtolower($user->fullname));
+		}
+		
+		return $array;
+	}
 
 
 }

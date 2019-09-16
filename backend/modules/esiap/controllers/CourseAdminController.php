@@ -3,11 +3,12 @@
 namespace backend\modules\esiap\controllers;
 
 use Yii;
+use backend\modules\esiap\models\CourseAdminSearch;
 use backend\modules\esiap\models\Course;
 use backend\modules\esiap\models\CourseProfile;
 use backend\modules\esiap\models\CourseClo;
 use backend\modules\esiap\models\CourseCloAssessment;
-use backend\modules\esiap\models\CourseSearch;
+
 use backend\modules\esiap\models\CourseVersion;
 use backend\modules\esiap\models\CourseSyllabus;
 use backend\modules\esiap\models\CourseSltAs;
@@ -53,7 +54,7 @@ class CourseAdminController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new CourseSearch();
+        $searchModel = new CourseAdminSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -136,8 +137,14 @@ class CourseAdminController extends Controller
     {
         $model = $this->findModel($course);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect('index');
+        if ($model->load(Yii::$app->request->post())) {
+			
+			if($model->save()){
+				return $this->redirect('index');
+			}
+			
+			
+            
         }
 
         return $this->render('update', [

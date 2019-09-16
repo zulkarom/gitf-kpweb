@@ -26,29 +26,21 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            [
-				'attribute' => 'crs_code',
-				'contentOptions' => ['style' => 'width: 12%'],
-			],
-            'crs_name',
-            'crs_name_bi',
-			[
-				'attribute' => 'credit_hour',
-				'contentOptions' => ['style' => 'width: 10%'],
-				
-			],
+            'course_code',
+            'course_name',
+            'course_name_bi',
+			'pic.fullname',
 
             ['class' => 'yii\grid\ActionColumn',
-                 'contentOptions' => ['style' => 'width: 17%'],
-                'template' => '{pic} {version}',
+                 'contentOptions' => ['style' => 'width: 20%'],
+                'template' => '{update} {version}',
                 //'visible' => false,
                 'buttons'=>[
-                    'pic'=>function ($url, $model) {
-                        return Html::a('<span class="glyphicon glyphicon-user"></span> PIC',['/esiap/course-admin/course-version', 'course' => $model->id],['class'=>'btn btn-warning btn-sm']);
+                    'update'=>function ($url, $model) {
+                        return Html::a('<span class="glyphicon glyphicon-pencil"></span> Update',['/esiap/course-admin/update/', 'course' => $model->id],['class'=>'btn btn-warning btn-sm']);
                     },
 					'version'=>function ($url, $model) {
-                        return Html::a('<span class="glyphicon glyphicon-files"></span> Version',['/esiap/course/delete/', 'course' => $model->id],['class'=>'btn btn-info btn-sm',
-]);
+                        return Html::a('<span class="glyphicon glyphicon-pencil"></span> Version',['/esiap/course-admin/course-version/', 'course' => $model->id],['class'=>'btn btn-info btn-sm']);
                     }
                 ],
             

@@ -10,7 +10,7 @@ use backend\modules\esiap\models\Course;
 /**
  * CourseSearch represents the model behind the search form of `backend\modules\esiap\models\Course`.
  */
-class CourseSearch extends Course
+class CourseAdminSearch extends Course
 {
     /**
      * @inheritdoc
@@ -41,7 +41,7 @@ class CourseSearch extends Course
      */
     public function search($params)
     {
-        $query = Course::find();
+        $query = Course::find()->where(['faculty' => 1]);
 
         // add conditions that should always apply here
 
