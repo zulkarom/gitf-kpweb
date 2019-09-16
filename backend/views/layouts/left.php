@@ -2,6 +2,7 @@
 use common\models\Todo;
 use yii\helpers\Url;
 use backend\modules\jeb\models\Menu as JebMenu;
+use backend\models\Menu;
 
 ?>
 <aside class="main-sidebar">
@@ -215,19 +216,33 @@ use backend\modules\jeb\models\Menu as JebMenu;
                  ]
                     ];
 					
-		$esiap = [
+		$esiap_pic = [];
+		
+		$coor = Course::find()->where(['course_pic' => Yii::$app->user->identity->id])->all();
+		
+		if($coor){
+			foreach($coor as $c){
+				$ver = $c->defaultVersion->status;
+				if($ver == 0){
+					$rt = '/esiap/course/update';
+				}else{
+					$rt = '/esiap/course/report';
+				}
+				$arr[] = ['label' => $c->course_name, 'icon' => 'book', 'url' => [$rt, 'course' => $c->id]];
+			}
+			
+			$menu_coor = [
                         'label' => 'Course PIC',
                         'icon' => 'book',
                         'url' => '#',
-                        'items' => [
-						
-				//['label' => 'eSiap Dashboard', 'icon' => 'dashboard', 'url' => ['/esiap']],
-
-				['label' => 'Course', 'icon' => 'book', 'url' => ['/esiap/course']],
+                        'items' => $arr,
+                    ]
+				;
 				
+			$esiap_pic  = $menu_coor;	
+		}
+					
 
-                 ]
-                    ];	
 		$esiap_admin = [
                         'label' => 'eSIAP Admin',
                         'icon' => 'list-ul',
@@ -268,7 +283,7 @@ use backend\modules\jeb\models\Menu as JebMenu;
 			break;
 			
 			case 'esiap':
-			$focus = $esiap;
+			$focus = $esiap_pic;
 			$admin_focus = $esiap_admin;
 			break;
 			

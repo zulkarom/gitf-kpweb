@@ -77,19 +77,6 @@ use backend\models\Department;
 
 </div>
 
-   
-
-
-   
-
-<div class="row">
-<div class="col-md-6"> <?= $form->field($model, 'synopsis')->textarea(['rows' => 6]) ?></div>
-
-<div class="col-md-6"> <?= $form->field($model, 'synopsis_bi')->textarea(['rows' => 6]) ?>
-</div>
-
-</div>
-   
 
    
 
