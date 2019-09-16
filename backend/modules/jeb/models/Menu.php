@@ -115,7 +115,7 @@ class Menu
 				
 				
 				
-				//['label' => 'User Management', 'icon' => 'user', 'url' => ['/jeb/user']],
+				['label' => 'User Fields', 'icon' => 'user', 'url' => ['/jeb/user']],
 				
 				['label' => 'General Setting', 'icon' => 'cog', 'url' => ['/jeb/setting']],
 				

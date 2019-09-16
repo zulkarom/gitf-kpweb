@@ -2,8 +2,6 @@
 
 use yii\helpers\Html;
 use kartik\widgets\ActiveForm;
-use wbraganca\dynamicform\DynamicFormWidget;
-use yii\jui\JuiAsset;
 use backend\modules\esiap\models\AssessmentCat;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
@@ -11,9 +9,12 @@ use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\esiap\models\Course */
 
-$this->title = 'Update: ' . $model->course->course_name;
+
+$this->title = 'CLO Assessment: ' . $model->course->course_name . ' '. $model->course->course_code;
 $this->params['breadcrumbs'][] = ['label' => 'Courses', 'url' => ['index']];
 $this->params['breadcrumbs'][] = 'Update';
+
+$form = ActiveForm::begin(['id' => 'form-clo-assessment']);
 ?>
 
 
@@ -23,7 +24,7 @@ $this->params['breadcrumbs'][] = 'Update';
 
 <?php
 
-$form = ActiveForm::begin(['id' => 'form-clo-assessment']);
+
 
 echo $form->field($model, 'updated_at')->hiddenInput(['value' => time()])->label(false);
 
@@ -55,14 +56,16 @@ if($clos){
 	echo '</table>';
 }
 ?>
+
+
+
+</div>
+</div>
+
 <div class="form-group">
-        <?= Html::submitButton('SAVE CLO ASSESSMENT', ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> SAVE CLO ASSESSMENT', ['class' => 'btn btn-primary']) ?>
     </div>
 <?php ActiveForm::end()?>
-
-
-</div>
-</div>
 
 
 <?php

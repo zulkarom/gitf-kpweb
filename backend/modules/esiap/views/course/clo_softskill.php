@@ -9,7 +9,8 @@ use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\esiap\models\Course */
 
-$this->title = 'Update: ' . $model->course->course_name;
+
+$this->title = 'Softskill: ' . $model->course->course_name . ' '. $model->course->course_code;
 $this->params['breadcrumbs'][] = ['label' => 'Courses', 'url' => ['index']];
 $this->params['breadcrumbs'][] = 'Update';
 $plo_num = $model->plo_num;
@@ -31,11 +32,16 @@ echo $form->field($model, 'updated_at')->hiddenInput(['value' => time()])->label
 </thead>
 <tbody>
 <?php
-$i=1;
+$x=1;
 if($clos){
 	foreach($clos as $clo){
 		echo '<tr><td>';
-		echo $i.". </td><td>".$clo->clo_text ."</td>";
+		
+		echo $x.'. </td><td>'.$clo->clo_text .'<br /><i>'.$clo->clo_text_bi .'</i>
+		
+		<br />
+		('.$clo->plo .')
+		</td>';
 		echo "<td>";
 		
 		echo "<table class='table table-hover table-striped'>
@@ -125,7 +131,7 @@ if($clos){
 		
 		echo "</td>";
 	echo '</tr>';
-	$i++;
+	$x++;
 	}
 }
 ?>
@@ -138,7 +144,7 @@ if($clos){
 
 
 <div class="form-group">
-        <?= Html::submitButton('SAVE CLO SOFTSKILL', ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> SAVE CLO SOFTSKILL', ['class' => 'btn btn-primary']) ?>
     </div>
 	
 	

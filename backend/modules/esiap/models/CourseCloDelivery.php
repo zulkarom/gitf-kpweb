@@ -32,8 +32,8 @@ class CourseCloDelivery extends \yii\db\ActiveRecord
         return [
             [['clo_id', 'delivery_id'], 'required'],
             [['clo_id', 'delivery_id'], 'integer'],
-            [['clo_id'], 'exist', 'skipOnError' => true, 'targetClass' => SpCourseClo::className(), 'targetAttribute' => ['clo_id' => 'id']],
-            [['delivery_id'], 'exist', 'skipOnError' => true, 'targetClass' => SpCourseDelivery::className(), 'targetAttribute' => ['delivery_id' => 'id']],
+            [['clo_id'], 'exist', 'skipOnError' => true, 'targetClass' => CourseClo::className(), 'targetAttribute' => ['clo_id' => 'id']],
+            [['delivery_id'], 'exist', 'skipOnError' => true, 'targetClass' => CourseDelivery::className(), 'targetAttribute' => ['delivery_id' => 'id']],
         ];
     }
 
@@ -54,7 +54,7 @@ class CourseCloDelivery extends \yii\db\ActiveRecord
      */
     public function getClo()
     {
-        return $this->hasOne(SpCourseClo::className(), ['id' => 'clo_id']);
+        return $this->hasOne(CourseClo::className(), ['id' => 'clo_id']);
     }
 
     /**
@@ -62,6 +62,6 @@ class CourseCloDelivery extends \yii\db\ActiveRecord
      */
     public function getDelivery()
     {
-        return $this->hasOne(SpCourseDelivery::className(), ['id' => 'delivery_id']);
+        return $this->hasOne(CourseDelivery::className(), ['id' => 'delivery_id']);
     }
 }

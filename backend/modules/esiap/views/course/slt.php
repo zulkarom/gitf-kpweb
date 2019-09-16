@@ -2,18 +2,19 @@
 
 use yii\helpers\Html;
 use kartik\widgets\ActiveForm;
-use wbraganca\dynamicform\DynamicFormWidget;
-use yii\jui\JuiAsset;
-use backend\modules\esiap\models\AssessmentCat;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
+
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\esiap\models\Course */
 
-$this->title = 'Update: ' . $model->course->course_name;
+
+$this->title = 'SLT: ' . $model->course->course_name . ' '. $model->course->course_code;
 $this->params['breadcrumbs'][] = ['label' => 'Courses', 'url' => ['index']];
 $this->params['breadcrumbs'][] = 'Update';
+
+$form = ActiveForm::begin(['id' => 'form-clo-assessment']); 
 ?>
 
 
@@ -28,7 +29,7 @@ $notional = 40;
 $slt_hour = $ch * 40;
 $aclo="";$asyll="";
 
-$form = ActiveForm::begin(['id' => 'form-clo-assessment']); 
+
 
 ?>
 <div class="row">
@@ -55,18 +56,13 @@ $form = ActiveForm::begin(['id' => 'form-clo-assessment']);
 		<td style="text-align:center;font-weight:bold" id="subtut">0</td>
 	</tr>
 	<tr>
-		<td>Practical</td>
+		<td>Lab / Studio / Others</td>
 		<td><input class="form-control tgcal" name="slt[practical_jam]" id="practical_jam" style="text-align:center" value="<?php echo $slt->practical_jam;?>"  /></td>
 		<td><input class="form-control tgcal" name="slt[practical_mggu]" id="practical_mggu" style="text-align:center" value="<?php echo $slt->practical_mggu;?>"  /></td>
 		<td style="text-align:center;font-weight:bold" id="subprac">0</td>
 	</tr>
 
-	<tr>
-		<td>Others</td>
-		<td><input class="form-control tgcal" name="slt[others_jam]" id="others_jam" style="text-align:center" value="<?php echo $slt->others_jam;?>"  /></td>
-		<td><input class="form-control tgcal" name="slt[others_mggu]" id="others_mggu" style="text-align:center" value="<?php echo $slt->others_mggu;?>"  /></td>
-		<td style="text-align:center;font-weight:bold" id="subot">0</td>
-	</tr>
+
 	
 	<tr>
 		<td colspan="3"><strong>Total Guided Learning (F2F)</strong></td>
@@ -74,7 +70,10 @@ $form = ActiveForm::begin(['id' => 'form-clo-assessment']);
 	</tr>
 	
 	<tr>
-		<td colspan="3"><strong>Guided Learning (NF2F)</strong></td>
+		<td colspan="3"><strong>Guided Learning (NF2F)</strong><br />
+		<i>*E-learning, Project, HIEPs, Assignment, LI, SIEP etc.</i>
+		
+		</td>
 		<td style="text-align:center"><input type="text" class="form-control tgcal"  id="jum-nf2f" name="slt[nf2f]" value="<?php echo $slt->nf2f;?>" style="text-align:center" /></td>
 	</tr>
 	
@@ -119,8 +118,9 @@ $form = ActiveForm::begin(['id' => 'form-clo-assessment']);
 	$assindirect= $model->assessmentIndirect;
 	
 	$arrass = "";
+	$i=1;
 	if($assdirect){
-		$i=1;
+		
 		foreach($assdirect as $rhead){
 			$id = $rhead->id;
 
@@ -150,8 +150,9 @@ $form = ActiveForm::begin(['id' => 'form-clo-assessment']);
 			<td><input class='form-control tgcal' name='assess[".$id . "]' id='ass-".$id . "' value='".$rhead->assess_hour ."' style='text-align:center' /></td>
 			</tr>
 			";
+			$i++;
 		}
-	$i++;
+	
 	}
 	?>
 	<tr>
@@ -171,11 +172,15 @@ $form = ActiveForm::begin(['id' => 'form-clo-assessment']);
 	
 	<table class='table table-hover table-striped'>
 	<thead>
-	<tr><th width='1%' rowspan='3'>WEEK</th><th rowspan='3' width="25%">TOPICS</th><th colspan="7" style="text-align:center">STUDENT LEARNING TIMES</th></tr>
+	<tr><th width='1%' rowspan='3'>WEEK</th><th rowspan='3' width="25%">TOPICS</th><th colspan="6" style="text-align:center">STUDENT LEARNING TIMES</th></tr>
 	
-	<tr><th style='text-align:center' colspan='4' >GUIDED LEARNING (F2F)</th><th rowspan="2" style="vertical-align:top;text-align:center">GUIDED LEARNING<br />(NF2F)</th><th rowspan="2" style="vertical-align:top">INDEPENDENT<br />LEARNING</th><th rowspan="2" style="vertical-align:top">TOTAL</th></tr>
+	<tr><th style='text-align:center' colspan='3' >GUIDED LEARNING (F2F)
 	
-	<tr><th >LECTURE</th><th>TUTORIAL</th><th>PRACTICAL</th><th>OTHERS</th></tr>
+	</th><th rowspan="2" style="vertical-align:top;text-align:center">GUIDED LEARNING<br />(NF2F)
+	<br /><i style="font-weight:normal">*E-learning, Project, HIEPs, Assignment, LI, SIEP etc.</i>
+	</th><th rowspan="2" style="vertical-align:top">INDEPENDENT<br />LEARNING</th><th rowspan="2" style="vertical-align:top">TOTAL</th></tr>
+	
+	<tr><th >LECTURE</th><th>TUTORIAL</th><th>LAB / STUDIO / OTHERS</th></tr>
 	</thead>
 <?php 
 
@@ -216,9 +221,7 @@ foreach($syll as $row){ ?>
 	<input type="text" style="text-align:center" class="form-control tgsyl" name="syll[<?php echo $row->id;?>][pnp_practical]" id="pnp_practical_<?php echo $row->id;?>" value="<?php echo $row->pnp_practical ; ?>"  />
 	</td>
 	
-	<td style="vertical-align:middle"><!-- OTHERS -->
-	<input type="text" style="text-align:center"  value="<?php echo $row->pnp_others ; ?>" name="syll[<?php echo $row->id;?>][pnp_others]" id="pnp_others_<?php echo $row->id;?>" class="form-control tgsyl" />
-	</td>
+
 	
 	<td style="vertical-align:middle">
 	<input type="text" style="text-align:center" class="form-control tgsyl" name="syll[<?php echo $row->id;?>][nf2f]" id="nf2f_<?php echo $row->id;?>" value="<?php echo $row->nf2f ; ?>"  />
@@ -243,10 +246,16 @@ $i++;
 <td id="subsyll_pnp_lecture">0</td>
 <td id="subsyll_pnp_tutorial">0</td>
 <td id="subsyll_pnp_practical">0</td>
-<td id="subsyll_pnp_others">0</td>
+
 <td id="subsyll_nf2f">0</td>
 <td id="subsyll_independent">0</td>
 <td id="subsyll_total">0</td>
+</tr>
+
+<tr style="text-align:center;font-weight:bold">
+<td colspan="2"><b>Assessment</b></td>
+<td colspan="5"></td>
+<td id="subsyll_assess">0</td>
 </tr>
 
 <tr style="text-align:center;font-weight:bold">
@@ -254,7 +263,7 @@ $i++;
 <td id="setsyll_pnp_lecture">0</td>
 <td id="setsyll_pnp_tutorial">0</td>
 <td id="setsyll_pnp_practical">0</td>
-<td id="setsyll_pnp_others">0</td>
+
 <td id="setsyll_nf2f">0</td>
 <td id="setsyll_independent">0</td>
 <td id="setsyll_total"><?php echo $slt_hour?></td>
@@ -265,7 +274,7 @@ $i++;
 <td id="gly_pnp_lecture"><span class="glyphicon glyphicon-warning-sign" style="color:red"></span></td>
 <td id="gly_pnp_tutorial"><span class="glyphicon glyphicon-warning-sign" style="color:red"></span></td>
 <td id="gly_pnp_practical"><span class="glyphicon glyphicon-warning-sign" style="color:red"></span></td>
-<td id="gly_pnp_others"><span class="glyphicon glyphicon-warning-sign" style="color:red"></span></td>
+
 <td id="gly_nf2f"><span class="glyphicon glyphicon-warning-sign" style="color:red"></span></td>
 <td id="gly_independent"><span class="glyphicon glyphicon-warning-sign" style="color:red"></span></td>
 <td id="gly_total"><span class="glyphicon glyphicon-warning-sign" style="color:red"></span></td>
@@ -273,7 +282,15 @@ $i++;
 </table>
 </div>
 	</div>
-	<div align="center">
+	
+
+
+
+
+
+</div>
+</div>
+<div align="center">
 	
 	<?=$form->field($model, 'updated_at')->hiddenInput(['value' => time()])->label(false)?>
 
@@ -284,15 +301,9 @@ $i++;
 <?php ActiveForm::end()?>
 
 
-</div>
-</div>
-
-
-
-
 <?php 
 
-$js = <<<'EOD'
+$js = '
 
 
 	cal_indlearn();
@@ -318,7 +329,7 @@ function cal_indlearn(){
 	$("#indlearn").text(ind);
 	$("#setsyll_independent").text(myfor(ind));
 	if(ind < 0 ){
-		$("#negwarn").html('<span class="glyphicon glyphicon-warning-sign"></span> The Value Cannot Be Negative!');
+		$("#negwarn").html(\'<span class="glyphicon glyphicon-warning-sign"></span> The Value Cannot Be Negative!\');
 	}else{
 		$("#negwarn").html("");
 	}
@@ -327,11 +338,11 @@ function cal_indlearn(){
 }
 
 function getSlt(){
-	return <?php echo $slt_hour?>;
+	return ' . $slt_hour . ';
 }
 
 function calculate_learning(){
-var besar = cal_lec() + cal_tut() + cal_prac() + cal_ot();	
+var besar = cal_lec() + cal_tut() + cal_prac() ;	
 $("#jumlearning").text(myfor(besar));
 return besar;
 }
@@ -352,14 +363,14 @@ function myfor(num){
 	return parseFloat(num.toFixed(2)) + 0;
 }
 
-function cal_ot(){
+/* function cal_ot(){
 	var ot_hour = $("#others_jam").val();
 	var ot_week = $("#others_mggu").val();
 	var jum = myparse(ot_hour) * myparse(ot_week);
 	$("#subot").text(myfor(jum));
 	$("#setsyll_pnp_others").text(myfor(jum));
 	return jum;
-}
+} */
 function cal_prac(){
 	var prac_hour = $("#practical_jam").val();
 	var prac_week = $("#practical_mggu").val();
@@ -396,7 +407,7 @@ function myparse(num){
 }
 
 function cal_ass(){
-	var arr = [<?php echo $arrass;?>];
+	var arr = [' . $arrass . '];
 	var jum = 0;
 	
 	for(i=0;i<arr.length;i++){
@@ -406,6 +417,7 @@ function cal_ass(){
 	
 	
 	$("#jumass").text(myfor(jum));
+	$("#subsyll_assess").text(myfor(jum));
 	
 	return jum;
 	
@@ -417,13 +429,18 @@ function glystr(what){
 		sign = "warning-sign";
 		color = "red";
 	}
-	return '<span class="glyphicon glyphicon-' + sign + '" style="color:' + color + '"></span>';
+	return \'<span class="glyphicon glyphicon-\' + sign + \'" style="color:\' + color + \'"></span>\';
 }
 function checkEqual(){
-	var arrw = ["pnp_lecture", "pnp_tutorial", "pnp_practical", "pnp_others", "independent", "nf2f", "total"];
+	
+	var arrw = ["pnp_lecture", "pnp_tutorial", "pnp_practical", "independent", "nf2f", "total"];
 	for(s=0;s<arrw.length;s++){
-		var syl = $("#subsyll_"+arrw[s]).text();
+		var syl = myparse($("#subsyll_"+arrw[s]).text());
 		var set = $("#setsyll_"+arrw[s]).text();
+		if(arrw[s] == "total"){
+			syl += myparse($("#subsyll_assess").text());
+		}
+		
 		
 		if(syl == set){
 			$("#gly_"+arrw[s]).html(glystr(1));
@@ -434,10 +451,10 @@ function checkEqual(){
 }
 
 function cal_syll_week(){
-	var arrsyl = [<?php echo $arr_syll ; ?>];
+	var arrsyl = ['.$arr_syll.'];
 	var tot= 0;
 	for(n=0;n<arrsyl.length;n++){
-		var arrw = ["pnp_lecture", "pnp_tutorial", "pnp_practical", "pnp_others", "independent", "nf2f"];
+		var arrw = ["pnp_lecture", "pnp_tutorial", "pnp_practical",  "independent", "nf2f"];
 		sub = 0;
 		for(s=0;s<arrw.length;s++){
 			sub += getNumValue(arrw[s], arrsyl[n]);
@@ -447,11 +464,12 @@ function cal_syll_week(){
 	}
 	$("#subsyll_total").text(myfor(tot));
 }
+
 function cal_syll_col(){
-	var arrw = ["pnp_lecture", "pnp_tutorial", "pnp_practical", "pnp_others", "independent", "nf2f"];
+	var arrw = ["pnp_lecture", "pnp_tutorial", "pnp_practical", "independent", "nf2f"];
 	var tot= 0;
 	for(s=0;s<arrw.length;s++){
-		var arrsyl = [<?php echo $arr_syll ; ?>];
+		var arrsyl = ['.$arr_syll.'];
 		sub = 0;
 		for(n=0;n<arrsyl.length;n++){
 			sub += getNumValue(arrw[s], arrsyl[n]);
@@ -471,7 +489,7 @@ function getNumValue(mystr, week){
 
 
 
-EOD;
+';
 
 $this->registerJs($js);
 

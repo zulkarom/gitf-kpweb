@@ -9,7 +9,7 @@ use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\esiap\models\Course */
 
-$this->title = 'Update: ' . $model->course->course_name;
+$this->title = 'Taxonomy: ' . $model->course->course_name . ' '. $model->course->course_code;
 $this->params['breadcrumbs'][] = ['label' => 'Courses', 'url' => ['index']];
 $this->params['breadcrumbs'][] = 'Update';
 $plo_num = $model->plo_num;
@@ -43,7 +43,10 @@ if($clos){
 	foreach($clos as $index => $clo){
 		echo '<tr>';
 		echo '<td style="vertical-align:middle;" >CLO'.$x.'</td>';
-		echo '<td style="vertical-align:middle;">' . $clo->clo_text . '<br /><i>'.$clo->clo_text_bi.'</i></td>';
+		echo '<td style="vertical-align:middle;">' . $clo->clo_text . '<br /><i>'.$clo->clo_text_bi.'</i>
+		<br />
+		('.$clo->plo .')
+		</td>';
 		echo '<td>';
 		
 		echo '<table class="table table-hover table-striped">
@@ -127,7 +130,7 @@ if($clos){
 
 
 <div class="form-group">
-        <?= Html::submitButton('SAVE CLO TAXONOMY', ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> SAVE CLO TAXONOMY', ['class' => 'btn btn-primary']) ?>
     </div>
 <?php ActiveForm::end()?>
 

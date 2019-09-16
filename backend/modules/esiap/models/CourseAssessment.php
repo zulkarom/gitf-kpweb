@@ -19,6 +19,8 @@ use Yii;
  */
 class CourseAssessment extends \yii\db\ActiveRecord
 {
+	public $percentage;
+	
     /**
      * @inheritdoc
      */
@@ -33,10 +35,16 @@ class CourseAssessment extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['assess_name', 'assess_name_bi', 'assess_cat'], 'required'],
+           [['assess_name', 'assess_name_bi', 'assess_cat'], 'required', 'on' => 'saveall'],
+			
+			[['crs_version_id'], 'required', 'on' => 'add'],
+			
 			[['assess_hour'], 'required', 'on' => 'update_slt'],
 			
-            [['crs_version_id', 'assess_cat', 'trash', 'created_by', 'assess_hour'], 'integer'],
+            [['crs_version_id', 'assess_cat', 'trash', 'created_by'], 'integer'],
+			
+			[['assess_hour'], 'number'],
+			
             [['created_at', 'updated_at'], 'safe'],
             [['assess_name', 'assess_name_bi'], 'string', 'max' => 100],
         ];
@@ -63,6 +71,33 @@ class CourseAssessment extends \yii\db\ActiveRecord
 	public function getCourseVersion(){
         return $this->hasOne(CourseVersion::className(), ['id' => 'crs_version_id']);
     }
+	
+	public function getAssessmentPercentage(){
+		$per = CourseCloAssessment::find()
+		->select('SUM(percentage) as percentage')
+		->where(['assess_id' => $this->id])
+		->groupBy('assess_id')
+		->one();
+		if($per){
+			return $per->percentage;
+		}else{
+			return 0;
+		}
+	}
+	
+	public function flashError(){
+        if($this->getErrors()){
+            foreach($this->getErrors() as $error){
+                if($error){
+                    foreach($error as $e){
+                        Yii::$app->session->addFlash('error', $e);
+                    }
+                }
+            }
+        }
+
+    }
+
 	
 
 

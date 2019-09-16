@@ -41,7 +41,7 @@ class CourseAdminSearch extends Course
      */
     public function search($params)
     {
-        $query = Course::find()->where(['faculty' => 1]);
+        $query = Course::find()->where(['faculty_id' => 1]);
 
         // add conditions that should always apply here
 

@@ -84,7 +84,7 @@ class Menu
 				
 				['label' => 'References', 'icon' => 'book', 'url' => ['/esiap/course/course-reference', 'course' => $course_id]],
 				
-				['label' => 'Report', 'icon' => 'book', 'url' => ['/esiap/course']],
+				['label' => 'Report', 'icon' => 'book', 'url' => ['/esiap/course/report', 'course' => $course_id]],
 
                  ]
                     ];
@@ -183,7 +183,7 @@ class Menu
                         'url' => '#',
                         'items' => [
 						
-				['label' => 'Website Dashboard', 'icon' => 'dashboard', 'url' => ['/website']],
+				['label' => 'Dashboard', 'icon' => 'dashboard', 'url' => ['/website']],
 				
 				['label' => 'Front Slider', 'icon' => 'pencil', 'url' => ['/website/front-slider']],
 				

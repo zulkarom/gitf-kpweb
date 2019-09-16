@@ -4,7 +4,7 @@ namespace backend\modules\esiap\models;
 
 
 use Yii;
-use backend\models\Component;
+use backend\models\Faculty;
 use common\models\User;
 
 /**
@@ -62,14 +62,10 @@ class Course extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'component_id' => 'Component ID',
             'course_name' => 'Course Name (BM)',
 			'course_name_bi' => 'Course Name (EN)',
             'course_code' => 'Course Code',
 			'is_active' => 'Is Active',
-			'campus_1' => 'Kampus Bachok',
-			'campus_2' => 'Kampus Kota',
-			'campus_3' => 'Kampus Jeli',
         ];
     }
 	
@@ -87,7 +83,9 @@ class Course extends \yii\db\ActiveRecord
 	}
 	
 	public function allCoursesArray(){
-		$result = self::find()->orderBy('course_name ASC')->all();
+		$result = self::find()->orderBy('course_name ASC')
+		->where(['faculty' => 1, 'is_dummy' => 0])
+		->all();
 		$array[0] = 'Tiada / Nil';
 		foreach($result as $row){
 			$array[$row->id] = $row->course_name .' - '.$row->course_code;
@@ -112,5 +110,10 @@ class Course extends \yii\db\ActiveRecord
 		return CourseVersion::findOne(['course_id' => $this->id, 'is_active' => 1]);
 
 	}
+	
+	public function getFaculty(){
+        return $this->hasOne(Faculty::className(), ['id' => 'faculty_id']);
+    }
+
 
 }

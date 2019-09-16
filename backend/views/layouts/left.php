@@ -88,10 +88,9 @@ use backend\models\Menu;
                     ['label' => 'MAIN MENU', 'options' => ['class' => 'header']],
 					['label' => 'Dashboard', 'icon' => 'dashboard', 'url' => ['/site']],
 					Menu::courseFocus(),
-					Menu::profile(),
-					
 					$focus,
 					$admin_focus,
+					Menu::profile(),
 					//$modules,
 					
 					['label' => 'MODULES', 'options' => ['class' => 'header']],

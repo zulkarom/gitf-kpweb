@@ -35,6 +35,7 @@ class CourseReference extends \yii\db\ActiveRecord
             [['crs_version_id'], 'required'],
             [['crs_version_id', 'is_classic', 'is_main'], 'integer'],
             [['ref_year'], 'safe'],
+			[['ref_full'], 'string'],
             [['ref_author', 'ref_title', 'ref_others'], 'string', 'max' => 200],
         ];
     }
@@ -48,6 +49,7 @@ class CourseReference extends \yii\db\ActiveRecord
             'id' => 'ID',
             'crs_version_id' => 'Crs Version ID',
             'ref_author' => 'Ref Author',
+			'ref_full' => 'Full Reference',
             'ref_year' => 'Ref Year',
             'ref_title' => 'Ref Title',
             'ref_others' => 'Ref Others',
@@ -55,4 +57,26 @@ class CourseReference extends \yii\db\ActiveRecord
             'is_main' => 'Is Main',
         ];
     }
+	
+	public function getFormatedReference(){
+		$str = $this->ref_full;
+		$str_arr = explode("*", $str);
+		$return = '';
+		$i = 0;
+		$x = 1;
+		foreach($str_arr as $s){
+			if($x == 1){
+				$tag = '';
+			}else{
+				$tag = $i == 0 ? '</i>' : '<i>';
+			}
+			
+			$return .= $tag.$s;
+			
+			$i = $i == 0 ? 1 : 0;
+			$x++;
+		}
+		
+		return $return;
+	}
 }

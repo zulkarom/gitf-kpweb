@@ -1,14 +1,19 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
+use richardfan\widget\JSRegister;
+use yii\bootstrap\Modal;
+use kartik\sortable\Sortable;
 
 
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\esiap\models\Course */
 
-$this->title = 'Update: ' . $model->course->course_name;
+
+$this->title = 'Syllabus: ' . $model->course->course_name . ' '. $model->course->course_code;
 $this->params['breadcrumbs'][] = ['label' => 'Courses', 'url' => ['index']];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
@@ -19,6 +24,7 @@ $this->params['breadcrumbs'][] = 'Update';
 <div class="box-header"></div>
 <div class="box-body">	
 
+<i>* Do consider to put also mid semester break here normally at Week 7 or Week 8 <br />Topik (BM) = Cuti Pertengahan Semester | Topic (EN) = Mid Semester Break</i>
     
 <?=$form->field($model, 'updated_at')->hiddenInput(['value' => time()])->label(false)?>
 
@@ -26,13 +32,15 @@ $this->params['breadcrumbs'][] = 'Update';
 
 
 	<table class='table table-hover table-striped'>
-	<thead><tr><th width='10%'>WEEK</th><th width='10%'>CLO</th><th>TOPICS</th></tr></thead>
+	<thead><tr><th width='10%'>WEEK</th><th width='10%'>CLO</th><th>TOPICS</th><th></th></tr></thead>
 <?php 
 $totalclo = count($clos);
+$i = 1;
 foreach($syllabus as $row){ ?>
 	<tr>
-	<td><b>WEEK <?php echo $row->week_num ; ?></b>
-	<input id="input-week-<?php echo $row->week_num ; ?>" name="input-week-<?php echo $row->week_num ; ?>" type="hidden" value="" />
+	<td><label>WEEK</label>
+	<input type="text" class="form-control" value="<?=$row->week_num?>" name="week-num-<?=$i?>" required />
+	<input id="input-week-<?php echo $i ; ?>" name="input-week-<?php echo $i ; ?>" type="hidden" value="" />
 	</td>
 	<td>
 	<?php 
@@ -42,13 +50,13 @@ foreach($syllabus as $row){ ?>
 	}
 	for($f=1;$f<=$totalclo;$f++){
 		$check = in_array($f, $clo) ? "checked" : "";
-		echo '<div class="form-group"><label><input type="checkbox" value="'.$f.'" name="'.$row->week_num.'-clo[]" '.$check.' /> CLO'.$f . "</label></div>";
+		echo '<div class="form-group"><label><input type="checkbox" value="'.$f.'" name="'.$i.'-clo[]" '.$check.' /> CLO'.$f . "</label></div>";
 	}
 	
 	?>
 	</td>
 	<td>
-		<div id='topic-<?php echo $row->week_num; ?>'>
+		<div id='topic-<?php echo $i; ?>'>
 		<?php 
 		$arr_all = json_decode($row->topics);
 		if($arr_all){
@@ -61,13 +69,13 @@ foreach($syllabus as $row){ ?>
 		</div>
 		<div class='col-md-5'>
 			<div class='form-group'>
-			<textarea class='form-control topic-text'><?php echo $rt->top_bm;?></textarea>
+			<textarea rows="1" class='form-control topic-text'><?php echo $rt->top_bm;?></textarea>
 			</div>
 		</div>
-		<div class='col-md-1'><label>Topic: </label><br><i>(BI)</i></div>
+		<div class='col-md-1'><label>Topic: </label><br><i>(EN)</i></div>
 		<div class='col-md-5'>
 			<div class='form-group'>
-			<textarea class='form-control topic-text'><?php echo $rt->top_bi;?></textarea>
+			<textarea rows="1" class='form-control topic-text'><?php echo $rt->top_bi;?></textarea>
 			</div>
 		</div>
 		</div>
@@ -81,17 +89,17 @@ foreach($syllabus as $row){ ?>
 			?>
 			<div class='row-subtopic'><div class='row'>
 			<div class='col-md-1'></div>
-			<div class='col-md-1'><label>Sub Topik: </label><br><i>(BM)</i></div>
+			<div class='col-md-1'><label>Sub (BM): </label></div>
 			<div class='col-md-4'>
 			<div class='form-group'>
-			<textarea class='form-control subtopic-text'><?php echo $rst->sub_bm;?></textarea>
+			<textarea rows='1' class='form-control subtopic-text'><?php echo $rst->sub_bm;?></textarea>
 			</div>
 			</div>
 			<div class='col-md-1'></div>
-			<div class='col-md-1'><label>Sub Topic: </label><br><i>(BI)</i></div>
+			<div class='col-md-1'><label>Sub (EN): </label></div>
 			<div class='col-md-4'>
 			<div class='form-group'>
-			<textarea class='form-control subtopic-text'><?php echo $rst->sub_bi;?></textarea>
+			<textarea rows='1' class='form-control subtopic-text'><?php echo $rst->sub_bi;?></textarea>
 			</div>
 			</div>
 			</div></div>
@@ -103,9 +111,9 @@ foreach($syllabus as $row){ ?>
 			<div class='row'>
 				<div class='col-md-1'></div>
 				<div class='col-md-6'>
-				<button type='button' class='btn btn-default btn-sm addsubtopic' >
-				<span class='glyphicon glyphicon-plus'></span> Add Sub Topic</button> <button class='btn btn-default btn-sm removesubtopic' type='button'>
-				<span class='glyphicon glyphicon-remove'></span> Remove Last Sub Topic</button>
+				<i style='font-size:12px'><a href="javascript:void(0)" class='addsubtopic' >
+				<span class='glyphicon glyphicon-plus'></span> Add Sub Topic</a> &nbsp; <a href="javascript:void(0)" class='removesubtopic'>
+				<span class='glyphicon glyphicon-remove'></span> Remove Last Sub Topic</a></i>
 				</div>
 			</div>
 		</div>
@@ -115,33 +123,128 @@ foreach($syllabus as $row){ ?>
 		
 		
 		<br />
-		<button type='button' class='btn btn-default' id='btn-topic-<?php echo $row->week_num;?>'>
-		<span class='glyphicon glyphicon-plus'></span> Add Topic</button> <button type='button' class='btn btn-default' id='btnx-topic-<?php echo $row->week_num;?>'>
+		<button type='button' class='btn btn-default btn-sm' id='btn-topic-<?php echo $i;?>'>
+		<span class='glyphicon glyphicon-plus'></span> Add Topic</button> <button type='button' class='btn btn-default btn-sm' id='btnx-topic-<?php echo $i;?>'>
 		<span class='glyphicon glyphicon-remove'></span> Remove Last Topic</button>
 	
 	
 	
 	</td>
+	<td>
+	
+	<?= Html::a('<span class="glyphicon glyphicon-remove"></span>', ['course/course-syllabus-delete', 'version' => $model->id, 'id' => $row->id], [
+            'data' => [
+                'confirm' => 'Are you sure you want to delete this week?',
+                'method' => 'post',
+            ],
+        ]) ?>
+
+	
+	</td>
 	</tr>
-<?php 
+	
+<?php
+$i++;
 }
 
 ?>
+
+<tr><td colspan="3">
+
+
+	<div class="row">
+	<div class="col-md-1">
+
+
+</div>
+<div class="col-md-11"><a href="<?=Url::to(['course/course-syllabus-add', 'version' => $model->id])?>" class="btn btn-warning btn-sm"><span class='glyphicon glyphicon-plus'></span> Add Week</a> 
+
+
+<?php 
+Modal::begin([
+    'header' => '<h5>Re-order Weeks</h5>',
+    'toggleButton' => ['label' => '<i class="glyphicon glyphicon-move"></i> Re-order Weeks', 'class' => 'btn btn-warning btn-sm'],
+	'size' => 'modal-sm',
+    'footer' => '<div class="form-group">
+                            <a id="btn-reorder" href="'.Url::to(['course/course-syllabus-reorder', 'id' => 24]) .'" class="btn btn-success">Re-order</a> 
+                         </div>
+
+                         <?php ActiveForm::end(); ?>'
+]);
+
+$array = [];
+
+foreach($syllabus as $row){
+	$array[] = ['content' => 'WEEK ' . $row->week_num, 'options' => ['id' => $row->id, 'class' => 'week-item']];
+}
+
+echo Sortable::widget([
+    'type' => Sortable::TYPE_LIST,
+	'showHandle'=>true,
+	'pluginEvents' => [
+		'sortupdate' => 'function() {updateWeekSorting();}',
+	],
+    'items' => $array
+]); 
+
+Modal::end();
+
+?>
+
+</div>
+
+
+
+</div>
+	
+	<br /><i>* please save before adding or removing weeks</i>
+	</td><td colspan="2"></td></tr>
+<?php 
+if(!$model->final_week){
+	$model->final_week = '17-19';
+}
+if(!$model->study_week){
+	$model->study_week = '16';
+}
+
+?>
+<tr><td>
+	<label>WEEK</label>
+	<input type="text" class="form-control" value="<?=$model->study_week?>" name="study-week" />
+	
+	</td>
+	
+	<td colspan="3" style="vertical-align:middle">Minggu Ulang Kaji<br />
+<i>Study Week</i>
+</td></tr>	
+
+<tr><td>
+	<label>WEEK</label>
+	<input type="text" class="form-control" value="<?=$model->final_week?>" name="final-week" />
+	
+	</td>
+	
+	<td colspan="3" style="vertical-align:middle">Peperiksaan Akhir<br />
+<i>Final Exam</i>
+</td></tr>	
+	
+	
 </table>
+
+</div></div>
 
 
     <div class="form-group">
-        <?= Html::submitButton('SAVE SYLLABUS', ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> SAVE SYLLABUS', ['class' => 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
 
 
-<?php 
-
-$js = <<<'EOD'
-
-for(i=1;i<=14;i++){
+<?php JSRegister::begin(); ?>
+<script>
+var tw = <?=count($syllabus)?>;
+for(i=1;i<=tw;i++){
 		$("#btn-topic-"+i).click(function(){
 			var att = $(this).attr('id');
 			att = att.split('-');
@@ -150,6 +253,7 @@ for(i=1;i<=14;i++){
 			btnSubTopic();
 			clearBtn();
 			btnSubTopic();
+			 autosizeTextarea();
 			
 		});
 		$("#btnx-topic-"+i).click(function(){
@@ -166,11 +270,6 @@ for(i=1;i<=14;i++){
 	
 	btnSubTopic();
 	
-	$('#test').click(function(){
-	
-	});
-	
-
 	$("form#formsyll").submit(function(){
     putJson();
 	});
@@ -179,7 +278,7 @@ for(i=1;i<=14;i++){
 
 
 function putJson(){
-	for(g=1;g<=14;g++){
+	for(g=1;g<=tw;g++){
 		var myArray = [];
 	var topic;
 	var subtopic;
@@ -234,6 +333,7 @@ function btnSubTopic(){
 	$(".addsubtopic").click(function(){
 		var sel = $(this).parents("div.consubtopic").children(".consubtopicinput");
 		sel.append(genSubTopic());
+		 autosizeTextarea();
 	});
 	$(".removesubtopic").click(function(){
 		var sel = $(this).parents("div.consubtopic").children(".consubtopicinput").children("div.row-subtopic"); 
@@ -245,17 +345,17 @@ function btnSubTopic(){
 function genSubTopic(){
 	var html = "<div class='row-subtopic'><div class='row'>";
 	html += "<div class='col-md-1'></div>";
-	html += "<div class='col-md-1'><label>Sub Topik: </label><br><i>(BM)</i></div>";
+	html += "<div class='col-md-1'><label>Sub (BM): </label></div>";
 	html += "<div class='col-md-4'>";
 	html += "<div class='form-group'>";
-	html += "<textarea class='form-control subtopic-text' ></textarea>";
+	html += "<textarea rows='1' class='form-control subtopic-text' ></textarea>";
 	html += "</div>";
 	html += "</div>";
 	html += "<div class='col-md-1'></div>";
-	html += "<div class='col-md-1'><label>Sub Topic: </label><br><i>(BI)</i></div>";
+	html += "<div class='col-md-1'><label>Sub (EN): </label></div>";
 	html += "<div class='col-md-4'>";
 	html += "<div class='form-group'>";
-	html += "<textarea class='form-control subtopic-text' ></textarea>";
+	html += "<textarea rows='1' class='form-control subtopic-text' ></textarea>";
 	html += "</div>";
 	html += "</div>";
 	html += "</div></div>";
@@ -270,13 +370,13 @@ function genTopic(){
 		html += "</div>";
 		html += "<div class='col-md-5'>";
 			html += "<div class='form-group'>";
-			html += "<textarea class='form-control topic-text' ></textarea>";
+			html += "<textarea rows='1' class='form-control topic-text' ></textarea>";
 			html += "</div>";
 		html += "</div>";
-		html += "<div class='col-md-1'><label>Topic: </label><br><i>(BI)</i></div>";
+		html += "<div class='col-md-1'><label>Topic: </label><br><i>(EN)</i></div>";
 		html += "<div class='col-md-5'>";
 			html += "<div class='form-group'>";
-			html += "<textarea class='form-control topic-text' ></textarea>";
+			html += "<textarea rows='1' class='form-control topic-text' ></textarea>";
 			html += "</div>";
 		html += "</div>";
 		html += "</div>";
@@ -286,9 +386,10 @@ function genTopic(){
 			html += "<div class='row'>";
 				html += "<div class='col-md-1'></div>";
 				html += "<div class='col-md-6'>";
-				html += "<button type='button' class='btn btn-default btn-sm addsubtopic' >";
-				html += "<span class='glyphicon glyphicon-plus'></span> Add Sub Topic</button> <button type='button' class='btn btn-default btn-sm removesubtopic'>";
-				html += "<span class='glyphicon glyphicon-remove'></span> Remove Last Sub Topic</button>";
+				
+				html += "<i style='font-size:12px'><a href='javascript:void(0)' class='addsubtopic' >";
+				html += "<span class='glyphicon glyphicon-plus'></span> Add Sub Topic</a> &nbsp; <a href='javascript:void(0)' class='removesubtopic'>";
+				html += "<span class='glyphicon glyphicon-remove'></span> Remove Last Sub Topic</a></i>";
 				html += "</div>";
 			html += "</div>";
 		html += "</div>";
@@ -297,9 +398,27 @@ function genTopic(){
 	return html;
 }
 
+function autosizeTextarea(){
+    $("textarea").each(function(){
+        autosize($(this));
+    });
+}
 
-EOD;
+function updateWeekSorting(){
+	var order = 0;
+	var params = '';
+	$("#w1").find('.week-item').each(function(i, el){
+		order = i + 1;
+		id = this.id;
+		params += '&or[' + id + ']=' + order;
+		
+     });
+	 var url = $('#btn-reorder').attr('href');
+	 $('#btn-reorder').attr('href', url + params);
+	 //console.log();
+}
 
-$this->registerJs($js);
+//var ids = $('#w1 li').map(function(i) { return this.id; }).get();
 
-?>
+</script>
+<?php JSRegister::end(); ?>

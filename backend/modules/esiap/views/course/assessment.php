@@ -2,8 +2,6 @@
 
 use yii\helpers\Html;
 use kartik\widgets\ActiveForm;
-use wbraganca\dynamicform\DynamicFormWidget;
-use yii\jui\JuiAsset;
 use backend\modules\esiap\models\AssessmentCat;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
@@ -11,7 +9,8 @@ use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\esiap\models\Course */
 
-$this->title = 'Update: ' . $model->course->course_name;
+
+$this->title = 'Assessment: ' . $model->course->course_name . ' '. $model->course->course_code;
 $this->params['breadcrumbs'][] = ['label' => 'Courses', 'url' => ['index']];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
@@ -22,27 +21,11 @@ $this->params['breadcrumbs'][] = 'Update';
 <div class="box-header"></div>
 <div class="box-body">	
 
-<?php DynamicFormWidget::begin([
-        'widgetContainer' => 'dynamicform_wrapper',
-        'widgetBody' => '.container-items',
-        'widgetItem' => '.row-item',
-        'limit' => 10,
-        'min' => 1,
-        'insertButton' => '.add-item',
-        'deleteButton' => '.remove-item',
-        'model' => $items[0],
-        'formId' => 'dynamic-form',
-        'formFields' => [
-            'assess_name',
-            'assess_name_bi',
-			'assess_cat',
-        ],
-    ]); ?>
     
     <table class="table table-bordered table-striped">
         <thead>
             <tr>
-                <th width="5%"></th>
+               
                 <th>Assessment (BM)</th>
                 <th>Assessment (EN)</th>
 				<th>Category</th>
@@ -54,9 +37,7 @@ $this->params['breadcrumbs'][] = 'Update';
         <tbody class="container-items">
         <?php foreach ($items as $indexItem => $item): ?>
             <tr class="row-item">
-                <td class="sortable-handle text-center vcenter" style="cursor: move;">
-                        <i class="fa fa-arrows"></i>
-                    </td>
+        
             
                 <td class="vcenter">
                     <?php
@@ -81,7 +62,7 @@ $this->params['breadcrumbs'][] = 'Update';
                 
 
                 <td class="text-center vcenter" style="width: 90px;">
-                    <button type="button" class="remove-item btn btn-default btn-sm"><span class="fa fa-remove"></span></button>
+                    <a href="<?=Url::to(['course-assessment-delete', 'version' => $model->id, 'id' => $item->id])?>" class="remove-item btn btn-default btn-sm"><span class="fa fa-remove"></span></a>
                 </td>
             </tr>
          <?php endforeach; ?>
@@ -89,9 +70,10 @@ $this->params['breadcrumbs'][] = 'Update';
         
         <tfoot>
             <tr>
-            <td></td>
+         
                 <td colspan="3">
-                <button type="button" class="add-item btn btn-default btn-sm"><span class="fa fa-plus"></span> New Assessment</button>
+                <a href="<?=Url::to(['course-assessment-add', 'version' => $model->id])?>" class="add-item btn btn-default btn-sm"><span class="fa fa-plus"></span> New Assessment</a>
+				<br /><br /><i>* please save before add or remove assessment</i>
                 
                 </td>
                 <td>
@@ -104,47 +86,19 @@ $this->params['breadcrumbs'][] = 'Update';
     </table>
     
     
-    
-    <?php DynamicFormWidget::end(); ?>
-    
 <?=$form->field($model, 'updated_at')->hiddenInput(['value' => time()])->label(false)?>
 
 
+
+
+
+
+</div>
+</div>
+
     <div class="form-group">
-        <?= Html::submitButton('SAVE ASSESSMENT', ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> SAVE ASSESSMENT', ['class' => 'btn btn-primary']) ?>
     </div>
 
+
     <?php ActiveForm::end(); ?>
-
-</div>
-</div>
-
-
-<?php
-
-$js = <<<'EOD'
-
-var fixHelperSortable = function(e, ui) {
-    ui.children().each(function() {
-        $(this).width($(this).width());
-    });
-    return ui;
-};
-
-$(".container-items").sortable({
-    items: "tr",
-    cursor: "move",
-    opacity: 0.6,
-    axis: "y",
-    handle: ".sortable-handle",
-    helper: fixHelperSortable,
-    update: function(ev){
-        $(".dynamicform_wrapper").yiiDynamicForm("updateContainer");
-    }
-}).disableSelection();
-
-EOD;
-
-JuiAsset::register($this);
-$this->registerJs($js);
-?>

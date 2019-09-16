@@ -40,11 +40,11 @@ class CourseProfile extends \yii\db\ActiveRecord
 			
 			[['crs_version_id'], 'required', 'on' => 'fresh'],
 			
-            [['synopsis', 'synopsis_bi', 'transfer_skill', 'transfer_skill_bi', 'feedback', 'feedback_bi'], 'required', 'on' => 'update'],
+            [['synopsis', 'synopsis_bi', 'transfer_skill', 'transfer_skill_bi', 'feedback', 'feedback_bi', 'objective', 'objective_bi', 'rational', 'rational_bi'], 'required', 'on' => 'update'],
 			
 			
             [['crs_version_id', 'prerequisite'], 'integer'],
-            [['synopsis', 'synopsis_bi', 'transfer_skill', 'transfer_skill_bi', 'feedback', 'feedback_bi', 'staff_academic', 'requirement', 'additional'], 'string'],
+            [['synopsis', 'synopsis_bi', 'transfer_skill', 'transfer_skill_bi', 'feedback', 'feedback_bi', 'staff_academic', 'requirement', 'additional', 'objective', 'objective_bi', 'rational', 'rational_bi'], 'string'],
             [['offer_at'], 'string', 'max' => 200],
         ];
     }
@@ -60,6 +60,10 @@ class CourseProfile extends \yii\db\ActiveRecord
             'prerequisite' => 'Prerequisite',
             'synopsis' => 'Synopsis (BM)',
             'synopsis_bi' => 'Synopsis (EN)',
+			'objective' => 'Objective (BM)',
+            'objective_bi' => 'Objective (EN)',
+			'rational' => 'Rational (BM)',
+            'rational_bi' => 'Rational (EN)',
             'transfer_skill' => 'Transfer Skill (BM)',
             'transfer_skill_bi' => 'Transfer Skill (EN)',
             'feedback' => 'Feedback (BM)',
@@ -77,6 +81,26 @@ class CourseProfile extends \yii\db\ActiveRecord
 	
 	public function getCourse(){
 		return Course::findOne($this->courseVersion->course_id);
+	}
+	
+	public function getCoursePrerequisite(){
+		$result = Course::findOne($this->prerequisite);
+		if($result){
+			return [$result->course_code, $result->course_code];
+		}else{
+			return ['Tiada','Nil'];
+		}
+	}
+	
+	public static function checkProfile($version){
+		$slt = self::findOne(['crs_version_id' => $version]);
+		if(!$slt){
+			$slt = new self();
+			$slt->scenario = 'fresh';
+			$slt->crs_version_id = $version;
+			$slt->save();
+		}
+		
 	}
 
 }

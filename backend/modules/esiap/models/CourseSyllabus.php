@@ -22,6 +22,7 @@ use Yii;
  */
 class CourseSyllabus extends \yii\db\ActiveRecord
 {
+	public $last_order;
     /**
      * @inheritdoc
      */
@@ -36,12 +37,15 @@ class CourseSyllabus extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['crs_version_id', 'week_num', 'topics'], 'required'],
+            [['crs_version_id', 'week_num', 'topics'], 'required', 'on' => 'saveall'],
+			
+			[['crs_version_id'], 'required', 'on' => 'addweek'],
 			
 			[['pnp_lecture', 'pnp_tutorial', 'pnp_practical', 'pnp_others', 'independent',  'nf2f'], 'required', 'on' => 'slt'],
 			
-            [['crs_version_id', 'week_num'], 'integer'],
-            [['topics'], 'string'],
+            [['crs_version_id'], 'integer'],
+			
+            [['topics', 'week_num'], 'string'],
 			
             [['pnp_lecture', 'pnp_tutorial', 'pnp_practical', 'pnp_others', 'independent', 'assessment', 'nf2f'], 'number'],
 			
@@ -71,12 +75,24 @@ class CourseSyllabus extends \yii\db\ActiveRecord
     }
 	
 	public static function createWeeks($version){
-		for($i=1;$i<=14;$i++){
+		for($i=1;$i<=15;$i++){
 			$week = new self();
+			$week->scenario = 'addweek';
 			$week->crs_version_id = $version;
-			$week->week_num = $i;
+
 			$week->topics = '[{"top_bm":"","top_bi":"","sub_topic":[]}]';
-			$week->save();
+			if(!$week->save()){
+				
+			}
+		}
+		
+		
+	}
+	
+	public static function checkSyllabus($version){
+		$result = self::find()->where(['crs_version_id' => $version])->all();
+		if(!$result){
+			self::createWeeks($version);
 		}
 	}
 	

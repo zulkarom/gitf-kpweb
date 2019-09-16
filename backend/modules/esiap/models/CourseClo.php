@@ -205,4 +205,110 @@ class CourseClo extends \yii\db\ActiveRecord
         return $this->hasMany(CourseCloDelivery::className(), ['clo_id' => 'id']);
     }
 	
+	public function assessPercent($assessment_id){
+		$per = CourseCloAssessment::find()->where(['clo_id' => $this->id, 'assess_id' => $assessment_id])->one();
+		if($per){
+			return $per->percentage;
+		}else{
+			return '';
+		}
+	}
+	
+	public function getDefaultVersion(){
+		return CourseVersion::findOne($this->crs_version_id);
+	}
+	
+	public function getPlo(){
+		$html = '';
+		$plo_num = $this->defaultVersion->plo_num;
+		$x=1;
+		for($c=1;$c<=$plo_num;$c++){
+			$prop = 'PLO'.$c;
+			if($this->$prop == 1){
+				
+				$comma = $x == 1 ? '' : ', ';
+				$html .= $comma.$prop;
+				$x++;
+			}
+		}
+		return $html;
+	}
+	
+	public function getSoftskillStr(){
+		$kira = 0;
+		$str = '';
+		$break = '<br />';
+		for($i=1;$i<=8;$i++){
+			$prop = 'CS'.$i;
+			if($this->{$prop} == 1){
+				$comma = $kira == 0 ? '' : $break;
+				$str .= $comma.$prop;
+				$kira++;
+			}
+
+		}
+		for($i=1;$i<=7;$i++){
+			$prop = 'CT'.$i;
+			if($this->{$prop} == 1){
+				$comma = $kira == 0 ? '' : $break;
+				$str .= $comma.$prop;
+				$kira++;
+			}
+
+		}
+		for($i=1;$i<=5;$i++){
+			$prop = 'TS'.$i;
+			if($this->{$prop} == 1){
+				$comma = $kira == 0 ? '' : $break;
+				$str .= $comma.$prop;
+				$kira++;
+			}
+
+		}
+
+		for($i=1;$i<=3;$i++){
+			$prop = 'LL'.$i;
+			if($this->{$prop} == 1){
+				$comma = $kira == 0 ? '' : $break;
+				$str .= $comma.$prop;
+				$kira++;
+			}
+		}
+
+
+		//Entrepreneurial (ES)
+		for($i=1;$i<=4;$i++){
+			$prop = 'ES'.$i;
+			if($this->{$prop} == 1){
+				$comma = $kira == 0 ? '' : $break;
+				$str .= $comma.$prop;
+				$kira++;
+			}
+
+		}
+
+		//Ethic and Moral (EM)
+		for($i=1;$i<=3;$i++){
+			$prop = 'EM'.$i;
+			if($this->{$prop} == 1){
+				$comma = $kira == 0 ? '' : $break;
+				$str .= $comma.$prop;
+				$kira++;
+			}
+
+		}
+		//Leadership (LS)
+		for($i=1;$i<=4;$i++){
+			$prop = 'LS'.$i;
+			if($this->{$prop} == 1){
+				$comma = $kira == 0 ? '' : $break;
+				$str .= $comma.$prop;
+				$kira++;
+			}
+			
+		}
+		
+		return $str;
+	}
+	
 }

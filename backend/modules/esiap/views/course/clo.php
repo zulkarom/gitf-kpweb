@@ -8,7 +8,7 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\esiap\models\Course */
 
-$this->title = 'Update: ' . $model->course->course_name;
+$this->title = 'Course Learning Outcome: ' . $model->course->course_name . ' '. $model->course->course_code;
 $this->params['breadcrumbs'][] = ['label' => 'Courses', 'url' => ['index']];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
@@ -62,7 +62,9 @@ $this->params['breadcrumbs'][] = 'Update';
             <tr>
 				<td></td>
                 <td colspan="3">
-                <a href="<?=Url::to(['course-clo-add', 'version' => $model->id, 'clo' => $clo->id])?>" class="add-clo btn btn-default btn-sm"><span class="fa fa-plus"></span> ADD CLO</a>
+                <a href="<?=Url::to(['course-clo-add', 'version' => $model->id])?>" class="add-clo btn btn-default btn-sm"><span class="fa fa-plus"></span> ADD CLO</a>
+				
+				<br /> <i>* please save first before add new</i>
                 
                 </td>
     
@@ -76,7 +78,7 @@ $this->params['breadcrumbs'][] = 'Update';
 
 
     <div class="form-group">
-        <?= Html::submitButton('<span class="fa fa-save"></span> SAVE CLO', ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> SAVE COURSE LEARNING OUTCOME', ['class' => 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
