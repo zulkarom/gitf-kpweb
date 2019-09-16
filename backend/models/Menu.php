@@ -42,24 +42,21 @@ class Menu
 		$course_focus = '';
 		if(Yii::$app->controller->id == 'course' and Yii::$app->controller->module->id == 'esiap'){
 			switch(Yii::$app->controller->action->id){
-				case 'course-version':
 				case 'update': case 'profile':case 'course-clo':
 				case 'course-syllabus':case 'course-assessment':
 				case 'clo-assessment':case 'course-slt': case 'clo-plo':
 				case 'clo-taxonomy':case 'clo-softskill': case 'course-reference':
 				case 'clo-delivery':
 				$course_id = Yii::$app->getRequest()->getQueryParam('course');
-				$course = backend\modules\esiap\Models\Course::findOne($course_id);
+				$course = Course::findOne($course_id);
 				$course_focus  = [
-                        'label' => $course->crs_name,
+                        'label' => $course->course_name,
                         'icon' => 'book',
 						'format' => 'html',
                         'url' => '#',
                         'items' => [
 						
 				['label' => 'Course Nomenclature', 'icon' => 'pencil', 'url' => ['/esiap/course/update', 'course' => $course_id]],
-				
-				['label' => 'Course Version', 'icon' => 'pencil', 'url' => ['/esiap/course/course-version', 'course' => $course_id]],
 				
 				['label' => 'Course Pro Forma', 'icon' => 'book', 'url' => ['/esiap/course/profile', 'course' => $course_id]],
 				
@@ -217,6 +214,27 @@ class Menu
                  ]
                     ];
 		return $staff;
+	}
+	
+	public static function profile(){
+		return [
+                        'label' => 'My Profile',
+                        'icon' => 'user',
+                        'url' => '#',
+                        'items' => [
+							
+							['label' => 'Update Profile', 'icon' => 'pencil', 'url' => ['/user/create'],],
+						
+							['label' => 'Change Password', 'icon' => 'lock', 'url' => ['/user/assignment'],],
+							
+						
+                            ['label' => 'My Education', 'icon' => 'mortar-board', 'url' => ['/admin/role'],],
+							
+							['label' => 'Log Out', 'icon' => 'arrow-left', 'url' => ['/admin/role'],],
+
+
+                        ],
+                    ];
 	}
 
 }

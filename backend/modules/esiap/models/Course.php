@@ -11,7 +11,7 @@ use common\models\User;
  * This is the model class for table "sp_course".
  *
  * @property int $id
- * @property string $crs_code
+ * @property string $course_code
  * @property string $course_name
  * @property string $course_name_bi
  * @property int $credit_hour

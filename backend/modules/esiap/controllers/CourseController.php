@@ -121,7 +121,8 @@ class CourseController extends Controller
         $model = $this->findModel($course);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect('index');
+			Yii::$app->session->addFlash('success', "Data Updated");
+            //return $this->redirect('index');
         }
 
         return $this->render('update', [

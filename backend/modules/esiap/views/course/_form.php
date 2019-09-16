@@ -22,10 +22,10 @@ use backend\models\Department;
 <div class="box-body">	
 
 <div class="row">
-<div class="col-md-4"><?= $form->field($model, 'crs_code')->textInput(['maxlength' => true]) ?></div>
+<div class="col-md-4"><?= $form->field($model, 'course_code')->textInput(['maxlength' => true]) ?></div>
 <div class="col-md-4">
 
-<?= $form->field($model, 'crs_type')->dropDownList(
+<?= $form->field($model, 'course_type')->dropDownList(
         ArrayHelper::map(CourseType::find()->all(),'id', 'type_name'), ['prompt' => 'Please Select' ]
     ) ?>
 
@@ -33,7 +33,7 @@ use backend\models\Department;
 
 <div class="col-md-4">
 
-<?= $form->field($model, 'crs_level')->dropDownList(
+<?= $form->field($model, 'course_level')->dropDownList(
         ArrayHelper::map(CourseLevel::find()->all(),'id', 'lvl_name'), ['prompt' => 'Please Select' ]
     ) ?>
 </div>
@@ -41,9 +41,9 @@ use backend\models\Department;
 </div>
 
     <div class="row">
-<div class="col-md-6"> <?= $form->field($model, 'crs_name')->textInput(['maxlength' => true]) ?></div>
+<div class="col-md-6"> <?= $form->field($model, 'course_name')->textInput(['maxlength' => true]) ?></div>
 
-<div class="col-md-6"><?= $form->field($model, 'crs_name_bi')->textInput(['maxlength' => true]) ?>
+<div class="col-md-6"><?= $form->field($model, 'course_name_bi')->textInput(['maxlength' => true]) ?>
 </div>
 
 </div>

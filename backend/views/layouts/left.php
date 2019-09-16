@@ -87,25 +87,9 @@ use backend\models\Menu;
                 'items' => [
                     ['label' => 'MAIN MENU', 'options' => ['class' => 'header']],
 					['label' => 'Dashboard', 'icon' => 'dashboard', 'url' => ['/site']],
-					[
-                        'label' => 'My Profile',
-                        'icon' => 'user',
-                        'url' => '#',
-                        'items' => [
-							
-							['label' => 'Update Profile', 'icon' => 'pencil', 'url' => ['/user/create'],],
-						
-							['label' => 'Change Password', 'icon' => 'lock', 'url' => ['/user/assignment'],],
-							
-						
-                            ['label' => 'My Education', 'icon' => 'mortar-board', 'url' => ['/admin/role'],],
-							
-							['label' => 'Log Out', 'icon' => 'arrow-left', 'url' => ['/admin/role'],],
-
-
-                        ],
-                    ],
 					Menu::courseFocus(),
+					Menu::profile(),
+					
 					$focus,
 					$admin_focus,
 					//$modules,

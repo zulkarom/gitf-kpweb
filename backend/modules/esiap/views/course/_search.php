@@ -17,11 +17,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'crs_code') ?>
+    <?= $form->field($model, 'course_code') ?>
 
-    <?= $form->field($model, 'crs_name') ?>
+    <?= $form->field($model, 'course_name') ?>
 
-    <?= $form->field($model, 'crs_name_bi') ?>
+    <?= $form->field($model, 'course_name_bi') ?>
 
     <?= $form->field($model, 'credit_hour') ?>
 
