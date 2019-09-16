@@ -103,6 +103,31 @@ class Menu
 		return $count > 0 ? $count : '';
 	}
 	
-	
+	public static function adminJeb(){
+		$admin_jeb = [
+                        'label' => 'JEB Admin',
+						'visible' => Todo::can('jeb-administrator'),
+                        'icon' => 'list-ul',
+                        'url' => '#',
+                        'items' => [
+						
+				//['label' => 'Admin Stats', 'icon' => 'dashboard', 'url' => ['/jeb'],],
+				
+				
+				
+				//['label' => 'User Management', 'icon' => 'user', 'url' => ['/jeb/user']],
+				
+				['label' => 'General Setting', 'icon' => 'cog', 'url' => ['/jeb/setting']],
+				
+				['label' => 'Email Template', 'icon' => 'envelope', 'url' => ['/jeb/email-template']],
+
+
+                 ]
+                    ]
+		
+		;
+		
+		return $admin_jeb ;
+	}
 
 }

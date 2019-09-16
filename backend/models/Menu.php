@@ -1,0 +1,222 @@
+<?php
+
+namespace backend\models;
+
+use Yii;
+use common\models\Todo;
+use backend\modules\esiap\models\Course;
+
+class Menu
+{
+	public static function coursePic(){
+		$esiap_pic = [];
+		
+		$coor = Course::find()->where(['course_pic' => Yii::$app->user->identity->id])->all();
+		
+		if($coor){
+			foreach($coor as $c){
+				$ver = $c->defaultVersion->status;
+				if($ver == 0){
+					$rt = '/esiap/course/update';
+				}else{
+					$rt = '/esiap/course/report';
+				}
+				$arr[] = ['label' => $c->course_name, 'icon' => 'book', 'url' => [$rt, 'course' => $c->id]];
+			}
+			
+			$menu_coor = [
+                        'label' => 'Course PIC',
+                        'icon' => 'book',
+                        'url' => '#',
+                        'items' => $arr,
+                    ]
+				;
+				
+			$esiap_pic  = $menu_coor;	
+		}
+		
+		return $esiap_pic;
+	}
+	
+	public static function courseFocus(){
+		$course_focus = '';
+		if(Yii::$app->controller->id == 'course' and Yii::$app->controller->module->id == 'esiap'){
+			switch(Yii::$app->controller->action->id){
+				case 'course-version':
+				case 'update': case 'profile':case 'course-clo':
+				case 'course-syllabus':case 'course-assessment':
+				case 'clo-assessment':case 'course-slt': case 'clo-plo':
+				case 'clo-taxonomy':case 'clo-softskill': case 'course-reference':
+				case 'clo-delivery':
+				$course_id = Yii::$app->getRequest()->getQueryParam('course');
+				$course = backend\modules\esiap\Models\Course::findOne($course_id);
+				$course_focus  = [
+                        'label' => $course->crs_name,
+                        'icon' => 'book',
+						'format' => 'html',
+                        'url' => '#',
+                        'items' => [
+						
+				['label' => 'Course Nomenclature', 'icon' => 'pencil', 'url' => ['/esiap/course/update', 'course' => $course_id]],
+				
+				['label' => 'Course Version', 'icon' => 'pencil', 'url' => ['/esiap/course/course-version', 'course' => $course_id]],
+				
+				['label' => 'Course Pro Forma', 'icon' => 'book', 'url' => ['/esiap/course/profile', 'course' => $course_id]],
+				
+				['label' => 'Course Learning Outcome', 'icon' => 'book', 'url' => ['/esiap/course/course-clo', 'course' => $course_id]],
+				
+				['label' => 'CLO PLO', 'icon' => 'book', 'url' => ['/esiap/course/clo-plo', 'course' => $course_id]],
+				
+				['label' => 'CLO Taxonomy', 'icon' => 'book', 'url' => ['/esiap/course/clo-taxonomy', 'course' => $course_id]],
+				
+				['label' => 'CLO Softskill', 'icon' => 'book', 'url' => ['/esiap/course/clo-softskill', 'course' => $course_id]],
+				
+				['label' => 'CLO Delivery', 'icon' => 'book', 'url' => ['/esiap/course/clo-delivery', 'course' => $course_id]],
+				
+				
+				
+				
+				
+				['label' => 'Syllabus', 'icon' => 'book', 'url' => ['/esiap/course/course-syllabus', 'course' => $course_id]],
+				
+				['label' => 'Assessment', 'icon' => 'book', 'url' => ['/esiap/course/course-assessment', 'course' => $course_id]],
+				
+				['label' => 'CLO Assessment', 'icon' => 'book', 'url' => ['/esiap/course/clo-assessment', 'course' => $course_id]],
+				['label' => 'Student Learning Time', 'icon' => 'book', 'url' => ['/esiap/course/course-slt', 'course' => $course_id]],
+				
+				
+				['label' => 'References', 'icon' => 'book', 'url' => ['/esiap/course/course-reference', 'course' => $course_id]],
+				
+				['label' => 'Report', 'icon' => 'book', 'url' => ['/esiap/course']],
+
+                 ]
+                    ];
+				break;
+			}
+		}
+		
+		return $course_focus;
+	}
+	
+	public static function adminErpd(){
+		$erpd_admin = [
+                        'label' => 'e-RPD Admin',
+                        'icon' => 'list-ul',
+                        'url' => '#',
+                        'items' => [
+						
+				//['label' => 'Dashboard', 'icon' => 'dashboard', 'url' => ['/erpd'],],
+				
+				['label' => 'Research', 'icon' => 'book', 'url' => ['/erpd/research/all'],],
+				
+				['label' => 'Publication', 'icon' => 'send', 'url' => ['/erpd/publication/all'],],
+				
+				
+				
+				['label' => 'Membership', 'icon' => 'users', 'url' => ['/erpd/membership/all'],],
+				
+				['label' => 'Award', 'icon' => 'trophy', 'url' => ['/erpd/award/all'],],
+				
+				['label' => 'Consultation', 'icon' => 'microphone', 'url' => ['/erpd/consultation/all'],],
+				
+				['label' => 'Knowledge Transfer', 'icon' => 'truck', 'url' => ['/erpd/knowledge-transfer/all'],],
+
+
+                 ]
+                    ]
+		
+		;
+		
+		return $erpd_admin;
+	}
+	
+	public static function erpd(){
+		return [
+                        'label' => 'Course PIC',
+                        'icon' => 'list-ul',
+                        'url' => '#',
+                        'items' => [
+						
+				//['label' => 'Dashboard', 'icon' => 'dashboard', 'url' => ['/erpd'],],
+				
+				['label' => 'Research', 'icon' => 'book', 'url' => ['/erpd/research'],],
+				
+				['label' => 'Publication', 'icon' => 'send', 'url' => ['/erpd/publication'],],
+				
+				
+				
+				['label' => 'Membership', 'icon' => 'users', 'url' => ['/erpd/membership'],],
+				
+				['label' => 'Award', 'icon' => 'trophy', 'url' => ['/erpd/award'],],
+				
+				['label' => 'Consultation', 'icon' => 'microphone', 'url' => ['/erpd/consultation'],],
+				
+				['label' => 'Knowledge Transfer', 'icon' => 'truck', 'url' => ['/erpd/knowledge-transfer'],],
+
+
+                 ]
+                    ]
+		
+		;
+	}
+	
+	public static function adminEsiap(){
+		$esiap_admin = [
+                        'label' => 'eSIAP Admin',
+                        'icon' => 'list-ul',
+                        'url' => '#',
+                        'items' => [
+						
+				//['label' => 'eSiap Dashboard', 'icon' => 'dashboard', 'url' => ['/esiap']],
+				
+				['label' => 'Program List', 'icon' => 'book', 'url' => ['/esiap/program']],
+				
+				['label' => 'Course List', 'icon' => 'book', 'url' => ['/esiap/course-admin']],
+				
+
+                 ]
+                    ];	
+		return $esiap_admin;
+	}
+	
+	public static function website(){
+		$website = [
+                        'label' => 'Website Menu',
+                        'icon' => 'list-ul',
+                        'url' => '#',
+                        'items' => [
+						
+				['label' => 'Website Dashboard', 'icon' => 'dashboard', 'url' => ['/website']],
+				
+				['label' => 'Front Slider', 'icon' => 'pencil', 'url' => ['/website/front-slider']],
+				
+				['label' => 'Event List', 'icon' => 'list', 'url' => ['/website/event']],
+				
+
+                 ]
+                    ];
+		return $website;
+	}
+	
+	public static function staff(){
+		$staff = [
+                        'label' => 'Staff Menu',
+                        'icon' => 'list-ul',
+                        'url' => '#',
+                        'items' => [
+						
+				//['label' => 'Staff Dashboard', 'icon' => 'dashboard', 'url' => ['/staff']],
+				
+				['label' => 'New Staff', 'icon' => 'plus', 'url' => ['/staff/staff/create']],
+				
+				['label' => 'Staff List', 'icon' => 'user', 'url' => ['/staff/staff']],
+				
+				['label' => 'Inactive', 'icon' => 'user', 'url' => ['/staff/staff/inactive']],
+				
+
+                 ]
+                    ];
+		return $staff;
+	}
+
+}
