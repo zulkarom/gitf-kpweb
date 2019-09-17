@@ -12,9 +12,8 @@ use kartik\date\DatePicker;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\esiap\models\Course */
 
-$this->title = 'Update Course';
+$this->title = 'Course Information';
 $this->params['breadcrumbs'][] = ['label' => 'Courses', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="course-update">
@@ -30,13 +29,8 @@ $this->params['breadcrumbs'][] = 'Update';
 
 <div class="row">
 <div class="col-md-4"><?= $form->field($model, 'course_code')->textInput(['maxlength' => true]) ?></div>
-<div class="col-md-4">
 
-<?= $form->field($model, 'course_type')->dropDownList(
-        ArrayHelper::map(CourseType::find()->all(),'id', 'type_name'), ['prompt' => 'Please Select' ]
-    ) ?>
-
-</div>
+<div class="col-md-2"><?= $form->field($model, 'credit_hour')->textInput() ?></div>
 
 <div class="col-md-4">
 
@@ -56,12 +50,12 @@ $this->params['breadcrumbs'][] = 'Update';
 </div>
 
   <div class="row">
-<div class="col-md-6"><?= $form->field($model, 'credit_hour')->textInput() ?></div>
+
 
 <div class="col-md-6">
 
-<?= $form->field($model, 'program')->dropDownList(
-        ArrayHelper::map(Program::find()->where(['faculty' => 1, 'trash' => 0])->all(),'id', 'pro_name'), ['prompt' => 'Please Select' ]
+<?= $form->field($model, 'program_id')->dropDownList(
+        ArrayHelper::map(Program::find()->where(['faculty_id' => 1, 'trash' => 0])->all(),'id', 'pro_name'), ['prompt' => 'Please Select' ]
     ) ?>
 
 </div>
@@ -71,7 +65,7 @@ $this->params['breadcrumbs'][] = 'Update';
 <div class="row">
 <div class="col-md-6">
 
-<?= $form->field($model, 'department')->dropDownList(
+<?= $form->field($model, 'department_id')->dropDownList(
         ArrayHelper::map(Department::find()->all(),'id', 'dep_name'), ['prompt' => 'Please Select' ]
     ) ?>
 
@@ -113,6 +107,10 @@ $this->params['breadcrumbs'][] = 'Update';
 </div>
 
 <div class="col-md-3">
+<?= $form->field($version, 'senate_approve_show')->dropDownList( [ 1 => 'YES', 0 => 'NO'] )->label('Show Senate Date')?>
+</div>
+
+<div class="col-md-3">
  <?php
  
  if($version->senate_approve_at == '0000-00-00'){
@@ -144,7 +142,7 @@ $this->params['breadcrumbs'][] = 'Update';
 
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> Save Course Information', ['class' => 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

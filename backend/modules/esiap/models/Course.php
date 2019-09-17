@@ -44,9 +44,9 @@ class Course extends \yii\db\ActiveRecord
 			
 			[['course_pic'], 'required', 'on' => 'coor'],
 			
-            [['is_active', 'course_pic'], 'integer'],
+            [['is_active', 'course_pic', 'program_id', 'department_id', 'faculty_id'], 'integer'],
 			
-            [['course_name'], 'string', 'max' => 100],
+            [['course_name', 'course_name_bi'], 'string', 'max' => 100],
 			
             [['course_code'], 'string', 'max' => 50],
 			
@@ -66,6 +66,8 @@ class Course extends \yii\db\ActiveRecord
 			'course_name_bi' => 'Course Name (EN)',
             'course_code' => 'Course Code',
 			'is_active' => 'Is Active',
+			'program_id' => 'Program',
+			'department_id' => 'Department'
         ];
     }
 	
@@ -84,7 +86,7 @@ class Course extends \yii\db\ActiveRecord
 	
 	public function allCoursesArray(){
 		$result = self::find()->orderBy('course_name ASC')
-		->where(['faculty' => 1, 'is_dummy' => 0])
+		->where(['faculty_id' => 1, 'is_dummy' => 0])
 		->all();
 		$array[0] = 'Tiada / Nil';
 		foreach($result as $row){

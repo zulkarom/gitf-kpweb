@@ -44,7 +44,7 @@ class CourseVersion extends \yii\db\ActiveRecord
         return [
             [['course_id', 'version_name', 'created_by', 'created_at', 'is_active'], 'required'],
 			
-			[['senate_approve_at', 'faculty_approve_at'], 'required', 'on' => 'save_date'],
+			[['senate_approve_at', 'faculty_approve_at', 'senate_approve_show'], 'required', 'on' => 'save_date'],
 			
             [['course_id', 'created_by', 'is_active', 'status'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],

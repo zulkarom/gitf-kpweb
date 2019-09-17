@@ -78,6 +78,7 @@ class Program extends \yii\db\ActiveRecord
 			
 			
             [['pro_level', 'faculty', 'department', 'status', 'pro_cat', 'pro_field', 'grad_credit', 'study_mode', 'full_week_long', 'full_week_short', 'full_sem_long', 'full_sem_short', 'part_week_long', 'part_week_short', 'part_sem_long', 'part_sem_short', 'trash'], 'integer'],
+			
             [['pro_sustain', 'synopsis', 'synopsis_bi', 'objective', 'just_stat', 'just_industry', 'just_employ', 'just_tech', 'just_others', 'nec_perjawatan', 'nec_fizikal', 'nec_kewangan', 'kos_yuran', 'kos_beven', 'pro_tindih_pub', 'pro_tindih_pri', 'jumud', 'admission_req', 'admission_req_bi', 'career', 'career_bi'], 'string'],
             [['full_time_year', 'full_max_year', 'part_max_year', 'part_time_year'], 'number'],
             [['pro_name', 'pro_name_bi', 'prof_body', 'coll_inst', 'sesi_start'], 'string', 'max' => 250],

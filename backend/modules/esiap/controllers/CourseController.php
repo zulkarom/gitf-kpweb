@@ -173,6 +173,7 @@ class CourseController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
 			
 			if ($version->load(Yii::$app->request->post()) && $version->save()) {
+				Yii::$app->session->addFlash('success', "Data Updated");
 				return $this->redirect(['update','course' => $course]);
 			}
         }
@@ -438,7 +439,9 @@ class CourseController extends Controller
 		$model = $this->findDefaultVersion($course);
 		$clos = $model->clos;
 		if (Yii::$app->request->post() ) {
+			$flag = true;
 			if(Yii::$app->request->validateCsrfToken()){
+				
                 $clos = Yii::$app->request->post('plo');
 				if($clos){
 					foreach($clos as $key => $plos){
@@ -447,12 +450,21 @@ class CourseController extends Controller
 							foreach($plos as $p=>$plo){
 								$row->{$p} = $plo;
 							}
-							$row->save();
+							if(!$row->save()){
+								$flag = false;
+								break;
+							}
 						}
 					}
+					
 				}
+				
             }
-			return $this->redirect(['clo-plo', 'course' => $course]);
+			if($flag){
+				Yii::$app->session->addFlash('success', "Data Updated");
+				return $this->redirect(['clo-plo', 'course' => $course]);
+			}
+			
 			
 		}
 	

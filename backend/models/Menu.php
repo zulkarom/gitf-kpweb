@@ -46,7 +46,7 @@ class Menu
 				case 'course-syllabus':case 'course-assessment':
 				case 'clo-assessment':case 'course-slt': case 'clo-plo':
 				case 'clo-taxonomy':case 'clo-softskill': case 'course-reference':
-				case 'clo-delivery':
+				case 'clo-delivery':case 'report':
 				$course_id = Yii::$app->getRequest()->getQueryParam('course');
 				$course = Course::findOne($course_id);
 				$course_focus  = [
@@ -56,7 +56,7 @@ class Menu
                         'url' => '#',
                         'items' => [
 						
-				['label' => 'Course Nomenclature', 'icon' => 'pencil', 'url' => ['/esiap/course/update', 'course' => $course_id]],
+				['label' => 'Course Information', 'icon' => 'pencil', 'url' => ['/esiap/course/update', 'course' => $course_id]],
 				
 				['label' => 'Course Pro Forma', 'icon' => 'book', 'url' => ['/esiap/course/profile', 'course' => $course_id]],
 				
