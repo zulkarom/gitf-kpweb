@@ -34,4 +34,23 @@ class SecurityController extends BaseSecurityController
             'module' => $this->module,
         ]);
 	}
+	
+	public function actionChangePassword()
+	{
+		$id = Yii::$app->user->id;
+	 
+		try {
+			$model = new ChangePasswordForm($id);
+		} catch (InvalidParamException $e) {
+			throw new \yii\web\BadRequestHttpException($e->getMessage());
+		}
+	 
+		if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->changePassword()) {
+			Yii::$app->session->setFlash('success', 'Password Changed!');
+		}
+	 
+		return $this->render('change-password', [
+			'model' => $model,
+		]);
+	}
 }

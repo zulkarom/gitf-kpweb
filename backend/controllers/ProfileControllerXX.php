@@ -17,7 +17,7 @@ use backend\modules\jeb\models\Associate;
 /**
  * UsersController implements the CRUD actions for Users model.
  */
-class UserController extends Controller
+class ProfileController extends Controller
 {
     /**
      * @inheritdoc
