@@ -140,8 +140,7 @@ class UploadFile
 
 	}
 	
-	
-	public static function upload($model, $attr, $ts = false){
+	public static function upload($model, $attr, $ts = false, $path = false){
 		
 		$model->scenario = $attr . '_upload';
 
@@ -153,18 +152,22 @@ class UploadFile
 		$model->{$instance} = $upFile;
 		$uid = uniqid(time(), true);
 		
+		
+		
 		$ext = $upFile->extension;
-		
-		
-		
 		$fileName = $attr . '_' . $uid . '.' . $ext;
 		
-		$year = date('Y') + 0 ;
-		$path = $year . '/' . Yii::$app->user->identity->username .  '/' ;
+		if(!$path){
+			
+			$year = date('Y') + 0 ;
+			$path = $year . '/' . Yii::$app->user->identity->username ;
+		}
 		
-	
+		
+		
 		
 		$directory = Yii::getAlias('@upload/' . $path . '/');
+
 		$filePath = $directory . $fileName;
 		
 		
@@ -178,9 +181,7 @@ class UploadFile
 		}
 		
 		//$model->save();
-		/* return Json::encode([
-						'errors' => $model->getErrors(),
-					]); */
+		
 		if($model->save()){
 			
 			if ($upFile) {

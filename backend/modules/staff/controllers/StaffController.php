@@ -254,7 +254,7 @@ class StaffController extends Controller
         $model = $this->findModel(['user_id' => $id]);
 		
 		if($model->image_file){
-			$file = Yii::getAlias('@upload/profile/' . $model->image_file);
+			$file = Yii::getAlias('@upload/' . $model->image_file);
 		}else{
 			$file = Yii::getAlias('@img') . '/user.png';
 		}
@@ -268,6 +268,11 @@ class StaffController extends Controller
 			
 			Upload::sendFile($file, $filename, $ext);
 			
+			}else{
+				$ext = pathinfo($file, PATHINFO_EXTENSION);
+				$filename = Yii::$app->user->identity->fullname . '.' . $ext ;
+				$file = Yii::getAlias('@img') . '/user.png';
+				Upload::sendFile($file, $filename, $ext);
 			}
 		
 	}
@@ -275,11 +280,14 @@ class StaffController extends Controller
 	
 
 	public function actionUploadFile($attr, $id){
+		
+
         $attr = $this->clean($attr);
         $model = $this->findModel($id);
         $model->file_controller = 'staff';
+		
 
-        return UploadFile::upload($model, $attr, 'updated_at');
+        return UploadFile::upload($model, $attr, 'updated_at', 'profile/');
 
     }
 
@@ -335,6 +343,10 @@ class StaffController extends Controller
         
         UploadFile::download($model, $attr, $filename);
     }
+	
+	public function actionUpdateImageStaffDeleteThisFunction(){
+		
+	}
 
 
 }
