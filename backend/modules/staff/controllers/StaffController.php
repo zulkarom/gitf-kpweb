@@ -14,6 +14,7 @@ use common\models\Upload;
 use common\models\UploadFile;
 use yii\helpers\Json;
 use yii\db\Expression;
+use yii\filters\AccessControl;
 
 /**
  * StaffController implements the CRUD actions for Staff model.
@@ -23,17 +24,23 @@ class StaffController extends Controller
     /**
      * @inheritdoc
      */
-    public function behaviors()
+    
+
+	public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
                 ],
             ],
         ];
     }
+
 
     /**
      * Lists all Staff models.

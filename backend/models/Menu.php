@@ -223,7 +223,7 @@ class Menu
                         'url' => '#',
                         'items' => [
 							
-							['label' => 'Update Profile', 'icon' => 'pencil', 'url' => ['/user/create'],],
+							['label' => 'Update Profile', 'icon' => 'pencil', 'url' => ['/staff/profile'],],
 						
 							['label' => 'Change Password', 'icon' => 'lock', 'url' => ['/user/assignment'],],
 							
