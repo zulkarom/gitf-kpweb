@@ -25,7 +25,7 @@ class Menu
 			}
 			
 			$menu_coor = [
-                        'label' => 'Course PIC',
+                        'label' => 'My Course',
                         'icon' => 'book',
                         'url' => '#',
                         'items' => $arr,
@@ -129,7 +129,7 @@ class Menu
 	
 	public static function erpd(){
 		return [
-                        'label' => 'Course PIC',
+                        'label' => 'e-RPD Menu',
                         'icon' => 'list-ul',
                         'url' => '#',
                         'items' => [
@@ -225,12 +225,13 @@ class Menu
 							
 							['label' => 'Update Profile', 'icon' => 'pencil', 'url' => ['/staff/profile'],],
 						
-							['label' => 'Change Password', 'icon' => 'lock', 'url' => ['/user/assignment'],],
+							['label' => 'Change Password', 'icon' => 'lock', 'url' => ['/user-setting/change-password'],],
 							
 						
-                            ['label' => 'My Education', 'icon' => 'mortar-board', 'url' => ['/admin/role'],],
+                            ['label' => 'My Education', 'icon' => 'mortar-board', 'url' => ['/staff/profile/education'],],
 							
-							['label' => 'Log Out', 'icon' => 'arrow-left', 'url' => ['/admin/role'],],
+							
+							['label' => 'Log Out', 'icon' => 'arrow-left', 'url' => ['/site/logout'], 'template' => '<a href="{url}" data-method="post">{icon} {label}</a>']
 
 
                         ],

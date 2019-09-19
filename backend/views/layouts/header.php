@@ -45,7 +45,7 @@ use yii\helpers\Url;
               <li class="user-body">
                 <div class="row">
                   <div class="col-xs-12 text-center">
-                    <a href="index.php?p=profile" class="btn btn-default btn-flat"><span class="glyphicon glyphicon-user"></span> View My Profile</a>
+                    <a href="<?=Url::to(['/staff/profile'])?>" class="btn btn-default btn-flat"><span class="glyphicon glyphicon-user"></span> View My Profile</a>
                   </div>
              
              
@@ -55,10 +55,10 @@ use yii\helpers\Url;
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="index.php?p=profile&amp;t=chpass" class="btn btn-default btn-flat">Change Password</a>
+                  <a href="<?=Url::to(['/user-setting/change-password'])?>" class="btn btn-default btn-flat">Change Password</a>
                 </div>
                 <div class="pull-right">
-                  <a href="index.php?p=login&amp;t=logout" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="<?=Url::to(['/site/logout'])?>" class="btn btn-default btn-flat" data-method="post">Log out</a>
                 </div>
               </li>
             </ul>
