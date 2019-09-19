@@ -94,7 +94,7 @@ use backend\models\Menu;
 					//$modules,
 					
 					['label' => 'MODULES', 'options' => ['class' => 'header']],
-					['label' => 'STAFF', 'icon' => 'user', 'url' => ['/staff/staff/index'],],
+					['label' => 'STAFF', 'icon' => 'user', 'url' => ['/staff/staff/index'], 'visible' => Yii::$app->user->can('staff-management')],
 					
 					['label' => 'e-SIAP', 'icon' => 'mortar-board', 'url' => ['/esiap'],],
 					
@@ -114,12 +114,12 @@ use backend\models\Menu;
 							
 							['label' => 'New External User', 'icon' => 'plus', 'url' => ['/user/create'],],
 						
-							['label' => 'User Role', 'icon' => 'user', 'url' => ['/user/assignment'],],
+							//['label' => 'User Role', 'icon' => 'user', 'url' => ['/user-admin/assignment'],],
 							
 							//['label' => 'User Signup', 'icon' => 'plus', 'url' => ['/admin/user/signup'],],
 							
 							
-							/* ['label' => 'User Assignment', 'icon' => 'user', 'url' => ['/admin'],], */
+							['label' => 'User Assignment', 'icon' => 'user', 'url' => ['/admin'],],
 						
                             ['label' => 'Role List', 'icon' => 'user', 'url' => ['/admin/role'],],
 							

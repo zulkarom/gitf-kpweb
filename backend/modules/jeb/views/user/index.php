@@ -64,7 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'buttons'=>[
                     'view'=>function ($url, $model) {
 
-                        return '<a href="'.Url::to(['user/view/', 'id' => $model->id]).'" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-search"></span> VIEW</a>';
+                        return '<a href="'.Url::to(['user/view/', 'id' => $model->id]).'" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-pencil"></span> UPDATE</a>';
                     }
                 ],
 			]

@@ -75,6 +75,7 @@ class ProgramController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+			Yii::$app->session->addFlash('success', "Data Updated");
             return $this->redirect('index');
         }
 

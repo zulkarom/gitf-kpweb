@@ -115,7 +115,9 @@ class Menu
 				
 				
 				
-				['label' => 'User Fields', 'icon' => 'user', 'url' => ['/jeb/user']],
+				['label' => 'User Setting', 'icon' => 'user', 'url' => ['/jeb/user']],
+				
+				['label' => 'Add External User', 'icon' => 'plus', 'url' => ['/jeb/user/external']],
 				
 				['label' => 'General Setting', 'icon' => 'cog', 'url' => ['/jeb/setting']],
 				
