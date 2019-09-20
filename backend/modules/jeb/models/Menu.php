@@ -13,6 +13,8 @@ class Menu
 		'icon' => 'list-ul',
 		'url' => '#',
 		'items' => [
+		
+		['label' => 'Current Issue', 'icon' => 'book', 'url' => ['/jeb']],
 
 		['label' => 'Submission', 'icon' => 'send', 'url' => ['/jeb/submission'], 'badge' => self::submission(), 
 			'badgeOptions' => ['class' => 'label pull-right bg-red']],
@@ -113,7 +115,7 @@ class Menu
 						
 				//['label' => 'Admin Stats', 'icon' => 'dashboard', 'url' => ['/jeb'],],
 				
-				
+				['label' => 'Overwrite', 'icon' => 'cog', 'url' => ['/jeb/article-overwrite']],
 				
 				['label' => 'User Setting', 'icon' => 'user', 'url' => ['/jeb/user']],
 				

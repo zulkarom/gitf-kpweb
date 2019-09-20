@@ -22,10 +22,12 @@ class DefaultController extends Controller
     public function actionIndex()
     {
 		
-        return $this->render('index');
+        return $this->render('index', [
+			'journal' => Journal::findOne(['status' => 20])
+		]);
     }
 	
-	public function actionRestore()
+	/* public function actionRestoreXX()
     {
 		$list = Archive::find()->all();
 		
@@ -73,6 +75,6 @@ class DefaultController extends Controller
 		}
 		
         return $this->render('index');
-    }
+    } */
 
 }

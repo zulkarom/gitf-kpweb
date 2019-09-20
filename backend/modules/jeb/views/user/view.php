@@ -44,22 +44,6 @@ $this->params['breadcrumbs'][] = $this->title;
 	</h3>
 </div>
 <div class="box-body">
-<div class="row">
-<div class="col-md-10"><?php 
-
-$model->user_fields = ArrayHelper::map($model->userScopes ,'id', 'scope_id');
-
-echo $form->field($model, 'user_fields')->widget(Select2::classname(), [
-    'data' => ArrayHelper::map(ArticleScope::find()->all(),'id', 'scope_name'),
-    'language' => 'de',
-    'options' => ['multiple' => true, 'placeholder' => 'Select a fields ...'],
-    'pluginOptions' => [
-        'allowClear' => true
-    ],
-])->label('User Fields');
-
-?></div>
-</div>
 
 
 <div class="row">
@@ -80,6 +64,27 @@ echo $form->field($model, 'user_roles')->widget(Select2::classname(), [
 
 ?></div>
 </div>
+
+
+
+<div class="row">
+<div class="col-md-10"><?php 
+
+$model->user_fields = ArrayHelper::map($model->userScopes ,'id', 'scope_id');
+
+echo $form->field($model, 'user_fields')->widget(Select2::classname(), [
+    'data' => ArrayHelper::map(ArticleScope::find()->all(),'id', 'scope_name'),
+    'language' => 'de',
+    'options' => ['multiple' => true, 'placeholder' => 'Select a fields ...'],
+    'pluginOptions' => [
+        'allowClear' => true
+    ],
+])->label('User Fields');
+
+?></div>
+</div>
+
+
 
 
 
