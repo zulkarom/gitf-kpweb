@@ -53,7 +53,7 @@ class NewsSearch extends Event
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
 			'pagination' => [
-                'pageSize' => 20,
+                'pageSize' => 10,
             ],
 
         ]);

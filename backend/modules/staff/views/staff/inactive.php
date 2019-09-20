@@ -23,13 +23,12 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'staff_no',
-			'staff_title',
 			[
 				'attribute' => 'staff_name',
 				'label' => 'Staff Name',
 				'value' => function($model){
 					if($model->user){
-						return $model->user->fullname;
+						return $model->staff_title . ' ' . $model->user->fullname;
 					}
 					
 				}
@@ -37,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
 			[
 				'attribute' => 'position_id',
-				'filter' => Html::activeDropDownList($searchModel, 'position_id', ArrayHelper::map(StaffPosition::find()->where(['>', 'position_id',0])->all(),'position_id', 'position_name'),['class'=> 'form-control','prompt' => 'Choose Position']),
+				'filter' => Html::activeDropDownList($searchModel, 'position_id', ArrayHelper::map(StaffPosition::find()->where(['>', 'id',0])->all(),'id', 'position_name'),['class'=> 'form-control','prompt' => 'Choose Position']),
 				'value' => function($model){
 					return $model->staffPosition->position_name;
 				}

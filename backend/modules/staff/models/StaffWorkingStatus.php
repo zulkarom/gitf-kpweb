@@ -39,7 +39,7 @@ class StaffWorkingStatus extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'work_id' => 'Work ID',
+            'id' => 'ID',
             'work_name' => 'Work Name',
             'work_order' => 'Work Order',
         ];

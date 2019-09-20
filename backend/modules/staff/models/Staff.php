@@ -36,8 +36,6 @@ use common\models\User;
  * @property string $ofis_location
  * @property string $staff_cv
  * @property string $image_file
- * @property int $teach_pg
- * @property int $staff_level
  * @property string $staff_interest
  * @property int $staff_department
  * @property int $trash
@@ -80,7 +78,7 @@ class Staff extends \yii\db\ActiveRecord
 			//['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email has already been taken'],
 			
 			
-            [['user_id', 'is_academic', 'position_id', 'position_status', 'working_status', 'teach_pg', 'staff_level', 'staff_department', 'trash', 'publish', 'staff_active', 'user_token_at'], 'integer'],
+            [['user_id', 'is_academic', 'position_id', 'position_status', 'working_status',  'staff_department', 'trash', 'publish', 'staff_active', 'user_token_at'], 'integer'],
             [['leave_start', 'leave_end', 'staff_dob', 'date_begin_umk', 'date_begin_service'], 'safe'],
 			
             [['leave_note', 'staff_interest'], 'string'],
@@ -136,7 +134,6 @@ class Staff extends \yii\db\ActiveRecord
             'ofis_location' => 'Office Location',
             'staff_cv' => 'Staff CV',
             'image_file' => 'Staff Image',
-            'teach_pg' => 'Teach Pg',
             'staff_level' => 'Staff Level',
             'staff_interest' => 'Staff Interest',
             'staff_department' => 'Staff Department',
@@ -159,7 +156,11 @@ class Staff extends \yii\db\ActiveRecord
 	}
 	
 	public function getStaffPosition(){
-		return $this->hasOne(StaffPosition::className(), ['position_id' => 'position_id']);
+		return $this->hasOne(StaffPosition::className(), ['id' => 'position_id']);
+	}
+	
+	public function getWorkingStatus(){
+		return $this->hasOne(StaffWorkingStatus::className(), ['id' => 'working_status']);
 	}
 	
 	public static function activeStaff(){

@@ -1,7 +1,8 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use kartik\grid\GridView;
+use kartik\export\ExportMenu;
 use yii\helpers\ArrayHelper;
 use backend\modules\staff\models\StaffPosition;
 
@@ -11,21 +12,9 @@ use backend\modules\staff\models\StaffPosition;
 
 $this->title = 'Staff';
 $this->params['breadcrumbs'][] = $this->title;
-?>
-<div class="staff-index">
 
-
-    <p>
-        <?= Html::a('Create Staff', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-    <div class="box">
-<div class="box-header"></div>
-<div class="box-body"><?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+$exportColumns = [
+ ['class' => 'yii\grid\SerialColumn'],
             'staff_no',
 			'staff_title',
 			[
@@ -41,7 +30,110 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
 			[
 				'attribute' => 'position_id',
-				'filter' => Html::activeDropDownList($searchModel, 'position_id', ArrayHelper::map(StaffPosition::find()->where(['>', 'position_id',0])->all(),'position_id', 'position_name'),['class'=> 'form-control','prompt' => 'Choose Position']),
+				'value' => function($model){
+					return $model->staffPosition->position_name;
+				}
+				
+			],
+			[
+				'label' => 'Email',
+				'value' => function($model){
+					if($model->user){
+						return $model->user->email;
+					}
+					
+				}
+				
+			],
+			[
+				'attribute' => 'is_academic',
+				'value' => function($model){
+					if($model->is_academic == 1){
+						return 'Academic';
+					}else{
+						return 'Administrative';
+					}
+					
+				}
+				
+			],
+			
+			[
+				'attribute' => 'position_status',
+				'value' => function($model){
+					return $model->staffPosition->position_name;
+					
+				}
+				
+			],
+			
+			[
+				'attribute' => 'working_status',
+				'value' => function($model){
+					return $model->workingStatus->work_name;
+					
+				}
+				
+			],
+			'staff_edu',
+			'staff_gscholar',
+			'staff_expertise',
+			'staff_interest',
+			'officephone',
+			'handphone1',
+			'handphone2',
+			'staff_ic',
+			'staff_dob',
+			'date_begin_umk',
+			'date_begin_service',
+			'personal_email',
+			'ofis_location'
+
+];
+?>
+<div class="staff-index">
+
+
+<div class="form-group"><?=ExportMenu::widget([
+    'dataProvider' => $dataProvider,
+    'columns' => $exportColumns,
+	'filename' => 'STAFF_DATA_' . date('Y-m-d'),
+	'onRenderSheet'=>function($sheet, $grid){
+		$sheet->getStyle('A2:'.$sheet->getHighestColumn().$sheet->getHighestRow())
+		->getAlignment()->setWrapText(true);
+	},
+	'exportConfig' => [
+    \kartik\export\ExportMenu::FORMAT_PDF => [
+        'pdfConfig' => [
+            'orientation' => 'L',
+        ],
+    ],
+],
+]);?> <?= Html::a('Create Staff', ['create'], ['class' => 'btn btn-success']) ?></div>
+
+
+    <div class="box">
+<div class="box-header"></div>
+<div class="box-body"><?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+            'staff_no',
+			[
+				'attribute' => 'staff_name',
+				'label' => 'Staff Name',
+				'value' => function($model){
+					if($model->user){
+						return $model->staff_title . ' ' . $model->user->fullname;
+					}
+					
+				}
+				
+			],
+			[
+				'attribute' => 'position_id',
+				'filter' => Html::activeDropDownList($searchModel, 'position_id', ArrayHelper::map(StaffPosition::find()->where(['>', 'id',0])->all(),'id', 'position_name'),['class'=> 'form-control','prompt' => 'Choose Position']),
 				'value' => function($model){
 					return $model->staffPosition->position_name;
 				}

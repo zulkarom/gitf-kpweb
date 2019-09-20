@@ -41,7 +41,7 @@ class StaffPosition extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'position_id' => 'Position ID',
+            'id' => 'Position ID',
             'position_name' => 'Position Name',
             'position_gred' => 'Position Gred',
             'position_order' => 'Position Order',
@@ -50,9 +50,9 @@ class StaffPosition extends \yii\db\ActiveRecord
 	
 	public static function positionList(){
 		$array = [];
-		$list = self::find()->where(['>', 'position_id', 0])->all();
+		$list = self::find()->where(['>', 'id', 0])->all();
 		foreach($list as $row){
-			$array[$row->position_id] = $row->position_name . ' ' . $row->position_gred;
+			$array[$row->id] = $row->position_name . ' ' . $row->position_gred;
 		}
 		return $array;
 	}

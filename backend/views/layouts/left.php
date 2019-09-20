@@ -94,7 +94,7 @@ use backend\models\Menu;
 					//$modules,
 					
 					['label' => 'MODULES', 'options' => ['class' => 'header']],
-					['label' => 'STAFF', 'icon' => 'user', 'url' => ['/staff/staff/index'], 'visible' => Yii::$app->user->can('staff-management')],
+					['label' => 'STAFF', 'icon' => 'user', 'url' => ['/staff']],
 					
 					['label' => 'e-SIAP', 'icon' => 'mortar-board', 'url' => ['/esiap'],],
 					

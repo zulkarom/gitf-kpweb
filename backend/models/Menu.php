@@ -204,7 +204,7 @@ class Menu
                         'url' => '#',
                         'items' => [
 						
-				//['label' => 'Staff Dashboard', 'icon' => 'dashboard', 'url' => ['/staff']],
+				['label' => 'Summary', 'icon' => 'pie-chart', 'url' => ['/staff']],
 				
 				['label' => 'New Staff', 'icon' => 'plus', 'url' => ['/staff/staff/create']],
 				

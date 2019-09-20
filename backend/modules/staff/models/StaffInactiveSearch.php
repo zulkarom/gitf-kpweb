@@ -19,7 +19,7 @@ class StaffInactiveSearch extends Staff
     public function rules()
     {
         return [
-            [['id', 'staff_no','is_academic', 'position_id', 'position_status', 'working_status', 'teach_pg', 'staff_level', 'staff_department', 'trash', 'publish'], 'integer'],
+            [['id', 'staff_no','is_academic', 'position_id', 'position_status', 'working_status',  'staff_department', 'publish'], 'integer'],
 			
 			[['staff_name', 'staff_title'], 'string']
 			
