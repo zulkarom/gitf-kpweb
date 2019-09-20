@@ -6,7 +6,7 @@ use Yii;
 use backend\modules\erpd\models\KnowledgeTransfer;
 use backend\modules\erpd\models\KnowledgeTransferMember;
 use backend\modules\erpd\models\KnowledgeTransferSearch;
-use backend\modules\erpd\models\KnowledgeTransferAllSearch;
+
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
@@ -56,16 +56,7 @@ class KnowledgeTransferController extends Controller
         ]);
     }
 	
-	public function actionAll()
-    {
-        $searchModel = new KnowledgeTransferAllSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('all', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-    }
+	
 
     /**
      * Displays a single KnowledgeTransfer model.
@@ -80,27 +71,7 @@ class KnowledgeTransferController extends Controller
         ]);
     }
 	
-	public function actionViewVerify($id)
-    {
-		$model = $this->findModel($id);
-		if ($model->load(Yii::$app->request->post())) {
-			$model->reviewed_at = new Expression('NOW()');
-			$model->reviewed_by = Yii::$app->user->identity->id;
-			$status = Yii::$app->request->post('wfaction');
-			if($status == 'correction'){
-				$model->status = 10;
-			}else if($status == 'verify'){
-				$model->status = 50;
-			}
-			if($model->save()){
-				Yii::$app->session->addFlash('success', "Data Updated");
-			}
-		}
-		
-        return $this->render('view-verify', [
-            'model' => $model,
-        ]);
-    }
+	
 
     /**
      * Creates a new KnowledgeTransfer model.

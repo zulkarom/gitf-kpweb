@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = 'Verify';
 ?>
 
 
-<?=$this->render('_view_all', ['model' => $model])?>
+<?=$this->render('../knowledge-transfer/_view_all', ['model' => $model])?>
 
 
 
@@ -26,20 +26,25 @@ $this->params['breadcrumbs'][] = 'Verify';
 
 <div class="form-group">
 
-<?=Html::a('<span class="glyphicon glyphicon-arrow-left"></span> BACK', ['/erpd/knowledge-transfer/all'],['class'=>'btn btn-default'])?>  
+<?=Html::a('<span class="glyphicon glyphicon-arrow-left"></span> BACK', ['/erpd/admin/knowledge-transfer'],['class'=>'btn btn-default'])?>  
 
-<?=Html::submitButton('<span class="glyphicon glyphicon-pencil"></span> CORRECTION', 
+<?=Html::submitButton('<span class="glyphicon glyphicon-pencil"></span> MODIFY', 
     ['class' => 'btn btn-warning', 'name' => 'wfaction', 'value' => 'correction', 'data' => [
                 'confirm' => 'Are you sure to request the staff to correct the knowledge transfer?'
             ],
     ])?>
 
 	
-	<?=Html::submitButton('<span class="glyphicon glyphicon-ok"></span> VERIFY', 
-    ['class' => 'btn btn-primary', 'name' => 'wfaction', 'value' => 'verify', 'data' => [
-                'confirm' => 'Are you sure to verify the knowledge transfer?'
-            ],
-    ])?>
+	<?php 
+	if($model->status != 50){
+	echo Html::submitButton('<span class="glyphicon glyphicon-ok"></span> VERIFY', 
+		['class' => 'btn btn-primary', 'name' => 'wfaction', 'value' => 'verify', 'data' => [
+					'confirm' => 'Are you sure to verify the knowledge transfer?'
+				],
+		]);
+	}
+	
+	?>
     
 
     </div>

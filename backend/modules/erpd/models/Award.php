@@ -63,8 +63,9 @@ class Award extends \yii\db\ActiveRecord
             'awd_staff' => 'Awd Staff',
             'awd_name' => 'Award Name',
             'awd_level' => 'Level',
-            'awd_type' => 'Award Type',
-            'awd_by' => 'Awarded By',
+			'levelName' => 'Level',
+            'awd_type' => 'Type',
+            'awd_by' => 'Award By',
             'awd_date' => 'Date',
             'awd_file' => 'Award PDF File',
         ];

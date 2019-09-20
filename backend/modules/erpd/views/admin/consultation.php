@@ -6,15 +6,15 @@ use kartik\grid\GridView;
 use kartik\export\ExportMenu;
 
 /* @var $this yii\web\View */
-/* @var $searchModel backend\modules\erpd\models\AwardSearch */
+/* @var $searchModel backend\modules\erpd\models\ConsultationSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'All Awards';
+$this->title = 'All Consultations';
 $this->params['breadcrumbs'][] = $this->title;
 
 $exportColumns = [
-		['class' => 'yii\grid\SerialColumn'],
-		['attribute' => 'staff_search',
+			['class' => 'yii\grid\SerialColumn'],
+			['attribute' => 'staff_search',
 			'label' => 'Staff',
 			'value' => function($model){
 				if($model->staff){
@@ -24,40 +24,48 @@ $exportColumns = [
 			}
 			
 		],
-		'awd_name',
-		'awd_by',
-		[
-			'attribute' => 'awd_level',
-			'value' => function($model){
-				return $model->levelName;
-			}
-		]
-		,
-		[
-			'attribute' => 'awd_date',
-			'format' => 'date',
-		],
-		[
-			'attribute' => 'status',
-			'format' => 'html',
-			'value' => function($model){
-				return $model->showStatus();
-			}
-		],
-		'created_at',
+            'csl_title',
+			'csl_funder',
+			
+			[
+				'attribute' => 'csl_amount',
+				'label' => 'Value of Sponsorship',
+				'value' => function($model){
+					return $model->csl_amount;
+				}
+				
+			],
+			
+			[
+				'attribute' => 'csl_level',
+				'value' => function($model){
+					return $model->levelName;
+				}
+			]
+            ,
+			'date_start:date',
+			'date_end:date',
+			
+			[
+				'attribute' => 'status',
+                'format' => 'html',
+				'value' => function($model){
+					return $model->showStatus();
+				}
+			],
+			'created_at',
 		'modified_at',
 		'reviewed_at'
-
 ];
 
 
 ?>
-<div class="award-index">
+<div class="consultation-index">
 
 <div class="form-group"><?=ExportMenu::widget([
     'dataProvider' => $dataProvider,
     'columns' => $exportColumns,
-	'filename' => 'AWARD_DATA_' . date('Y-m-d'),
+	'filename' => 'CONSULTATION_DATA_' . date('Y-m-d'),
 	'onRenderSheet'=>function($sheet, $grid){
 		$sheet->getStyle('A2:'.$sheet->getHighestColumn().$sheet->getHighestRow())
 		->getAlignment()->setWrapText(true);
@@ -72,9 +80,9 @@ $exportColumns = [
 ],
 ]);?></div>
 
-    <div class="box">
+   <div class="box">
 <div class="box-header"></div>
-<div class="box-body"><?= GridView::widget([
+<div class="box-body"> <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
@@ -85,7 +93,7 @@ $exportColumns = [
 				'contentOptions' => [ 'style' => 'width: 1%;' ],
 				'value' => function($model){
 					
-					return '<a href="'.Url::to(['download-file', 'attr' => 'awd', 'id' => $model->id]).'" target="_blank"><i class="fa fa-file-pdf-o"></i></a>';
+					return '<a href="'.Url::to(['/erpd/consultation/download-file', 'attr' => 'csl', 'id' => $model->id]).'" target="_blank"><i class="fa fa-file-pdf-o"></i></a>';
 				}
 				
 			],
@@ -100,20 +108,27 @@ $exportColumns = [
 				}
 				
 			],
-            'awd_name',
+            'csl_title',
+			
 			[
-				'attribute' => 'awd_level',
-				'filter' => Html::activeDropDownList($searchModel, 'awd_level', $searchModel->listLevel(),['class'=> 'form-control','prompt' => 'All']),
+				'attribute' => 'csl_level',
+				'filter' => Html::activeDropDownList($searchModel, 'csl_level', $searchModel->listLevel(),['class'=> 'form-control','prompt' => 'All']),
 				'value' => function($model){
 					return $model->levelName;
 				}
 			]
             ,
-			[
-				'attribute' => 'awd_date',
+            [
+				'attribute' => 'duration',
 				'filter' => Html::activeDropDownList($searchModel, 'duration', $searchModel->listYears(),['class'=> 'form-control','prompt' => 'All']),
-				'format' => 'date',
+				'label' => 'Duration',
+				'format' => 'html',
+				'value' => function($model){
+					return date('d/m/Y', strtotime($model->date_start)) . '<br />' . date('d/m/Y', strtotime($model->date_end));
+				}
+				
 			],
+			
 			[
 				'attribute' => 'status',
                 'format' => 'html',
@@ -121,7 +136,9 @@ $exportColumns = [
 				'value' => function($model){
 					return $model->showStatus();
 				}
-			],
+			]
+
+            ,
 
             ['class' => 'yii\grid\ActionColumn',
                  'contentOptions' => ['style' => 'width: 8.7%'],
@@ -130,9 +147,9 @@ $exportColumns = [
                 'buttons'=>[
                     'update'=>function ($url, $model) {
 						if($model->status < 50){
-							return Html::a('<span class="glyphicon glyphicon-eye-open"></span> VERIFY',['/erpd/award/view-verify', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
+							return Html::a('<span class="glyphicon glyphicon-eye-open"></span> VERIFY',['/erpd/admin/view-consultation', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
 						}else{
-							return Html::a('<span class="glyphicon glyphicon-pencil"></span> VIEW',['/erpd/award/view-verify', 'id' => $model->id],['class'=>'btn btn-default btn-sm']);
+							return Html::a('<span class="glyphicon glyphicon-search"></span> VIEW',['/erpd/admin/view-consultation', 'id' => $model->id],['class'=>'btn btn-default btn-sm']);
 						}
                         
                     }

@@ -104,19 +104,19 @@ class Menu
 						
 				//['label' => 'Dashboard', 'icon' => 'dashboard', 'url' => ['/erpd'],],
 				
-				['label' => 'Research', 'icon' => 'book', 'url' => ['/erpd/research/all'],],
+				['label' => 'Research', 'icon' => 'book', 'url' => ['/erpd/admin/research'],],
 				
-				['label' => 'Publication', 'icon' => 'send', 'url' => ['/erpd/publication/all'],],
+				['label' => 'Publication', 'icon' => 'send', 'url' => ['/erpd/admin/publication'],],
 				
 				
 				
-				['label' => 'Membership', 'icon' => 'users', 'url' => ['/erpd/membership/all'],],
+				['label' => 'Membership', 'icon' => 'users', 'url' => ['/erpd/admin/membership'],],
 				
-				['label' => 'Award', 'icon' => 'trophy', 'url' => ['/erpd/award/all'],],
+				['label' => 'Award', 'icon' => 'trophy', 'url' => ['/erpd/admin/award'],],
 				
-				['label' => 'Consultation', 'icon' => 'microphone', 'url' => ['/erpd/consultation/all'],],
+				['label' => 'Consultation', 'icon' => 'microphone', 'url' => ['/erpd/admin/consultation'],],
 				
-				['label' => 'Knowledge Transfer', 'icon' => 'truck', 'url' => ['/erpd/knowledge-transfer/all'],],
+				['label' => 'Knowledge Transfer', 'icon' => 'truck', 'url' => ['/erpd/admin/knowledge-transfer'],],
 
 
                  ]
@@ -134,7 +134,7 @@ class Menu
                         'url' => '#',
                         'items' => [
 						
-				//['label' => 'Dashboard', 'icon' => 'dashboard', 'url' => ['/erpd'],],
+				['label' => 'Summary', 'icon' => 'pie-chart', 'url' => ['/erpd'],],
 				
 				['label' => 'Research', 'icon' => 'book', 'url' => ['/erpd/research'],],
 				
@@ -181,10 +181,11 @@ class Menu
 		$website = [
                         'label' => 'Website Menu',
                         'icon' => 'list-ul',
+						'visible' => Yii::$app->user->can('website-manager'),
                         'url' => '#',
                         'items' => [
 						
-				['label' => 'Dashboard', 'icon' => 'dashboard', 'url' => ['/website']],
+				['label' => 'Summary', 'icon' => 'pie-chart', 'url' => ['/website']],
 				
 				['label' => 'Front Slider', 'icon' => 'pencil', 'url' => ['/website/front-slider']],
 				

@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = 'Verify';
 ?>
 
 
-<?=$this->render('_view_all', ['model' => $model])?>
+<?=$this->render('../membership/_view_all', ['model' => $model])?>
 
 
 
@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = 'Verify';
 
 <div class="form-group">
 
-<?=Html::a('<span class="glyphicon glyphicon-arrow-left"></span> BACK', ['/erpd/membership/all'],['class'=>'btn btn-default'])?>  
+<?=Html::a('<span class="glyphicon glyphicon-arrow-left"></span> BACK', ['/erpd/admin/membership'],['class'=>'btn btn-default'])?>  
 
 <?=Html::submitButton('<span class="glyphicon glyphicon-pencil"></span> CORRECTION', 
     ['class' => 'btn btn-warning', 'name' => 'wfaction', 'value' => 'correction', 'data' => [
@@ -35,11 +35,18 @@ $this->params['breadcrumbs'][] = 'Verify';
     ])?>
 
 	
-	<?=Html::submitButton('<span class="glyphicon glyphicon-ok"></span> VERIFY', 
-    ['class' => 'btn btn-primary', 'name' => 'wfaction', 'value' => 'verify', 'data' => [
-                'confirm' => 'Are you sure to verify the membership?'
-            ],
-    ])?>
+	<?php 
+	
+	
+	if($model->status != 50){
+		echo Html::submitButton('<span class="glyphicon glyphicon-ok"></span> VERIFY', 
+		['class' => 'btn btn-primary', 'name' => 'wfaction', 'value' => 'verify', 'data' => [
+					'confirm' => 'Are you sure to verify the membership?'
+				],
+		]);
+	}
+	
+	?>
     
 
     </div>

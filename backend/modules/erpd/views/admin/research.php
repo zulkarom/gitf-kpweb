@@ -65,7 +65,7 @@ $colums = [
 				'contentOptions' => [ 'style' => 'width: 1%;' ],
 				'value' => function($model){
 					
-					return '<a href="'.Url::to(['download-file', 'attr' => 'res', 'id' => $model->id]).'" target="_blank"><i class="fa fa-file-pdf-o"></i></a>';
+					return '<a href="'.Url::to(['erpd/research/download-file', 'attr' => 'res', 'id' => $model->id]).'" target="_blank"><i class="fa fa-file-pdf-o"></i></a>';
 				}
 				
 			],
@@ -124,9 +124,9 @@ $colums = [
                 'buttons'=>[
                     'update'=>function ($url, $model) {
 						if($model->status < 50){
-							return Html::a('<span class="glyphicon glyphicon-eye-open"></span> VERIFY',['/erpd/research/view-verify', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
+							return Html::a('<span class="glyphicon glyphicon-eye-open"></span> VERIFY',['/erpd/admin/view-research', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
 						}else{
-							return Html::a('<span class="glyphicon glyphicon-pencil"></span> VIEW',['/erpd/research/view-verify', 'id' => $model->id],['class'=>'btn btn-default btn-sm']);
+							return Html::a('<span class="glyphicon glyphicon-search"></span> VIEW',['/erpd/admin/view-research', 'id' => $model->id],['class'=>'btn btn-default btn-sm']);
 						}
                         
                     }

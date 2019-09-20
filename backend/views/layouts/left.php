@@ -98,7 +98,7 @@ use backend\models\Menu;
 					
 					['label' => 'e-SIAP', 'icon' => 'mortar-board', 'url' => ['/esiap'],],
 					
-					['label' => 'e-RPD', 'icon' => 'flask', 'url' => ['/erpd/research'],],	
+					['label' => 'e-RPD', 'icon' => 'flask', 'url' => ['/erpd'],],	
 					
 					['label' => 'JEB JOURNAL', 'icon' => 'book', 'url' => ['/jeb'],],
 					

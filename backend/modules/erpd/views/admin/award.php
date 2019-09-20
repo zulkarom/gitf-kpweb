@@ -6,68 +6,58 @@ use kartik\grid\GridView;
 use kartik\export\ExportMenu;
 
 /* @var $this yii\web\View */
-/* @var $searchModel backend\modules\erpd\models\MembershipSearch */
+/* @var $searchModel backend\modules\erpd\models\AwardSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'All Memberships';
+$this->title = 'All Awards';
 $this->params['breadcrumbs'][] = $this->title;
 
 $exportColumns = [
-['class' => 'yii\grid\SerialColumn'],
-			[
-				'attribute' => 'staff_search',
-				'label' => 'Staff',
-				'value' => function($model){
-					if($model->staff){
-						return $model->staff->user->fullname . ' ('.$model->staff->staff_no .')';
-					}
-					
+		['class' => 'yii\grid\SerialColumn'],
+		['attribute' => 'staff_search',
+			'label' => 'Staff',
+			'value' => function($model){
+				if($model->staff){
+					return $model->staff->user->fullname . ' ('.$model->staff->staff_no .')';
 				}
 				
-			],
-            'msp_body',
-			'msp_type',
-			[
-				'attribute' => 'msp_level',
-				'value' => function($model){
-					return $model->levelName;
-				}
-			]
-            ,
-			'date_start',
-			[
-				'attribute' => 'date_end',
-				'value' => function($model){
-					if($model->date_end == '0000-00-00'){
-						return '-';
-					}else{
-						return $model->date_end;
-					}
-					
-				}
-				
-			],
+			}
 			
-			
-			[
-				'attribute' => 'status',
-                'format' => 'html',
-				'value' => function($model){
-					return $model->showStatus();
-				}
-			],
-			'created_at',
-			'modified_at',
-			'reviewed_at'
+		],
+		'awd_name',
+		'awd_by',
+		[
+			'attribute' => 'awd_level',
+			'value' => function($model){
+				return $model->levelName;
+			}
+		]
+		,
+		[
+			'attribute' => 'awd_date',
+			'format' => 'date',
+		],
+		[
+			'attribute' => 'status',
+			'format' => 'html',
+			'value' => function($model){
+				return $model->showStatus();
+			}
+		],
+		'created_at',
+		'modified_at',
+		'reviewed_at'
 
 ];
+
+
 ?>
-<div class="membership-index">
+<div class="award-index">
 
 <div class="form-group"><?=ExportMenu::widget([
     'dataProvider' => $dataProvider,
     'columns' => $exportColumns,
-	'filename' => 'MEMBERSHIP_DATA_' . date('Y-m-d'),
+	'filename' => 'AWARD_DATA_' . date('Y-m-d'),
 	'onRenderSheet'=>function($sheet, $grid){
 		$sheet->getStyle('A2:'.$sheet->getHighestColumn().$sheet->getHighestRow())
 		->getAlignment()->setWrapText(true);
@@ -82,9 +72,9 @@ $exportColumns = [
 ],
 ]);?></div>
 
-<div class="box">
+    <div class="box">
 <div class="box-header"></div>
-<div class="box-body">    <?= GridView::widget([
+<div class="box-body"><?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
@@ -95,7 +85,7 @@ $exportColumns = [
 				'contentOptions' => [ 'style' => 'width: 1%;' ],
 				'value' => function($model){
 					
-					return '<a href="'.Url::to(['download-file', 'attr' => 'msp', 'id' => $model->id]).'" target="_blank"><i class="fa fa-file-pdf-o"></i></a>';
+					return '<a href="'.Url::to(['/erpd/award/download-file', 'attr' => 'awd', 'id' => $model->id]).'" target="_blank"><i class="fa fa-file-pdf-o"></i></a>';
 				}
 				
 			],
@@ -110,32 +100,20 @@ $exportColumns = [
 				}
 				
 			],
-            'msp_body',
+            'awd_name',
 			[
-				'attribute' => 'msp_level',
-				'filter' => Html::activeDropDownList($searchModel, 'msp_level', $searchModel->listLevel(),['class'=> 'form-control','prompt' => 'All']),
+				'attribute' => 'awd_level',
+				'filter' => Html::activeDropDownList($searchModel, 'awd_level', $searchModel->listLevel(),['class'=> 'form-control','prompt' => 'All']),
 				'value' => function($model){
 					return $model->levelName;
 				}
 			]
             ,
-			
 			[
-				'attribute' => 'duration',
+				'attribute' => 'awd_date',
 				'filter' => Html::activeDropDownList($searchModel, 'duration', $searchModel->listYears(),['class'=> 'form-control','prompt' => 'All']),
-				'label' => 'Duration',
-				'format' => 'html',
-				'value' => function($model){
-					if($model->date_end=='0000-00-00'){
-						$end = 'No End';
-					}else{
-						$end = date('d/m/Y', strtotime($model->date_end));
-					}
-					return date('d/m/Y', strtotime($model->date_start)) . '<br />' . $end;
-				}
-				
+				'format' => 'date',
 			],
-			
 			[
 				'attribute' => 'status',
                 'format' => 'html',
@@ -152,9 +130,9 @@ $exportColumns = [
                 'buttons'=>[
                     'update'=>function ($url, $model) {
 						if($model->status < 50){
-							return Html::a('<span class="glyphicon glyphicon-eye-open"></span> VERIFY',['/erpd/membership/view-verify', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
+							return Html::a('<span class="glyphicon glyphicon-eye-open"></span> VERIFY',['/erpd/admin/view-award', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
 						}else{
-							return Html::a('<span class="glyphicon glyphicon-pencil"></span> VIEW',['/erpd/membership/view-verify', 'id' => $model->id],['class'=>'btn btn-default btn-sm']);
+							return Html::a('<span class="glyphicon glyphicon-search"></span> VIEW',['/erpd/admin/view-award', 'id' => $model->id],['class'=>'btn btn-default btn-sm']);
 						}
                         
                     }

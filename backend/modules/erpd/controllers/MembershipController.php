@@ -4,8 +4,9 @@ namespace backend\modules\erpd\controllers;
 
 use Yii;
 use backend\modules\erpd\models\Membership;
+
 use backend\modules\erpd\models\MembershipSearch;
-use backend\modules\erpd\models\MembershipAllSearch;
+
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -53,16 +54,7 @@ class MembershipController extends Controller
         ]);
     }
 	
-    public function actionAll()
-    {
-        $searchModel = new MembershipAllSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('all', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-    }
+   
 
     /**
      * Displays a single Membership model.
@@ -77,27 +69,7 @@ class MembershipController extends Controller
         ]);
     }
 	
-	public function actionViewVerify($id)
-    {
-		$model = $this->findModel($id);
-		if ($model->load(Yii::$app->request->post())) {
-			$model->reviewed_at = new Expression('NOW()');
-			$model->reviewed_by = Yii::$app->user->identity->id;
-			$status = Yii::$app->request->post('wfaction');
-			if($status == 'correction'){
-				$model->status = 10;
-			}else if($status == 'verify'){
-				$model->status = 50;
-			}
-			if($model->save()){
-				Yii::$app->session->addFlash('success', "Data Updated");
-			}
-		}
-		
-        return $this->render('view-verify', [
-            'model' => $model,
-        ]);
-    }
+	
 
     /**
      * Creates a new Membership model.

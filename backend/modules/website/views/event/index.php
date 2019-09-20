@@ -33,8 +33,36 @@ $this->params['breadcrumbs'][] = $this->title;
                 'contentOptions' => [ 'style' => 'width: 50%;' ],
             ],
 			'date_start:date',
-			'publish_promo',
-			'publish_report',
+			
+			[
+				'attribute' => 'publish_promo',
+				'filter' => Html::activeDropDownList($searchModel, 'publish_promo', [1=>'YES', 0 => 'NO'],['class'=> 'form-control','prompt' => 'All']),
+				'format' => 'html',
+				'value' => function($model){
+					$val = $model->publish_promo;
+					if($val == 1){
+						return '<span class="label label-success">YES</span>';
+					}else{
+						return '<span class="label label-danger">NO</span>';
+					}
+				}
+				
+			],
+			
+			[
+				'attribute' => 'publish_report',
+				'filter' => Html::activeDropDownList($searchModel, 'publish_report', [1=>'YES', 0 => 'NO'],['class'=> 'form-control','prompt' => 'All']),
+				'format' => 'html',
+				'value' => function($model){
+					$val = $model->publish_report;
+					if($val == 1){
+						return '<span class="label label-success">YES</span>';
+					}else{
+						return '<span class="label label-danger">NO</span>';
+					}
+				}
+				
+			],
 
            ['class' => 'yii\grid\ActionColumn',
                  'contentOptions' => ['style' => 'width: 10%'],

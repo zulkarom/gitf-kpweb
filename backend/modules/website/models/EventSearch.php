@@ -18,7 +18,7 @@ class EventSearch extends Event
     public function rules()
     {
         return [
-            [['id', 'created_by'], 'integer'],
+            [['id', 'created_by', 'publish_promo', 'publish_report'], 'integer'],
             [['name', 'date_start', 'date_end', 'time_start', 'time_end', 'created_at', 'updated_at', 'venue', 'register_link', 'intro_promo'], 'safe'],
         ];
     }
@@ -61,17 +61,11 @@ class EventSearch extends Event
         $query->andFilterWhere([
             'id' => $this->id,
             'date_start' => $this->date_start,
-            'time_start' => $this->time_start,
-            'time_end' => $this->time_end,
-            'created_at' => $this->created_at,
-            'created_by' => $this->created_by,
-            'updated_at' => $this->updated_at,
+			'publish_promo' => $this->publish_promo,
+			'publish_report' => $this->publish_report,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'venue', $this->venue])
-            ->andFilterWhere(['like', 'register_link', $this->register_link])
-            ->andFilterWhere(['like', 'intro_promo', $this->intro_promo]);
+        $query->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
     }

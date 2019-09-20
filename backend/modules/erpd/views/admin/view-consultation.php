@@ -15,7 +15,7 @@ $model->file_controller = 'publication';
 ?>
 
 
-<?=$this->render('_view_all', ['model' => $model])?>
+<?=$this->render('../consultation/_view_all', ['model' => $model])?>
 
 
 
@@ -28,20 +28,26 @@ $model->file_controller = 'publication';
 
 <div class="form-group">
 
-<?=Html::a('<span class="glyphicon glyphicon-arrow-left"></span> BACK', ['/erpd/consultation/all'],['class'=>'btn btn-default'])?>  
+<?=Html::a('<span class="glyphicon glyphicon-arrow-left"></span> BACK', ['/erpd/admin/consultation'],['class'=>'btn btn-default'])?>  
 
-<?=Html::submitButton('<span class="glyphicon glyphicon-pencil"></span> CORRECTION', 
+<?=Html::submitButton('<span class="glyphicon glyphicon-pencil"></span> MODIFY', 
     ['class' => 'btn btn-warning', 'name' => 'wfaction', 'value' => 'correction', 'data' => [
                 'confirm' => 'Are you sure to request the staff to correct the consultation?'
             ],
     ])?>
 
 	
-	<?=Html::submitButton('<span class="glyphicon glyphicon-ok"></span> VERIFY', 
-    ['class' => 'btn btn-primary', 'name' => 'wfaction', 'value' => 'verify', 'data' => [
-                'confirm' => 'Are you sure to verify the consultation?'
-            ],
-    ])?>
+	<?php 
+	
+	if($model->status != 50){
+	echo Html::submitButton('<span class="glyphicon glyphicon-ok"></span> VERIFY', 
+		['class' => 'btn btn-primary', 'name' => 'wfaction', 'value' => 'verify', 'data' => [
+					'confirm' => 'Are you sure to verify the consultation?'
+				],
+		]);
+	}
+	
+	?>
     
 
     </div>

@@ -62,26 +62,6 @@ class PublicationController extends Controller
         ]);
     }
 	
-	/**
-     * Lists all Publication models.
-     * @return mixed
-     */
-    public function actionAll()
-    {
-        $searchModel = new PublicationAllSearch();
-        
-		$r = Yii::$app->request->queryParams;
-		if(!array_key_exists('PublicationAllSearch', $r)){
-			$searchModel->pub_year = date('Y');
-		}
-		
-		$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-		
-        return $this->render('all', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-    }
 
     /**
      * Displays a single Publication model.
@@ -96,33 +76,7 @@ class PublicationController extends Controller
         ]);
     }
 	
-	/**
-     * Displays a single Publication model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionViewVerify($id)
-    {
-		$model = $this->findModel($id);
-		if ($model->load(Yii::$app->request->post())) {
-			$model->reviewed_at = new Expression('NOW()');
-			$model->reviewed_by = Yii::$app->user->identity->id;
-			$status = Yii::$app->request->post('wfaction');
-			if($status == 'correction'){
-				$model->status = 10;
-			}else if($status == 'verify'){
-				$model->status = 50;
-			}
-			if($model->save()){
-				Yii::$app->session->addFlash('success', "Data Updated");
-			}
-		}
-		
-        return $this->render('view-verify', [
-            'model' => $model,
-        ]);
-    }
+	
 
     /**
      * Creates a new Publication model.
@@ -448,7 +402,13 @@ class PublicationController extends Controller
 		
 		if ($model->load(Yii::$app->request->post())) {
 			$model->modified_at = new Expression('NOW()');
-			$model->status = 20;//submit
+			
+			if($model->status == 10){
+				$model->status = 30;//updated
+			}else{
+				$model->status = 20;//submit
+			}
+			
 			if($model->save()){
 				Yii::$app->session->addFlash('success', "Your publication has been successfully submitted.");
 				return $this->redirect('index');

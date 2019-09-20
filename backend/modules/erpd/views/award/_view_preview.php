@@ -22,6 +22,8 @@ table.detail-view th {
         'attributes' => [
 			'awd_name:ntext',
 			'awd_by:ntext',
+			'levelName',
+			'awd_type',
 			'awd_date:date',
 			
 

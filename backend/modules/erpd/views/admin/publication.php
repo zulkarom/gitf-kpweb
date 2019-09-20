@@ -124,7 +124,7 @@ $exportColumns = [
 				'contentOptions' => [ 'style' => 'width: 1%;' ],
 				'value' => function($model){
 					
-					return '<a href="'.Url::to(['download-file', 'attr' => 'awd', 'id' => $model->id]).'" target="_blank"><i class="fa fa-file-pdf-o"></i></a>';
+					return '<a href="'.Url::to(['erpd/publication/download-file', 'attr' => 'awd', 'id' => $model->id]).'" target="_blank"><i class="fa fa-file-pdf-o"></i></a>';
 				}
 				
 			],
@@ -168,8 +168,12 @@ $exportColumns = [
                 //'visible' => false,
                 'buttons'=>[
                     'update'=>function ($url, $model) {
-						$status = $model->status;
-						return Html::a('<span class="glyphicon glyphicon-eye-open"></span> VIEW',['/erpd/publication/view-verify/', 'id' => $model->id],['class'=>'btn btn-primary btn-sm']);
+						
+						if($model->status < 50){
+							return Html::a('<span class="glyphicon glyphicon-eye-open"></span> VERIFY',['/erpd/admin/view-publication', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
+						}else{
+							return Html::a('<span class="glyphicon glyphicon-search"></span> VIEW',['/erpd/admin/view-publication', 'id' => $model->id],['class'=>'btn btn-default btn-sm']);
+						}
                        
                     }
                 ],
