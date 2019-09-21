@@ -9,7 +9,7 @@ use backend\modules\staff\models\StaffPosition;
 /* @var $searchModel backend\modules\staff\models\StaffSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Inactive Staff';
+$this->title = 'Transfered/Quit Staff';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="staff-index">

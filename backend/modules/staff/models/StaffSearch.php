@@ -7,6 +7,7 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use backend\modules\staff\models\Staff;
 
+
 /**
  * StaffSearch represents the model behind the search form of `backend\modules\staff\models\Staff`.
  */
@@ -19,9 +20,9 @@ class StaffSearch extends Staff
     public function rules()
     {
         return [
-            [['id', 'staff_no','is_academic', 'position_id', 'position_status', 'working_status', 'staff_department', 'publish'], 'integer'],
+            [['id','is_academic', 'position_id', 'position_status', 'working_status', 'staff_department'], 'integer'],
 			
-			[['staff_name', 'staff_title'], 'string']
+			[['staff_name', 'staff_title', 'staff_no'], 'string']
 			
 
         ];
@@ -69,11 +70,14 @@ class StaffSearch extends Staff
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-			'staff_no' => $this->staff_no,
-			'position_id' => $this->position_id
+			'position_id' => $this->position_id,
+			'is_academic' => $this->is_academic,
+			'position_status' => $this->position_status,
+			'working_status' => $this->working_status,
         ]);
 
         $query->andFilterWhere(['like', 'staff_no', $this->staff_no]);
+		$query->andFilterWhere(['like', 'user.fullname', $this->staff_name]);
 		
 		$dataProvider->sort->attributes['staff_name'] = [
         'asc' => ['user.fullname' => SORT_ASC],

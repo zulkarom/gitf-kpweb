@@ -3,8 +3,7 @@
 use yii\helpers\Html;
 use kartik\grid\GridView;
 use kartik\export\ExportMenu;
-use yii\helpers\ArrayHelper;
-use backend\modules\staff\models\StaffPosition;
+
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\modules\staff\models\StaffSearch */
@@ -94,7 +93,20 @@ $exportColumns = [
 <div class="staff-index">
 
 
-<div class="form-group"><?=ExportMenu::widget([
+<div class="form-group">
+<?= Html::a('<span class="glyphicon glyphicon-plus"></span> Add New Staff', ['create'], ['class' => 'btn btn-success']) ?>
+
+ 
+ </div>
+
+
+
+<?=$this->render('_search', ['model' => $searchModel])?>
+
+
+<div class="form-group">
+
+<b>EXPORT DATA</b>  <?=ExportMenu::widget([
     'dataProvider' => $dataProvider,
     'columns' => $exportColumns,
 	'filename' => 'STAFF_DATA_' . date('Y-m-d'),
@@ -109,14 +121,13 @@ $exportColumns = [
         ],
     ],
 ],
-]);?> <?= Html::a('Create Staff', ['create'], ['class' => 'btn btn-success']) ?></div>
-
+]);?> </div>
 
     <div class="box">
 <div class="box-header"></div>
 <div class="box-body"><?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+        //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'staff_no',
@@ -133,7 +144,6 @@ $exportColumns = [
 			],
 			[
 				'attribute' => 'position_id',
-				'filter' => Html::activeDropDownList($searchModel, 'position_id', ArrayHelper::map(StaffPosition::find()->where(['>', 'id',0])->all(),'id', 'position_name'),['class'=> 'form-control','prompt' => 'Choose Position']),
 				'value' => function($model){
 					return $model->staffPosition->position_name;
 				}

@@ -51,6 +51,10 @@ class Staff extends \yii\db\ActiveRecord
 	
 	public $image_instance;
 	public $file_controller;
+	
+	public $count_staff;
+	public $position_name;
+	public $staff_label;
 
 	
     /**

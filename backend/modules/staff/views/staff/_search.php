@@ -2,124 +2,80 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use backend\modules\staff\models\StaffPosition;
+use backend\modules\staff\models\StaffPositionStatus;
+use backend\modules\staff\models\StaffWorkingStatus;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\staff\models\StaffSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="staff-search">
+<div class="box">
+<div class="box-header">
+<div class="box-title">
+Search Staff
+
+</div>
+
+</div>
+<div class="box-body"><div class="staff-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'staff_id') ?>
+<div class="row">
+<div class="col-md-4"><?= $form->field($model, 'staff_no') ?></div>
+<div class="col-md-4"><?php  echo $form->field($model, 'staff_name') ?>
+</div>
 
-    <?= $form->field($model, 'staff_no') ?>
 
-    <?= $form->field($model, 'user_name') ?>
+<div class="col-md-4">
+<?php  echo $form->field($model, 'position_id')->dropDownList( ArrayHelper::map(StaffPosition::find()->where(['>', 'id',0])->all(),'id', 'position_name'),['class'=> 'form-control','prompt' => 'All']) ?>
 
-    <?= $form->field($model, 'user_password_hash') ?>
+</div>
 
-    <?= $form->field($model, 'staff_email') ?>
+</div>
+    
 
-    <?php // echo $form->field($model, 'staff_name') ?>
 
-    <?php // echo $form->field($model, 'staff_name_pub') ?>
+    <div class="row">
+	
+	<div class="col-md-3"><?php  echo $form->field($model, 'is_academic')->dropDownList([1=>'Academic', 0 => 'Administrative'], ['prompt' => 'All'])?>
+</div>
+	
+<div class="col-md-3">
 
-    <?php // echo $form->field($model, 'staff_title') ?>
+<?php  echo $form->field($model, 'position_status')->dropDownList( ArrayHelper::map(StaffPositionStatus::find()->where(['>', 'id',0])->all(),'id', 'status_name'),['class'=> 'form-control','prompt' => 'All']) ?>
 
-    <?php // echo $form->field($model, 'staff_edu') ?>
 
-    <?php // echo $form->field($model, 'is_academic') ?>
+</div>
 
-    <?php // echo $form->field($model, 'position_id') ?>
+<div class="col-md-3">
 
-    <?php // echo $form->field($model, 'position_status') ?>
+<?php  echo $form->field($model, 'working_status')->dropDownList( ArrayHelper::map(StaffWorkingStatus::find()->where(['>', 'id',0])->all(),'id', 'work_name'),['class'=> 'form-control','prompt' => 'All']) ?>
+</div>
 
-    <?php // echo $form->field($model, 'working_status') ?>
+</div>
 
-    <?php // echo $form->field($model, 'leave_start') ?>
+    
 
-    <?php // echo $form->field($model, 'leave_end') ?>
+    
 
-    <?php // echo $form->field($model, 'leave_note') ?>
+  
 
-    <?php // echo $form->field($model, 'rotation_post') ?>
 
-    <?php // echo $form->field($model, 'staff_expertise') ?>
-
-    <?php // echo $form->field($model, 'staff_gscholar') ?>
-
-    <?php // echo $form->field($model, 'officephone') ?>
-
-    <?php // echo $form->field($model, 'handphone1') ?>
-
-    <?php // echo $form->field($model, 'handphone2') ?>
-
-    <?php // echo $form->field($model, 'staff_ic') ?>
-
-    <?php // echo $form->field($model, 'staff_dob') ?>
-
-    <?php // echo $form->field($model, 'date_begin_umk') ?>
-
-    <?php // echo $form->field($model, 'date_begin_service') ?>
-
-    <?php // echo $form->field($model, 'staff_note') ?>
-
-    <?php // echo $form->field($model, 'personal_email') ?>
-
-    <?php // echo $form->field($model, 'ofis_location') ?>
-
-    <?php // echo $form->field($model, 'staff_cv') ?>
-
-    <?php // echo $form->field($model, 'staff_img') ?>
-
-    <?php // echo $form->field($model, 'teach_pg') ?>
-
-    <?php // echo $form->field($model, 'staff_level') ?>
-
-    <?php // echo $form->field($model, 'staff_interest') ?>
-
-    <?php // echo $form->field($model, 'staff_department') ?>
-
-    <?php // echo $form->field($model, 'is_super') ?>
-
-    <?php // echo $form->field($model, 'progress') ?>
-
-    <?php // echo $form->field($model, 'total_progress') ?>
-
-    <?php // echo $form->field($model, 'trash') ?>
-
-    <?php // echo $form->field($model, 'publish') ?>
-
-    <?php // echo $form->field($model, 'user_active') ?>
-
-    <?php // echo $form->field($model, 'user_deleted') ?>
-
-    <?php // echo $form->field($model, 'user_account_type') ?>
-
-    <?php // echo $form->field($model, 'user_suspension_timestamp') ?>
-
-    <?php // echo $form->field($model, 'user_last_login_timestamp') ?>
-
-    <?php // echo $form->field($model, 'user_failed_logins') ?>
-
-    <?php // echo $form->field($model, 'user_last_failed_login') ?>
-
-    <?php // echo $form->field($model, 'user_password_reset_hash') ?>
-
-    <?php // echo $form->field($model, 'user_password_reset_timestamp') ?>
-
-    <?php // echo $form->field($model, 'session_id') ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton('<span class="glyphicon glyphicon-search"></span> Search Staff', ['class' => 'btn btn-primary']) ?>
         <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
 
+</div></div>
 </div>
+

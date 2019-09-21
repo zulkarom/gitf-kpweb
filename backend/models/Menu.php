@@ -206,11 +206,11 @@ class Menu
 						
 				['label' => 'Summary', 'icon' => 'pie-chart', 'url' => ['/staff']],
 				
-				['label' => 'New Staff', 'icon' => 'plus', 'url' => ['/staff/staff/create']],
+				//['label' => 'New Staff', 'icon' => 'plus', 'url' => ['/staff/staff/create']],
 				
 				['label' => 'Staff List', 'icon' => 'user', 'url' => ['/staff/staff']],
 				
-				['label' => 'Inactive', 'icon' => 'user', 'url' => ['/staff/staff/inactive']],
+				['label' => 'Transfered/Quit', 'icon' => 'user', 'url' => ['/staff/staff/inactive']],
 				
 
                  ]
