@@ -71,7 +71,7 @@ use backend\models\Menu;
 			break;
 			
 			case 'esiap':
-			$focus = Menu::coursePic();
+			//$focus = Menu::coursePic();
 			$admin_focus = Menu::adminEsiap();
 			break;
 			

@@ -29,19 +29,24 @@ $this->params['breadcrumbs'][] = $this->title;
             'course_code',
             'course_name',
             'course_name_bi',
-			'pic.fullname',
+			[
+                'label' => 'Status',
+                'format' => 'html',
+                
+                'value' => function($model){
+                    return $model->defaultVersion->labelStatus;
+                }
+            ],
 
             ['class' => 'yii\grid\ActionColumn',
-                 'contentOptions' => ['style' => 'width: 20%'],
-                'template' => '{update} {version}',
+                 'contentOptions' => ['style' => 'width: 9%'],
+                'template' => '{update}',
                 //'visible' => false,
                 'buttons'=>[
                     'update'=>function ($url, $model) {
                         return Html::a('<span class="glyphicon glyphicon-pencil"></span> Update',['/esiap/course-admin/update/', 'course' => $model->id],['class'=>'btn btn-warning btn-sm']);
                     },
-					'version'=>function ($url, $model) {
-                        return Html::a('<span class="glyphicon glyphicon-pencil"></span> Version',['/esiap/course-admin/course-version/', 'course' => $model->id],['class'=>'btn btn-info btn-sm']);
-                    }
+
                 ],
             
             ],

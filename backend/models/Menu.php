@@ -8,7 +8,7 @@ use backend\modules\esiap\models\Course;
 
 class Menu
 {
-	public static function coursePic(){
+	public static function coursePicXX(){
 		$esiap_pic = [];
 		
 		$coor = Course::find()->where(['course_pic' => Yii::$app->user->identity->id])->all();

@@ -38,7 +38,6 @@ use common\models\User;
  * @property string $image_file
  * @property string $staff_interest
  * @property int $staff_department
- * @property int $trash
  * @property int $publish
  * @property int $staff_active
  * @property string $user_token
@@ -82,7 +81,7 @@ class Staff extends \yii\db\ActiveRecord
 			//['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email has already been taken'],
 			
 			
-            [['user_id', 'is_academic', 'position_id', 'position_status', 'working_status',  'staff_department', 'trash', 'publish', 'staff_active', 'user_token_at'], 'integer'],
+            [['user_id', 'is_academic', 'position_id', 'position_status', 'working_status',  'staff_department', 'publish', 'staff_active', 'user_token_at'], 'integer'],
             [['leave_start', 'leave_end', 'staff_dob', 'date_begin_umk', 'date_begin_service'], 'safe'],
 			
             [['leave_note', 'staff_interest'], 'string'],
@@ -141,7 +140,6 @@ class Staff extends \yii\db\ActiveRecord
             'staff_level' => 'Staff Level',
             'staff_interest' => 'Staff Interest',
             'staff_department' => 'Staff Department',
-            'trash' => 'Trash',
             'publish' => 'Publish',
             'staff_active' => 'Staff Active',
             'user_token' => 'User Token',
@@ -150,7 +148,7 @@ class Staff extends \yii\db\ActiveRecord
     }
 	
 	public function getListTitles(){
-		$array = ['Encik','Cik' ,'Dr.', 'Prof. Madya', 'Prof.'];
+		$array = ['Encik','Cik', 'Puan' ,'Dr.', 'Prof. Madya', 'Prof. Madya Dr.', 'Prof.', 'Prof. Dr.'];
 		$return = [];
 		foreach($array as $a){
 			$return[$a] = $a;
@@ -171,7 +169,7 @@ class Staff extends \yii\db\ActiveRecord
 		return self::find()
 		->select('staff.id, user.fullname as staff_name, user.id as user_id')
 		->innerJoin('user', 'user.id = staff.user_id')
-		->where(['staff.staff_active' => 1, 'staff.trash' => 0])->orderBy('user.fullname ASC')
+		->where(['staff.staff_active' => 1])->orderBy('user.fullname ASC')
 		->all();
 	}
 	
@@ -179,7 +177,7 @@ class Staff extends \yii\db\ActiveRecord
 		return self::find()
 		->select('staff.id, user.fullname as staff_name, user.id as user_id')
 		->innerJoin('user', 'user.id = staff.user_id')
-		->where(['staff.staff_active' => 1, 'staff.trash' => 0])
+		->where(['staff.staff_active' => 1])
 		->andWhere(['<>', 'staff.id', Yii::$app->user->identity->staff->id])
 		->all();
 	}

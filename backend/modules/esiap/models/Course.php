@@ -72,8 +72,8 @@ class Course extends \yii\db\ActiveRecord
     }
 	
 	
-	public function getPic(){
-		return $this->hasOne(User::className(), ['id' => 'course_pic']);
+	public function getCoursePics(){
+		return $this->hasMany(CoursePic::className(), ['course_id' => 'id']);
 	}
 	
 	public function getCodeAndCourse(){

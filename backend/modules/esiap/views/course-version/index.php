@@ -8,14 +8,16 @@ use yii\grid\GridView;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Course Versions for ' . $course->course_code .' '. $course->course_name;
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = ['label' => 'Course List', 'url' => ['/esiap/course-admin/index']];
+$this->params['breadcrumbs'][] = ['label' => 'Update', 'url' => ['/esiap/course-admin/update', 'course' => $course->id]];
+$this->params['breadcrumbs'][] = 'Version List';
 ?>
 <div class="course-version-index">
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-	<?= Html::a('Back', ['/esiap/course-admin'], ['class' => 'btn btn-default']) ?>
+	<?= Html::a('Back', ['/esiap/course-admin/update', 'course' => $course->id], ['class' => 'btn btn-default']) ?>
         <?= Html::a('Create Course Version', ['course-version-create', 'course' => $course->id], ['class' => 'btn btn-success']) ?>
     </p>
 

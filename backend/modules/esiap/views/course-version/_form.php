@@ -18,15 +18,21 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'version_name')->textInput(['maxlength' => true]) ?>
 
+<div class="row">
+<div class="col-md-6"><?= $form->field($model, 'is_active')->dropDownList( [1 => 'YES' , 0 => 'NO'] ) ?></div>
 
-   <?= $form->field($model, 'is_active')->dropDownList( [1 => 'YES' , 0 => 'NO'] ) ?>
+<div class="col-md-6"><?= $form->field($model, 'status')->dropDownList( $model->statusArray ) ?>
+</div>
+
+</div>
+   
    
    </div>
 </div>
 
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('SAVE COURSE VERSION', ['class' => 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
