@@ -47,6 +47,10 @@ class CourseAdminSearch extends Course
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+			'pagination' => [
+                'pageSize' => 30,
+            ],
+
         ]);
 
         $this->load($params);
@@ -56,16 +60,13 @@ class CourseAdminSearch extends Course
             // $query->where('0=1');
             return $dataProvider;
         }
+		
+		// grid filtering conditions
+        $query->andFilterWhere(['like', 'course_code', $this->search_course]);
 
-        // grid filtering conditions
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'credit_hour' => $this->credit_hour,
-        ]);
 
-        $query->andFilterWhere(['like', 'course_code', $this->course_code])
-            ->andFilterWhere(['like', 'course_name', $this->course_name])
-            ->andFilterWhere(['like', 'course_name_bi', $this->course_name_bi]);
+        $query->orFilterWhere(['like', 'course_name', $this->search_course])
+            ->orFilterWhere(['like', 'course_name_bi', $this->search_course]);
 
         return $dataProvider;
     }
