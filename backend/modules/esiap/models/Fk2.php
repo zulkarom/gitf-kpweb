@@ -188,13 +188,13 @@ EOD;
 		</td>
 		
 		<td width="'.$row5col2.'">
-		<b>Jabatan:</b> <br />
-		<i><b>Department:</b> </i>
+		<b>Jabatan:</b> '.$this->model->course->department->dep_name .'<br />
+		<i><b>Department:</b> '.$this->model->course->department->dep_name_bi .'</i>
 		</td>
 		
 		<td colspan="2" width="'.$row5col3.'">
-		<b>Program:</b> <br />
-		<i><b>Programme:</b> </i>
+		<b>Program:</b> '.$this->model->course->program->pro_name .'<br />
+		<i><b>Programme:</b> '.$this->model->course->program->pro_name_bi .'</i>
 		</td>
 		
 		</tr>
