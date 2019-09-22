@@ -220,7 +220,7 @@ class CourseClo extends \yii\db\ActiveRecord
 	
 	public function getPlo(){
 		$html = '';
-		$plo_num = $this->developmentVersion->plo_num;
+		$plo_num = $this->defaultVersion->plo_num;
 		$x=1;
 		for($c=1;$c<=$plo_num;$c++){
 			$prop = 'PLO'.$c;

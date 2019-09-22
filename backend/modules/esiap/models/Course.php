@@ -40,11 +40,10 @@ class Course extends \yii\db\ActiveRecord
     {
         return [
 			
-			[['course_name', 'course_name_bi', 'course_code', 'credit_hour'], 'required', 'on' => 'update'],
+			[['course_name', 'course_name_bi', 'course_code', 'credit_hour', 'is_dummy'], 'required', 'on' => 'update'],
 			
-			[['course_pic'], 'required', 'on' => 'coor'],
 			
-            [['is_developed', 'course_pic', 'program_id', 'department_id', 'faculty_id'], 'integer'],
+            [['program_id', 'department_id', 'faculty_id', 'is_dummy'], 'integer'],
 			
             [['course_name', 'course_name_bi'], 'string', 'max' => 100],
 			
@@ -74,6 +73,10 @@ class Course extends \yii\db\ActiveRecord
 	
 	public function getCoursePics(){
 		return $this->hasMany(CoursePic::className(), ['course_id' => 'id']);
+	}
+	
+	public function getCourseAccesses(){
+		return $this->hasMany(CourseAccess::className(), ['course_id' => 'id']);
 	}
 	
 	public function IAmCoursePic(){

@@ -40,9 +40,11 @@ $this->params['breadcrumbs'][] = 'Update';
 
 
 <?= $form->field($model, 'course_name')->textInput(['maxlength' => true]) ?>
+
+
 	<?= $form->field($model, 'course_name_bi')->textInput(['maxlength' => true]) ?>
 
-
+<?= $form->field($model, 'is_dummy')->dropDownList( [ 0 => 'NO', 1 => 'YES' ] ) ?>
 
 
 </div></div>
@@ -51,7 +53,7 @@ $this->params['breadcrumbs'][] = 'Update';
 
 <div class="box box-danger">
 <div class="box-header">
-<h3 class="box-title">Staff in Charge</h3>
+<h3 class="box-title">Staff in Charge for Development</h3>
 </div>
 <div class="box-body">
 
@@ -118,6 +120,73 @@ $this->params['breadcrumbs'][] = 'Update';
 </div>
 
 
+<div class="box box-warning">
+<div class="box-header">
+<h3 class="box-title">Staff Access for View</h3>
+</div>
+<div class="box-body">
+
+<?php DynamicFormWidget::begin([
+        'widgetContainer' => 'dynamicform_wrapper',
+        'widgetBody' => '.container-items-access',
+        'widgetItem' => '.access-item',
+        'limit' => 10,
+        'min' => 1,
+        'insertButton' => '.add-access',
+        'deleteButton' => '.remove-access',
+        'model' => $accesses[0],
+        'formId' => 'dynamic-form',
+        'formFields' => [
+            'id',
+            'staff_id',
+        ],
+    ]); ?>
+
+    
+    <table class="table table-bordered table-striped">
+
+        <tbody class="container-items-access">
+        <?php foreach ($accesses as $i => $access): ?>
+            <tr class="access-item">
+            
+                <td class="vcenter">
+                    <?php
+                        // necessary for update action.
+                        if (! $access->isNewRecord) {
+                            echo Html::activeHiddenInput($access, "[{$i}]id");
+                        }
+                    ?>
+                    <?= $form->field($access, "[{$i}]staff_id")->dropDownList(ArrayHelper::map(Staff::activeStaff(), 'id', 'user.fullname'), ['prompt' => 'Select'])->label(false) ?>
+                </td>
+
+                <td class="text-center vcenter" style="width: 40px;">
+                    <button type="button" class="remove-access btn btn-default btn-sm"><span class="fa fa-remove"></span></button>
+                </td>
+            </tr>
+         <?php endforeach; ?>
+        </tbody>
+        
+        <tfoot>
+            <tr>
+                <td>
+                <button type="button" class="add-access btn btn-default btn-sm"><span class="fa fa-plus"></span> New Staff Access</button>
+                
+                </td>
+                <td>
+                
+                
+                </td>
+            </tr>
+        </tfoot>
+        
+    </table>
+    <?php DynamicFormWidget::end(); ?>
+
+
+</div>
+</div>
+
+
     <div class="form-group">
 	<?= Html::a("<span class='glyphicon glyphicon-arrow-left'></span> BACK", ['course-admin/index'] ,['class' => 'btn btn-default']) ?>
         <?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> SAVE COURSE', ['class' => 'btn btn-success']) ?>
@@ -140,24 +209,31 @@ $this->params['breadcrumbs'][] = 'Update';
       <tr>
 		<th>#</th>
         <th>Document</th>
-        <th>PDF</th>
+        <th>Published</th>
+		<th>Dev</th>
       </tr>
     </thead>
     <tbody>
       <tr>
 		<td>1.</td>
         <td><span class="glyphicon glyphicon-file"></span> FK01 - PRO FORMA KURSUS / <i>COURSE PRO FORMA</i>                             </td>
-        <td><a href="<?=Url::to(['/esiap/course/fk1', 'course' => $model->id])?>" class="btn btn-danger btn-sm" target="_blank"><span class='glyphicon glyphicon-download-alt'></span></a></td>
+        <td><a href="<?=Url::to(['/esiap/course/fk1', 'course' => $model->id])?>" class="btn btn-success btn-sm" target="_blank"><span class='glyphicon glyphicon-download-alt'></span></a></td>
+		
+		<td><a href="<?=Url::to(['/esiap/course/fk1', 'course' => $model->id, 'dev' => 1])?>" class="btn btn-warning btn-sm" target="_blank"><span class='glyphicon glyphicon-download-alt'></span></a></td>
       </tr>
 	  <tr>
 	  <td>2.</td>
         <td><span class="glyphicon glyphicon-file"></span> FK02 - MAKLUMAT KURSUS / <i>COURSE INFORMATION </i>                               </td>
-        <td><a href="<?=Url::to(['/esiap/course/fk2', 'course' => $model->id])?>" class="btn btn-danger btn-sm" target="_blank"><span class='glyphicon glyphicon-download-alt'></span></a></td>
+        <td><a href="<?=Url::to(['/esiap/course/fk2', 'course' => $model->id])?>" class="btn btn-success btn-sm" target="_blank"><span class='glyphicon glyphicon-download-alt'></span></a></td>
+		
+		<td><a href="<?=Url::to(['/esiap/course/fk1', 'course' => $model->id, 'dev' => 1])?>" class="btn btn-warning btn-sm" target="_blank"><span class='glyphicon glyphicon-download-alt'></span></a></td>
       </tr>
 	  <tr>
 	  <td>3.</td>
         <td><span class="glyphicon glyphicon-file"></span> FK03 - PENJAJARAN KONSTRUKTIF / <i>CONSTRUCTIVE ALIGNMENT       </i>                         </td>
-        <td><a href="<?=Url::to(['/esiap/course/fk3', 'course' => $model->id])?>" class="btn btn-danger btn-sm" target="_blank"><span class='glyphicon glyphicon-download-alt'></span></a></td>
+        <td><a href="<?=Url::to(['/esiap/course/fk3', 'course' => $model->id])?>" class="btn btn-success btn-sm" target="_blank"><span class='glyphicon glyphicon-download-alt'></span></a></td>
+		
+		<td><a href="<?=Url::to(['/esiap/course/fk1', 'course' => $model->id,  'dev' => 1])?>" class="btn btn-warning btn-sm" target="_blank"><span class='glyphicon glyphicon-download-alt'></span></a></td>
       </tr>
       
     </tbody>
@@ -194,6 +270,54 @@ $this->params['breadcrumbs'][] = 'Update';
 		
 		</td>
       </tr>
+	  
+	  <tr>
+        <td>Preparation</td>
+        <td><?php 
+		if($model->publishedVersion){
+			echo $model->publishedVersion->preparedBy->fullname . ' ('.$model->publishedVersion->prepareDate.')';
+		}else{
+			echo 'None';
+		}
+		?>
+		
+		</td>
+      </tr>
+	 
+	  
+	  <tr>
+        <td>Verification</td>
+        <td><?php 
+		if($model->publishedVersion){
+			echo $model->publishedVersion->verifiedBy->fullname . ' ('.$model->publishedVersion->verifiedDate.')';
+		}else{
+			echo 'None';
+		}
+		?>
+		
+		</td>
+      </tr>
+	  
+	  <tr>
+        <td>Approval</td>
+        <td><?php 
+		if($model->publishedVersion){
+			if($model->publishedVersion->senate_approve_show){
+				$senate = $model->publishedVersion->senateDate;
+			}else{
+				$senate = '-';
+			}
+			echo 'Faculty: '.$model->publishedVersion->facultyDate.'<br />
+			Senate: ' . $senate;
+			
+		}else{
+			echo 'None';
+		}
+		?>
+		
+		</td>
+      </tr>
+
 
     </tbody>
   </table>
@@ -236,25 +360,10 @@ $this->params['breadcrumbs'][] = 'Update';
         <td>Action</td>
         <td><?php 
 		if($model->developmentVersion){
-			$status = $model->developmentVersion->status;
-			if($status == 0){
-				echo 'Waiting for submission';
-			}else if($status == 10){
-				echo Html::a('VERIFY', ['verify-version', 'id' => $model->developmentVersion->id], [
+			echo Html::a('<span class="glyphicon glyphicon-pencil"></span> Update Version', ['/esiap/course-admin/course-version-update', 'id' => $model->developmentVersion->id], [
 					'class' => 'btn btn-warning btn-sm',
-					'data' => [
-						'confirm' => 'Are you sure you to verify this course version?',
-						'method' => 'post',
-					],
+					
 				]);
-			}else if($status == 20){
-				echo Html::a('<i>Back to draft</i>', ['version-back-draft', 'id' => $model->developmentVersion->id], [
-					'data' => [
-						'confirm' => 'Are you sure you to put back this version to draft status?',
-						'method' => 'post',
-					],
-				]);
-			}
 		}else{
 			echo 'None';
 		}

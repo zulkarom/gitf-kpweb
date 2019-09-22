@@ -34,6 +34,12 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
             'pro_name',
 			[
+				'attribute' => 'pro_name_short',
+				'label' => 'Abbr.',
+				
+			],
+			
+			[
 				'attribute' => 'status',
 				'format' => 'html',
 				'value' => function($model){

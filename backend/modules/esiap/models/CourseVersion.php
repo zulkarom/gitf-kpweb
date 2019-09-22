@@ -50,9 +50,11 @@ class CourseVersion extends \yii\db\ActiveRecord
 			
 			[['senate_approve_at', 'faculty_approve_at', 'senate_approve_show'], 'required', 'on' => 'save_date'],
 			
-            [['course_id', 'created_by', 'is_developed', 'is_published', 'status'], 'integer'],
+
 			
-            [['created_at', 'updated_at'], 'safe'],
+            [['course_id', 'created_by', 'is_developed', 'is_published', 'status', 'prepared_by', 'verified_by'], 'integer'],
+			
+            [['created_at', 'updated_at', 'senate_approve_at', 'faculty_approve_at', 'senate_approve_show', 'prepared_at', 'verified_at'], 'safe'],
             [['version_name'], 'string', 'max' => 200],
         ];
     }
@@ -209,6 +211,17 @@ class CourseVersion extends \yii\db\ActiveRecord
 	public function getPreparedBy(){
         return $this->hasOne(User::className(), ['id' => 'prepared_by']);
     }
+	public function getPrepareDate(){
+		return $this->niceDate($this->prepared_at);
+	}
+	
+	public function getVerifiedBy(){
+        return $this->hasOne(User::className(), ['id' => 'verified_by']);
+    }
+	public function getVerifiedDate(){
+		return $this->niceDate($this->verified_at);
+	}
+
 
 	public function getCourse(){
         return $this->hasOne(Course::className(), ['id' => 'course_id']);
@@ -296,9 +309,9 @@ class CourseVersion extends \yii\db\ActiveRecord
 		return $this->niceDate($this->faculty_approve_at);
 	}
 	
-	public function getPrepareDate(){
-		return $this->niceDate($this->prepared_at);
-	}
+	
+	
+	
 	
 	public function getSetting(){
 		return GeneralSetting::findOne(1);

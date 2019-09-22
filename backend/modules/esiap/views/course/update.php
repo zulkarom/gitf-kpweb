@@ -7,7 +7,7 @@ use backend\modules\esiap\models\CourseType;
 use backend\modules\esiap\models\CourseLevel;
 use backend\modules\esiap\models\Program;
 use backend\models\Department;
-use kartik\date\DatePicker;
+
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\esiap\models\Course */
@@ -60,9 +60,6 @@ $this->params['breadcrumbs'][] = 'Update';
 
 </div>
 
-</div>
-
-<div class="row">
 <div class="col-md-6">
 
 <?= $form->field($model, 'department_id')->dropDownList(
@@ -71,66 +68,6 @@ $this->params['breadcrumbs'][] = 'Update';
 
 
 
-</div>
-
-<div class="col-md-6"><?= $form->field($model, 'is_dummy')->dropDownList( [ 0 => 'NO', 1 => 'YES' ] ) ?>
-</div>
-
-</div>
-
-<div class="row">
-<div class="col-md-3">
-
-
-
- <?php
- 
- if($version->faculty_approve_at == '0000-00-00'){
-	 $version->faculty_approve_at = date('Y-m-d');
- }
- 
- 
- echo $form->field($version, 'faculty_approve_at')->widget(DatePicker::classname(), [
-    'removeButton' => false,
-    'pluginOptions' => [
-        'autoclose'=>true,
-        'format' => 'yyyy-mm-dd',
-        'todayHighlight' => true,
-        
-    ],
-    
-    
-])->label('Faculty/Center Approve at');
-
-?>
-
-</div>
-
-<div class="col-md-3">
-<?= $form->field($version, 'senate_approve_show')->dropDownList( [ 1 => 'YES', 0 => 'NO'] )->label('Show Senate Date')?>
-</div>
-
-<div class="col-md-3">
- <?php
- 
- if($version->senate_approve_at == '0000-00-00'){
-	 $version->senate_approve_at = date('Y-m-d');
- }
- 
- 
- echo $form->field($version, 'senate_approve_at')->widget(DatePicker::classname(), [
-    'removeButton' => false,
-    'pluginOptions' => [
-        'autoclose'=>true,
-        'format' => 'yyyy-mm-dd',
-        'todayHighlight' => true,
-        
-    ],
-    
-    
-]);
-
-?>
 </div>
 
 </div>

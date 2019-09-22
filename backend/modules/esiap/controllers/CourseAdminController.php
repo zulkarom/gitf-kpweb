@@ -24,7 +24,7 @@ use common\models\Model;
 use yii\helpers\ArrayHelper;
 use yii\filters\AccessControl;
 use backend\modules\esiap\models\CoursePic;
-
+use backend\modules\esiap\models\CourseAccess;
 
 /**
  * CourseController implements the CRUD actions for Course model.
@@ -145,9 +145,13 @@ class CourseAdminController extends Controller
 			
 			if($model->is_published == 1){
 				if($model->status == 20){
+					if($model->is_developed ==1){
+						Yii::$app->session->addFlash('error', "You can not publish and develop at the same time");
+						return $this->redirect(['course-version-update', 'id' => $id]);
+					}
 					CourseVersion::updateAll(['is_published' => 0], ['course_id' => $model->course_id]);
 				}else{
-					Yii::$app->session->addFlash('error', "The status must be verified before running");
+					Yii::$app->session->addFlash('error', "The status must be verified before publishing");
 					return $this->redirect(['course-version-update', 'id' => $id]);
 				}
 			}
@@ -195,26 +199,32 @@ class CourseAdminController extends Controller
         $model = $this->findModel($course);
 		$model->scenario = 'update';
         $pics = $model->coursePics;
+		
+		$accesses = $model->courseAccesses;
        
         if ($model->load(Yii::$app->request->post())) {
             
             $model->updated_at = new Expression('NOW()');    
             
             $oldIDs = ArrayHelper::map($pics, 'id', 'id');
-            
             $pics = Model::createMultiple(CoursePic::classname(), $pics);
-            
             Model::loadMultiple($pics, Yii::$app->request->post());
-            
             $deletedIDs = array_diff($oldIDs, array_filter(ArrayHelper::map($pics, 'id', 'id')));
-            
             foreach ($pics as $i => $pic) {
                 $pic->pic_order = $i;
             }
+			
+			$oldAcIDs = ArrayHelper::map($accesses, 'id', 'id');
+            $accesses = Model::createMultiple(CourseAccess::classname(), $accesses);
+            Model::loadMultiple($accesses, Yii::$app->request->post());
+            $deletedAcIDs = array_diff($oldAcIDs, array_filter(ArrayHelper::map($accesses, 'id', 'id')));
+            foreach ($accesses as $i => $access) {
+                $access->acc_order = $i;
+            }
             
             $valid = $model->validate();
-            
             $valid = Model::validateMultiple($pics) && $valid;
+			$valid = Model::validateMultiple($accesses) && $valid;
 
 			
             
@@ -226,6 +236,9 @@ class CourseAdminController extends Controller
                         if (! empty($deletedIDs)) {
                             CoursePic::deleteAll(['id' => $deletedIDs]);
                         }
+						if (! empty($deletedAcIDs)) {
+                            CourseAccess::deleteAll(['id' => $deletedAcIDs]);
+                        }
                         foreach ($pics as $i => $pic) {
                             if ($flag === false) {
                                 break;
@@ -235,6 +248,19 @@ class CourseAdminController extends Controller
 							$pic->updated_at = new Expression('NOW()');
 
                             if (!($flag = $pic->save(false))) {
+                                break;
+                            }
+                        }
+						
+						foreach ($accesses as $i => $access) {
+                            if ($flag === false) {
+                                break;
+                            }
+                            //do not validate this in model
+                            $access->course_id = $model->id;
+							$access->updated_at = new Expression('NOW()');
+
+                            if (!($flag = $access->save(false))) {
                                 break;
                             }
                         }
@@ -264,7 +290,8 @@ class CourseAdminController extends Controller
     
 		 return $this->render('update', [
 				'model' => $model,
-				'pics' => (empty($pics)) ? [new CoursePic] : $pics
+				'pics' => (empty($pics)) ? [new CoursePic] : $pics,
+				'accesses' => (empty($accesses)) ? [new CourseAccess] : $accesses
 			]);
     }
 	
