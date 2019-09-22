@@ -42,11 +42,16 @@ class CourseVersion extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['course_id', 'version_name', 'created_by', 'created_at', 'is_active'], 'required'],
+            [['course_id', 'version_name', 'created_by', 'created_at', 'is_active', 'is_published'], 'required', 'on' => 'create'],
+			
+			[['status', 'verified_by', 'verified_at'], 'required', 'on' => 'verify'],
+			
+			[['status'], 'required', 'on' => 'status'],
 			
 			[['senate_approve_at', 'faculty_approve_at', 'senate_approve_show'], 'required', 'on' => 'save_date'],
 			
-            [['course_id', 'created_by', 'is_active', 'status'], 'integer'],
+            [['course_id', 'created_by', 'is_active', 'is_published', 'status'], 'integer'],
+			
             [['created_at', 'updated_at'], 'safe'],
             [['version_name'], 'string', 'max' => 200],
         ];
@@ -64,7 +69,8 @@ class CourseVersion extends \yii\db\ActiveRecord
             'created_by' => 'Created By',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
-            'is_active' => 'Is Active',
+            'is_active' => 'Under Development',
+			'is_published' => 'Published',
         ];
     }
 	
@@ -250,8 +256,16 @@ class CourseVersion extends \yii\db\ActiveRecord
 	}
 	
 	public function getLabelActive(){
+		return $this->yesNoLabel($this->is_active);
+	}
+	
+	public function getLabelPublished(){
+		return $this->yesNoLabel($this->is_published);
+	}
+	
+	private function yesNoLabel($field){
 		$status = '';
-		switch($this->is_active){
+		switch($field){
 			case 1:
 			$status = 'YES';
 			$color = 'success';

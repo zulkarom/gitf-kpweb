@@ -30,11 +30,16 @@ $this->params['breadcrumbs'][] = $this->title;
             'course_name',
             'course_name_bi',
 			[
-                'label' => 'Status',
+                'label' => 'UDV',
                 'format' => 'html',
                 
                 'value' => function($model){
-                    return $model->defaultVersion->labelStatus;
+					if($model->defaultVersion){
+						return $model->defaultVersion->labelStatus;
+					}else{
+						return 'NONE';
+					}
+                    
                 }
             ],
 

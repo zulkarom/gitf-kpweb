@@ -97,20 +97,25 @@ class CourseController extends Controller
     {
         $model = $this->findModel($course);
 		$version = $model->defaultVersion;
-		$version->scenario = 'save_date';
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-			
-			if ($version->load(Yii::$app->request->post()) && $version->save()) {
-				Yii::$app->session->addFlash('success', "Data Updated");
-				return $this->redirect(['update','course' => $course]);
+		$status = $version->status;
+		if($status == 0){
+			$version->scenario = 'save_date';
+			if ($model->load(Yii::$app->request->post()) && $model->save()) {
+				
+				if ($version->load(Yii::$app->request->post()) && $version->save()) {
+					Yii::$app->session->addFlash('success', "Data Updated");
+					return $this->redirect(['update','course' => $course]);
+				}
 			}
-        }
 
-        return $this->render('update', [
-            'model' => $model,
-			'version' => $version
-        ]);
+			return $this->render('update', [
+				'model' => $model,
+				'version' => $version
+			]);
+		}else{
+			return $this->redirect(['report', 'course' => $course]);
+		}
+		
     }
 	
 	 public function actionReport($course)
@@ -120,8 +125,7 @@ class CourseController extends Controller
 		$version = $model->defaultVersion;
 
         if ($version->load(Yii::$app->request->post())) {
-			$version->prepared_at = new Expression('NOW()');
-			$version->prepared_by = Yii::$app->user->identity->id;
+			$version->status = 10;
 			if($version->save()){
 				return $this->redirect(['course/report','course' => $course]);
 			}

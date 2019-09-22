@@ -49,42 +49,45 @@ class Menu
 				case 'clo-delivery':case 'report':
 				$course_id = Yii::$app->getRequest()->getQueryParam('course');
 				$course = Course::findOne($course_id);
+				$version = $course->defaultVersion;
+				$status = $version->status;
+				$show = false;
+				if($status == 0 and $course->IAmCoursePic()){
+					$show = true;
+				}
 				$course_focus  = [
-                        'label' => $course->course_name,
-                        'icon' => 'book',
-						'format' => 'html',
-                        'url' => '#',
-                        'items' => [
+					'label' => $course->course_name,
+					'icon' => 'book',
+					'format' => 'html',
+					'url' => '#',
+					'items' => [
 						
-				['label' => 'Course Information', 'icon' => 'pencil', 'url' => ['/esiap/course/update', 'course' => $course_id]],
+				['label' => 'Course Information', 'visible' => $show, 'icon' => 'pencil', 'url' => ['/esiap/course/update', 'course' => $course_id]],
 				
-				['label' => 'Course Pro Forma', 'icon' => 'book', 'url' => ['/esiap/course/profile', 'course' => $course_id]],
+				['label' => 'Course Pro Forma', 'visible' => $show, 'icon' => 'book', 'url' => ['/esiap/course/profile', 'course' => $course_id]],
 				
-				['label' => 'Course Learning Outcome', 'icon' => 'book', 'url' => ['/esiap/course/course-clo', 'course' => $course_id]],
+				['label' => 'Course Learning Outcome', 'visible' => $show, 'icon' => 'book', 'url' => ['/esiap/course/course-clo', 'course' => $course_id]],
 				
-				['label' => 'CLO PLO', 'icon' => 'book', 'url' => ['/esiap/course/clo-plo', 'course' => $course_id]],
+				['label' => 'CLO PLO', 'icon' => 'book', 'visible' => $show, 'url' => ['/esiap/course/clo-plo', 'course' => $course_id]],
 				
-				['label' => 'CLO Taxonomy', 'icon' => 'book', 'url' => ['/esiap/course/clo-taxonomy', 'course' => $course_id]],
+				['label' => 'CLO Taxonomy', 'visible' => $show, 'icon' => 'book', 'url' => ['/esiap/course/clo-taxonomy', 'course' => $course_id]],
 				
-				['label' => 'CLO Softskill', 'icon' => 'book', 'url' => ['/esiap/course/clo-softskill', 'course' => $course_id]],
+				['label' => 'CLO Softskill', 'visible' => $show, 'icon' => 'book', 'url' => ['/esiap/course/clo-softskill', 'course' => $course_id]],
 				
-				['label' => 'CLO Delivery', 'icon' => 'book', 'url' => ['/esiap/course/clo-delivery', 'course' => $course_id]],
+				['label' => 'CLO Delivery', 'visible' => $show, 'icon' => 'book', 'url' => ['/esiap/course/clo-delivery', 'course' => $course_id]],
 				
+				['label' => 'Syllabus', 'visible' => $show, 'icon' => 'book', 'url' => ['/esiap/course/course-syllabus', 'course' => $course_id]],
 				
+				['label' => 'Assessment', 'visible' => $show, 'icon' => 'book', 'url' => ['/esiap/course/course-assessment', 'course' => $course_id]],
 				
+				['label' => 'CLO Assessment', 'visible' => $show, 'icon' => 'book', 'url' => ['/esiap/course/clo-assessment', 'course' => $course_id]],
 				
-				
-				['label' => 'Syllabus', 'icon' => 'book', 'url' => ['/esiap/course/course-syllabus', 'course' => $course_id]],
-				
-				['label' => 'Assessment', 'icon' => 'book', 'url' => ['/esiap/course/course-assessment', 'course' => $course_id]],
-				
-				['label' => 'CLO Assessment', 'icon' => 'book', 'url' => ['/esiap/course/clo-assessment', 'course' => $course_id]],
-				['label' => 'Student Learning Time', 'icon' => 'book', 'url' => ['/esiap/course/course-slt', 'course' => $course_id]],
+				['label' => 'Student Learning Time', 'visible' => $show, 'icon' => 'book', 'url' => ['/esiap/course/course-slt', 'course' => $course_id]],
 				
 				
-				['label' => 'References', 'icon' => 'book', 'url' => ['/esiap/course/course-reference', 'course' => $course_id]],
+				['label' => 'References', 'visible' => $show, 'icon' => 'book', 'url' => ['/esiap/course/course-reference', 'course' => $course_id]],
 				
-				['label' => 'Report', 'icon' => 'book', 'url' => ['/esiap/course/report', 'course' => $course_id]],
+				['label' => 'Preview & Submit', 'icon' => 'book', 'url' => ['/esiap/course/report', 'course' => $course_id]],
 
                  ]
                     ];

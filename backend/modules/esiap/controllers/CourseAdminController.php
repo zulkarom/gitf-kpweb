@@ -109,6 +109,30 @@ class CourseAdminController extends Controller
         ]);
     }
 	
+	public function actionVerifyVersion($id){
+		 $model = CourseVersion::findOne($id);
+		 $model->scenario = 'verify';
+		 $model->status = 20;
+		 $model->verified_by = Yii::$app->user->identity->id;
+		 $model->verified_at = new Expression('NOW()');
+		 if($model->save()){
+			 Yii::$app->session->addFlash('success', "Successfully Verified");
+			 return $this->redirect(['update', 'course' => $model->course_id]);
+		 }
+		 
+	}
+	
+	public function actionVersionBackDraft($id){
+		 $model = CourseVersion::findOne($id);
+		 $model->scenario = 'status';
+		 $model->status = 0;
+		 if($model->save()){
+			 Yii::$app->session->addFlash('success', "Data Updated");
+			 return $this->redirect(['update', 'course' => $model->course_id]);
+		 }
+		 
+	}
+	
 	public function actionCourseVersionUpdate($id)
     {
         $model = CourseVersion::findOne($id);
@@ -117,6 +141,15 @@ class CourseAdminController extends Controller
 			
 			if($model->is_active == 1){
 				CourseVersion::updateAll(['is_active' => 0], ['course_id' => $model->course_id]);
+			}
+			
+			if($model->is_published == 1){
+				if($model->status == 20){
+					CourseVersion::updateAll(['is_published' => 0], ['course_id' => $model->course_id]);
+				}else{
+					Yii::$app->session->addFlash('error', "The status must be verified before running");
+					return $this->redirect(['course-version-update', 'id' => $id]);
+				}
 			}
 			
 			if($model->save()){

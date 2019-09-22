@@ -4,6 +4,7 @@ namespace backend\modules\staff\models;
 
 use Yii;
 use common\models\User;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "staff".
@@ -171,6 +172,10 @@ class Staff extends \yii\db\ActiveRecord
 		->innerJoin('user', 'user.id = staff.user_id')
 		->where(['staff.staff_active' => 1])->orderBy('user.fullname ASC')
 		->all();
+	}
+	
+	public static function activeStaffUserArray(){
+		return ArrayHelper::map(self::activeStaff(), 'user_id', 'staff_name');
 	}
 	
 	public static function activeStaffNotMe(){

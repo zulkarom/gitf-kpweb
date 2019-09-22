@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="box">
 <div class="box-header">
-<h3 class="box-title">My Course(s)</h3>
+<h3 class="box-title">Under Development Course(s)</h3>
 </div>
 <div class="box-body"><?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -37,7 +37,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 //'visible' => false,
                 'buttons'=>[
                     'update'=>function ($url, $model) {
-                        return Html::a('<span class="glyphicon glyphicon-pencil"></span> Update',['/esiap/course/update/', 'course' => $model->course_id],['class'=>'btn btn-warning btn-sm']);
+						$version = $model->course->defaultVersion;
+						if($version){
+							return Html::a('<span class="glyphicon glyphicon-pencil"></span> Update',['/esiap/course/update/', 'course' => $model->course_id],['class'=>'btn btn-warning btn-sm']);
+						}else{
+							return 'NO UDV';
+						}
+                        
                     },
                 ],
             

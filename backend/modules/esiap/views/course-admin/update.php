@@ -170,7 +170,7 @@ $this->params['breadcrumbs'][] = 'Update';
 
 <div class="box box-warning">
 <div class="box-header">
-<h3 class="box-title">Active Version</h3>
+<h3 class="box-title">Under Development Version</h3>
 </div>
 <div class="box-body">
 
@@ -179,24 +179,56 @@ $this->params['breadcrumbs'][] = 'Update';
     <tbody>
       <tr>
         <td>Version Name</td>
-        <td><?=$model->defaultVersion->version_name?></td>
+        <td><?php 
+		if($model->defaultVersion){
+			echo $model->defaultVersion->version_name;
+		}else{
+			echo 'None';
+		}
+		?>
+		
+		</td>
       </tr>
 	  <tr>
         <td>Status</td>
-        <td><?=$model->defaultVersion->labelStatus?></td>
+        <td>
+		<?php 
+		if($model->defaultVersion){
+			echo $model->defaultVersion->labelStatus;
+		}else{
+			echo 'None';
+		}
+		?>
+		
+		</td>
       </tr>
 	  <tr>
         <td>Action</td>
         <td><?php 
-		
-		$status = $model->defaultVersion->status;
-		if($status == 0){
-			echo 'Waiting for submission';
-		}else if($status == 10){
-			echo '<a href="" class="btn btn-warning btn-sm">VERIFY</a>';
-		}else if($status == 20){
-			echo '<a href="" class="btn btn-default btn-sm">BACK TO DRAFT</a>';
+		if($model->defaultVersion){
+			$status = $model->defaultVersion->status;
+			if($status == 0){
+				echo 'Waiting for submission';
+			}else if($status == 10){
+				echo Html::a('VERIFY', ['verify-version', 'id' => $model->defaultVersion->id], [
+					'class' => 'btn btn-warning btn-sm',
+					'data' => [
+						'confirm' => 'Are you sure you to verify this course version?',
+						'method' => 'post',
+					],
+				]);
+			}else if($status == 20){
+				echo Html::a('<i>Back to draft</i>', ['version-back-draft', 'id' => $model->defaultVersion->id], [
+					'data' => [
+						'confirm' => 'Are you sure you to put back this version to draft status?',
+						'method' => 'post',
+					],
+				]);
+			}
+		}else{
+			echo 'None';
 		}
+		
 		
 		
 		?></td>

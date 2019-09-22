@@ -76,6 +76,18 @@ class Course extends \yii\db\ActiveRecord
 		return $this->hasMany(CoursePic::className(), ['course_id' => 'id']);
 	}
 	
+	public function IAmCoursePic(){
+		$pics = $this->coursePics;
+		if($pics){
+			foreach($pics as $pic){
+				if($pic->staff_id == Yii::$app->user->identity->staff->id){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	public function getCodeAndCourse(){
 		return $this->course_code . ' - ' . $this->course_name;
 	}
