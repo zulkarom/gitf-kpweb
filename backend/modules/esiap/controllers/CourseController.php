@@ -96,7 +96,7 @@ class CourseController extends Controller
     public function actionUpdate($course)
     {
         $model = $this->findModel($course);
-		$version = $model->defaultVersion;
+		$version = $model->developmentVersion;
 		$status = $version->status;
 		if($status == 0){
 			$version->scenario = 'save_date';
@@ -122,7 +122,7 @@ class CourseController extends Controller
     {
         $model = $this->findModel($course);
 		
-		$version = $model->defaultVersion;
+		$version = $model->developmentVersion;
 
         if ($version->load(Yii::$app->request->post())) {
 			$version->status = 10;
@@ -716,7 +716,7 @@ class CourseController extends Controller
     }
 	
 	protected function findDefaultVersion($id){
-		$default = CourseVersion::findOne(['course_id' => $id, 'is_active' => 1]);
+		$default = CourseVersion::findOne(['course_id' => $id, 'is_developed' => 1]);
 		if($default){
 			return $default;
 		}else{

@@ -18,7 +18,7 @@ class CourseVersionSearch extends CourseVersion
     public function rules()
     {
         return [
-            [['id', 'course_id', 'created_by', 'is_active'], 'integer'],
+            [['id', 'course_id', 'created_by', 'is_developed'], 'integer'],
             [['version_name', 'created_at', 'updated_at'], 'safe'],
         ];
     }
@@ -65,7 +65,7 @@ class CourseVersionSearch extends CourseVersion
             'created_by' => $this->created_by,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'is_active' => $this->is_active,
+            'is_developed' => $this->is_developed,
         ]);
 
         $query->andFilterWhere(['like', 'version_name', $this->version_name]);

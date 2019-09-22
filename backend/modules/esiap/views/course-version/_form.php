@@ -19,7 +19,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'version_name')->textInput(['maxlength' => true]) ?>
 
 <div class="row">
-<div class="col-md-4"><?= $form->field($model, 'is_active')->dropDownList( [1 => 'YES' , 0 => 'NO'] ) ?></div>
+<div class="col-md-4"><?= $form->field($model, 'is_developed')->dropDownList( [1 => 'YES' , 0 => 'NO'] ) ?></div>
 
 <div class="col-md-4"><?= $form->field($model, 'status')->dropDownList( $model->statusArray ) ?>
 </div>

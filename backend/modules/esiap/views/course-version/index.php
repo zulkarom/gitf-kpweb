@@ -38,9 +38,9 @@ $this->params['breadcrumbs'][] = 'Version List';
 			],
             
 			[
-                'attribute' => 'is_active',
+                'attribute' => 'is_developed',
 				'format' => 'html',
-				'filter' => Html::activeDropDownList($searchModel, 'is_active', [1=>'YES', 2 => 'NO'],['class'=> 'form-control','prompt' => 'All']),
+				'filter' => Html::activeDropDownList($searchModel, 'is_developed', [1=>'YES', 2 => 'NO'],['class'=> 'form-control','prompt' => 'All']),
 				'value' => function($model){
 					return $model->labelActive;
 					
@@ -60,7 +60,7 @@ $this->params['breadcrumbs'][] = 'Version List';
 			[
                 'attribute' => 'status',
 				'format' => 'html',
-				'filter' => Html::activeDropDownList($searchModel, 'is_active', [0=>'DRAFT', 10 => 'SUBMITTED', 20 => 'VERIFIED'],['class'=> 'form-control','prompt' => 'Choose Status']),
+				'filter' => Html::activeDropDownList($searchModel, 'is_developed', [0=>'DRAFT', 10 => 'SUBMITTED', 20 => 'VERIFIED'],['class'=> 'form-control','prompt' => 'Choose Status']),
 				'value' => function($model){
 					return $model->labelStatus;
 					

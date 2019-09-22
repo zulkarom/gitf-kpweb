@@ -139,8 +139,8 @@ class CourseAdminController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
 			
-			if($model->is_active == 1){
-				CourseVersion::updateAll(['is_active' => 0], ['course_id' => $model->course_id]);
+			if($model->is_developed == 1){
+				CourseVersion::updateAll(['is_developed' => 0], ['course_id' => $model->course_id]);
 			}
 			
 			if($model->is_published == 1){
@@ -335,7 +335,7 @@ class CourseAdminController extends Controller
     }
 	
 	protected function findDefaultVersion($id){
-		$default = CourseVersion::findOne(['course_id' => $id, 'is_active' => 1]);
+		$default = CourseVersion::findOne(['course_id' => $id, 'is_developed' => 1]);
 		if($default){
 			return $default;
 		}else{

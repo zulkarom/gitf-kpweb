@@ -17,7 +17,7 @@ use backend\models\GeneralSetting;
  * @property int $created_by
  * @property string $created_at
  * @property string $updated_at
- * @property int $is_active
+ * @property int $is_developed
  */
 class CourseVersion extends \yii\db\ActiveRecord
 {
@@ -42,7 +42,7 @@ class CourseVersion extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['course_id', 'version_name', 'created_by', 'created_at', 'is_active', 'is_published'], 'required', 'on' => 'create'],
+            [['course_id', 'version_name', 'created_by', 'created_at', 'is_developed', 'is_published'], 'required', 'on' => 'create'],
 			
 			[['status', 'verified_by', 'verified_at'], 'required', 'on' => 'verify'],
 			
@@ -50,7 +50,7 @@ class CourseVersion extends \yii\db\ActiveRecord
 			
 			[['senate_approve_at', 'faculty_approve_at', 'senate_approve_show'], 'required', 'on' => 'save_date'],
 			
-            [['course_id', 'created_by', 'is_active', 'is_published', 'status'], 'integer'],
+            [['course_id', 'created_by', 'is_developed', 'is_published', 'status'], 'integer'],
 			
             [['created_at', 'updated_at'], 'safe'],
             [['version_name'], 'string', 'max' => 200],
@@ -69,7 +69,7 @@ class CourseVersion extends \yii\db\ActiveRecord
             'created_by' => 'Created By',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
-            'is_active' => 'Under Development',
+            'is_developed' => 'Under Development',
 			'is_published' => 'Published',
         ];
     }
@@ -82,7 +82,7 @@ class CourseVersion extends \yii\db\ActiveRecord
 /* 	public function getCloAssessments(){
 		return self::find()
         ->select('sp_course_clo.clo_text')
-        ->where(['sp_course_version.id' => $this->id, 'is_active' => 1])
+        ->where(['sp_course_version.id' => $this->id, 'is_developed' => 1])
         ->innerJoin('sp_course_clo', 'sp_course_clo.crs_version_id = sp_course_version.id')
 		->innerJoin('sp_course_clo_assess', 'sp_course_clo.id = sp_course_clo_assess.clo_id')
         ->all();
@@ -256,7 +256,7 @@ class CourseVersion extends \yii\db\ActiveRecord
 	}
 	
 	public function getLabelActive(){
-		return $this->yesNoLabel($this->is_active);
+		return $this->yesNoLabel($this->is_developed);
 	}
 	
 	public function getLabelPublished(){

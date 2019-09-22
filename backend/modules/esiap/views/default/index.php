@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			'course.course_name_bi',
 			'course.credit_hour',
 			[
-				'attribute' => 'course.defaultVersion.labelStatus',
+				'attribute' => 'course.developmentVersion.labelStatus',
 				'label' => 'Status',
 				'format' => 'html'
 				
@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 //'visible' => false,
                 'buttons'=>[
                     'update'=>function ($url, $model) {
-						$version = $model->course->defaultVersion;
+						$version = $model->course->developmentVersion;
 						if($version){
 							return Html::a('<span class="glyphicon glyphicon-pencil"></span> Update',['/esiap/course/update/', 'course' => $model->course_id],['class'=>'btn btn-warning btn-sm']);
 						}else{

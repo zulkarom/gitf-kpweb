@@ -44,7 +44,7 @@ class Course extends \yii\db\ActiveRecord
 			
 			[['course_pic'], 'required', 'on' => 'coor'],
 			
-            [['is_active', 'course_pic', 'program_id', 'department_id', 'faculty_id'], 'integer'],
+            [['is_developed', 'course_pic', 'program_id', 'department_id', 'faculty_id'], 'integer'],
 			
             [['course_name', 'course_name_bi'], 'string', 'max' => 100],
 			
@@ -65,7 +65,7 @@ class Course extends \yii\db\ActiveRecord
             'course_name' => 'Course Name (BM)',
 			'course_name_bi' => 'Course Name (EN)',
             'course_code' => 'Course Code',
-			'is_active' => 'Is Active',
+			'is_developed' => 'Is Active',
 			'program_id' => 'Program',
 			'department_id' => 'Department'
         ];
@@ -120,8 +120,13 @@ class Course extends \yii\db\ActiveRecord
 
     }
 	
-	public function getDefaultVersion(){
-		return CourseVersion::findOne(['course_id' => $this->id, 'is_active' => 1]);
+	public function getDevelopmentVersion(){
+		return CourseVersion::findOne(['course_id' => $this->id, 'is_developed' => 1]);
+
+	}
+	
+	public function getPublishedVersion(){
+		return CourseVersion::findOne(['course_id' => $this->id, 'is_published' => 1]);
 
 	}
 	

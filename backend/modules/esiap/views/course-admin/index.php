@@ -13,29 +13,58 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="course-index">
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
+	
+	<div class="row">
+<div class="col-md-6"><p>
         <?= Html::a('Create Course', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    </p></div>
+
+<div class="col-md-6" align="right">
+
+<?=$this->render('_search', ['model' => $searchModel])?>
+</div>
+
+</div>
+
+    
 
     <div class="box">
 <div class="box-header"></div>
 <div class="box-body"><?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+       // 'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
             'course_code',
-            'course_name',
-            'course_name_bi',
+			[
+				'attribute' => 'course_name',
+				'format' => 'html',
+				'label' => 'Course Name',
+				'value' => function($model){
+					return $model->course_name . ' / <i>' . $model->course_name_bi . '</i>';
+				}
+				
+			],
+            [
+                'label' => 'Published',
+                'format' => 'html',
+                'value' => function($model){
+					if($model->publishedVersion){
+						return $model->publishedVersion->version_name;
+					}else{
+						return 'NONE';
+					}
+                    
+                }
+            ],
 			[
                 'label' => 'UDV',
                 'format' => 'html',
                 
                 'value' => function($model){
-					if($model->defaultVersion){
-						return $model->defaultVersion->labelStatus;
+					if($model->developmentVersion){
+						return $model->developmentVersion->labelStatus;
 					}else{
 						return 'NONE';
 					}

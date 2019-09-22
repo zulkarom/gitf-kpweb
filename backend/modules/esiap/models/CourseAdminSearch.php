@@ -12,14 +12,14 @@ use backend\modules\esiap\models\Course;
  */
 class CourseAdminSearch extends Course
 {
+	public $search_course;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'credit_hour'], 'integer'],
-            [['course_code', 'course_name', 'course_name_bi'], 'safe'],
+            [['search_course'], 'string'],
         ];
     }
 

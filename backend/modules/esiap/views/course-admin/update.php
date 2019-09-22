@@ -170,18 +170,48 @@ $this->params['breadcrumbs'][] = 'Update';
 
 <div class="box box-warning">
 <div class="box-header">
-<h3 class="box-title">Under Development Version</h3>
+<h3 class="box-title">Course Version</h3>
 </div>
 <div class="box-body">
 
 <div class="table-responsive">
   <table class="table table-striped table-hover">
+  <thead>
+  <tr>
+  <th colspan="2">Published Version</th>
+  </tr>
+  </thead>
     <tbody>
       <tr>
         <td>Version Name</td>
         <td><?php 
-		if($model->defaultVersion){
-			echo $model->defaultVersion->version_name;
+		if($model->publishedVersion){
+			echo $model->publishedVersion->version_name;
+		}else{
+			echo 'None';
+		}
+		?>
+		
+		</td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-hover">
+  <thead>
+  <tr>
+  <th colspan="2">Under Development Version (UDV)</th>
+  </tr>
+  </thead>
+    <tbody>
+      <tr>
+        <td>Version Name</td>
+        <td><?php 
+		if($model->developmentVersion){
+			echo $model->developmentVersion->version_name;
 		}else{
 			echo 'None';
 		}
@@ -193,8 +223,8 @@ $this->params['breadcrumbs'][] = 'Update';
         <td>Status</td>
         <td>
 		<?php 
-		if($model->defaultVersion){
-			echo $model->defaultVersion->labelStatus;
+		if($model->developmentVersion){
+			echo $model->developmentVersion->labelStatus;
 		}else{
 			echo 'None';
 		}
@@ -205,12 +235,12 @@ $this->params['breadcrumbs'][] = 'Update';
 	  <tr>
         <td>Action</td>
         <td><?php 
-		if($model->defaultVersion){
-			$status = $model->defaultVersion->status;
+		if($model->developmentVersion){
+			$status = $model->developmentVersion->status;
 			if($status == 0){
 				echo 'Waiting for submission';
 			}else if($status == 10){
-				echo Html::a('VERIFY', ['verify-version', 'id' => $model->defaultVersion->id], [
+				echo Html::a('VERIFY', ['verify-version', 'id' => $model->developmentVersion->id], [
 					'class' => 'btn btn-warning btn-sm',
 					'data' => [
 						'confirm' => 'Are you sure you to verify this course version?',
@@ -218,7 +248,7 @@ $this->params['breadcrumbs'][] = 'Update';
 					],
 				]);
 			}else if($status == 20){
-				echo Html::a('<i>Back to draft</i>', ['version-back-draft', 'id' => $model->defaultVersion->id], [
+				echo Html::a('<i>Back to draft</i>', ['version-back-draft', 'id' => $model->developmentVersion->id], [
 					'data' => [
 						'confirm' => 'Are you sure you to put back this version to draft status?',
 						'method' => 'post',
