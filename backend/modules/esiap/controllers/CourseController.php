@@ -172,7 +172,7 @@ class CourseController extends Controller
     }
 	
 	public function actionCourseReference($course){
-		$model = $this->findDefaultVersion($course);
+		$model = $this->findDevelopmentVersion($course);
 		$ref = $model->references;
 		
 		if(Yii::$app->request->post()){
@@ -246,7 +246,7 @@ class CourseController extends Controller
 	}
 	
 	public function actionCourseSyllabus($course){
-		$model = $this->findDefaultVersion($course);
+		$model = $this->findDevelopmentVersion($course);
 		$syllabus = $model->syllabus;
 		
 		$kira = count($syllabus);
@@ -294,7 +294,7 @@ class CourseController extends Controller
 	}
 	
 	public function actionCourseSyllabusReorder($id){
-		$model = $this->findDefaultVersion($id);
+		$model = $this->findDevelopmentVersion($id);
 		$syllabus = $model->syllabus;
 		$reorder = Yii::$app->request->queryParams['or'];
 		if($syllabus){
@@ -330,7 +330,7 @@ class CourseController extends Controller
 	public function actionCourseClo($course)
     {
 		
-        $model = $this->findDefaultVersion($course);
+        $model = $this->findDevelopmentVersion($course);
 		$clos = $model->clos;
         
         if (Yii::$app->request->post()) {
@@ -369,7 +369,7 @@ class CourseController extends Controller
 	}
 	
 	public function actionCloPlo($course){
-		$model = $this->findDefaultVersion($course);
+		$model = $this->findDevelopmentVersion($course);
 		$clos = $model->clos;
 		if (Yii::$app->request->post() ) {
 			$flag = true;
@@ -408,7 +408,7 @@ class CourseController extends Controller
 	}
 	
 	public function actionCloTaxonomy($course){
-		$model = $this->findDefaultVersion($course);
+		$model = $this->findDevelopmentVersion($course);
 		$clos = $model->clos;
 		if (Yii::$app->request->post()) {
 			if(Yii::$app->request->validateCsrfToken()){
@@ -436,7 +436,7 @@ class CourseController extends Controller
 	}
 	
 	public function actionCloDelivery($course){
-		$model = $this->findDefaultVersion($course);
+		$model = $this->findDevelopmentVersion($course);
 		$clos = $model->clos;
 		
 		if (Yii::$app->request->post()) {
@@ -479,7 +479,7 @@ class CourseController extends Controller
 	}
 	
 	public function actionCloSoftskill($course){
-		$model = $this->findDefaultVersion($course);
+		$model = $this->findDevelopmentVersion($course);
 		$clos = $model->clos;
 		if (Yii::$app->request->post()) {
 			if(Yii::$app->request->validateCsrfToken()){
@@ -507,7 +507,7 @@ class CourseController extends Controller
 	}
 	
 	public function actionCloAssessment($course){
-		$model = $this->findDefaultVersion($course);
+		$model = $this->findDevelopmentVersion($course);
 		$items = $model->assessments;
 		if($model->putOneCloAssessment()){
 			return $this->redirect(['course-assessment', 'course' => $course]);
@@ -538,7 +538,7 @@ class CourseController extends Controller
 	}
 	
 	public function actionCourseSlt($course){
-		$model = $this->findDefaultVersion($course);
+		$model = $this->findDevelopmentVersion($course);
 		$slt = $model->slt;
 		$syll = $model->syllabus;
 		if ($model->load(Yii::$app->request->post())) {
@@ -595,7 +595,7 @@ class CourseController extends Controller
 	public function actionCourseAssessment($course)
     {
 		
-        $model = $this->findDefaultVersion($course);
+        $model = $this->findDevelopmentVersion($course);
 		
 		$items = $model->assessments;
 		
@@ -699,7 +699,7 @@ class CourseController extends Controller
 	
 	protected function findProfile($id)
     {
-		$default = $this->findDefaultVersion($id);
+		$default = $this->findDevelopmentVersion($id);
 		$model = CourseProfile::findOne(['crs_version_id' => $default->id]);
 		if($model){
 			return $model;
@@ -715,18 +715,27 @@ class CourseController extends Controller
 		}
     }
 	
-	protected function findDefaultVersion($id){
+	protected function findDevelopmentVersion($id){
 		$default = CourseVersion::findOne(['course_id' => $id, 'is_developed' => 1]);
 		if($default){
 			return $default;
 		}else{
-			throw new NotFoundHttpException('Please create default active version for this course!');
+			throw new NotFoundHttpException('Please create development version for this course!');
+		}
+	}
+	
+	protected function findPublishedVersion($id){
+		$default = CourseVersion::findOne(['course_id' => $id, 'is_published' => 1]);
+		if($default){
+			return $default;
+		}else{
+			throw new NotFoundHttpException('Please create published version for this course!');
 		}
 	}
 	
 	protected function findCourseClo($id)
     {
-		$default = $this->findDefaultVersion($id);
+		$default = $this->findDevelopmentVersion($id);
 		$model = CourseProfile::findOne(['crs_version_id' => $default->id]);
 		if($model){
 			return $model;
@@ -742,28 +751,38 @@ class CourseController extends Controller
 		}
     }
 	
-	public function actionFk1($course){
-		$model = $this->findDefaultVersion($course);
+	public function actionFk1($course, $dev = false){
+		if($dev){
+			//control access
+			$model = $this->findDevelopmentVersion($course);
+		}else{
+			$model = $this->findPublishedVersion($course);
+		}
+		
 			$pdf = new Fk1;
 			$pdf->model = $model;
 			$pdf->generatePdf();
 	}
 	
-	public function actionTest($course){
-		$model = $this->findDefaultVersion($course);
-		$sum = $model->sltAssessmentSummative;
-			echo $sum->as_hour;
-	}
-	
-	public function actionFk2($course){
-		$model = $this->findDefaultVersion($course);
+	public function actionFk2($course, $dev = false){
+		if($dev){
+			//control access
+			$model = $this->findDevelopmentVersion($course);
+		}else{
+			$model = $this->findPublishedVersion($course);
+		}
 			$pdf = new Fk2;
 			$pdf->model = $model;
 			$pdf->generatePdf();
 	}
 	
-	public function actionFk3($course){
-		$model = $this->findDefaultVersion($course);
+	public function actionFk3($course, $dev = false){
+		if($dev){
+			//control access
+			$model = $this->findDevelopmentVersion($course);
+		}else{
+			$model = $this->findPublishedVersion($course);
+		}
 			$pdf = new Fk3;
 			$pdf->model = $model;
 			$pdf->generatePdf();

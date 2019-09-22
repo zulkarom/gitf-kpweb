@@ -5,6 +5,7 @@ namespace backend\modules\esiap\models;
 
 use Yii;
 use backend\models\Faculty;
+use backend\models\Department;
 use common\models\User;
 
 /**
