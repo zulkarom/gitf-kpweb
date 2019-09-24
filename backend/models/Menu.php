@@ -5,6 +5,7 @@ namespace backend\models;
 use Yii;
 use common\models\Todo;
 use backend\modules\esiap\models\Course;
+use backend\modules\erpd\models\Stats as ErpdStats;
 
 class Menu
 {
@@ -137,21 +138,27 @@ class Menu
                         'url' => '#',
                         'items' => [
 						
-				['label' => 'Summary', 'icon' => 'pie-chart', 'url' => ['/erpd'],],
+				['label' => 'Summary', 'icon' => 'pie-chart', 'url' => ['/erpd']],
 				
-				['label' => 'Research', 'icon' => 'book', 'url' => ['/erpd/research'],],
+				['label' => 'Research', 'icon' => 'book', 'url' => ['/erpd/research'], 'badge' => ErpdStats::countMyResearch(), 
+			'badgeOptions' => ['class' => 'label pull-right bg-blue']],
 				
-				['label' => 'Publication', 'icon' => 'send', 'url' => ['/erpd/publication'],],
+				['label' => 'Publication', 'icon' => 'send', 'url' => ['/erpd/publication'], 'badge' => ErpdStats::countMyPublication(), 
+			'badgeOptions' => ['class' => 'label pull-right bg-blue']],
 				
 				
 				
-				['label' => 'Membership', 'icon' => 'users', 'url' => ['/erpd/membership'],],
+				['label' => 'Membership', 'icon' => 'users', 'url' => ['/erpd/membership'], 'badge' => ErpdStats::countMyPublication(), 
+			'badgeOptions' => ['class' => 'label pull-right bg-blue']],
 				
-				['label' => 'Award', 'icon' => 'trophy', 'url' => ['/erpd/award'],],
+				['label' => 'Award', 'icon' => 'trophy', 'url' => ['/erpd/award'], 'badge' => ErpdStats::countMyAward(), 
+			'badgeOptions' => ['class' => 'label pull-right bg-blue']],
 				
-				['label' => 'Consultation', 'icon' => 'microphone', 'url' => ['/erpd/consultation'],],
+				['label' => 'Consultation', 'icon' => 'microphone', 'url' => ['/erpd/consultation'], 'badge' => ErpdStats::countMyConsultation(), 
+			'badgeOptions' => ['class' => 'label pull-right bg-blue']],
 				
-				['label' => 'Knowledge Transfer', 'icon' => 'truck', 'url' => ['/erpd/knowledge-transfer'],],
+				['label' => 'Knowledge Transfer', 'icon' => 'truck', 'url' => ['/erpd/knowledge-transfer'], 'badge' => ErpdStats::countMyKtp(), 
+			'badgeOptions' => ['class' => 'label pull-right bg-blue']],
 
 
                  ]
@@ -168,7 +175,7 @@ class Menu
                         'url' => '#',
                         'items' => [
 						
-				//['label' => 'eSiap Dashboard', 'icon' => 'dashboard', 'url' => ['/esiap']],
+				['label' => 'Summary', 'icon' => 'pie-chart', 'url' => ['/esiap/dashboard']],
 				
 				['label' => 'Program List', 'icon' => 'book', 'url' => ['/esiap/program']],
 				

@@ -22,10 +22,12 @@ use common\models\User;
  * @property int $department
  * @property int $program
  * @property int $is_dummy
- * @property int $trash
  */
 class Course extends \yii\db\ActiveRecord
 {
+	public $course_label;
+	public $course_data;
+	
     /**
      * @inheritdoc
      */
@@ -67,6 +69,7 @@ class Course extends \yii\db\ActiveRecord
             'course_code' => 'Course Code',
 			'is_developed' => 'Is Active',
 			'program_id' => 'Program',
+			'faculty_id' => 'Faculty',
 			'department_id' => 'Department'
         ];
     }
@@ -145,6 +148,11 @@ class Course extends \yii\db\ActiveRecord
 	public function getProgram(){
         return $this->hasOne(Program::className(), ['id' => 'program_id']);
     }
-
+	
+	public function getCourseVersion(){
+		return $this->hasMany(CourseVersion::className(), ['course_id' => 'id']);
+	}
+	
+	
 
 }

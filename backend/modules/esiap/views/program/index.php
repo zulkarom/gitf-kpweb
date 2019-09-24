@@ -28,7 +28,10 @@ $this->params['breadcrumbs'][] = $this->title;
 			[
 				'attribute' => 'pro_level',
 				'value' => function($model){
-					return $model->programLevel->level_name;
+					if($model->programLevel){
+						return $model->programLevel->level_name;
+					}
+					
 				}
 				
 			],

@@ -61,7 +61,7 @@ if($version->prepared_at == '0000-00-00'){
 <div class="box box-info">
 <div class="box-body">
 <div class="row">
-<div class="col-md-6"><?=$form->field($version, 'prepared_by')->dropDownList([Staff::activeStaffUserArray()])?></div>
+<div class="col-md-6"><?=$form->field($version, 'prepared_by')->dropDownList(Staff::activeStaffUserArray(), ['prompt' => 'Choose'])?></div>
 
 <div class="col-md-3">
 

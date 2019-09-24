@@ -1,20 +1,14 @@
 <?php
 
-namespace common\models;
+namespace backend\modules\erpd\models;
 
 use Yii;
-use backend\modules\erpd\models\Research;
-use backend\modules\erpd\models\Publication;
-use backend\modules\erpd\models\Membership;
-use backend\modules\erpd\models\Award;
-use backend\modules\erpd\models\Consultation;
-use backend\modules\erpd\models\KnowledgeTransfer;
 
 /**
  * Class Menu
  * Theme menu widget.
  */
-class Dashboard
+class Stats
 {
 	public static function countMyResearch(){
 		$kira = Research::find()

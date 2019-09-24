@@ -1,6 +1,6 @@
 <?php
 
-use common\models\Dashboard;
+use backend\modules\erpd\models\Stats;
 /* @var $this yii\web\View */
 
 $this->title = 'e-RPD Summary';
@@ -13,7 +13,7 @@ $this->title = 'e-RPD Summary';
           <!-- small box -->
           <div class="small-box bg-aqua">
             <div class="inner">
-              <h3><?=Dashboard::countMyResearch()?></h3>
+              <h3><?=Stats::countMyResearch()?></h3>
 
               <p>My Research</p>
             </div>
@@ -29,7 +29,7 @@ $this->title = 'e-RPD Summary';
           <!-- small box -->
           <div class="small-box bg-green">
             <div class="inner">
-              <h3><?=Dashboard::countMyPublication()?></h3>
+              <h3><?=Stats::countMyPublication()?></h3>
 
               <p>My Publication</p>
             </div>
@@ -44,7 +44,7 @@ $this->title = 'e-RPD Summary';
           <!-- small box -->
           <div class="small-box bg-yellow">
             <div class="inner">
-              <h3><?=Dashboard::countMyMembership()?></h3>
+              <h3><?=Stats::countMyMembership()?></h3>
 
               <p>My Membership</p>
             </div>
@@ -59,7 +59,7 @@ $this->title = 'e-RPD Summary';
           <!-- small box -->
           <div class="small-box bg-red">
             <div class="inner">
-              <h3><?=Dashboard::countMyAward()?></h3>
+              <h3><?=Stats::countMyAward()?></h3>
 
               <p>My Award</p>
             </div>
@@ -84,7 +84,7 @@ $this->title = 'e-RPD Summary';
 
             <div class="info-box-content">
               <span class="info-box-text">My Consultation</span>
-              <span class="info-box-number"><?=Dashboard::countMyConsultation()?></span>
+              <span class="info-box-number"><?=Stats::countMyConsultation()?></span>
             </div>
             <!-- /.info-box-content -->
           </div>
@@ -99,7 +99,7 @@ $this->title = 'e-RPD Summary';
 
             <div class="info-box-content">
               <span class="info-box-text">My Knowledge <br />Transfer Program</span>
-              <span class="info-box-number"><?=Dashboard::countMyKtp()?></span>
+              <span class="info-box-number"><?=Stats::countMyKtp()?></span>
             </div>
             <!-- /.info-box-content -->
           </div>
@@ -112,7 +112,7 @@ $this->title = 'e-RPD Summary';
 
             <div class="info-box-content">
               <span class="info-box-text">Completed <br />Research</span>
-              <span class="info-box-number"><?=Dashboard::countMyCompletedResearch()?></span>
+              <span class="info-box-number"><?=Stats::countMyCompletedResearch()?></span>
             </div>
             <!-- /.info-box-content -->
           </div>
@@ -125,7 +125,7 @@ $this->title = 'e-RPD Summary';
 
             <div class="info-box-content">
               <span class="info-box-text">On Going <br />Research</span>
-              <span class="info-box-number"><?=Dashboard::countMyOnGoingResearch()?></span>
+              <span class="info-box-number"><?=Stats::countMyOnGoingResearch()?></span>
             </div>
             <!-- /.info-box-content -->
           </div>
