@@ -75,7 +75,7 @@ if($model->id){
 <div class="col-md-2">
 
 <?= $form->field($model, 'position_status')->dropDownList(
-        ArrayHelper::map(StaffPositionStatus::find()->where(['>', 'status_id', 0])->all(),'status_id', 'status_name'), ['prompt' => 'Please Select' ]
+        ArrayHelper::map(StaffPositionStatus::find()->where(['>', 'id', 0])->all(),'id', 'status_name'), ['prompt' => 'Please Select' ]
     ) ?>
 
 </div>
