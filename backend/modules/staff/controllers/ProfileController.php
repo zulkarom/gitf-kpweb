@@ -148,6 +148,34 @@ class ProfileController extends Controller
 
         return $this->redirect(['education']);
     }
+	
+	public function actionImage(){
+		$id = Yii::$app->user->identity->id;
+        $model = $this->findModel(['user_id' => $id]);
+		
+		if($model->image_file){
+			$file = Yii::getAlias('@upload/' . $model->image_file);
+		}else{
+			$file = Yii::getAlias('@img') . '/user.png';
+		}
+        
+		
+			if (file_exists($file)) {
+			
+			$ext = pathinfo($file, PATHINFO_EXTENSION);
+			
+			$filename = Yii::$app->user->identity->fullname . '.' . $ext ;
+			
+			Upload::sendFile($file, $filename, $ext);
+			
+			}else{
+				$ext = pathinfo($file, PATHINFO_EXTENSION);
+				$filename = Yii::$app->user->identity->fullname . '.' . $ext ;
+				$file = Yii::getAlias('@img') . '/user.png';
+				Upload::sendFile($file, $filename, $ext);
+			}
+		
+	}
 
     /**
      * Finds the StaffEducation model based on its primary key value.
