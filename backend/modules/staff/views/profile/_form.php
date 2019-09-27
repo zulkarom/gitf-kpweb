@@ -10,7 +10,7 @@ use common\models\UploadFile;
 /* @var $model backend\modules\staff\models\Staff */
 /* @var $form yii\widgets\ActiveForm */
 
-$model->file_controller = 'staff';
+$model->file_controller = 'profile';
 ?>
 
 <div class="box box-primary">
@@ -28,7 +28,7 @@ BASIC PROFILE
     <tbody>
 	<tr>
         <td></td>
-        <td><img src="<?=Url::to(['/staff/staff/download-file', 'attr' => 'image', 'id' => Yii::$app->user->identity->staff->id])?>" width="200" /></td>
+        <td><img src="<?=Url::to(['/staff/profile/download-file', 'attr' => 'image', 'id' => Yii::$app->user->identity->staff->id])?>" width="200" /></td>
       </tr>
       <tr>
         <td><b>Name</b></td>
