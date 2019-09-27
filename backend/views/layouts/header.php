@@ -24,7 +24,7 @@ use yii\helpers\Url;
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
 
 			
-			<img src="<?= Url::to(['/staff/staff/image']) ?>" width="20" height="20" class="img-circle" alt="..." />  &nbsp;
+			<img src="<?= Url::to(['/staff/profile/image']) ?>" width="20" height="20" class="img-circle" alt="..." />  &nbsp;
              
               <span class="hidden-xs"><?=Yii::$app->user->identity->fullname?></span>
 			      &nbsp;&nbsp;&nbsp;<i class="fa fa-chevron-down"></i>
@@ -35,7 +35,7 @@ use yii\helpers\Url;
 			  
           
 				
-				<img src="<?= Url::to(['/staff/staff/image']) ?>" width="160" class="img-circle" alt="...">
+				<img src="<?= Url::to(['/staff/profile/image']) ?>" width="160" class="img-circle" alt="...">
 
                 <p>
                   <?=Yii::$app->user->identity->fullname?>                 
