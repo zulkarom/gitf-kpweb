@@ -469,16 +469,6 @@ if($this->model->references){
 	foreach($this->model->references as $row){
 		$html .='<tr>';
 		$html .='<td width="4%">'.$i.'. </td>';
-		$au = $row->ref_author;
-		$yr = $row->ref_year;
-		$title = $row->ref_title;
-		$others = $row->ref_others;
-		if($others=="" || $title ==""){
-			$comma = "";
-		}else{
-			$comma = ", ";
-		}
-		$bib = $au.' ('.$yr.'). <i>'.$title.'</i>'.$comma.$others;
 		$html .='<td width="96%">'.$row->formatedReference.'</td>';
 		$html .='</tr>';
 	$i++;

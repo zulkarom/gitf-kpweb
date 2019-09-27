@@ -26,6 +26,14 @@ use backend\modules\staff\models\Staff;
 <div class="col-md-4"><?= $form->field($model, 'status')->dropDownList( $model->statusArray ) ?>
 </div>
 
+<div class="col-md-2"><?php 
+
+if((!$model->plo_num) or $model->plo_num == 0){
+	$model->plo_num = $model->defaultPloNumber;
+}
+
+echo $form->field($model, 'plo_num')->dropDownList( $model->ploNumberArray ) ?>
+</div>
 
 
 

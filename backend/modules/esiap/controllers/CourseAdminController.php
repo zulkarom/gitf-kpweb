@@ -16,6 +16,7 @@ use backend\modules\esiap\models\CourseAssessment;
 use backend\modules\esiap\models\CourseVersionSearch;
 use backend\modules\esiap\models\CourseReference;
 use backend\modules\esiap\models\CourseCloDelivery;
+use backend\modules\esiap\models\CourseVersionClone;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -25,6 +26,7 @@ use yii\helpers\ArrayHelper;
 use yii\filters\AccessControl;
 use backend\modules\esiap\models\CoursePic;
 use backend\modules\esiap\models\CourseAccess;
+use yii\helpers\Json;
 
 /**
  * CourseController implements the CRUD actions for Course model.
@@ -91,23 +93,71 @@ class CourseAdminController extends Controller
     public function actionCourseVersionCreate($course)
     {
         $model = new CourseVersion();
+		$model->scenario = 'create';
+		$course_model = $this->findModel($course);
 
         if ($model->load(Yii::$app->request->post())) {
 			
-			$model->course_id = $course;
-			$model->created_by = Yii::$app->user->identity->id;
-			$model->created_at = new Expression('NOW()');
-			
-			if($model->save()){
-				return $this->redirect(['course-version', 'course' => $course]);
+			$transaction = Yii::$app->db->beginTransaction();
+			try {
+				
+				$model->course_id = $course;
+				$model->created_by = Yii::$app->user->identity->id;
+				$model->created_at = new Expression('NOW()');
+				if($model->is_developed == 1){
+					CourseVersion::updateAll(['is_developed' => 0], ['course_id' => $course]);
+				}
+					
+				if($model->save()){
+					if($model->duplicate == 1){
+						if($model->dup_version > 0){
+							$clone = new CourseVersionClone;
+							$clone->ori_version = $model->dup_version;
+							$clone->copy_version = $model->id;
+							if($flag = $clone->cloneVersion()){
+								Yii::$app->session->addFlash('success', "Version creation with duplication is successful");
+							}
+						}else{
+							Yii::$app->session->addFlash('error', "No existing version selected!");
+						}
+						
+					}else{
+						Yii::$app->session->addFlash('success', "Empty course version creation is successful");
+					}
+					
+				}
+				
+				
+
+				if ($flag) {
+					$transaction->commit();
+					return $this->redirect(['course-version', 'course' => $course]);
+				} else {
+					$transaction->rollBack();
+				}
+			} catch (Exception $e) {
+				$transaction->rollBack();
+				
 			}
-            
+			
         }
 
         return $this->render('../course-version/create', [
             'model' => $model,
+			'course' => $course_model
         ]);
     }
+	
+	public function actionListVersionByCourse($course){
+		
+		$version = CourseVersion::find()->select('id, version_name')->where(['course_id' => $course])->orderBy('created_at DESC')->all();
+
+		
+		if($version){
+			return Json::encode($version);
+		}
+		
+	}
 	
 	public function actionVerifyVersion($id){
 		 $model = CourseVersion::findOne($id);
@@ -136,8 +186,11 @@ class CourseAdminController extends Controller
 	public function actionCourseVersionUpdate($id)
     {
         $model = CourseVersion::findOne($id);
+		$model->scenario = 'update';
 
         if ($model->load(Yii::$app->request->post())) {
+			
+			$model->updated_at = new Expression('NOW()');
 			
 			if($model->is_developed == 1){
 				CourseVersion::updateAll(['is_developed' => 0], ['course_id' => $model->course_id]);

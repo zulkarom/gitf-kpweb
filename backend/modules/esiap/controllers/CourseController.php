@@ -15,6 +15,7 @@ use backend\modules\esiap\models\CourseAssessment;
 use backend\modules\esiap\models\CourseVersionSearch;
 use backend\modules\esiap\models\CourseReference;
 use backend\modules\esiap\models\CourseCloDelivery;
+use backend\modules\esiap\models\CourseVersionClone;
 use backend\modules\esiap\models\Fk1;
 use backend\modules\esiap\models\Fk2;
 use backend\modules\esiap\models\Fk3;
@@ -787,4 +788,17 @@ class CourseController extends Controller
 			$pdf->model = $model;
 			$pdf->generatePdf();
 	}
+	
+	public function actionDuplicate(){
+		/* $clone = new CourseVersionClone;
+		$clone->ori_version = 2;
+		$clone->copy_version = 999;
+		if($clone->cloneVersion()){
+			echo 'good';
+		} */
+		
+	}
+	
+	
+	
 }

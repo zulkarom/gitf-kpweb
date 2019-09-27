@@ -28,6 +28,9 @@ class CourseVersion extends \yii\db\ActiveRecord
 	public $delivery_name_bi;
 	public $as_hour;
 	public $duplicate = 1;
+	public $dup_course;
+	public $dup_version;
+	
 	
     /**
      * @inheritdoc
@@ -43,7 +46,9 @@ class CourseVersion extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['course_id', 'version_name', 'created_by', 'created_at', 'is_developed', 'is_published'], 'required', 'on' => 'create'],
+            [['course_id', 'version_name', 'created_by', 'created_at', 'is_developed', 'plo_num'], 'required', 'on' => 'create'],
+			
+			[['course_id', 'version_name', 'updated_at', 'is_developed', 'plo_num', 'is_published'], 'required', 'on' => 'update'],
 			
 			[['status', 'verified_by', 'verified_at'], 'required', 'on' => 'verify'],
 			
@@ -53,9 +58,10 @@ class CourseVersion extends \yii\db\ActiveRecord
 			
 
 			
-            [['course_id', 'created_by', 'is_developed', 'is_published', 'status', 'prepared_by', 'verified_by'], 'integer'],
+            [['course_id', 'created_by', 'is_developed', 'is_published', 'status', 'prepared_by', 'verified_by', 'dup_course', 'dup_version', 'plo_num'], 'integer'],
 			
             [['created_at', 'updated_at', 'senate_approve_at', 'faculty_approve_at', 'senate_approve_show', 'prepared_at', 'verified_at'], 'safe'],
+			
             [['version_name'], 'string', 'max' => 200],
         ];
     }
@@ -71,6 +77,7 @@ class CourseVersion extends \yii\db\ActiveRecord
             'version_name' => 'Version Name',
             'created_by' => 'Created By',
             'created_at' => 'Created At',
+			'plo_num' => 'PLO Count',
             'updated_at' => 'Updated At',
             'is_developed' => 'Under Development',
 			'is_published' => 'Published',
@@ -310,8 +317,17 @@ class CourseVersion extends \yii\db\ActiveRecord
 		return $this->niceDate($this->faculty_approve_at);
 	}
 	
+	public function getPloNumberArray(){
+		$array = array();
+		for($i=1;$i<=12;$i++){
+			$array[$i] = $i;
+		}
+		return $array;
+	}
 	
-	
+	public function getDefaultPloNumber(){
+		return 8;
+	}
 	
 	
 	public function getSetting(){

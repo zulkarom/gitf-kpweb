@@ -99,6 +99,10 @@ class Course extends \yii\db\ActiveRecord
 		return $this->course_code . ' - ' . $this->course_name;
 	}
 	
+	public static function activeCourses(){
+		return self::find()->where(['is_dummy' => 0, 'is_active' => 1, 'faculty_id' => 1])->orderBy('course_name ASC')->all();
+	}
+	
 	public function getCodeBrCourse(){
 		return $this->course_code . '<br />' . $this->course_name;
 	}
@@ -150,7 +154,7 @@ class Course extends \yii\db\ActiveRecord
     }
 	
 	public function getCourseVersion(){
-		return $this->hasMany(CourseVersion::className(), ['course_id' => 'id']);
+		return $this->hasMany(CourseVersion::className(), ['course_id' => 'id'])->orderBy('created_at DESC');
 	}
 	
 	
