@@ -154,7 +154,7 @@ class Course extends \yii\db\ActiveRecord
     }
 	
 	public function getCourseVersion(){
-		return $this->hasMany(CourseVersion::className(), ['course_id' => 'id'])->orderBy('created_at DESC');
+		return $this->hasMany(CourseVersion::className(), ['course_id' => 'id'])->orderBy('sp_course_version.created_at DESC');
 	}
 	
 	

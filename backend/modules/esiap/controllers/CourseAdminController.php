@@ -5,17 +5,19 @@ namespace backend\modules\esiap\controllers;
 use Yii;
 use backend\modules\esiap\models\CourseAdminSearch;
 use backend\modules\esiap\models\Course;
+use backend\modules\esiap\models\CourseVersion;
+
 use backend\modules\esiap\models\CourseProfile;
+use backend\modules\esiap\models\CourseSyllabus;
+use backend\modules\esiap\models\CourseSlt;
+use backend\modules\esiap\models\CourseAssessment;
+use backend\modules\esiap\models\CourseReference;
 use backend\modules\esiap\models\CourseClo;
 use backend\modules\esiap\models\CourseCloAssessment;
-
-use backend\modules\esiap\models\CourseVersion;
-use backend\modules\esiap\models\CourseSyllabus;
-use backend\modules\esiap\models\CourseSltAs;
-use backend\modules\esiap\models\CourseAssessment;
-use backend\modules\esiap\models\CourseVersionSearch;
-use backend\modules\esiap\models\CourseReference;
 use backend\modules\esiap\models\CourseCloDelivery;
+
+
+use backend\modules\esiap\models\CourseVersionSearch;
 use backend\modules\esiap\models\CourseVersionClone;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -183,9 +185,56 @@ class CourseAdminController extends Controller
 		 
 	}
 	
+	public function actionCourseVersionDelete($id){
+		$model = $this->findVersionModel($id);
+		$course = $model->course_id;
+		if($model->status != 0){
+			Yii::$app->session->addFlash('error', "You can only delete draft status");
+		}else{
+			$transaction = Yii::$app->db->beginTransaction();
+			try {
+				$clos = CourseClo::find()->where(['crs_version_id' => $id])->all();
+				if($clos){
+					foreach($clos as $clo){
+						$clo_id = $clo->id;
+						CourseCloAssessment::deleteAll(['clo_id' => $clo_id]);
+						CourseCloDelivery::deleteAll(['clo_id' => $clo_id]);
+					}
+				}
+				CourseClo::deleteAll(['crs_version_id' => $id]);
+				CourseReference::deleteAll(['crs_version_id' => $id]);
+				CourseSyllabus::deleteAll(['crs_version_id' => $id]);
+				CourseSlt::deleteAll(['crs_version_id' => $id]);
+				CourseAssessment::deleteAll(['crs_version_id' => $id]);
+				CourseProfile::deleteAll(['crs_version_id' => $id]);
+				
+				if(CourseVersion::findOne($id)->delete()){
+					
+					$transaction->commit();
+					Yii::$app->session->addFlash('success', "Version Deleted");
+				}
+				
+				
+				
+				
+			}
+			catch (Exception $e) 
+			{
+				$transaction->rollBack();
+				Yii::$app->session->addFlash('error', $e->getMessage());
+			}
+
+			
+		}
+		
+		
+		return $this->redirect(['course-version', 'course' => $course]);
+		
+	}
+	
 	public function actionCourseVersionUpdate($id)
     {
-        $model = CourseVersion::findOne($id);
+		$model = $this->findVersionModel($id);
 		$model->scenario = 'update';
 
         if ($model->load(Yii::$app->request->post())) {
@@ -389,6 +438,15 @@ class CourseAdminController extends Controller
     protected function findModel($id)
     {
         if (($model = Course::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+	
+	protected function findVersionModel($id)
+    {
+        if (($model = CourseVersion::findOne($id)) !== null) {
             return $model;
         }
 

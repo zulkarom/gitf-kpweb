@@ -188,11 +188,28 @@ class CourseVersionClone
 				$copy = new CourseCloAssessment();
 				$copy->attributes = $original->attributes;
 				$copy->clo_id = $clo_id_new;
+				
+				//kena update assess_id lama ke baru
+				$old_assess = $original->assess_id;
+				$old_name = CourseAssessment::findOne($old_assess)->assess_name;
+				//Yii::$app->session->addFlash('success', $old_name .'---'. $this->copy_version);
+				$new_assess = CourseAssessment::findOne(['assess_name' => $old_name, 'crs_version_id' => $this->copy_version]);
+				if($new_assess){
+					
+					$copy->assess_id = $new_assess->id;
+				}
+				
+				
+				
 				if(!($flag = $copy->save())){
 					$copy->flashError();
 					break;
 				}
+				
+				
 			}
+			
+			
 		}
 		
 		return $flag;

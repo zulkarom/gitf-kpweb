@@ -205,7 +205,7 @@ echo ChartJs::widget([
     'type' => 'pie',
     'id' => 'coursesprogram',
     'options' => [
-        'height' => 200,
+        'height' => 300,
         'width' => 400,
     ],
     'data' => [
