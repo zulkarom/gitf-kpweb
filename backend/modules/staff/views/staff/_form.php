@@ -40,8 +40,7 @@ if($model->id){
 <?= $form
             ->field($model, 'staff_title', ['template' => '{label}<div id="con-title">{input}</div>{error}']
 )
-            ->label('Title')
-            ->dropDownList($model->listTitles) ?>
+            ->label('Title') ?>
 </div>
 
 <div class="col-md-7">
