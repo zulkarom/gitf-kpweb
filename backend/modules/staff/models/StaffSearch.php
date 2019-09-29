@@ -46,7 +46,7 @@ class StaffSearch extends Staff
      */
     public function search($params)
     {
-        $query = Staff::find()->where(['staff_active' => 1]);
+        $query = Staff::find()->where(['staff_active' => 1])->orderBy('user.fullname ASC');
 		$query->joinWith(['user']);
 
         // add conditions that should always apply here
