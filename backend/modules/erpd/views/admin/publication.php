@@ -124,7 +124,7 @@ $exportColumns = [
 				'contentOptions' => [ 'style' => 'width: 1%;' ],
 				'value' => function($model){
 					
-					return '<a href="'.Url::to(['erpd/publication/download-file', 'attr' => 'awd', 'id' => $model->id]).'" target="_blank"><i class="fa fa-file-pdf-o"></i></a>';
+					return '<a href="'.Url::to(['erpd/publication/download-file', 'attr' => 'pubupload', 'id' => $model->id]).'" target="_blank"><i class="fa fa-file-pdf-o"></i></a>';
 				}
 				
 			],
