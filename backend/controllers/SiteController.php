@@ -10,7 +10,7 @@ use common\models\Product;
 use backend\models\Customer;
 use backend\modules\staff\models\Staff;
 use common\models\User;
-use backend\modules\staff\models\Stats as Dashboard;
+use backend\modules\erpd\models\Stats as Dashboard;
 
 /**
  * Site controller
