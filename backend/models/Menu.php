@@ -9,35 +9,7 @@ use backend\modules\erpd\models\Stats as ErpdStats;
 
 class Menu
 {
-	public static function coursePicXX(){
-		$esiap_pic = [];
-		
-		$coor = Course::find()->where(['course_pic' => Yii::$app->user->identity->id])->all();
-		
-		if($coor){
-			foreach($coor as $c){
-				$ver = $c->defaultVersion->status;
-				if($ver == 0){
-					$rt = '/esiap/course/update';
-				}else{
-					$rt = '/esiap/course/report';
-				}
-				$arr[] = ['label' => $c->course_name, 'icon' => 'book', 'url' => [$rt, 'course' => $c->id]];
-			}
-			
-			$menu_coor = [
-                        'label' => 'My Course',
-                        'icon' => 'book',
-                        'url' => '#',
-                        'items' => $arr,
-                    ]
-				;
-				
-			$esiap_pic  = $menu_coor;	
-		}
-		
-		return $esiap_pic;
-	}
+	
 	
 	public static function courseFocus(){
 		$course_focus = '';
@@ -148,7 +120,7 @@ class Menu
 				
 				
 				
-				['label' => 'Membership', 'icon' => 'users', 'url' => ['/erpd/membership'], 'badge' => ErpdStats::countMyPublication(), 
+				['label' => 'Membership', 'icon' => 'users', 'url' => ['/erpd/membership'], 'badge' => ErpdStats::countMyMembership(), 
 			'badgeOptions' => ['class' => 'label pull-right bg-blue']],
 				
 				['label' => 'Award', 'icon' => 'trophy', 'url' => ['/erpd/award'], 'badge' => ErpdStats::countMyAward(), 

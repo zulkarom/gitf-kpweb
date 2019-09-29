@@ -111,14 +111,7 @@ use backend\models\Menu;
 						'visible' => Todo::can('sysadmin'),
                         'url' => '#',
                         'items' => [
-							
-							['label' => 'New External User', 'icon' => 'plus', 'url' => ['/user/create'],],
 						
-							//['label' => 'User Role', 'icon' => 'user', 'url' => ['/user-admin/assignment'],],
-							
-							//['label' => 'User Signup', 'icon' => 'plus', 'url' => ['/admin/user/signup'],],
-							
-							
 							['label' => 'User Assignment', 'icon' => 'user', 'url' => ['/admin'],],
 						
                             ['label' => 'Role List', 'icon' => 'user', 'url' => ['/admin/role'],],
@@ -131,7 +124,6 @@ use backend\models\Menu;
                         ],
                     ],
 					
-					//['label' => 'Change Password', 'icon' => 'lock', 'url' => ['/user/change-password']],
 					
 					['label' => 'Log Out', 'icon' => 'arrow-left', 'url' => ['/site/logout'], 'template' => '<a href="{url}" data-method="post">{icon} {label}</a>']
 					
