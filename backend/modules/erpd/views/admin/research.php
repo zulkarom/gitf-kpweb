@@ -65,7 +65,7 @@ $colums = [
 				'contentOptions' => [ 'style' => 'width: 1%;' ],
 				'value' => function($model){
 					
-					return '<a href="'.Url::to(['erpd/research/download-file', 'attr' => 'res', 'id' => $model->id]).'" target="_blank"><i class="fa fa-file-pdf-o"></i></a>';
+					return '<a href="'.Url::to(['/erpd/research/download-file', 'attr' => 'res', 'id' => $model->id]).'" target="_blank"><i class="fa fa-file-pdf-o"></i></a>';
 				}
 				
 			],
