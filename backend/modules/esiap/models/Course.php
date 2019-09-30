@@ -43,6 +43,9 @@ class Course extends \yii\db\ActiveRecord
     {
         return [
 			
+			[['course_name', 'course_name_bi', 'course_code', 'credit_hour', 'is_dummy', 'faculty_id', 'program_id'], 'required', 'on' => 'create'],
+			
+			
 			[['course_name', 'course_name_bi', 'course_code', 'credit_hour', 'is_dummy'], 'required', 'on' => 'update'],
 			
 			
@@ -52,7 +55,7 @@ class Course extends \yii\db\ActiveRecord
 			
             [['course_code'], 'string', 'max' => 50],
 			
-			['course_code', 'unique', 'targetClass' => '\backend\modules\esiap\models\Course', 'message' => 'This course code has already been taken'],
+			/* ['course_code', 'unique', 'targetClass' => '\backend\modules\esiap\models\Course', 'message' => 'This course code has already been taken'], */
 			
         ];
     }

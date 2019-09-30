@@ -279,6 +279,7 @@ class CourseAdminController extends Controller
     public function actionCreate()
     {
         $model = new Course();
+		$model->scenario = 'create';
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect('index');

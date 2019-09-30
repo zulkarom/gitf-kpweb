@@ -131,4 +131,16 @@ class Stats
 		->count();
 		return $kira;
 	}
+	
+	public static function publicationLastFiveYears(){
+		$curr_year = date('Y') + 0;
+		$last_five = $curr_year - 5;
+		
+		return Publication::find()
+		->select('sp_program.id, sp_program.pro_name as course_label, COUNT(sp_course.program_id) as course_data')
+		->where(['pub_year' => 1, 'status' => 50])
+		->groupBy('pub_year')
+		->all();
+		
+	}
 }

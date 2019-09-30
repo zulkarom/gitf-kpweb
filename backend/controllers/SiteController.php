@@ -11,6 +11,7 @@ use backend\models\Customer;
 use backend\modules\staff\models\Staff;
 use common\models\User;
 use backend\modules\erpd\models\Stats as Dashboard;
+use common\models\UserToken;
 
 /**
  * Site controller
@@ -27,11 +28,11 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'login-portal', 'error'],
+                        'actions' => ['login', 'error'],
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index', 'test'],
+                        'actions' => ['logout', 'index', 'test', 'jeb-web'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -95,32 +96,26 @@ class SiteController extends Controller
         }
     }
 	
-	public function actionLoginPortal($u,$t)
+	public function actionJebWeb()
     {
-        /* if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        } */
-	
-
-        $last5 = time() - (60);
+		$id = Yii::$app->user->identity->id;
+       $token = new UserToken;
+		$token->user_id = $id;
+		$token->token = Yii::$app->security->generateRandomString();
+		$token->created_at = time();
 		
-		$db = Staff::find()
-		->where(['staff_id' => $u, 'user_token' => $t])
-		->andWhere('user_token_at > ' . $last5)
-		->one();
-		
-		$staff = Staff::findOne(['staff_id' => $u]);
-		$id = $staff->user_id;
-		//echo $id;
-		
-		if($db){
-		   $user = User::findIdentity($id);
-			if(Yii::$app->user->login($user)){
-				return $this->redirect(['/website']);
-			}
+		if(YII_ENV == 'prod'){
+			$url = 'https://jeb.umk.edu.my/';
 		}else{
-			throw new ForbiddenHttpException;
+			$url = '/projects/jeb/pro02/backend/web/';
 		}
+		
+		$url = $url . 'site/login-portal?u='.$id.'&t='.$token->token;
+		
+		if($token->save()){
+			return $this->redirect($url);
+		}
+
     }
 	
 

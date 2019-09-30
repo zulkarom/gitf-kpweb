@@ -1,7 +1,6 @@
 <?php 
 use common\models\Todo;
 use yii\helpers\Url;
-use backend\modules\jeb\models\Menu as JebMenu;
 use backend\models\Menu;
 
 ?>
@@ -52,10 +51,6 @@ use backend\models\Menu;
 		$admin_focus = [];
 		
 		switch(Yii::$app->controller->module->id){
-			case 'jeb':
-			$focus = JebMenu::committee();
-			$admin_focus = JebMenu::adminJeb();
-			break;
 			
 			case 'erpd':
 			$focus = Menu::erpd();
@@ -100,7 +95,7 @@ use backend\models\Menu;
 					
 					['label' => 'e-RPD', 'icon' => 'flask', 'url' => ['/erpd'],],	
 					
-					['label' => 'JEB JOURNAL', 'icon' => 'book', 'url' => ['/jeb'],],
+					['label' => 'JEB JOURNAL', 'icon' => 'book', 'url' => ['/site/jeb-web'], 'template'=>'<a href="{url}" target="_blank">{icon} {label}</a>'],
 					
 					['label' => 'WEBSITE', 'icon' => 'tv', 'url' => ['/website'],],
 					
