@@ -105,7 +105,7 @@ class SiteController extends Controller
 		$token->created_at = time();
 		
 		if(YII_ENV == 'prod'){
-			$url = 'https://jeb.umk.edu.my/';
+			$url = 'https://jeb.umk.edu.my/admin/';
 		}else{
 			$url = '/projects/jeb/pro02/backend/web/';
 		}
