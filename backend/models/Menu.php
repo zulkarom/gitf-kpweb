@@ -78,7 +78,8 @@ class Menu
                         'url' => '#',
                         'items' => [
 						
-				//['label' => 'Dashboard', 'icon' => 'dashboard', 'url' => ['/erpd'],],
+				
+				['label' => 'Summary', 'icon' => 'pie-chart', 'url' => ['/erpd/admin']],
 				
 				['label' => 'Research', 'icon' => 'book', 'url' => ['/erpd/admin/research'],],
 				

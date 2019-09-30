@@ -8,7 +8,7 @@ use backend\modules\erpd\models\ConsultationSearch;
 
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use common\models\Upload;
+use common\models\UploadFile as Upload;
 use yii\helpers\Json;
 use yii\db\Expression;
 use yii\filters\AccessControl;
@@ -191,8 +191,11 @@ class ConsultationController extends Controller
         $attr = $this->clean($attr);
         $model = $this->findModel($id);
         $model->file_controller = 'consultation';
+		
+		$year = date('Y') + 0 ;
+		$path = $year . '/erpd/consultation';
 
-        return Upload::upload($model, $attr, 'modified_at');
+        return Upload::upload($model, $attr, 'modified_at', $path);
 
     }
 

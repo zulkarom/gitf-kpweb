@@ -16,9 +16,9 @@ $this->title = 'e-RPD';
           <!-- small box -->
           <div class="small-box bg-aqua">
             <div class="inner">
-              <h3><?=Stats::countMyResearch()?></h3>
+              <h3><?=Stats::countTotalResearch()?></h3>
 
-              <p>My Research</p>
+              <p>Total Research</p>
             </div>
             <div class="icon">
               <i class="fa fa-flask"></i>
@@ -32,9 +32,9 @@ $this->title = 'e-RPD';
           <!-- small box -->
           <div class="small-box bg-green">
             <div class="inner">
-              <h3><?=Stats::countMyPublication()?></h3>
+              <h3><?=Stats::countTotalPublication()?></h3>
 
-              <p>My Publication</p>
+              <p>Total Publication</p>
             </div>
             <div class="icon">
               <i class="fa fa-send"></i>
@@ -47,9 +47,9 @@ $this->title = 'e-RPD';
           <!-- small box -->
           <div class="small-box bg-yellow">
             <div class="inner">
-              <h3><?=Stats::countMyMembership()?></h3>
+              <h3><?=Stats::countTotalMembership()?></h3>
 
-              <p>My Membership</p>
+              <p>Total Membership</p>
             </div>
             <div class="icon">
               <i class="fa fa-users"></i>
@@ -62,9 +62,9 @@ $this->title = 'e-RPD';
           <!-- small box -->
           <div class="small-box bg-red">
             <div class="inner">
-              <h3><?=Stats::countMyAward()?></h3>
+              <h3><?=Stats::countTotalAward()?></h3>
 
-              <p>My Award</p>
+              <p>Total Award</p>
             </div>
             <div class="icon">
               <i class="fa fa-trophy"></i>
@@ -86,8 +86,8 @@ $this->title = 'e-RPD';
             <span class="info-box-icon bg-red"><i class="fa fa-microphone"></i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text">My Consultation</span>
-              <span class="info-box-number"><?=Stats::countMyConsultation()?></span>
+              <span class="info-box-text">Total Consultation</span>
+              <span class="info-box-number"><?=Stats::countTotalConsultation()?></span>
             </div>
             <!-- /.info-box-content -->
           </div>
@@ -101,8 +101,8 @@ $this->title = 'e-RPD';
             <span class="info-box-icon bg-blue"><i class="fa fa-truck"></i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text">My Knowledge <br />Transfer Program</span>
-              <span class="info-box-number"><?=Stats::countMyKtp()?></span>
+              <span class="info-box-text">Total Knowledge <br />Transfer Program</span>
+              <span class="info-box-number"><?=Stats::countTotalKtp()?></span>
             </div>
             <!-- /.info-box-content -->
           </div>
@@ -115,7 +115,7 @@ $this->title = 'e-RPD';
 
             <div class="info-box-content">
               <span class="info-box-text">Completed <br />Research</span>
-              <span class="info-box-number"><?=Stats::countMyCompletedResearch()?></span>
+              <span class="info-box-number"><?=Stats::countTotalCompletedResearch()?></span>
             </div>
             <!-- /.info-box-content -->
           </div>
@@ -128,7 +128,7 @@ $this->title = 'e-RPD';
 
             <div class="info-box-content">
               <span class="info-box-text">On Going <br />Research</span>
-              <span class="info-box-number"><?=Stats::countMyOnGoingResearch()?></span>
+              <span class="info-box-number"><?=Stats::countTotalOnGoingResearch()?></span>
             </div>
             <!-- /.info-box-content -->
           </div>

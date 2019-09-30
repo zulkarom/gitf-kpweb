@@ -171,7 +171,7 @@ class UploadFile
 		$filePath = $directory . $fileName;
 		
 		
-		$model->{$attr_db} = $path . $fileName;
+		$model->{$attr_db} = $path . '/' . $fileName;
 		if($ts){
 			$model->{$ts} = new Expression('NOW()');
 		}

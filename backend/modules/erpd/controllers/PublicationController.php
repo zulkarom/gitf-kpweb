@@ -14,7 +14,7 @@ use yii\web\NotFoundHttpException;
 use common\models\Model;
 use yii\helpers\ArrayHelper;
 use yii\filters\AccessControl;
-use common\models\Upload;
+use common\models\UploadFile as Upload;
 use yii\helpers\Json;
 use yii\db\Expression;
 
@@ -456,8 +456,11 @@ class PublicationController extends Controller
         $attr = $this->clean($attr);
         $model = $this->findModel($id);
         $model->file_controller = 'publication';
+		
+		$year = date('Y') + 0 ;
+		$path = $year . '/erpd/publication';
 
-        return Upload::upload($model, $attr, 'modified_at');
+        return Upload::upload($model, $attr, 'modified_at', $path);
 
     }
 

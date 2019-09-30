@@ -287,7 +287,7 @@ class StaffController extends Controller
         $model->file_controller = 'staff';
 		
 
-        return UploadFile::upload($model, $attr, 'updated_at', 'profile/');
+        return UploadFile::upload($model, $attr, 'updated_at', 'profile');
 
     }
 

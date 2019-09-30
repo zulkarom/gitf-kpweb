@@ -11,7 +11,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use common\models\Upload;
+use common\models\UploadFile as Upload;
 use yii\helpers\Json;
 use yii\db\Expression;
 
@@ -200,8 +200,11 @@ class MembershipController extends Controller
         $attr = $this->clean($attr);
         $model = $this->findModel($id);
         $model->file_controller = 'membership';
+		
+		$year = date('Y') + 0 ;
+		$path = $year . '/erpd/membership';
 
-        return Upload::upload($model, $attr, 'modified_at');
+        return Upload::upload($model, $attr, 'modified_at', $path);
 
     }
 

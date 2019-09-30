@@ -70,4 +70,65 @@ class Stats
 		->count();
 		return $kira;
 	}
+	
+	public static function countTotalResearch(){
+		$kira = Research::find()
+		->joinWith('researchers')
+		->where(['status' => 50])
+		->count();
+		return $kira;
+	}
+	
+	public static function countTotalCompletedResearch(){
+		$kira = Research::find()
+		->joinWith('researchers')
+		->where(['status' => 50, 'res_progress' => 1])
+		->count();
+		return $kira;
+	}
+	
+	public static function countTotalOnGoingResearch(){
+		$kira = Research::find()
+		->joinWith('researchers')
+		->where(['status' => 50, 'res_progress' => 0])
+		->count();
+		return $kira;
+	}
+	
+	public static function countTotalPublication(){
+		$kira = Publication::find()
+		->joinWith('pubTags')
+		->where(['status' => 50])
+		->count();
+		return $kira;
+	}
+	
+	public static function countTotalMembership(){
+		$kira = Membership::find()
+		->where(['status' => 50])
+		->count();
+		return $kira;
+	}
+	
+	public static function countTotalAward(){
+		$kira = Award::find()
+		->where(['status' => 50])
+		->count();
+		return $kira;
+	}
+	
+	public static function countTotalConsultation(){
+		$kira = Consultation::find()
+		->where(['status' => 50])
+		->count();
+		return $kira;
+	}
+	
+	public static function countTotalKtp(){
+		$kira = KnowledgeTransfer::find()
+		->joinWith('members')
+		->where(['status' => 50])
+		->count();
+		return $kira;
+	}
 }

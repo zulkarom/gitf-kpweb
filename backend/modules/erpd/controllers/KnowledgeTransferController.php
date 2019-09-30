@@ -13,7 +13,7 @@ use yii\filters\AccessControl;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 use common\models\Model;
-use common\models\Upload;
+use common\models\UploadFile as Upload;
 use yii\helpers\Json;
 
 /**
@@ -315,8 +315,11 @@ class KnowledgeTransferController extends Controller
         $attr = $this->clean($attr);
         $model = $this->findModel($id);
         $model->file_controller = 'knowledge-transfer';
+		
+		$year = date('Y') + 0 ;
+		$path = $year . '/erpd/knowledge_transfer';
 
-        return Upload::upload($model, $attr, 'modified_at');
+        return Upload::upload($model, $attr, 'modified_at', $path);
 
     }
 
