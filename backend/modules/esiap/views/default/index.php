@@ -15,7 +15,9 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="box-header">
 <h3 class="box-title">My Course(s)</h3>
 </div>
-<div class="box-body"><?= GridView::widget([
+<div class="box-body">
+
+<div class="table-responsive"><?= GridView::widget([
         'dataProvider' => $dataProvider2,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
@@ -61,7 +63,7 @@ $this->params['breadcrumbs'][] = $this->title;
             
             ],
         ],
-    ]); ?></div>
+    ]); ?></div></div>
 </div>
 
 
@@ -69,7 +71,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="box-header">
 <h3 class="box-title">Under Development Course(s)</h3>
 </div>
-<div class="box-body"><?= GridView::widget([
+<div class="box-body"><div class="table-responsive"><?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
@@ -103,5 +105,5 @@ $this->params['breadcrumbs'][] = $this->title;
             
             ],
         ],
-    ]); ?></div>
+    ]); ?></div></div>
 </div>

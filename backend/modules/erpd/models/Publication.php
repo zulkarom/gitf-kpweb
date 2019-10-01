@@ -38,6 +38,9 @@ class Publication extends \yii\db\ActiveRecord
 	
 	public $pubupload_instance;
 	public $file_controller;
+	
+	public $pub_label;
+	public $pub_data;
 
     /**
      * @inheritdoc

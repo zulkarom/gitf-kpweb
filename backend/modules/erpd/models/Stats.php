@@ -42,6 +42,13 @@ class Stats
 		return $kira;
 	}
 	
+	public static function countPublicationByTypeYear($type, $year){
+		$kira = Publication::find()
+		->where(['status' => 50, 'pub_type' => $type, 'pub_year' => $year])
+		->count();
+		return $kira;
+	}
+	
 	public static function countMyMembership(){
 		$kira = Membership::find()
 		->where(['msp_staff' => Yii::$app->user->identity->staff->id, 'status' => 50])
@@ -73,15 +80,19 @@ class Stats
 	
 	public static function countTotalResearch(){
 		$kira = Research::find()
-		->joinWith('researchers')
 		->where(['status' => 50])
 		->count();
 		return $kira;
 	}
 	
+	public static function countResearchByYear($year){
+		return Research::find()
+		->where(['status' => 50, 'YEAR(date_start)' => $year])
+		->count();
+	}
+	
 	public static function countTotalCompletedResearch(){
 		$kira = Research::find()
-		->joinWith('researchers')
 		->where(['status' => 50, 'res_progress' => 1])
 		->count();
 		return $kira;
@@ -97,8 +108,14 @@ class Stats
 	
 	public static function countTotalPublication(){
 		$kira = Publication::find()
-		->joinWith('pubTags')
 		->where(['status' => 50])
+		->count();
+		return $kira;
+	}
+	
+	public static function countPublicationByYear($year){
+		$kira = Publication::find()
+		->where(['status' => 50, 'pub_year' => $year])
 		->count();
 		return $kira;
 	}
@@ -110,9 +127,23 @@ class Stats
 		return $kira;
 	}
 	
+	public static function countMembershipByYear($year){
+		$kira = Membership::find()
+		->where(['status' => 50, 'YEAR(date_start)' => $year])
+		->count();
+		return $kira;
+	}
+	
 	public static function countTotalAward(){
 		$kira = Award::find()
 		->where(['status' => 50])
+		->count();
+		return $kira;
+	}
+	
+	public static function countAwardByYear($year){
+		$kira = Award::find()
+		->where(['status' => 50, 'YEAR(awd_date)' => $year])
 		->count();
 		return $kira;
 	}
@@ -124,23 +155,77 @@ class Stats
 		return $kira;
 	}
 	
+	public static function countConsultationByYear($year){
+		$kira = Consultation::find()
+		->where(['status' => 50, 'YEAR(date_start)' => $year])
+		->count();
+		return $kira;
+	}
+	
 	public static function countTotalKtp(){
 		$kira = KnowledgeTransfer::find()
-		->joinWith('members')
 		->where(['status' => 50])
+		->count();
+		return $kira;
+	}
+	
+	public static function countKtpByYear($year){
+		$kira = KnowledgeTransfer::find()
+		->where(['status' => 50, 'YEAR(date_start)' => $year])
 		->count();
 		return $kira;
 	}
 	
 	public static function publicationLastFiveYears(){
 		$curr_year = date('Y') + 0;
-		$last_five = $curr_year - 5;
+		$last_five = $curr_year - 4;
 		
 		return Publication::find()
-		->select('sp_program.id, sp_program.pro_name as course_label, COUNT(sp_course.program_id) as course_data')
-		->where(['pub_year' => 1, 'status' => 50])
+		->select('id, pub_year as pub_label, COUNT(id) as pub_data')
+		->where(['status' => 50])
+		->andWhere(['>=', 'pub_year', $last_five])
+		->andWhere(['<=', 'pub_year', $curr_year])
 		->groupBy('pub_year')
 		->all();
-		
+	}
+	
+	
+	
+	public static function researchLastFiveYears(){
+		$curr_year = date('Y') + 0;
+		$last_five = $curr_year - 4;
+		return Research::find()
+		->select('id, YEAR(date_start) as res_label, COUNT(id) as res_data')
+		->where(['status' => 50])
+		->andWhere(['>=', 'YEAR(date_start)', $last_five])
+		->andWhere(['<=', 'YEAR(date_start)', $curr_year])
+		->groupBy('YEAR(date_start)')
+		->all();
+	}
+	
+	public static function myPublicationLastFiveYears(){
+		$curr_year = date('Y') + 0;
+		$last_five = $curr_year - 4;
+		return Publication::find()
+		->select('rp_publication.id, pub_year as pub_label, COUNT(pub_year) as pub_data')
+		->joinWith(['pubTags'])
+		->where(['status' => 50, 'rp_pub_tag.staff_id' => Yii::$app->user->identity->staff->id])
+		->andWhere(['>=', 'pub_year', $last_five])
+		->andWhere(['<=', 'pub_year', $curr_year])
+		->groupBy('pub_year')
+		->all();
+	}
+	
+	public static function myResearchLastFiveYears(){
+		$curr_year = date('Y') + 0;
+		$last_five = $curr_year - 4;
+		return Research::find()
+		->select('rp_research.id, YEAR(date_start) as res_label, COUNT(rp_research.id) as res_data')
+		->joinWith(['researchers'])
+		->where(['status' => 50, 'rp_researcher.staff_id' => Yii::$app->user->identity->staff->id])
+		->andWhere(['>=', 'YEAR(date_start)', $last_five])
+		->andWhere(['<=', 'YEAR(date_start)', $curr_year])
+		->groupBy('YEAR(date_start)')
+		->all();
 	}
 }

@@ -11,7 +11,7 @@ use yii\helpers\Url;
 
 $this->title = 'CLO PLO: ' . $model->course->course_name . ' '. $model->course->course_code;
 $this->params['breadcrumbs'][] = ['label' => 'Courses', 'url' => ['index']];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = 'CLO PLO';
 $form = ActiveForm::begin(['id' => 'form-clo-plo']);
 ?>
 

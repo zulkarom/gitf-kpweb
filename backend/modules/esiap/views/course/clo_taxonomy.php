@@ -11,7 +11,7 @@ use yii\helpers\Url;
 
 $this->title = 'Taxonomy: ' . $model->course->course_name . ' '. $model->course->course_code;
 $this->params['breadcrumbs'][] = ['label' => 'Courses', 'url' => ['index']];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = 'Taxonomy';
 $plo_num = $model->plo_num;
 $form = ActiveForm::begin(['id' => 'form-clo-plo']);
 echo $form->field($model, 'updated_at')->hiddenInput(['value' => time()])->label(false);

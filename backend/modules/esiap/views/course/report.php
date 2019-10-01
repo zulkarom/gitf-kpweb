@@ -11,8 +11,7 @@ use kartik\date\DatePicker;
 
 $this->title = 'Preview & Submit: ' . $model->course_name . ' '. $model->course_code;
 $this->params['breadcrumbs'][] = ['label' => 'Courses', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = 'Preview & Submit';
 echo '<b>STATUS: </b>' . $version->labelStatus;
 echo '<br /><br />';
 ?>
@@ -25,17 +24,17 @@ echo '<br /><br />';
 	<tbody><tr>
 		<td width="5%">1.</td>
 		<td><span class="glyphicon glyphicon-file"></span> FK01 - PRO FORMA KURSUS / <i>COURSE PRO FORMA</i>                             </td>
-		<td><a href="<?=Url::to(['/esiap/course/fk1', 'course' => $model->id])?>" target="_blank" class="btn btn-default"><span class="glyphicon glyphicon-download-alt"></span> Download</a></td>
+		<td><a href="<?=Url::to(['/esiap/course/fk1', 'course' => $model->id, 'dev' => 1])?>" target="_blank" class="btn btn-default"><span class="glyphicon glyphicon-download-alt"></span> Download</a></td>
 	</tr>
 	<tr>
 		<td width="5%">2.</td>
 		<td><span class="glyphicon glyphicon-file"></span> FK02 - MAKLUMAT KURSUS / <i>COURSE INFORMATION </i>                               </td>
-		<td><a href="<?=Url::to(['/esiap/course/fk2', 'course' => $model->id])?>" target="_blank"  class="btn btn-default"><span class="glyphicon glyphicon-download-alt"></span> Download</a></td>
+		<td><a href="<?=Url::to(['/esiap/course/fk2', 'course' => $model->id, 'dev' => 1])?>" target="_blank"  class="btn btn-default"><span class="glyphicon glyphicon-download-alt"></span> Download</a></td>
 	</tr>
 	<tr>
 		<td width="5%">3.</td>
 		<td><span class="glyphicon glyphicon-file"></span> FK03 - PENJAJARAN KONSTRUKTIF / <i>CONSTRUCTIVE ALIGNMENT       </i>                         </td>
-		<td><a href="<?=Url::to(['/esiap/course/fk3', 'course' => $model->id])?>" target="_blank" class="btn btn-default"><span class="glyphicon glyphicon-download-alt"></span> Download</a></td>
+		<td><a href="<?=Url::to(['/esiap/course/fk3', 'course' => $model->id, 'dev' => 1])?>" target="_blank" class="btn btn-default"><span class="glyphicon glyphicon-download-alt"></span> Download</a></td>
 	</tr>
 	
 </tbody></table>

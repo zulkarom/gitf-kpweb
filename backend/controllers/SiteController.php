@@ -66,11 +66,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-		$dashboard = new Dashboard;
-        return $this->render('index', [
-
-		'customer' => 33
-		]);
+        return $this->render('index');
     }
 
     /**

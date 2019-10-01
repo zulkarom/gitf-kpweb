@@ -29,6 +29,8 @@ class Research extends \yii\db\ActiveRecord
 	public $file_controller;
 	public $year_start;
 	public $year_end;
+	public $res_label;
+	public $res_data;
 	
     /**
      * @inheritdoc
@@ -102,7 +104,10 @@ class Research extends \yii\db\ActiveRecord
 			if($result->staff_id == 0){
 				return $result->ext_name;
 			}else{
-				return $result->staff->user->fullname;
+				if($result->staff){
+					return $result->staff->user->fullname;
+				}
+				
 			}
 		}
 	}
