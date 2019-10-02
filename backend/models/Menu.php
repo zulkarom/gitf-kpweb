@@ -81,6 +81,8 @@ class Menu
 				
 				['label' => 'Summary', 'icon' => 'pie-chart', 'url' => ['/erpd/admin']],
 				
+				['label' => 'Lecturers', 'icon' => 'user', 'url' => ['/erpd/admin/lecturer']],
+				
 				['label' => 'Research', 'icon' => 'book', 'url' => ['/erpd/admin/research'],'badge' => ErpdStats::countTotalResearch(), 
 			'badgeOptions' => ['class' => 'label pull-right bg-blue']],
 				

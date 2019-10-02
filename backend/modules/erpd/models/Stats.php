@@ -18,6 +18,14 @@ class Stats
 		return $kira;
 	}
 	
+	public static function countStaffResearch($staff){
+		$kira = Research::find()
+		->joinWith('researchers')
+		->where(['staff_id' => $staff, 'status' => 50])
+		->count();
+		return $kira;
+	}
+	
 	public static function countMyCompletedResearch(){
 		$kira = Research::find()
 		->joinWith('researchers')
@@ -42,6 +50,14 @@ class Stats
 		return $kira;
 	}
 	
+	public static function countStaffPublication($staff){
+		$kira = Publication::find()
+		->joinWith('pubTags')
+		->where(['rp_pub_tag.staff_id' => $staff, 'status' => 50])
+		->count();
+		return $kira;
+	}
+	
 	public static function countPublicationByTypeYear($type, $year){
 		$kira = Publication::find()
 		->where(['status' => 50, 'pub_type' => $type, 'pub_year' => $year])
@@ -56,9 +72,23 @@ class Stats
 		return $kira;
 	}
 	
+	public static function countStaffMembership($staff){
+		$kira = Membership::find()
+		->where(['msp_staff' => $staff, 'status' => 50])
+		->count();
+		return $kira;
+	}
+	
 	public static function countMyAward(){
 		$kira = Award::find()
 		->where(['awd_staff' => Yii::$app->user->identity->staff->id, 'status' => 50])
+		->count();
+		return $kira;
+	}
+	
+	public static function countStaffAward($staff){
+		$kira = Award::find()
+		->where(['awd_staff' => $staff, 'status' => 50])
 		->count();
 		return $kira;
 	}
@@ -70,10 +100,25 @@ class Stats
 		return $kira;
 	}
 	
+	public static function countStaffConsultation($staff){
+		$kira = Consultation::find()
+		->where(['csl_staff' => $staff, 'status' => 50])
+		->count();
+		return $kira;
+	}
+	
 	public static function countMyKtp(){
 		$kira = KnowledgeTransfer::find()
 		->joinWith('members')
 		->where(['rp_knowledge_transfer_member.staff_id' => Yii::$app->user->identity->staff->id, 'status' => 50])
+		->count();
+		return $kira;
+	}
+	
+	public static function countStaffKtp($staff){
+		$kira = KnowledgeTransfer::find()
+		->joinWith('members')
+		->where(['rp_knowledge_transfer_member.staff_id' => $staff, 'status' => 50])
 		->count();
 		return $kira;
 	}

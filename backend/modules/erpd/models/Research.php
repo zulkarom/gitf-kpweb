@@ -197,7 +197,10 @@ class Research extends \yii\db\ActiveRecord
 				if($researcher->staff_id == 0){
 					$string .= $researcher->ext_name . '*<br />';
 				}else{
-					$string .= $researcher->staff->user->fullname . '<br />';
+					if($researcher->staff){
+						$string .= $researcher->staff->user->fullname . '<br />';
+					}
+					
 				}
 				
 			}

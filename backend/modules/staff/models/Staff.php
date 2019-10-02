@@ -5,6 +5,7 @@ namespace backend\modules\staff\models;
 use Yii;
 use common\models\User;
 use yii\helpers\ArrayHelper;
+use backend\modules\erpd\models\Stats as ErpdStats;
 
 /**
  * This is the model class for table "staff".
@@ -41,8 +42,6 @@ use yii\helpers\ArrayHelper;
  * @property int $staff_department
  * @property int $publish
  * @property int $staff_active
- * @property string $user_token
- * @property int $user_token_at
  */
 class Staff extends \yii\db\ActiveRecord
 {
@@ -203,5 +202,30 @@ class Staff extends \yii\db\ActiveRecord
         }
 
     }
+	
+	public function getTotalPublication(){
+		return ErpdStats::countStaffPublication($this->id);
+	}
+	
+	public function getTotalResearch(){
+		return ErpdStats::countStaffResearch($this->id);
+	}
+	
+	public function getTotalMembership(){
+		return ErpdStats::countStaffMembership($this->id);
+	}
+	
+	public function getTotalAward(){
+		return ErpdStats::countStaffAward($this->id);
+	}
+	
+	public function getTotalConsultation(){
+		return ErpdStats::countStaffConsultation($this->id);
+	}
+	
+	public function getTotalKtp(){
+		return ErpdStats::countStaffKtp($this->id);
+	}
+	
 
 }

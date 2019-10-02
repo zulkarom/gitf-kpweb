@@ -5,12 +5,15 @@ namespace backend\modules\erpd\controllers;
 use Yii;
 use yii\db\Expression;
 use backend\modules\erpd\models\Research;
+use backend\modules\erpd\models\ResearchLecturerSearch;
 use backend\modules\erpd\models\ResearchAllSearch;
+use backend\modules\erpd\models\LecturerOverallSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
 use backend\modules\erpd\models\Publication;
 use backend\modules\erpd\models\PublicationAllSearch;
+use backend\modules\erpd\models\PublicationLecturerSearch;
 use backend\modules\erpd\models\Membership;
 use backend\modules\erpd\models\MembershipAllSearch;
 use backend\modules\erpd\models\Award;
@@ -19,6 +22,7 @@ use backend\modules\erpd\models\ConsultationAllSearch;
 use backend\modules\erpd\models\Consultation;
 use backend\modules\erpd\models\KnowledgeTransferAllSearch;
 use backend\modules\erpd\models\KnowledgeTransfer;
+use backend\modules\staff\models\Staff;
 
 /**
  * ResearchController implements the CRUD actions for Research model.
@@ -106,6 +110,50 @@ class AdminController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+	
+	protected function findStaff($id)
+    {
+        if (($model = Staff::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+	
+	public function actionLecturer()
+    {
+        $searchModel = new LecturerOverallSearch();
+		$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+		
+        return $this->render('lecturer', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+	
+	public function actionLecturerOverall($id)
+    {
+		$staff = $this->findStaff($id);
+		
+		
+        $searchModel = new ResearchLecturerSearch();
+		$searchModel->staff = $id;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+		
+		$searchPublication = new PublicationLecturerSearch();
+		$searchPublication->staff = $id;
+        $dataProviderPub = $searchPublication->search(Yii::$app->request->queryParams);
+
+        return $this->render('lecturer-overall', [
+			'staff' => $staff,
+			
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+			
+			'searchPublication' => $searchPublication,
+            'dataProviderPub' => $dataProviderPub,
+        ]);
     }
 	
 	public function actionPublication()
