@@ -81,19 +81,25 @@ class Menu
 				
 				['label' => 'Summary', 'icon' => 'pie-chart', 'url' => ['/erpd/admin']],
 				
-				['label' => 'Research', 'icon' => 'book', 'url' => ['/erpd/admin/research'],],
+				['label' => 'Research', 'icon' => 'book', 'url' => ['/erpd/admin/research'],'badge' => ErpdStats::countTotalResearch(), 
+			'badgeOptions' => ['class' => 'label pull-right bg-blue']],
 				
-				['label' => 'Publication', 'icon' => 'send', 'url' => ['/erpd/admin/publication'],],
+				['label' => 'Publication', 'icon' => 'send', 'url' => ['/erpd/admin/publication'], 'badge' => ErpdStats::countTotalPublication(), 
+			'badgeOptions' => ['class' => 'label pull-right bg-blue']],
 				
 				
 				
-				['label' => 'Membership', 'icon' => 'users', 'url' => ['/erpd/admin/membership'],],
+				['label' => 'Membership', 'icon' => 'users', 'url' => ['/erpd/admin/membership'], 'badge' => ErpdStats::countTotalMembership(), 
+			'badgeOptions' => ['class' => 'label pull-right bg-blue']],
 				
-				['label' => 'Award', 'icon' => 'trophy', 'url' => ['/erpd/admin/award'],],
+				['label' => 'Award', 'icon' => 'trophy', 'url' => ['/erpd/admin/award'], 'badge' => ErpdStats::countTotalAward(), 
+			'badgeOptions' => ['class' => 'label pull-right bg-blue']],
 				
-				['label' => 'Consultation', 'icon' => 'microphone', 'url' => ['/erpd/admin/consultation'],],
+				['label' => 'Consultation', 'icon' => 'microphone', 'url' => ['/erpd/admin/consultation'], 'badge' => ErpdStats::countTotalConsultation(), 
+			'badgeOptions' => ['class' => 'label pull-right bg-blue']],
 				
-				['label' => 'Knowledge Transfer', 'icon' => 'truck', 'url' => ['/erpd/admin/knowledge-transfer'],],
+				['label' => 'Knowledge Transfer', 'icon' => 'truck', 'url' => ['/erpd/admin/knowledge-transfer'], 'badge' => ErpdStats::countTotalKtp(), 
+			'badgeOptions' => ['class' => 'label pull-right bg-blue']],
 
 
                  ]
