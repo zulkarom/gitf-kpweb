@@ -53,7 +53,7 @@ class PublicationLecturerSearch extends Publication
             'query' => $query,
 			'sort'=> ['defaultOrder' => ['status'=>SORT_ASC, 'pub_year' =>SORT_DESC, 'pub_type' => SORT_ASC]],
 			'pagination' => [
-					'pageSize' => 50,
+					'pageSize' => 10,
 				],
 
         ]);

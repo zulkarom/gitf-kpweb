@@ -16,8 +16,10 @@ use backend\modules\erpd\models\PublicationAllSearch;
 use backend\modules\erpd\models\PublicationLecturerSearch;
 use backend\modules\erpd\models\Membership;
 use backend\modules\erpd\models\MembershipAllSearch;
+use backend\modules\erpd\models\MembershipLecturerSearch;
 use backend\modules\erpd\models\Award;
 use backend\modules\erpd\models\AwardAllSearch;
+use backend\modules\erpd\models\AwardLecturerSearch;
 use backend\modules\erpd\models\ConsultationAllSearch;
 use backend\modules\erpd\models\Consultation;
 use backend\modules\erpd\models\KnowledgeTransferAllSearch;
@@ -144,6 +146,14 @@ class AdminController extends Controller
 		$searchPublication = new PublicationLecturerSearch();
 		$searchPublication->staff = $id;
         $dataProviderPub = $searchPublication->search(Yii::$app->request->queryParams);
+		
+		$searchMembership = new MembershipLecturerSearch();
+		$searchMembership->staff = $id;
+        $dataProviderMsp = $searchMembership->search(Yii::$app->request->queryParams);
+		
+		$searchAward = new AwardLecturerSearch();
+		$searchAward->staff = $id;
+        $dataProviderAwd = $searchAward->search(Yii::$app->request->queryParams);
 
         return $this->render('lecturer-overall', [
 			'staff' => $staff,
@@ -153,6 +163,12 @@ class AdminController extends Controller
 			
 			'searchPublication' => $searchPublication,
             'dataProviderPub' => $dataProviderPub,
+			
+			'searchMembership' => $searchMembership,
+            'dataProviderMsp' => $dataProviderMsp,
+			
+			'searchAward' => $searchAward,
+            'dataProviderAwd' => $dataProviderAwd,
         ]);
     }
 	

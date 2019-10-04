@@ -2,10 +2,12 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
-use kartik\grid\GridView;
+use yii\grid\GridView;
 use yii\widgets\Pjax;
 use backend\modules\erpd\models\PubType;
 use yii\helpers\ArrayHelper;
+
+
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\modules\erpd\models\ResearchSearch */
@@ -60,7 +62,7 @@ $colums = [
 			],
 			[
 				'attribute' => 'res_progress',
-				'filter' => Html::activeDropDownList($searchModel, 'res_grant', $searchModel->progressArr(),['class'=> 'form-control','prompt' => 'All']),
+				'filter' => Html::activeDropDownList($searchModel, 'res_progress', $searchModel->progressArr(),['class'=> 'form-control','prompt' => 'All']),
 				'format' => 'html',
 				'value' => function($model){
 					return $model->showProgress();
@@ -95,10 +97,10 @@ Research
 </div>
 </div>
 <div class="box-body"> <div class="table-responsive"> 
-<?php Pjax::begin();?>
+<?php Pjax::begin(['id'=>'pjax_research']); ?>
 <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+        //'filterModel' => $searchModel,
 		'options' => [ 'style' => 'table-layout:fixed;' ],
 		
         'columns' => $colums,
@@ -116,11 +118,11 @@ Research
 </div>
 <div class="box-body">  
 
-<?php Pjax::begin();?>
+<?php Pjax::begin(['id'=>'pjax_publication']); ?>
  <?= GridView::widget([
         'dataProvider' => $dataProviderPub,
 		'options' => [ 'style' => 'table-layout:fixed;' ],
-        'filterModel' => $searchPublication,
+        //'filterModel' => $searchPublication,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 			[
@@ -178,3 +180,118 @@ Research
 </div>
 
 
+
+<div class="box">
+<div class="box-header">
+<div class="box-title">Membership</div>
+</div>
+<div class="box-body">    <?= GridView::widget([
+        'dataProvider' => $dataProviderMsp,
+       // 'filterModel' => $searchMembership,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+			[
+				'label' => '',
+				'format' => 'raw',
+				'contentOptions' => [ 'style' => 'width: 1%;' ],
+				'value' => function($model){
+					
+					return '<a href="'.Url::to(['/erpd/membership/download-file', 'attr' => 'msp', 'id' => $model->id]).'" target="_blank"><i class="fa fa-file-pdf-o"></i></a>';
+				}
+				
+			],
+			
+            'msp_body',
+			[
+				'attribute' => 'msp_level',
+				'filter' => Html::activeDropDownList($searchMembership, 'msp_level', $searchMembership->listLevel(),['class'=> 'form-control','prompt' => 'All']),
+				'value' => function($model){
+					return $model->levelName;
+				}
+			]
+            ,
+			
+			[
+				'attribute' => 'duration',
+				'filter' => Html::activeDropDownList($searchMembership, 'duration', $searchMembership->listYears(),['class'=> 'form-control','prompt' => 'All']),
+				'label' => 'Duration',
+				'format' => 'html',
+				'value' => function($model){
+					if($model->date_end=='0000-00-00'){
+						$end = 'No End';
+					}else{
+						$end = date('d/m/Y', strtotime($model->date_end));
+					}
+					return date('d/m/Y', strtotime($model->date_start)) . '<br />' . $end;
+				}
+				
+			],
+
+            ['class' => 'yii\grid\ActionColumn',
+                 'contentOptions' => ['style' => 'width: 8.7%'],
+                'template' => '{update}',
+                //'visible' => false,
+                'buttons'=>[
+                    'update'=>function ($url, $model) {
+						return Html::a('<span class="glyphicon glyphicon-search"></span> VIEW',['/erpd/admin/view-membership', 'id' => $model->id],['class'=>'btn btn-default btn-sm']);
+                        
+                    }
+                ],
+            
+            ],
+
+        ],
+    ]); ?></div>
+</div>
+
+
+
+<div class="box">
+<div class="box-header">
+<div class="box-title">Award</div>
+</div>
+<div class="box-body"><?= GridView::widget([
+        'dataProvider' => $dataProviderAwd,
+        //'filterModel' => $searchAward,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+			[
+				'label' => '',
+				'format' => 'raw',
+				'contentOptions' => [ 'style' => 'width: 1%;' ],
+				'value' => function($model){
+					return '<a href="'.Url::to(['/erpd/award/download-file', 'attr' => 'awd', 'id' => $model->id]).'" target="_blank"><i class="fa fa-file-pdf-o"></i></a>';
+				}
+				
+			],
+            'awd_name',
+			[
+				'attribute' => 'awd_level',
+				'filter' => Html::activeDropDownList($searchAward, 'awd_level', $searchAward->listLevel(),['class'=> 'form-control','prompt' => 'All']),
+				'value' => function($model){
+					return $model->levelName;
+				}
+			]
+            ,
+			[
+				'attribute' => 'awd_date',
+				'filter' => Html::activeDropDownList($searchAward, 'duration', $searchAward->listYears(),['class'=> 'form-control','prompt' => 'All']),
+				'format' => 'date',
+			],
+
+            ['class' => 'yii\grid\ActionColumn',
+                 'contentOptions' => ['style' => 'width: 8.7%'],
+                'template' => '{update}',
+                //'visible' => false,
+                'buttons'=>[
+                    'update'=>function ($url, $model) {
+						return Html::a('<span class="glyphicon glyphicon-search"></span> VIEW',['/erpd/admin/view-award', 'id' => $model->id],['class'=>'btn btn-default btn-sm']);
+                        
+                    }
+                ],
+            
+            ],
+
+        ],
+    ]); ?></div>
+</div>

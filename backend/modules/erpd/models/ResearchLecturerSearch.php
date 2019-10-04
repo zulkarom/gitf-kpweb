@@ -56,7 +56,7 @@ class ResearchLecturerSearch extends Research
             'query' => $query,
 			'sort'=> ['defaultOrder' => ['status'=>SORT_ASC, 'date_start' =>SORT_DESC]],
 			'pagination' => [
-					'pageSize' => 50,
+					'pageSize' => 10,
 				],
         ]);
 
@@ -71,7 +71,8 @@ class ResearchLecturerSearch extends Research
         // grid filtering conditions
         $query->andFilterWhere([
 			'rp_researcher.staff_id' => $this->staff,
-			'res_grant' => $this->res_grant
+			'res_grant' => $this->res_grant,
+			'res_progress' => $this->res_progress
 			
         ]);
 		

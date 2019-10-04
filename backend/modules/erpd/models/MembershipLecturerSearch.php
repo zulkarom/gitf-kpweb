@@ -5,13 +5,15 @@ namespace backend\modules\erpd\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\modules\erpd\models\Research;
+use backend\modules\erpd\models\Membership;
 
 /**
- * ResearchSearch represents the model behind the search form of `backend\modules\erpd\models\Research`.
+ * MembershipSearch represents the model behind the search form of `backend\modules\erpd\models\Membership`.
  */
-class ResearchAllSearch extends Research
+class MembershipLecturerSearch extends Membership
 {
+	public $staff;
+	public $staff_search;
 	public $duration;
     /**
      * @inheritdoc
@@ -19,11 +21,11 @@ class ResearchAllSearch extends Research
     public function rules()
     {
         return [
-            [['id', 'res_staff', 'res_progress', 'res_grant', 'reminder', 'status', 'duration'], 'integer'],
+            [['id', 'msp_staff', 'msp_level', 'duration', 'status'], 'integer'],
 			
-            [['res_title', 'date_start', 'date_end', 'res_grant_others', 'res_source', 'res_file', 'modified_at', 'created_at'], 'safe'],
+			[['staff_search'], 'string'],
 			
-            [['res_amount'], 'number'],
+            [['msp_body', 'msp_type', 'date_start', 'date_end', 'msp_file'], 'safe'],
         ];
     }
 
@@ -45,15 +47,16 @@ class ResearchAllSearch extends Research
      */
     public function search($params)
     {
-        $query = Research::find()->where(['>','status',10]);
-
+        $query = Membership::find()->where(['>','rp_membership.status',10]);
+		$query->joinWith(['staff.user']);
+		
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
 			'sort'=> ['defaultOrder' => ['status'=>SORT_ASC, 'date_start' =>SORT_DESC]],
 			'pagination' => [
-					'pageSize' => 50,
+					'pageSize' => 100,
 				],
         ]);
 
@@ -67,23 +70,36 @@ class ResearchAllSearch extends Research
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'status' => $this->status,
-			'res_grant' => $this->res_grant,
-			'res_progress' => $this->res_progress
-			
+            'rp_membership.status' => $this->status,
+			'msp_level' => $this->msp_level,
+			'msp_staff' => $this->staff
         ]);
-		
-		 $query->andFilterWhere(['<=', 'YEAR(date_start)', $this->duration]);
-		 $query->andFilterWhere(['>=', 'YEAR(date_end)', $this->duration]);
 
-        $query->andFilterWhere(['like', 'res_title', $this->res_title]);
+        $query->andFilterWhere(['like', 'msp_body', $this->msp_body])
+            ->andFilterWhere(['like', 'msp_type', $this->msp_type])
+			->andFilterWhere(['like', 'user.fullname', $this->staff_search])
+			;
 		
+		
+		if($this->duration){
+			$query->andFilterWhere(['<=', 'YEAR(date_start)', $this->duration]);
+			$query->andFilterWhere(['or', 
+				['>=', 'YEAR(date_end)', $this->duration],
+				['date_end' => '0000-00-00']
+			]);
+		}
+		
+		 
+			
 		$dataProvider->sort->attributes['duration'] = [
         'asc' => ['date_start' => SORT_ASC],
         'desc' => ['date_start' => SORT_DESC],
         ]; 
-
-
+		
+		$dataProvider->sort->attributes['staff_search'] = [
+        'asc' => ['user.fullname' => SORT_ASC],
+        'desc' => ['user.fullname' => SORT_DESC],
+        ]; 
 
         return $dataProvider;
     }

@@ -102,7 +102,7 @@ $colums = [
 			],
 			[
 				'attribute' => 'res_progress',
-				'filter' => Html::activeDropDownList($searchModel, 'res_grant', $searchModel->progressArr(),['class'=> 'form-control','prompt' => 'All']),
+				'filter' => Html::activeDropDownList($searchModel, 'res_progress', $searchModel->progressArr(),['class'=> 'form-control','prompt' => 'All']),
 				'format' => 'html',
 				'value' => function($model){
 					return $model->showProgress();

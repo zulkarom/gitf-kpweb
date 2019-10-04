@@ -5,25 +5,28 @@ namespace backend\modules\erpd\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\modules\erpd\models\Research;
+use backend\modules\erpd\models\Award;
 
 /**
- * ResearchSearch represents the model behind the search form of `backend\modules\erpd\models\Research`.
+ * AwardSearch represents the model behind the search form of `backend\modules\erpd\models\Award`.
  */
-class ResearchAllSearch extends Research
+class AwardLecturerSearch extends Award
 {
+	public $staff;
 	public $duration;
+	public $staff_search;
+	
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'res_staff', 'res_progress', 'res_grant', 'reminder', 'status', 'duration'], 'integer'],
+            [['id', 'awd_staff', 'awd_level', 'duration', 'status'], 'integer'],
 			
-            [['res_title', 'date_start', 'date_end', 'res_grant_others', 'res_source', 'res_file', 'modified_at', 'created_at'], 'safe'],
+			[['staff_search'], 'string'],
 			
-            [['res_amount'], 'number'],
+            [['awd_name', 'awd_type', 'awd_by', 'awd_date', 'awd_file'], 'safe'],
         ];
     }
 
@@ -45,15 +48,18 @@ class ResearchAllSearch extends Research
      */
     public function search($params)
     {
-        $query = Research::find()->where(['>','status',10]);
+		
+		
+		 $query = Award::find()->where(['>','rp_award.status',10]);
+		$query->joinWith(['staff.user']);
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-			'sort'=> ['defaultOrder' => ['status'=>SORT_ASC, 'date_start' =>SORT_DESC]],
+			'sort'=> ['defaultOrder' => ['status'=>SORT_ASC, 'awd_date' =>SORT_DESC]],
 			'pagination' => [
-					'pageSize' => 50,
+					'pageSize' => 100,
 				],
         ]);
 
@@ -67,23 +73,25 @@ class ResearchAllSearch extends Research
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'status' => $this->status,
-			'res_grant' => $this->res_grant,
-			'res_progress' => $this->res_progress
-			
+            'awd_level' => $this->awd_level,
+			'awd_staff' => $this->staff,
+			'YEAR(awd_date)' => $this->duration,
+			'rp_award.status' => $this->status
         ]);
-		
-		 $query->andFilterWhere(['<=', 'YEAR(date_start)', $this->duration]);
-		 $query->andFilterWhere(['>=', 'YEAR(date_end)', $this->duration]);
 
-        $query->andFilterWhere(['like', 'res_title', $this->res_title]);
+        $query->andFilterWhere(['like', 'awd_name', $this->awd_name])
+		->andFilterWhere(['like', 'user.fullname', $this->staff_search]);
 		
 		$dataProvider->sort->attributes['duration'] = [
-        'asc' => ['date_start' => SORT_ASC],
-        'desc' => ['date_start' => SORT_DESC],
+        'asc' => ['awd_date' => SORT_ASC],
+        'desc' => ['awd_date' => SORT_DESC],
         ]; 
-
-
+		
+		$dataProvider->sort->attributes['staff_search'] = [
+        'asc' => ['user.fullname' => SORT_ASC],
+        'desc' => ['user.fullname' => SORT_DESC],
+        ]; 
+		
 
         return $dataProvider;
     }
