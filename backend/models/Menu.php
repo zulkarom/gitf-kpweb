@@ -74,6 +74,7 @@ class Menu
 	public static function adminErpd(){
 		$erpd_admin = [
                         'label' => 'e-RPD Admin',
+						'visible' => Yii::$app->user->can('erpd-manager'),
                         'icon' => 'list-ul',
                         'url' => '#',
                         'items' => [
@@ -191,6 +192,7 @@ class Menu
 	public static function staff(){
 		$staff = [
                         'label' => 'Staff Menu',
+						'visible' => Yii::$app->user->can('staff-management'),
                         'icon' => 'list-ul',
                         'url' => '#',
                         'items' => [
