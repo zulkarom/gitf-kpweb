@@ -63,7 +63,7 @@ if($model->id){
 
 
 <div class="row">
-<div class="col-md-3"><?= $form->field($model, 'is_academic')->dropDownList([1=>'Academic', 2 => 'Administrative'], ['prompt' => 'Please Select' ]
+<div class="col-md-3"><?= $form->field($model, 'is_academic')->dropDownList([1=>'Academic', 0 => 'Administrative'], ['prompt' => 'Please Select' ]
     ) ?></div>
 
 <div class="col-md-5"><?= $form->field($model, 'position_id')->dropDownList(
