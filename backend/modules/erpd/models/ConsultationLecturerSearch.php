@@ -5,27 +5,27 @@ namespace backend\modules\erpd\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\modules\erpd\models\Membership;
+use backend\modules\erpd\models\Consultation;
 
 /**
- * MembershipSearch represents the model behind the search form of `backend\modules\erpd\models\Membership`.
+ * ConsultationSearch represents the model behind the search form of `backend\modules\erpd\models\Consultation`.
  */
-class MembershipLecturerSearch extends Membership
+class ConsultationLecturerSearch extends Consultation
 {
 	public $staff;
-	public $staff_search;
 	public $duration;
+	public $staff_search;
+	
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'msp_staff', 'msp_level', 'duration', 'status'], 'integer'],
+            [['csl_level', 'duration', 'status'], 'integer'],
 			
-			[['staff_search'], 'string'],
+			[['staff_search', 'csl_title'], 'string'],
 			
-            [['msp_body', 'msp_type', 'date_start', 'date_end', 'msp_file'], 'safe'],
         ];
     }
 
@@ -47,9 +47,10 @@ class MembershipLecturerSearch extends Membership
      */
     public function search($params)
     {
-        $query = Membership::find()->where(['rp_membership.status' => 50]);
-		$query->joinWith(['staff.user']);
 		
+		 $query = Consultation::find()->where(['rp_consultation.status' => 50]);
+		$query->joinWith(['staff.user']);
+
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -70,26 +71,16 @@ class MembershipLecturerSearch extends Membership
 
         // grid filtering conditions
         $query->andFilterWhere([
-			'msp_level' => $this->msp_level,
-			'msp_staff' => $this->staff
+			'csl_staff' => $this->staff,
+            'csl_level' => $this->csl_level,
         ]);
 
-        $query->andFilterWhere(['like', 'msp_body', $this->msp_body])
-            ->andFilterWhere(['like', 'msp_type', $this->msp_type])
-			->andFilterWhere(['like', 'user.fullname', $this->staff_search])
-			;
+        $query->andFilterWhere(['like', 'csl_title', $this->csl_title])
+		->andFilterWhere(['like', 'user.fullname', $this->staff_search]);
 		
+		$query->andFilterWhere(['<=', 'YEAR(date_start)', $this->duration]);
+		 $query->andFilterWhere(['>=', 'YEAR(date_end)', $this->duration]);
 		
-		if($this->duration){
-			$query->andFilterWhere(['<=', 'YEAR(date_start)', $this->duration]);
-			$query->andFilterWhere(['or', 
-				['>=', 'YEAR(date_end)', $this->duration],
-				['date_end' => '0000-00-00']
-			]);
-		}
-		
-		 
-			
 		$dataProvider->sort->attributes['duration'] = [
         'asc' => ['date_start' => SORT_ASC],
         'desc' => ['date_start' => SORT_DESC],

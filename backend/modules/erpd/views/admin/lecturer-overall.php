@@ -295,3 +295,116 @@ Research
         ],
     ]); ?></div>
 </div>
+
+
+<div class="box">
+<div class="box-header">
+<div class="box-title">Consultation</div>
+</div>
+<div class="box-body"> <?= GridView::widget([
+        'dataProvider' => $dataProviderCsl,
+        //'filterModel' => $searchConsultation,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+			[
+				'label' => '',
+				'format' => 'raw',
+				'contentOptions' => [ 'style' => 'width: 1%;' ],
+				'value' => function($model){
+					
+					return '<a href="'.Url::to(['/erpd/consultation/download-file', 'attr' => 'csl', 'id' => $model->id]).'" target="_blank"><i class="fa fa-file-pdf-o"></i></a>';
+				}
+				
+			],
+            'csl_title',
+			
+			[
+				'attribute' => 'csl_level',
+				'filter' => Html::activeDropDownList($searchConsultation, 'csl_level', $searchConsultation->listLevel(),['class'=> 'form-control','prompt' => 'All']),
+				'value' => function($model){
+					return $model->levelName;
+				}
+			]
+            ,
+            [
+				'attribute' => 'duration',
+				'filter' => Html::activeDropDownList($searchConsultation, 'duration', $searchConsultation->listYears(),['class'=> 'form-control','prompt' => 'All']),
+				'label' => 'Duration',
+				'format' => 'html',
+				'value' => function($model){
+					return date('d/m/Y', strtotime($model->date_start)) . '<br />' . date('d/m/Y', strtotime($model->date_end));
+				}
+				
+			],
+
+            ['class' => 'yii\grid\ActionColumn',
+                 'contentOptions' => ['style' => 'width: 8.7%'],
+                'template' => '{update}',
+                //'visible' => false,
+                'buttons'=>[
+                    'update'=>function ($url, $model) {
+						return Html::a('<span class="glyphicon glyphicon-search"></span> VIEW',['/erpd/admin/view-consultation', 'id' => $model->id],['class'=>'btn btn-default btn-sm']);
+                        
+                    }
+                ],
+            
+            ],
+
+        ],
+    ]); ?></div>
+</div>
+
+
+ <div class="box">
+<div class="box-header">
+<div class="box-title">Knowledge Transfer Program</div>
+</div>
+<div class="box-body"><?= GridView::widget([
+        'dataProvider' => $dataProviderKtp,
+       // 'filterModel' => $searchKnowledgeTransfer,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+			[
+				'label' => '',
+				'format' => 'raw',
+				'contentOptions' => [ 'style' => 'width: 1%;' ],
+				'value' => function($model){
+					
+					return '<a href="'.Url::to(['/erpd/knowledge-transfer/download-file', 'attr' => 'ktp', 'id' => $model->id]).'" target="_blank"><i class="fa fa-file-pdf-o"></i></a>';
+				}
+				
+			],
+            'ktp_title',
+			'ktp_community',
+			
+			
+			[
+				'attribute' => 'duration',
+				'filter' => Html::activeDropDownList($searchKnowledgeTransfer, 'duration', $searchKnowledgeTransfer->listYears(),['class'=> 'form-control','prompt' => 'All']),
+				'label' => 'Duration',
+				'format' => 'html',
+				'value' => function($model){
+					return date('d/m/Y', strtotime($model->date_start)) . '<br />' . date('d/m/Y', strtotime($model->date_end));
+				}
+				
+			]
+
+            ,
+            ['class' => 'yii\grid\ActionColumn',
+                 'contentOptions' => ['style' => 'width: 8.7%'],
+                'template' => '{update}',
+                //'visible' => false,
+                'buttons'=>[
+                    'update'=>function ($url, $model) {
+						return Html::a('<span class="glyphicon glyphicon-search"></span> VIEW',['/erpd/admin/view-knowledge-transfer', 'id' => $model->id],['class'=>'btn btn-default btn-sm']);
+                        
+                    }
+                ],
+            
+            ],
+
+        ],
+    ]); ?></div>
+</div>
+
+</div>

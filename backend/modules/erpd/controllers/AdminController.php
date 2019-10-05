@@ -21,8 +21,10 @@ use backend\modules\erpd\models\Award;
 use backend\modules\erpd\models\AwardAllSearch;
 use backend\modules\erpd\models\AwardLecturerSearch;
 use backend\modules\erpd\models\ConsultationAllSearch;
+use backend\modules\erpd\models\ConsultationLecturerSearch;
 use backend\modules\erpd\models\Consultation;
 use backend\modules\erpd\models\KnowledgeTransferAllSearch;
+use backend\modules\erpd\models\KnowledgeTransferLecturerSearch;
 use backend\modules\erpd\models\KnowledgeTransfer;
 use backend\modules\staff\models\Staff;
 
@@ -154,6 +156,14 @@ class AdminController extends Controller
 		$searchAward = new AwardLecturerSearch();
 		$searchAward->staff = $id;
         $dataProviderAwd = $searchAward->search(Yii::$app->request->queryParams);
+		
+		$searchConsultation = new ConsultationLecturerSearch();
+		$searchConsultation->staff = $id;
+        $dataProviderCsl = $searchConsultation->search(Yii::$app->request->queryParams);
+		
+		$searchKnowledgeTransfer = new KnowledgeTransferLecturerSearch();
+		$searchKnowledgeTransfer->staff = $id;
+        $dataProviderKtp = $searchKnowledgeTransfer->search(Yii::$app->request->queryParams);
 
         return $this->render('lecturer-overall', [
 			'staff' => $staff,
@@ -169,6 +179,12 @@ class AdminController extends Controller
 			
 			'searchAward' => $searchAward,
             'dataProviderAwd' => $dataProviderAwd,
+			
+			'searchConsultation' => $searchConsultation,
+            'dataProviderCsl' => $dataProviderCsl,
+			
+			'searchKnowledgeTransfer' => $searchKnowledgeTransfer,
+            'dataProviderKtp' => $dataProviderKtp,
         ]);
     }
 	

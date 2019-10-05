@@ -50,7 +50,7 @@ class AwardLecturerSearch extends Award
     {
 		
 		
-		 $query = Award::find()->where(['>','rp_award.status',10]);
+		 $query = Award::find()->where(['rp_award.status' => 50]);
 		$query->joinWith(['staff.user']);
 
         // add conditions that should always apply here
@@ -59,7 +59,7 @@ class AwardLecturerSearch extends Award
             'query' => $query,
 			'sort'=> ['defaultOrder' => ['status'=>SORT_ASC, 'awd_date' =>SORT_DESC]],
 			'pagination' => [
-					'pageSize' => 100,
+					'pageSize' => 10,
 				],
         ]);
 
@@ -76,7 +76,6 @@ class AwardLecturerSearch extends Award
             'awd_level' => $this->awd_level,
 			'awd_staff' => $this->staff,
 			'YEAR(awd_date)' => $this->duration,
-			'rp_award.status' => $this->status
         ]);
 
         $query->andFilterWhere(['like', 'awd_name', $this->awd_name])

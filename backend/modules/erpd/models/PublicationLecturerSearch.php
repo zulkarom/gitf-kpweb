@@ -71,7 +71,6 @@ class PublicationLecturerSearch extends Publication
             'rp_pub_tag.staff_id' => $this->staff,
 			'pub_type' => $this->pub_type,
             'pub_year' => $this->pub_year,
-			'status' => $this->status,
         ]);
 
         $query->andFilterWhere(['like', 'pub_title', $this->pub_title]);
