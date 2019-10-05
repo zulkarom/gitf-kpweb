@@ -113,6 +113,8 @@ use backend\models\Menu;
 							
 							['label' => 'Route List', 'icon' => 'user', 'url' => ['/admin/route'],],
 							
+							['label' => 'Login As', 'icon' => 'lock', 'url' => ['/user-admin/login-as'],],
+							
 	
 							
 

@@ -219,11 +219,13 @@ class Menu
 			'items' => [
 				
 				['label' => 'Update Profile', 'icon' => 'pencil', 'url' => ['/staff/profile'],],
+				
+				['label' => 'My Education', 'icon' => 'mortar-board', 'url' => ['/staff/profile/education'],],
 			
 				['label' => 'Change Password', 'icon' => 'lock', 'url' => ['/user-setting/change-password'],],
 				
 			
-				['label' => 'My Education', 'icon' => 'mortar-board', 'url' => ['/staff/profile/education'],],
+				
 				
 				
 				['label' => 'Log Out', 'icon' => 'arrow-left', 'url' => ['/site/logout'], 'template' => '<a href="{url}" data-method="post">{icon} {label}</a>']

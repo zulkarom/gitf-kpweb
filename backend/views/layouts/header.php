@@ -25,8 +25,15 @@ use yii\helpers\Url;
 
 			
 			<img src="<?= Url::to(['/staff/profile/image']) ?>" width="20" height="20" class="img-circle" alt="..." />  &nbsp;
+			
+			<?php 
+			$user = Yii::$app->user->identity;
+			$title = $user->staff->staff_title;
+			$name = $title .' '. $user->fullname;
+			
+			?>
              
-              <span class="hidden-xs"><?=Yii::$app->user->identity->fullname?></span>
+              <span class="hidden-xs"><?=$name?></span>
 			      &nbsp;&nbsp;&nbsp;<i class="fa fa-chevron-down"></i>
             </a>
             <ul class="dropdown-menu">
@@ -38,15 +45,26 @@ use yii\helpers\Url;
 				<img src="<?= Url::to(['/staff/profile/image']) ?>" width="160" class="img-circle" alt="...">
 
                 <p>
-                  <?=Yii::$app->user->identity->fullname?>                 
+                  <?=$name?>                 
                 </p>
               </li>
               <!-- Menu Body -->
               <li class="user-body">
                 <div class="row">
-                  <div class="col-xs-12 text-center">
-                    <a href="<?=Url::to(['/staff/profile'])?>" class="btn btn-default btn-flat"><span class="glyphicon glyphicon-user"></span> View My Profile</a>
+				<?php 
+				$session = Yii::$app->session;
+				$col = $session->has('or-usr') ? 6 : 12;
+				?>
+                  <div class="col-xs-<?=$col?> text-center">
+                    <a href="<?=Url::to(['/staff/profile'])?>" class="btn btn-default"><span class="glyphicon glyphicon-user"></span> View Profile</a>
                   </div>
+				  <?php 
+				  if ($session->has('or-usr')){ ?>
+					<div class="col-xs-6 text-center">
+                    <a href="<?=Url::to(['/user-setting/return-role'])?>" class="btn btn-default"><span class="glyphicon glyphicon-cog"></span> Return Role</a>
+                  </div>
+				  <?php } ?>
+				
              
              
                 </div>

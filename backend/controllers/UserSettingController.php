@@ -7,6 +7,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
 use common\models\ChangePasswordForm;
+use common\models\User;
 
 /**
  * UsersController implements the CRUD actions for Users model.
@@ -48,6 +49,23 @@ class UserSettingController extends Controller
 		return $this->render('change-password', [
 			'model' => $model,
 		]);
+	}
+	
+	public function actionReturnRole()
+	{
+		$session = Yii::$app->session;
+		if ($session->has('or-usr')){
+			$id = $session->get('or-usr');
+			$user = User::findIdentity($id);
+				if(Yii::$app->user->login($user)){
+					$session->remove('or-usr');
+					return $this->redirect(['site/index']);
+				}
+			
+		}else{
+			throw new NotFoundHttpException('The requested page does not exist..');
+		}
+		
 	}
 
 }

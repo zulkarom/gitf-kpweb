@@ -95,7 +95,7 @@ $fieldOptions2 = [
 
 <?php ActiveForm::end(); ?>
 
-       <?= Html::a('I forgot my password',
+       <?= Html::a('Recover My Password',
                            ['/user/recovery/request'],['tabindex' => '5']
                                 ) ?>
 		

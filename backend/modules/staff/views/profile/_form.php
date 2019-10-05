@@ -88,7 +88,7 @@ if($model->id){
 <div class="row">
 <div class="col-md-6">
 
-<?= $form->field($model, 'staff_edu', ['template' => '{label}{input}<i style="font-size:small">*e.g. PhD (Salford, Manchester, UK), MSc, BSc (UPM)</i>{error}'])->textInput(['maxlength' => true]) ?>
+<?= $form->field($model, 'staff_edu', ['template' => '{label}{input}<i style="font-size:small">*e.g. PhD (UK), MSc (UM), BSc (UPM)</i>{error}'])->textInput(['maxlength' => true]) ?>
 
 </div>
 
