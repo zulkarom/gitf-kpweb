@@ -87,7 +87,7 @@ echo ChartJs::widget([
     ],
     'data' => [
         'radius' =>  "90%",
-        'labels' => ['Administrative', 'Academic'], // Your labels
+        'labels' => ['Academic', 'Administrative'], // Your labels
         'datasets' => [
             [
                 'data' => $data, // Your dataset
