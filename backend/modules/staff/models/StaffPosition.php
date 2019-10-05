@@ -50,7 +50,7 @@ class StaffPosition extends \yii\db\ActiveRecord
 	
 	public static function positionList(){
 		$array = [];
-		$list = self::find()->where(['>', 'id', 0])->all();
+		$list = self::find()->where(['>', 'id', 0])->orderBy('position_order ASC')->all();
 		foreach($list as $row){
 			$array[$row->id] = $row->position_name . ' ' . $row->position_gred;
 		}
