@@ -77,6 +77,16 @@ echo ChartJs::widget([
         'labels' => $year,
 		'yAxisID' => 0,
         'datasets' => [
+		[
+                'label' => "Research",
+                'backgroundColor' => "#00c0ef",
+                'borderColor' => "rgba(179,181,198,1)",
+                'pointBackgroundColor' => "rgba(179,181,198,1)",
+                'pointBorderColor' => "#fff",
+                'pointHoverBackgroundColor' => "#fff",
+                'pointHoverBorderColor' => "rgba(179,181,198,1)",
+                'data' => $res_data
+            ],
             [
                 'label' => "Publication",
                 'backgroundColor' => '#00a65a',
@@ -88,16 +98,7 @@ echo ChartJs::widget([
                 'data' => $data
             ],
 			
-			[
-                'label' => "Research",
-                'backgroundColor' => "#00c0ef",
-                'borderColor' => "rgba(179,181,198,1)",
-                'pointBackgroundColor' => "rgba(179,181,198,1)",
-                'pointBorderColor' => "#fff",
-                'pointHoverBackgroundColor' => "#fff",
-                'pointHoverBorderColor' => "rgba(179,181,198,1)",
-                'data' => $res_data
-            ],
+			
         ]
     ]
 ]);
