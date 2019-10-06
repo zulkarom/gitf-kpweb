@@ -148,6 +148,7 @@ class StaffController extends Controller
 				$user->password_hash = \Yii::$app->security->generatePasswordHash($random);
 				
 				$user->status = 10;
+				$user->username = $model->staff_no;
 				$user->confirmed_at = time();
 				$user->created_at = time();
 				$user->updated_at = time();
