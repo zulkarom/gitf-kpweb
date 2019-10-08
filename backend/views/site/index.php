@@ -5,14 +5,14 @@ use dosamigos\chartjs\ChartJs;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use backend\modules\erpd\models\Stats as Erpd;
-
+$dirAsset = Yii::$app->assetManager->getPublishedUrl('@backend/views/myasset');
 /* @var $this yii\web\View */
 
 $this->title = 'Dashboard';
 
 ?>
 <div class="row">
-<div class="col-md-12"><div class="form-group"><img src="images/umktag.png" width="100%" /></div></div>
+<div class="col-md-12"><div class="form-group"><img src="<?=$dirAsset?>/img/umktag.png" width="100%" /></div></div>
 </div>
 
 <div class="box">
