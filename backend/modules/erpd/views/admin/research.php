@@ -149,12 +149,9 @@ $colums = [
 		->getAlignment()->setWrapText(true);
 	},
 	'exportConfig' => [
-    \kartik\export\ExportMenu::FORMAT_PDF => [
-        'pdfConfig' => [
-            'orientation' => 'L',
-        ],
+        ExportMenu::FORMAT_PDF => false,
+		ExportMenu::FORMAT_EXCEL_X => false,
     ],
-],
 ]);?></div>
 
   <div class="box">
@@ -162,6 +159,7 @@ $colums = [
 <div class="box-body">  <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+		'export' => false,
 		'options' => [ 'style' => 'table-layout:fixed;' ],
 		
         'columns' => $colums,

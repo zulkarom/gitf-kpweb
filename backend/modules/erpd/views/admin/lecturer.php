@@ -14,22 +14,9 @@ use kartik\export\ExportMenu;
 $this->title = 'Lecturers';
 $this->params['breadcrumbs'][] = $this->title;
 
-$exportColumns = [
-];
-?>
-<div class="publication-index">
+$columns = [
 
-
- <div class="box">
-<div class="box-header"></div>
-<div class="box-body">   
-
-<?= GridView::widget([
-        'dataProvider' => $dataProvider,
-		'options' => [ 'style' => 'table-layout:fixed;' ],
-        //'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+ ['class' => 'yii\grid\SerialColumn'],
 			[
 				'attribute' => 'user.fullname',
 				'label' => 'Name',
@@ -97,8 +84,33 @@ $exportColumns = [
                 ],
             
             ],
+];
+?>
+<div class="publication-index">
 
-        ],
+<div class="form-group"><?=ExportMenu::widget([
+    'dataProvider' => $dataProvider,
+    'columns' => $columns,
+	'filename' => 'LECTURER_DATA_' . date('Y-m-d'),
+	'onRenderSheet'=>function($sheet, $grid){
+		$sheet->getStyle('A2:'.$sheet->getHighestColumn().$sheet->getHighestRow())
+		->getAlignment()->setWrapText(true);
+		
+	},
+	'exportConfig' => [
+        ExportMenu::FORMAT_PDF => false,
+		ExportMenu::FORMAT_EXCEL_X => false,
+    ],
+]);?></div>
+ <div class="box">
+<div class="box-header"></div>
+<div class="box-body">   
+
+<?= GridView::widget([
+        'dataProvider' => $dataProvider,
+		'options' => [ 'style' => 'table-layout:fixed;' ],
+        //'filterModel' => $searchModel,
+        'columns' => $columns,
     ]); ?></div>
 </div>
 

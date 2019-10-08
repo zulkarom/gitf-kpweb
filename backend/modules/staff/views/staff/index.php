@@ -109,24 +109,23 @@ $exportColumns = [
 <b>EXPORT DATA</b>  <?=ExportMenu::widget([
     'dataProvider' => $dataProvider,
     'columns' => $exportColumns,
+	'exportConfig' => [
+        ExportMenu::FORMAT_PDF => false,
+		ExportMenu::FORMAT_EXCEL_X => false,
+    ],
 	'filename' => 'STAFF_DATA_' . date('Y-m-d'),
 	'onRenderSheet'=>function($sheet, $grid){
 		$sheet->getStyle('A2:'.$sheet->getHighestColumn().$sheet->getHighestRow())
 		->getAlignment()->setWrapText(true);
 	},
-	'exportConfig' => [
-    \kartik\export\ExportMenu::FORMAT_PDF => [
-        'pdfConfig' => [
-            'orientation' => 'L',
-        ],
-    ],
-],
+
 ]);?> </div>
 
     <div class="box">
 <div class="box-header"></div>
 <div class="box-body"><?= GridView::widget([
         'dataProvider' => $dataProvider,
+		'export' => false,
         //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],

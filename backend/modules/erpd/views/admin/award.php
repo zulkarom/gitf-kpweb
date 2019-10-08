@@ -64,12 +64,9 @@ $exportColumns = [
 		
 	},
 	'exportConfig' => [
-    \kartik\export\ExportMenu::FORMAT_PDF => [
-        'pdfConfig' => [
-            'orientation' => 'L',
-        ],
+        ExportMenu::FORMAT_PDF => false,
+		ExportMenu::FORMAT_EXCEL_X => false,
     ],
-],
 ]);?></div>
 
     <div class="box">
@@ -77,6 +74,7 @@ $exportColumns = [
 <div class="box-body"><?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+		'export' => false,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 			[
