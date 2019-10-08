@@ -227,5 +227,17 @@ class Staff extends \yii\db\ActiveRecord
 		return ErpdStats::countStaffKtp($this->id);
 	}
 	
+	public function getListType(){
+		return [
+			0 => 'Administrative',
+			1 => 'Academic'
+		];
+	}
+	
+	public function getTypeName(){
+		$arr = $this->listType;
+		return $arr[$this->is_academic];
+	}
+	
 
 }

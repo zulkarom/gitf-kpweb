@@ -11,9 +11,20 @@ use Yii;
 class Stats
 {
 	public static function countMyResearch(){
+		
 		$kira = Research::find()
 		->joinWith('researchers')
 		->where(['staff_id' => Yii::$app->user->identity->staff->id, 'status' => 50])
+		->count();
+		return $kira;
+	}
+	
+	public static function countMyUnVerifiedResearch(){
+		
+		$kira = Research::find()
+		->joinWith('researchers')
+		->where(['staff_id' => Yii::$app->user->identity->staff->id])
+		->andWhere(['<', 'status', 50])
 		->count();
 		return $kira;
 	}
@@ -50,6 +61,15 @@ class Stats
 		return $kira;
 	}
 	
+	public static function countMyUnverifiedPublication(){
+		$kira = Publication::find()
+		->joinWith('pubTags')
+		->where(['rp_pub_tag.staff_id' => Yii::$app->user->identity->staff->id])
+		->andWhere(['<', 'status' , 50])
+		->count();
+		return $kira;
+	}
+	
 	public static function countStaffPublication($staff){
 		$kira = Publication::find()
 		->joinWith('pubTags')
@@ -72,6 +92,14 @@ class Stats
 		return $kira;
 	}
 	
+	public static function countMyUnverifiedMembership(){
+		$kira = Membership::find()
+		->where(['msp_staff' => Yii::$app->user->identity->staff->id])
+		->andWhere(['<', 'status' , 50])
+		->count();
+		return $kira;
+	}
+	
 	public static function countStaffMembership($staff){
 		$kira = Membership::find()
 		->where(['msp_staff' => $staff, 'status' => 50])
@@ -82,6 +110,14 @@ class Stats
 	public static function countMyAward(){
 		$kira = Award::find()
 		->where(['awd_staff' => Yii::$app->user->identity->staff->id, 'status' => 50])
+		->count();
+		return $kira;
+	}
+	
+	public static function countMyUnverifiedAward(){
+		$kira = Award::find()
+		->where(['awd_staff' => Yii::$app->user->identity->staff->id])
+		->andWhere(['<', 'status' , 50])
 		->count();
 		return $kira;
 	}
@@ -100,6 +136,14 @@ class Stats
 		return $kira;
 	}
 	
+	public static function countMyUnverifiedConsultation(){
+		$kira = Consultation::find()
+		->where(['csl_staff' => Yii::$app->user->identity->staff->id])
+		->andWhere(['<', 'status' , 50])
+		->count();
+		return $kira;
+	}
+	
 	public static function countStaffConsultation($staff){
 		$kira = Consultation::find()
 		->where(['csl_staff' => $staff, 'status' => 50])
@@ -111,6 +155,15 @@ class Stats
 		$kira = KnowledgeTransfer::find()
 		->joinWith('members')
 		->where(['rp_knowledge_transfer_member.staff_id' => Yii::$app->user->identity->staff->id, 'status' => 50])
+		->count();
+		return $kira;
+	}
+	
+	public static function countMyUnverifiedKtp(){
+		$kira = KnowledgeTransfer::find()
+		->joinWith('members')
+		->where(['rp_knowledge_transfer_member.staff_id' => Yii::$app->user->identity->staff->id])
+		->andWhere(['<', 'status' , 50])
 		->count();
 		return $kira;
 	}

@@ -27,7 +27,7 @@ $columns[] = [
     'template' => '{view}',
 	'buttons'=>[
 					'view'=>function ($url, $model) {
-						return Html::a('<span class="glyphicon glyphicon-pencil"></span> Update Role Assignment',$url, ['class'=>'btn btn-primary btn-sm']);
+						return Html::a('<span class="glyphicon glyphicon-pencil"></span> Assign Role',$url, ['class'=>'btn btn-primary btn-sm']);
 						
 						
 					

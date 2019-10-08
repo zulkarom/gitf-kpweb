@@ -10,7 +10,6 @@ use common\models\Product;
 use backend\models\Customer;
 use backend\modules\staff\models\Staff;
 use common\models\User;
-use backend\modules\erpd\models\Stats as Dashboard;
 use common\models\UserToken;
 
 /**
@@ -66,8 +65,11 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        return $this->render('index', [
+			'user' => User::findOne(Yii::$app->user->identity->id),
+		]);
     }
+	
 
     /**
      * Login action.
