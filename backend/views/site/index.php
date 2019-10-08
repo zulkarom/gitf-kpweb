@@ -96,7 +96,7 @@ $this->title = 'Dashboard';
 </div>
 </div>
 
-
+<?php if($user->staff->is_academic == 1) {?>
 <div class="box">
 <div class="box-header">
 <h3 class="box-title">e-RPD</h3>
@@ -229,3 +229,5 @@ echo ChartJs::widget([
 
 </div>
 </div>
+
+<?php } ?>
