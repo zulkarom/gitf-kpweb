@@ -54,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'pub_title',
                 'format' => 'html',
 				'value' => function($model){
-					return $model->showApaStyle();
+					return $model->showApaStyle() . ' <i class="fa fa-tags"></i> by ' . $model->staff->user->fullname;
 				},
                 'contentOptions' => [ 'style' => 'width: 50%;' ],
             ],

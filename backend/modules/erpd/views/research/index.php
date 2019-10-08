@@ -40,7 +40,10 @@ $this->params['breadcrumbs'][] = $this->title;
 			[
                 'attribute' => 'res_title',
 				'label' => 'Title',
-                'format' => 'ntext',
+                'format' => 'html',
+				'value' => function($model){
+					return $model->res_title . ' <i class="fa fa-tags"></i> by ' . $model->staff->user->fullname;
+				},
                 'contentOptions' => [ 'style' => 'width: 60%;' ],
             ],
 			[

@@ -4,6 +4,7 @@ namespace backend\modules\erpd\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
+use backend\modules\staff\models\Staff;
 
 
 /**
@@ -143,6 +144,10 @@ class Publication extends \yii\db\ActiveRecord
 	
 	public function getPubType(){
         return $this->hasOne(PubType::className(), ['id' => 'pub_type']);
+    }
+	
+	public function getStaff(){
+        return $this->hasOne(Staff::className(), ['id' => 'staff_id']);
     }
 	
 	public function getStatusInfo(){

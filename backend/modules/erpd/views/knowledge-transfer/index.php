@@ -34,7 +34,15 @@ $this->params['breadcrumbs'][] = $this->title;
 				}
 				
 			],
-            'ktp_title',
+			[
+				'attribute' => 'ktp_title',
+				'format' => 'html',
+				'value' => function($model){
+					return $model->ktp_title . ' <i class="fa fa-tags"></i> by ' . $model->staff->user->fullname;
+				}
+				
+			],
+            
 			'ktp_source',
 			'ktp_community',
 			

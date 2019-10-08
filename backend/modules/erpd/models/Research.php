@@ -4,6 +4,7 @@ namespace backend\modules\erpd\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
+use backend\modules\staff\models\Staff;
 
 /**
  * This is the model class for table "research".
@@ -144,6 +145,10 @@ class Research extends \yii\db\ActiveRecord
 	
 	public function getResearchGrant(){
         return $this->hasOne(ResearchGrant::className(), ['id' => 'res_grant']);
+    }
+	
+	public function getStaff(){
+        return $this->hasOne(Staff::className(), ['id' => 'res_staff']);
     }
 	
 	public function statusList(){
