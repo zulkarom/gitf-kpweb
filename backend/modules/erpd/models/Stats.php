@@ -176,9 +176,10 @@ class Stats
 		return $kira;
 	}
 	
-	public static function countTotalResearch(){
+	public static function countTotalResearch($verified = true){
+		$status = $verified ? 50 :  [20, 30] ;
 		$kira = Research::find()
-		->where(['status' => 50])
+		->where(['status' => $status])
 		->count();
 		return $kira;
 	}
@@ -204,9 +205,10 @@ class Stats
 		return $kira;
 	}
 	
-	public static function countTotalPublication(){
+	public static function countTotalPublication($verified = true){
+		$status = $verified ? 50 :  [20, 30] ;
 		$kira = Publication::find()
-		->where(['status' => 50])
+		->where(['status' => $status])
 		->count();
 		return $kira;
 	}
@@ -218,9 +220,10 @@ class Stats
 		return $kira;
 	}
 	
-	public static function countTotalMembership(){
+	public static function countTotalMembership($verified = true){
+		$status = $verified ? 50 :  [20, 30] ;
 		$kira = Membership::find()
-		->where(['status' => 50])
+		->where(['status' => $status])
 		->count();
 		return $kira;
 	}
@@ -232,9 +235,10 @@ class Stats
 		return $kira;
 	}
 	
-	public static function countTotalAward(){
+	public static function countTotalAward($verified = true){
+		$status = $verified ? 50 :  [20, 30] ;
 		$kira = Award::find()
-		->where(['status' => 50])
+		->where(['status' => $status])
 		->count();
 		return $kira;
 	}
@@ -246,9 +250,10 @@ class Stats
 		return $kira;
 	}
 	
-	public static function countTotalConsultation(){
+	public static function countTotalConsultation($verified = true){
+		$status = $verified ? 50 :  [20, 30] ;
 		$kira = Consultation::find()
-		->where(['status' => 50])
+		->where(['status' => $status])
 		->count();
 		return $kira;
 	}
@@ -260,9 +265,10 @@ class Stats
 		return $kira;
 	}
 	
-	public static function countTotalKtp(){
+	public static function countTotalKtp($verified = true){
+		$status = $verified ? 50 :  [20, 30] ;
 		$kira = KnowledgeTransfer::find()
-		->where(['status' => 50])
+		->where(['status' => $status])
 		->count();
 		return $kira;
 	}

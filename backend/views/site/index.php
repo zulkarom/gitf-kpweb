@@ -196,7 +196,7 @@ echo ChartJs::widget([
         'datasets' => [
 		[
                 'label' => "Processing",
-                'backgroundColor' => "#00c0ef",
+                'backgroundColor' => "#f39c12",
                 'borderColor' => "rgba(179,181,198,1)",
                 'pointBackgroundColor' => "rgba(179,181,198,1)",
                 'pointBorderColor' => "#fff",

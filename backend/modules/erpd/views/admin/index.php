@@ -3,6 +3,8 @@
 use backend\modules\erpd\models\Stats;
 use dosamigos\chartjs\ChartJs;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
+
 /* @var $this yii\web\View */
 
 $this->title = 'e-RPD';
@@ -15,6 +17,138 @@ $last_five = $curr_year - 4;
 
 
 <section class="content">
+
+<div class="box">
+<div class="box-header">
+</div>
+<div class="box-body">
+
+<div class="row">
+<div class="col-md-6">
+
+<div class="table-responsive">
+  <table class="table table-striped table-hover">
+  <thead>
+      <tr>
+        <th>Item</th>
+		<th>Unverified</th>
+        <th>Verified</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Research</td>
+        <td><a href="<?=Url::to(['/erpd/research'])?>" class="btn btn-warning btn-sm"><?=Stats::countTotalResearch(false)?></a></td>
+		<td><a href="<?=Url::to(['/erpd/research'])?>" class="btn btn-success btn-sm"><?=Stats::countTotalResearch()?></a></td>
+      </tr>
+	 <tr>
+        <td>Publication</td>
+        <td><a href="<?=Url::to(['/erpd/publication'])?>" class="btn btn-warning btn-sm"><?=Stats::countTotalPublication(false)?></a></td>
+		<td><a href="<?=Url::to(['/erpd/publication'])?>" class="btn btn-success btn-sm"><?=Stats::countTotalPublication()?></a></td>
+      </tr>
+	  <tr>
+        <td>Membership</td>
+        <td><a href="<?=Url::to(['/erpd/membership'])?>" class="btn btn-warning btn-sm"><?=Stats::countTotalMembership(false)?></a></td>
+		<td><a href="<?=Url::to(['/erpd/membership'])?>" class="btn btn-success btn-sm"><?=Stats::countTotalMembership()?></a></td>
+      </tr>
+	  <tr>
+        <td>Award</td>
+        <td><a href="<?=Url::to(['/erpd/award'])?>" class="btn btn-warning btn-sm"><?=Stats::countTotalAward(false)?></a></td>
+		<td><a href="<?=Url::to(['/erpd/award'])?>" class="btn btn-success btn-sm"><?=Stats::countTotalAward()?></a></td>
+      </tr>
+	  <tr>
+        <td>Consultation</td>
+        <td><a href="<?=Url::to(['/erpd/consultation'])?>" class="btn btn-warning btn-sm"><?=Stats::countTotalConsultation(false)?></a></td>
+		<td><a href="<?=Url::to(['/erpd/consultation'])?>" class="btn btn-success btn-sm"><?=Stats::countTotalConsultation()?></a></td>
+      </tr>
+    <tr>
+        <td>Knowledge Transfer</td>
+        <td><a href="<?=Url::to(['/erpd/knowledge-transfer'])?>" class="btn btn-warning btn-sm"><?=Stats::countTotalKtp(false)?></a></td>
+		<td><a href="<?=Url::to(['/erpd/knowledge-transfer'])?>" class="btn btn-success btn-sm"><?=Stats::countTotalKtp()?></a></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</div>
+
+<div class="col-md-6">
+
+<?php
+$items = ['Research', 'Publication', 'Membership', 'Award', 'Consultation', 'Knowledge Transfer'];
+
+$processing = [
+	Stats::countTotalResearch(false),
+	Stats::countTotalPublication(false),
+	Stats::countTotalMembership(false),
+	Stats::countTotalAward(false),
+	Stats::countTotalConsultation(false),
+	Stats::countTotalKtp(false)
+];
+
+$verified = [
+	Stats::countTotalResearch(),
+	Stats::countTotalPublication(),
+	Stats::countTotalMembership(),
+	Stats::countTotalAward(),
+	Stats::countTotalConsultation(),
+	Stats::countTotalKtp()
+];
+
+echo ChartJs::widget([
+    'type' => 'bar',
+    'options' => [
+		'scales' => [
+				'yAxes' => [
+					[
+						'ticks' => [
+							'min' => 0
+						]
+					]
+					
+				]
+			],
+        'height' => 220
+    ],
+    'data' => [
+        'labels' => $items,
+		'yAxisID' => 0,
+        'datasets' => [
+		[
+                'label' => "Unverified",
+                'backgroundColor' => "#f39c12",
+                'borderColor' => "rgba(179,181,198,1)",
+                'pointBackgroundColor' => "rgba(179,181,198,1)",
+                'pointBorderColor' => "#fff",
+                'pointHoverBackgroundColor' => "#fff",
+                'pointHoverBorderColor' => "rgba(179,181,198,1)",
+                'data' => $processing
+            ],
+            [
+                'label' => "Verified",
+                'backgroundColor' => '#00a65a',
+                'borderColor' => "rgba(179,181,198,1)",
+                'pointBackgroundColor' => "rgba(179,181,198,1)",
+                'pointBorderColor' => "#fff",
+                'pointHoverBackgroundColor' => "#fff",
+                'pointHoverBorderColor' => "rgba(179,181,198,1)",
+                'data' => $verified
+            ],
+			
+			
+        ]
+    ]
+]);
+?>
+</div>
+
+</div>
+
+
+
+
+</div>
+</div>
 
 <div class="box">
 <div class="box-header">
