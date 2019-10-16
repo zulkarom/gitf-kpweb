@@ -338,11 +338,12 @@ foreach($this->model->syllabus as $row){
 		$clok++;
 		}
 	}
+	$practical_others = $row->pnp_practical + $row->pnp_others;
 	$style_number = 'style="vertical-align: middle;text-align:center;font-size:8pt"';
 	$html .='</td><td span style="font-size:10pt;">'.$clo_str.'</td>';
 	$html .='<td '.$style_number.'>'.$row->pnp_lecture .'</td>';
 	$html .='<td '.$style_number.'>'.$row->pnp_tutorial .'</td>';
-	$html .='<td '.$style_number.'>'.$row->pnp_practical .'</td>';
+	$html .='<td '.$style_number.'>'.$practical_others.'</td>';
 	//$html .='<td style="vertical-align: middle;text-align:center">'.$row->pnp_others .'</td>';
 	
 	
@@ -350,7 +351,7 @@ foreach($this->model->syllabus as $row){
 	
 	$html .='<td '.$style_number.'>'.$row->independent .'</td>';
 	
-	$sub = $row->pnp_lecture + $row->pnp_tutorial + $row->pnp_practical + $row->independent + $row->nf2f;
+	$sub = $row->pnp_lecture + $row->pnp_tutorial + $practical_others + $row->independent + $row->nf2f;
 	
 	$html .='<td '.$style_number.' width="'.$jum.'">'.$sub.'</td>';
 	$html .='</tr>';
@@ -358,7 +359,7 @@ foreach($this->model->syllabus as $row){
 	
 	$tlec += $row->pnp_lecture;
 	$ttut += $row->pnp_tutorial;
-	$tprac += $row->pnp_practical;
+	$tprac += $practical_others;
 	//$toth += $row->pnp_others;
 	$tind += $row->independent;
 	$tass += $row->nf2f;

@@ -225,7 +225,10 @@ echo $form->field($model, 'faculty_id')->dropDownList(
         <td>Preparation</td>
         <td><?php 
 		if($model->publishedVersion){
-			echo $model->publishedVersion->preparedBy->fullname . ' ('.$model->publishedVersion->prepareDate.')';
+			if($model->publishedVersion->preparedBy){
+				echo $model->publishedVersion->preparedBy->fullname . ' ('.$model->publishedVersion->prepareDate.')';
+			}
+			
 		}else{
 			echo 'None';
 		}
@@ -239,7 +242,10 @@ echo $form->field($model, 'faculty_id')->dropDownList(
         <td>Verification</td>
         <td><?php 
 		if($model->publishedVersion){
-			echo $model->publishedVersion->verifiedBy->fullname . ' ('.$model->publishedVersion->verifiedDate.')';
+			if($model->publishedVersion->verifiedBy){
+				echo $model->publishedVersion->verifiedBy->fullname . ' ('.$model->publishedVersion->verifiedDate.')';
+			}
+			
 		}else{
 			echo 'None';
 		}

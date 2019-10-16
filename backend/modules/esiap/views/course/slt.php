@@ -56,12 +56,17 @@ $aclo="";$asyll="";
 		<td style="text-align:center;font-weight:bold" id="subtut">0</td>
 	</tr>
 	<tr>
-		<td>Lab / Studio / Others</td>
+		<td>Practical</td>
 		<td><input class="form-control tgcal" name="slt[practical_jam]" id="practical_jam" style="text-align:center" value="<?php echo $slt->practical_jam;?>"  /></td>
 		<td><input class="form-control tgcal" name="slt[practical_mggu]" id="practical_mggu" style="text-align:center" value="<?php echo $slt->practical_mggu;?>"  /></td>
 		<td style="text-align:center;font-weight:bold" id="subprac">0</td>
 	</tr>
-
+	<tr>
+		<td>Others</td>
+		<td><input class="form-control tgcal" name="slt[others_jam]" id="others_jam" style="text-align:center" value="<?php echo $slt->others_jam;?>"  /></td>
+		<td><input class="form-control tgcal" name="slt[others_mggu]" id="others_mggu" style="text-align:center" value="<?php echo $slt->others_mggu;?>"  /></td>
+		<td style="text-align:center;font-weight:bold" id="subother">0</td>
+	</tr>
 
 	
 	<tr>
@@ -172,15 +177,20 @@ $aclo="";$asyll="";
 	
 	<table class='table table-hover table-striped'>
 	<thead>
-	<tr><th width='1%' rowspan='3'>WEEK</th><th rowspan='3' width="25%">TOPICS</th><th colspan="6" style="text-align:center">STUDENT LEARNING TIMES</th></tr>
+	<tr>
+	<th width='1%' rowspan='3'>WEEK</th>
+	<th rowspan='3' width="25%">TOPICS</th>
+	<th colspan="7" style="text-align:center">STUDENT LEARNING TIMES</th></tr>
 	
-	<tr><th style='text-align:center' colspan='3' >GUIDED LEARNING (F2F)
+	<tr>
+	
+	<th style='text-align:center' colspan='4' >GUIDED LEARNING (F2F)
 	
 	</th><th rowspan="2" style="vertical-align:top;text-align:center">GUIDED LEARNING<br />(NF2F)
 	<br /><i style="font-weight:normal">*E-learning, Project, HIEPs, Assignment, LI, SIEP etc.</i>
 	</th><th rowspan="2" style="vertical-align:top">INDEPENDENT<br />LEARNING</th><th rowspan="2" style="vertical-align:top">TOTAL</th></tr>
 	
-	<tr><th >LECTURE</th><th>TUTORIAL</th><th>LAB / STUDIO / OTHERS</th></tr>
+	<tr><th >LECTURE</th><th>TUTORIAL</th><th>PRACTICAL</th><th>OTHERS</th></tr>
 	</thead>
 <?php 
 
@@ -221,6 +231,10 @@ foreach($syll as $row){ ?>
 	<input type="text" style="text-align:center" class="form-control tgsyl" name="syll[<?php echo $row->id;?>][pnp_practical]" id="pnp_practical_<?php echo $row->id;?>" value="<?php echo $row->pnp_practical ; ?>"  />
 	</td>
 	
+	<td style="vertical-align:middle">
+	<input type="text" style="text-align:center" class="form-control tgsyl" name="syll[<?php echo $row->id;?>][pnp_others]" id="pnp_others_<?php echo $row->id;?>" value="<?php echo $row->pnp_others ; ?>"  />
+	</td>
+	
 
 	
 	<td style="vertical-align:middle">
@@ -246,7 +260,7 @@ $i++;
 <td id="subsyll_pnp_lecture">0</td>
 <td id="subsyll_pnp_tutorial">0</td>
 <td id="subsyll_pnp_practical">0</td>
-
+<td id="subsyll_pnp_others">0</td>
 <td id="subsyll_nf2f">0</td>
 <td id="subsyll_independent">0</td>
 <td id="subsyll_total">0</td>
@@ -254,7 +268,7 @@ $i++;
 
 <tr style="text-align:center;font-weight:bold">
 <td colspan="2"><b>Assessment</b></td>
-<td colspan="5"></td>
+<td colspan="6"></td>
 <td id="subsyll_assess">0</td>
 </tr>
 
@@ -263,7 +277,7 @@ $i++;
 <td id="setsyll_pnp_lecture">0</td>
 <td id="setsyll_pnp_tutorial">0</td>
 <td id="setsyll_pnp_practical">0</td>
-
+<td id="setsyll_pnp_others">0</td>
 <td id="setsyll_nf2f">0</td>
 <td id="setsyll_independent">0</td>
 <td id="setsyll_total"><?php echo $slt_hour?></td>
@@ -274,6 +288,7 @@ $i++;
 <td id="gly_pnp_lecture"><span class="glyphicon glyphicon-warning-sign" style="color:red"></span></td>
 <td id="gly_pnp_tutorial"><span class="glyphicon glyphicon-warning-sign" style="color:red"></span></td>
 <td id="gly_pnp_practical"><span class="glyphicon glyphicon-warning-sign" style="color:red"></span></td>
+<td id="gly_pnp_others"><span class="glyphicon glyphicon-warning-sign" style="color:red"></span></td>
 
 <td id="gly_nf2f"><span class="glyphicon glyphicon-warning-sign" style="color:red"></span></td>
 <td id="gly_independent"><span class="glyphicon glyphicon-warning-sign" style="color:red"></span></td>
@@ -342,7 +357,7 @@ function getSlt(){
 }
 
 function calculate_learning(){
-var besar = cal_lec() + cal_tut() + cal_prac() ;	
+var besar = cal_lec() + cal_tut() + cal_prac() + cal_other() ;	
 $("#jumlearning").text(myfor(besar));
 return besar;
 }
@@ -371,6 +386,17 @@ function myfor(num){
 	$("#setsyll_pnp_others").text(myfor(jum));
 	return jum;
 } */
+
+function cal_other(){
+	var other_hour = $("#others_jam").val();
+	var other_week = $("#others_mggu").val();
+	var jum = myparse(other_hour) * myparse(other_week);
+	$("#subother").text(myfor(jum));
+	$("#setsyll_pnp_others").text(myfor(jum));
+	return jum;
+	
+}
+
 function cal_prac(){
 	var prac_hour = $("#practical_jam").val();
 	var prac_week = $("#practical_mggu").val();
@@ -413,9 +439,7 @@ function cal_ass(){
 	for(i=0;i<arr.length;i++){
 		jum += myparse($("#ass-"+arr[i]).val());
 	}
-	
-	
-	
+
 	$("#jumass").text(myfor(jum));
 	$("#subsyll_assess").text(myfor(jum));
 	
@@ -433,7 +457,7 @@ function glystr(what){
 }
 function checkEqual(){
 	
-	var arrw = ["pnp_lecture", "pnp_tutorial", "pnp_practical", "independent", "nf2f", "total"];
+	var arrw = ["pnp_lecture", "pnp_tutorial", "pnp_practical", "pnp_others", "independent", "nf2f", "total"];
 	for(s=0;s<arrw.length;s++){
 		var syl = myparse($("#subsyll_"+arrw[s]).text());
 		var set = $("#setsyll_"+arrw[s]).text();
@@ -454,7 +478,7 @@ function cal_syll_week(){
 	var arrsyl = ['.$arr_syll.'];
 	var tot= 0;
 	for(n=0;n<arrsyl.length;n++){
-		var arrw = ["pnp_lecture", "pnp_tutorial", "pnp_practical",  "independent", "nf2f"];
+		var arrw = ["pnp_lecture", "pnp_tutorial", "pnp_practical", "pnp_others",  "independent", "nf2f"];
 		sub = 0;
 		for(s=0;s<arrw.length;s++){
 			sub += getNumValue(arrw[s], arrsyl[n]);
@@ -466,7 +490,7 @@ function cal_syll_week(){
 }
 
 function cal_syll_col(){
-	var arrw = ["pnp_lecture", "pnp_tutorial", "pnp_practical", "independent", "nf2f"];
+	var arrw = ["pnp_lecture", "pnp_tutorial", "pnp_practical", "pnp_others", "independent", "nf2f"];
 	var tot= 0;
 	for(s=0;s<arrw.length;s++){
 		var arrsyl = ['.$arr_syll.'];
