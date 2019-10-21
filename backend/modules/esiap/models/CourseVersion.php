@@ -134,7 +134,7 @@ class CourseVersion extends \yii\db\ActiveRecord
 	public function getSltAssessmentFormative()
     {
 		return self::find()
-		->select('sp_course_assessment.*, SUM(sp_course_assessment.assess_hour) AS as_hour')
+		->select('sp_course_assessment.*, SUM(sp_course_assessment.assess_f2f) AS as_hour')
 		->innerJoin('sp_course_assessment', 'sp_course_assessment.crs_version_id = sp_course_version.id')
 		->innerJoin('sp_assessment_cat', 'sp_assessment_cat.id = sp_course_assessment.assess_cat')
 		->groupBy(['sp_assessment_cat.form_sum'])
@@ -147,7 +147,7 @@ class CourseVersion extends \yii\db\ActiveRecord
 	public function getSltAssessmentSummative()
     {
 		return self::find()
-		->select('sp_course_assessment.*, SUM(sp_course_assessment.assess_hour) AS as_hour')
+		->select('sp_course_assessment.*, SUM(sp_course_assessment.assess_f2f) AS as_hour')
 		->innerJoin('sp_course_assessment', 'sp_course_assessment.crs_version_id = sp_course_version.id')
 		->innerJoin('sp_assessment_cat', 'sp_assessment_cat.id = sp_course_assessment.assess_cat')
 		->groupBy(['sp_assessment_cat.form_sum'])
@@ -214,6 +214,16 @@ class CourseVersion extends \yii\db\ActiveRecord
 	public function getReferences()
     {
         return $this->hasMany(CourseReference::className(), ['crs_version_id' => 'id'])->orderBy('id ASC');
+    }
+	
+	public function getMainReferences()
+    {
+        return $this->hasMany(CourseReference::className(), ['crs_version_id' => 'id'])->where(['is_main' => 1])->orderBy('id ASC');
+    }
+	
+	public function getAdditionalReferences()
+    {
+        return $this->hasMany(CourseReference::className(), ['crs_version_id' => 'id'])->where(['is_main' => 0])->orderBy('id ASC');
     }
 	
 	public function getPreparedBy(){

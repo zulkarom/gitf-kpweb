@@ -25,7 +25,7 @@ $this->title = 'Dashboard';
 
 <div class="row">
 
-<div class="col-md-2">
+<div class="hidden-xs col-md-2">
 <img width="100%" src="<?=Url::to(['/staff/profile/image'])?>" />
 
 </div>

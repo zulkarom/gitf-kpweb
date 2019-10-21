@@ -39,11 +39,11 @@ class CourseAssessment extends \yii\db\ActiveRecord
 			
 			[['crs_version_id'], 'required', 'on' => 'add'],
 			
-			[['assess_hour'], 'required', 'on' => 'update_slt'],
+			[['assess_f2f'], 'required', 'on' => 'update_slt'],
 			
             [['crs_version_id', 'assess_cat', 'trash', 'created_by'], 'integer'],
 			
-			[['assess_hour'], 'number'],
+			[['assess_f2f'], 'number'],
 			
             [['created_at', 'updated_at'], 'safe'],
             [['assess_name', 'assess_name_bi'], 'string', 'max' => 100],

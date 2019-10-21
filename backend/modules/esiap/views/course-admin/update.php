@@ -175,6 +175,13 @@ echo $form->field($model, 'faculty_id')->dropDownList(
         <td><a href="<?=Url::to(['/esiap/course/fk3', 'course' => $model->id])?>" class="btn btn-success btn-sm" target="_blank"><span class='glyphicon glyphicon-download-alt'></span></a></td>
 		
       </tr>
+	  
+	  <!-- <tr>
+	  <td>4.</td>
+        <td><span class="glyphicon glyphicon-file"></span> TABLE 4 - MAKLUMAT KURSUS / <i>COURSE INFORMATION </i>                               </td>
+        <td><a href="<?=Url::to(['/esiap/course/tbl4', 'course' => $model->id])?>" class="btn btn-success btn-sm" target="_blank"><span class='glyphicon glyphicon-download-alt'></span></a></td>
+		
+      </tr> -->
       
     </tbody>
   </table>
@@ -435,14 +442,20 @@ echo $form->field($model, 'faculty_id')->dropDownList(
 	  <td>2.</td>
         <td><span class="glyphicon glyphicon-file"></span> FK02 - MAKLUMAT KURSUS / <i>COURSE INFORMATION </i>                               </td>
 		
-		<td><a href="<?=Url::to(['/esiap/course/fk1', 'course' => $model->id, 'dev' => 1])?>" class="btn btn-warning btn-sm" target="_blank"><span class='glyphicon glyphicon-download-alt'></span></a></td>
+		<td><a href="<?=Url::to(['/esiap/course/fk2', 'course' => $model->id, 'dev' => 1])?>" class="btn btn-warning btn-sm" target="_blank"><span class='glyphicon glyphicon-download-alt'></span></a></td>
       </tr>
 	  <tr>
 	  <td>3.</td>
         <td><span class="glyphicon glyphicon-file"></span> FK03 - PENJAJARAN KONSTRUKTIF / <i>CONSTRUCTIVE ALIGNMENT       </i>                         </td>
 		
-		<td><a href="<?=Url::to(['/esiap/course/fk1', 'course' => $model->id,  'dev' => 1])?>" class="btn btn-warning btn-sm" target="_blank"><span class='glyphicon glyphicon-download-alt'></span></a></td>
+		<td><a href="<?=Url::to(['/esiap/course/fk3', 'course' => $model->id,  'dev' => 1])?>" class="btn btn-warning btn-sm" target="_blank"><span class='glyphicon glyphicon-download-alt'></span></a></td>
       </tr>
+	  
+	  <!-- <tr>
+	  <td>4.</td>
+        <td><span class="glyphicon glyphicon-file"></span> TABLE 4 - MAKLUMAT KURSUS / <i>COURSE INFORMATION </i>		
+		<td><a href="<?=Url::to(['/esiap/course/tbl4', 'course' => $model->id,  'dev' => 1])?>" class="btn btn-warning btn-sm" target="_blank"><span class='glyphicon glyphicon-download-alt'></span></a></td>
+      </tr> -->
       
     </tbody>
   </table>

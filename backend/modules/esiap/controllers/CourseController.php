@@ -19,6 +19,7 @@ use backend\modules\esiap\models\CourseVersionClone;
 use backend\modules\esiap\models\Fk1;
 use backend\modules\esiap\models\Fk2;
 use backend\modules\esiap\models\Fk3;
+use backend\modules\esiap\models\Tbl4;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -557,7 +558,7 @@ class CourseController extends Controller
 					$as = CourseAssessment::findOne($key);
 					$as->scenario = 'update_slt';
 					if($as){
-						$as->assess_hour = $val;
+						$as->assess_f2f = $val;
 						if(!$as->save()){
 							$as->flashError();
 						}
@@ -773,6 +774,18 @@ class CourseController extends Controller
 			$model = $this->findPublishedVersion($course);
 		}
 			$pdf = new Fk2;
+			$pdf->model = $model;
+			$pdf->generatePdf();
+	}
+	
+	public function actionTbl4($course, $dev = false){
+		if($dev){
+			//control access
+			$model = $this->findDevelopmentVersion($course);
+		}else{
+			$model = $this->findPublishedVersion($course);
+		}
+			$pdf = new Tbl4;
 			$pdf->model = $model;
 			$pdf->generatePdf();
 	}

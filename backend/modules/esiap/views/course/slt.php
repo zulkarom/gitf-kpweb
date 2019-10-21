@@ -132,13 +132,13 @@ $aclo="";$asyll="";
 			$arrass .= $i == 1 ? $id : "," . $id ;
 			echo "<tr><td>".$rhead->assess_name_bi ."</td>
 			<td>
-			<input class='form-control tgcal' name='assess[".$id . "]' id='ass-".$id . "' value='" . $rhead->assess_hour . "' style='text-align:center' /></td>
+			<input class='form-control tgcal' name='assess[".$id . "]' id='ass-".$id . "' value='" . $rhead->assess_f2f . "' style='text-align:center' /></td>
 			</tr>
 			";
 		$i++;
 		}
 	}
-	//".$rhead->slt->assess_hour ."
+	//".$rhead->slt->assess_f2f ."
 	?>
 	
 
@@ -152,7 +152,7 @@ $aclo="";$asyll="";
 			$id = $rhead->id;
 			$arrass .= $i == 1 ? $id : "," . $id ;
 			echo "<tr><td>".$rhead->assess_name_bi ."</td>
-			<td><input class='form-control tgcal' name='assess[".$id . "]' id='ass-".$id . "' value='".$rhead->assess_hour ."' style='text-align:center' /></td>
+			<td><input class='form-control tgcal' name='assess[".$id . "]' id='ass-".$id . "' value='".$rhead->assess_f2f ."' style='text-align:center' /></td>
 			</tr>
 			";
 			$i++;
