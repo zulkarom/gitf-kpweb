@@ -172,10 +172,7 @@ if($model->id){
 
 </div>
 
-<div class="row">
-<div class="col-md-3"><?= $form->field($model, 'staff_active', ['template' => '{label}{input}<i style="font-size:small">*NO value will put this staff in Transfered/Quit page</i>{error}'])->dropDownList( [1 => 'YES' , 0 => 'NO'] ) ?></div>
 
-</div>
 
 
 
