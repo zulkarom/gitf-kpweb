@@ -226,11 +226,16 @@ class StaffController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionRemove($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+		$model->staff_active = 0;
+		if($model->save()){
+			Yii::$app->session->addFlash('success', "Staff Removed");
+			return $this->redirect(['index']);
+		}
 
-        return $this->redirect(['index']);
+        
     }
 
     /**

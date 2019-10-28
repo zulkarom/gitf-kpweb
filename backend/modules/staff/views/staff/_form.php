@@ -37,10 +37,8 @@ if($model->id){
 	
 	<div class="row">
 <div class="col-md-3">
-<?= $form
-            ->field($model, 'staff_title', ['template' => '{label}<div id="con-title">{input}</div>{error}']
-)
-            ->label('Title') ?>
+<?= $form->field($model, 'staff_title', ['template' => '{label}<div id="con-title">{input}</div>{error}']
+)->label('Title') ?>
 </div>
 
 <div class="col-md-7">
@@ -183,11 +181,20 @@ if($model->id){
 
 <?= $form->field($model, 'staff_note')->textarea(['rows' => '6']) ?>
 
+<div class="row">
+<div class="col-md-6">  <div class="form-group">
+        <?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> Save Staff Data', ['class' => 'btn btn-success']) ?>
+    </div></div>
 
+<div class="col-md-6" align="right">
+<?= Html::a('<span class="glyphicon glyphicon-trash"></span> Remove Staff', ['remove', 'id' => $model->id], [
+            'class' => 'btn btn-danger',
+            
+        ]) ?>
 
-    <div class="form-group">
-        <?= Html::submitButton('Save Staff Data', ['class' => 'btn btn-success']) ?>
-    </div>
+</div>
+
+</div>
 
     <?php ActiveForm::end(); ?>
 
