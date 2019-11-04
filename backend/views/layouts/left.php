@@ -99,6 +99,8 @@ use backend\models\Menu;
 					
 					['label' => 'WEBSITE', 'icon' => 'tv', 'url' => ['/website'],],
 					
+					['label' => 'PROCEEDINGS', 'icon' => 'microphone', 'url' => ['/proceedings'],],
+					
 					
 					[
                         'label' => 'User Management',
