@@ -1,0 +1,91 @@
+ALTER TABLE `sp_course` CHANGE `program_id` `program_id` INT(11) NULL;
+ALTER TABLE `sp_course_type` ADD `showing` TINYINT(1) NOT NULL AFTER `type_order`;
+UPDATE `sp_course_type` SET `showing` = '1' WHERE `sp_course_type`.`id` = 2; UPDATE `sp_course_type` SET `showing` = '1' WHERE `sp_course_type`.`id` = 3; UPDATE `sp_course_type` SET `showing` = '1' WHERE `sp_course_type`.`id` = 5;
+
+active task at front page
+
+badge editing at frontend xde badge
+brief instruction on what to do at every stage
+
+
+default password redirect to change password page
+
+++++++++++++++++++++++++++++++
+7.2 Editorial conflicts of interest
+a. The editors and the author(s) - only author
++++++++++++++++++++++++++++++++++++++++
+
+
+
+finalise_at kosong : corrected not test
+
+advance search
+
+===================== KIV =================
+
+references input kena ada line number
+
+review file (optional)
+
+reviewer certificate
+
+create account for new reviewer
+
+front page utk reviewer ada task list link
+
+=======================  DONE =====================
+prevent publish before article number
+ME - reject to withdraw and go back to original status
+edit guideline page
+baiki kenapa tak email associate editor - Associate editor tak berkaitan dapat jgk email - so far detect email template target at assistant editor
+add reviewer xde email -
+template link = downloads/v1-i2-2018.01.pdf
+reset password email
+pre & post create different file lah
+email notification & reminder
+WORKFLOW CHANGE - PROOFREAD FIRST THEN FINALISE
+rejected paper
+badge number at menu
+submission menu show to all user - buat redirect to create submission in frontend
+reviewer must accept first - abstract sahaja - setuju baru full paper
+upload reviewer file - include pdf
+sorting articles in compiling journal - assign journal number
+button withdraw kpd authors sblm finalise - withdraw-request --> withdraw
+pre evaluation kena ada manuscript no - manuscript number (cari formula buat automatik) at pre - evaluate - including rejected - 2018.234 - {year}.{id}
+upload pdf - template
+masa correction attach template
+masa submit paper declare belum publish mana2 - accept terms and condition
+link dari portaL ke portal v2
+
+
+======================review meeting ===============DONE=============
+manually create new associate
+show url at article number page
+article number must be unique
+link journal lama kena guna link doi
+search article - 
+reviewer masa agree - masa dah review -> appreciation & notify to associate editor
+post evaluate - button to accept manuscript & notify author
+manuscript number - manual
+ETHICAL GUIDELINE - alignment
+Timeline: Two Weeks - NO NEED
+
+7. A. <b>Initiall Assessment</b>: The Managing EditoR
+
+EDITORIAL POLICY
+alignment
+
+SUBMISSION GUIDELINE ALIGNMENT
+
+All manuscripts should be submitted to:
+REPLACE WITH ANY FURTHER INQUIRIES PLZ ...
+
+------------no bullet
+Stephen Teo, Edith Cowan University, Malaysia.
+Hafiz T.A. Khan, University of West London, United Kingdom.
+Kamarul Zaman Bin Ahmad, University of Dubai, United Arab Emirates
+Siri Roland Xavier, Universiti Tun Abdul Razak, Malaysia.
+Fon Sim Ong, University of Nottingham, Malaysia.
+-----------------------
+
+STRAIGHT FOWARD LESS COLOR DESIGN
