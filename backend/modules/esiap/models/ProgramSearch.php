@@ -44,7 +44,7 @@ class ProgramSearch extends Program
      */
     public function search($params)
     {
-         $query = Program::find()->where(['faculty_id' => 1, 'trash' => 0])->andWhere(['>', 'id', 0])->orderBy('status DESC');
+         $query = Program::find()->where(['faculty_id' => Yii::$app->params['faculty_id'], 'trash' => 0])->andWhere(['>', 'id', 0])->orderBy('status DESC');
 
         // add conditions that should always apply here
 

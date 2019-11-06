@@ -109,7 +109,8 @@ class Stats
 	
 	public static function countMyAward(){
 		$kira = Award::find()
-		->where(['awd_staff' => Yii::$app->user->identity->staff->id, 'status' => 50])
+		->joinWith('awardTags')
+		->where(['rp_award_tag.staff_id' => Yii::$app->user->identity->staff->id, 'status' => 50])
 		->count();
 		return $kira;
 	}
@@ -124,7 +125,8 @@ class Stats
 	
 	public static function countStaffAward($staff){
 		$kira = Award::find()
-		->where(['awd_staff' => $staff, 'status' => 50])
+		->joinWith('awardTags')
+		->where(['rp_award_tag.staff_id' =>$staff, 'status' => 50])
 		->count();
 		return $kira;
 	}

@@ -42,7 +42,16 @@ table.detail-view th {
 				'value' => function($model){
 					return Html::a('<span class="glyphicon glyphicon-download-alt"></span> File',['award/download-file', 'attr'=>'awd', 'id' => $model->id], ['target' => '_blank']);
 				}
-			]
+			],
+			
+			[
+				'label' => 'Tagged Staff',
+				'format' => 'html',
+				'value' => function($model){
+					return $model->tagStaffNames;
+				}
+			],
+
 
 			
 			

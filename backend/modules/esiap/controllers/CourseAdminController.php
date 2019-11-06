@@ -109,7 +109,7 @@ class CourseAdminController extends Controller
 				if($model->is_developed == 1){
 					CourseVersion::updateAll(['is_developed' => 0], ['course_id' => $course]);
 				}
-					
+				$flag = true;
 				if($model->save()){
 					if($model->duplicate == 1){
 						if($model->dup_version > 0){
@@ -120,7 +120,7 @@ class CourseAdminController extends Controller
 								Yii::$app->session->addFlash('success', "Version creation with duplication is successful");
 							}
 						}else{
-							Yii::$app->session->addFlash('error', "No existing version selected!");
+							//Yii::$app->session->addFlash('error', "No existing version selected!");
 						}
 						
 					}else{

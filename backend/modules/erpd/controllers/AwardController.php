@@ -5,7 +5,7 @@ namespace backend\modules\erpd\controllers;
 use Yii;
 use backend\modules\erpd\models\Award;
 use backend\modules\erpd\models\AwardSearch;
-
+use backend\modules\erpd\models\AwardTag;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
@@ -85,8 +85,57 @@ class AwardController extends Controller
 			$model->created_at = new Expression('NOW()');
 			
 			$model->awd_staff = Yii::$app->user->identity->staff->id;
-			
+			//$tag = Yii::$app->request->post('tagged_staff');print_r($tag);die();
 			if($model->save()){
+				
+				$tag = new AwardTag;
+				$tag->award_id = $model->id;
+				$tag->staff_id = Yii::$app->user->identity->staff->id;
+				$tag->save();
+				
+				$tag = Yii::$app->request->post('tagged_staff');
+				
+						if($tag){
+							$kira_post = count($tag);
+							$kira_lama = count($model->awardTagsNotMe);
+							if($kira_post > $kira_lama){
+								$bil = $kira_post - $kira_lama;
+								for($i=1;$i<=$bil;$i++){
+									$insert = new AwardTag;
+									$insert->award_id = $model->id;
+									$insert->save();
+								}
+							}else if($kira_post < $kira_lama){
+	
+								$bil = $kira_lama - $kira_post;
+								$deleted = AwardTag::find()
+								  ->where(['award_id'=>$model->id])
+								  ->andwhere(['<>', 'staff_id', Yii::$app->user->identity->staff->id])
+								  ->limit($bil)
+								  ->all();
+								if($deleted){
+									foreach($deleted as $del){
+										$del->delete();
+									}
+								}
+							}
+							
+							$update_tag = AwardTag::find()
+							->where(['award_id' => $model->id])
+							->andWhere(['<>', 'staff_id', Yii::$app->user->identity->staff->id])
+							->all();
+	
+							if($update_tag){
+								$i=0;
+								foreach($update_tag as $ut){
+									$ut->staff_id = $tag[$i];
+									$ut->save();
+									$i++;
+								}
+							}
+						}
+				
+				
 				 $action = Yii::$app->request->post('wfaction');
 				if($action == 'save'){
 					Yii::$app->session->addFlash('success', "Data saved");
@@ -118,6 +167,49 @@ class AwardController extends Controller
         if ($model->load(Yii::$app->request->post())) {
 			$model->modified_at = new Expression('NOW()');
 			if($model->save()){
+				
+				$tag = Yii::$app->request->post('tagged_staff');
+				
+						if($tag){
+							$kira_post = count($tag);
+							$kira_lama = count($model->awardTagsNotMe);
+							if($kira_post > $kira_lama){
+								$bil = $kira_post - $kira_lama;
+								for($i=1;$i<=$bil;$i++){
+									$insert = new AwardTag;
+									$insert->award_id = $model->id;
+									$insert->save();
+								}
+							}else if($kira_post < $kira_lama){
+	
+								$bil = $kira_lama - $kira_post;
+								$deleted = AwardTag::find()
+								  ->where(['award_id'=>$model->id])
+								  ->andwhere(['<>', 'staff_id', Yii::$app->user->identity->staff->id])
+								  ->limit($bil)
+								  ->all();
+								if($deleted){
+									foreach($deleted as $del){
+										$del->delete();
+									}
+								}
+							}
+							
+							$update_tag = AwardTag::find()
+							->where(['award_id' => $model->id])
+							->andWhere(['<>', 'staff_id', Yii::$app->user->identity->staff->id])
+							->all();
+	
+							if($update_tag){
+								$i=0;
+								foreach($update_tag as $ut){
+									$ut->staff_id = $tag[$i];
+									$ut->save();
+									$i++;
+								}
+							}
+						}
+				
 				$action = Yii::$app->request->post('wfaction');
 				if($action == 'save'){
 					Yii::$app->session->addFlash('success', "Data saved");

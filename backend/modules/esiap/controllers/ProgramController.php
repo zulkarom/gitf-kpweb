@@ -37,7 +37,7 @@ class ProgramController extends Controller
     {
         $searchModel = new ProgramSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+		
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -53,9 +53,14 @@ class ProgramController extends Controller
     public function actionCreate()
     {
         $model = new Program();
+		$model->scenario = 'update';
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+			$model->faculty_id = Yii::$app->params['faculty_id'];
+			if($model->save()){
+				return $this->redirect(['index']);
+			}
+            
         }
 
         return $this->render('create', [
@@ -73,6 +78,7 @@ class ProgramController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+		$model->scenario = 'update';
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
 			Yii::$app->session->addFlash('success', "Data Updated");

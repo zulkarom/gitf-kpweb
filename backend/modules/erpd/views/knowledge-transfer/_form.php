@@ -47,7 +47,7 @@ use yii\jui\JuiAsset;
         <thead>
             <tr>
                 <th width="5%"></th>
-				<th width="15%">FKP Staff</th>
+				<th width="15%"><?=Yii::$app->params['faculty_abbr']?> Staff</th>
                 <th>Members' Name
 				<br /><i style="font-weight:normal"> * Leader at the top</i>
 				</th>

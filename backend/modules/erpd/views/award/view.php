@@ -7,8 +7,8 @@ use common\models\Upload;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\erpd\models\Publication */
 
-$this->title = 'View Membership';
-$this->params['breadcrumbs'][] = ['label' => 'Research', 'url' => ['index']];
+$this->title = 'View Award';
+$this->params['breadcrumbs'][] = ['label' => 'Award', 'url' => ['index']];
 $this->params['breadcrumbs'][] = 'View';
 
 ?>

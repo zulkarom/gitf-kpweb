@@ -36,6 +36,17 @@ $this->params['breadcrumbs'][] = 'Version List';
 				}
 				
 			],
+			
+			[
+                'attribute' => 'is_published',
+				'format' => 'html',
+				'filter' => Html::activeDropDownList($searchModel, 'is_published', [1=>'YES', 2 => 'NO'],['class'=> 'form-control','prompt' => 'All']),
+				'value' => function($model){
+					return $model->labelPublished;
+					
+				}
+                
+            ],
             
 			[
                 'attribute' => 'is_developed',
@@ -47,18 +58,10 @@ $this->params['breadcrumbs'][] = 'Version List';
 				}
                 
             ],
-			[
-                'attribute' => 'is_published',
-				'format' => 'html',
-				'filter' => Html::activeDropDownList($searchModel, 'is_published', [1=>'YES', 2 => 'NO'],['class'=> 'form-control','prompt' => 'All']),
-				'value' => function($model){
-					return $model->labelPublished;
-					
-				}
-                
-            ],
+			
 			[
                 'attribute' => 'status',
+				'label' => 'Dev Status',
 				'format' => 'html',
 				'filter' => Html::activeDropDownList($searchModel, 'is_developed', [0=>'DRAFT', 10 => 'SUBMITTED', 20 => 'VERIFIED'],['class'=> 'form-control','prompt' => 'Choose Status']),
 				'value' => function($model){
