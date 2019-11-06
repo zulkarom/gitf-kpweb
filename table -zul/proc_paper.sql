@@ -35,7 +35,7 @@ CREATE TABLE `proc_paper` (
   `author` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `paper_no` int(11) NOT NULL,
   `paper_page` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `paper_url` text COLLATE utf8_unicode_ci NOT NULL
+  `paper_file` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --

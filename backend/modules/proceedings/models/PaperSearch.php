@@ -18,7 +18,7 @@ class PaperSearch extends Paper
     {
         return [
             [['id', 'proc_id', 'paper_no'], 'integer'],
-            [['paper_title', 'author', 'paper_page', 'paper_url'], 'safe'],
+            [['paper_title', 'author', 'paper_page', 'paper_file'], 'safe'],
         ];
     }
 
@@ -66,7 +66,7 @@ class PaperSearch extends Paper
         $query->andFilterWhere(['like', 'paper_title', $this->paper_title])
             ->andFilterWhere(['like', 'author', $this->author])
             ->andFilterWhere(['like', 'paper_page', $this->paper_page])
-            ->andFilterWhere(['like', 'paper_url', $this->paper_url]);
+            ->andFilterWhere(['like', 'paper_file', $this->paper_file]);
 
         return $dataProvider;
     }

@@ -13,7 +13,7 @@ use Yii;
  * @property string $author
  * @property int $paper_no
  * @property string $paper_page
- * @property string $paper_url
+ * @property string $paper_file
  */
 class Paper extends \yii\db\ActiveRecord
 {
@@ -31,9 +31,9 @@ class Paper extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['proc_id', 'paper_title', 'author', 'paper_no', 'paper_page', 'paper_url'], 'required'],
+            [['proc_id', 'paper_title', 'author', 'paper_no', 'paper_page', 'paper_file'], 'required'],
             [['proc_id', 'paper_no'], 'integer'],
-            [['paper_url'], 'string'],
+            [['paper_file'], 'string'],
             [['paper_title', 'author'], 'string', 'max' => 255],
             [['paper_page'], 'string', 'max' => 100],
         ];
@@ -51,7 +51,7 @@ class Paper extends \yii\db\ActiveRecord
             'author' => 'Author',
             'paper_no' => 'Paper No',
             'paper_page' => 'Paper Page',
-            'paper_url' => 'Paper Url',
+            'paper_file' => 'Paper File',
         ];
     }
 }

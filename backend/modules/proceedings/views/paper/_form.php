@@ -22,7 +22,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'paper_page')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'paper_url')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'paper_file')->textarea(['rows' => 6]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
