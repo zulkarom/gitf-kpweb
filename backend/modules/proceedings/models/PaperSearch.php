@@ -9,7 +9,7 @@ use backend\modules\proceedings\models\Paper;
 /**
  * ProjectSearch represents the model behind the search form of `backend\modules\proceedings\models\Paper`.
  */
-class ProjectSearch extends Paper
+class PaperSearch extends Paper
 {
     /**
      * {@inheritdoc}
