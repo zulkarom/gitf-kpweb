@@ -39,33 +39,33 @@ $last_five = $curr_year - 4;
     <tbody>
       <tr>
         <td>Research</td>
-        <td><a href="<?=Url::to(['/erpd/research'])?>" class="btn btn-warning btn-sm"><?=Stats::countTotalResearch(false)?></a></td>
-		<td><a href="<?=Url::to(['/erpd/research'])?>" class="btn btn-success btn-sm"><?=Stats::countTotalResearch()?></a></td>
+        <td><a href="<?=Url::to(['/erpd/admin/research'])?>" class="btn btn-warning btn-sm"><?=Stats::countTotalResearch(false)?></a></td>
+		<td><a href="<?=Url::to(['/erpd/admin/research'])?>" class="btn btn-success btn-sm"><?=Stats::countTotalResearch()?></a></td>
       </tr>
 	 <tr>
         <td>Publication</td>
-        <td><a href="<?=Url::to(['/erpd/publication'])?>" class="btn btn-warning btn-sm"><?=Stats::countTotalPublication(false)?></a></td>
-		<td><a href="<?=Url::to(['/erpd/publication'])?>" class="btn btn-success btn-sm"><?=Stats::countTotalPublication()?></a></td>
+        <td><a href="<?=Url::to(['/erpd/admin/publication'])?>" class="btn btn-warning btn-sm"><?=Stats::countTotalPublication(false)?></a></td>
+		<td><a href="<?=Url::to(['/erpd/admin/publication'])?>" class="btn btn-success btn-sm"><?=Stats::countTotalPublication()?></a></td>
       </tr>
 	  <tr>
         <td>Membership</td>
-        <td><a href="<?=Url::to(['/erpd/membership'])?>" class="btn btn-warning btn-sm"><?=Stats::countTotalMembership(false)?></a></td>
-		<td><a href="<?=Url::to(['/erpd/membership'])?>" class="btn btn-success btn-sm"><?=Stats::countTotalMembership()?></a></td>
+        <td><a href="<?=Url::to(['/erpd/admin/membership'])?>" class="btn btn-warning btn-sm"><?=Stats::countTotalMembership(false)?></a></td>
+		<td><a href="<?=Url::to(['/erpd/admin/membership'])?>" class="btn btn-success btn-sm"><?=Stats::countTotalMembership()?></a></td>
       </tr>
 	  <tr>
         <td>Award</td>
-        <td><a href="<?=Url::to(['/erpd/award'])?>" class="btn btn-warning btn-sm"><?=Stats::countTotalAward(false)?></a></td>
-		<td><a href="<?=Url::to(['/erpd/award'])?>" class="btn btn-success btn-sm"><?=Stats::countTotalAward()?></a></td>
+        <td><a href="<?=Url::to(['/erpd/admin/award'])?>" class="btn btn-warning btn-sm"><?=Stats::countTotalAward(false)?></a></td>
+		<td><a href="<?=Url::to(['/erpd/admin/award'])?>" class="btn btn-success btn-sm"><?=Stats::countTotalAward()?></a></td>
       </tr>
 	  <tr>
         <td>Consultation</td>
-        <td><a href="<?=Url::to(['/erpd/consultation'])?>" class="btn btn-warning btn-sm"><?=Stats::countTotalConsultation(false)?></a></td>
-		<td><a href="<?=Url::to(['/erpd/consultation'])?>" class="btn btn-success btn-sm"><?=Stats::countTotalConsultation()?></a></td>
+        <td><a href="<?=Url::to(['/erpd/admin/consultation'])?>" class="btn btn-warning btn-sm"><?=Stats::countTotalConsultation(false)?></a></td>
+		<td><a href="<?=Url::to(['/erpd/admin/consultation'])?>" class="btn btn-success btn-sm"><?=Stats::countTotalConsultation()?></a></td>
       </tr>
     <tr>
         <td>Knowledge Transfer</td>
-        <td><a href="<?=Url::to(['/erpd/knowledge-transfer'])?>" class="btn btn-warning btn-sm"><?=Stats::countTotalKtp(false)?></a></td>
-		<td><a href="<?=Url::to(['/erpd/knowledge-transfer'])?>" class="btn btn-success btn-sm"><?=Stats::countTotalKtp()?></a></td>
+        <td><a href="<?=Url::to(['/erpd/admin/knowledge-transfer'])?>" class="btn btn-warning btn-sm"><?=Stats::countTotalKtp(false)?></a></td>
+		<td><a href="<?=Url::to(['/erpd/admin/knowledge-transfer'])?>" class="btn btn-success btn-sm"><?=Stats::countTotalKtp()?></a></td>
       </tr>
     </tbody>
   </table>

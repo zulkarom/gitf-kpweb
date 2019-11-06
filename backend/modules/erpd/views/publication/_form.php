@@ -291,7 +291,7 @@ echo Select2::widget([
     'name' => 'tagged_staff',
     'value' => ArrayHelper::map($model->pubTagsNotMe,'id','staff_id'),
     'data' => ArrayHelper::map(Staff::activeStaffNotMe(), 'id', 'staff_name'),
-    'options' => ['multiple' => true, 'placeholder' => 'Select FKP Staff ...']
+    'options' => ['multiple' => true, 'placeholder' => 'Select '.Yii::$app->params['faculty_abbr'].' Staff ...']
 ]);
 
 ?>

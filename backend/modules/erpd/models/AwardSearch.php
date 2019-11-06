@@ -42,6 +42,7 @@ class AwardSearch extends Award
     public function search($params)
     {
         $query = Award::find();
+		$query->joinWith(['myAwardTags']);
 
         // add conditions that should always apply here
 

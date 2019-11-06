@@ -3,6 +3,9 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\date\DatePicker;
+use kartik\select2\Select2;
+use yii\helpers\ArrayHelper;
+use backend\modules\staff\models\Staff;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\erpd\models\Award */
@@ -85,6 +88,25 @@ if($model->id){
 <div class="col-md-6">
 </div>
 
+</div>
+
+<div class="field-award-pub_tag">
+<div class="row">
+
+<div class="col-md-8">
+<label class="control-label" for="award-pub_tag">Tagged Staff</label>
+<?php 
+echo Select2::widget([
+    'name' => 'tagged_staff',
+    'value' => ArrayHelper::map($model->awardTagsNotMe,'id','staff_id'),
+    'data' => ArrayHelper::map(Staff::activeStaffNotMe(), 'id', 'staff_name'),
+    'options' => ['multiple' => true, 'placeholder' => 'Select '.Yii::$app->params['faculty_abbr'].' Staff ...']
+]);
+
+?>
+
+</div>
+</div>
 </div>
 
     

@@ -5,6 +5,7 @@ use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use backend\modules\esiap\models\Program;
 use backend\models\Faculty;
+use backend\modules\esiap\models\CourseType;
 
 
 /* @var $this yii\web\View */
@@ -41,23 +42,29 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="col-md-3"><?= $form->field($model, 'credit_hour')->textInput(['maxlength' => true]) ?></div>
 
+<div class="col-md-8">
+<?= $form->field($model, 'course_type')->dropDownList(ArrayHelper::map(CourseType::find()->where(['showing' => 1])->orderBy('type_order ASC')->all(),'id', 'type_name'), ['prompt' => 'Please Select' ]) ?>
 </div>
 
-<?= $form->field($model, 'is_dummy')->dropDownList( [ 0 => 'NO', 1 => 'YES' ] ) ?>
+</div>
+
+
 
 <?= $form->field($model, 'program_id')->dropDownList(
-        ArrayHelper::map(Program::find()->where(['faculty_id' => 1, 'trash' => 0])->all(),'id', 'pro_name'), ['prompt' => 'Please Select' ]
+        ArrayHelper::map(Program::find()->where(['faculty_id' => Yii::$app->params['faculty_id'], 'trash' => 0])->all(),'id', 'pro_name'), ['prompt' => 'Please Select' ]
     ) ?>
 
 <?php 
 if($model->faculty_id == 0){
-	$model->faculty_id = 1;
+	$model->faculty_id = Yii::$app->params['faculty_id'];
 }
 echo $form->field($model, 'faculty_id')->dropDownList(
         ArrayHelper::map(Faculty::find()->where(['showing' => 1])->all(),'id', 'faculty_name'), ['prompt' => 'Please Select' ]
     ) ?>
 
 
+
+<?= $form->field($model, 'is_dummy')->dropDownList( [ 0 => 'NO', 1 => 'YES' ] ) ?>
 </div></div>
 </div>
 

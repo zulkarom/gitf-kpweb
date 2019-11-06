@@ -75,6 +75,8 @@ class Program extends \yii\db\ActiveRecord
         return [
             [['pro_name', 'pro_name_bi'], 'required'],
 			
+			[['pro_name', 'pro_name_bi', 'department_id', 'pro_cat', 'grad_credit', 'pro_name_short', 'pro_level', 'study_mode'], 'required', 'on' => 'update'],
+			
 			
 			
             [['pro_level', 'faculty_id', 'department_id', 'status', 'pro_cat', 'pro_field', 'grad_credit', 'study_mode', 'full_week_long', 'full_week_short', 'full_sem_long', 'full_sem_short', 'part_week_long', 'part_week_short', 'part_sem_long', 'part_sem_short', 'trash'], 'integer'],

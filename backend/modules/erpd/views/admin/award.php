@@ -90,9 +90,10 @@ $exportColumns = [
 			[
 				'attribute' => 'staff_search',
 				'label' => 'Staff',
+				'format' => 'html',
 				'value' => function($model){
 					if($model->staff){
-						return $model->staff->user->fullname;
+						return $model->tagStaffNames;
 					}
 					
 				}
