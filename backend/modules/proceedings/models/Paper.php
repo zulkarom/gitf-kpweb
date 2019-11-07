@@ -34,7 +34,7 @@ class Paper extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['proc_id'], 'required'],
+            [['paper_title', 'paper_no'], 'required'],
             [['proc_id', 'paper_no'], 'integer'],
             [['paper_file'], 'string'],
             [['paper_title', 'author'], 'string', 'max' => 255],

@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'author',
             'paper_no',
             'paper_page',
-            'paper_url:ntext',
+            'paper_file:ntext',
         ],
     ]) ?>
 
