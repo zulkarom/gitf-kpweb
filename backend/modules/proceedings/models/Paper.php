@@ -17,6 +17,9 @@ use Yii;
  */
 class Paper extends \yii\db\ActiveRecord
 {
+	public $paper_instance;
+	public $file_controller;
+
     /**
      * {@inheritdoc}
      */
@@ -31,11 +34,18 @@ class Paper extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['proc_id', 'paper_title', 'author', 'paper_no', 'paper_page', 'paper_file'], 'required'],
+            [['proc_id'], 'required'],
             [['proc_id', 'paper_no'], 'integer'],
             [['paper_file'], 'string'],
             [['paper_title', 'author'], 'string', 'max' => 255],
             [['paper_page'], 'string', 'max' => 100],
+			
+			
+			[['paper_file'], 'required', 'on' => 'paper_upload'],
+            [['paper_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'doc, docx', 'maxSize' => 5000000],
+            [['updated_at'], 'required', 'on' => 'paper_delete'],
+
+			
         ];
     }
 

@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use common\models\UploadFile;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\proceedings\models\Paper */
@@ -12,8 +13,7 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'proc_id')->textInput() ?>
-
+ 
     <?= $form->field($model, 'paper_title')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'author')->textInput(['maxlength' => true]) ?>
@@ -22,7 +22,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'paper_page')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'paper_file')->textarea(['rows' => 6]) ?>
+    <?=UploadFile::fileInput($model, 'paper')?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use kartik\date\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\proceedings\models\Proceeding */
@@ -14,9 +15,35 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'proc_name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'date_start')->textInput() ?>
+  
 
-    <?= $form->field($model, 'date_end')->textInput() ?>
+ <?=$form->field($model, 'date_start')->widget(DatePicker::classname(), [
+    'removeButton' => false,
+    'pluginOptions' => [
+        'autoclose'=>true,
+        'format' => 'yyyy-mm-dd',
+        'todayHighlight' => true,
+        
+    ],
+    
+    
+]);
+?>
+
+
+    <?=$form->field($model, 'date_end')->widget(DatePicker::classname(), [
+    'removeButton' => false,
+    'pluginOptions' => [
+        'autoclose'=>true,
+        'format' => 'yyyy-mm-dd',
+        'todayHighlight' => true,
+        
+    ],
+    
+    
+]);
+?>
+
 
     <?= $form->field($model, 'image_file')->textarea(['rows' => 6]) ?>
 
