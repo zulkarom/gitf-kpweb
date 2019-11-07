@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $model backend\modules\proceedings\models\Paper */
 
 $this->title = 'Create Paper';
-$this->params['breadcrumbs'][] = ['label' => 'Papers', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Papers', 'url' => ['index', 'proc'=>$proc]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="paper-create">

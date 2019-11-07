@@ -11,6 +11,8 @@ use backend\modules\proceedings\models\Paper;
  */
 class PaperSearch extends Paper
 {
+	
+	public $proceeding;
     /**
      * {@inheritdoc}
      */
@@ -59,7 +61,7 @@ class PaperSearch extends Paper
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'proc_id' => $this->proc_id,
+            'proc_id' => $this->proceeding,
             'paper_no' => $this->paper_no,
         ]);
 

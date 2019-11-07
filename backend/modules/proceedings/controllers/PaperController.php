@@ -36,14 +36,16 @@ class PaperController extends Controller
      * Lists all Paper models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($proc)
     {
         $searchModel = new PaperSearch();
+		$searchModel -> proceeding = $proc;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+			'proc' => $proc,
         ]);
     }
 
@@ -53,10 +55,11 @@ class PaperController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id, $proc)
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
+			'proc' => $proc,
         ]);
     }
 
@@ -65,16 +68,19 @@ class PaperController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($proc)
     {
         $model = new Paper();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post()) ) {
+           $model ->proc_id = $proc;
+		   $model->save();
+		   return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
             'model' => $model,
+			'proc' => $proc,
         ]);
     }
 
