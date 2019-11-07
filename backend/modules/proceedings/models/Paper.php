@@ -42,7 +42,7 @@ class Paper extends \yii\db\ActiveRecord
 			
 			
 			[['paper_file'], 'required', 'on' => 'paper_upload'],
-            [['paper_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'doc, docx', 'maxSize' => 5000000],
+            [['paper_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
             [['updated_at'], 'required', 'on' => 'paper_delete'],
 
 			
@@ -64,4 +64,9 @@ class Paper extends \yii\db\ActiveRecord
             'paper_file' => 'Paper File',
         ];
     }
+	
+	public function getProceeding(){
+        return $this->hasOne(Proceeding::className(), ['id' => 'proc_id']);
+    }
+
 }

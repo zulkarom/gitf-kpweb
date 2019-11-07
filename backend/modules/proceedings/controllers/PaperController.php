@@ -134,8 +134,8 @@ public function actionUploadFile($attr, $id){
         $attr = $this->clean($attr);
         $model = $this->findModel($id);
         $model->file_controller = 'paper';
-
-        return UploadFile::upload($model, $attr, 'document_updated_at');
+		$path = 'proceedings/' . $model->proceeding->proc_url;
+        return UploadFile::upload($model, $attr, 'updated_at', $path);
 
     }
 

@@ -4,6 +4,8 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use common\models\UploadFile;
 
+$model->file_controller = 'paper';
+
 /* @var $this yii\web\View */
 /* @var $model backend\modules\proceedings\models\Paper */
 /* @var $form yii\widgets\ActiveForm */
