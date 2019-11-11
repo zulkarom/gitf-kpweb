@@ -99,7 +99,7 @@ use backend\models\Menu;
 					
 					['label' => 'WEBSITE', 'icon' => 'tv', 'url' => ['/website'],],
 					
-					['label' => 'PROCEEDINGS', 'icon' => 'microphone', 'url' => ['/proceedings'],],
+					['label' => 'PROCEEDINGS', 'icon' => 'microphone', 'url' => ['/proceedings'], 'visible' => Yii::$app->user->can('proceedings-manager')],
 					
 					
 					[
