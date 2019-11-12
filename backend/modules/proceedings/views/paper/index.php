@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 //'visible' => false,
                 'buttons'=>[
                     'update' => function ($url, $model) {
-                        return Html::a('<span class="fa fa-edit"></span>',['update', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
+                        return Html::a('<span class="fa fa-edit"></span>',['update', 'id' => $model->id, 'proc' => $model -> proc_id],['class'=>'btn btn-warning btn-sm']);
                     },
                     'view' => function ($url, $model) {
                         return Html::a('<span class="fa fa-eye"></span>',['view', 'id' => $model->id, 'proc' => $model -> proc_id],['class'=>'btn btn-success btn-sm']);

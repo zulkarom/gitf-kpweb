@@ -11,6 +11,7 @@ use yii\filters\VerbFilter;
 use common\models\UploadFile;
 use yii\helpers\Json;
 use yii\db\Expression;
+ use yii\filters\AccessControl;
 
 /**
  * ProjectController implements the CRUD actions for Paper model.
@@ -20,13 +21,18 @@ class PaperController extends Controller
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
+       
+
+	public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
                 ],
             ],
         ];
@@ -75,7 +81,7 @@ class PaperController extends Controller
         if ($model->load(Yii::$app->request->post()) ) {
            $model ->proc_id = $proc;
 		   $model->save();
-		   return $this->redirect(['view', 'id' => $model->id]);
+		   return $this->redirect(['index', 'proc' => $proc]);
         }
 
         return $this->render('create', [
@@ -91,12 +97,12 @@ class PaperController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id, $proc)
     {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index', 'proc' => $proc]);
         }
 
         return $this->render('update', [

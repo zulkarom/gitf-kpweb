@@ -8,9 +8,10 @@ use backend\modules\proceedings\models\ProceedingSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-	use common\models\UploadFile;
+use common\models\UploadFile;
 use yii\helpers\Json;
 use yii\db\Expression;
+use yii\filters\AccessControl;
 
 /**
  * ProceedingController implements the CRUD actions for Proceeding model.
@@ -20,13 +21,18 @@ class DefaultController extends Controller
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
+        
+
+	public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
                 ],
             ],
         ];

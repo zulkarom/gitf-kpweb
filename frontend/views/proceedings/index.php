@@ -12,11 +12,13 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="proceeding-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    
-
+   
+<section class="contact-page spad pt-0">
+        <div class="container">
+		
+		<p>
+ <h3><?= Html::encode($this->title) ?></h3>
+ </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
               'columns' => [
@@ -32,25 +34,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 'template' => '{view}',
                 //'visible' => false,
                 'buttons'=>[
-                    'update' => function ($url, $model) {
-                        return Html::a('<span class="fa fa-edit"></span>',['update', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
-                    },
+
                     'view' => function ($url, $model) {
-                        return Html::a('View',['paper', 'proc' => $model->id],['class'=>'btn btn-success btn-sm']);
+                        return Html::a('View Papers',['paper', 'purl' => $model->proc_url],['class'=>'btn btn-success btn-sm']);
                     },
-                    'delete' => function ($url, $model) {
-                        return Html::a('<span class="fa fa-trash"></span>', ['delete-article', 'id' => $model->id], [
-                            'class' => 'btn btn-danger btn-sm',
-                            'data' => [
-                                'confirm' => 'Are you sure you want to delete this manuscript?',
-                                'method' => 'post',
-                            ],
-                        ]) ;
-                    }
+                    
                 ],
             
             ]
 
         ],
     ]); ?>
+	        </div>
+    </section>
+
 </div>

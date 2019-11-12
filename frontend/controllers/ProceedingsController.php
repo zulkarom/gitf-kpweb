@@ -4,10 +4,13 @@ namespace frontend\controllers;
 
 use Yii;
 use backend\modules\proceedings\models\Proceeding;
+use backend\modules\proceedings\models\Paper;
 use backend\modules\proceedings\models\ProceedingSearch;
+use frontend\models\PaperSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use common\models\UploadFile;
 
 /**
  * ProceedingController implements the CRUD actions for Proceeding model.
@@ -42,6 +45,34 @@ class ProceedingsController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+    }
+	
+	 public function actionPaper($purl)
+    {
+        $searchModel = new PaperSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('paper', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+			'proceeding' => $this->findModel($purl)
+        ]);
+    }
+	
+	public function actionDownloadFile($id){
+        $attr = 'paper';
+        $model = $this->findPaper($id);
+        $filename = strtoupper($attr) . '_' . $model->paper_no;
+
+        UploadFile::download($model, $attr, $filename);
+    }
+	
+	public function actionDownloadImage($id){
+        $attr = 'image';
+        $model = $this->findModel($id);
+        $filename = strtoupper($attr);
+
+        UploadFile::download($model, $attr, $filename);
     }
 
     /**
@@ -116,9 +147,18 @@ class ProceedingsController extends Controller
      * @return Proceeding the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($purl)
     {
-        if (($model = Proceeding::findOne($id)) !== null) {
+        if (($model = Proceeding::findOne(['proc_url' => $purl])) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+	
+	protected function findPaper($id)
+    {
+        if (($model = Paper::findOne($id)) !== null) {
             return $model;
         }
 
