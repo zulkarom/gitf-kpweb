@@ -8,7 +8,7 @@ use yii\grid\GridView;
 /* @var $searchModel backend\modules\proceedings\models\ProjectSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Papers';
+$this->title = Html::encode($proceeding->proc_name);
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="paper-index">

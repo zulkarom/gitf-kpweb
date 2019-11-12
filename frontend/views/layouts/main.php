@@ -29,7 +29,7 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@frontend/views/myas
   gtag('config', 'UA-144386179-1');
 </script>
 
-	<title>FAKULTI KEUSAHAWANAN DAN PERNIAGAAN</title>
+	<title><?= Html::encode($this->title) ?> : FAKULTI KEUSAHAWANAN DAN PERNIAGAAN</title>
 	<meta charset="UTF-8">
 	<meta name="description" content="Faculty of Entrepreneurship and Business">
 	<meta name="keywords" content="event, fkp, creative, html">
