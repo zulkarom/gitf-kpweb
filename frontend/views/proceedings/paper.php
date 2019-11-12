@@ -55,7 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
             
             [
 				'attribute' => 'paper_page',
-				'label' => 'Pages',
+				'label' => 'PAGES',
 				
 			],
             

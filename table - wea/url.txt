@@ -1,1 +1,3 @@
+letak dekat common -> config -> main-localkat component url manager bawah rules
+
 'proceedings/<purl>' => 'proceedings/paper',
