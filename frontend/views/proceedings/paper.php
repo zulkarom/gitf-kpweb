@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
    <?php 
    if($proceeding->image_file){
 	   ?>
-	    <img width="50%" src="<?=Url::to(['download-image', 'id' => $proceeding->proc_url])?>" />
+	    <img width="50%" src="<?=Url::to(['download-image', 'purl' => $proceeding->proc_url])?>" />
 	   <?php
    }
    

@@ -24,10 +24,19 @@ $model->file_controller = 'paper';
 
     <?= $form->field($model, 'paper_page')->textInput(['maxlength' => true]) ?>
 
-    <?=UploadFile::fileInput($model, 'paper')?>
+    <?php 
+	if(!$model->isNewRecord){
+		echo UploadFile::fileInput($model, 'paper');
+		$button = 'Save';
+	}else{
+		$button = 'Next';
+	}
+	
+	
+	?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton($button, ['class' => 'btn btn-success', 'name'=> 'btn-submit', 'value' => $button]) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

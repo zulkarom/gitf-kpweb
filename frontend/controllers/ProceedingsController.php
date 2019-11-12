@@ -67,9 +67,9 @@ class ProceedingsController extends Controller
         UploadFile::download($model, $attr, $filename);
     }
 	
-	public function actionDownloadImage($id){
+	public function actionDownloadImage($purl){
         $attr = 'image';
-        $model = $this->findModel($id);
+        $model = $this->findModel($purl);
         $filename = strtoupper($attr);
 
         UploadFile::download($model, $attr, $filename);
@@ -153,7 +153,7 @@ class ProceedingsController extends Controller
             return $model;
         }
 
-        throw new NotFoundHttpException('The requested page does not exist.');
+        throw new NotFoundHttpException('The requested page does not existx.');
     }
 	
 	protected function findPaper($id)

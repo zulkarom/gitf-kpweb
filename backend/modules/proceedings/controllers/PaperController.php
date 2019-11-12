@@ -81,7 +81,13 @@ class PaperController extends Controller
         if ($model->load(Yii::$app->request->post()) ) {
            $model ->proc_id = $proc;
 		   $model->save();
-		   return $this->redirect(['index', 'proc' => $proc]);
+		   $action = Yii::$app->request->post('btn-submit');
+		   if($action == 'Next'){
+			   return $this->redirect(['update', 'id' => $model->id ,'proc' => $proc]);
+		   }else{
+			   return $this->redirect(['index', 'proc' => $proc]);
+		   }
+		   
         }
 
         return $this->render('create', [
