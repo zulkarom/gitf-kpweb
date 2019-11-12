@@ -1,0 +1,1 @@
+ALTER TABLE `proceeding` ADD `updated_at` DATETIME NOT NULL AFTER `proc_url`;

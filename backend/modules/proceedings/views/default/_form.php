@@ -3,10 +3,13 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\date\DatePicker;
+use common\models\UploadFile;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\proceedings\models\Proceeding */
 /* @var $form yii\widgets\ActiveForm */
+
+$model->file_controller = 'default';
 ?>
 
 <div class="proceeding-form">
@@ -44,8 +47,8 @@ use kartik\date\DatePicker;
 ]);
 ?>
 
-
-    <?= $form->field($model, 'image_file')->textarea(['rows' => 6]) ?>
+	
+	<?=UploadFile::fileInput($model, 'image', true)?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

@@ -15,6 +15,9 @@ use Yii;
  */
 class Proceeding extends \yii\db\ActiveRecord
 {
+	public $image_instance;
+	public $file_controller;
+
     /**
      * {@inheritdoc}
      */
@@ -29,10 +32,16 @@ class Proceeding extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['proc_name', 'date_start', 'date_end', 'image_file'], 'required'],
+            [['proc_name', 'date_start', 'date_end'], 'required'],
             [['date_start', 'date_end'], 'safe'],
             [['image_file'], 'string'],
             [['proc_name'], 'string', 'max' => 200],
+			
+			[['image_file'], 'required', 'on' => 'image_upload'],
+            [['image_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg, png, gif', 'maxSize' => 5000000],
+            [['updated_at'], 'required', 'on' => 'image_delete'],
+			
+			
         ];
     }
 
