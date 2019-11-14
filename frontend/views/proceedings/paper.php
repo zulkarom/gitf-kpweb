@@ -37,7 +37,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
 			[
 				'attribute' => 'paper_no',
-				'label' => '#'
+				'label' => '#',
+				'value' => function($model){
+					return $model->paper_no == 0 ? 'i.' : $model->paper_no . '.';
+					
+				}
 				
 			],
 			
@@ -69,7 +73,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'buttons'=>[
 
                     'view' => function ($url, $model) {
-                        return Html::a('<span class="fa fa-download"></span> FULL PAPER',['download-file', 'id' => $model->id],['class'=>'btn btn-primary btn-sm', 'target' => '_blank']);
+						$text = $model->paper_no == 0 ? 'VIEW' : 'FULLPAPER';
+                        return Html::a('<span class="fa fa-download"></span> ' . $text ,['download-file', 'id' => $model->id],['class'=>'btn btn-primary btn-sm', 'target' => '_blank']);
                     },
                     
                 ],
