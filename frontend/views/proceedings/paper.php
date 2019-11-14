@@ -73,7 +73,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'buttons'=>[
 
                     'view' => function ($url, $model) {
-						$text = $model->paper_no == 0 ? 'VIEW' : 'FULLPAPER';
+						$text = $model->paper_no == 0 ? 'VIEW' : 'FULL PAPER';
                         return Html::a('<span class="fa fa-download"></span> ' . $text ,['download-file', 'id' => $model->id],['class'=>'btn btn-primary btn-sm', 'target' => '_blank']);
                     },
                     
