@@ -27,7 +27,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'paper_no',
             'paper_title',
-            'author',
+			[
+				'attribute' => 'author',
+				'label' => 'id',
+				'format' => 'html'
+				
+			],
+            
             
             //'paper_page',
             //'paper_url:ntext',
