@@ -35,6 +35,7 @@ use yii\helpers\Url;
 				<li><a target="_blank" href="http://jeb.umk.edu.my">JEB JOURNAL</a></li>
                 <li><a href="<?=Url::to(['/research/caknawan'])?>">CAKNAWAN</a></li>
 				<li><a href="<?=Url::to(['/proceedings'])?>">PROCEEDINGS</a></li>
+				<li><a target="_blank" href="https://fkpresearch.wixsite.com/fkp-researchskill">RESEARCH SKILLS DEVELOPMENT</a></li>
             </ul>
         </li>
         
