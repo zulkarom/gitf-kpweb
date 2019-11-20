@@ -19,7 +19,7 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@frontend/views/myas
 			
 		<div class="row">
 				
-				<div class="col-lg-3 col-sm-6 service-item offset-lg-1">
+				<div class="col-lg-3 col-sm-6 service-item">
 					<a href="http://ecomm.umk.edu.my/" target="_blank"><div class="service-icon">
 						<img src="<?=$directoryAsset ?>/img/services-icons/2.png" alt="1">
 					</div>
