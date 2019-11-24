@@ -1,3 +1,20 @@
+ALTER TABLE `rp_research` ADD `review_note` TEXT NOT NULL AFTER `reviewed_by`;
+ALTER TABLE `rp_award` ADD `review_note` TEXT NOT NULL AFTER `reviewed_by`;
+ALTER TABLE `rp_consultation` ADD `review_note` TEXT NOT NULL AFTER `reviewed_at`;
+ALTER TABLE `rp_knowledge_transfer` ADD `review_note` TEXT NOT NULL AFTER `reviewed_at`;
+ALTER TABLE `rp_membership` ADD `review_note` TEXT NOT NULL AFTER `reviewed_at`;
+ALTER TABLE `rp_publication` ADD `review_note` TEXT NOT NULL AFTER `reviewed_by`;
+ALTER TABLE `rp_award` CHANGE `awd_file` `awd_file` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+ALTER TABLE `rp_consultation` CHANGE `csl_file` `csl_file` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+ALTER TABLE `rp_research` CHANGE `res_file` `res_file` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+ALTER TABLE `rp_status` ADD `admin_action` TINYINT(1) NOT NULL AFTER `admin_show`;
+
+
+
+
+
+
+
 ALTER TABLE `sp_course` CHANGE `program_id` `program_id` INT(11) NULL;
 ALTER TABLE `sp_course_type` ADD `showing` TINYINT(1) NOT NULL AFTER `type_order`;
 UPDATE `sp_course_type` SET `showing` = '1' WHERE `sp_course_type`.`id` = 2; UPDATE `sp_course_type` SET `showing` = '1' WHERE `sp_course_type`.`id` = 3; UPDATE `sp_course_type` SET `showing` = '1' WHERE `sp_course_type`.`id` = 5;

@@ -129,7 +129,7 @@ class EventController extends Controller
     }
 	
 	
-public function actionUpload($attr, $id){
+public function actionUploadFile($attr, $id){
         $attr = $this->clean($attr);
         $model = $this->findModel($id);
         $model->file_controller = 'event';
@@ -142,7 +142,7 @@ protected function clean($string){
         return preg_replace('/[^A-Za-z0-9\-]/', '', $string);
     }
 
-public function actionDelete($attr, $id)
+public function actionDeleteFile($attr, $id)
     {
         $attr = $this->clean($attr);
         $model = $this->findModel($id);
@@ -172,7 +172,7 @@ public function actionDelete($attr, $id)
 
     }
 
-	public function actionDownload($attr, $id, $identity = true){
+	public function actionDownloadFile($attr, $id, $identity = true){
         $attr = $this->clean($attr);
         $model = $this->findModel($id);
         $filename = strtoupper($attr) ;
