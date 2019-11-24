@@ -19,7 +19,7 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@frontend/views/myas
 			
 		<div class="row">
 				
-				<div class="col-lg-4 col-sm-6 service-item offset-lg-1">
+				<div class="col-lg-3 col-sm-6 service-item">
 					<a href="http://ecomm.umk.edu.my/" target="_blank"><div class="service-icon">
 						<img src="<?=$directoryAsset ?>/img/services-icons/2.png" alt="1">
 					</div>
@@ -47,6 +47,17 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@frontend/views/myas
 					<div class="service-content">
 						<h4>LIBRARY</h4>
 				<p>Access OPAC Web, journals and past year exam papers</p>
+					</div>
+					</a>
+				</div>
+				
+				<div class="col-lg-3 col-sm-6 service-item">
+					<a href="https://fkpresearch.wixsite.com/fkp-researchskill" target="_blank"><div class="service-icon">
+						<img src="<?=$directoryAsset ?>/img/services-icons/2.png" alt="1">
+					</div>
+					<div class="service-content">
+						<h4>RESEARCH SKILSS DEVELOPMENT PROGRAMME</h4>
+				<p>A range of workshops, seminars and short courses to build research knowledge and skills for postgraduate students</p>
 					</div>
 					</a>
 				</div>
