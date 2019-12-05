@@ -10,6 +10,133 @@ ALTER TABLE `rp_research` CHANGE `res_file` `res_file` TEXT CHARACTER SET latin1
 ALTER TABLE `rp_status` ADD `admin_action` TINYINT(1) NOT NULL AFTER `admin_show`;
 
 
+ALTER TABLE `sp_program` ADD `updated_at` DATETIME NOT NULL AFTER `career_bi`;
+
+
+CREATE TABLE `sp_program_access` (
+  `id` int(11) NOT NULL,
+  `staff_id` int(11) NOT NULL,
+  `program_id` int(11) NOT NULL,
+  `acc_order` int(11) NOT NULL,
+  `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sp_program_pic`
+--
+
+CREATE TABLE `sp_program_pic` (
+  `id` int(11) NOT NULL,
+  `program_id` int(11) NOT NULL,
+  `staff_id` int(11) NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `pic_order` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sp_program_structure`
+--
+
+CREATE TABLE `sp_program_structure` (
+  `id` int(11) NOT NULL,
+  `prg_version_id` int(11) NOT NULL,
+  `crs_version_id` int(11) NOT NULL,
+  `course_type_id` int(11) NOT NULL,
+  `sem_num` tinyint(1) NOT NULL COMMENT 'e.g. 1 or 2 = semester 1, semester dua',
+  `year` tinyint(2) NOT NULL,
+  `sem_num_part` tinyint(1) NOT NULL,
+  `year_part` tinyint(2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sp_program_version`
+--
+
+CREATE TABLE `sp_program_version` (
+  `id` int(11) NOT NULL,
+  `program_id` int(11) NOT NULL,
+  `version_name` varchar(200) NOT NULL,
+  `status` tinyint(4) NOT NULL,
+  `plo_num` tinyint(4) NOT NULL,
+  `is_developed` tinyint(1) NOT NULL,
+  `is_published` tinyint(1) NOT NULL,
+  `trash` tinyint(1) NOT NULL,
+  `created_by` int(11) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `prepared_by` int(11) NOT NULL,
+  `prepared_at` date NOT NULL,
+  `verified_by` int(11) NOT NULL,
+  `verified_at` date NOT NULL,
+  `faculty_approve_at` date NOT NULL,
+  `senate_approve_at` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `sp_program_access`
+--
+ALTER TABLE `sp_program_access`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `staff_id` (`staff_id`),
+  ADD KEY `course_id` (`program_id`);
+
+--
+-- Indexes for table `sp_program_pic`
+--
+ALTER TABLE `sp_program_pic`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `staff_id` (`staff_id`),
+  ADD KEY `course_id` (`program_id`);
+
+--
+-- Indexes for table `sp_program_structure`
+--
+ALTER TABLE `sp_program_structure`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `sp_program_version`
+--
+ALTER TABLE `sp_program_version`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `sp_program_access`
+--
+ALTER TABLE `sp_program_access`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `sp_program_pic`
+--
+ALTER TABLE `sp_program_pic`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `sp_program_structure`
+--
+ALTER TABLE `sp_program_structure`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `sp_program_version`
+--
+ALTER TABLE `sp_program_version`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  
+
+
 
 
 
