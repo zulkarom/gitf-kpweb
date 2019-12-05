@@ -179,6 +179,9 @@ class Menu
 						
 				['label' => 'Summary', 'icon' => 'pie-chart', 'url' => ['/website']],
 				
+				['label' => 'Programs', 'icon' => 'cubes', 'url' => ['/website/program']],
+				
+				
 				['label' => 'Front Slider', 'icon' => 'pencil', 'url' => ['/website/front-slider']],
 				
 				['label' => 'Event List', 'icon' => 'list', 'url' => ['/website/event']],

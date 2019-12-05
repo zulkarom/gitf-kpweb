@@ -1,7 +1,0 @@
-ALTER TABLE `rp_knowledge_transfer_member` ADD `ktp_order` INT NOT NULL AFTER `ext_name`;
-
-ALTER TABLE `rp_knowledge_transfer` CHANGE `updated_at` `modified_at` DATETIME NOT NULL;
-
-
-
-ALTER TABLE `sp_course` ADD `created_at` DATETIME NOT NULL AFTER `trash`, ADD `updated_at` DATETIME NOT NULL AFTER `created_at`;

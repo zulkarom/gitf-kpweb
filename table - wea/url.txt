@@ -1,5 +1,0 @@
-letak dekat common -> config -> main-localkat component url manager bawah rules
-
-'proceedings/download-image' => 'proceedings/download-image',
-'proceedings/download-file' => 'proceedings/download-file',
-'proceedings/<purl>' => 'proceedings/paper',
