@@ -146,8 +146,36 @@ class Program extends \yii\db\ActiveRecord
         ];
     }
 	
+	public function IAmProgramPic(){
+		$pics = $this->programPics;
+		if($pics){
+			foreach($pics as $pic){
+				if($pic->staff_id == Yii::$app->user->identity->staff->id){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public function getProgramPics(){
+		return $this->hasMany(ProgramPic::className(), ['program_id' => 'id']);
+	}
+	
+	public function getProgramAccesses(){
+		return $this->hasMany(ProgramAccess::className(), ['program_id' => 'id']);
+	}
+	
 	public function getProgramLevel(){
         return $this->hasOne(ProgramLevel::className(), ['id' => 'pro_level']);
     }
+	
+	public function getPublishedVersion(){
+		return ProgramVersion::findOne(['program_id' => $this->id, 'is_published' => 1]);
+	}
+	
+	public function getDevelopmentVersion(){
+		return ProgramVersion::findOne(['program_id' => $this->id, 'is_developed' => 1]);
+	}
 
 }

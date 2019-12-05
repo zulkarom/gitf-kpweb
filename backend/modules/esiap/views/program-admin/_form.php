@@ -1,28 +1,19 @@
 <?php
 
 use yii\helpers\Html;
-use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use backend\modules\esiap\models\ProgramCategory;
 use backend\modules\esiap\models\StudyMode;
 use backend\modules\esiap\models\ProgramLevel;
 use backend\models\Department;
-use wbraganca\dynamicform\DynamicFormWidget;
-use backend\modules\staff\models\Staff;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\esiap\models\Program */
-
-$this->title = 'Update Program';
-$this->params['breadcrumbs'][] = ['label' => 'Programs', 'url' => ['index']];
-$this->params['breadcrumbs'][] = 'Update';
+/* @var $form yii\widgets\ActiveForm */
 ?>
-<div class="program-update">
-
   <?php $form = ActiveForm::begin(); ?>
-
-<div class="box box-primary">
+<div class="box">
 <div class="box-header"></div>
 <div class="box-body"><div class="program-form">
 
@@ -33,9 +24,9 @@ $this->params['breadcrumbs'][] = 'Update';
     <?= $form->field($model, 'pro_name_bi')->textInput(['maxlength' => true]) ?>
 	
 	<div class="row">
-<div class="col-md-6"> <?= $form->field($model, 'pro_name_short')->textInput(['maxlength' => true]) ?></div>
+<div class="col-md-3"> <?= $form->field($model, 'pro_name_short')->textInput(['maxlength' => true]) ?></div>
 
-<div class="col-md-6"> 
+<div class="col-md-3"> 
 
 
 <?= $form->field($model, 'pro_level')->dropDownList(
@@ -98,14 +89,9 @@ $this->params['breadcrumbs'][] = 'Update';
 
 </div></div>
 
-
-
-
  <div class="form-group">
         <?= Html::submitButton('<i class="fa fa-save"> </i> SAVE PROGRAM', ['class' => 'btn btn-primary']) ?>
     </div>
 
 
    <?php ActiveForm::end(); ?>
-
-</div>

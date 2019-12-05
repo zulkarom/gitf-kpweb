@@ -188,13 +188,31 @@ EOD;
 		</td>
 		
 		<td width="'.$row5col2.'">
-		<b>Jabatan:</b> '.$this->model->course->department->dep_name .'<br />
-		<i><b>Department:</b> '.$this->model->course->department->dep_name_bi .'</i>
+		<b>Jabatan:</b> ';
+		$dep_bm = '';
+		$dep_bi = '';
+		if($this->model->course->department){
+			$dep_bm = $this->model->course->department->dep_name ;
+			$dep_bi = $this->model->course->department->dep_name_bi ;
+		}
+		
+		$html .= $dep_bm;
+		
+		$html .= '<br />
+		<i><b>Department:</b> '. $dep_bi .'</i>
 		</td>
 		
-		<td colspan="2" width="'.$row5col3.'">
-		<b>Program:</b> '.$this->model->course->program->pro_name .'<br />
-		<i><b>Programme:</b> '.$this->model->course->program->pro_name_bi .'</i>
+		<td colspan="2" width="'.$row5col3.'">';
+		
+		$prog_bm = '';
+		$prog_bi = '';
+		if($this->model->course->program){
+			$prog_bm = $this->model->course->program->pro_name;
+			$prog_bi = $this->model->course->program->pro_name_bi;
+		}
+		
+		$html .= '<b>Program:</b> '. $prog_bm .'<br />
+		<i><b>Programme:</b> '. $prog_bi .'</i>
 		</td>
 		
 		</tr>
@@ -345,6 +363,7 @@ foreach($this->model->syllabus as $row){
 	$html .='<td '.$style_number.'>'.$row->pnp_tutorial .'</td>';
 	$html .='<td '.$style_number.'>'.$practical_others.'</td>';
 	//$html .='<td style="vertical-align: middle;text-align:center">'.$row->pnp_others .'</td>';
+	
 	
 	
 	$html .='<td '.$style_number.'>'.$row->nf2f .'</td>';

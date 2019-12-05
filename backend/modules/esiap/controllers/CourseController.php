@@ -566,6 +566,20 @@ class CourseController extends Controller
 				}
 				}
 				
+				$post_assess = Yii::$app->request->post('assess2');
+				if($post_assess){
+					foreach($post_assess as $key => $val){
+					$as = CourseAssessment::findOne($key);
+					$as->scenario = 'update_slt2';
+					if($as){
+						$as->assess_nf2f = $val;
+						if(!$as->save()){
+							$as->flashError();
+						}
+					}
+				}
+				}
+				
 				
 				$post_assess = Yii::$app->request->post('syll');
 				foreach($post_assess as $key => $val){

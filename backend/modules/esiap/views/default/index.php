@@ -107,3 +107,71 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?></div></div>
 </div>
+
+<?php 
+if($dataProvider4->getCount() > 0){?>
+<div class="box box-primary">
+<div class="box-header">
+<h3 class="box-title">My Program(s)</h3>
+</div>
+<div class="box-body">
+
+<div class="table-responsive"><?= GridView::widget([
+        'dataProvider' => $dataProvider4,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+			'program.pro_name',
+
+
+            ['class' => 'yii\grid\ActionColumn',
+                 'contentOptions' => ['style' => 'width: 25%'],
+                'template' => '',
+                //'visible' => false,
+                'buttons'=>[
+                ],
+            
+            ],
+        ],
+    ]); ?></div></div>
+</div>
+<?php 
+}
+
+if($dataProvider3->getCount() > 0){?>
+<div class="box box-danger">
+<div class="box-header">
+<h3 class="box-title">Under Development Program(s)</h3>
+</div>
+<div class="box-body"><div class="table-responsive"><?= GridView::widget([
+        'dataProvider' => $dataProvider3,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+			'program.pro_name',
+			[
+				'attribute' => 'program.developmentVersion.labelStatus',
+				'label' => 'Status',
+				'format' => 'html'
+			],
+
+            ['class' => 'yii\grid\ActionColumn',
+                 'contentOptions' => ['style' => 'width: 10%'],
+                'template' => '{update}',
+                //'visible' => false,
+                'buttons'=>[
+                    'update'=>function ($url, $model) {
+						$version = $model->program->developmentVersion;
+						if($version){
+							return Html::a('<span class="glyphicon glyphicon-pencil"></span> Update',['/esiap/program/update/', 'program' => $model->program_id],['class'=>'btn btn-warning btn-sm']);
+						}else{
+							return 'NO UDV';
+						}
+                        
+                    },
+                ],
+            
+            ],
+        ],
+    ]); ?></div></div>
+</div>
+
+<?php } ?>

@@ -10,8 +10,8 @@ use richardfan\widget\JSRegister;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\esiap\models\CourseVersion */
 
-$this->title = 'New Version: ' . $course->course_name;
-$this->params['breadcrumbs'][] = ['label' => 'Course Versions', 'url' => ['index']];
+$this->title = 'New Version: ' . $program->pro_name;
+$this->params['breadcrumbs'][] = ['label' => 'Program Versions', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="course-version-create">
@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?= $form->field($model, 'is_developed')->dropDownList( [1 => 'YES' , 0 => 'NO'] ) ?>
 
-<?= $form->field($model, 'duplicate')->dropDownList([ 0 => 'NO', 1 => 'YES'] ) ?>
+
 
 
 
@@ -53,29 +53,13 @@ echo $form->field($model, 'plo_num')->dropDownList( $model->ploNumberArray ) ?>
 </div>
 
 
-<div class="row">
-<div class="col-md-8">
-<div id="con_course" style="display:none">
-<?php 
-
-$model->dup_course = $course->id;
-echo $form->field($model, 'dup_course')->dropDownList(ArrayHelper::map(Course::activeCourses(), 'id', 'course_name') )->label('Course') ?>
-</div>
-
-<div id="con_version" style="display:none">
-<?= $form->field($model, 'dup_version')->dropDownList( ArrayHelper::map($course->courseVersion, 'id' , 'version_name') )->label('Version') ?>
-</div>
-
-</div>
-
-</div>
 
 </div>
 
 </div>
 
     <div class="form-group">
-        <?= Html::submitButton('CREATE COURSE VERSION', ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton('CREATE PROGRAM VERSION', ['class' => 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

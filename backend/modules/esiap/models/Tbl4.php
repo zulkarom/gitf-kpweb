@@ -111,7 +111,7 @@ class Tbl4
 		<br /><br />
 		<b style="font-size:12pt;">MAKLUMAT KURSUS
 		<br /><i>COURSE INFORMATION</i></b></td>
-		<td width="125"><div align="right" style="font-size:11pt;">MQA TABLE 4</div></td>
+		<td width="125"><div align="right" style="font-size:11pt;">UMK/AKAD/P&P/FK02 </div></td>
 		</tr>
 		 </table>';
 		 
@@ -446,10 +446,12 @@ foreach($this->model->syllabus as $row){
 	</tr>';
 	
 	$html .='<tr style="font-weight:bold">
-	<td>Continuous Assessment</td>
-	<td>CLO*</td>
-	<td colspan="6">Percentage (%)</td>
-	<td>Total SLT</td>
+	<td align="center">Continuous Assessment</td>
+
+	<td colspan="5" align="center">Percentage (%)</td>
+	<td align="center">F2F</td>
+	<td align="center">NF2F</td>
+	<td align="center">Total SLT</td>
 	</tr>';
 	
 	//array
@@ -457,61 +459,67 @@ foreach($this->model->syllabus as $row){
 	
 	$i=1;
 	$total = 0;
-	$slt_ass = 0;
 	if($this->model->courseAssessmentFormative){
+	$slt_assess = 0;
 	foreach($this->model->courseAssessmentFormative as $rf){
 			$per = $rf->as_percentage + 0;
-
+			$f2f = $rf->assess_f2f;
+			$nf2f = $rf->assess_nf2f;
+			$sub_total = $f2f + $nf2f;
+			$slt_assess += $sub_total;
 			$c=1;
 			$cc=1;
 			$str="";
 
 			$html .='<tr>
 			<td>'.$i.'. '.$rf->assess_name_bi .'</td>
-			<td align="center"></td>
-			<td colspan="6">'. $per .'%</td>
-			<td></td>
+			<td colspan="5" align="center">'. $per .'</td>
+			<td align="center">'.$f2f.'</td>
+			<td align="center">'.$nf2f.'</td>
+			<td align="center">'.$sub_total .'</td>
 			</tr>';
-			//$slt_ass += $rf->jam;
 			$total +=$per;
 	$i++;
 	}
 	}
 	
 	$html .='<tr style="font-weight:bold">
-	<td>Final Assessment</td>
-	<td>CLO*</td>
-	<td colspan="6">Percentage (%)</td>
-	<td>Total SLT</td>
+	<td align="center">Final Assessment</td>
+	<td colspan="5" align="center">Percentage (%)</td>
+	<td align="center">F2F</td>
+	<td align="center">NF2F</td>
+	<td align="center">Total SLT</td>
 	</tr>';
 	
 	if($this->model->courseAssessmentSummative){
 		$i=1;
 		foreach($this->model->courseAssessmentSummative as $rf){
 			$per = $rf->as_percentage + 0;	
-
+			$f2f = $rf->assess_f2f;
+			$nf2f = $rf->assess_nf2f;
+			$sub_total = $f2f + $nf2f;
+			$slt_assess += $sub_total;
 			$c=1;
 			$cc=1;
 			$str="";
 			
 			$html .='<tr>
 			<td>'.$i.'. '.$rf->assess_name_bi .'</td>
-			<td align="center">'.$str.'</td>
-			<td colspan="6">'. $per .'%</td>
-			<td>'.$rf->jam .'</td>
+			<td colspan="5" align="center">'. $per .'</td>
+			<td align="center">'.$f2f.'</td>
+			<td align="center">'.$nf2f.'</td>
+			<td align="center">'.$sub_total.'</td>
 			</tr>';
-			//$slt_ass += $rf->jam;
 			$total +=$per;
 	$i++;
 	}
 	}
 	
 	$html .='<tr>
-	<td colspan="2" align="center"><b>Total</b></td>
-	<td colspan="6"><b>'.$total.'%</b></td>
-	<td><b>'.$slt_ass.'</b></td>
+	<td colspan="9"></td>
+	
 	</tr>';
-	$slt_semua = $tgrand + $slt_ass;
+	$slt_semua = $tgrand + $slt_assess;
 	$html .='<tr>
 	<td colspan="8" align="center"><b>GRAND TOTAL SLT</b></td>
 	<td><b>'.$slt_semua.'</b></td>

@@ -22,12 +22,14 @@ use backend\models\GeneralSetting;
 class CourseVersion extends \yii\db\ActiveRecord
 {
 	public $as_percentage;
+	public $assess_f2f;
+	public $assess_nf2f;
 	public $assess_name;
 	public $assess_name_bi;
 	public $delivery_name;
 	public $delivery_name_bi;
 	public $as_hour;
-	public $duplicate = 1;
+	public $duplicate = 0;
 	public $dup_course;
 	public $dup_version;
 	
@@ -127,14 +129,30 @@ class CourseVersion extends \yii\db\ActiveRecord
 	
 	public function getAssessmentDirect()
     {
-		return $this->hasMany(CourseAssessment::className(), ['crs_version_id' => 'id'])->orderBy('id ASC')->innerJoin('sp_assessment_cat', 'sp_assessment_cat.id = sp_course_assessment.assess_cat')->where(['sp_assessment_cat.is_direct' => 1]);
+		return $this->hasMany(CourseAssessment::className(), ['crs_version_id' => 'id'])->orderBy('id ASC')
+		->innerJoin('sp_assessment_cat', 'sp_assessment_cat.id = sp_course_assessment.assess_cat')->where(['sp_assessment_cat.is_direct' => 1]);
         
+    }
+	
+	public function getAssessmentIndirect()
+    {
+		return $this->hasMany(CourseAssessment::className(), ['crs_version_id' => 'id'])->orderBy('id ASC')->innerJoin('sp_assessment_cat', 'sp_assessment_cat.id = sp_course_assessment.assess_cat')->where(['sp_assessment_cat.is_direct' => 0]);
+    }
+	
+	public function getAssessmentFormative()
+    {
+		return $this->hasMany(CourseAssessment::className(), ['crs_version_id' => 'id'])->orderBy('id ASC')->innerJoin('sp_assessment_cat', 'sp_assessment_cat.id = sp_course_assessment.assess_cat')->where(['sp_assessment_cat.form_sum' => 1]);
+    }
+	
+	public function getAssessmentSummative()
+    {
+		return $this->hasMany(CourseAssessment::className(), ['crs_version_id' => 'id'])->orderBy('id ASC')->innerJoin('sp_assessment_cat', 'sp_assessment_cat.id = sp_course_assessment.assess_cat')->where(['sp_assessment_cat.form_sum' => 2]);
     }
 	
 	public function getSltAssessmentFormative()
     {
 		return self::find()
-		->select('sp_course_assessment.*, SUM(sp_course_assessment.assess_f2f) AS as_hour')
+		->select('sp_course_assessment.*, SUM(sp_course_assessment.assess_f2f) + SUM(sp_course_assessment.assess_nf2f) AS as_hour')
 		->innerJoin('sp_course_assessment', 'sp_course_assessment.crs_version_id = sp_course_version.id')
 		->innerJoin('sp_assessment_cat', 'sp_assessment_cat.id = sp_course_assessment.assess_cat')
 		->groupBy(['sp_assessment_cat.form_sum'])
@@ -147,7 +165,7 @@ class CourseVersion extends \yii\db\ActiveRecord
 	public function getSltAssessmentSummative()
     {
 		return self::find()
-		->select('sp_course_assessment.*, SUM(sp_course_assessment.assess_f2f) AS as_hour')
+		->select('sp_course_assessment.*, SUM(sp_course_assessment.assess_f2f) + SUM(sp_course_assessment.assess_nf2f) AS as_hour')
 		->innerJoin('sp_course_assessment', 'sp_course_assessment.crs_version_id = sp_course_version.id')
 		->innerJoin('sp_assessment_cat', 'sp_assessment_cat.id = sp_course_assessment.assess_cat')
 		->groupBy(['sp_assessment_cat.form_sum'])
@@ -160,7 +178,7 @@ class CourseVersion extends \yii\db\ActiveRecord
 	public function getCourseAssessmentFormative()
     {
 		return self::find()
-		->select('sp_course_assessment.*, SUM(sp_course_clo_assess.percentage) AS as_percentage')
+		->select('sp_course_assessment.*, SUM(sp_course_clo_assess.percentage) AS as_percentage, sp_course_assessment.assess_f2f, sp_course_assessment.assess_nf2f')
 		->innerJoin('sp_course_clo', 'sp_course_clo.crs_version_id = sp_course_version.id')
 		->innerJoin('sp_course_clo_assess', 'sp_course_clo_assess.clo_id = sp_course_clo.id')
 		->innerJoin('sp_course_assessment', 'sp_course_assessment.id = sp_course_clo_assess.assess_id')
@@ -175,7 +193,7 @@ class CourseVersion extends \yii\db\ActiveRecord
 	public function getCourseAssessmentSummative()
     {
 		return self::find()
-		->select('sp_course_assessment.*, SUM(sp_course_clo_assess.percentage) AS as_percentage')
+		->select('sp_course_assessment.*, SUM(sp_course_clo_assess.percentage) AS as_percentage, sp_course_assessment.assess_f2f, sp_course_assessment.assess_nf2f')
 		->innerJoin('sp_course_clo', 'sp_course_clo.crs_version_id = sp_course_version.id')
 		->innerJoin('sp_course_clo_assess', 'sp_course_clo_assess.clo_id = sp_course_clo.id')
 		->innerJoin('sp_course_assessment', 'sp_course_assessment.id = sp_course_clo_assess.assess_id')
@@ -199,10 +217,7 @@ class CourseVersion extends \yii\db\ActiveRecord
 		;
     }
 	
-	public function getAssessmentIndirect()
-    {
-		return $this->hasMany(CourseAssessment::className(), ['crs_version_id' => 'id'])->orderBy('id ASC')->innerJoin('sp_assessment_cat', 'sp_assessment_cat.id = sp_course_assessment.assess_cat')->where(['sp_assessment_cat.is_direct' => 0]);
-    }
+	
 	
 	
 	public function getSyllabus()

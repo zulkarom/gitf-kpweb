@@ -37,6 +37,12 @@ echo '<br /><br />';
 		<td><a href="<?=Url::to(['/esiap/course/fk3', 'course' => $model->id, 'dev' => 1])?>" target="_blank" class="btn btn-default"><span class="glyphicon glyphicon-download-alt"></span> Download</a></td>
 	</tr>
 	
+	<tr>
+		<td width="5%">2.</td>
+		<td><span class="glyphicon glyphicon-file"></span>TABLE 4 - MAKLUMAT KURSUS / <i>COURSE INFORMATION </i>                               </td>
+		<td><a href="<?=Url::to(['/esiap/course/tbl4', 'course' => $model->id, 'dev' => 1])?>" target="_blank"  class="btn btn-default"><span class="glyphicon glyphicon-download-alt"></span> Download</a></td>
+	</tr>
+	
 </tbody></table>
 
 

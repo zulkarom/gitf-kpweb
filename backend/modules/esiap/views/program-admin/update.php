@@ -4,91 +4,100 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
+use backend\modules\esiap\models\ProgramCategory;
+use backend\modules\esiap\models\StudyMode;
+use backend\modules\esiap\models\ProgramLevel;
+use backend\models\Department;
 use wbraganca\dynamicform\DynamicFormWidget;
 use backend\modules\staff\models\Staff;
-use backend\modules\esiap\models\Program;
-use backend\modules\esiap\models\CourseType;
-use backend\models\Faculty;
 
 /* @var $this yii\web\View */
-/* @var $model backend\modules\esiap\models\Course */
+/* @var $model backend\modules\esiap\models\Program */
 
-$this->title = 'Update: ' . $model->course_name;
-$this->params['breadcrumbs'][] = ['label' => 'Courses', 'url' => ['index']];
+$this->title = 'Update Program';
+$this->params['breadcrumbs'][] = ['label' => 'Programs', 'url' => ['index']];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
-<?php $form = ActiveForm::begin(['id' => 'dynamic-form']); ?>
+<div class="program-update">
 
-
+  <?php $form = ActiveForm::begin(); ?>
 <div class="row">
+<div class="col-md-6">
+<div class="box box-primary">
+<div class="box-header"></div>
+<div class="box-body"><div class="program-form">
+
+  
+
+    <?= $form->field($model, 'pro_name')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'pro_name_bi')->textInput(['maxlength' => true]) ?>
+	
+	<div class="row">
+<div class="col-md-6"> <?= $form->field($model, 'pro_name_short')->textInput(['maxlength' => true]) ?></div>
+
+<div class="col-md-6"> 
+
+
+<?= $form->field($model, 'pro_level')->dropDownList(
+        ArrayHelper::map(ProgramLevel::find()->all(),'id', 'level_name'), ['prompt' => 'Please Select' ]
+    ) ?>
+
+
+</div>
+
+<div class="col-md-6">
+<?= $form->field($model, 'status')->dropDownList( [1 => 'YES' , 0 => 'NO'] ) ?>
+
+</div>
+
+</div>
+
+   <div class="row">
+<div class="col-md-6">
+
+<?= $form->field($model, 'department_id')->dropDownList(
+        ArrayHelper::map(Department::find()->all(),'id', 'dep_name'), ['prompt' => 'Please Select' ]
+    ) ?>
+
+
+
+
+</div>
+
+<div class="col-md-6"><?= $form->field($model, 'pro_cat')->dropDownList(
+        ArrayHelper::map(ProgramCategory::find()->all(),'id', 'cat_name'), ['prompt' => 'Please Select' ]
+    ) ?>
+</div>
+
+</div>
+	
+    <div class="row">
+<div class="col-md-6"> <?= $form->field($model, 'grad_credit')->textInput() ?></div>
+
 <div class="col-md-6">
 
 
-<div class="box box-primary">
-<div class="box-header">
-<div class="box-title">Main Setting</div>
-</div>
-<div class="box-body"><div class="course-update">
 
-
-
-<div class="row">
-
-<div class="col-md-6"><?= $form->field($model, 'course_code')->textInput(['maxlength' => true]) ?>
-</div>
-
-
-</div>
-
-
-<?= $form->field($model, 'course_name')->textInput(['maxlength' => true]) ?>
-
-
-	<?= $form->field($model, 'course_name_bi')->textInput(['maxlength' => true]) ?>
-	
-	
-	<div class="row">
-
-
-<div class="col-md-4"><?= $form->field($model, 'credit_hour')->textInput(['maxlength' => true]) ?></div>
-
-<div class="col-md-8">
-<?= $form->field($model, 'course_type')->dropDownList(ArrayHelper::map(CourseType::find()->where(['showing' => 1])->orderBy('type_order ASC')->all(),'id', 'type_name'), ['prompt' => 'Please Select' ]) ?>
-</div>
-
-</div>
-
-
-
-<?= $form->field($model, 'program_id')->dropDownList(
-        ArrayHelper::map(Program::find()->where(['faculty_id' => Yii::$app->params['faculty_id'], 'trash' => 0])->all(),'id', 'pro_name'), ['prompt' => 'Please Select' ]
+<?= $form->field($model, 'study_mode')->dropDownList(
+        ArrayHelper::map(StudyMode::find()->all(),'id', 'mode_name'), ['prompt' => 'Please Select' ]
     ) ?>
 
-<?php 
-if($model->faculty_id == 0){
-	$model->faculty_id = Yii::$app->params['faculty_id'];
-}
-echo $form->field($model, 'faculty_id')->dropDownList(
-        ArrayHelper::map(Faculty::find()->where(['showing' => 1])->all(),'id', 'faculty_name'), ['prompt' => 'Please Select' ]
-    ) ?>
-
-
-<div class="row">
-<div class="col-md-4">
-
-<?= $form->field($model, 'is_dummy')->dropDownList( [ 0 => 'NO', 1 => 'YES' ] ) ?>
+</div>
 
 </div>
 
 
+   
 
 </div>
+
+
+   
+
+ 
 
 </div></div>
-</div>
-
-
-
 
 
 <div class="box box-warning">
@@ -156,74 +165,12 @@ echo $form->field($model, 'faculty_id')->dropDownList(
 
 </div>
 </div>
-<?php 
-if($model->publishedVersion){
-	$disabled = '';
-}else{
-	$disabled = ' disabled';
-}
-
-?>
-<div class="box box-info">
-<div class="box-header">
-<h3 class="box-title">PUBLISHED FK01 - FK03</h3>
-</div>
-<div class="box-body">
-
-<div class="table-responsive">
-  <table class="table table-striped table-hover">
-    <thead>
-      <tr>
-		<th>#</th>
-        <th>Document</th>
-        <th>PDF</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-		<td>1.</td>
-        <td><span class="glyphicon glyphicon-file"></span> FK01 - PRO FORMA KURSUS / <i>COURSE PRO FORMA</i>                             </td>
-        <td><a href="<?=Url::to(['/esiap/course/fk1', 'course' => $model->id])?>" class="btn btn-success btn-sm<?=$disabled?>" target="_blank"><span class='glyphicon glyphicon-download-alt'></span></a></td>
-		
-      </tr>
-	  <tr>
-	  <td>2.</td>
-        <td><span class="glyphicon glyphicon-file"></span> FK02 - MAKLUMAT KURSUS / <i>COURSE INFORMATION </i>                               </td>
-        <td><a href="<?=Url::to(['/esiap/course/fk2', 'course' => $model->id])?>" class="btn btn-success btn-sm<?=$disabled?>" target="_blank"><span class='glyphicon glyphicon-download-alt'></span></a></td>
-		
-      </tr>
-	  <tr>
-	  <td>3.</td>
-        <td><span class="glyphicon glyphicon-file"></span> FK03 - PENJAJARAN KONSTRUKTIF / <i>CONSTRUCTIVE ALIGNMENT       </i>                         </td>
-        <td><a href="<?=Url::to(['/esiap/course/fk3', 'course' => $model->id])?>" class="btn btn-success btn-sm<?=$disabled?>" target="_blank"><span class='glyphicon glyphicon-download-alt'></span></a></td>
-		
-      </tr>
-	  
-	  <tr>
-	  <td>4.</td>
-        <td><span class="glyphicon glyphicon-file"></span> TABLE 4 - MAKLUMAT KURSUS / <i>COURSE INFORMATION </i>                               </td>
-        <td><a href="<?=Url::to(['/esiap/course/tbl4', 'course' => $model->id])?>" class="btn btn-success btn-sm<?=$disabled?>" target="_blank"><span class='glyphicon glyphicon-download-alt'></span></a></td>
-		
-      </tr>
-      
-    </tbody>
-  </table>
-</div>
-
-</div>
-</div>
-
-
 
 
 
 </div>
 
 <div class="col-md-6">
-
-
-
-
 <div class="box box-warning">
 <div class="box-header">
 <h3 class="box-title">Course Version</h3>
@@ -346,7 +293,7 @@ if($model->publishedVersion){
         <td>Action</td>
         <td><?php 
 		if($model->developmentVersion){
-			echo Html::a('<span class="glyphicon glyphicon-pencil"></span> Update Version', ['/esiap/course-admin/course-version-update', 'id' => $model->developmentVersion->id], [
+			echo Html::a('<span class="glyphicon glyphicon-pencil"></span> Update Version', ['/esiap/program-admin/program-version-update', 'id' => $model->developmentVersion->id], [
 					'class' => 'btn btn-warning btn-sm',
 					
 				]);
@@ -359,7 +306,7 @@ if($model->publishedVersion){
 		?></td>
       </tr>
      <tr>
-        <td><a class="btn btn-default btn-sm" href="<?=Url::to(['/esiap/course-admin/course-version', 'course' => $model->id])?>"><span class='glyphicon glyphicon-cog'></span> Manage Version</a></td>
+        <td><a class="btn btn-default btn-sm" href="<?=Url::to(['/esiap/program-admin/program-version', 'program' => $model->id])?>"><span class='glyphicon glyphicon-cog'></span> Manage Version</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -439,64 +386,16 @@ if($model->publishedVersion){
 </div>
 
 
-<div class="box box-info">
-<div class="box-header">
-<h3 class="box-title">FK01 - FK03 (UNDER DEVELOPMENT)</h3>
-</div>
-<div class="box-body">
-
-<div class="table-responsive">
-  <table class="table table-striped table-hover">
-    <thead>
-      <tr>
-		<th>#</th>
-        <th>Document</th>
-		<th>PDF</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-		<td>1.</td>
-        <td><span class="glyphicon glyphicon-file"></span> FK01 - PRO FORMA KURSUS / <i>COURSE PRO FORMA</i>                             </td>
-		
-		<td><a href="<?=Url::to(['/esiap/course/fk1', 'course' => $model->id, 'dev' => 1])?>" class="btn btn-warning btn-sm" target="_blank"><span class='glyphicon glyphicon-download-alt'></span></a></td>
-      </tr>
-	  <tr>
-	  <td>2.</td>
-        <td><span class="glyphicon glyphicon-file"></span> FK02 - MAKLUMAT KURSUS / <i>COURSE INFORMATION </i>                               </td>
-		
-		<td><a href="<?=Url::to(['/esiap/course/fk2', 'course' => $model->id, 'dev' => 1])?>" class="btn btn-warning btn-sm" target="_blank"><span class='glyphicon glyphicon-download-alt'></span></a></td>
-      </tr>
-	  <tr>
-	  <td>3.</td>
-        <td><span class="glyphicon glyphicon-file"></span> FK03 - PENJAJARAN KONSTRUKTIF / <i>CONSTRUCTIVE ALIGNMENT       </i>                         </td>
-		
-		<td><a href="<?=Url::to(['/esiap/course/fk3', 'course' => $model->id,  'dev' => 1])?>" class="btn btn-warning btn-sm" target="_blank"><span class='glyphicon glyphicon-download-alt'></span></a></td>
-      </tr>
-	  
-	  <tr>
-	  <td>4.</td>
-        <td><span class="glyphicon glyphicon-file"></span> TABLE 4 - MAKLUMAT KURSUS / <i>COURSE INFORMATION </i>		
-		<td><a href="<?=Url::to(['/esiap/course/tbl4', 'course' => $model->id,  'dev' => 1])?>" class="btn btn-warning btn-sm" target="_blank"><span class='glyphicon glyphicon-download-alt'></span></a></td>
-      </tr> 
-      
-    </tbody>
-  </table>
-</div>
-
-</div>
-</div>
-
 
 </div>
 
 </div>
 
-
-    <div class="form-group">
-	<?= Html::a("<span class='glyphicon glyphicon-arrow-left'></span> BACK", ['course-admin/index'] ,['class' => 'btn btn-default']) ?>
-        <?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> SAVE COURSE', ['class' => 'btn btn-success']) ?>
+ <div class="form-group">
+        <?= Html::submitButton('<i class="fa fa-save"> </i> SAVE PROGRAM', ['class' => 'btn btn-primary']) ?>
     </div>
 
 
-    <?php ActiveForm::end(); ?>
+   <?php ActiveForm::end(); ?>
+
+</div>
