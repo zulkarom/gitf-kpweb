@@ -1,4 +1,5 @@
 <?php 
+$this->title = 'UNDERGRADUATE PROGRAMMES';
 $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@frontend/views/myasset');
 
 ?>

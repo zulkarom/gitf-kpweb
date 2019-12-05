@@ -3,6 +3,7 @@
 namespace backend\modules\website\models;
 
 use Yii;
+use backend\modules\esiap\models\Program;
 
 /**
  * This is the model class for table "web_program".

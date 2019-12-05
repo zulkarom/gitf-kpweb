@@ -12,14 +12,10 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="program-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a('Create Program', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-    <?= GridView::widget([
+<div class="box">
+<div class="box-header"></div>
+<div class="box-body">    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
@@ -27,10 +23,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'program_id',
-            'summary:ntext',
-            'career:ntext',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
-    ]); ?>
+    ]); ?></div>
+</div>
+
 </div>
