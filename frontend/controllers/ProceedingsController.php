@@ -50,6 +50,7 @@ class ProceedingsController extends Controller
 	 public function actionPaper($purl)
     {
         $searchModel = new PaperSearch();
+		$searchModel->url = $purl;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('paper', [

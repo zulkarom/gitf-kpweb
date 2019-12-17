@@ -13,6 +13,7 @@ class PaperSearch extends Paper
 {
 	
 	public $proceeding;
+	public $url;
     /**
      * {@inheritdoc}
      */
@@ -42,7 +43,10 @@ class PaperSearch extends Paper
      */
     public function search($params)
     {
-        $query = Paper::find();
+        $query = Paper::find()
+		->leftJoin('proceeding', 'proceeding.id = proc_paper.proc_id')
+         ->where(['proceeding.proc_url' => $this->url]);
+
 
         // add conditions that should always apply here
 
@@ -61,12 +65,6 @@ class PaperSearch extends Paper
             return $dataProvider;
         }
 
-        // grid filtering conditions
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'proc_id' => $this->proceeding,
-            'paper_no' => $this->paper_no,
-        ]);
 
         $query->andFilterWhere(['like', 'paper_title', $this->paper_title])
             ->andFilterWhere(['like', 'author', $this->author])
