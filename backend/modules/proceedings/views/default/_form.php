@@ -17,6 +17,8 @@ $model->file_controller = 'default';
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'proc_name')->textInput(['maxlength' => true]) ?>
+	
+	 <?= $form->field($model, 'proc_url')->textInput(['maxlength' => true]) ?>
 
   
 
