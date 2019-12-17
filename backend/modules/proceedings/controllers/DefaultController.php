@@ -95,8 +95,14 @@ class DefaultController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+			if($model->save()){
+				Yii::$app->session->addFlash('success', "Data Updatedx");
+				return $this->redirect(['update', 'id' => $model->id]);
+			}else{
+				$model->flashError();
+			}
+			
         }
 
         return $this->render('update', [

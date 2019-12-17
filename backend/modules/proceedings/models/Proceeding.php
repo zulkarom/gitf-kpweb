@@ -33,8 +33,11 @@ class Proceeding extends \yii\db\ActiveRecord
     {
         return [
             [['proc_name', 'date_start', 'date_end'], 'required'],
+			
             [['date_start', 'date_end'], 'safe'],
-            [['image_file'], 'string'],
+			
+            [['image_file', 'proc_url'], 'string'],
+			
             [['proc_name'], 'string', 'max' => 200],
 			
 			[['image_file'], 'required', 'on' => 'image_upload'],
@@ -58,4 +61,18 @@ class Proceeding extends \yii\db\ActiveRecord
             'image_file' => 'Image File',
         ];
     }
+	
+	public function flashError(){
+        if($this->getErrors()){
+            foreach($this->getErrors() as $error){
+                if($error){
+                    foreach($error as $e){
+                        Yii::$app->session->addFlash('error', $e);
+                    }
+                }
+            }
+        }
+
+    }
+
 }
