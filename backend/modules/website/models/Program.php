@@ -3,7 +3,7 @@
 namespace backend\modules\website\models;
 
 use Yii;
-use backend\modules\esiap\models\Program;
+use backend\modules\esiap\models\Program as SpProgram;
 
 /**
  * This is the model class for table "web_program".
@@ -29,7 +29,7 @@ class Program extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'program_id', 'summary', 'career'], 'required'],
+            [['program_id'], 'required', 'on' => 'init'],
             [['id', 'program_id'], 'integer'],
             [['summary', 'career'], 'string'],
             [['id'], 'unique'],
@@ -48,4 +48,26 @@ class Program extends \yii\db\ActiveRecord
             'career' => 'Career',
         ];
     }
+	
+	public function getProgram(){
+        return $this->hasOne(SpProgram::className(), ['id' => 'program_id']);
+    }
+
+	
+	public static function syncProgram(){
+		$list = SpProgram::find()->where(['faculty_id' => Yii::$app->params['faculty_id'], 'status' => 1])->all();
+		if($list){
+			foreach($list as $p){
+				$id = $p->id;
+				$web = self::findOne(['program_id' => $id]);
+				if(!$web){
+					$new = new Program;
+					$new->scenario = 'init';
+					$new->program_id = $id;
+					$new->save();
+					
+				}
+			}
+		}
+	}
 }

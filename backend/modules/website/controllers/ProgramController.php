@@ -40,6 +40,7 @@ class ProgramController extends Controller
      */
     public function actionIndex()
     {
+		Program::syncProgram();
         $searchModel = new ProgramSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 

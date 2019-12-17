@@ -159,7 +159,7 @@ class Menu
 						
 				['label' => 'Summary', 'icon' => 'pie-chart', 'url' => ['/esiap/dashboard']],
 				
-				['label' => 'Program List', 'icon' => 'book', 'url' => ['/esiap/program']],
+				['label' => 'Program List', 'icon' => 'book', 'url' => ['/esiap/program-admin']],
 				
 				['label' => 'Course List', 'icon' => 'book', 'url' => ['/esiap/course-admin']],
 				
