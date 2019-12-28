@@ -43,7 +43,9 @@ class FrontSlider extends \yii\db\ActiveRecord
     {
         return [
             [['slide_name', 'is_publish'], 'required', 'on' => 'create'],
+			
 			[['image_file', 'slide_name', 'slide_order'], 'required', 'on' => 'update'],
+			
             [['image_file', 'caption', 'slide_url'], 'string'],
 			
 			[['slide_order', 'is_publish'], 'integer'],

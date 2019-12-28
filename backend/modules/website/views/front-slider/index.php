@@ -63,7 +63,12 @@ $this->params['breadcrumbs'][] = $this->title;
 				'label' => 'Image',
 				'format' => 'html',
 				'value' => function($model){
-					return '<img src="'.Url::to(['/website/front-slider/download-file', 'attr' => 'image','id' => $model->id]).'" width="300px" />';
+					if($model->image_file){
+						return '<img src="'.Url::to(['/website/front-slider/download-file', 'attr' => 'image','id' => $model->id]).'" width="300px" />';
+					}else{
+						return 'NO IMAGE!';
+					}
+					
 				}
 			],
             
