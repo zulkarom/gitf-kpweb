@@ -124,7 +124,7 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@frontend/views/myas
 	<section class="fact-section spad set-bg" data-setbg="<?=$directoryAsset ?>/img/fact-bg.jpg">
 		<div class="container">
 			<div class="row">
-				<div class="col-sm-6 col-lg-3 fact">
+				<div class="col-xs-6 col-sm-6 col-lg-3 fact">
 					<div class="fact-icon">
 						<i class="ti-time"></i>
 					</div>
@@ -133,7 +133,7 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@frontend/views/myas
 						<p>YEARS</p>
 					</div>
 				</div>
-				<div class="col-sm-6 col-lg-3 fact">
+				<div class="col-xs-6 col-sm-6 col-lg-3 fact">
 					<div class="fact-icon">
 						<i class="ti-briefcase"></i>
 					</div>
@@ -142,7 +142,7 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@frontend/views/myas
 						<p>LECTURERS</p>
 					</div>
 				</div>
-				<div class="col-sm-6 col-lg-3 fact">
+				<div class="col-xs-6 col-sm-6 col-lg-3 fact">
 					<div class="fact-icon">
 						<i class="ti-user"></i>
 					</div>
@@ -151,7 +151,7 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@frontend/views/myas
 						<p>STUDENTS</p>
 					</div>
 				</div>
-				<div class="col-sm-6 col-lg-3 fact">
+				<div class="col-xs-6 col-sm-6 col-lg-3 fact">
 					<div class="fact-icon">
 						<i class="ti-pencil-alt"></i>
 					</div>
