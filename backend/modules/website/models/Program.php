@@ -15,6 +15,8 @@ use backend\modules\esiap\models\Program as SpProgram;
  */
 class Program extends \yii\db\ActiveRecord
 {
+	public $rtype;
+	
     /**
      * {@inheritdoc}
      */
@@ -52,7 +54,6 @@ class Program extends \yii\db\ActiveRecord
 	public function getProgram(){
         return $this->hasOne(SpProgram::className(), ['id' => 'program_id']);
     }
-
 	
 	public static function syncProgram(){
 		$list = SpProgram::find()->where(['faculty_id' => Yii::$app->params['faculty_id'], 'status' => 1])->all();
@@ -70,4 +71,18 @@ class Program extends \yii\db\ActiveRecord
 			}
 		}
 	}
+	
+	public function typeRequirement(){
+		return [1 => ['STPM', 'STPM'], 2 => ['MATRIKULASI', 'MATRICULATION'], 3 => ['STAM', 'STAM'], 4 => ['DIPLOMA', 'DIPLOMA']];
+	}
+	
+	public function getRequirements()
+    {
+        return $this->hasMany(ProgramRequirement::className(), ['program_id' => 'id'])->where(['req_type' => $this->rtype]);
+    }
+	
+	public function listRequirements($type){
+		return ProgramRequirement::find()->where(['program_id' => $this->id, 'req_type' => $type])->all();
+	}
+
 }

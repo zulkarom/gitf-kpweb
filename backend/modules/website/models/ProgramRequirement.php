@@ -29,7 +29,7 @@ class ProgramRequirement extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['program_id', 'req_type', 'req_text', 'updated_at'], 'required'],
+            [['req_text'], 'required'],
             [['program_id', 'req_type'], 'integer'],
             [['req_text'], 'string'],
             [['updated_at'], 'safe'],
@@ -49,4 +49,6 @@ class ProgramRequirement extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
         ];
     }
+	
+	
 }
