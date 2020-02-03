@@ -46,6 +46,8 @@ class Award extends \yii\db\ActiveRecord
             [['awd_name', 'awd_by'], 'string', 'max' => 300],
             [['awd_type', 'awd_file'], 'string', 'max' => 100],
 			
+			[['review_note', 'awd_file'], 'string'],
+			
 			[['awd_file'], 'required', 'on' => 'awd_upload'],
             [['awd_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
             [['modified_at'], 'required', 'on' => 'awd_delete'],

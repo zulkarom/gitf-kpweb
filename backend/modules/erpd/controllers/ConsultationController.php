@@ -4,6 +4,7 @@ namespace backend\modules\erpd\controllers;
 
 use Yii;
 use backend\modules\erpd\models\Consultation;
+use backend\modules\erpd\models\ConsultationTag;
 use backend\modules\erpd\models\ConsultationSearch;
 
 use yii\web\Controller;
@@ -84,6 +85,53 @@ class ConsultationController extends Controller
 			$model->csl_staff = Yii::$app->user->identity->staff->id;
 			$model->created_at = new Expression('NOW()');
 			if($model->save()){
+				
+				$tag = new ConsultationTag;
+				$tag->consult_id = $model->id;
+				$tag->staff_id = Yii::$app->user->identity->staff->id;
+				$tag->save();
+				
+				$tag = Yii::$app->request->post('tagged_staff');
+				
+						if($tag){
+							$kira_post = count($tag);
+							$kira_lama = count($model->consultationTagsNotMe);
+							if($kira_post > $kira_lama){
+								$bil = $kira_post - $kira_lama;
+								for($i=1;$i<=$bil;$i++){
+									$insert = new ConsultationTag;
+									$insert->consult_id = $model->id;
+									$insert->save();
+								}
+							}else if($kira_post < $kira_lama){
+	
+								$bil = $kira_lama - $kira_post;
+								$deleted = ConsultationTag::find()
+								  ->where(['consult_id'=>$model->id])
+								  ->andwhere(['<>', 'staff_id', Yii::$app->user->identity->staff->id])
+								  ->limit($bil)
+								  ->all();
+								if($deleted){
+									foreach($deleted as $del){
+										$del->delete();
+									}
+								}
+							}
+							
+							$update_tag = ConsultationTag::find()
+							->where(['consult_id' => $model->id])
+							->andWhere(['<>', 'staff_id', Yii::$app->user->identity->staff->id])
+							->all();
+	
+							if($update_tag){
+								$i=0;
+								foreach($update_tag as $ut){
+									$ut->staff_id = $tag[$i];
+									$ut->save();
+									$i++;
+								}
+							}
+						}
 				$action = Yii::$app->request->post('wfaction');
 				if($action == 'save'){
 					Yii::$app->session->addFlash('success', "Data saved");
@@ -114,6 +162,49 @@ class ConsultationController extends Controller
         if ($model->load(Yii::$app->request->post())) {
 			$model->modified_at = new Expression('NOW()');
 			if($model->save()){
+				
+				$tag = Yii::$app->request->post('tagged_staff');
+				
+						if($tag){
+							$kira_post = count($tag);
+							$kira_lama = count($model->consultationTagsNotMe);
+							if($kira_post > $kira_lama){
+								$bil = $kira_post - $kira_lama;
+								for($i=1;$i<=$bil;$i++){
+									$insert = new ConsultationTag;
+									$insert->consult_id = $model->id;
+									$insert->save();
+								}
+							}else if($kira_post < $kira_lama){
+	
+								$bil = $kira_lama - $kira_post;
+								$deleted = ConsultationTag::find()
+								  ->where(['consult_id'=>$model->id])
+								  ->andwhere(['<>', 'staff_id', Yii::$app->user->identity->staff->id])
+								  ->limit($bil)
+								  ->all();
+								if($deleted){
+									foreach($deleted as $del){
+										$del->delete();
+									}
+								}
+							}
+							
+							$update_tag = ConsultationTag::find()
+							->where(['consult_id' => $model->id])
+							->andWhere(['<>', 'staff_id', Yii::$app->user->identity->staff->id])
+							->all();
+	
+							if($update_tag){
+								$i=0;
+								foreach($update_tag as $ut){
+									$ut->staff_id = $tag[$i];
+									$ut->save();
+									$i++;
+								}
+							}
+						}
+						
 				$action = Yii::$app->request->post('wfaction');
 				if($action == 'save'){
 					Yii::$app->session->addFlash('success', "Data saved");
@@ -138,9 +229,18 @@ class ConsultationController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        $model = $this->findModel($id);
+		if($model->csl_staff == Yii::$app->user->identity->staff->id){
+			$file = Yii::getAlias('@upload/' . $model->csl_file);
+			if (is_file($file)) {
+                unlink($file); 
+            }
+			if($model->delete()){
+				Yii::$app->session->addFlash('success', "The consultation has been successfully deleted");
+				return $this->redirect(['index']);
+			}
+			
+		}
     }
 
     /**

@@ -37,6 +37,13 @@ table.detail-view th {
 				
 			],
 			[
+				'label' => 'Tagged Staff',
+				'format' => 'html',
+				'value' => function($model){
+					return $model->tagStaffNames;
+				}
+			],
+			[
 				'label' => 'Consultation File',
 				'format' => 'raw',
 				'value' => function($model){

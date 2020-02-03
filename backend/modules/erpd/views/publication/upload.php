@@ -29,6 +29,9 @@ $model->file_controller = 'publication';
 <div class="box-body">
 
 <?=Upload::fileInput($model, 'pubupload')?>
+<?=Upload::fileInput($model, 'pubother')?>
+<i>*e.g. Main evidence for publication</i><br />
+<i>**e.g. Evidence for journal Scopus/ISI index (optional)</i>
 
 <?=$form->field($model, 'modified_at')->hiddenInput(['value' => time()])->label(false)?>
 

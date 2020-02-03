@@ -106,7 +106,7 @@ if($model->date_end != '0000-00-00'){
 ?>
 </div>
 
-<div class="col-md-2"><div class="form-group">&nbsp;</div> <div class="form-group"><label><input id="check-end" type="checkbox" name="check-end" value="1" <?=$check?> /> No End</label></div></div>
+<div class="col-md-2"><div class="form-group">&nbsp;</div> <div class="form-group"><label><input id="check-end" type="checkbox" name="[Membership]checknoend" value="1" <?=$check?> /> No End</label></div></div>
 
 </div>
 

@@ -35,8 +35,19 @@ $this->params['breadcrumbs'][] = $this->title;
 				}
 				
 			],
-			
-            'csl_title',
+			[
+				'attribute' => 'csl_title',
+				'format' => 'html',
+				'value' => function($model){
+					$note = '';
+					if($model->status == 10){
+						$note = '<br /> <span style="color:red">*Review Note: ' . $model->review_note . '</span>';
+					}
+					return $model->csl_title . $note;
+				}
+				
+			],
+            
             [
 				'attribute' => 'csl_funder',
 				'label'  => 'Funder'
@@ -64,15 +75,27 @@ $this->params['breadcrumbs'][] = $this->title;
             ,
 
             ['class' => 'yii\grid\ActionColumn',
-                 'contentOptions' => ['style' => 'width: 8.7%'],
-                'template' => '{update}',
+                 'contentOptions' => ['style' => 'width: 13.7%'],
+                'template' => '{update} {delete}',
                 //'visible' => false,
                 'buttons'=>[
                     'update'=>function ($url, $model) {
 						if($model->status > 10){
-							return Html::a('<span class="glyphicon glyphicon-pencil"></span> VIEW',['/erpd/consultation/view', 'id' => $model->id],['class'=>'btn btn-default btn-sm']);
+							return Html::a('<span class="glyphicon glyphicon-search"></span> VIEW',['/erpd/consultation/view', 'id' => $model->id],['class'=>'btn btn-default btn-sm']);
 						}else{
 							return Html::a('<span class="glyphicon glyphicon-pencil"></span> UPDATE',['/erpd/consultation/update', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
+						}
+                        
+                    },
+					'delete' => function ($url, $model) {
+						if($model->status == 0 or  $model->status == 10){
+							return Html::a('<span class="glyphicon glyphicon-trash"></span>',['/erpd/consultation/delete', 'id' => $model->id],['class'=>'btn btn-danger btn-sm', 'data' => [
+								'confirm' => 'Are you sure you want to delete this consultation?',
+								'method' => 'post',
+							],
+							]);
+						}else{
+							return '';
 						}
                         
                     }

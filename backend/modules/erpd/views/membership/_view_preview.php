@@ -23,7 +23,19 @@ table.detail-view th {
 			'msp_body:ntext',
 			'msp_type:ntext',
 			'date_start:date',
-			'date_end:date',
+			
+			[
+				'attribute' => 'date_end',
+				'value' => function($model){
+					if($model->date_end == '0000-00-00'){
+						return 'No End';
+					}else{
+						return date('d M Y', strtotime($model->date_end));
+					}
+				}
+				
+			],
+			
 			[
 				'attribute' => 'msp_level',
 				'value' => function($model){

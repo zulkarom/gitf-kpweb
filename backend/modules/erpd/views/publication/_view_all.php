@@ -63,6 +63,18 @@ table.detail-view th {
 				'value' => function($model){
 					return Html::a('<span class="glyphicon glyphicon-download-alt"></span> File',['publication/download-file', 'attr'=>'pubupload', 'id' => $model->id], ['target' => '_blank']);
 				}
+			],
+			[
+				'label' => 'Other File',
+				'format' => 'raw',
+				'value' => function($model){
+					if($model->pubother_file){
+						return Html::a('<span class="glyphicon glyphicon-download-alt"></span> File',['publication/download-file', 'attr'=>'pubother', 'id' => $model->id], ['target' => '_blank']);
+					}else{
+						return 'NONE';
+					}
+					
+				}
 			]
 			
 			

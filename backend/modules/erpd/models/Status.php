@@ -50,4 +50,15 @@ class Status extends \yii\db\ActiveRecord
             'user_show' => 'User Show',
         ];
     }
+	
+	public static function adminStatusAction(){
+		$array = array();
+		$list = self::find()->where(['admin_action' => 1])->all();
+		
+		foreach($list as $item){
+			$array[] = $item->status_code;
+		}
+		return $array;
+		
+	} 
 }

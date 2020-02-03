@@ -8,7 +8,7 @@ use common\models\Upload;
 /* @var $model backend\modules\erpd\models\Publication */
 
 $this->title = 'Award: Upload File';
-$this->params['breadcrumbs'][] = ['label' => 'Publications', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Award', 'url' => ['index']];
 $this->params['breadcrumbs'][] = 'Upload';
 
 $model->file_controller = 'award';

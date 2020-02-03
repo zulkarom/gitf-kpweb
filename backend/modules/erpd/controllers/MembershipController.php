@@ -79,9 +79,13 @@ class MembershipController extends Controller
     public function actionCreate()
     {
         $model = new Membership();
+		$model->scenario = 'save';
 
         if ($model->load(Yii::$app->request->post())) {
 			$model->msp_staff = Yii::$app->user->identity->staff->id;
+			if(empty($model->date_end) or $model->checknoend == 1){
+				$model->date_end = '0000-00-00';
+			}
 			$model->created_at = new Expression('NOW()');
 			
 			
@@ -117,7 +121,8 @@ class MembershipController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
 			$model->modified_at = new Expression('NOW()');
-			if(Yii::$app->request->post('check-end')){
+
+			if(empty($model->date_end) or $model->checknoend == 1){
 				$model->date_end = '0000-00-00';
 			}
 
@@ -147,9 +152,18 @@ class MembershipController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        $model = $this->findModel($id);
+		if($model->msp_staff == Yii::$app->user->identity->staff->id){
+			$file = Yii::getAlias('@upload/' . $model->msp_file);
+			if (is_file($file)) {
+                unlink($file); 
+            }
+			if($model->delete()){
+				Yii::$app->session->addFlash('success', "The membership has been successfully deleted");
+				return $this->redirect(['index']);
+			}
+			
+		}
     }
 
     /**

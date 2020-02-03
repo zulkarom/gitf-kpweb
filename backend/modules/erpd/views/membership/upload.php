@@ -8,7 +8,7 @@ use common\models\Upload;
 /* @var $model backend\modules\erpd\models\Publication */
 
 $this->title = 'Membership: Upload File';
-$this->params['breadcrumbs'][] = ['label' => 'Publications', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Membership', 'url' => ['index']];
 $this->params['breadcrumbs'][] = 'Upload';
 
 $model->file_controller = 'membership';
@@ -37,7 +37,7 @@ $model->file_controller = 'membership';
 
 <div class="form-group">
 
-<?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Back', ['/erpd/publication/update', 'id' => $model->id], ['class' => 'btn btn-default']) ?> 
+<?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Back', ['/erpd/membership/update', 'id' => $model->id], ['class' => 'btn btn-default']) ?> 
         
 <?= Html::submitButton('Submit Membership', ['class' => 'btn btn-primary']) ?>
     </div>

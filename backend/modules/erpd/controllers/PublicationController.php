@@ -431,9 +431,21 @@ class PublicationController extends Controller
      */
     public function actionDelete($id)
     {
-       // $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+       $model = $this->findModel($id);
+		if($model->staff_id == Yii::$app->user->identity->staff->id){
+			$file = Yii::getAlias('@upload/' . $model->pubupload_file);
+			if (is_file($file)) {
+                unlink($file); 
+            }
+			PubTag::deleteAll(['pub_id' => $id]);
+			Author::deleteAll(['pub_id' => $id]);
+			Editor::deleteAll(['pub_id' => $id]);
+			if($model->delete()){
+				Yii::$app->session->addFlash('success', "The publication has been successfully deleted");
+				return $this->redirect(['index']);
+			}
+			
+		}
     }
 
     /**
@@ -465,7 +477,7 @@ class PublicationController extends Controller
     }
 
 	protected function clean($string){
-		$allowed = ['pubupload'];
+		$allowed = ['pubupload', 'pubother'];
 		
 		foreach($allowed as $a){
 			if($string == $a){

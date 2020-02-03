@@ -38,6 +38,7 @@ class Publication extends \yii\db\ActiveRecord
 	public $staff_name;
 	
 	public $pubupload_instance;
+	public $pubother_instance;
 	public $file_controller;
 	
 	public $pub_label;
@@ -72,9 +73,16 @@ class Publication extends \yii\db\ActiveRecord
 			
             [['pub_isbn', 'pub_organizer', 'pub_index'], 'string', 'max' => 200],
 			
+			[['review_note', 'pubupload_file', 'pubother_file'], 'string'],
+			
 			[['pubupload_file'], 'required', 'on' => 'pubupload_upload'],
             [['pubupload_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
             [['modified_at'], 'required', 'on' => 'pubupload_delete'],
+			
+			[['pubother_file'], 'required', 'on' => 'pubother_upload'],
+            [['pubother_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
+            [['modified_at'], 'required', 'on' => 'pubother_delete'],
+
 
 
 
@@ -107,7 +115,8 @@ class Publication extends \yii\db\ActiveRecord
             'pub_day' => 'Day',
             'pub_date' => 'Date',
             'has_file' => 'Has File',
-            'pubupload_file' => 'Publication PDF File',
+            'pubupload_file' => 'Publication PDF File *',
+			'pubother_file' => 'Other Related File **',
             'modified_at' => 'Modified At',
             'created_at' => 'Created At',
         ];

@@ -235,9 +235,19 @@ class AwardController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        $model = $this->findModel($id);
+		if($model->awd_staff == Yii::$app->user->identity->staff->id){
+			$file = Yii::getAlias('@upload/' . $model->awd_file);
+			if (is_file($file)) {
+                unlink($file); 
+            }
+			AwardTag::deleteAll(['award_id' => $id]);
+			if($model->delete()){
+				Yii::$app->session->addFlash('success', "The award has been successfully deleted");
+				return $this->redirect(['index']);
+			}
+			
+		}
     }
 
     /**

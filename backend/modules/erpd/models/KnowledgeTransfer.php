@@ -57,7 +57,9 @@ class KnowledgeTransfer extends \yii\db\ActiveRecord
             [['ktp_amount'], 'number'],
             [['ktp_description'], 'string'],
             [['ktp_title'], 'string', 'max' => 600],
-            [['ktp_research', 'ktp_community', 'ktp_source', 'ktp_file'], 'string', 'max' => 200],
+            [['ktp_research', 'ktp_community', 'ktp_source'], 'string', 'max' => 200],
+			
+			[['review_note', 'ktp_file'], 'string'],
 			
 			[['ktp_file'], 'required', 'on' => 'ktp_upload'],
             [['ktp_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],

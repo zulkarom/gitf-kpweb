@@ -34,7 +34,19 @@ $this->params['breadcrumbs'][] = $this->title;
 				}
 				
 			],
-            'msp_body',
+			[
+				'attribute' => 'msp_body',
+				'format' => 'html',
+				'value' => function($model){
+					$note = '';
+					if($model->status == 10){
+						$note = '<br /> <span style="color:red">*Review Note: ' . $model->review_note . '</span>';
+					}
+					return $model->msp_body . $note;
+				}
+				
+			],
+            
             'msp_type',
 			[
 				'attribute' => 'msp_level',
@@ -54,8 +66,8 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
 
             ['class' => 'yii\grid\ActionColumn',
-                 'contentOptions' => ['style' => 'width: 8.7%'],
-                'template' => '{update}',
+                 'contentOptions' => ['style' => 'width: 13.7%'],
+                'template' => '{update} {delete}',
                 //'visible' => false,
                 'buttons'=>[
                     'update'=>function ($url, $model) {
@@ -63,6 +75,18 @@ $this->params['breadcrumbs'][] = $this->title;
 							return Html::a('<span class="glyphicon glyphicon-pencil"></span> VIEW',['/erpd/membership/view', 'id' => $model->id],['class'=>'btn btn-default btn-sm']);
 						}else{
 							return Html::a('<span class="glyphicon glyphicon-pencil"></span> UPDATE',['/erpd/membership/update', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
+						}
+                        
+                    },
+					'delete' => function ($url, $model) {
+						if($model->status == 0 or  $model->status == 10){
+							return Html::a('<span class="glyphicon glyphicon-trash"></span>',['/erpd/membership/delete', 'id' => $model->id],['class'=>'btn btn-danger btn-sm', 'data' => [
+								'confirm' => 'Are you sure you want to delete this membership?',
+								'method' => 'post',
+							],
+							]);
+						}else{
+							return '';
 						}
                         
                     }

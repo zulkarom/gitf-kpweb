@@ -46,7 +46,8 @@ class Consultation extends \yii\db\ActiveRecord
             [['csl_amount'], 'number'],
             [['date_start', 'date_end'], 'safe'],
             [['csl_title', 'csl_funder'], 'string', 'max' => 500],
-            [['csl_file'], 'string', 'max' => 100],
+			
+			[['review_note', 'csl_file'], 'string'],
 			
 			[['csl_file'], 'required', 'on' => 'csl_upload'],
             [['csl_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
@@ -117,4 +118,74 @@ class Consultation extends \yii\db\ActiveRecord
 		
 		return $array;
 	}
+	
+	public function flashError(){
+        if($this->getErrors()){
+            foreach($this->getErrors() as $error){
+                if($error){
+                    foreach($error as $e){
+                        Yii::$app->session->addFlash('error', $e);
+                    }
+                }
+            }
+        }
+
+    }
+	
+	
+	public function getConsultationTags()
+    {
+        return $this->hasMany(ConsultationTag::className(), ['consult_id' => 'id']);
+    }
+	
+	public function getTagStaffNames($break = "<br />"){
+		$tags = $this->consultationTags;
+		$str = '';
+		if($tags){
+			$i = 0;
+			foreach($tags as $tag){
+				$br = $i == 0 ? "" : $break;
+				$str .= $br.$tag->staff->user->fullname;
+			$i++;
+			}
+		}
+		return $str;
+	}
+	
+	public function getTagStaffNamesNotMe($break = "<br />"){
+		$tags = $this->consultationTagsNotMe;
+		$str = '';
+		if($tags){
+			$i = 0;
+			foreach($tags as $tag){
+				$br = $i == 0 ? "" : $break;
+				$str .= $br.$tag->staff->user->fullname;
+			$i++;
+			}
+		}
+		return $str;
+	}
+	
+	public function getMyConsultationTags()
+    {
+        return $this->hasMany(ConsultationTag::className(), ['consult_id' => 'id'])->where(['rp_consultation_tag.staff_id' => Yii::$app->user->identity->staff->id]);
+    }
+	
+	public function getConsultationTagsNotMe()
+    {
+        return $this->hasMany(ConsultationTag::className(), ['consult_id' => 'id'])->where(['<>', 'staff_id',Yii::$app->user->identity->staff->id]);
+    }
+	
+	public function tagStaffArray()
+    {
+        $list = self::find()
+		->select('staff.id, user.fullname as staff_name, user.id as user_id')
+		->innerJoin('rp_consultation_tag', 'rp_consultation_tag.pub_id = rp_consultation.id')
+		->innerJoin('staff', 'rp_consultation_tag.staff_id = staff.id')
+		->innerJoin('user', 'user.id = staff.user_id')
+		->where(['rp_consultation_tag.pub_id' => $this->id])
+		->all();
+		
+		return ArrayHelper::map($list,'id', 'id');
+    }
 }

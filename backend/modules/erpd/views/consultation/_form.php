@@ -3,6 +3,9 @@
 use yii\helpers\Html;
 use kartik\widgets\ActiveForm;
 use kartik\date\DatePicker;
+use yii\helpers\ArrayHelper;
+use backend\modules\staff\models\Staff;
+use kartik\select2\Select2;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\erpd\models\Consultation */
@@ -67,6 +70,26 @@ use kartik\date\DatePicker;
 
 <div class="row">
 <div class="col-md-4"><?= $form->field($model, 'csl_level')->dropDownList($model->listLevel()) ?>
+</div>
+</div>
+
+
+<div class="field-consultation_tag">
+<div class="row">
+
+<div class="col-md-8">
+<label class="control-label" for="consultation_tag">Tagged Staff</label>
+<?php 
+echo Select2::widget([
+    'name' => 'tagged_staff',
+    'value' => ArrayHelper::map($model->consultationTagsNotMe,'id','staff_id'),
+    'data' => ArrayHelper::map(Staff::activeStaffNotMe(), 'id', 'staff_name'),
+    'options' => ['multiple' => true, 'placeholder' => 'Select '.Yii::$app->params['faculty_abbr'].' Staff ...']
+]);
+
+?>
+
+</div>
 </div>
 </div>
 

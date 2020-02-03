@@ -262,9 +262,19 @@ class KnowledgeTransferController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        $model = $this->findModel($id);
+		if($model->staff_id == Yii::$app->user->identity->staff->id){
+			$file = Yii::getAlias('@upload/' . $model->ktp_file);
+			if (is_file($file)) {
+                unlink($file); 
+            }
+			KnowledgeTransferMember::deleteAll(['ktp_id' => $id]);
+			if($model->delete()){
+				Yii::$app->session->addFlash('success', "The knowledge transfer has been successfully deleted");
+				return $this->redirect(['index']);
+			}
+			
+		};
     }
 
     /**

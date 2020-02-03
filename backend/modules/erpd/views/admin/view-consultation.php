@@ -30,26 +30,45 @@ $model->file_controller = 'publication';
 
 <?=Html::a('<span class="glyphicon glyphicon-arrow-left"></span> BACK', ['/erpd/admin/consultation'],['class'=>'btn btn-default'])?>  
 
-<?=Html::submitButton('<span class="glyphicon glyphicon-pencil"></span> MODIFY', 
+
+
+	
+	<?php 
+	
+	
+	
+	if(in_array($model->status, \backend\modules\erpd\models\Status::adminStatusAction())){
+		echo Html::submitButton('<span class="glyphicon glyphicon-ok"></span> VERIFY', 
+		['class' => 'btn btn-primary', 'name' => 'wfaction', 'value' => 'verify', 'data' => [
+					'confirm' => 'Are you sure to verify the consultation?'
+				],
+		]);
+	
+	?>
+
+
+
+<br /><br />
+    </div>
+<div class="row">
+<div class="col-md-6"><?= $form->field($model, 'review_note')->textarea(['rows' => '6']) ?></div>
+
+</div>
+
+	
+	<?=Html::submitButton('<span class="glyphicon glyphicon-pencil"></span> MODIFY', 
     ['class' => 'btn btn-warning', 'name' => 'wfaction', 'value' => 'correction', 'data' => [
                 'confirm' => 'Are you sure to request the staff to correct the consultation?'
             ],
     ])?>
 
-	
-	<?php 
-	
-	if($model->status != 50){
-	echo Html::submitButton('<span class="glyphicon glyphicon-ok"></span> VERIFY', 
-		['class' => 'btn btn-primary', 'name' => 'wfaction', 'value' => 'verify', 'data' => [
-					'confirm' => 'Are you sure to verify the consultation?'
-				],
-		]);
-	}
-	
-	?>
-    
 
-    </div>
+<?php 
+
+	}
+?>
+
 
     <?php ActiveForm::end(); ?>
+
+

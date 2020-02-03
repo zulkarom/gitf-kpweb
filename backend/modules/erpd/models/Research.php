@@ -60,7 +60,9 @@ class Research extends \yii\db\ActiveRecord
 			
             [['res_title'], 'string', 'max' => 600],
 			
-            [['res_grant_others', 'res_source', 'res_file'], 'string', 'max' => 200],
+            [['res_grant_others', 'res_source'], 'string', 'max' => 200],
+			
+			[['review_note', 'res_file'], 'string'],
 			
 			[['res_file'], 'required', 'on' => 'res_upload'],
             [['res_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
@@ -230,6 +232,8 @@ class Research extends \yii\db\ActiveRecord
 		}
 		return $string;
 	}
+	
+	
 
 
 }

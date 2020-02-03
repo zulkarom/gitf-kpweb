@@ -298,10 +298,20 @@ class ResearchController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
-    }
+        $model = $this->findModel($id);
+		if($model->res_staff == Yii::$app->user->identity->staff->id){
+			$file = Yii::getAlias('@upload/' . $model->res_file);
+			if (is_file($file)) {
+                unlink($file); 
+            }
+			Researcher::deleteAll(['res_id' => $id]);
+			if($model->delete()){
+				Yii::$app->session->addFlash('success', "The research has been successfully deleted");
+				return $this->redirect(['index']);
+			}
+			
+		}
+	}
 
     /**
      * Finds the Research model based on its primary key value.

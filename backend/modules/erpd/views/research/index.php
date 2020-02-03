@@ -42,7 +42,11 @@ $this->params['breadcrumbs'][] = $this->title;
 				'label' => 'Title',
                 'format' => 'html',
 				'value' => function($model){
-					return $model->res_title . ' <i class="fa fa-tags"></i> by ' . $model->staff->user->fullname;
+					$note = '';
+					if($model->status == 10){
+						$note = '<br /> <span style="color:red">*Review Note: ' . $model->review_note . '</span>';
+					}
+					return $model->res_title . ' <br /><i class="fa fa-tags"></i> by ' . $model->staff->user->fullname . $note;
 				},
                 'contentOptions' => [ 'style' => 'width: 60%;' ],
             ],
@@ -72,15 +76,27 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
        
             ['class' => 'yii\grid\ActionColumn',
-                 'contentOptions' => ['style' => 'width: 8.7%'],
-                'template' => '{update}',
+                 'contentOptions' => ['style' => 'width: 13.7%'],
+                'template' => '{update} {delete}',
                 //'visible' => false,
                 'buttons'=>[
                     'update'=>function ($url, $model) {
 						if($model->status > 10){
-							return Html::a('<span class="glyphicon glyphicon-pencil"></span> VIEW',['/erpd/research/view', 'id' => $model->id],['class'=>'btn btn-default btn-sm']);
+							return Html::a('<span class="glyphicon glyphicon-search"></span> VIEW',['/erpd/research/view', 'id' => $model->id],['class'=>'btn btn-default btn-sm']);
 						}else{
 							return Html::a('<span class="glyphicon glyphicon-pencil"></span> UPDATE',['/erpd/research/update', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
+						}
+                        
+                    },
+					'delete' => function ($url, $model) {
+						if($model->status == 0 or  $model->status == 10){
+							return Html::a('<span class="glyphicon glyphicon-trash"></span>',['/erpd/research/delete', 'id' => $model->id],['class'=>'btn btn-danger btn-sm', 'data' => [
+								'confirm' => 'Are you sure you want to delete this research?',
+								'method' => 'post',
+							],
+							]);
+						}else{
+							return '';
 						}
                         
                     }

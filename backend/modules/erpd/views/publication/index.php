@@ -41,6 +41,21 @@ $this->params['breadcrumbs'][] = $this->title;
 				'attribute' => 'pub_year',
 				'filter' => Html::activeDropDownList($searchModel, 'pub_year', $searchModel->myUniqueYear(),['class'=> 'form-control','prompt' => 'All']),
 			],
+            
+			[
+                'attribute' => 'pub_title',
+                'format' => 'html',
+				'value' => function($model){
+					$note = '';
+					if($model->status == 10){
+						$note = '<br /> <span style="color:red">*Review Note: ' . $model->review_note . '</span>';
+					}
+					return $model->showApaStyle() . '<br /><i class="fa fa-tags"></i> by ' . $model->staff->user->fullname . $note;
+				},
+                'contentOptions' => [ 'style' => 'width: 50%;' ],
+            ],
+			
+			
             [
 				'attribute' => 'pub_type',
 				'filter' => Html::activeDropDownList($searchModel, 'pub_type', ArrayHelper::map(PubType::find()->all(), 'id','type_name'),['class'=> 'form-control','prompt' => 'All']),
@@ -49,15 +64,6 @@ $this->params['breadcrumbs'][] = $this->title;
 				},
 				'label' => 'Type'
 			],
-            
-			[
-                'attribute' => 'pub_title',
-                'format' => 'html',
-				'value' => function($model){
-					return $model->showApaStyle() . ' <i class="fa fa-tags"></i> by ' . $model->staff->user->fullname;
-				},
-                'contentOptions' => [ 'style' => 'width: 50%;' ],
-            ],
 			
 			[
 				'attribute' => 'status',
@@ -71,8 +77,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ,
 
             ['class' => 'yii\grid\ActionColumn',
-                 'contentOptions' => ['style' => 'width: 8.7%'],
-                'template' => '{update}',
+                 'contentOptions' => ['style' => 'width: 13.7%'],
+                'template' => '{update} {delete}',
                 //'visible' => false,
                 'buttons'=>[
                     'update'=>function ($url, $model) {
@@ -83,6 +89,18 @@ $this->params['breadcrumbs'][] = $this->title;
 							 return Html::a('<span class="glyphicon glyphicon-pencil"></span> UPDATE',['/erpd/publication/update/', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
 						}
                        
+                    },
+					'delete' => function ($url, $model) {
+						if($model->status == 0 or  $model->status == 10){
+							return Html::a('<span class="glyphicon glyphicon-trash"></span>',['/erpd/publication/delete', 'id' => $model->id],['class'=>'btn btn-danger btn-sm', 'data' => [
+								'confirm' => 'Are you sure you want to delete this publication?',
+								'method' => 'post',
+							],
+							]);
+						}else{
+							return '';
+						}
+                        
                     }
                 ],
             
