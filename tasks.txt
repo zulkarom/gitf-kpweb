@@ -1,23 +1,6 @@
-ALTER TABLE `staff_position_status` ADD `status_cat` VARCHAR(50) NOT NULL AFTER `status_name`;
-UPDATE `staff_position_status` SET `status_cat` = 'Tetap' WHERE `staff_position_status`.`id` = 1; UPDATE `staff_position_status` SET `status_cat` = 'Tetap' WHERE `staff_position_status`.`id` = 2; UPDATE `staff_position_status` SET `status_cat` = 'Sementara' WHERE `staff_position_status`.`id` = 3; UPDATE `staff_position_status` SET `status_cat` = 'Kontrak' WHERE `staff_position_status`.`id` = 4; UPDATE `staff_position_status` SET `status_cat` = 'Kontrak' WHERE `staff_position_status`.`id` = 5; UPDATE `staff_position_status` SET `status_cat` = 'Pinjaman' WHERE `staff_position_status`.`id` = 6;
-ALTER TABLE `country` ADD UNIQUE(`country_code`);
-ALTER TABLE `staff` ADD `nationality` VARCHAR(10) NOT NULL DEFAULT 'MY' AFTER `is_academic`;
-ALTER TABLE `staff` ADD `high_qualification` VARCHAR(10) NOT NULL AFTER `staff_active`, ADD `hq_specialization` VARCHAR(100) NOT NULL AFTER `high_qualification`, ADD `hq_year` YEAR NOT NULL AFTER `hq_specialization`, ADD `hq_country` VARCHAR(10) NOT NULL AFTER `hq_year`, ADD `hq_institution` VARCHAR(200) NOT NULL AFTER `hq_country`;
 
 
-ALTER TABLE `rp_publication` ADD `pubother_file` TEXT NOT NULL AFTER `pubupload_file`;
 
-CREATE TABLE `rp_consultation_tag` (
-  `id` int(11) NOT NULL,
-  `staff_id` int(11) NOT NULL,
-  `consult_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-ALTER TABLE `rp_consultation_tag`
-  ADD PRIMARY KEY (`id`);
-
-ALTER TABLE `rp_consultation_tag`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 
 ALTER TABLE `sp_course_type` ADD `showing` TINYINT(1) NOT NULL AFTER `type_order`;
@@ -115,3 +98,26 @@ Fon Sim Ong, University of Nottingham, Malaysia.
 -----------------------
 
 STRAIGHT FOWARD LESS COLOR DESIGN
+
+
+
+ALTER TABLE `staff_position_status` ADD `status_cat` VARCHAR(50) NOT NULL AFTER `status_name`;
+UPDATE `staff_position_status` SET `status_cat` = 'Tetap' WHERE `staff_position_status`.`id` = 1; UPDATE `staff_position_status` SET `status_cat` = 'Tetap' WHERE `staff_position_status`.`id` = 2; UPDATE `staff_position_status` SET `status_cat` = 'Sementara' WHERE `staff_position_status`.`id` = 3; UPDATE `staff_position_status` SET `status_cat` = 'Kontrak' WHERE `staff_position_status`.`id` = 4; UPDATE `staff_position_status` SET `status_cat` = 'Kontrak' WHERE `staff_position_status`.`id` = 5; UPDATE `staff_position_status` SET `status_cat` = 'Pinjaman' WHERE `staff_position_status`.`id` = 6;
+ALTER TABLE `country` ADD UNIQUE(`country_code`);
+ALTER TABLE `staff` ADD `nationality` VARCHAR(10) NOT NULL DEFAULT 'MY' AFTER `is_academic`;
+ALTER TABLE `staff` ADD `high_qualification` VARCHAR(10) NOT NULL AFTER `staff_active`, ADD `hq_specialization` VARCHAR(100) NOT NULL AFTER `high_qualification`, ADD `hq_year` YEAR NOT NULL AFTER `hq_specialization`, ADD `hq_country` VARCHAR(10) NOT NULL AFTER `hq_year`, ADD `hq_institution` VARCHAR(200) NOT NULL AFTER `hq_country`;
+
+
+ALTER TABLE `rp_publication` ADD `pubother_file` TEXT NOT NULL AFTER `pubupload_file`;
+
+CREATE TABLE `rp_consultation_tag` (
+  `id` int(11) NOT NULL,
+  `staff_id` int(11) NOT NULL,
+  `consult_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `rp_consultation_tag`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `rp_consultation_tag`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
