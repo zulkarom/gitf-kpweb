@@ -89,17 +89,18 @@ use backend\models\Menu;
 					//$modules,
 					
 					['label' => 'MODULES', 'options' => ['class' => 'header']],
-					['label' => 'STAFF', 'icon' => 'user', 'url' => ['/staff']],
+					['label' => 'Teaching Allocation', 'icon' => 'gears', 'url' => ['/teaching-load/default/teaching-form']],
+					['label' => 'Staff', 'icon' => 'user', 'url' => ['/staff']],
 					
 					['label' => 'e-SIAP', 'icon' => 'mortar-board', 'url' => ['/esiap'],],
 					
 					['label' => 'e-RPD', 'icon' => 'flask', 'url' => ['/erpd'],],	
 					
-					['label' => 'JEB JOURNAL', 'icon' => 'book', 'url' => ['/site/jeb-web'], 'template'=>'<a href="{url}" target="_blank">{icon} {label}</a>'],
+					['label' => 'JEB Journal', 'icon' => 'book', 'url' => ['/site/jeb-web'], 'template'=>'<a href="{url}" target="_blank">{icon} {label}</a>'],
 					
-					['label' => 'WEBSITE', 'icon' => 'tv', 'url' => ['/website'],],
+					['label' => 'Website', 'icon' => 'tv', 'url' => ['/website'],],
 					
-					['label' => 'PROCEEDINGS', 'icon' => 'microphone', 'url' => ['/proceedings'], 'visible' => Yii::$app->user->can('proceedings-manager')],
+					['label' => 'Proceedings', 'icon' => 'microphone', 'url' => ['/proceedings'], 'visible' => Yii::$app->user->can('proceedings-manager')],
 					
 					
 					[

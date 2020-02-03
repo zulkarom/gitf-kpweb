@@ -4,6 +4,7 @@ namespace backend\modules\esiap\controllers;
 
 use Yii;
 use backend\modules\esiap\models\CourseAdminSearch;
+use backend\modules\esiap\models\CourseInactiveSearch;
 use backend\modules\esiap\models\Course;
 use backend\modules\esiap\models\CourseVersion;
 
@@ -64,6 +65,17 @@ class CourseAdminController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+	
+	public function actionInactive()
+    {
+        $searchModel = new CourseInactiveSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('inactive', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -281,8 +293,18 @@ class CourseAdminController extends Controller
         $model = new Course();
 		$model->scenario = 'create';
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect('index');
+        if ($model->load(Yii::$app->request->post())) {
+			$code = Course::findOne(['course_code' => $model->course_code]);
+			if($code){
+				Yii::$app->session->addFlash('error', "The course code has already exist!");
+			}else{
+				if($model->save()){
+					Yii::$app->session->addFlash('success', "A new course has been successfully created");
+					return $this->redirect('index');
+				}
+			}
+			
+            
         }
 
         return $this->render('create', [

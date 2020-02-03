@@ -79,7 +79,7 @@ class Tbl4
 		<br /><br />
 		<b style="font-size:15px;">MAKLUMAT KURSUS
 		<br /><i>COURSE INFORMATION</i></b></td>
-		<td width="120"><div align="right">UMK/AKAD/P&P/FK02</div></td>
+		<td width="120"><div align="right"></div></td>
 		</tr>
 		 </table>';
 		 
@@ -111,7 +111,7 @@ class Tbl4
 		<br /><br />
 		<b style="font-size:12pt;">MAKLUMAT KURSUS
 		<br /><i>COURSE INFORMATION</i></b></td>
-		<td width="125"><div align="right" style="font-size:11pt;">UMK/AKAD/P&P/FK02 </div></td>
+		<td width="125"><div align="right" style="font-size:11pt;">MQF 2.0 TABLE 4</div></td>
 		</tr>
 		 </table>';
 		 

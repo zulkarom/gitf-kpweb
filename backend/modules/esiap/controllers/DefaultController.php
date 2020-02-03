@@ -9,12 +9,29 @@ use backend\modules\esiap\models\CoursePic;
 use backend\modules\esiap\models\CourseAccess;
 use backend\modules\esiap\models\ProgramPic;
 use backend\modules\esiap\models\ProgramAccess;
-
+use yii\filters\AccessControl;
+ 
 /**
  * Default controller for the `esiap` module
  */
 class DefaultController extends Controller
 {
+	   
+
+	public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }
     /**
      * Renders the index view for the module
      * @return string

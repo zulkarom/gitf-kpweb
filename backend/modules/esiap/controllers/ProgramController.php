@@ -110,6 +110,10 @@ class ProgramController extends Controller
         return $this->redirect(['index']);
     }
 	
+	public function actionPeo(){
+		
+	}
+	
 	public function actionStructure($program)
     {
 		$model = $this->findDevelopmentVersion($program);
@@ -139,7 +143,7 @@ class ProgramController extends Controller
         if ($model->load(Yii::$app->request->post())) {
 			$model->prg_version_id = $pversion->id;
 			if($model->save()){
-				Yii::$app->session->addFlash('success', "Course Added");
+				Yii::$app->session->addFlash('success', "The course has been successfully included.");
 				return $this->redirect(['structure', 'program' => $program->id]);
 			}
             
@@ -182,7 +186,7 @@ class ProgramController extends Controller
 		$list = CourseVersion::find()->where(['course_id' => $id])->orderBy('created_at DESC')->all();
 		if($list){
 			foreach($list as $ver){
-				echo '<option value="'.$ver->id .'">'.$ver->version_name .'</option>';
+				echo '<option value="'.$ver->id .'">'.$ver->version_name .' (PLO'.$ver->plo_num.')</option>';
 			}
 		}
 		

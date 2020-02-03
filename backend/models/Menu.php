@@ -163,6 +163,8 @@ class Menu
 				
 				['label' => 'Course List', 'icon' => 'book', 'url' => ['/esiap/course-admin']],
 				
+				['label' => 'Inactive Courses', 'icon' => 'remove', 'url' => ['/esiap/course-admin/inactive']],
+				
 
                  ]
                     ];	

@@ -36,7 +36,7 @@ use backend\modules\esiap\models\Course;
  }
  
  echo $form->field($model, 'course_id') ->dropDownList(
-        ArrayHelper::map(Course::find()->orderBy('course_name ASC')->all(),'id', 'course_name'), [
+        ArrayHelper::map(Course::activeCoursesNameCode(),'id', 'course_code_name'), [
 		'prompt' => 'Please Select',
 		'onchange'=>'
              $.post("'.Yii::$app->urlManager->createUrl('/esiap/program/course-version-list?id=').
@@ -83,7 +83,7 @@ echo $form->field($model, 'crs_version_id')->dropDownList($list, ['prompt' => 'P
 
 
     <div class="form-group">
-        <?= Html::submitButton('Add Course', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Include Course', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

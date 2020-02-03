@@ -80,6 +80,12 @@ echo $form->field($model, 'faculty_id')->dropDownList(
 
 </div>
 
+<div class="col-md-4">
+
+<?= $form->field($model, 'is_active')->dropDownList( [ 0 => 'NO', 1 => 'YES' ] ) ?>
+
+</div>
+
 
 
 </div>

@@ -73,6 +73,10 @@ class CourseAssessment extends \yii\db\ActiveRecord
 	public function getCourseVersion(){
         return $this->hasOne(CourseVersion::className(), ['id' => 'crs_version_id']);
     }
+
+	public function getAssessmentCat(){
+        return $this->hasOne(AssessmentCat::className(), ['id' => 'assess_cat']);
+    }
 	
 	public function getAssessmentPercentage(){
 		$per = CourseCloAssessment::find()

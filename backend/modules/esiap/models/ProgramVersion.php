@@ -84,6 +84,19 @@ class ProgramVersion extends \yii\db\ActiveRecord
         ];
     }
 	
+	public function pageHeader(){
+		return '<div class="row">
+		<div class="col-md-9"><h4>' . $this->program->pro_name . '<br />
+		<i>' . $this->program->pro_name_bi . '</i></h4></div>
+		<div class="col-md-3"><span style="margin-top:10px"><b>Version:</b>' . $this->version_name . '<br />
+		<b>PLO:</b>' . $this->plo_num .' Domains</span></div>
+		
+		
+		
+		</div>
+		<br />';
+	}
+	
 	private function yesNoLabel($field){
 		$status = '';
 		switch($field){

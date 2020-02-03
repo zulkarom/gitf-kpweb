@@ -20,7 +20,6 @@ class Fk2
 	public $wtab;
 	
 	public function generatePdf(){
-
 		$this->directoryAsset = Yii::$app->assetManager->getPublishedUrl('@frontend/views/myasset');
 		
 		$this->pdf = new Fk2Start(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -189,30 +188,29 @@ EOD;
 		
 		<td width="'.$row5col2.'">
 		<b>Jabatan:</b> ';
-		$dep_bm = '';
-		$dep_bi = '';
+		$dep = ' - ';
+		$dep_bi = ' - ';
 		if($this->model->course->department){
-			$dep_bm = $this->model->course->department->dep_name ;
-			$dep_bi = $this->model->course->department->dep_name_bi ;
+			$dep = $this->model->course->department->dep_name;
+			$dep_bi = $this->model->course->department->dep_name_bi;
 		}
-		
-		$html .= $dep_bm;
-		
+		$html .= $dep;
 		$html .= '<br />
-		<i><b>Department:</b> '. $dep_bi .'</i>
+		<i><b>Department:</b> '.$dep_bi .'</i>
 		</td>
 		
-		<td colspan="2" width="'.$row5col3.'">';
-		
-		$prog_bm = '';
-		$prog_bi = '';
+		<td colspan="2" width="'.$row5col3.'">
+		<b>Program:</b> ';
+		$pro = ' - ';
+		$pro_bi = ' - ';
 		if($this->model->course->program){
-			$prog_bm = $this->model->course->program->pro_name;
-			$prog_bi = $this->model->course->program->pro_name_bi;
+			$pro = $this->model->course->program->pro_name;
+			$pro_bi = $this->model->course->program->pro_name_bi;
 		}
+		$html .= $pro;
 		
-		$html .= '<b>Program:</b> '. $prog_bm .'<br />
-		<i><b>Programme:</b> '. $prog_bi .'</i>
+		$html .= '<br />
+		<i><b>Programme:</b> '.$pro_bi .'</i>
 		</td>
 		
 		</tr>
@@ -549,17 +547,11 @@ $per = 0;
 
 $per_sum = 0;
 if($this->model->courseAssessmentSummative){
-	//$kira = count($this->model->courseAssessmentSummative);
-	//if($kira == 1){
-		$arr = $this->model->courseAssessmentSummative;
-		$per_sum = $arr[0]->as_percentage + 0;
-		if($per_sum  > 0){
-			/* //$html .='<tr><td></td>
-			<td><b>B. '.$arr[0]->assess_name .'/ <i>'.$arr[0]->assess_name_bi .'</i> (Summative)</b></td><td align="center">'. $per .'%</td>
-			</tr>'; */
-			$total +=$per_sum ;
-		}
-	//}
+	foreach($this->model->courseAssessmentSummative as $rs){
+		$per_sum +=$rs->as_percentage;
+		$total +=$rs->as_percentage;
+	} 
+		
 }
 
 $border_no_bottom = 'style="border-top:1px solid #000000;border-right:1px solid #000000;border-left:1px solid #000000"';

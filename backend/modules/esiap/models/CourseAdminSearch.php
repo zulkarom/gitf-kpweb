@@ -41,14 +41,14 @@ class CourseAdminSearch extends Course
      */
     public function search($params)
     {
-        $query = Course::find()->where(['faculty_id' => Yii::$app->params['faculty_id']]);
+        $query = Course::find()->where(['is_active' => 1, 'faculty_id' => Yii::$app->params['faculty_id']]);
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
 			'pagination' => [
-                'pageSize' => 30,
+                'pageSize' => 100,
             ],
 
         ]);

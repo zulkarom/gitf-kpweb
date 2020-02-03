@@ -6,6 +6,7 @@ use Yii;
 use common\models\User;
 use yii\helpers\ArrayHelper;
 use backend\modules\erpd\models\Stats as ErpdStats;
+use backend\modules\teachingLoad\models\TaughtCourse;
 
 /**
  * This is the model class for table "staff".
@@ -81,16 +82,19 @@ class Staff extends \yii\db\ActiveRecord
 			//['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email has already been taken'],
 			
 			
-            [['user_id', 'is_academic', 'position_id', 'position_status', 'working_status',  'staff_department', 'publish', 'staff_active'], 'integer'],
+            [['user_id', 'is_academic', 'position_id', 'position_status', 'working_status',  'staff_department', 'publish', 'staff_active', 'hq_year'], 'integer'],
+			
             [['leave_start', 'leave_end', 'staff_dob', 'date_begin_umk', 'date_begin_service'], 'safe'],
 			
-            [['leave_note', 'staff_interest'], 'string'],
+            [['leave_note', 'staff_interest', ], 'string'],
 			
-            [['staff_no'], 'string', 'max' => 10],
-            [['staff_note', 'personal_email', 'ofis_location'], 'string', 'max' => 100],
+            [['staff_no', 'nationality', 'high_qualification', 'hq_country'], 'string', 'max' => 10],
+			
+			
+            [['staff_note', 'personal_email', 'ofis_location', 'hq_specialization'], 'string', 'max' => 100],
             [['staff_title', 'officephone', 'handphone1', 'handphone2'], 'string', 'max' => 20],
 			
-            [['staff_edu', 'staff_expertise', 'staff_cv'], 'string', 'max' => 300],
+            [['staff_edu', 'staff_expertise', 'staff_cv', 'hq_institution'], 'string', 'max' => 300],
 			
             [['rotation_post', 'staff_gscholar'], 'string', 'max' => 500],
 			
@@ -234,10 +238,14 @@ class Staff extends \yii\db\ActiveRecord
 		];
 	}
 	
+	
 	public function getTypeName(){
 		$arr = $this->listType;
 		return $arr[$this->is_academic];
 	}
 	
+	public function getTaughtCourses(){
+		return $this->hasMany(TaughtCourse::className(), ['staff_id' => 'id']);
+	}
 
 }

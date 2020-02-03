@@ -146,6 +146,8 @@ class Program extends \yii\db\ActiveRecord
         ];
     }
 	
+	
+	
 	public function IAmProgramPic(){
 		$pics = $this->programPics;
 		if($pics){

@@ -59,7 +59,7 @@ echo $form->field($model, 'plo_num')->dropDownList( $model->ploNumberArray ) ?>
 <?php 
 
 $model->dup_course = $course->id;
-echo $form->field($model, 'dup_course')->dropDownList(ArrayHelper::map(Course::activeCourses(), 'id', 'course_name') )->label('Course') ?>
+echo $form->field($model, 'dup_course')->dropDownList(ArrayHelper::map(Course::activeCoursesNameCode(), 'id', 'course_code_name') )->label('Course') ?>
 </div>
 
 <div id="con_version" style="display:none">

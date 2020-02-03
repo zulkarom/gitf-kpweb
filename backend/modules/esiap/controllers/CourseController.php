@@ -620,17 +620,29 @@ class CourseController extends Controller
 			if(Yii::$app->request->validateCsrfToken()){
 				
                 $assess = Yii::$app->request->post('CourseAssessment');
-				
+				$final = 0;
+				$flag = true;
 				foreach($assess as $key => $as){
 					$assesment = CourseAssessment::findOne($as['id']);
 					if($assesment){
+						if($final == 1){
+							Yii::$app->session->addFlash('error', "Only one final assessment is allowed!");
+							$flag = false;
+							break;
+						}
+						$cat = $assesment->assessmentCat;
+						$form_sum = $cat->form_sum;
+						$final = $form_sum == 2 ? 1 : 0;
 						$assesment->assess_name = $as['assess_name'];
 						$assesment->assess_name_bi = $as['assess_name_bi'];
 						$assesment->assess_cat = $as['assess_cat'];
 						$assesment->save();
 					}
 				}
-				Yii::$app->session->addFlash('success', "Data Updated");
+				if($flag){
+					Yii::$app->session->addFlash('success', "Data Updated");
+				}
+				
             }
 			return $this->redirect(['course-assessment','course'=>$course]);
 		}

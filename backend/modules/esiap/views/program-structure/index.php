@@ -10,14 +10,17 @@ use yii\bootstrap\Modal;
 
 $this->title = 'Program Structures';
 $this->params['breadcrumbs'][] = $this->title;
+echo $model->pageHeader();
 ?>
+
+
 <div class="program-structure-index">
 
     <p>
-        <?php echo Html::button('Add Course', ['value' => Url::to(['structure-create', 'program' => $model->id]), 'class' => 'btn btn-success', 'id' => 'modalButton']);
+        <?php echo Html::button('<span class="glyphicon glyphicon-plus"></span>  Include Course', ['value' => Url::to(['structure-create', 'program' => $model->program_id]), 'class' => 'btn btn-success', 'id' => 'modalButton']);
 		
 Modal::begin([
-    'header' => '<h4>Add Course</h4>',
+    'header' => '<h4>Include Course</h4>',
 	'id' =>'modal',
 	'size' => 'modal-lg'
 ]);
@@ -58,7 +61,8 @@ $(function(){
 				'value' => function($model){
 					if($model->courseVersion){
 						if($model->courseVersion->course){
-							return $model->courseVersion->course->course_name . '<br /><i style="font-size:11px">Version: ' . $model->courseVersion->version_name . '</i>';
+							$course = $model->courseVersion->course;
+							return $course->course_code . ' ' . $course->course_name . '<br /><i style="font-size:11px">Version: ' . $model->courseVersion->version_name . '</i>';
 						}
 						
 					}

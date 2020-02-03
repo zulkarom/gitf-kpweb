@@ -44,7 +44,7 @@ class Stats
 	public static function countUDStatus($status){
 		$kira = Course::find()
 		->joinWith(['courseVersion'])
-		->where(['faculty_id' => Yii::$app->params['faculty_id'] 'is_active' => 1, 'is_developed' => 1, 'status' => $status])
+		->where(['faculty_id' => Yii::$app->params['faculty_id'], 'is_active' => 1, 'is_developed' => 1, 'status' => $status])
 		->count();
 		return $kira;
 	}
