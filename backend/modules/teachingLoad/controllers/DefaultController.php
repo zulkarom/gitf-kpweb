@@ -41,6 +41,7 @@ class DefaultController extends Controller
 			$brp = 4 - $kira;
 			for($s=1;$s<=$brp;$s++){
 				$kur = new TeachCourse;
+				$kur->course_id = 0;
 				$kur->staff_id = $model->id;
 				$kur->save();
 			}

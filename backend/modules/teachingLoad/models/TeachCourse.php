@@ -27,6 +27,7 @@ class TeachCourse extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['course_id'], 'required'],
             [['staff_id', 'course_id'], 'integer'],
         ];
     }
@@ -39,7 +40,7 @@ class TeachCourse extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'staff_id' => 'Staff ID',
-            'course_id' => 'Course ID',
+            'course_id' => 'Course Name',
         ];
     }
 }
