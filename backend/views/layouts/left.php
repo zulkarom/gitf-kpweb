@@ -70,6 +70,11 @@ use backend\models\Menu;
 			$admin_focus = Menu::adminEsiap();
 			break;
 			
+			case 'teaching-load':
+			//$focus = Menu::coursePic();
+			$admin_focus = Menu::adminTeachingLoad();
+			break;
+			
 
 		}
 		

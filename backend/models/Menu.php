@@ -171,6 +171,24 @@ class Menu
 		return $esiap_admin;
 	}
 	
+	public static function adminTeachingLoad(){
+		$esiap_admin = [
+                        'label' => 'Teaching Admin',
+                        'icon' => 'gears',
+						'visible' => Yii::$app->user->can('teaching-load-manager'),
+                        'url' => '#',
+                        'items' => [
+				
+				['label' => 'Teaching By Staff', 'icon' => 'user', 'url' => ['/teaching-load/manager/by-staff']],
+				
+				['label' => 'Teaching By Course', 'icon' => 'book', 'url' => ['/teaching-load/manager/by-course']],
+				
+
+                 ]
+                    ];	
+		return $esiap_admin;
+	}
+	
 	public static function website(){
 		$website = [
                         'label' => 'Website Menu',
