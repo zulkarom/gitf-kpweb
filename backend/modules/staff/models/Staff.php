@@ -252,7 +252,7 @@ class Staff extends \yii\db\ActiveRecord
 	}
 	
 	public function getTeachCourses(){
-		return $this->hasMany(TeachCourse::className(), ['staff_id' => 'id']);
+		return $this->hasMany(TeachCourse::className(), ['staff_id' => 'id'])->orderBy('rank ASC');
 	}
 	
 	public function getOtherTaughtCourses(){

@@ -48,6 +48,13 @@ class DefaultController extends Controller
 		}
 		unset($model->teachCourses);
 		$teachCourses = $model->teachCourses;
+		$r = 1;
+		foreach($teachCourses as $t){
+			$t->rank = $r;
+			$t->save();
+			$r++;
+		}
+		
 		
         if ($model->load(Yii::$app->request->post())) {
             
