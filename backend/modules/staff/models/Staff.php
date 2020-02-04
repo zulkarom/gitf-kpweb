@@ -332,7 +332,7 @@ class Staff extends \yii\db\ActiveRecord
 		return $this->hasOne(Country::className(), ['country_code' => 'hq_country']);
 	}
 	
-	public function getHighAcademicQualification(){
+	public function getHighAcademicQualification($br = "\n"){
 		$country = '';
 		if($this->hqCountry){
 			$country = $this->hqCountry->country_name;
@@ -341,7 +341,7 @@ class Staff extends \yii\db\ActiveRecord
 		if($this->hq_year != '0000'){
 			return $this->high_qualification. ',  ' .  
 		$this->hq_specialization . ',  '  . 
-		$this->hq_year . '<br />'. $this->hq_institution . ', ' . 
+		$this->hq_year . $br. $this->hq_institution . ', ' . 
 		$country
 		;
 		}

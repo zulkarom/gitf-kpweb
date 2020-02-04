@@ -207,7 +207,7 @@ $columns = [
                 'label' => 'Academic Qualification',
 				'format' => 'html',
                 'value' => function($model){
-					return $model->highAcademicQualification;
+					return $model->getHighAcademicQualification("<br />");
                 }
             ],
 			
