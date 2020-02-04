@@ -253,6 +253,7 @@ class User extends ActiveRecord implements IdentityInterface
 		return $this->hasOne(Staff::className(), ['user_id' => 'id']);
 	}
 	
+	
 	public function getAssociate(){
 		return $this->hasOne(Associate::className(), ['user_id' => 'id']);
 	}

@@ -10,6 +10,7 @@ use backend\modules\teachingLoad\models\TaughtCourse;
 use backend\modules\teachingLoad\models\TeachCourse;
 use backend\modules\teachingLoad\models\OutCourse;
 use backend\modules\teachingLoad\models\PastExperience;
+use common\models\Country;
 
 /**
  * This is the model class for table "staff".
@@ -168,8 +169,16 @@ class Staff extends \yii\db\ActiveRecord
 		return $this->hasOne(StaffPosition::className(), ['id' => 'position_id']);
 	}
 	
+	public function getStaffPositionStatus(){
+		return $this->hasOne(StaffPositionStatus::className(), ['id' => 'position_status']);
+	}
+	
 	public function getWorkingStatus(){
 		return $this->hasOne(StaffWorkingStatus::className(), ['id' => 'working_status']);
+	}
+	
+	public function getStaffNationality(){
+		return $this->hasOne(Country::className(), ['country_code' => 'nationality']);
 	}
 	
 	public static function activeStaff(){
@@ -251,16 +260,92 @@ class Staff extends \yii\db\ActiveRecord
 		return $this->hasMany(TaughtCourse::className(), ['staff_id' => 'id']);
 	}
 	
+	public function getTaughtCoursesStr($br = "\n"){
+		$list = $this->taughtCourses;
+		$str = '';
+		if($list){
+			$i = 1;
+			foreach($list as $item){
+				$d = $i == 1 ? '' : $br;
+				$str .= $d.$item->course->codeAndCourse;
+			$i++;
+			}
+		}
+		return $str;
+	}
+	
 	public function getTeachCourses(){
 		return $this->hasMany(TeachCourse::className(), ['staff_id' => 'id'])->orderBy('rank ASC');
+	}
+	
+	public function getTeachCoursesStr($br = "\n"){
+		$list = $this->teachCourses;
+		$str = '';
+		if($list){
+			$i = 1;
+			foreach($list as $item){
+				$d = $i == 1 ? '' : $br;
+				$str .= $d.$item->course->codeAndCourse;
+			$i++;
+			}
+		}
+		return $str;
 	}
 	
 	public function getOtherTaughtCourses(){
 		return $this->hasMany(OutCourse::className(), ['staff_id' => 'id']);
 	}
 	
+	public function getOtherTaughtCoursesStr($br = "\n"){
+		$list = $this->otherTaughtCourses;
+		$str = '';
+		if($list){
+			$i = 1;
+			foreach($list as $item){
+				$d = $i == 1 ? '' : $br;
+				$str .= $d.$item->course_name;
+			$i++;
+			}
+		}
+		return $str;
+	}
+	
 	public function getPastExperiences(){
 		return $this->hasMany(PastExperience::className(), ['staff_id' => 'id']);
+	}
+	
+	public function getPastExperiencesStr($br = "\n"){
+		$list = $this->pastExperiences;
+		$str = '';
+		if($list){
+			$i = 1;
+			foreach($list as $item){
+				$d = $i == 1 ? '' : $br;
+				$str .= $d. strtoupper(' - ' . $item->position . ' AT ' . $item->employer . ' ('.$item->start_end .')' );
+			$i++;
+			}
+		}
+		return $str;
+	}
+	
+	public function getHqCountry(){
+		return $this->hasOne(Country::className(), ['country_code' => 'hq_country']);
+	}
+	
+	public function getHighAcademicQualification(){
+		$country = '';
+		if($this->hqCountry){
+			$country = $this->hqCountry->country_name;
+		}
+		
+		if($this->hq_year != '0000'){
+			return $this->high_qualification. ',  ' .  
+		$this->hq_specialization . ',  '  . 
+		$this->hq_year . '<br />'. $this->hq_institution . ', ' . 
+		$country
+		;
+		}
+		
 	}
 
 }

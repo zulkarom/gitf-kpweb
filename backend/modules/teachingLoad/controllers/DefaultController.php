@@ -11,12 +11,27 @@ use backend\modules\teachingLoad\models\OutCourse;
 use backend\modules\teachingLoad\models\PastExperience;
 use yii\helpers\ArrayHelper;
 use yii\db\Expression;
-
+use yii\filters\AccessControl;
 /**
  * Default controller for the `teaching-load` module
  */
 class DefaultController extends Controller
 {
+	    
+	public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }
     /**
      * Renders the index view for the module
      * @return string
@@ -29,7 +44,6 @@ class DefaultController extends Controller
 	public function actionTeachingForm(){
 		$user = Yii::$app->user->identity;
 		$model = $user->staff;
-		
         $taughtCourses = $model->taughtCourses;
 		$outCourses = $model->otherTaughtCourses;
 		$pastExpes = $model->pastExperiences;
@@ -57,7 +71,6 @@ class DefaultController extends Controller
 		
 		
         if ($model->load(Yii::$app->request->post())) {
-            
             $model->updated_at = new Expression('NOW()');    
             
             $oldIDs = ArrayHelper::map($taughtCourses, 'id', 'id');
@@ -83,6 +96,7 @@ class DefaultController extends Controller
             
             $valid = $model->validate();
             $valid = Model::validateMultiple($taughtCourses) && $valid;
+			
 			$valid = Model::validateMultiple($teachCourses) && $valid;
 			$valid = Model::validateMultiple($outCourses) && $valid;
 			$valid = Model::validateMultiple($pastExpes) && $valid;
@@ -91,7 +105,9 @@ class DefaultController extends Controller
 
                 $transaction = Yii::$app->db->beginTransaction();
                 try {
+					
                     if ($flag = $model->save(false)) {
+						
                         if (! empty($deletedIDs)) {
                             TaughtCourse::deleteAll(['id' => $deletedIDs]);
                         }
@@ -106,12 +122,14 @@ class DefaultController extends Controller
                         }
                         foreach ($taughtCourses as $i => $course) {
                             if ($flag === false) {
+								
                                 break;
                             }
                             //do not validate this in model
                             $course->staff_id = $model->id;
 
                             if (!($flag = $course->save(false))) {
+								Yii::$app->session->addFlash('error', "taught course error");
                                 break;
                             }
                         }
@@ -124,6 +142,7 @@ class DefaultController extends Controller
                             $teach->staff_id = $model->id;
 
                             if (!($flag = $teach->save(false))) {
+								Yii::$app->session->addFlash('error', "teach course error");
                                 break;
                             }
                         }
@@ -136,6 +155,7 @@ class DefaultController extends Controller
                             $out_course->staff_id = $model->id;
 
                             if (!($flag = $out_course->save(false))) {
+								Yii::$app->session->addFlash('error', "out course error");
                                 break;
                             }
                         }
@@ -148,11 +168,15 @@ class DefaultController extends Controller
                             $pastExpe->staff_id = $model->id;
 
                             if (!($flag = $pastExpe->save(false))) {
+								Yii::$app->session->addFlash('error', "past expe error");
                                 break;
                             }
                         }
 
-                    }
+                    }else{
+						Yii::$app->session->addFlash('error', "model error");
+						$model->flashError();
+					}
 
                     if ($flag) {
                         $transaction->commit();
