@@ -1,4 +1,3 @@
-ALTER TABLE `staff` ADD `research_focus` TEXT NOT NULL AFTER `staff_department`;
 
 
 menu, update at backend

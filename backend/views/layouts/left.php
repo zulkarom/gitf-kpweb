@@ -94,7 +94,9 @@ use backend\models\Menu;
 					//$modules,
 					
 					['label' => 'MODULES', 'options' => ['class' => 'header']],
-					['label' => 'Teaching Allocation', 'icon' => 'gears', 'url' => ['/teaching-load/default/teaching-form']],
+					
+					['label' => 'Teaching', 'icon' => 'gears', 'url' => ['/teaching-load/default/teaching-form']],
+					
 					['label' => 'Staff', 'icon' => 'user', 'url' => ['/staff']],
 					
 					['label' => 'e-SIAP', 'icon' => 'mortar-board', 'url' => ['/esiap'],],
