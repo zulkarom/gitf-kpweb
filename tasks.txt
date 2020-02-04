@@ -1,11 +1,5 @@
+ALTER TABLE `staff` ADD `research_focus` TEXT NOT NULL AFTER `staff_department`;
 
-
-
-
-
-ALTER TABLE `sp_course_type` ADD `showing` TINYINT(1) NOT NULL AFTER `type_order`;
-INSERT INTO `sp_course_type` (`id`, `type_name`, `main_type`, `type_order`, `showing`) VALUES (NULL, 'Kursus Teras Pengkhususan', '2', '6', '1');
-UPDATE `sp_course_type` SET `showing` = '1' WHERE `sp_course_type`.`id` = 2; UPDATE `sp_course_type` SET `showing` = '1' WHERE `sp_course_type`.`id` = 3; UPDATE `sp_course_type` SET `showing` = '1' WHERE `sp_course_type`.`id` = 5;
 
 menu, update at backend
 frontend - link - create page program

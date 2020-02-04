@@ -103,6 +103,10 @@ class Course extends \yii\db\ActiveRecord
 		return $this->course_code . ' - ' . $this->course_name;
 	}
 	
+	public function getCodeCourseCredit(){
+		return strtoupper($this->course_code . ' - ' . $this->course_name . ' (' . $this->credit_hour . ' CREDIT HOURS)');
+	}
+	
 	public static function activeCourses(){
 		return self::find()->where(['is_dummy' => 0, 'is_active' => 1, 'faculty_id' => Yii::$app->params['faculty_id']])->orderBy('course_name ASC')->all();
 	}

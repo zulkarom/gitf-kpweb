@@ -30,6 +30,12 @@ $this->title = 'Teaching Information Form';
 
 
 
+<div class="row">
+<div class="col-md-10">
+<?= $form->field($user, 'fullname')->textInput(['readonly' => true])->label('Staff Name') ?></div>
+
+</div>
+
 
 <div class="row">
 <div class="col-md-6">
@@ -38,7 +44,7 @@ $this->title = 'Teaching Information Form';
 
 if(in_array($staff->staff_title, $staff->listTitles)){
 	echo $form->field($staff , 'staff_title', ['template' => '{label}<div id="con-title">{input}</div>{error}']
-)->label('Staff Designation')->dropDownList($staff->listTitles);
+)->label('Designation')->dropDownList($staff->listTitles);
 }else{
 	echo $form->field($staff , 'staff_title')->inputText()->label('Staff Designation');
 }
@@ -52,21 +58,14 @@ if(in_array($staff->staff_title, $staff->listTitles)){
 
 
 
-<div class="row">
-<div class="col-md-10">
-<?= $form->field($user, 'fullname')->textInput(['readonly' => true])->label('Staff Name') ?></div>
 
-</div>
 
 
 <div class="row">
-<div class="col-md-7"><?= $form->field($staff, 'position_status')->dropDownList(ArrayHelper::map(StaffPositionStatus::find()->where(['>', 'id', 0])->all(), 'id', 'status_name'), ['prompt' => 'Please Select' ])->label('Current Appointment Status') ?></div>
-
-</div>
+<div class="col-md-6"><?= $form->field($staff, 'position_status')->dropDownList(ArrayHelper::map(StaffPositionStatus::find()->where(['>', 'id', 0])->all(), 'id', 'status_name'), ['prompt' => 'Please Select' ])->label('Current Appointment Status') ?></div>
 
 
-<div class="row">
-<div class="col-md-7">
+<div class="col-md-6">
 <?php 
 
 
@@ -83,16 +82,11 @@ echo $form->field($staff, 'nationality')->widget(Select2::classname(), [
 ?>
 	</div>
 
+
 </div>
+ 
 
-
-
-	
-	
-
-
-  
-
+<?= $form->field($staff, 'research_focus')->textarea(['rows' => 3])->label('Research Focus Area') ?>
 
 
 </div>
@@ -102,7 +96,7 @@ echo $form->field($staff, 'nationality')->widget(Select2::classname(), [
 
 <div class="box box-warning">
 <div class="box-header">
-<h3 class="box-title">Previously Taught Courses</h3>
+<h3 class="box-title">Previously Taught Courses in This Faculty</h3>
 </div>
 <div class="box-body">
 
@@ -179,6 +173,8 @@ echo $form->field($staff, 'nationality')->widget(Select2::classname(), [
 
 
 
+
+
 </div>
 
 <div class="col-md-6">
@@ -222,7 +218,7 @@ echo $form->field($staff, 'hq_year'
 
 <div class="row">
 <div class="col-md-11">
-<?php echo $form->field($staff, 'hq_institution')->textInput()->label('Awarding Institution') ?>
+<?php echo $form->field($staff, 'hq_institution')->textInput()->label('Awarding Institution & Country') ?>
 
 </div>
 
@@ -242,7 +238,7 @@ echo $form->field($staff, 'hq_country')->widget(Select2::classname(), [
     'pluginOptions' => [
         'allowClear' => true
     ],
-])->label('Country');
+])->label(false);
 
 
 ?>
@@ -262,16 +258,270 @@ echo $form->field($staff, 'hq_country')->widget(Select2::classname(), [
 
 </div>
 </div>
+
+
+<div class="box box-warning">
+<div class="box-header">
+<h3 class="box-title">Previously Taught Courses in Other Faculty/University</h3>
+</div>
+<div class="box-body">
+
+
+<?php DynamicFormWidget::begin([
+        'widgetContainer' => 'dynamicform_wrapper_out',
+        'widgetBody' => '.container-items_out',
+        'widgetItem' => '.outCourse-item',
+        'limit' => 10,
+        'min' => 1,
+        'insertButton' => '.add-outCourse',
+        'deleteButton' => '.remove-outCourse',
+        'model' => $outCourses[0],
+        'formId' => 'dynamic-form',
+        'formFields' => [
+            'course_name',
+        ],
+    ]); ?>
+
+
+
+	<table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Courses</th>
+                <th class="text-center" width="5%">
+                    
+                </th>
+            </tr>
+        </thead>
+        <tbody class="container-items_out">
+        <?php foreach ($outCourses as $x => $outCourse): ?>
+            <tr class="outCourse-item">
+            
+                <td class="vcenter">
+                    <?php
+                        // necessary for update action.
+                        if (! $outCourse->isNewRecord) {
+                            echo Html::activeHiddenInput($outCourse, "[{$x}]id");
+                        }
+                    ?>
+					
+					
+					
+
+                    <?= $form->field($outCourse, "[{$x}]course_name")->textInput()->label(false) ?>
+                </td>
+                
+
+                <td class="text-center vcenter" style="width: 90px; verti">
+                    <button type="button" class="remove-outCourse btn btn-default btn-sm"><span class="fa fa-remove"></span></button>
+                </td>
+            </tr>
+         <?php endforeach; ?>
+        </tbody>
+        
+        <tfoot>
+            <tr>
+                <td colspan="2">
+                <button type="button" class="add-outCourse btn btn-default btn-sm"><span class="fa fa-plus"></span> Add Other Taught Courses</button>
+                
+                </td>
+        
+            </tr>
+        </tfoot>
+        
+    </table>
+    <?php DynamicFormWidget::end(); ?>
+
+
+
+
+</div>
+</div>
+
+
+
+
+
+
 </div>
 
 </div>
 
 
+<div class="box box-info">
+<div class="box-header">
+<h3 class="box-title">Past Work Experiences</h3>
+</div>
+<div class="box-body">
+
+
+<?php DynamicFormWidget::begin([
+        'widgetContainer' => 'dynamicform_wrapper_past',
+        'widgetBody' => '.container-items_past',
+        'widgetItem' => '.pastExpe-item',
+        'limit' => 10,
+        'min' => 1,
+        'insertButton' => '.add-pastExpe',
+        'deleteButton' => '.remove-pastExpe',
+        'model' => $pastExpes[0],
+        'formId' => 'dynamic-form',
+        'formFields' => [
+            'id',
+        ],
+    ]); ?>
+
+
+
+	<table class="table table-bordered table-striped">
+ <thead>
+            <tr>
+                <th width="50%">Employer</th>
+				<th>Position</th>
+				<th>Years of Service<br />
+				<i style="font-weight:normal">(Start and End)</i>
+				</th>
+                <th class="text-center" width="5%">
+                    
+                </th>
+            </tr>
+        </thead>
+        <tbody class="container-items_past">
+        <?php foreach ($pastExpes as $x => $pastExpe): ?>
+            <tr class="pastExpe-item">
+            
+                <td class="vcenter">
+                    <?php
+                        // necessary for update action.
+                        if (! $pastExpe->isNewRecord) {
+                            echo Html::activeHiddenInput($pastExpe, "[{$x}]id");
+                        }
+                    ?>
+					
+					
+					
+
+                    <?= $form->field($pastExpe, "[{$x}]employer")->textInput()->label(false) ?>
+	  
+                </td>
+				
+				
+				 <td class="vcenter">
+                   <?= $form->field($pastExpe, "[{$x}]position")->textInput()->label(false) ?>
+
+					 
+					  
+                </td>
+				
+				<td class="vcenter">
+                   <?= $form->field($pastExpe, "[{$x}]start_end")->textInput()->label(false) ?>
+
+					 
+					  
+                </td>
+                
+
+                <td class="text-center vcenter" width="5%">
+                    <button type="button" class="remove-pastExpe btn btn-default btn-sm"><span class="fa fa-remove"></span></button>
+                </td>
+            </tr>
+         <?php endforeach; ?>
+        </tbody>
+        
+        <tfoot>
+            <tr>
+                <td colspan="2">
+                <button type="button" class="add-pastExpe btn btn-default btn-sm"><span class="fa fa-plus"></span> Add Experience</button>
+                
+                </td>
+        
+            </tr>
+        </tfoot>
+        
+    </table>
+    <?php DynamicFormWidget::end(); ?>
+
+
+
+
+</div>
+</div>
+
+
+<div class="box box-danger">
+<div class="box-header">
+<h3 class="box-title">FOUR (4) Courses Willingly to Teach</h3>
+</div>
+<div class="box-body">
+
+
+<?php DynamicFormWidget::begin([
+        'widgetContainer' => 'dynamicform_wrapper_teach',
+        'widgetBody' => '.container-items_teach',
+        'widgetItem' => '.teachCourse-item',
+        'limit' => 10,
+        'min' => 4,
+        'insertButton' => '.add-teachCourse',
+        'deleteButton' => '.remove-teachCourse',
+        'model' => $teachCourses[0],
+        'formId' => 'dynamic-form',
+        'formFields' => [
+            'course_id',
+        ],
+    ]); ?>
+
+    
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+			
+			<th class="text-center" width="5%">
+                   # 
+                </th>
+                <th>Courses</th>
+                
+            </tr>
+        </thead>
+        <tbody class="container-items_teach">
+        <?php foreach ($teachCourses as $i => $teachCourse): ?>
+            <tr class="teachCourse-item">
+            <td class="text-center vcenter">
+                  <?=$i + 1 ?> . 
+                </td>
+                <td class="vcenter">
+                    <?php
+                        // necessary for update action.
+                        if (! $teachCourse->isNewRecord) {
+                            echo Html::activeHiddenInput($teachCourse, "[{$i}]id");
+                        }
+                    ?>
+					
+					
+					
+
+                    <?= $form->field($teachCourse, "[{$i}]course_id")->dropDownList(ArrayHelper::map(Course::find()->where(['faculty_id' => Yii::$app->params['faculty_id'], 'is_dummy' => 0, 'is_active' => 1])->orderBy('course_code ASC')->all(), 'id', 'codeCourseCredit'), ['prompt' => 'Please Select' ])->label(false) ?>
+                </td>
+                
+
+                
+            </tr>
+         <?php endforeach; ?>
+        </tbody>
+        
+
+        
+    </table>
+    <?php DynamicFormWidget::end(); ?>
+
+
+
+
+</div>
+</div>
 
 
 <div class="form-group">
         
-<?= Html::submitButton('Save Teaching Information', ['class' => 'btn btn-success']) ?>
+<?= Html::submitButton('SUBMIT FORM', ['class' => 'btn btn-success']) ?>
     </div>
 	
 	

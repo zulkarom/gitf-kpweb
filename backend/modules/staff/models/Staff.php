@@ -7,6 +7,9 @@ use common\models\User;
 use yii\helpers\ArrayHelper;
 use backend\modules\erpd\models\Stats as ErpdStats;
 use backend\modules\teachingLoad\models\TaughtCourse;
+use backend\modules\teachingLoad\models\TeachCourse;
+use backend\modules\teachingLoad\models\OutCourse;
+use backend\modules\teachingLoad\models\PastExperience;
 
 /**
  * This is the model class for table "staff".
@@ -86,7 +89,7 @@ class Staff extends \yii\db\ActiveRecord
 			
             [['leave_start', 'leave_end', 'staff_dob', 'date_begin_umk', 'date_begin_service'], 'safe'],
 			
-            [['leave_note', 'staff_interest', ], 'string'],
+            [['leave_note', 'staff_interest', 'research_focus' ], 'string'],
 			
             [['staff_no', 'nationality', 'high_qualification', 'hq_country'], 'string', 'max' => 10],
 			
@@ -246,6 +249,18 @@ class Staff extends \yii\db\ActiveRecord
 	
 	public function getTaughtCourses(){
 		return $this->hasMany(TaughtCourse::className(), ['staff_id' => 'id']);
+	}
+	
+	public function getTeachCourses(){
+		return $this->hasMany(TeachCourse::className(), ['staff_id' => 'id']);
+	}
+	
+	public function getOtherTaughtCourses(){
+		return $this->hasMany(OutCourse::className(), ['staff_id' => 'id']);
+	}
+	
+	public function getPastExperiences(){
+		return $this->hasMany(PastExperience::className(), ['staff_id' => 'id']);
 	}
 
 }
