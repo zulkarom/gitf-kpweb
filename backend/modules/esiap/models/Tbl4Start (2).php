@@ -56,7 +56,7 @@ class Tbl4Start extends \TCPDF {
     public function Header() {
 		
 		
-		$this->setY(18);
+		$this->setY(13);
 		$w = 192.5;
 		$this ->Line($this->GetX(),$this->GetY(),$w, $this->GetY(), array('width'=>0.3));
     }
@@ -67,12 +67,12 @@ class Tbl4Start extends \TCPDF {
 		
 		
 		if($this->lineFooterTable){
-			$this->SetY(-20);
+			$this->SetY(-30);
 		$w = 192.5;
 		$this ->Line($this->GetX(),$this->GetY(),$w, $this->GetY(), array('width'=>0.3));
 		}
         
-		$this->SetY(-15);
+		$this->SetY(-25);
 		 //$html = '';
 		//$this->writeHTMLCell($w = 0, $h = 0, $x = '', $y = '', $html, $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = 'top', $autopadding = true);
         // Set font
