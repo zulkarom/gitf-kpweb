@@ -377,8 +377,8 @@ echo $form->field($staff, 'hq_country')->widget(Select2::classname(), [
             <tr>
                 <th width="50%">Employer</th>
 				<th>Position</th>
-				<th>Years of Service<br />
-				<i style="font-weight:normal">(Start and End)</i>
+				<th>Start and End<br />
+				<i style="font-weight:normal">e.g 2003 - 2010</i>
 				</th>
                 <th class="text-center" width="5%">
                     
