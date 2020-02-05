@@ -141,7 +141,7 @@ echo $form->field($staff, 'nationality')->widget(Select2::classname(), [
 					
 					
 
-                    <?= $form->field($taughtCourse, "[{$i}]course_id")->dropDownList(ArrayHelper::map(Course::find()->where(['faculty_id' => Yii::$app->params['faculty_id'], 'is_dummy' => 0, 'is_active' => 1])->orderBy('course_code ASC')->all(), 'id', 'codeAndCourse'), ['prompt' => 'Please Select' ])->label(false) ?>
+                    <?= $form->field($taughtCourse, "[{$i}]course_id")->dropDownList(ArrayHelper::map(Course::find()->where(['faculty_id' => Yii::$app->params['faculty_id'], 'is_dummy' => 0, 'is_active' => 1, 'method_type' => 1])->orderBy('course_code ASC')->all(), 'id', 'codeAndCourse'), ['prompt' => 'Please Select' ])->label(false) ?>
                 </td>
                 
 
@@ -498,7 +498,7 @@ echo $form->field($staff, 'hq_country')->widget(Select2::classname(), [
 					
 					
 
-                    <?= $form->field($teachCourse, "[{$i}]course_id")->dropDownList(ArrayHelper::map(Course::find()->where(['faculty_id' => Yii::$app->params['faculty_id'], 'is_dummy' => 0, 'is_active' => 1])->orderBy('course_code ASC')->all(), 'id', 'codeCourseCredit'), ['prompt' => 'Please Select' ])->label(false) ?>
+                    <?= $form->field($teachCourse, "[{$i}]course_id")->dropDownList(ArrayHelper::map(Course::find()->where(['faculty_id' => Yii::$app->params['faculty_id'], 'is_dummy' => 0, 'is_active' => 1, 'method_type' => 1])->orderBy('course_code ASC')->all(), 'id', 'codeCourseCredit'), ['prompt' => 'Please Select' ])->label(false) ?>
                 </td>
                 
 

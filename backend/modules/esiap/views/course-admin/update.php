@@ -86,7 +86,11 @@ echo $form->field($model, 'faculty_id')->dropDownList(
 
 </div>
 
+<div class="col-md-4">
 
+<?= $form->field($model, 'method_type')->dropDownList( [ 1 => 'Classroom', 0 => 'Non-Classroom' ] ) ?>
+
+</div>
 
 </div>
 
