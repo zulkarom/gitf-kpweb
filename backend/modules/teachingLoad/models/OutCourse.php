@@ -27,7 +27,7 @@ class OutCourse extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['course_name'], 'required'],
+           // [['course_name'], 'required'],
             [['staff_id'], 'integer'],
             [['course_name'], 'string', 'max' => 200],
         ];
