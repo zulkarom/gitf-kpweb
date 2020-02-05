@@ -449,7 +449,7 @@ echo $form->field($staff, 'hq_country')->widget(Select2::classname(), [
 
 <div class="box box-danger">
 <div class="box-header">
-<h3 class="box-title">FOUR (4) Courses Willingly to Teach</h3>
+<h3 class="box-title">FOUR (4) Courses That Able to Teach</h3>
 </div>
 <div class="box-body">
 
