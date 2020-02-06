@@ -73,7 +73,9 @@ class DefaultController extends Controller
 		
         if ($model->load(Yii::$app->request->post())) {
             $model->updated_at = new Expression('NOW()');    
-            
+            $model->teaching_submit_at = new Expression('NOW()');
+			$model->teaching_submit = 1;
+			
             $oldIDs = ArrayHelper::map($taughtCourses, 'id', 'id');
 			$teach_oldIDs = ArrayHelper::map($teachCourses, 'id', 'id');
 			$out_oldIDs = ArrayHelper::map($outCourses, 'id', 'id');
