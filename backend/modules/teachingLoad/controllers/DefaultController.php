@@ -44,6 +44,7 @@ class DefaultController extends Controller
 	public function actionTeachingForm(){
 		$user = Yii::$app->user->identity;
 		$model = $user->staff;
+		$model->scenario = 'teaching';
         $taughtCourses = $model->taughtCourses;
 		$outCourses = $model->otherTaughtCourses;
 		$pastExpes = $model->pastExperiences;

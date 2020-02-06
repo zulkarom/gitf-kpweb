@@ -41,7 +41,7 @@ class TaughtCourse extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'staff_id' => 'Staff ID',
-            'course_id' => 'Course ID',
+            'course_id' => 'Course',
         ];
     }
 	

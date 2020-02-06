@@ -77,6 +77,8 @@ class Staff extends \yii\db\ActiveRecord
         return [
             [['staff_no', 'user_id', 'staff_title', 'is_academic', 'position_id', 'position_status', 'working_status'], 'required'],
 			
+			[['staff_title', 'position_status', 'nationality', 'research_focus', 'high_qualification', 'hq_year', 'hq_specialization', 'hq_institution', 'hq_country'], 'required', 'on' => 'teaching'],
+			
 			[['user_id'], 'required', 'on' => 'reload'],
 			
 			[['email'], 'email'],
@@ -121,7 +123,7 @@ class Staff extends \yii\db\ActiveRecord
             'id' => 'ID',
             'user_id' => 'User ID',
             'staff_no' => 'Staff No',
-            'staff_title' => 'Staff Title',
+            'staff_title' => 'Staff Designation',
             'staff_edu' => 'Staff Education (abbr.)',
             'is_academic' => 'Type',
             'position_id' => 'Position',
@@ -152,6 +154,9 @@ class Staff extends \yii\db\ActiveRecord
             'staff_active' => 'Staff Active',
             'user_token' => 'User Token',
             'user_token_at' => 'User Token At',
+			'hq_specialization' => 'Specialization',
+			'hq_institution' => 'Awarding Institution',
+			'hq_country' => 'Country',
         ];
     }
 	
