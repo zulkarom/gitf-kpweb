@@ -52,6 +52,9 @@ class Staff extends \yii\db\ActiveRecord
 {
 	public $staff_name;
 	public $email;
+	public $staffid;
+	public $fullname;
+	public $stitle;
 	
 	public $image_instance;
 	public $file_controller;
@@ -159,6 +162,10 @@ class Staff extends \yii\db\ActiveRecord
 			'hq_country' => 'Country',
         ];
     }
+	
+	public function getNiceName(){
+		return $this->staff_title . ' ' . $this->user->fullname;
+	}
 	
 	public function getListTitles(){
 		$array = ['Encik','Cik', 'Puan' ,'Dr.', 'Prof. Madya', 'Prof. Madya Dr.', 'Prof.', 'Prof. Dr.'];
@@ -350,6 +357,29 @@ class Staff extends \yii\db\ActiveRecord
 		$country
 		;
 		}
+		
+	}
+	
+	
+	public function getAcademicStaff(){
+		return self::find()
+		->joinWith('user')
+		->where(['staff_active' => 1, 'is_academic' => 1, 'working_status' => 1])->orderBy('user.fullname ASC')->all();
+	}
+	
+	public static function listAcademicStaffArray(){
+		$list = self::find()
+		->select('staff.id as staffid, user.fullname as fullname, staff.staff_title as stitle')
+		->joinWith('user')
+		->where(['staff_active' => 1, 'is_academic' => 1])->orderBy('user.fullname ASC')->all();
+		
+		$array = [];
+		
+		foreach($list as $item){
+			$array[$item->staffid] = $item->stitle . ' ' . $item->fullname;
+		}
+		
+		return $array;
 		
 	}
 

@@ -1,4 +1,34 @@
+ALTER TABLE `sp_course_version` ADD `version_type_id` INT NOT NULL AFTER `version_name`;
+UPDATE `sp_course_version` SET `version_type_id` = '1';
+ALTER TABLE `sp_course_version` DROP `plo_num`;
+ALTER TABLE `sp_program_version` CHANGE `plo_num` `version_type_id` INT NOT NULL;
+ALTER TABLE `sp_course_transfer` ADD `transfer_order` INT NOT NULL AFTER `transferable_id`;
+ALTER TABLE `sp_course_profile` ADD `offer_sem` TINYINT(1) NOT NULL AFTER `prerequisite`, ADD `offer_year` TINYINT(2) NOT NULL AFTER `offer_sem`;
+ALTER TABLE `sp_version_type` ADD `plo1_bi` TEXT NOT NULL AFTER `plo12`, ADD `plo2_bi` TEXT NOT NULL AFTER `plo1_bi`, ADD `plo3_bi` TEXT NOT NULL AFTER `plo2_bi`, ADD `plo4_bi` TEXT NOT NULL AFTER `plo3_bi`, ADD `plo5_bi` TEXT NOT NULL AFTER `plo4_bi`, ADD `plo6_bi` TEXT NOT NULL AFTER `plo5_bi`, ADD `plo7_bi` TEXT NOT NULL AFTER `plo6_bi`, ADD `plo8_bi` TEXT NOT NULL AFTER `plo7_bi`, ADD `plo9_bi` TEXT NOT NULL AFTER `plo8_bi`, ADD `plo10_bi` TEXT NOT NULL AFTER `plo9_bi`, ADD `plo11_bi` TEXT NOT NULL AFTER `plo10_bi`, ADD `plo12_bi` TEXT NOT NULL AFTER `plo11_bi`;
+UPDATE `sp_version_type` SET `plo1_bi` = 'Knowledge and understanding', `plo2_bi` = 'Cognitive skills', `plo3_bi` = 'Practical skills', `plo4_bi` = 'Interpersonal skills', `plo5_bi` = 'Communication skills', `plo6_bi` = 'Digital skills', `plo7_bi` = 'Numeracy skills', `plo8_bi` = 'Leadership, autonomy and responsibility', `plo9_bi` = 'Personal skills', `plo10_bi` = 'Entrepreneurial skills', `plo11_bi` = 'Ethics and professionalism' WHERE `sp_version_type`.`id` = 2;
+ALTER TABLE `sp_course_slt` ADD `is_practical` TINYINT(1) NOT NULL AFTER `nf2f`;
+ALTER TABLE `sp_course_profile` ADD `requirement_bi` TEXT NOT NULL AFTER `additional`, ADD `additional_bi` TEXT NOT NULL AFTER `requirement_bi`;
+------------------------------------------
 
+Knowledge and understanding
+Cognitive skills
+Practical skills
+Interpersonal skills
+Communication skills
+Digital skills
+Numeracy skills
+Leadership, autonomy and responsibility
+Personal skills
+Entrepreneurial skills
+Ethics and professionalism. 
+
+	
+'Numeracy skills',				
+'Leadership, autonomy and responsibility',						
+'Personal skills',	
+'Entrepreneurial skills',	
+'Ethics and professionalism',	
+-------------------------------------
 
 menu, update at backend
 frontend - link - create page program

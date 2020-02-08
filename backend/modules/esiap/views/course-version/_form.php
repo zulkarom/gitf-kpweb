@@ -5,6 +5,7 @@ use yii\widgets\ActiveForm;
 use kartik\date\DatePicker;
 use backend\modules\staff\models\Staff;
 
+
 /* @var $this yii\web\View */
 /* @var $model backend\modules\esiap\models\CourseVersion */
 /* @var $form yii\widgets\ActiveForm */
@@ -16,24 +17,37 @@ use backend\modules\staff\models\Staff;
 
 <div class="box">
 <div class="box-header"></div>
-<div class="box-body">    
-
-    <?= $form->field($model, 'version_name')->textInput(['maxlength' => true]) ?>
+<div class="box-body">   
 
 <div class="row">
-<div class="col-md-4"><?= $form->field($model, 'is_developed')->dropDownList( [1 => 'YES' , 0 => 'NO'] ) ?></div>
+<div class="col-md-3"><?= $form->field($model, 'status')->dropDownList( $model->statusArray ) ?></div>
 
-<div class="col-md-4"><?= $form->field($model, 'status')->dropDownList( $model->statusArray ) ?>
+<div class="col-md-3">
+<?= $form->field($model, 'is_developed')->dropDownList( [1 => 'YES' , 0 => 'NO'] ) ?>
 </div>
 
-<div class="col-md-2"><?php 
-
-if((!$model->plo_num) or $model->plo_num == 0){
-	$model->plo_num = $model->defaultPloNumber;
-}
-
-echo $form->field($model, 'plo_num')->dropDownList( $model->ploNumberArray ) ?>
+<div class="col-md-3">
+<?= $form->field($model, 'is_published')->dropDownList( [1 => 'YES' , 0 => 'NO'] ) ?>
 </div>
+
+</div>
+
+<div class="row">
+<div class="col-md-9">
+    <?= $form->field($model, 'version_name')->textInput(['maxlength' => true]) ?></div>
+
+</div>
+
+
+
+<div class="row">
+<div class="col-md-6"><?php 
+
+echo $form->field($model, 'version_type_id')->dropDownList($model->versionTypeList) ?>
+</div>
+
+
+
 
 
 
@@ -148,10 +162,6 @@ echo $form->field($model, 'plo_num')->dropDownList( $model->ploNumberArray ) ?>
 
 </div>
 
-<div class="row">
-<div class="col-md-4"><?= $form->field($model, 'is_published')->dropDownList( [1 => 'YES' , 0 => 'NO'] ) ?></div>
-
-</div>
    
    
    </div>

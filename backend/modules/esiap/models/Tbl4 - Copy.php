@@ -90,17 +90,7 @@ $html = '<table border="0" width="'.$wtab.'" cellpadding="5">
 <td width="'.$colnum.'" '.$style_shade.' align="center">3. </td>
 
 <td width="'.$col_label.'" '.$style_shade.'>Name(s) of academic staff:</td>
-<td width="'.$col_content.'" colspan="14" '.$border.'>';
-
-$staff = $this->model->profile->academicStaff;
-
-if($staff){
-	foreach($staff as $st){
-		$html .= $st->staff->niceName . '<br />';
-	}
-}
-
-$html .= '</td>
+<td width="'.$col_content.'" colspan="14" '.$border.'></td>
 </tr>';
 
 $col_sem = 120;
@@ -115,22 +105,9 @@ $html .= '<tr>
 
 <td width="'.$col_label.'" '.$style_shade.'>Semester and Year Offered:</td>
 <td width="'.$col_sem.'" colspan="4" align="center" '.$style_shade.'>Semester</td>
-<td width="'.$col_sem_num.'" '.$border.' align="center">';
-
-$offer_sem = $this->model->profile->offer_sem;
-if($offer_sem == 0){
-	$offer_sem = '';
-}
-$html .= $offer_sem;
-$html .= '</td>
+<td width="'.$col_sem_num.'" '.$border.'></td>
 <td width="'.$col_year.'" align="center" '.$style_shade.'>Year</td>
-<td width="'.$col_year_num.'" '.$border.' align="center">';
-$offer_year = $this->model->profile->offer_year;
-if($offer_year == 0){
-	$offer_year = '';
-}
-$html .= $offer_year;
-$html .= '</td>
+<td width="'.$col_year_num.'" '.$border.'></td>
 <td width="'.$col_sem_bal.'" colspan="7" '.$style_black.'></td>
 </tr>
 
@@ -205,7 +182,7 @@ for($e=1;$e<=12;$e++){
 	$plo_str = 'PLO'.$e;
 	$html_plo .='<td align="center" '.$border.'>';
 	if($c->{$plo_str} == 1){
-		$html_plo .= '<span style="font-size:14px;"><span>√</span></span>';
+		$html_plo .= '<span style="font-size:14px;font-family:zapfdingbats"><span>3</span></span>';
 	}
 	$html_plo .= '</td>';
 }
@@ -274,17 +251,13 @@ $html .= '
 
 
 <tr>';
-
-$vert = $this->model->versionType;
-
+///ROW desc
 for($i=1;$i<=9;$i++){
-	$pattr = 'plo' .$i. '_bi';
-	$html .= '<td width="'.$col_unit.'" style="font-size:8px; border:1px solid #000000">'.$vert->{$pattr}.'</td>';
+	$html .= '<td width="'.$col_unit.'" '.$border.'><br /><br /></td>';
 }
 
 for($i=10;$i<=12;$i++){
-	$pattr = 'plo' .$i. '_bi';
-	$html .= '<td width="'.$col_unit2.'" style="font-size:8px; border:1px solid #000000">'.$vert->{$pattr}.'</td>';
+	$html .= '<td width="'.$col_unit2.'" '.$border.'></td>';
 }
 $html .='</tr>
 
@@ -310,7 +283,7 @@ $html .= '<tr>
 </tr>
 <tr>
 <td width="'.$col_wide.'" colspan="15" style="border-right:1px solid #000000">
-<i>Indicate the relevancy between the CLO and PLO by ticking “√“ the appropriate relevant box.</i>
+<i>Indicate the relevancy between the CLO and PLO by ticking “<span style="font-size:14px;font-family:zapfdingbats"><span>3</span></span>“ the appropriate relevant box.</i>
 </td>
 </tr>
 <tr>
@@ -327,21 +300,75 @@ $col_trans_bal = $wtab - $colnum - $col_trans_label - $col_trans_number;
 $trans_text = $this->model->profile->transfer_skill_bi;
 
 $version_type = $this->model->version_type_id;
-
 $transferables = $this->model->profile->transferables;
 
 
+$dlm = [';'];
+function str_has_del($text, $arr){
+	foreach($arr as $d){
+		if (strpos($text, $d) !== false) {
+			return true;
+			break;
+		}
+	}
+	return false;
+}
+
+function multiExplode($delims, $string, $special = '|||') {
+
+    if (is_array($delims) == false) {
+        $delims = array($delims);
+    }
+
+    if (empty($delims) == false) {
+        foreach ($delims as $d) {
+            $string = str_replace($d, $special, $string);
+        }
+    }
+
+    return explode($special, $string);
+}
+
+
+
+
+
 $html_transfer = '';
-$rowspan_transfer = 1;
+
+//print_r($transferables);die();
+
 if($version_type == 1){
-$html_transfer .= '<td width="'.$col_trans_number.'" '.$style_shade.' align="center">1</td>
+if(empty($trans_text) and str_has_del($trans_text, $dlm) == false){
+	$html_transfer .= '<td width="'.$col_trans_number.'" '.$style_shade.' align="center">1</td>
 	<td colspan="8" width="'.$col_trans_bal.'" '.$border.'>
 	'.$trans_text.'
 	</td>
 	</tr>';
-}elseif($version_type == 2){
+	
+}else{
+	$list_trans = multiExplode($dlm, $trans_text);
+	if($list_trans){
+		$i = 1;
+		foreach($list_trans as $trans_item){
+			if($i==1){
+				$html_transfer .= '<td width="'.$col_trans_number.'" '.$style_shade.' align="center">1</td>
+				<td colspan="8" width="'.$col_trans_bal.'" '.$border.'>
+				'.trim($trans_item).'
+				</td>
+				</tr>';
+			}else{
+				$html_transfer .= '<tr>
+				<td width="'.$col_trans_number.'" '.$style_shade.' align="center">'.$i.'</td>
+				<td colspan="8" width="'.$col_trans_bal.'" '.$border.'>'.trim($trans_item).'</td>
+				</tr>';
+			}
+		$i++;
+		}
+	}
+}
+}else if($version_type == 2){
 
-if($transferables){
+if($transferable){
 	$kira = 1;
 	foreach($transferables as $transfer){
 		if($kira == 1){
@@ -358,7 +385,7 @@ if($transferables){
 		}
 	$kira++;
 	}
-	$rowspan_transfer = $kira - 1;
+	
 }else{
 	$html_transfer .= '<td width="'.$col_trans_number.'" '.$style_shade.' align="center">1</td>
 				<td colspan="8" width="'.$col_trans_bal.'" '.$border.'>
@@ -366,7 +393,6 @@ if($transferables){
 				</td>
 				</tr>';
 }
-
 	
 }else{ // if no version type
 	$html_transfer .= '<td width="'.$col_trans_number.'" '.$style_shade.' align="center">1</td>
@@ -376,6 +402,13 @@ if($transferables){
 	</tr>';
 }
 
+/* if($i > 3){
+	$rowspan_transfer = $i - 1;	
+}else{
+	$rowspan_transfer = 3;
+} */
+
+$rowspan_transfer = $i - 1;
 
 $html .= '<tr>
 <td width="'.$colnum.'" '.$style_shade.' align="center" rowspan="'.$rowspan_transfer.'">9. </td>
@@ -391,17 +424,8 @@ $html .= $html_transfer;
 /////////////////
 
 $syl_row = count($this->model->syllabus);
-if($this->model->courseAssessmentFormative){
-	$formative_row = count($this->model->courseAssessmentFormative);
-}else{
-	$formative_row = 1;
-}
-if($this->model->courseAssessmentSummative){
-	$summative_row = count($this->model->courseAssessmentSummative);
-}else{
-	$summative_row = 1;
-}
-
+$formative_row = count($this->model->courseAssessmentFormative);
+$summative_row = count($this->model->courseAssessmentSummative);
 $span_10 = 14 + $syl_row + $formative_row + $summative_row;
 $html .= '<tr>
 <td width="'.$colnum.'" '.$style_shade.' align="center" rowspan="'.$span_10.'">10. </td>
@@ -554,14 +578,6 @@ foreach($this->model->syllabus as $row){
 			$total +=$per;
 	$i++;
 	}
-	}else{
-		$html .='<tr>
-			<td width="'.$htopic.'" colspan="2" '.$border.'></td>
-			<td width="'.$assess_percent .'" colspan="3" align="center" '.$border.'></td>
-			<td width="'.$assess_f2f .'" colspan="2" align="center" '.$border.'></td>
-			<td width="'.$assess_nf2f .'" align="center" '.$border.'></td>
-			<td width="'.$flex.'" align="center" '.$border.'></td>
-			</tr>';
 	}
 	
 	
@@ -612,14 +628,6 @@ $html .='<tr style="font-weight:bold">
 			$total +=$per;
 	$i++;
 	}
-	}else{
-		$html .='<tr>
-			<td width="'.$htopic.'" colspan="2" '.$border.'></td>
-			<td width="'.$assess_percent .'" colspan="3" align="center" '.$border.'></td>
-			<td width="'.$assess_f2f .'" colspan="2" align="center" '.$border.'></td>
-			<td width="'.$assess_nf2f .'" align="center" '.$border.'></td>
-			<td width="'.$flex.'" align="center" '.$border.'></td>
-			</tr>';
 	}
 	
 	
@@ -646,15 +654,10 @@ $grand_slt_text = $assess_nf2f - $box_practical;
 	$html .='<td align="center" width="'.$flex.'" style="border-right:1px solid #000000"></td>
 </tr>';
 
-if($this->model->slt->is_practical == 1){
-	$tick_prac = '√';
-}else{
-	$tick_prac = '';
-}
 
 $html .='<tr>';
 	$html .='
-	<td style="border:1px solid #000000;font-size:15px" align="center" width="'.$box_practical.'">'.$tick_prac.'</td>
+	<td '.$border.' width="'.$box_practical.'"></td>
 	<td colspan="2" width="'.$grand_slt_text.'" align="right"><b>GRANT TOTAL SLT</b></td>
 	
 	';
@@ -676,7 +679,7 @@ $html .= '<tr>
 <td width="'.$special.'" '.$style_shade.' colspan="3">Identify special requirement to deliver the course (e.g: software, nursery, computer lab, simulation room, etc): </td>
 
 
-<td width="'.$special_content.'" colspan="12" '.$border.'>'.$this->model->profile->requirement_bi.'</td>
+<td width="'.$special_content.'" colspan="12" '.$border.'></td>
 </tr>';
 
 
@@ -729,14 +732,14 @@ $html .= '<tr>
 <td width="'.$ref .'" '.$style_shade.' colspan="3">Other additional information : </td>
 
 
-<td width="'.$ref_content.'" colspan="12" '.$border.'>'.$this->model->profile->additional_bi.'</td>
+<td width="'.$ref_content.'" colspan="12" '.$border.'></td>
 </tr>';
 	
 
 $html .= '</table>
 ';
 
-$this->pdf->SetFont('calibri', '', 8); // 8
+$this->pdf->SetFont('calibri', '', 8);
 $tbl = <<<EOD
 $html
 EOD;

@@ -40,11 +40,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="col-md-2"><?php 
 
-if((!$model->plo_num) or $model->plo_num == 0){
-	$model->plo_num = $model->defaultPloNumber;
-}
 
-echo $form->field($model, 'plo_num')->dropDownList( $model->ploNumberArray ) ?>
+
+echo $form->field($model, 'version_type_id')->dropDownList($model->versionTypeList) ?> 
 </div>
 
 

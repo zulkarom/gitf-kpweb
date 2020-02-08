@@ -22,36 +22,7 @@ class Tbl4Start extends \TCPDF {
 	public function setHeaderTable($boo) {
         $this->lineHeaderTable = $boo;
     }
-	
-	public function myrotate($text) {
-        /* if( !isset($this->xywalter) ) {
-            $this->xywalter = array();
-        }
-        $this->xywalter[] = array($this->GetX(), $this->GetY()); */
-		$this->SetFont('helvetica', 'B', 8);
-		$this->StartTransform();
-		$this->Rotate(90);
-		$currX = $this->getX();
-		$currY = $this->getY();
-		$this->setXY($currX -13,$currY + 1);
-		$this->Cell($w=0,
-				$h = 0,
-				$txt = $text,
-				$border = 0,
-				$ln = 1,
-				$align ='L',
-				$fill = false,
-				$link = '',
-				$stretch = 0,
-				$ignore_min_height = false,
-				$calign = 'C',
-				$valign = 'T' 
-			);
-		//$this->Cell(0, 0, $text ,0,1,'L',0,'');
-		$this->StopTransform();
-		$this->ln(6);
-    }
-	
+
 
     public function Header() {
 		

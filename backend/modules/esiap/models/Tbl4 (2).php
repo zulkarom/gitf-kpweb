@@ -241,7 +241,7 @@ Teaching Methods
 Assessment
 </td>
 </tr>';
-$plo_num = $this->model->plo_num;
+$plo_num = $this->model->ploNumber;
 $html .='<tr>';
 for($e=1;$e<=$plo_num;$e++){
 	$html .= '<td align="center">

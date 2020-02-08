@@ -24,7 +24,7 @@ $form = ActiveForm::begin(['id' => 'form-clo-plo']);
 
 <?php
 
-$plo_num = $model->plo_num;
+$plo_num = $model->ploNumber;
 
 
 

@@ -61,7 +61,6 @@ class ProgramVersionSearch extends ProgramVersion
             'id' => $this->id,
             'program_id' => $this->program_id,
             'status' => $this->status,
-            'plo_num' => $this->plo_num,
             'is_developed' => $this->is_developed,
             'is_published' => $this->is_published,
             'trash' => $this->trash,

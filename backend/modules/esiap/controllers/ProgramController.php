@@ -186,7 +186,7 @@ class ProgramController extends Controller
 		$list = CourseVersion::find()->where(['course_id' => $id])->orderBy('created_at DESC')->all();
 		if($list){
 			foreach($list as $ver){
-				echo '<option value="'.$ver->id .'">'.$ver->version_name .' (PLO'.$ver->plo_num.')</option>';
+				echo '<option value="'.$ver->id .'">'.$ver->version_name .'</option>';
 			}
 		}
 		

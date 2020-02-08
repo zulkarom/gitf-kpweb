@@ -130,6 +130,8 @@ class CourseAdminController extends Controller
 							$clone->copy_version = $model->id;
 							if($flag = $clone->cloneVersion()){
 								Yii::$app->session->addFlash('success', "Version creation with duplication is successful");
+							}else{
+								Yii::$app->session->addFlash('error', "Duplication failed!");
 							}
 						}else{
 							//Yii::$app->session->addFlash('error', "No existing version selected!");

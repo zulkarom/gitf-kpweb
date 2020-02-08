@@ -5,6 +5,7 @@ namespace backend\modules\esiap\models;
 use Yii;
 use common\models\User;
 use backend\models\GeneralSetting;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "sp_course_version".
@@ -12,7 +13,6 @@ use backend\models\GeneralSetting;
  * @property int $id
  * @property int $course_id
  * @property string $version_name
- * @property int $plo_num
  * @property int $trash
  * @property int $created_by
  * @property string $created_at
@@ -48,9 +48,9 @@ class CourseVersion extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['course_id', 'version_name', 'created_by', 'created_at', 'is_developed', 'plo_num'], 'required', 'on' => 'create'],
+            [['course_id', 'version_name', 'version_type_id', 'created_by', 'created_at', 'is_developed'], 'required', 'on' => 'create'],
 			
-			[['course_id', 'version_name', 'updated_at', 'is_developed', 'plo_num', 'is_published'], 'required', 'on' => 'update'],
+			[['course_id', 'version_name', 'updated_at', 'is_developed', 'is_published'], 'required', 'on' => 'update'],
 			
 			[['status', 'verified_by', 'verified_at'], 'required', 'on' => 'verify'],
 			
@@ -60,7 +60,7 @@ class CourseVersion extends \yii\db\ActiveRecord
 			
 
 			
-            [['course_id', 'created_by', 'is_developed', 'is_published', 'status', 'prepared_by', 'verified_by', 'dup_course', 'dup_version', 'plo_num'], 'integer'],
+            [['course_id', 'created_by', 'is_developed', 'is_published', 'status', 'prepared_by', 'verified_by', 'dup_course', 'dup_version', 'version_type_id', 'duplicate'], 'integer'],
 			
             [['created_at', 'updated_at', 'senate_approve_at', 'faculty_approve_at', 'senate_approve_show', 'prepared_at', 'verified_at'], 'safe'],
 			
@@ -79,12 +79,20 @@ class CourseVersion extends \yii\db\ActiveRecord
             'version_name' => 'Version Name',
             'created_by' => 'Created By',
             'created_at' => 'Created At',
-			'plo_num' => 'PLO Count',
+			'version_type_id' => 'Version Type',
             'updated_at' => 'Updated At',
             'is_developed' => 'Under Development',
 			'is_published' => 'Published',
         ];
     }
+	
+	public function getVersionType(){
+        return $this->hasOne(VersionType::className(), ['id' => 'version_type_id']);
+    }
+	
+	public function getPloNumber(){
+		return $this->versionType->plo_num;
+	}
 	
 	public function getClos()
     {
@@ -126,6 +134,8 @@ class CourseVersion extends \yii\db\ActiveRecord
 		return $this->hasMany(CourseAssessment::className(), ['crs_version_id' => 'id'])->orderBy('id ASC');
         
     }
+	
+	
 	
 	public function getAssessmentDirect()
     {
@@ -230,6 +240,7 @@ class CourseVersion extends \yii\db\ActiveRecord
     {
         return $this->hasMany(CourseReference::className(), ['crs_version_id' => 'id'])->orderBy('id ASC');
     }
+
 	
 	public function getMainReferences()
     {
@@ -355,8 +366,14 @@ class CourseVersion extends \yii\db\ActiveRecord
 	}
 	
 	
+	
+	
 	public function getSetting(){
 		return GeneralSetting::findOne(1);
+	}
+	
+	public function getVersionTypeList(){
+		return ArrayHelper::map(VersionType::find()->all(), 'id', 'type_name');
 	}
 	
 

@@ -25,8 +25,13 @@ $form = ActiveForm::begin(['id' => 'form-clo-assessment']);
 <?php
 
 $ch = $model->course->credit_hour;
-$notional = 40;
-$slt_hour = $ch * 40;
+if($model->slt->is_practical == 1){
+	$notional = 80;
+}else{
+	$notional = 40;
+}
+
+$slt_hour = $ch * $notional;
 $aclo="";$asyll="";
 
 
@@ -96,12 +101,12 @@ $aclo="";$asyll="";
 	<tr>
 		<td colspan="3"><strong>Student Learning Time (c)</strong></td>
 
-		<td style="text-align:center"><strong><?php echo $slt_hour;?></strong></td>
+		<td style="text-align:center"><strong id="total-slt-hour"><?php echo $slt_hour;?></strong></td>
 	</tr>
 	<tr>
-		<td colspan="3"><strong>Credit Hour</strong> (c) / 40 </td>
+		<td colspan="3"><strong>Credit Hour</strong> (c) / <span id="notional_hour"><?=$notional?></span> </td>
 
-		<td style="text-align:center"><strong><?php echo $ch?></strong></td>
+		<td style="text-align:center"><strong id="credit_hour_val"><?php echo $ch?></strong></td>
 	</tr>
 </table>
 </div>
@@ -174,6 +179,24 @@ $aclo="";$asyll="";
 		<td style="text-align:center"><strong id="jumass2">0</strong></td>
 	</tr>
 </table>
+
+<div class="form-group">
+<div class="checkbox"><label for="is_practical">
+<input type="hidden" name="is_practical" value="0">
+<?php 
+if($slt->is_practical == 1){
+	$checked = 'checked';
+}else{
+	$checked = '';
+}
+
+?>
+<input type="checkbox" id="is_practical" name="is_practical" value="1" <?=$checked?>>
+Please tick if this course is Latihan Industri/ Clinical Placement/ Practicum/ WBL using Effective Learning Time(ELT) of 50%
+</label>
+<div class="help-block"></div>
+</div>
+</div>
 
 </div>
 </div>
@@ -299,7 +322,7 @@ $i++;
 <td id="setsyll_pnp_others">0</td>
 <td id="setsyll_nf2f">0</td>
 <td id="setsyll_independent">0</td>
-<td id="setsyll_total"><?php echo $slt_hour?></td>
+<td id="setsyll_total"></td>
 </tr>
 
 <tr style="text-align:center">
@@ -346,6 +369,30 @@ $js = '
 	cal_syll_col();
 	cal_syll_col2();
 	checkEqual();
+	
+	$("#is_practical").click(function(){
+		var notional;
+		if($(this).is(":checked")){
+			notional = 80;
+		}else{
+			notional = 40;
+			
+		}
+		$("#notional_hour").text(notional);
+		var credit = myparse($("#credit_hour_val").text());
+		//alert(credit);
+		var total = notional * credit;
+		$("#total-slt-hour").text(total);
+		
+		
+		cal_indlearn();
+	cal_syll_week();
+	cal_syll_week2();
+	cal_syll_col();
+	cal_syll_col2();
+		checkEqual();
+	});
+	
 	$(".tgcal").keyup(function(){
 		cal_indlearn();
 		checkEqual();
@@ -376,7 +423,7 @@ function cal_indlearn(){
 }
 
 function getSlt(){
-	return ' . $slt_hour . ';
+	return myparse($("#total-slt-hour").text());
 }
 
 function calculate_learning(){
@@ -477,6 +524,9 @@ function glystr(what){
 	return \'<span class="glyphicon glyphicon-\' + sign + \'" style="color:\' + color + \'"></span>\';
 }
 function checkEqual(){
+	
+	$("#setsyll_total").text(getSlt());
+	
 	
 	var arrw = ["pnp_lecture", "pnp_tutorial", "pnp_practical", "pnp_others", "independent", "nf2f", "total"];
 	for(s=0;s<arrw.length;s++){

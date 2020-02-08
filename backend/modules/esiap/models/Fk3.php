@@ -286,7 +286,7 @@ $html .= '</td>
 
 $x=1;
 $gtotal = 0;
-$plo_num = $this->model->plo_num;
+$plo_num = $this->model->ploNumber;
 $clo_assess = $this->model->assessments;
 foreach($this->model->clos as $clo){
 	$html .='
