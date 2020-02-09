@@ -7,6 +7,8 @@ use yii\web\Controller;
 use yii\helpers\ArrayHelper;
 use yii\filters\AccessControl;
 use backend\modules\teachingLoad\models\TeachingStaffSearch;
+use backend\modules\teachingLoad\models\Setting;
+use yii\db\Expression;
 
 /**
  * Default controller for the `teaching-load` module
@@ -50,5 +52,24 @@ class ManagerController extends Controller
         ]);
 
     }
+	
+	public function actionSetting(){
+		
+		$model = Setting::findOne(1);
+		
+		if ($model->load(Yii::$app->request->post())) {
+			$model->updated_by = Yii::$app->user->identity->id;
+			$model->updated_at = new Expression('NOW()'); 
+			if($model->save()){
+				Yii::$app->session->addFlash('success', "Data Updated");
+				return $this->redirect('setting');
+			}
+		}
+		
+		return $this->render('setting', [
+            'model' => $model,
+        ]);
+		
+	}
 	
 }

@@ -9,6 +9,7 @@ use backend\modules\teachingLoad\models\TaughtCourse;
 use backend\modules\teachingLoad\models\TeachCourse;
 use backend\modules\teachingLoad\models\OutCourse;
 use backend\modules\teachingLoad\models\PastExperience;
+use backend\modules\teachingLoad\models\Setting;
 use yii\helpers\ArrayHelper;
 use yii\db\Expression;
 use yii\filters\AccessControl;
@@ -41,7 +42,29 @@ class DefaultController extends Controller
         return $this->render('index');
     }
 	
+	public function actionTeachingView(){
+		$user = Yii::$app->user->identity;
+		$model = $user->staff;
+		$setting = Setting::findOne(1);
+
+		if(!$setting->formAccess){
+			Yii::$app->session->addFlash('info', "The teaching information form has been closed.");
+		}
+		
+		return $this->render('teaching-view', [
+			'model' => $model,
+			'user' => $user,
+			'setting' => $setting
+		]);
+	}
+	
 	public function actionTeachingForm(){
+		
+		$setting = Setting::findOne(1);
+		if(!$setting->formAccess){
+			return $this->redirect(['teaching-view']);
+		}
+		
 		$user = Yii::$app->user->identity;
 		$model = $user->staff;
 		$model->scenario = 'teaching';
@@ -183,8 +206,8 @@ class DefaultController extends Controller
 
                     if ($flag) {
                         $transaction->commit();
-                            Yii::$app->session->addFlash('success', "Information updated");
-                            return $this->redirect(['teaching-form']);
+                            Yii::$app->session->addFlash('success', "Teaching Information has been submitted");
+                            return $this->redirect(['teaching-view']);
                     } else {
                         $transaction->rollBack();
                     }
@@ -209,6 +232,7 @@ class DefaultController extends Controller
 			'teachCourses' => (empty($teachCourses)) ? [new TeachCourse] : $teachCourses,
 			'outCourses' => (empty($outCourses)) ? [new OutCourse] : $outCourses,
 			'pastExpes' => (empty($pastExpes)) ? [new PastExperience] : $pastExpes,
+			'setting' => $setting
 		]);
 	}
 }

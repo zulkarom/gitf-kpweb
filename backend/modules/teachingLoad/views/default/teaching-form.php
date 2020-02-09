@@ -15,6 +15,7 @@ $this->title = 'Teaching Information Form';
 
 <?php $form = ActiveForm::begin(['id' => 'dynamic-form']); ?>
 
+<p><b><i>* please complete this form before <?=date('d M Y', strtotime($setting->date_end))?></i></b></p>
 
 <div class="row">
 <div class="col-md-6">

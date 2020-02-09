@@ -95,7 +95,7 @@ use backend\models\Menu;
 					
 					['label' => 'MODULES', 'options' => ['class' => 'header']],
 					
-					['label' => 'Teaching', 'icon' => 'gears', 'url' => ['/teaching-load/default/teaching-form']],
+					['label' => 'Teaching', 'icon' => 'gears', 'url' => ['/teaching-load/default/teaching-view']],
 					
 					['label' => 'Staff', 'icon' => 'user', 'url' => ['/staff']],
 					

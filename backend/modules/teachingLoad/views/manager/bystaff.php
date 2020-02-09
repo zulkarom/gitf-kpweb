@@ -94,7 +94,7 @@ $columns = [
             ],
 			
 			[
-                'label' => 'Four Courses Willingly to Teach',
+                'label' => 'Four Courses Able to Teach',
 				'format' => 'html',
                 'value' => function($model){
 					return $model->teachCoursesStr;
@@ -228,7 +228,7 @@ $columns = [
             ],
 			
 			[
-                'label' => 'Four Courses Willingly to Teach',
+                'label' => 'Four Courses Able to Teach',
 				'format' => 'html',
                 'value' => function($model){
 					return $model->getTeachCoursesStr("<br />");
