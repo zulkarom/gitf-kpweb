@@ -46,9 +46,15 @@ class DefaultController extends Controller
 		$user = Yii::$app->user->identity;
 		$model = $user->staff;
 		$setting = Setting::findOne(1);
+		
+		
 
 		if(!$setting->formAccess){
 			Yii::$app->session->addFlash('info', "The teaching information form has been closed.");
+		}
+		
+		if($model->teaching_submit == 0 and $setting->formAccess){
+			return $this->redirect('teaching-form');
 		}
 		
 		return $this->render('teaching-view', [

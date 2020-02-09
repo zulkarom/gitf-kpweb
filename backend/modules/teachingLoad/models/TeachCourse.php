@@ -3,7 +3,8 @@
 namespace backend\modules\teachingLoad\models;
 
 use Yii;
-use backend\modules\esiap\models\Course;
+use backend\modules\esiap\models\Course as CourseModel;
+use backend\modules\staff\models\Staff;
 
 /**
  * This is the model class for table "tld_course_teach".
@@ -46,6 +47,10 @@ class TeachCourse extends \yii\db\ActiveRecord
     }
 	
 	public function getCourse(){
-		return $this->hasOne(Course::className(), ['id' => 'course_id']);
+		return $this->hasOne(CourseModel::className(), ['id' => 'course_id']);
+	}
+	
+	public function getStaff(){
+		return $this->hasOne(Staff::className(), ['id' => 'staff_id']);
 	}
 }
