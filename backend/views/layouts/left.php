@@ -105,7 +105,7 @@ use backend\models\Menu;
 					
 					['label' => 'JEB Journal', 'icon' => 'book', 'url' => ['/site/jeb-web'], 'template'=>'<a href="{url}" target="_blank">{icon} {label}</a>'],
 					
-					['label' => 'Website', 'icon' => 'tv', 'url' => ['/website'],],
+					['label' => 'Website', 'icon' => 'tv', 'url' => ['/website'], 'visible' => Yii::$app->user->can('website-manager')],
 					
 					['label' => 'Proceedings', 'icon' => 'microphone', 'url' => ['/proceedings'], 'visible' => Yii::$app->user->can('proceedings-manager')],
 					

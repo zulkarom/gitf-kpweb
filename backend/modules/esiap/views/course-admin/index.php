@@ -93,7 +93,8 @@ $exportColumns = [
     <div class="box">
 <div class="box-header"></div>
 <div class="box-body"><?= GridView::widget([
-        'dataProvider' => $dataProvider,
+         'dataProvider' => $dataProvider,
+		'options' => [ 'style' => 'table-layout:fixed;' ],
 		'export' => false,
        // 'filterModel' => $searchModel,
         'columns' => [
@@ -110,7 +111,7 @@ $exportColumns = [
 				'format' => 'html',
 				'label' => 'Course Name',
 				'value' => function($model){
-					return $model->course_name . ' / <i>' . $model->course_name_bi . '</i>';
+					return strtoupper($model->course_name) . ' / <i>' . strtoupper($model->course_name_bi) . '</i>';
 				}
 				
 			],

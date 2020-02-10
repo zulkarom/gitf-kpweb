@@ -9,6 +9,9 @@ use backend\modules\staff\models\Staff;
 use backend\modules\esiap\models\Program;
 use backend\modules\esiap\models\CourseType;
 use backend\models\Faculty;
+use kartik\select2\Select2;
+use yii\grid\GridView;
+use yii\bootstrap\Modal;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\esiap\models\Course */
@@ -17,11 +20,14 @@ $this->title = 'Update: ' . $model->course_name;
 $this->params['breadcrumbs'][] = ['label' => 'Courses', 'url' => ['index']];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
-<?php $form = ActiveForm::begin(['id' => 'dynamic-form']); ?>
 
 
 <div class="row">
 <div class="col-md-6">
+
+
+
+<?php $form = ActiveForm::begin(['id' => 'update-course']); ?>
 
 
 <div class="box box-primary">
@@ -37,18 +43,16 @@ $this->params['breadcrumbs'][] = 'Update';
 <div class="col-md-6"><?= $form->field($model, 'course_code')->textInput(['maxlength' => true]) ?>
 </div>
 
-
 </div>
+
+
 
 
 <?= $form->field($model, 'course_name')->textInput(['maxlength' => true]) ?>
 
 
 	<?= $form->field($model, 'course_name_bi')->textInput(['maxlength' => true]) ?>
-	
-	
 	<div class="row">
-
 
 <div class="col-md-4"><?= $form->field($model, 'credit_hour')->textInput(['maxlength' => true]) ?></div>
 
@@ -56,13 +60,14 @@ $this->params['breadcrumbs'][] = 'Update';
 <?= $form->field($model, 'course_type')->dropDownList(ArrayHelper::map(CourseType::find()->where(['showing' => 1])->orderBy('type_order ASC')->all(),'id', 'type_name'), ['prompt' => 'Please Select' ]) ?>
 </div>
 
+
 </div>
-
-
-
+	
 <?= $form->field($model, 'program_id')->dropDownList(
         ArrayHelper::map(Program::find()->where(['faculty_id' => Yii::$app->params['faculty_id'], 'trash' => 0])->all(),'id', 'pro_name'), ['prompt' => 'Please Select' ]
     ) ?>
+
+
 
 <?php 
 if($model->faculty_id == 0){
@@ -71,6 +76,8 @@ if($model->faculty_id == 0){
 echo $form->field($model, 'faculty_id')->dropDownList(
         ArrayHelper::map(Faculty::find()->where(['showing' => 1])->all(),'id', 'faculty_name'), ['prompt' => 'Please Select' ]
     ) ?>
+	
+	
 
 
 <div class="row">
@@ -94,133 +101,45 @@ echo $form->field($model, 'faculty_id')->dropDownList(
 
 </div>
 
-</div></div>
 </div>
 
 
 
+<div class="form-group">
 
+<label class="control-label">Staff in charge for development</label>
 
-<div class="box box-warning">
-<div class="box-header">
-<h3 class="box-title">Staff Access for View</h3>
-</div>
-<div class="box-body">
-
-<?php DynamicFormWidget::begin([
-        'widgetContainer' => 'dynamicform_wrapper',
-        'widgetBody' => '.container-items-access',
-        'widgetItem' => '.access-item',
-        'limit' => 20,
-        'min' => 1,
-        'insertButton' => '.add-access',
-        'deleteButton' => '.remove-access',
-        'model' => $accesses[0],
-        'formId' => 'dynamic-form',
-        'formFields' => [
-            'id',
-            'staff_id',
-        ],
-    ]); ?>
-
-    
-    <table class="table table-bordered table-striped">
-
-        <tbody class="container-items-access">
-        <?php foreach ($accesses as $i => $access): ?>
-            <tr class="access-item">
-            
-                <td class="vcenter">
-                    <?php
-                        // necessary for update action.
-                        if (! $access->isNewRecord) {
-                            echo Html::activeHiddenInput($access, "[{$i}]id");
-                        }
-                    ?>
-                    <?= $form->field($access, "[{$i}]staff_id")->dropDownList(ArrayHelper::map(Staff::activeStaff(), 'id', 'user.fullname'), ['prompt' => 'Select'])->label(false) ?>
-                </td>
-
-                <td class="text-center vcenter" style="width: 40px;">
-                    <button type="button" class="remove-access btn btn-default btn-sm"><span class="fa fa-remove"></span></button>
-                </td>
-            </tr>
-         <?php endforeach; ?>
-        </tbody>
-        
-        <tfoot>
-            <tr>
-                <td>
-                <button type="button" class="add-access btn btn-default btn-sm"><span class="fa fa-plus"></span> New Staff Access</button>
-                
-                </td>
-                <td>
-                
-                
-                </td>
-            </tr>
-        </tfoot>
-        
-    </table>
-    <?php DynamicFormWidget::end(); ?>
-
-
-</div>
-</div>
 <?php 
-if($model->publishedVersion){
-	$disabled = '';
-}else{
-	$disabled = ' disabled';
-}
+
+
+echo Select2::widget([
+    'name' => 'staff_pic',
+    'value' => ArrayHelper::map($model->coursePics, 'staff_id', 'staff_id'),
+    'data' => Staff::listAcademicStaffArray(),
+    'options' => ['multiple' => true, 'placeholder' => 'Select staff ...']
+]);
 
 ?>
-<div class="box box-info">
-<div class="box-header">
-<h3 class="box-title">PUBLISHED FK01 - FK03</h3>
-</div>
-<div class="box-body">
-
-<div class="table-responsive">
-  <table class="table table-striped table-hover">
-    <thead>
-      <tr>
-		<th>#</th>
-        <th>Document</th>
-        <th>PDF</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-		<td>1.</td>
-        <td><span class="glyphicon glyphicon-file"></span> FK01 - PRO FORMA KURSUS / <i>COURSE PRO FORMA</i>                             </td>
-        <td><a href="<?=Url::to(['/esiap/course/fk1', 'course' => $model->id])?>" class="btn btn-success btn-sm<?=$disabled?>" target="_blank"><span class='glyphicon glyphicon-download-alt'></span></a></td>
-		
-      </tr>
-	  <tr>
-	  <td>2.</td>
-        <td><span class="glyphicon glyphicon-file"></span> FK02 - MAKLUMAT KURSUS / <i>COURSE INFORMATION </i>                               </td>
-        <td><a href="<?=Url::to(['/esiap/course/fk2', 'course' => $model->id])?>" class="btn btn-success btn-sm<?=$disabled?>" target="_blank"><span class='glyphicon glyphicon-download-alt'></span></a></td>
-		
-      </tr>
-	  <tr>
-	  <td>3.</td>
-        <td><span class="glyphicon glyphicon-file"></span> FK03 - PENJAJARAN KONSTRUKTIF / <i>CONSTRUCTIVE ALIGNMENT       </i>                         </td>
-        <td><a href="<?=Url::to(['/esiap/course/fk3', 'course' => $model->id])?>" class="btn btn-success btn-sm<?=$disabled?>" target="_blank"><span class='glyphicon glyphicon-download-alt'></span></a></td>
-		
-      </tr>
-	  
-	  <tr>
-	  <td>4.</td>
-        <td><span class="glyphicon glyphicon-file"></span> TABLE 4 - MAKLUMAT KURSUS / <i>COURSE INFORMATION </i>                               </td>
-        <td><a href="<?=Url::to(['/esiap/course/tbl4', 'course' => $model->id])?>" class="btn btn-success btn-sm<?=$disabled?>" target="_blank"><span class='glyphicon glyphicon-download-alt'></span></a></td>
-		
-      </tr>
-      
-    </tbody>
-  </table>
-</div>
 
 </div>
+
+
+<div class="form-group">
+
+<label class="control-label">Staff can view</label>
+
+<?php 
+
+
+echo Select2::widget([
+    'name' => 'staff_access',
+    'value' => ArrayHelper::map($model->courseAccesses, 'staff_id', 'staff_id'),
+    'data' => Staff::listAcademicStaffArray(),
+    'options' => ['multiple' => true, 'placeholder' => 'Select staff ...']
+]);
+
+?>
+
 </div>
 
 
@@ -228,279 +147,8 @@ if($model->publishedVersion){
 
 
 </div>
-
-<div class="col-md-6">
-
-
-
-
-<div class="box box-warning">
-<div class="box-header">
-<h3 class="box-title">Course Version</h3>
-</div>
-<div class="box-body">
-
-<div class="table-responsive">
-  <table class="table table-striped table-hover">
-  <thead>
-  <tr>
-  <th colspan="2">Published Version</th>
-  </tr>
-  </thead>
-    <tbody>
-      <tr>
-        <td>Version Name</td>
-        <td><?php 
-		if($model->publishedVersion){
-			echo $model->publishedVersion->version_name;
-		}else{
-			echo 'None';
-		}
-		?>
-		
-		</td>
-      </tr>
-	  
-	  <tr>
-        <td>Preparation</td>
-        <td><?php 
-		if($model->publishedVersion){
-			if($model->publishedVersion->preparedBy){
-				echo $model->publishedVersion->preparedBy->fullname . ' ('.$model->publishedVersion->prepareDate.')';
-			}
-			
-		}else{
-			echo 'None';
-		}
-		?>
-		
-		</td>
-      </tr>
-	 
-	  
-	  <tr>
-        <td>Verification</td>
-        <td><?php 
-		if($model->publishedVersion){
-			if($model->publishedVersion->verifiedBy){
-				echo $model->publishedVersion->verifiedBy->fullname . ' ('.$model->publishedVersion->verifiedDate.')';
-			}
-			
-		}else{
-			echo 'None';
-		}
-		?>
-		
-		</td>
-      </tr>
-	  
-	  <tr>
-        <td>Approval</td>
-        <td><?php 
-		if($model->publishedVersion){
-			if($model->publishedVersion->senate_approve_show){
-				$senate = $model->publishedVersion->senateDate;
-			}else{
-				$senate = '-';
-			}
-			echo 'Faculty: '.$model->publishedVersion->facultyDate.'<br />
-			Senate: ' . $senate;
-			
-		}else{
-			echo 'None';
-		}
-		?>
-		
-		</td>
-      </tr>
-
-
-    </tbody>
-  </table>
 </div>
 
-<div class="table-responsive">
-  <table class="table table-striped table-hover">
-  <thead>
-  <tr>
-  <th colspan="2">Under Development Version (UDV)</th>
-  </tr>
-  </thead>
-    <tbody>
-      <tr>
-        <td>Version Name</td>
-        <td><?php 
-		if($model->developmentVersion){
-			echo $model->developmentVersion->version_name;
-		}else{
-			echo 'None';
-		}
-		?>
-		
-		</td>
-      </tr>
-	  <tr>
-        <td>Status</td>
-        <td>
-		<?php 
-		if($model->developmentVersion){
-			echo $model->developmentVersion->labelStatus;
-		}else{
-			echo 'None';
-		}
-		?>
-		
-		</td>
-      </tr>
-	  <tr>
-        <td>Action</td>
-        <td><?php 
-		if($model->developmentVersion){
-			echo Html::a('<span class="glyphicon glyphicon-pencil"></span> Update Version', ['/esiap/course-admin/course-version-update', 'id' => $model->developmentVersion->id], [
-					'class' => 'btn btn-warning btn-sm',
-					
-				]);
-		}else{
-			echo 'None';
-		}
-		
-		
-		
-		?></td>
-      </tr>
-     <tr>
-        <td><a class="btn btn-default btn-sm" href="<?=Url::to(['/esiap/course-admin/course-version', 'course' => $model->id])?>"><span class='glyphicon glyphicon-cog'></span> Manage Version</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-</div>
-</div>
-
-
-<div class="box box-danger">
-<div class="box-header">
-<h3 class="box-title">Staff in Charge for Development</h3>
-</div>
-<div class="box-body">
-
-<?=$form->field($model, 'updated_at')->hiddenInput(['value' => time()])->label(false)?>
-
-<?php DynamicFormWidget::begin([
-        'widgetContainer' => 'dynamicform_wrapper',
-        'widgetBody' => '.container-items',
-        'widgetItem' => '.pic-item',
-        'limit' => 20,
-        'min' => 1,
-        'insertButton' => '.add-pic',
-        'deleteButton' => '.remove-pic',
-        'model' => $pics[0],
-        'formId' => 'dynamic-form',
-        'formFields' => [
-            'id',
-            'staff_id',
-        ],
-    ]); ?>
-
-    
-    <table class="table table-bordered table-striped">
-
-        <tbody class="container-items">
-        <?php foreach ($pics as $i => $pic): ?>
-            <tr class="pic-item">
-            
-                <td class="vcenter">
-                    <?php
-                        // necessary for update action.
-                        if (! $pic->isNewRecord) {
-                            echo Html::activeHiddenInput($pic, "[{$i}]id");
-                        }
-                    ?>
-                    <?= $form->field($pic, "[{$i}]staff_id")->dropDownList(ArrayHelper::map(Staff::activeStaff(), 'id', 'user.fullname'), ['prompt' => 'Select'])->label(false) ?>
-                </td>
-
-                <td class="text-center vcenter" style="width: 40px;">
-                    <button type="button" class="remove-pic btn btn-default btn-sm"><span class="fa fa-remove"></span></button>
-                </td>
-            </tr>
-         <?php endforeach; ?>
-        </tbody>
-        
-        <tfoot>
-            <tr>
-                <td>
-                <button type="button" class="add-pic btn btn-default btn-sm"><span class="fa fa-plus"></span> New Staff in Charge</button>
-                
-                </td>
-                <td>
-                
-                
-                </td>
-            </tr>
-        </tfoot>
-        
-    </table>
-    <?php DynamicFormWidget::end(); ?>
-
-
-</div>
-</div>
-
-
-<div class="box box-info">
-<div class="box-header">
-<h3 class="box-title">FK01 - FK03 (UNDER DEVELOPMENT)</h3>
-</div>
-<div class="box-body">
-
-<div class="table-responsive">
-  <table class="table table-striped table-hover">
-    <thead>
-      <tr>
-		<th>#</th>
-        <th>Document</th>
-		<th>PDF</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-		<td>1.</td>
-        <td><span class="glyphicon glyphicon-file"></span> FK01 - PRO FORMA KURSUS / <i>COURSE PRO FORMA</i>                             </td>
-		
-		<td><a href="<?=Url::to(['/esiap/course/fk1', 'course' => $model->id, 'dev' => 1])?>" class="btn btn-warning btn-sm" target="_blank"><span class='glyphicon glyphicon-download-alt'></span></a></td>
-      </tr>
-	  <tr>
-	  <td>2.</td>
-        <td><span class="glyphicon glyphicon-file"></span> FK02 - MAKLUMAT KURSUS / <i>COURSE INFORMATION </i>                               </td>
-		
-		<td><a href="<?=Url::to(['/esiap/course/fk2', 'course' => $model->id, 'dev' => 1])?>" class="btn btn-warning btn-sm" target="_blank"><span class='glyphicon glyphicon-download-alt'></span></a></td>
-      </tr>
-	  <tr>
-	  <td>3.</td>
-        <td><span class="glyphicon glyphicon-file"></span> FK03 - PENJAJARAN KONSTRUKTIF / <i>CONSTRUCTIVE ALIGNMENT       </i>                         </td>
-		
-		<td><a href="<?=Url::to(['/esiap/course/fk3', 'course' => $model->id,  'dev' => 1])?>" class="btn btn-warning btn-sm" target="_blank"><span class='glyphicon glyphicon-download-alt'></span></a></td>
-      </tr>
-	  
-	  <tr>
-	  <td>4.</td>
-        <td><span class="glyphicon glyphicon-file"></span> TABLE 4 - MAKLUMAT KURSUS / <i>COURSE INFORMATION </i>		
-		<td><a href="<?=Url::to(['/esiap/course/tbl4', 'course' => $model->id,  'dev' => 1])?>" class="btn btn-warning btn-sm" target="_blank"><span class='glyphicon glyphicon-download-alt'></span></a></td>
-      </tr> 
-      
-    </tbody>
-  </table>
-</div>
-
-</div>
-</div>
-
-
-</div>
-
-</div>
 
 
     <div class="form-group">
@@ -510,3 +158,146 @@ if($model->publishedVersion){
 
 
     <?php ActiveForm::end(); ?>
+
+
+
+
+</div>
+
+<div class="col-md-6">
+
+
+<?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
+    <p>
+	
+	<a id="modalButton" class="btn btn-success btn-sm" href="<?= Url::to(['course-version-create', 'course' => $model->id])?>"><span class="glyphicon glyphicon-plus"></span> New Version</a>
+    </p>
+
+    <div class="box box-warning">
+<div class="box-header"></div>
+<div class="box-body">
+
+<?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        //'filterModel' => $searchModel,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+			[
+				'label' => 'Version Name',
+				'format' => 'html',
+				'value' => function($model){
+					return $model->version_name . '<br />(' . 
+					$model->versionType->type_name . ')' .
+					'<br /> <i>'.date('d M Y', strtotime($model->created_at)).'</i>';
+				}
+			],
+			
+			[
+                'label' => 'Publish',
+				'format' => 'html',
+				'filter' => Html::activeDropDownList($searchModel, 'is_published', [1=>'YES', 2 => 'NO'],['class'=> 'form-control','prompt' => 'All']),
+				'value' => function($model){
+					return $model->labelPublished;
+					
+				}
+                
+            ],
+            
+			[
+                'label' => 'Development',
+				'format' => 'html',
+				'filter' => Html::activeDropDownList($searchModel, 'is_developed', [1=>'YES', 2 => 'NO'],['class'=> 'form-control','prompt' => 'All']),
+				'value' => function($model){
+					return $model->labelActive . ' ' . $model->labelStatus;
+					
+				}
+                
+            ],
+			
+			
+
+            
+
+            ['class' => 'yii\grid\ActionColumn',
+                 'contentOptions' => ['style' => 'width: 8.7%'],
+                'template' => '{update}',
+                //'visible' => false,
+                'buttons'=>[
+                    'update'=>function ($url, $model) {
+						return '
+						<div class="dropdown">
+  <button class="btn btn-warning btn-sm dropdown-toggle" type="button" data-toggle="dropdown">Actions 
+  <span class="caret"></span></button>
+  <ul class="dropdown-menu">
+    <li><a class="modalButton-update" href="'.Url::to(['/esiap/course-admin/course-version-update', 'id' => $model->id]).'">UPDATE</a></li>
+    <li><a target="_blank" href="'.Url::to(['/esiap/course/fk1', 'course' => $model->course_id, 'version' => $model->id]).'">FK1</a></li>
+    <li><a target="_blank" href="'.Url::to(['/esiap/course/fk2', 'course' => $model->course_id, 'version' => $model->id]).'">FK2</a></li>
+	<li><a target="_blank" href="'.Url::to(['/esiap/course/fk3', 'course' => $model->course_id, 'version' => $model->id]).'">FK3</a></li>
+	<li><a target="_blank" href="'.Url::to(['/esiap/course/tbl4', 'course' => $model->course_id, 'version' => $model->id]).'">TABLE 4</a></li>
+  </ul>
+</div>
+						
+						';
+                    }
+                ],
+            
+            ],
+
+        ],
+    ]); ?></div>
+</div>
+
+
+</div>
+
+</div>
+
+<?php 
+
+Modal::begin([
+    'header' => '<h4>Create Course Version</h4>',
+    'id' =>'modal',
+    'size' => 'modal-lg'
+]);
+
+echo '<div id="modalContent"></div>';
+
+Modal::end();
+
+Modal::begin([
+    'header' => '<h4>Update Course Version</h4>',
+    'id' =>'modal-update',
+    'size' => 'modal-lg'
+]);
+
+echo '<div id="modalContent-update"></div>';
+
+Modal::end();
+
+
+
+$this->registerJs('
+
+$(function(){
+  $("#modalButton").click(function(e){
+	   e.preventDefault();
+      $("#modal").modal("show")
+        .find("#modalContent")
+        .load($(this).attr("href"));
+  });
+});
+
+$(function(){
+  $(".modalButton-update").click(function(e){
+	   e.preventDefault();
+      $("#modal-update").modal("show")
+        .find("#modalContent-update")
+        .load($(this).attr("href"));
+  });
+});
+
+');
+
+
+?>

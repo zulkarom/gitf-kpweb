@@ -33,7 +33,7 @@ class CoursePic extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['staff_id'], 'required'],
+            //[['staff_id'], 'required'],
 			
 			
             [['staff_id', 'pic_order'], 'integer'],

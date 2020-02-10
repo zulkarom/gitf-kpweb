@@ -31,6 +31,7 @@ use backend\modules\esiap\models\CoursePic;
 use backend\modules\esiap\models\CourseAccess;
 use yii\helpers\Json;
 
+
 /**
  * CourseController implements the CRUD actions for Course model.
  */
@@ -147,7 +148,7 @@ class CourseAdminController extends Controller
 
 				if ($flag) {
 					$transaction->commit();
-					return $this->redirect(['course-version', 'course' => $course]);
+					return $this->redirect(['/esiap/course-admin/update', 'course' => $course]);
 				} else {
 					$transaction->rollBack();
 				}
@@ -158,7 +159,7 @@ class CourseAdminController extends Controller
 			
         }
 
-        return $this->render('../course-version/create', [
+        return $this->renderAjax('../course-version/create', [
             'model' => $model,
 			'course' => $course_model
         ]);
@@ -242,7 +243,7 @@ class CourseAdminController extends Controller
 		}
 		
 		
-		return $this->redirect(['course-version', 'course' => $course]);
+		return $this->redirect(['/esiap/course-admin/update', 'course' => $model->course->id]);
 		
 	}
 	
@@ -273,13 +274,13 @@ class CourseAdminController extends Controller
 			}
 			
 			if($model->save()){
-				Yii::$app->session->addFlash('success', "Data Updated");
-				return $this->redirect(['course-version', 'course' => $model->course->id]);
+				Yii::$app->session->addFlash('success', "Course Version Updated");
+				return $this->redirect(['/esiap/course-admin/update', 'course' => $model->course->id]);
 			}
             
         }
 
-        return $this->render('../course-version/update', [
+        return $this->renderAjax('../course-version/update', [
             'model' => $model,
         ]);
     }
@@ -328,98 +329,119 @@ class CourseAdminController extends Controller
         $pics = $model->coursePics;
 		
 		$accesses = $model->courseAccesses;
+		
+		$searchModel = new CourseVersionSearch();
+        $dataProvider = $searchModel->search($course, Yii::$app->request->queryParams);
+
+        
        
         if ($model->load(Yii::$app->request->post())) {
-            
-            $model->updated_at = new Expression('NOW()');    
-            
-            $oldIDs = ArrayHelper::map($pics, 'id', 'id');
-            $pics = Model::createMultiple(CoursePic::classname(), $pics);
-            Model::loadMultiple($pics, Yii::$app->request->post());
-            $deletedIDs = array_diff($oldIDs, array_filter(ArrayHelper::map($pics, 'id', 'id')));
-            foreach ($pics as $i => $pic) {
-                $pic->pic_order = $i;
-            }
+			$model->updated_at = new Expression('NOW()');    
+			if($model->save()){
+
+            $staff_pic_arr = Yii::$app->request->post('staff_pic');
 			
-			$oldAcIDs = ArrayHelper::map($accesses, 'id', 'id');
-            $accesses = Model::createMultiple(CourseAccess::classname(), $accesses);
-            Model::loadMultiple($accesses, Yii::$app->request->post());
-            $deletedAcIDs = array_diff($oldAcIDs, array_filter(ArrayHelper::map($accesses, 'id', 'id')));
-            foreach ($accesses as $i => $access) {
-                $access->acc_order = $i;
-            }
-            
-            $valid = $model->validate();
-            $valid = Model::validateMultiple($pics) && $valid;
-			$valid = Model::validateMultiple($accesses) && $valid;
-
-			
-            
-            if ($valid) {
-
-                $transaction = Yii::$app->db->beginTransaction();
-                try {
-                    if ($flag = $model->save(false)) {
-                        if (! empty($deletedIDs)) {
-                            CoursePic::deleteAll(['id' => $deletedIDs]);
-                        }
-						if (! empty($deletedAcIDs)) {
-                            CourseAccess::deleteAll(['id' => $deletedAcIDs]);
-                        }
-                        foreach ($pics as $i => $pic) {
-                            if ($flag === false) {
-                                break;
-                            }
-                            //do not validate this in model
-                            $pic->course_id = $model->id;
-							$pic->updated_at = new Expression('NOW()');
-
-                            if (!($flag = $pic->save(false))) {
-                                break;
-                            }
-                        }
-						
-						foreach ($accesses as $i => $access) {
-                            if ($flag === false) {
-                                break;
-                            }
-                            //do not validate this in model
-                            $access->course_id = $model->id;
-							$access->updated_at = new Expression('NOW()');
-
-                            if (!($flag = $access->save(false))) {
-                                break;
-                            }
-                        }
-
-                    }else{
-						$model->flashError();
+			if($staff_pic_arr){
+				//echo 'hai';die();
+				$kira_post = count($staff_pic_arr);
+				$kira_lama = count($model->coursePics);
+				if($kira_post > $kira_lama){
+					
+					$bil = $kira_post - $kira_lama;
+					for($i=1;$i<=$bil;$i++){
+						$insert = new CoursePic;
+						$insert->course_id = $model->id;
+						$insert->save();
 					}
+				}else if($kira_post < $kira_lama){
 
-                    if ($flag) {
-                        $transaction->commit();
-                            Yii::$app->session->addFlash('success', "Dates updated");
-                            return $this->redirect(['update','course' => $model->id]);
-                    } else {
-                        $transaction->rollBack();
-                    }
-                } catch (Exception $e) {
-                    $transaction->rollBack();
-                    
-                }
-            }
+					$bil = $kira_lama - $kira_post;
+					$deleted = CoursePic::find()
+					  ->where(['course_id'=>$model->id])
+					  ->limit($bil)
+					  ->all();
+					if($deleted){
+						foreach($deleted as $del){
+							$del->delete();
+						}
+					}
+				}
+				
+				$update_pic = CoursePic::find()
+				->where(['course_id' => $model->id])
+				->all();
+				//echo count($staff_pic_arr);
+				//echo count($update_pic);die();
 
-        
-        
-       
+				if($update_pic){
+					$i=0;
+					foreach($update_pic as $ut){
+						$ut->staff_id = $staff_pic_arr[$i];
+						$ut->save();
+						$i++;
+					}
+				}
+			}
+			
+			
 
-    }
-    
-		 return $this->render('update', [
-				'model' => $model,
-				'pics' => (empty($pics)) ? [new CoursePic] : $pics,
-				'accesses' => (empty($accesses)) ? [new CourseAccess] : $accesses
-			]);
+            $staff_access_arr = Yii::$app->request->post('staff_access');
+			
+			if($staff_access_arr){
+				//echo 'hai';die();
+				$kira_post = count($staff_access_arr);
+				$kira_lama = count($model->courseAccesses);
+				if($kira_post > $kira_lama){
+					
+					$bil = $kira_post - $kira_lama;
+					for($i=1;$i<=$bil;$i++){
+						$insert = new CourseAccess;
+						$insert->course_id = $model->id;
+						$insert->save();
+					}
+				}else if($kira_post < $kira_lama){
+
+					$bil = $kira_lama - $kira_post;
+					$deleted = CourseAccess::find()
+					  ->where(['course_id'=>$model->id])
+					  ->limit($bil)
+					  ->all();
+					if($deleted){
+						foreach($deleted as $del){
+							$del->delete();
+						}
+					}
+				}
+				
+				$update_access = CourseAccess::find()
+				->where(['course_id' => $model->id])
+				->all();
+				//echo count($staff_access_arr);
+				//echo count($update_access);die();
+
+				if($update_access){
+					$i=0;
+					foreach($update_access as $ut){
+						$ut->staff_id = $staff_access_arr[$i];
+						$ut->save();
+						$i++;
+					}
+				}
+			}
+			
+			}else{
+				$model->flashError();
+			}
+			
+			return $this->redirect(['update', 'course' => $course]);
+			}
+		
+		return $this->render('update', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+			'model' => $model
+        ]);
+
     }
 	
 	public function actionProfile($course)

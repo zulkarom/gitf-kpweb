@@ -13,11 +13,8 @@ use backend\modules\staff\models\Staff;
 
 <div class="course-version-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['id' => 'version-update-form']); ?>
 
-<div class="box">
-<div class="box-header"></div>
-<div class="box-body">   
 
 <div class="row">
 <div class="col-md-3"><?= $form->field($model, 'status')->dropDownList( $model->statusArray ) ?></div>
@@ -163,9 +160,7 @@ echo $form->field($model, 'version_type_id')->dropDownList($model->versionTypeLi
 </div>
 
    
-   
-   </div>
-</div>
+ 
 
 <div class="row">
 <div class="col-md-6"><div class="form-group">

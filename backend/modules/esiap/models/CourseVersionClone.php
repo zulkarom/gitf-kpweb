@@ -5,13 +5,14 @@ namespace backend\modules\esiap\models;
 use Yii;
 use yii\db\Expression;
 
+
 class CourseVersionClone
 {
 	public $ori_version;
 	public $copy_version;
 	
 	public function cloneVersion(){
-		$components = ['profile', 'assessment', 'clo', 'syllabus', 'slt', 'reference'];
+		$components = ['profile', 'assessment', 'clo', 'syllabus', 'slt', 'reference', 'transferable', 'staff'];
 		$flag = true;
 		foreach($components as $component){
 			if ($flag === false) {
@@ -237,6 +238,54 @@ class CourseVersionClone
 		
 		return $flag;
 		
+		
+	}
+	
+	public function transferable(){
+		$originals = CourseTransferable::find()->where(['crs_version_id' => $this->ori_version])->all();
+		$flag = true;
+		if($originals){
+			foreach($originals as $original){
+				if ($flag === false) {
+					break;
+				}
+				$copy = new CourseTransferable();
+				$copy->attributes = $original->attributes;
+				$copy->crs_version_id = $this->copy_version;
+				if(!($flag = $copy->save())){
+					$copy->flashError();
+					break;
+				}else{
+
+				}
+			}
+		}
+		
+		return $flag;
+		
+	}
+	
+	public function staff(){
+		$originals = CourseStaff::find()->where(['crs_version_id' => $this->ori_version])->all();
+		$flag = true;
+		if($originals){
+			foreach($originals as $original){
+				if ($flag === false) {
+					break;
+				}
+				$copy = new CourseStaff();
+				$copy->attributes = $original->attributes;
+				$copy->crs_version_id = $this->copy_version;
+				if(!($flag = $copy->save())){
+					$copy->flashError();
+					break;
+				}else{
+
+				}
+			}
+		}
+		
+		return $flag;
 		
 	}
 	

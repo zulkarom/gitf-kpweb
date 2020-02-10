@@ -55,4 +55,18 @@ class CourseStaff extends \yii\db\ActiveRecord
 		return $this->hasOne(Staff::className(), ['id' => 'staff_id'])->orderBy('id ASC');
 	}
 	
+	public function flashError(){
+        if($this->getErrors()){
+            foreach($this->getErrors() as $error){
+                if($error){
+                    foreach($error as $e){
+                        Yii::$app->session->addFlash('error', $e);
+                    }
+                }
+            }
+        }
+
+    }
+
+	
 }

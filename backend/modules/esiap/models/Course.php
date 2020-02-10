@@ -7,6 +7,9 @@ use Yii;
 use backend\models\Faculty;
 use backend\models\Department;
 use common\models\User;
+use backend\models\Component;
+
+
 
 /**
  * This is the model class for table "sp_course".
@@ -28,6 +31,8 @@ class Course extends \yii\db\ActiveRecord
 	public $course_label;
 	public $course_data;
 	public $course_code_name;
+	public $staff_pic;
+	public $staff_access;
 	
     /**
      * @inheritdoc
@@ -173,6 +178,9 @@ class Course extends \yii\db\ActiveRecord
 		return $this->hasMany(CourseVersion::className(), ['course_id' => 'id'])->orderBy('sp_course_version.created_at DESC');
 	}
 	
+	public function getComponent(){
+		return $this->hasOne(Component::className(), ['id' => 'component_id']);
+	}
 	
 
 }

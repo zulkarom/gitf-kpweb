@@ -833,6 +833,15 @@ class CourseController extends Controller
 		}
 	}
 	
+	protected function findVersion($id){
+		$default = CourseVersion::findOne($id);
+		if($default){
+			return $default;
+		}else{
+			throw new NotFoundHttpException('Page not found!');
+		}
+	}
+	
 	protected function findPublishedVersion($id){
 		$default = CourseVersion::findOne(['course_id' => $id, 'is_published' => 1]);
 		if($default){
@@ -860,10 +869,10 @@ class CourseController extends Controller
 		}
     }
 	
-	public function actionFk1($course, $dev = false){
-		if($dev){
+	public function actionFk1($course, $version = false){
+		if($version){
 			//control access
-			$model = $this->findDevelopmentVersion($course);
+			$model = $this->findVersion($version);
 		}else{
 			$model = $this->findPublishedVersion($course);
 		}
@@ -873,10 +882,10 @@ class CourseController extends Controller
 			$pdf->generatePdf();
 	}
 	
-	public function actionFk2($course, $dev = false){
-		if($dev){
+	public function actionFk2($course, $version = false){
+		if($version){
 			//control access
-			$model = $this->findDevelopmentVersion($course);
+			$model = $this->findVersion($version);
 		}else{
 			$model = $this->findPublishedVersion($course);
 		}
@@ -885,10 +894,10 @@ class CourseController extends Controller
 			$pdf->generatePdf();
 	}
 	
-	public function actionTbl4($course, $dev = false){
-		if($dev){
+	public function actionTbl4($course, $version = false){
+		if($version){
 			//control access
-			$model = $this->findDevelopmentVersion($course);
+			$model = $this->findVersion($version);
 		}else{
 			$model = $this->findPublishedVersion($course);
 		}
@@ -897,10 +906,10 @@ class CourseController extends Controller
 			$pdf->generatePdf();
 	}
 	
-	public function actionFk3($course, $dev = false){
-		if($dev){
+	public function actionFk3($course, $version = false){
+		if($version){
 			//control access
-			$model = $this->findDevelopmentVersion($course);
+			$model = $this->findVersion($version);
 		}else{
 			$model = $this->findPublishedVersion($course);
 		}

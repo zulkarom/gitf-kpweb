@@ -47,5 +47,19 @@ class CourseTransferable extends \yii\db\ActiveRecord
 	public function getTransferable(){
          return $this->hasOne(Transferable::className(), ['id' => 'transferable_id']);
     }
+	
+	public function flashError(){
+        if($this->getErrors()){
+            foreach($this->getErrors() as $error){
+                if($error){
+                    foreach($error as $e){
+                        Yii::$app->session->addFlash('error', $e);
+                    }
+                }
+            }
+        }
+
+    }
+
 
 }

@@ -152,11 +152,12 @@ class Menu
 	public static function adminEsiap(){
 		$esiap_admin = [
                         'label' => 'eSIAP Admin',
-                        'icon' => 'list-ul',
+                        'icon' => 'mortar-board',
 						'visible' => Yii::$app->user->can('esiap-management'),
                         'url' => '#',
                         'items' => [
-						
+				['label' => 'My Course(s)', 'icon' => 'pie-chart', 'url' => ['/esiap']],
+				
 				['label' => 'Summary', 'icon' => 'pie-chart', 'url' => ['/esiap/dashboard']],
 				
 				['label' => 'Program List', 'icon' => 'book', 'url' => ['/esiap/program-admin']],

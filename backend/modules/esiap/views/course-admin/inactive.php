@@ -65,22 +65,25 @@ $exportColumns = [
     <div class="box">
 <div class="box-header"></div>
 <div class="box-body"><?= GridView::widget([
-        'dataProvider' => $dataProvider,
+         'dataProvider' => $dataProvider,
+		'options' => [ 'style' => 'table-layout:fixed;' ],
 		'export' => false,
        // 'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 			[
 				'attribute' => 'course_code',
+				'contentOptions' => ['style' => 'width: 10%'],
 				
 			],
             
 			[
 				'attribute' => 'course_name',
+				'contentOptions' => ['style' => 'width: 45%'],
 				'format' => 'html',
 				'label' => 'Course Name',
 				'value' => function($model){
-					return $model->course_name . ' / <i>' . $model->course_name_bi . '</i>';
+					return strtoupper($model->course_name) . ' / <i>' . strtoupper($model->course_name_bi) . '</i>';
 				}
 				
 			],
