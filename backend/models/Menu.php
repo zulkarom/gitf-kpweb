@@ -156,7 +156,7 @@ class Menu
 						'visible' => Yii::$app->user->can('esiap-management'),
                         'url' => '#',
                         'items' => [
-				['label' => 'My Course(s)', 'icon' => 'pie-chart', 'url' => ['/esiap']],
+				['label' => 'My Course(s)', 'icon' => 'user', 'url' => ['/esiap']],
 				
 				['label' => 'Summary', 'icon' => 'pie-chart', 'url' => ['/esiap/dashboard']],
 				
