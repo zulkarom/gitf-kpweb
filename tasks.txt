@@ -1,6 +1,6 @@
 
 
-ALTER TABLE `sp_course` ADD `component_id` INT NOT NULL AFTER `updated_at`;
+
 
 ------------------------------------------
 
@@ -147,3 +147,5 @@ ALTER TABLE `sp_course_profile` ADD `offer_sem` TINYINT(1) NOT NULL AFTER `prere
 
 ALTER TABLE `sp_course_slt` ADD `is_practical` TINYINT(1) NOT NULL AFTER `nf2f`;
 ALTER TABLE `sp_course_profile` ADD `requirement_bi` TEXT NOT NULL AFTER `additional`, ADD `additional_bi` TEXT NOT NULL AFTER `requirement_bi`;
+
+ALTER TABLE `sp_course` ADD `component_id` INT NOT NULL AFTER `updated_at`;

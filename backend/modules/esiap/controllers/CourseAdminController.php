@@ -545,4 +545,31 @@ class CourseAdminController extends Controller
 			}
 		}
     }
+	
+	public function actionTarikcoor(){
+		/* $courses = Course::find()->where(['>','coordinator', 0])->all();
+		if($courses){
+			foreach($courses as $course){
+				$pic = CoursePic::findOne(['staff_id' => $course->coordinator]);
+				if(!$pic){
+					$npic = new CoursePic;
+					$npic->staff_id = $course->coor->fasi->id;
+					$npic->course_id = $course->id;
+					$npic->updated_at = new Expression('NOW()');
+					$npic->save();
+				}
+			}
+		} */
+	}
+	
+	public function actionRemovebracket(){
+		$clos = CourseClo::find()->all();
+		foreach($clos as $clo){
+			$bm = $clo->clo_text;
+			$clo->clo_text = trim(preg_replace('/\s*\([^)]*\)/', '', $bm));
+			$bi = $clo->clo_text_bi;
+			$clo->clo_text_bi = trim(preg_replace('/\s*\([^)]*\)/', '', $bi));
+			$clo->save();
+		}
+	}
 }

@@ -182,5 +182,8 @@ class Course extends \yii\db\ActiveRecord
 		return $this->hasOne(Component::className(), ['id' => 'component_id']);
 	}
 	
+	public function getCoor(){
+		return $this->hasOne(User::className(), ['id' => 'coordinator']);
+	}
 
 }
