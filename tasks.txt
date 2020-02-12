@@ -1,4 +1,5 @@
-
+ALTER TABLE `staff` ADD `faculty_id` INT NOT NULL AFTER `staff_title`;
+UPDATE `staff` SET `faculty_id` = '1';
 
 
 
