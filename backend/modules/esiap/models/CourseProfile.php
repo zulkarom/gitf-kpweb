@@ -41,7 +41,7 @@ class CourseProfile extends \yii\db\ActiveRecord
 			
 			[['crs_version_id'], 'required', 'on' => 'fresh'],
 			
-            [['synopsis', 'synopsis_bi', 'transfer_skill', 'transfer_skill_bi', 'feedback', 'feedback_bi', 'objective', 'objective_bi', 'rational', 'rational_bi', 'offer_sem', 'offer_year'], 'required', 'on' => 'update'],
+            [['synopsis', 'synopsis_bi', 'feedback', 'feedback_bi', 'objective', 'objective_bi', 'rational', 'rational_bi', 'offer_sem', 'offer_year'], 'required', 'on' => 'update'],
 			
 			
             [['crs_version_id', 'prerequisite', 'offer_sem', 'offer_year'], 'integer'],
