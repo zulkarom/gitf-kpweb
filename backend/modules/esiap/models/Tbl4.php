@@ -284,7 +284,7 @@ for($i=1;$i<=9;$i++){
 	$pattr = 'plo' .$i. '_bi';
 	$html .= '<td width="'.$col_unit.'" style="font-size:8px; border:1px solid #000000">'.$vert->{$pattr}.'</td>';
 }
-
+//make separate due to width difference
 for($i=10;$i<=12;$i++){
 	$pattr = 'plo' .$i. '_bi';
 	$html .= '<td width="'.$col_unit2.'" style="font-size:8px; border:1px solid #000000">'.$vert->{$pattr}.'</td>';
@@ -461,7 +461,8 @@ $toth = 0;
 $tind = 0;
 $tass = 0;
 $tgrand = 0;
-foreach($this->model->syllabus as $row){
+if($this->model->syllabus ){
+	foreach($this->model->syllabus as $row){
 	$html .='<tr nobr="true">';
 	$html .='<td '.$border.'>';
 	$arr_all = json_decode($row->topics);
@@ -508,6 +509,8 @@ foreach($this->model->syllabus as $row){
 	$tgrand +=$sub;
 		
 }
+}
+
 
 
 	$html .='<tr>';
@@ -738,6 +741,8 @@ $html .= '<tr>
 
 $html .= '</table>
 ';
+
+//echo $html;die();
 
 $this->pdf->SetFont('calibri', '', 8); // 8
 $tbl = <<<EOD
