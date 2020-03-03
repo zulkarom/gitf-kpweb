@@ -18,6 +18,7 @@ class Tbl4Excel
 	public $spreadsheet;
 	public $sheet;
 	public $border;
+	public $bold;
 	public $border_thin;
 	public $bgcolor;
 	public $border_bold;
@@ -25,6 +26,12 @@ class Tbl4Excel
 	public $ploHeadStart;
 	public $transferRowStart;
 	public $sltRowStart;
+	public $sltContentStart;
+	public $sltAssessConStart;
+	public $sltAssessSumStart;
+	public $sltTotalContentRow;
+	public $sltTotalAssessConRow;
+	public $sltTotalAssessSumRow;
 	
 	public function generateExcel(){
 		$this->start();
@@ -43,6 +50,14 @@ class Tbl4Excel
 		$this->item9Transferable();
 		$this->item10Slt();
 		$this->item10SltCourseContent();
+		$this->item10ContentFooter();
+		$this->item10SltAssessConHead();
+		$this->item10SltAssessConFooter();
+		$this->item10SltAssessSumHead();
+		$this->item10SltAssessSumFooter();
+		$this->item11Requirement();
+		$this->item12Reference();
+		$this->item13Other();
 		$this->generate();
 	}
 	
@@ -57,10 +72,10 @@ class Tbl4Excel
 			
 		$this->sheet = $this->spreadsheet->getActiveSheet();
 		
-		/* $this->sheet
+		 $this->sheet
 			->getStyle('A1:Z100')->getFill()
 			->setFillType(Fill::FILL_SOLID)
-			->getStartColor()->setARGB('FFFFFFFF'); */
+			->getStartColor()->setARGB('FFFFFFFF'); 
 			
 		$this->sheet->getSheetView()->setZoomScale(90);
 		
@@ -77,6 +92,14 @@ class Tbl4Excel
 						'borderStyle' => Border::BORDER_MEDIUM,
 					),
 				),
+			);
+		$this->bold = array(
+				'font'  => array(
+					'bold'  => true,
+					//'color' => array('rgb' => 'FF0000'),
+					'size'  => 11,
+					'name'  => 'Calibri'
+					),
 			);
 		$this->border_thin = array(
 				'font'  => array(
@@ -113,14 +136,14 @@ class Tbl4Excel
 		$normal = 10.2;//9.43
 		$this->sheet->getColumnDimension('A')->setWidth(1.57);
 		$this->sheet->getColumnDimension('B')->setWidth(3.71);
-		$this->sheet->getColumnDimension('C')->setWidth(23.29);
+		$this->sheet->getColumnDimension('C')->setWidth(24.29);
 		$this->sheet->getColumnDimension('D')->setWidth($normal);
 		$this->sheet->getColumnDimension('E')->setWidth($normal);
 		$this->sheet->getColumnDimension('F')->setWidth($normal);
 		$this->sheet->getColumnDimension('G')->setWidth($normal);
 		$this->sheet->getColumnDimension('H')->setWidth($normal);
 		$this->sheet->getColumnDimension('I')->setWidth($normal);
-		$this->sheet->getColumnDimension('J')->setWidth(10.43);
+		$this->sheet->getColumnDimension('J')->setWidth(11.43);
 		$this->sheet->getColumnDimension('K')->setWidth($normal);
 		$this->sheet->getColumnDimension('L')->setWidth($normal);
 		$this->sheet->getColumnDimension('M')->setWidth($normal);
@@ -173,7 +196,7 @@ class Tbl4Excel
 			->setCellValue('C4', 'Name of Course :')
 			->setCellValue('C5', 'Course Code :')
 			->setCellValue('D4', $this->model->course->course_code)
-			->setCellValue('D5', $this->model->course->course_name);
+			->setCellValue('D5', $this->model->course->course_name_bi);
 	}
 	
 	public function item2Synopsis(){
@@ -504,7 +527,7 @@ class Tbl4Excel
 
 		$this->sheet
 			->setCellValue('C'.$row , 'CLO' . $clonumber)
-			->setCellValue('D'.$row , $text);
+			->setCellValue('D'.$row , strip_tags($text));
 	}
 	
 	public function item8PloHead1(){
@@ -1082,12 +1105,13 @@ eg:
 e-Learning')
 			->setCellValue('P' . $row2, 'Independent Learning (NF2F)')
 			->setCellValue('K' . $row3, 'L')
-			->setCellValue('L' . $row3, 'P')
-			->setCellValue('M' . $row3, 'T')
+			->setCellValue('L' . $row3, 'T')
+			->setCellValue('M' . $row3, 'P')
 			->setCellValue('N' . $row3, 'O')
 			;
 			
 		$this->curr_row = $row3 + 1;
+		$this->sltContentStart = $row3 + 1;
 		
 		if($this->model->syllabus ){
 			foreach($this->model->syllabus as $row){
@@ -1096,8 +1120,11 @@ e-Learning')
 			if($arr_all){
 			//16
 			$row_count = 0;
+			$i = 1;
 			foreach($arr_all as $rt){
-				$topic .= $row->week_num . ".  ". $rt->top_bi;
+				$wk = $i == 1 ? $row->week_num . ".  " : '';
+				$br = $i == 1 ? '' : "\n";
+				$topic .= $br . $wk . $rt->top_bi;
 				$row_count++;
 				if($rt->sub_topic){
 					foreach($rt->sub_topic as $rst){
@@ -1105,6 +1132,7 @@ e-Learning')
 					$row_count++;
 					}
 				}
+			$i++;
 			}
 			}
 			
@@ -1217,6 +1245,672 @@ e-Learning')
 			->setCellValue('Q' . $curr_row, '=SUM(K'.$curr_row.':P'.$curr_row.')')
 			;
 			
+		$this->curr_row = $curr_row + 1;
+		
+	}
+	
+	public function item10ContentFooter(){
+		//ROW HEIGHT
+		
+		$this->sheet->getRowDimension($this->curr_row)->setRowHeight(24);
+		
+		$curr_row = $this->curr_row;
+		$this->sltTotalContentRow = $curr_row;
+		$next_row = $curr_row + 1;
+		$this->sheet->getRowDimension($curr_row)->setRowHeight(24);
+		$this->sheet->getRowDimension($next_row)->setRowHeight(24);
+		
+		//MERGE
+		$this->sheet->mergeCells('B'.$this->sltRowStart .':B' . $next_row);
+		$this->sheet->mergeCells('C'.$curr_row .':I' . $curr_row);
+		$this->sheet->mergeCells('J'.$curr_row .':P' . $curr_row);
+		
+		//BORDER
+		$this->sheet->getStyle('B'.$this->sltRowStart .':B' . $next_row)->applyFromArray($this->border);
+		$this->sheet->getStyle('C'.$curr_row .':Q' . $next_row)->applyFromArray($this->border);
+		$this->sheet->getStyle('Q' . $curr_row)->applyFromArray($this->border);
+		$this->sheet->getStyle('J' . $curr_row)->applyFromArray($this->bold);
+
+		//ALIGNMENT
+		$this->sheet->getStyle('J'.$curr_row)
+		->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT)
+		->setWrapText(true);
+		$this->sheet->getStyle('J'.$curr_row)
+		->getAlignment()->setVertical(Alignment::VERTICAL_CENTER)
+		->setWrapText(true);
+		$this->sheet->getStyle('Q'.$curr_row)
+		->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)
+		->setWrapText(true);
+		$this->sheet->getStyle('Q'.$curr_row)
+		->getAlignment()->setVertical(Alignment::VERTICAL_CENTER)
+		->setWrapText(true);
+		
+		//STYLE
+		
+		$this->sheet
+			->getStyle('Q'.$curr_row)->getFill()
+			->setFillType(Fill::FILL_SOLID)
+			->getStartColor()->setARGB($this->bgcolor);
+			
+			
+		//CONTENT
+
+		$pre = $curr_row - 1;
+		$this->sheet
+			->setCellValue('J' . $curr_row, 'Total')
+			->setCellValue('Q' . $curr_row, '=SUM(Q'.$this->sltContentStart.':Q'.$pre.')')
+			;
+		
+		$this->curr_row = $next_row + 1;
+		
+	}
+	
+	public function item10SltAssessConHead(){
+		$curr_row = $this->curr_row;
+		$row2 = $curr_row + 1;
+		//ROW HEIGHT
+		$this->sheet->getRowDimension($curr_row)->setRowHeight(24);
+		$this->sheet->getRowDimension($row2)->setRowHeight(24);
+		//MERGE
+		$this->sheet->mergeCells('B'.$this->sltRowStart .':B'.$row2);
+		$this->sheet->mergeCells('C'.$curr_row.':I'.$row2);
+		$this->sheet->mergeCells('J'.$curr_row.':J'.$row2);
+		$this->sheet->mergeCells('K'.$curr_row.':M'.$row2);
+		$this->sheet->mergeCells('N'.$curr_row.':P'.$row2);
+		$this->sheet->mergeCells('Q'.$curr_row.':Q'.$row2);
+		
+		//BORDER
+		$this->sheet->getStyle('B'.$this->sltRowStart .':B'.$row2)->applyFromArray($this->border_bold);
+		$this->sheet->getStyle('C'.$curr_row.':I'.$row2)->applyFromArray($this->border_bold);
+		$this->sheet->getStyle('J'.$curr_row.':J'.$row2)->applyFromArray($this->border_bold);
+		$this->sheet->getStyle('K'.$curr_row.':M'.$row2)->applyFromArray($this->border_bold);
+		$this->sheet->getStyle('N'.$curr_row.':P'.$row2)->applyFromArray($this->border_bold);$this->sheet->getStyle('Q'.$curr_row.':Q'.$row2)->applyFromArray($this->border_bold);
+		
+
+		//ALIGNMENT
+		
+		$this->sheet->getStyle('C'.$curr_row . ':Q' . $row2)
+		->getAlignment()->setVertical(Alignment::VERTICAL_CENTER)
+		->setWrapText(true);
+	
+		$this->sheet->getStyle('C'.$curr_row . ':Q' . $row2)
+		->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)
+		->setWrapText(true);
+		
+		
+		
+		//STYLE
+		
+		$this->sheet
+			->getStyle('C'.$curr_row . ':Q' . $row2)->getFill()
+			->setFillType(Fill::FILL_SOLID)
+			->getStartColor()->setARGB($this->bgcolor);
+		
+
+		$this->sheet
+			->setCellValue('C' . $curr_row, 'Continuous Assessment')
+			->setCellValue('J' . $curr_row, 'Percentage (%) ')
+			->setCellValue('J' . $curr_row, 'Percentage (%) ')
+			->setCellValue('K' . $curr_row, 'F2F')
+			->setCellValue('N' . $curr_row, 'NF2F')
+			->setCellValue('Q' . $curr_row, 'SLT')
+			;
+		$this->curr_row = $row2 + 1;
+		
+		$this->sltAssessConStart = $row2 + 1;
+		if($this->model->courseAssessmentFormative){
+			$i = 1;
+			foreach($this->model->courseAssessmentFormative as $rf){
+					$per = $rf->as_percentage + 0;
+					$f2f = $rf->assess_f2f;
+					$nf2f = $rf->assess_nf2f;
+					$data = [$per, $f2f, $nf2f];
+					
+					$this->item10SltAssessConText($i, $rf->assess_name_bi, $data);
+			$i++;
+			}
+			}else{
+				$data = ['','',''];
+				$this->item10SltAssessConText(1, '', $data);
+			}
+		
+		
+	}
+	
+	public function item10SltAssessConText($number, $name, $data){
+		$curr_row = $this->curr_row;
+		//ROW HEIGHT
+		$this->sheet->getRowDimension($curr_row)->setRowHeight(24);
+		
+		//MERGE
+		$this->sheet->mergeCells('B'.$this->sltRowStart .':B'.$curr_row);
+		$this->sheet->mergeCells('D'.$curr_row.':I'.$curr_row);
+		$this->sheet->mergeCells('K'.$curr_row.':M'.$curr_row);
+		$this->sheet->mergeCells('N'.$curr_row.':P'.$curr_row);
+		
+		//BORDER
+		$this->sheet->getStyle('B'.$this->sltRowStart .':B'.$curr_row)->applyFromArray($this->border_bold);
+		$this->sheet->getStyle('C'.$curr_row)->applyFromArray($this->border);
+		$this->sheet->getStyle('D'.$curr_row.':I'.$curr_row)->applyFromArray($this->border);
+		$this->sheet->getStyle('J'.$curr_row)->applyFromArray($this->border);
+		$this->sheet->getStyle('K'.$curr_row.':M'.$curr_row)->applyFromArray($this->border);
+		$this->sheet->getStyle('N'.$curr_row.':P'.$curr_row)->applyFromArray($this->border);
+		$this->sheet->getStyle('Q'.$curr_row)->applyFromArray($this->border);
+		
+
+		//ALIGNMENT
+		
+		$this->sheet->getStyle('C'.$curr_row)
+		->getAlignment()->setVertical(Alignment::VERTICAL_CENTER)
+		->setWrapText(true);
+		$this->sheet->getStyle('C'.$curr_row)
+		->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)
+		->setWrapText(true);
+	
+		$this->sheet->getStyle('D'.$curr_row)
+		->getAlignment()->setVertical(Alignment::VERTICAL_TOP)
+		->setWrapText(true);
+		$this->sheet->getStyle('D'.$curr_row)
+		->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT)
+		->setWrapText(true);
+		
+		$this->sheet->getStyle('J'.$curr_row.':Q'.$curr_row)
+		->getAlignment()->setVertical(Alignment::VERTICAL_CENTER)
+		->setWrapText(true);
+		$this->sheet->getStyle('J'.$curr_row.':Q'.$curr_row)
+		->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)
+		->setWrapText(true);
+		
+		//STYLE
+		
+		$this->sheet
+			->getStyle('C'.$curr_row)->getFill()
+			->setFillType(Fill::FILL_SOLID)
+			->getStartColor()->setARGB($this->bgcolor);
+			
+		$this->sheet
+			->getStyle('Q'.$curr_row)->getFill()
+			->setFillType(Fill::FILL_SOLID)
+			->getStartColor()->setARGB($this->bgcolor);
+		
+
+		$this->sheet
+			->setCellValue('C' . $curr_row, $number)
+			->setCellValue('D' . $curr_row, $name)
+			->setCellValue('J' . $curr_row, $data[0])
+			->setCellValue('K' . $curr_row, $data[1])
+			->setCellValue('N' . $curr_row, $data[2])
+			->setCellValue('Q' . $curr_row, '=SUM(K'.$curr_row.':P'.$curr_row.')')
+			;
+		$this->curr_row = $curr_row + 1;
+		
+	}
+	
+	public function item10SltAssessConFooter(){
+		//ROW HEIGHT
+		
+		$this->sheet->getRowDimension($this->curr_row)->setRowHeight(24);
+		
+		$curr_row = $this->curr_row;
+		$this->sltTotalAssessConRow = $curr_row;
+		$next_row = $curr_row + 1;
+		$this->sheet->getRowDimension($curr_row)->setRowHeight(24);
+		$this->sheet->getRowDimension($next_row)->setRowHeight(24);
+		
+		//MERGE
+		$this->sheet->mergeCells('B'.$this->sltRowStart .':B' . $next_row);
+		$this->sheet->mergeCells('C'.$curr_row .':I' . $curr_row);
+		$this->sheet->mergeCells('J'.$curr_row .':P' . $curr_row);
+		
+		//BORDER
+		$this->sheet->getStyle('B'.$this->sltRowStart .':B' . $next_row)->applyFromArray($this->border);
+		$this->sheet->getStyle('C'.$curr_row .':Q' . $next_row)->applyFromArray($this->border);
+		$this->sheet->getStyle('Q' . $curr_row)->applyFromArray($this->border);
+		$this->sheet->getStyle('J' . $curr_row)->applyFromArray($this->bold);
+
+		//ALIGNMENT
+		$this->sheet->getStyle('J'.$curr_row)
+		->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT)
+		->setWrapText(true);
+		$this->sheet->getStyle('J'.$curr_row)
+		->getAlignment()->setVertical(Alignment::VERTICAL_CENTER)
+		->setWrapText(true);
+		$this->sheet->getStyle('Q'.$curr_row)
+		->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)
+		->setWrapText(true);
+		$this->sheet->getStyle('Q'.$curr_row)
+		->getAlignment()->setVertical(Alignment::VERTICAL_CENTER)
+		->setWrapText(true);
+		
+		//STYLE
+		
+		$this->sheet
+			->getStyle('Q'.$curr_row)->getFill()
+			->setFillType(Fill::FILL_SOLID)
+			->getStartColor()->setARGB($this->bgcolor);
+			
+			
+		//CONTENT
+
+		$pre = $curr_row - 1;
+		$this->sheet
+			->setCellValue('J' . $curr_row, 'Total')
+			->setCellValue('Q' . $curr_row, '=SUM(Q'.$this->sltAssessConStart.':Q'.$pre.')')
+			;
+		
+		$this->curr_row = $next_row + 1;
+		
+	}
+	
+	public function item10SltAssessSumHead(){
+		$curr_row = $this->curr_row;
+		$row2 = $curr_row + 1;
+		//ROW HEIGHT
+		$this->sheet->getRowDimension($curr_row)->setRowHeight(24);
+		$this->sheet->getRowDimension($row2)->setRowHeight(24);
+		//MERGE
+		$this->sheet->mergeCells('B'.$this->sltRowStart .':B'.$row2);
+		$this->sheet->mergeCells('C'.$curr_row.':I'.$row2);
+		$this->sheet->mergeCells('J'.$curr_row.':J'.$row2);
+		$this->sheet->mergeCells('K'.$curr_row.':M'.$row2);
+		$this->sheet->mergeCells('N'.$curr_row.':P'.$row2);
+		$this->sheet->mergeCells('Q'.$curr_row.':Q'.$row2);
+		
+		//BORDER
+		$this->sheet->getStyle('B'.$this->sltRowStart .':B'.$row2)->applyFromArray($this->border_bold);
+		$this->sheet->getStyle('C'.$curr_row.':I'.$row2)->applyFromArray($this->border_bold);
+		$this->sheet->getStyle('J'.$curr_row.':J'.$row2)->applyFromArray($this->border_bold);
+		$this->sheet->getStyle('K'.$curr_row.':M'.$row2)->applyFromArray($this->border_bold);
+		$this->sheet->getStyle('N'.$curr_row.':P'.$row2)->applyFromArray($this->border_bold);$this->sheet->getStyle('Q'.$curr_row.':Q'.$row2)->applyFromArray($this->border_bold);
+		
+
+		//ALIGNMENT
+		
+		$this->sheet->getStyle('C'.$curr_row . ':Q' . $row2)
+		->getAlignment()->setVertical(Alignment::VERTICAL_CENTER)
+		->setWrapText(true);
+	
+		$this->sheet->getStyle('C'.$curr_row . ':Q' . $row2)
+		->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)
+		->setWrapText(true);
+		
+		
+		
+		//STYLE
+		
+		$this->sheet
+			->getStyle('C'.$curr_row . ':Q' . $row2)->getFill()
+			->setFillType(Fill::FILL_SOLID)
+			->getStartColor()->setARGB($this->bgcolor);
+		
+
+		$this->sheet
+			->setCellValue('C' . $curr_row, 'Continuous Assessment')
+			->setCellValue('J' . $curr_row, 'Percentage (%) ')
+			->setCellValue('J' . $curr_row, 'Percentage (%) ')
+			->setCellValue('K' . $curr_row, 'F2F')
+			->setCellValue('N' . $curr_row, 'NF2F')
+			->setCellValue('Q' . $curr_row, 'SLT')
+			;
+		$this->curr_row = $row2 + 1;
+		
+		$this->sltAssessSumStart = $row2 + 1;
+		if($this->model->courseAssessmentSummative){
+			$i = 1;
+			foreach($this->model->courseAssessmentSummative as $rf){
+					$per = $rf->as_percentage + 0;
+					$f2f = $rf->assess_f2f;
+					$nf2f = $rf->assess_nf2f;
+					$data = [$per, $f2f, $nf2f];
+					
+					$this->item10SltAssessSumText($i, $rf->assess_name_bi, $data);
+			$i++;
+			}
+			}else{
+				$data = ['','',''];
+				$this->item10SltAssessSumText(1, '', $data);
+			}
+		
+		
+	}
+	
+	public function item10SltAssessSumText($number, $name, $data){
+		$curr_row = $this->curr_row;
+		//ROW HEIGHT
+		$this->sheet->getRowDimension($curr_row)->setRowHeight(24);
+		
+		//MERGE
+		$this->sheet->mergeCells('B'.$this->sltRowStart .':B'.$curr_row);
+		$this->sheet->mergeCells('D'.$curr_row.':I'.$curr_row);
+		$this->sheet->mergeCells('K'.$curr_row.':M'.$curr_row);
+		$this->sheet->mergeCells('N'.$curr_row.':P'.$curr_row);
+		
+		//BORDER
+		$this->sheet->getStyle('B'.$this->sltRowStart .':B'.$curr_row)->applyFromArray($this->border_bold);
+		$this->sheet->getStyle('C'.$curr_row)->applyFromArray($this->border);
+		$this->sheet->getStyle('D'.$curr_row.':I'.$curr_row)->applyFromArray($this->border);
+		$this->sheet->getStyle('J'.$curr_row)->applyFromArray($this->border);
+		$this->sheet->getStyle('K'.$curr_row.':M'.$curr_row)->applyFromArray($this->border);
+		$this->sheet->getStyle('N'.$curr_row.':P'.$curr_row)->applyFromArray($this->border);
+		$this->sheet->getStyle('Q'.$curr_row)->applyFromArray($this->border);
+		
+
+		//ALIGNMENT
+		
+		$this->sheet->getStyle('C'.$curr_row)
+		->getAlignment()->setVertical(Alignment::VERTICAL_CENTER)
+		->setWrapText(true);
+		$this->sheet->getStyle('C'.$curr_row)
+		->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)
+		->setWrapText(true);
+	
+		$this->sheet->getStyle('D'.$curr_row)
+		->getAlignment()->setVertical(Alignment::VERTICAL_TOP)
+		->setWrapText(true);
+		$this->sheet->getStyle('D'.$curr_row)
+		->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT)
+		->setWrapText(true);
+		
+		$this->sheet->getStyle('J'.$curr_row.':Q'.$curr_row)
+		->getAlignment()->setVertical(Alignment::VERTICAL_CENTER)
+		->setWrapText(true);
+		$this->sheet->getStyle('J'.$curr_row.':Q'.$curr_row)
+		->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)
+		->setWrapText(true);
+		
+		//STYLE
+		
+		$this->sheet
+			->getStyle('C'.$curr_row)->getFill()
+			->setFillType(Fill::FILL_SOLID)
+			->getStartColor()->setARGB($this->bgcolor);
+			
+		$this->sheet
+			->getStyle('Q'.$curr_row)->getFill()
+			->setFillType(Fill::FILL_SOLID)
+			->getStartColor()->setARGB($this->bgcolor);
+		
+
+		$this->sheet
+			->setCellValue('C' . $curr_row, $number)
+			->setCellValue('D' . $curr_row, $name)
+			->setCellValue('J' . $curr_row, $data[0])
+			->setCellValue('K' . $curr_row, $data[1])
+			->setCellValue('N' . $curr_row, $data[2])
+			->setCellValue('Q' . $curr_row, '=SUM(K'.$curr_row.':P'.$curr_row.')')
+			;
+		$this->curr_row = $curr_row + 1;
+		
+	}
+	
+	public function item10SltAssessSumFooter(){
+		//ROW HEIGHT
+		
+		$this->sheet->getRowDimension($this->curr_row)->setRowHeight(24);
+		
+		$curr_row = $this->curr_row;
+		$this->sltTotalAssessSumRow = $curr_row;
+		$next_row = $curr_row + 1;
+		$row3 = $curr_row + 2;
+		$row4 = $curr_row + 3;
+		$row5 = $curr_row + 4;
+		
+		$this->sheet->getRowDimension($curr_row)->setRowHeight(24);
+		$this->sheet->getRowDimension($next_row)->setRowHeight(24);
+		$this->sheet->getRowDimension($row3)->setRowHeight(24);
+		$this->sheet->getRowDimension($row4)->setRowHeight(24);
+		$this->sheet->getRowDimension($row5)->setRowHeight(24);
+		
+		//MERGE
+		$this->sheet->mergeCells('B'.$this->sltRowStart .':B' . $row5);
+		$this->sheet->mergeCells('J'.$curr_row .':P' . $curr_row);
+		$this->sheet->mergeCells('C'.$next_row .':J' . $row3); // text
+		$this->sheet->mergeCells('O'.$row3 .':P' . $row3); //text grand
+		$this->sheet->mergeCells('C'.$row4 .':K' . $row4); //text 2
+		$this->sheet->mergeCells('C'.$row5.':I' . $row5); //text 2
+		
+		//BORDER
+		$this->sheet->getStyle('B'.$this->sltRowStart .':B' . $row5)->applyFromArray($this->border);
+		$this->sheet->getStyle('C'.$curr_row .':Q' . $row5)->applyFromArray($this->border);
+		$this->sheet->getStyle('N'.$row3)->applyFromArray($this->border);
+		$this->sheet->getStyle('Q'.$row3)->applyFromArray($this->border);
+		$this->sheet->getStyle('Q'.$curr_row)->applyFromArray($this->border);
+		$this->sheet->getStyle('C'.$next_row)->applyFromArray($this->bold);
+		$this->sheet->getStyle('O'.$row3)->applyFromArray($this->bold);
+
+		//ALIGNMENT
+		$this->sheet->getStyle('Q'.$curr_row)
+		->getAlignment()->setVertical(Alignment::VERTICAL_CENTER)
+		->setWrapText(true);
+		$this->sheet->getStyle('Q'.$curr_row)
+		->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)
+		->setWrapText(true);
+		
+		$this->sheet->getStyle('O'.$row3)
+		->getAlignment()->setVertical(Alignment::VERTICAL_CENTER)
+		->setWrapText(true);
+		$this->sheet->getStyle('O'.$row3)
+		->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)
+		->setWrapText(true);
+		
+		$this->sheet->getStyle('C'.$next_row)
+		->getAlignment()->setVertical(Alignment::VERTICAL_BOTTOM)
+		->setWrapText(true);
+		$this->sheet->getStyle('C'.$row4 .':K' . $row5)
+		->getAlignment()->setVertical(Alignment::VERTICAL_CENTER)
+		->setWrapText(true);
+		
+		
+		$this->sheet->getStyle('N'.$row4 .':Q' . $row4)
+		->getAlignment()->setVertical(Alignment::VERTICAL_CENTER)
+		->setWrapText(true);
+		$this->sheet->getStyle('N'.$row4 .':Q' . $row4)
+		->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)
+		->setWrapText(true);
+		
+		$this->sheet->getStyle('Q' . $row3)
+		->getAlignment()->setVertical(Alignment::VERTICAL_CENTER)
+		->setWrapText(true);
+		$this->sheet->getStyle('Q' . $row3)
+		->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)
+		->setWrapText(true);
+		
+		//STYLE
+		
+		$this->sheet
+			->getStyle('Q'.$curr_row)->getFill()
+			->setFillType(Fill::FILL_SOLID)
+			->getStartColor()->setARGB($this->bgcolor);
+		
+		$this->sheet
+			->getStyle('Q'.$row3)->getFill()
+			->setFillType(Fill::FILL_SOLID)
+			->getStartColor()->setARGB($this->bgcolor);
+			
+			
+		//CONTENT
+		if($this->model->slt->is_practical == 1){
+			$tick_prac = '√';
+		}else{
+			$tick_prac = '';
+		}
+
+		$pre = $curr_row - 1;
+		$this->sheet
+			->setCellValue('C' . $next_row, '**Please tick (√) if this course is Latihan Industri/ Clinical Placement/ Practicum/ WBL using Effective Learning Time(ELT) of 50%')
+			->setCellValue('C' . $row4, 'L = Lecture, T = Tutorial, P= Practical, O= Others, F2F=Face to Face, NF2F=Non Face to Face')
+			->setCellValue('C' . $row5, '*Indicate the CLO based on the CLO’s numbering in Item 8.')
+			->setCellValue('Q' . $curr_row, '=SUM(Q'.$this->sltAssessSumStart.':Q'.$pre.')')
+			->setCellValue('O' . $row3, 'GRAND TOTAL SLT')
+			->setCellValue('Q' . $row3, '=SUM(Q'.$this->sltTotalContentRow.',Q'.$this->sltTotalAssessConRow.',Q'.$this->sltTotalAssessSumRow .')')
+			->setCellValue('N' . $row3, $tick_prac)
+			//GRAND TOTAL SLT
+			;
+		
+		$this->curr_row = $row5 + 1;
+		
+	}
+	
+	public function item11Requirement(){
+		//ROW HEIGHT
+		
+		$this->sheet->getRowDimension($this->curr_row)->setRowHeight(55.5);
+		
+		$curr_row = $this->curr_row;
+		
+		//MERGE
+		$this->sheet->mergeCells('C'.$curr_row .':D' . $curr_row);
+		$this->sheet->mergeCells('E'.$curr_row .':Q' . $curr_row); // text
+		
+		//BORDER
+		$this->sheet->getStyle('B'.$curr_row .':B' . $curr_row)->applyFromArray($this->border);
+		$this->sheet->getStyle('C'.$curr_row .':D' . $curr_row)->applyFromArray($this->border);
+		$this->sheet->getStyle('E'.$curr_row .':Q' . $curr_row)->applyFromArray($this->border);
+
+		//ALIGNMENT
+		$this->sheet->getStyle('B'.$curr_row.':Q' . $curr_row)
+		->getAlignment()->setVertical(Alignment::VERTICAL_TOP)
+		->setWrapText(true);
+		$this->sheet->getStyle('B'.$curr_row.':Q' . $curr_row)
+		->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT)
+		->setWrapText(true);
+		
+		
+		//STYLE
+		
+		$this->sheet
+			->getStyle('B'.$curr_row .':D' . $curr_row)->getFill()
+			->setFillType(Fill::FILL_SOLID)
+			->getStartColor()->setARGB($this->bgcolor);
+		
+			
+			
+		//CONTENT
+
+		$pre = $curr_row - 1;
+		$this->sheet
+			->setCellValue('B' . $curr_row, '11.      ')
+			->setCellValue('C' . $curr_row, 'Identify special requirement to deliver the course (e.g: software, nursery, computer lab, simulation room, etc)')
+			->setCellValue('E' . $curr_row, $this->model->profile->requirement_bi)
+			;
+		
+		$this->curr_row = $curr_row + 1;
+		
+	}
+	
+	
+	public function item12Reference(){
+		//ROW HEIGHT
+		$curr_row = $this->curr_row;
+		
+		$row2 = $curr_row + 1;
+		$row3 = $curr_row + 2;
+		
+		$this->sheet->getRowDimension($this->curr_row)->setRowHeight(35.5);
+		$this->sheet->getRowDimension($row2)->setRowHeight(35.5);
+		$this->sheet->getRowDimension($row3)->setRowHeight(15);
+		
+		//MERGE
+		$this->sheet->mergeCells('B'.$curr_row .':B' . $row3);
+		$this->sheet->mergeCells('C'.$curr_row .':H' . $row3);
+		$this->sheet->mergeCells('I'.$curr_row .':Q' . $row3); // text
+		
+		//BORDER
+		$this->sheet->getStyle('B'.$curr_row .':B' . $row3)->applyFromArray($this->border);
+		$this->sheet->getStyle('C'.$curr_row .':H' . $row3)->applyFromArray($this->border);
+		$this->sheet->getStyle('I'.$curr_row .':Q' . $row3)->applyFromArray($this->border);
+
+		//ALIGNMENT
+		$this->sheet->getStyle('B'.$curr_row.':Q' . $curr_row)
+		->getAlignment()->setVertical(Alignment::VERTICAL_TOP)
+		->setWrapText(true);
+		$this->sheet->getStyle('B'.$curr_row.':Q' . $curr_row)
+		->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT)
+		->setWrapText(true);
+		
+		
+		//STYLE
+		
+		$this->sheet
+			->getStyle('B'.$curr_row .':H' . $row3)->getFill()
+			->setFillType(Fill::FILL_SOLID)
+			->getStartColor()->setARGB($this->bgcolor);
+		
+			
+			
+		//CONTENT
+		$i = 1;
+		$ref = '';
+		$br = '';
+		if($this->model->mainReferences){
+			foreach($this->model->mainReferences as $row){
+				$br = $i == 1 ? "" : "\n";
+				$ref .= $br . $i.'. '. strip_tags($row->formatedReference);
+			$i++;
+			}
+		}
+		$x = 1;
+		if($this->model->additionalReferences){
+			foreach($this->model->additionalReferences as $row){
+				$br = $x == 1 ? "" : "\n";
+				$ref .= $br . $i.'. '. strip_tags($row->formatedReference);
+			$x++;
+			$i++;
+			}
+		}
+		
+		//echo $ref;die();
+		$this->sheet
+			->setCellValue('B' . $curr_row, '12.      ')
+			->setCellValue('C' . $curr_row, 'References (include required and further readings, and should be the most current)')
+			->setCellValue('I' . $curr_row , $ref)
+			;
+		
+		$this->curr_row = $row3 + 1;
+		
+	}
+	
+	public function item13Other(){
+		
+		//ROW HEIGHT
+		$curr_row = $this->curr_row;
+		
+		$this->sheet->getRowDimension($this->curr_row)->setRowHeight(45.75);
+		
+		//MERGE
+		$this->sheet->mergeCells('C'. $curr_row .':H' . $curr_row);
+		$this->sheet->mergeCells('I'.$curr_row .':Q' . $curr_row);
+		
+		//BORDER
+		$this->sheet->getStyle('B'.$curr_row)->applyFromArray($this->border);
+		$this->sheet->getStyle('C'.$curr_row .':H' . $curr_row)->applyFromArray($this->border);
+		$this->sheet->getStyle('I'.$curr_row .':Q' . $curr_row)->applyFromArray($this->border);
+		
+		//ALIGNMENT
+		$this->sheet->getStyle('B'.$curr_row.':Q' . $curr_row)
+		->getAlignment()->setVertical(Alignment::VERTICAL_TOP)
+		->setWrapText(true);
+		$this->sheet->getStyle('B'.$curr_row.':Q' . $curr_row)
+		->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT)
+		->setWrapText(true);
+		
+		//STYLE
+		
+		$this->sheet
+			->getStyle('B'.$curr_row .':H' . $curr_row)->getFill()
+			->setFillType(Fill::FILL_SOLID)
+			->getStartColor()->setARGB($this->bgcolor);
+		
+			
+			
+		//CONTENT
+		
+		$this->sheet
+			->setCellValue('B' . $curr_row, '13.      ')
+			->setCellValue('C' . $curr_row, 'Other additional information :')
+			->setCellValue('I' . $curr_row , $this->model->profile->additional_bi)
+			;
+		
 		$this->curr_row = $curr_row + 1;
 		
 	}

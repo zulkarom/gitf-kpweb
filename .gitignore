@@ -16,6 +16,7 @@ nbproject
 .settings
 /composer.json
 /composer.lock
+/composer-setup.php
 
 # windows thumbnail cache
 Thumbs.db

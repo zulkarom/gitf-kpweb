@@ -15,20 +15,16 @@ class Menu extends \yii\widgets\Menu
     /**
      * @inheritdoc
      */
-    public $linkTemplate = '<a href="{url}">{icon} {label}{right-icon}{badge}</a>';
+    public $linkTemplate = '<a href="{url}">{icon} {label}</a>';
     /**
      * @inheritdoc
      * Styles all labels of items on sidebar by AdminLTE
      */
     public $labelTemplate = '<span>{label}</span>';
-	
     public $submenuTemplate = "\n<ul class='treeview-menu' {show}>\n{items}\n</ul>\n";
-	
     public $activateParents = true;
-	
     public $defaultIconHtml = '<i class="fa fa-circle-o"></i> ';
-    
-	public $options = ['class' => 'sidebar-menu', 'data-widget' => 'tree'];
+    public $options = ['class' => 'sidebar-menu', 'data-widget' => 'tree'];
 
     /**
      * @var string is prefix that will be added to $item['icon'] if it exist.
@@ -38,19 +34,6 @@ class Menu extends \yii\widgets\Menu
 
     private $noDefaultAction;
     private $noDefaultRoute;
-	
-	/**
-     * @var string Default tag for badge.
-     */
-    public $badgeTag = 'small';
-    /**
-     * @var string Default class for badge.
-     */
-    public $badgeClass = 'badge pull-right';
-    /**
-     * @var string Default background color for badge.
-     */
-    public $badgeBgClass = 'bg-green';
 
     /**
      * Renders the menu.
@@ -89,13 +72,6 @@ class Menu extends \yii\widgets\Menu
      */
     protected function renderItem($item)
     {
-		$item['badgeOptions'] = isset($item['badgeOptions']) ? $item['badgeOptions'] : [];
-        if (!ArrayHelper::getValue($item, 'badgeOptions.class')) {
-            $badgeBgClass = isset($item['badgeBgClass']) ? $item['badgeBgClass'] : $this->badgeBgClass;
-            $item['badgeOptions']['class'] = $this->badgeClass . ' ' . $badgeBgClass;
-        }
-		
-		
         if (isset($item['items'])) {
             $labelTemplate = '<a href="{url}">{icon} {label} <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>';
             $linkTemplate = '<a href="{url}">{icon} {label} <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>';
@@ -107,17 +83,8 @@ class Menu extends \yii\widgets\Menu
         $replacements = [
             '{label}' => strtr($this->labelTemplate, ['{label}' => $item['label'],]),
             '{icon}' => empty($item['icon']) ? $this->defaultIconHtml
-                : '<i class="' . self::$iconClassPrefix . $item['icon'] . '"></i> ',
-				
+                : '<i class="' . static::$iconClassPrefix . $item['icon'] . '"></i> ',
             '{url}' => isset($item['url']) ? Url::to($item['url']) : 'javascript:void(0);',
-			
-			'{right-icon}'  => isset($item['right-icon'])
-                    ? '<i class="' . $item['right-icon'] . '"></i>'
-                    : null,
-					
-			'{badge}'       => isset($item['badge'])
-                    ? Html::tag($this->badgeTag, $item['badge'], $item['badgeOptions'])
-                    : null,
         ];
 
         $template = ArrayHelper::getValue($item, 'template', isset($item['url']) ? $linkTemplate : $labelTemplate);
@@ -225,7 +192,7 @@ class Menu extends \yii\widgets\Menu
     {
         if (isset($item['url']) && is_array($item['url']) && isset($item['url'][0])) {
             $route = $item['url'][0];
-            if ($route[0] !== '/' && Yii::$app->controller) {
+            if (isset($route[0]) && $route[0] !== '/' && Yii::$app->controller) {
                 $route = ltrim(Yii::$app->controller->module->getUniqueId() . '/' . $route, '/');
             }
             $route = ltrim($route, '/');

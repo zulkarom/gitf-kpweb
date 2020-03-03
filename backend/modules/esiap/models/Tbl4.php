@@ -467,8 +467,11 @@ if($this->model->syllabus ){
 	$html .='<td '.$border.'>';
 	$arr_all = json_decode($row->topics);
 	if($arr_all){
+	$i = 1;
 	foreach($arr_all as $rt){
-		$html .= $row->week_num . ".  ". $rt->top_bi;
+		$wk = $i == 1 ? $row->week_num . ".  " : '';
+		$br = $i == 1 ? '' : "<br />";
+		$html .= $br . $wk . $rt->top_bi;
 		
 		if($rt->sub_topic){
 		$html .= '<br/><table>';
@@ -477,6 +480,7 @@ if($this->model->syllabus ){
 			}
 		$html .='</table>';
 		}
+	$i++;
 	}
 	}
 	$html .='</td>';
@@ -526,18 +530,22 @@ if($this->model->syllabus ){
 
 	
 	$html .='<tr style="font-weight:bold">
-	<td width="'.$htopic.'" colspan="7" align="center" '.$border.'>Continuous Assessment</td>
+	<td width="'.$htopic.'" colspan="7" align="center" '.$style_shade.'>Continuous Assessment</td>
 
-	<td width="'.$assess_percent.'" colspan="2" align="center" '.$border.'>Percentage (%)</td>
-	<td width="'.$assess_f2f .'" colspan="3" align="center" '.$border.'>F2F</td>
-	<td width="'.$assess_nf2f .'" colspan="2" align="center" '.$border.'>NF2F</td>
-	<td width="'.$flex.'" align="center" '.$border.'>SLT</td>
+	<td width="'.$assess_percent.'" colspan="2" align="center" '.$style_shade.'>Percentage (%)</td>
+	<td width="'.$assess_f2f .'" colspan="3" align="center" '.$style_shade.'>F2F</td>
+	<td width="'.$assess_nf2f .'" colspan="2" align="center" '.$style_shade.'>NF2F</td>
+	<td width="'.$flex.'" align="center" '.$style_shade.'>SLT</td>
 	</tr>';
 	
 	$i=1;
 	$total = 0;
 	$slt_assess = 0;
 	$total_form = 0;
+	
+	$num = $htopic / 4;
+	$as_width = $htopic / 4 * 3;
+	
 	if($this->model->courseAssessmentFormative){
 	
 	foreach($this->model->courseAssessmentFormative as $rf){
@@ -551,28 +559,29 @@ if($this->model->syllabus ){
 			$str="";
 
 			$html .='<tr>
-			<td width="'.$htopic.'" colspan="2" '.$border.'>'.$i.'. '.$rf->assess_name_bi .'</td>
+			<td width="'.$num.'" '.$style_shade.' align="center">'.$i.'</td><td width="'.$as_width.'" colspan="2" '.$border.'>'.$rf->assess_name_bi .'</td>
+			
 			<td width="'.$assess_percent .'" colspan="3" align="center" '.$border.'>'. $per .'</td>
 			<td width="'.$assess_f2f .'" colspan="2" align="center" '.$border.'>'.$f2f.'</td>
 			<td width="'.$assess_nf2f .'" align="center" '.$border.'>'.$nf2f.'</td>
-			<td width="'.$flex.'" align="center" '.$border.'>'.$sub_total .'</td>
+			<td width="'.$flex.'" align="center" '.$style_shade.'>'.$sub_total .'</td>
 			</tr>';
 			$total +=$per;
 	$i++;
 	}
 	}else{
 		$html .='<tr>
-			<td width="'.$htopic.'" colspan="2" '.$border.'></td>
+			<td width="'.$num.'" '.$style_shade.' align="center">'.$i.'</td><td width="'.$as_width.'" colspan="2" '.$border.'></td>
 			<td width="'.$assess_percent .'" colspan="3" align="center" '.$border.'></td>
 			<td width="'.$assess_f2f .'" colspan="2" align="center" '.$border.'></td>
 			<td width="'.$assess_nf2f .'" align="center" '.$border.'></td>
-			<td width="'.$flex.'" align="center" '.$border.'></td>
+			<td width="'.$flex.'" align="center" '.$style_shade.'></td>
 			</tr>';
 	}
 	
 	
 	$html .='<tr>';
-	$html .='<td colspan="8" align="right" >';
+	$html .='<td colspan="9" align="right" >';
 		$html .= '<b>Total</b>';
 	$html .='</td>';
 	$html .='<td align="center" '.$style_shade.'>'.$slt_assess.'</td>';
@@ -584,12 +593,12 @@ if($this->model->syllabus ){
 
 
 $html .='<tr style="font-weight:bold">
-	<td width="'.$htopic.'" colspan="7" align="center" '.$border.'>Final Assessment</td>
+	<td width="'.$htopic.'" colspan="7" align="center" '.$style_shade.'>Final Assessment</td>
 
-	<td width="'.$assess_percent.'" colspan="2" align="center" '.$border.'>Percentage (%)</td>
-	<td width="'.$assess_f2f .'" colspan="3" align="center" '.$border.'>F2F</td>
-	<td width="'.$assess_nf2f .'" colspan="2" align="center" '.$border.'>NF2F</td>
-	<td width="'.$flex.'" align="center" '.$border.'>SLT</td>
+	<td width="'.$assess_percent.'" colspan="2" align="center" '.$style_shade.'>Percentage (%)</td>
+	<td width="'.$assess_f2f .'" colspan="3" align="center" '.$style_shade.'>F2F</td>
+	<td width="'.$assess_nf2f .'" colspan="2" align="center" '.$style_shade.'>NF2F</td>
+	<td width="'.$flex.'" align="center" '.$style_shade.'>SLT</td>
 	</tr>';
 	
 	$i=1;
@@ -609,18 +618,19 @@ $html .='<tr style="font-weight:bold">
 			$str="";
 
 			$html .='<tr>
-			<td width="'.$htopic.'" colspan="2" '.$border.'>'.$i.'. '.$rf->assess_name_bi .'</td>
+			<td width="'.$num.'" '.$style_shade.' align="center">'.$i.'</td><td width="'.$as_width.'" colspan="2" '.$border.'>'.$rf->assess_name_bi .'</td>
+			
 			<td width="'.$assess_percent .'" colspan="3" align="center" '.$border.'>'. $per .'</td>
 			<td width="'.$assess_f2f .'" colspan="2" align="center" '.$border.'>'.$f2f.'</td>
 			<td width="'.$assess_nf2f .'" align="center" '.$border.'>'.$nf2f.'</td>
-			<td width="'.$flex.'" align="center" '.$border.'>'.$sub_total .'</td>
+			<td width="'.$flex.'" align="center" '.$style_shade.'>'.$sub_total .'</td>
 			</tr>';
 			$total +=$per;
 	$i++;
 	}
 	}else{
 		$html .='<tr>
-			<td width="'.$htopic.'" colspan="2" '.$border.'></td>
+			<td width="'.$num.'" '.$style_shade.' align="center">'.$i.'</td><td width="'.$as_width.'" colspan="2" '.$border.'></td>
 			<td width="'.$assess_percent .'" colspan="3" align="center" '.$border.'></td>
 			<td width="'.$assess_f2f .'" colspan="2" align="center" '.$border.'></td>
 			<td width="'.$assess_nf2f .'" align="center" '.$border.'></td>
@@ -630,7 +640,7 @@ $html .='<tr style="font-weight:bold">
 	
 	
 	$html .='<tr>';
-	$html .='<td colspan="8" align="right" >';
+	$html .='<td colspan="9" align="right" >';
 		$html .= '<b>Total</b>';
 	$html .='</td>';
 	$html .='<td align="center" '.$style_shade.'>'.$slt_assess.'</td>';
