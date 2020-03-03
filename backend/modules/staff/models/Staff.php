@@ -296,8 +296,12 @@ class Staff extends \yii\db\ActiveRecord
 		if($list){
 			$i = 1;
 			foreach($list as $item){
-				$d = $i == 1 ? '' : $br;
-				$str .= $d.$item->course->codeAndCourse;
+				
+				if($item->course){
+					$d = $i == 1 ? '' : $br;
+					$str .= $d.$item->course->codeAndCourse;
+				}
+				
 			$i++;
 			}
 		}

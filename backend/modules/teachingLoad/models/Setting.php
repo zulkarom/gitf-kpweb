@@ -51,7 +51,8 @@ class Setting extends \yii\db\ActiveRecord
 	
 	public function getFormAccess(){
 		$start = strtotime($this->date_start);
-		$end = strtotime($this->date_end);
+		
+		$end = strtotime($this->date_end . ' 11:59:59');
 		$open = false;
 		
 		if(time() >= $start and time() <= $end){
