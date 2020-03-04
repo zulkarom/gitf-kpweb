@@ -20,9 +20,13 @@ $dirAsset = Yii::$app->assetManager->getPublishedUrl('@backend/views/myasset');
     <?php $this->head() ?>
 	
 	<style>
-	.login-box-body{
+	.mybox{
+		margin-top:10px;
+	}
+	.login-mybox-body{
 		border-radius: 15px 15px 15px; 
 		padding:28px;
+		background-color:#FFFFFF;
 		opacity: 0.99;
   filter: alpha(opacity=95); 
 		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -38,10 +42,14 @@ $dirAsset = Yii::$app->assetManager->getPublishedUrl('@backend/views/myasset');
 
 <?php $this->beginBody() ?>
 
-<div class="login-box" style="width:980px;margin: 2% auto">
-<div class="login-box-body" style="padding:20px;">
+<div class="row">
+<div class="col-md-1"></div>
 
-    <div class="login-logo" style="font-family:verdana">
+<div class="col-md-10">
+<div class="mybox">
+<div class="login-mybox-body" style="padding:20px;">
+
+    <div style="font-family:verdana" align="center">
         <span style="font-size:18px;">FKP ONLINE FORMS</span><br /><span style="font-size:28px; font-weight:bold"><?=$this->title?></span>
     </div>
 	<?= Alert::widget() ?>
@@ -52,10 +60,15 @@ $dirAsset = Yii::$app->assetManager->getPublishedUrl('@backend/views/myasset');
 	  
 		<br />
 		<div align="center">
-		<?php // Html::a('Log In Page', ['/user/login']) ?></div>
+		</div>
 </div>
 
 </div>
+</div>
+
+</div>
+
+
     
 
 <?php $this->endBody() ?>
