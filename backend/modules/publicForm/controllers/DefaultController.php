@@ -33,7 +33,7 @@ class DefaultController extends Controller
 		$setting = Setting::findOne(1);
 		if(!$setting->formAccess){
 			Yii::$app->session->addFlash('info', "The form has already been closed");
-			return $this->render('error');
+			//return $this->render('error');
 		}
 		
 		$staff = new TeachForm;
@@ -56,29 +56,21 @@ class DefaultController extends Controller
 		]);
     }
 	
-	public function actionToughtCoursesFinished(){
-			return $this->render('error');
-	}
-	
 	
 	public function actionStaffToughtCourses($s){
 		$setting = Setting::findOne(1);
 		if(!$setting->formAccess){
-			Yii::$app->session->addFlash('info', "The form has already been closed");
-			return $this->render('error');
+			return $this->redirect(['tought-courses']);
 		}
 		
 		$model = $this->findStaff($s);
-		//print_r(Yii::$app->request->post());die();
 		
 		if ($model->load(Yii::$app->request->post())) {
-			//die();
 			return $this->processTeachingData($model);
 		}else{
-			
 			if($model->teaching_submit == 1){
 				Yii::$app->session->addFlash('info', "The form has already been submitted. You may view or change (before due date) the data by logging in to fkp-portal.umk.edu.my");
-				return $this->render('error');
+				return $this->redirect(['tought-courses']);
 			}else{
 				$taughtCourses = $model->taughtCourses;
 				$teachCourses = $model->teachCourses;
@@ -189,7 +181,7 @@ class DefaultController extends Controller
                     if ($flag) {
                         $transaction->commit();
                             Yii::$app->session->addFlash('info', "Thank your, your teaching Information has been submitted. To view or change (before due date), you may log in to fkp-portal.umk.edu.my");
-                            return $this->redirect(['tought-courses-finished']);
+                            return $this->redirect(['tought-courses']);
                     } else {
                         $transaction->rollBack();
                     }

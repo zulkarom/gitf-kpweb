@@ -60,6 +60,31 @@ $dirAsset = Yii::$app->assetManager->getPublishedUrl('@backend/views/myasset');
 	  
 		<br />
 		<div align="center">
+		<br />
+		
+
+		<b>Related Links:</b><br /><br />
+		
+		
+				<div class="row">
+				<div class="col-md-3"></div>
+<div class="col-md-3">
+FKP Website<br />
+			<a href="http://fkp.umk.edu.my" target="_blank">http://fkp.umk.edu.my/</a>
+</div>
+
+<div class="col-md-3">
+FKP Portal<br /><a href="https://fkp-portal.umk.edu.my/" target="_blank">https://fkp-portal.umk.edu.my</a>
+</div>
+
+</div>
+		
+	
+		
+		<br /><br />
+		Any any problems, please contact zul@umk.edu.my
+		
+		
 		</div>
 </div>
 
