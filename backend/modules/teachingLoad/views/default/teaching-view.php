@@ -12,6 +12,12 @@ $this->title = 'Teaching Information';
 
 </div>
 <div class="box-body"><div class="application-view">
+
+<div class="pull-right">
+<?=Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['teaching-form'], ['class' => 'btn btn-primary'])?>
+</div>
+
+
 <style>
 table.detail-view th {
     width:15%;
@@ -38,23 +44,7 @@ table.detail-view th {
 				}
 				
 			],
-            [
-                'label' => 'Appointment Status',
-                'value' => function($model){
-			
-					return $model->staffPositionStatus->status_cat;
-                    
-                }
-            ],
-			
-			[
-                'label' => 'Nationality',
-                'value' => function($model){
-			
-					return $model->staffNationality->country_name;
-                    
-                }
-            ],
+          
 			
 			[
                 'label' => 'Courses Taught',
@@ -64,37 +54,6 @@ table.detail-view th {
                 }
             ],
 			
-			[
-                'label' => 'Courses Taught (Others)',
-				'format' => 'html',
-                'value' => function($model){
-					return $model->getOtherTaughtCoursesStr("<br />");
-                }
-            ],
-			
-			[
-                'label' => 'Academic Qualification',
-				'format' => 'html',
-                'value' => function($model){
-					return $model->getHighAcademicQualification("<br />");
-                }
-            ],
-			
-		
-			[
-                'label' => 'Research Focus',
-                'value' => function($model){
-					return $model->research_focus;
-                }
-            ],
-			
-			[
-                'label' => 'Past Work Experiences',
-				'format' => 'html',
-                'value' => function($model){
-					return $model->getPastExperiencesStr("<br />");
-                }
-            ],
 			
 			[
                 'label' => 'Four Courses Able to Teach',
@@ -107,9 +66,7 @@ table.detail-view th {
         ],
     ]) ?>
 
-<div class="pull-right">
-<?=Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['teaching-form'], ['class' => 'btn btn-primary'])?>
-</div>
+
 
 </div>
 </div>

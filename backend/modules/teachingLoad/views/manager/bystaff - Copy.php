@@ -35,17 +35,23 @@ $columns = [
 				}
 				
 			],
-			
-			[
-                'label' => 'Submitted',
-				'format' => 'html',
+            [
+                'label' => 'Appointment Status',
                 'value' => function($model){
 			
-					return $model->teaching_submit == 1 ? '<span class="label label-success">Yes</span>' : '<span class="label label-danger">No</span>';
+					return $model->staffPositionStatus->status_cat;
                     
                 }
             ],
-           
+			
+			[
+                'label' => 'Nationality',
+                'value' => function($model){
+			
+					return $model->staffNationality->country_name;
+                    
+                }
+            ],
 			
 			[
                 'label' => 'Courses Taught',
@@ -55,6 +61,37 @@ $columns = [
                 }
             ],
 			
+			[
+                'label' => 'Courses Taught (Others)',
+				'format' => 'html',
+                'value' => function($model){
+					return $model->otherTaughtCoursesStr;
+                }
+            ],
+			
+			[
+                'label' => 'Academic Qualification',
+				'format' => 'html',
+                'value' => function($model){
+					return $model->highAcademicQualification;
+                }
+            ],
+			
+		
+			[
+                'label' => 'Research Focus',
+                'value' => function($model){
+					return $model->research_focus;
+                }
+            ],
+			
+			[
+                'label' => 'Past Work Experiences',
+				'format' => 'html',
+                'value' => function($model){
+					return $model->pastExperiencesStr;
+                }
+            ],
 			
 			[
                 'label' => 'Four Courses Able to Teach',
@@ -133,21 +170,60 @@ $columns = [
 				
 			],
             [
-                'label' => 'Submitted',
-				'format' => 'html',
+                'label' => 'Appointment Status',
                 'value' => function($model){
 			
-					return $model->teaching_submit == 1 ? '<span class="label label-success">Yes</span>' : '<span class="label label-danger">No</span>';
+					return $model->staffPositionStatus->status_cat;
                     
                 }
             ],
 			
+			[
+                'label' => 'Nationality',
+                'value' => function($model){
+			
+					return $model->staffNationality->country_name;
+                    
+                }
+            ],
 			
 			[
                 'label' => 'Courses Taught',
 				'format' => 'html',
                 'value' => function($model){
 					return $model->getTaughtCoursesStr("<br />");
+                }
+            ],
+			
+			[
+                'label' => 'Courses Taught (Others)',
+				'format' => 'html',
+                'value' => function($model){
+					return $model->getOtherTaughtCoursesStr("<br />");
+                }
+            ],
+			
+			[
+                'label' => 'Academic Qualification',
+				'format' => 'html',
+                'value' => function($model){
+					return $model->getHighAcademicQualification("<br />");
+                }
+            ],
+			
+		
+			[
+                'label' => 'Research Focus',
+                'value' => function($model){
+					return $model->research_focus;
+                }
+            ],
+			
+			[
+                'label' => 'Past Work Experiences',
+				'format' => 'html',
+                'value' => function($model){
+					return $model->getPastExperiencesStr("<br />");
                 }
             ],
 			
