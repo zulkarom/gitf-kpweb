@@ -75,6 +75,8 @@ class DefaultController extends Controller
 		$model = $user->staff;
 		$model->scenario = 'teaching';
         $taughtCourses = $model->taughtCourses;
+		$outCourses = $model->otherTaughtCourses;
+		$pastExpes = $model->pastExperiences;
 		
 		
 		$teachCourses = $model->teachCourses;
@@ -105,21 +107,31 @@ class DefaultController extends Controller
 			
             $oldIDs = ArrayHelper::map($taughtCourses, 'id', 'id');
 			$teach_oldIDs = ArrayHelper::map($teachCourses, 'id', 'id');
+			$out_oldIDs = ArrayHelper::map($outCourses, 'id', 'id');
+            $past_oldIDs = ArrayHelper::map($pastExpes, 'id', 'id');
             
             $taughtCourses = Model::createMultiple(TaughtCourse::classname(), $taughtCourses);
 			$teachCourses = Model::createMultiple(TeachCourse::classname(), $teachCourses);
+			$outCourses = Model::createMultiple(OutCourse::classname(), $outCourses);
+			$pastExpes = Model::createMultiple(PastExperience::classname(), $pastExpes);
             
             Model::loadMultiple($taughtCourses, Yii::$app->request->post());
-			Model::loadMultiple($teachCourses, Yii::$app->request->post());		
+			Model::loadMultiple($teachCourses, Yii::$app->request->post());
+			Model::loadMultiple($outCourses, Yii::$app->request->post());
+			Model::loadMultiple($pastExpes, Yii::$app->request->post());		
             
             $deletedIDs = array_diff($oldIDs, array_filter(ArrayHelper::map($taughtCourses, 'id', 'id')));
 			$teach_deletedIDs = array_diff($oldIDs, array_filter(ArrayHelper::map($teachCourses, 'id', 'id')));
+			$out_deletedIDs = array_diff($out_oldIDs, array_filter(ArrayHelper::map($outCourses, 'id', 'id')));
+			$past_deletedIDs = array_diff($past_oldIDs, array_filter(ArrayHelper::map($pastExpes, 'id', 'id')));
             
             
             $valid = $model->validate();
             $valid = Model::validateMultiple($taughtCourses) && $valid;
 			
 			$valid = Model::validateMultiple($teachCourses) && $valid;
+			$valid = Model::validateMultiple($outCourses) && $valid;
+			$valid = Model::validateMultiple($pastExpes) && $valid;
             
             if ($valid) {
 
@@ -131,7 +143,12 @@ class DefaultController extends Controller
                         if (! empty($deletedIDs)) {
                             TaughtCourse::deleteAll(['id' => $deletedIDs]);
                         }
-
+						if (! empty($out_deletedIDs)) {
+                            OutCourse::deleteAll(['id' => $out_deletedIDs]);
+                        }
+						if (! empty($past_deletedIDs)) {
+                            PastExperience::deleteAll(['id' => $past_deletedIDs]);
+                        }
 						if (! empty($teach_deletedIDs)) {
                             TeachCourse::deleteAll(['id' => $teach_deletedIDs]);
                         }
@@ -162,6 +179,31 @@ class DefaultController extends Controller
                             }
                         }
 						
+						foreach ($outCourses as $i => $out_course) {
+                            if ($flag === false) {
+                                break;
+                            }
+                            //do not validate this in model
+                            $out_course->staff_id = $model->id;
+
+                            if (!($flag = $out_course->save(false))) {
+								Yii::$app->session->addFlash('error', "out course error");
+                                break;
+                            }
+                        }
+						
+						foreach ($pastExpes as $i => $pastExpe) {
+                            if ($flag === false) {
+                                break;
+                            }
+                            //do not validate this in model
+                            $pastExpe->staff_id = $model->id;
+
+                            if (!($flag = $pastExpe->save(false))) {
+								Yii::$app->session->addFlash('error', "past expe error");
+                                break;
+                            }
+                        }
 
                     }else{
 						Yii::$app->session->addFlash('error', "model error");
@@ -173,7 +215,6 @@ class DefaultController extends Controller
                             Yii::$app->session->addFlash('success', "Teaching Information has been submitted");
                             return $this->redirect(['teaching-view']);
                     } else {
-						Yii::$app->session->addFlash('error', "flag false");
                         $transaction->rollBack();
                     }
                 } catch (Exception $e) {
@@ -195,6 +236,8 @@ class DefaultController extends Controller
 			'user' => $user,
 			'taughtCourses' => (empty($taughtCourses)) ? [new TaughtCourse] : $taughtCourses,
 			'teachCourses' => (empty($teachCourses)) ? [new TeachCourse] : $teachCourses,
+			'outCourses' => (empty($outCourses)) ? [new OutCourse] : $outCourses,
+			'pastExpes' => (empty($pastExpes)) ? [new PastExperience] : $pastExpes,
 			'setting' => $setting
 		]);
 	}

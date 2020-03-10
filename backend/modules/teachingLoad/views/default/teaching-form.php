@@ -14,7 +14,7 @@ $this->title = 'Teaching Information Form';
 ?>
 
 <?php $form = ActiveForm::begin(['id' => 'dynamic-form']); ?>
-
+<?=$form->field($staff, 'updated_at')->hiddenInput(['value' => 1])->label(false)?>
 <p><b><i>* please complete this form before <?=date('d M Y', strtotime($setting->date_end))?></i></b></p>
 
 <div class="row">
