@@ -86,6 +86,12 @@ class DefaultController extends Controller
 				}
 				unset($model->teachCourses);
 				$teachCourses = $model->teachCourses;
+				$r = 1;
+				foreach($teachCourses as $t){
+					$t->rank = $r;
+					$t->save();
+					$r++;
+				}
 				return $this->render('form2', [
 					'model' => $model,
 					
