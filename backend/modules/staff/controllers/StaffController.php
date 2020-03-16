@@ -196,7 +196,7 @@ class StaffController extends Controller
 		$user->scenario = 'update_external';
 
         if ($model->load(Yii::$app->request->post()) && $user->load(Yii::$app->request->post())) {
-			
+			$user->username = $model->staff_no;
 			if($user->save() && $model->save()){
 				Yii::$app->session->addFlash('success', "Data Updated");
 				return $this->redirect(['index']);
@@ -350,9 +350,7 @@ class StaffController extends Controller
         UploadFile::download($model, $attr, $filename);
     }
 	
-	public function actionUpdateImageStaffDeleteThisFunction(){
-		
-	}
+
 
 
 }
