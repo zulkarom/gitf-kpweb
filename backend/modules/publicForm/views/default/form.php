@@ -12,7 +12,7 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@frontend/views/myas
  * @var dektrium\user\Module $module
  */
 
-$this->title = 'TOUGHT COURSES BY ACADEMIC STAFF';
+$this->title = 'TAUGHT COURSES BY ACADEMIC STAFF';
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
