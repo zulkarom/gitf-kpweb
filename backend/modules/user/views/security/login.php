@@ -51,7 +51,7 @@ $fieldOptions2 = [
 
                 
 	
-        <p class="login-box-msg">Log in in to start your session</p>
+        <p class="login-box-msg">Log in to start your session</p>
 										
 														
 														
