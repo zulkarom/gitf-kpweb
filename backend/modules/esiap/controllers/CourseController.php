@@ -3,6 +3,7 @@
 namespace backend\modules\esiap\controllers;
 
 use Yii;
+use backend\modules\esiap\models\AssessmentCat;
 use backend\modules\esiap\models\Course;
 use backend\modules\esiap\models\CourseProfile;
 use backend\modules\esiap\models\CourseClo;
@@ -694,45 +695,61 @@ class CourseController extends Controller
 	
 	public function actionCourseAssessment($course)
     {
-		
-        $model = $this->findDevelopmentVersion($course);
-		
-		$items = $model->assessments;
-		
         
         if (Yii::$app->request->post()) {
 			if(Yii::$app->request->validateCsrfToken()){
 				
                 $assess = Yii::$app->request->post('CourseAssessment');
+				if($assess){
+				//print_r($assess);die();
 				$final = 0;
 				$flag = true;
+				$transaction = Yii::$app->db->beginTransaction();
 				foreach($assess as $key => $as){
+					if(!$flag ){
+						break;
+					}
+					//Yii::$app->session->addFlash('info', $as['id']);
 					$assesment = CourseAssessment::findOne($as['id']);
 					if($assesment){
-						if($final == 1){
-							Yii::$app->session->addFlash('error', "Only one final assessment is allowed!");
-							$flag = false;
-							break;
-						}
-						$cat = $assesment->assessmentCat;
+						$cat = AssessmentCat::findOne($as['assess_cat']);
 						$form_sum = $cat->form_sum;
-						$final = $form_sum == 2 ? 1 : 0;
+						$final = $final + ($form_sum == 2 ? 1 : 0);
 						$assesment->assess_name = $as['assess_name'];
 						$assesment->assess_name_bi = $as['assess_name_bi'];
 						$assesment->assess_cat = $as['assess_cat'];
-						$assesment->save();
+						
+						if($final > 1){
+							Yii::$app->session->addFlash('error', "Only one final exam or assessment is allowed!");
+							$flag = false;
+							break;
+						}
+						
+						
+						if(!$assesment->save()){
+							$flag = false;
+							break;
+						}
 					}
 				}
 				if($flag){
+					$transaction->commit();
 					Yii::$app->session->addFlash('success', "Data Updated");
+					return $this->redirect(['course-assessment','course'=>$course]);
+					
+				}else{
+					$transaction->rollBack();
+					return $this->redirect(['course-assessment','course'=>$course]);
+				}
+				
 				}
 				
             }
-			return $this->redirect(['course-assessment','course'=>$course]);
+			
 		}
 		
-		
-	
+	$model = $this->findDevelopmentVersion($course);
+	$items = $model->assessments;
 	
 		return $this->render('assessment', [
 				'model' => $model,
@@ -872,74 +889,53 @@ class CourseController extends Controller
 		}
     }
 	
-	public function actionFk1($course, $dev = false, $version = false){
-		if($version){
-			//control access
-			$model = $this->findVersion($version);
-		}else if($dev){
-			$model = $this->findDevelopmentVersion($course);
-		}else{
-			$model = $this->findPublishedVersion($course);
-		}
-		
+	public function actionFk1($course, $dev = false, $version = false){		
 			$pdf = new Fk1;
-			$pdf->model = $model;
+			$pdf->model = $this->decideVersion($course, $dev, $version);
 			$pdf->generatePdf();
 	}
 	
 	public function actionFk2($course, $dev = false, $version = false){
-		if($version){
-			//control access
-			$model = $this->findVersion($version);
-		}else if($dev){
-			$model = $this->findDevelopmentVersion($course);
-		}else{
-			$model = $this->findPublishedVersion($course);
-		}
 			$pdf = new Fk2;
-			$pdf->model = $model;
+			$pdf->model = $this->decideVersion($course, $dev, $version);
 			$pdf->generatePdf();
 	}
 	
-	public function actionTbl4($course, $dev = false, $version = false){
+	private function decideVersion($course, $dev, $version){
 		if($version){
 			//control access
 			$model = $this->findVersion($version);
 		}else if($dev){
 			$model = $this->findDevelopmentVersion($course);
 		}else{
-			$model = $this->findPublishedVersion($course);
+			$published =CourseVersion::findOne(['course_id' => $course, 'is_published' => 1]);
+			$developed =CourseVersion::findOne(['course_id' => $course, 'is_developed' => 1]);
+			if($published){
+				$model = $published;
+			}else if($developed){
+				$model = $developed;
+			}else{
+				die('Neither published nor development version exist!');
+			}
 		}
+		return $model;
+	}
+	
+	public function actionTbl4($course, $dev = false, $version = false){
 			$pdf = new Tbl4;
-			$pdf->model = $model;
+			$pdf->model = $this->decideVersion($course, $dev, $version);
 			$pdf->generatePdf();
 	}
 	
 	public function actionTbl4Excel($course, $dev = false, $version = false){
-		if($version){
-			//control access
-			$model = $this->findVersion($version);
-		}else if($dev){
-			$model = $this->findDevelopmentVersion($course);
-		}else{
-			$model = $this->findPublishedVersion($course);
-		}
 			$pdf = new Tbl4Excel;
-			$pdf->model = $model;
+			$pdf->model = $pdf->model = $this->decideVersion($course, $dev, $version);
 			$pdf->generateExcel();
 	}
 	
 	public function actionFk3($course, $dev = false, $version = false){
-		if($version){
-			//control access
-			$model = $this->findVersion($version);
-		}else if($dev){
-			$model = $this->findDevelopmentVersion($course);
-		}else{
-			$model = $this->findPublishedVersion($course);
-		}
 			$pdf = new Fk3;
-			$pdf->model = $model;
+			$pdf->model = $this->decideVersion($course, $dev, $version);
 			$pdf->generatePdf();
 	}
 	

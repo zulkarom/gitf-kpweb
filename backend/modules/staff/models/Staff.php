@@ -375,7 +375,7 @@ class Staff extends \yii\db\ActiveRecord
 		$list = self::find()
 		->select('staff.id as staffid, user.fullname as fullname, staff.staff_title as stitle')
 		->joinWith('user')
-		->where(['staff_active' => 1, 'is_academic' => 1])->orderBy('user.fullname ASC')->all();
+		->where(['staff_active' => 1, 'is_academic' => 1, 'faculty_id' => Yii::$app->params['faculty_id']])->orderBy('user.fullname ASC')->all();
 		
 		$array = [];
 		
