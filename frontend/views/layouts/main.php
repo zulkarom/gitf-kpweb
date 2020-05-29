@@ -61,105 +61,73 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@frontend/views/myas
 
 <script src="<?=$directoryAsset?>/js/rem.min.js"></script>
 	
-	<script src="<?=$directoryAsset?>/js/jssor.slider.min.js" type="text/javascript"></script>
-    <script type="text/javascript">
-        jssor_1_slider_init = function() {
-
-            var jssor_1_options = {
-              $AutoPlay: 1,
-              $SlideDuration: 800,
-              $SlideEasing: $Jease$.$OutQuint,
-              $ArrowNavigatorOptions: {
-                $Class: $JssorArrowNavigator$
-              },
-              $BulletNavigatorOptions: {
-                $Class: $JssorBulletNavigator$
-              }
-            };
-
-            var jssor_1_slider = new $JssorSlider$("jssor_1", jssor_1_options);
-
-            /*#region responsive code begin*/
-
-            var MAX_WIDTH = 3000;
-
-            function ScaleSlider() {
-                var containerElement = jssor_1_slider.$Elmt.parentNode;
-                var containerWidth = containerElement.clientWidth;
-
-                if (containerWidth) {
-
-                    var expectedWidth = Math.min(MAX_WIDTH || containerWidth, containerWidth);
-
-                    jssor_1_slider.$ScaleWidth(expectedWidth);
-                }
-                else {
-                    window.setTimeout(ScaleSlider, 30);
-                }
-            }
-
-            ScaleSlider();
-
-            $Jssor$.$AddEvent(window, "load", ScaleSlider);
-            $Jssor$.$AddEvent(window, "resize", ScaleSlider);
-            $Jssor$.$AddEvent(window, "orientationchange", ScaleSlider);
-            /*#endregion responsive code end*/
-        };
-    </script>
-    <style>
-        /*jssor slider loading skin spin css*/
-        .jssorl-009-spin img {
-            animation-name: jssorl-009-spin;
-            animation-duration: 1.6s;
-            animation-iteration-count: infinite;
-            animation-timing-function: linear;
-        }
-
-        @keyframes jssorl-009-spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        
-        /*jssor slider bullet skin 032 css*/
-        .jssorb032 {position:absolute;}
-        .jssorb032 .i {position:absolute;cursor:pointer;}
-        .jssorb032 .i .b {fill:#fff;fill-opacity:0.7;stroke:#000;stroke-width:1200;stroke-miterlimit:10;stroke-opacity:0.25;}
-        .jssorb032 .i:hover .b {fill:#000;fill-opacity:.6;stroke:#fff;stroke-opacity:.35;}
-        .jssorb032 .iav .b {fill:#000;fill-opacity:1;stroke:#fff;stroke-opacity:.35;}
-        .jssorb032 .i.idn {opacity:.3;}
-        
-        /*jssor slider arrow skin 051 css*/
-        .jssora051 {display:block;position:absolute;cursor:pointer;}
-        .jssora051 .a {fill:none;stroke:#fff;stroke-width:360;stroke-miterlimit:10;}
-        .jssora051:hover {opacity:.8;}
-        .jssora051.jssora051dn {opacity:.5;}
-        .jssora051.jssora051ds {opacity:.3;pointer-events:none;}
-    </style>
 
 </head>
 <body>
 <?php $this->beginBody() ?>
 
 
-<!-- Page Preloder -->
-	<div id="preloder">
-		<div class="loader"></div>
-	</div>
-	
-	
 
-	<!-- header section -->
+	
 	<header class="header-section">
 		<div class="container">
-			<!-- logo -->
-			<a href="index.html" class="site-logo"><img src="<?=$directoryAsset?>/img/header-bi.jpg" alt=""></a>
-		
+						<div class="row">
+				<div class="col-md-5 col-sm-12">
+					
+					<a href="http://fkp.umk.edu.my/index.cfm" class="site-logo"><img src="<?=$directoryAsset?>/img/logo.png" alt=""></a>
+					
+				</div>
+				<div class="col-md-7 col-sm-12">
+					<h2 style="font-family: &#39;Signika&#39;, sans-serif;font-size:18px;">
+					<br>FACULTY OF ENTREPRENEURSHIP AND BUSINESS<br>
+					Universiti Malaysia Kelantan
+					</h2>
+				</div>
+			</div>
+			<div class="nav-switch">
+				<i class="fa fa-bars"></i>
+			</div>
+			<div class="header-info">
 
+			</div>
 		</div>
 	</header>
+	<nav class="nav-section">
+		<div class="container">
+			<div class="nav-right">
+				<a href="http://fkp.umk.edu.my/search.cfm"><i class="fa fa-search"></i></a>
+				
+			</div>
+			<?= $this->render('_menu') ?>
+		</div>
+	</nav>
+	<section class="hero-section">
+	<div class="row no-gutters">
+	</div>
+	</section>
+	
+		<section>
+		
+		<div class="container services">
+			<div style="padding:30px;">
+			<div class="row">
+				<div class="col-md-12">
+				
+				
+
+					
+					
+					
+				</div>
+			</div>
+			</div>
+		</div>
+		<div style="min-height:50px;"></div>
+	
+	</section>
 
 	
-	<?= $this->render('_menu') ?>
+	
 
 	<?=$content?>
 	

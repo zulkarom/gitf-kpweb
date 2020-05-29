@@ -1,58 +1,78 @@
 <?php 
 use yii\helpers\Url;
+
+$directoryAsset = Yii::$app->assetManager->getPublishedUrl('@frontend/views/myasset');
 ?>
 <footer class="footer-section">
+	
 		<div class="container footer-top">
 			<div class="row">
-				
-				<!-- widget -->
-				<div class="col-sm-6 col-lg-3 footer-widget offset-lg-3">
-					<h6 class="fw-title">USEFUL LINK</h6>
+				<div class="col-sm-6 col-lg-3 footer-widget">
+					<div class="about-widget">
+						<img src="<?=$directoryAsset?>/img/logo-light.png" alt="">
+						
+						<p>Faculty of Entrepreneurship and Business, Universiti Malaysia Kelantan is located at UMK City Campus, Pengkalan Chepa, Kelantan Malaysia</p>
+						
+						<div class="social pt-1">
+							
+							
+							<a href="http://fkp.umk.edu.my/organization-chart.cfm" target="_blank"><i class="fa fa-twitter"></i></a>
+							<a href="http://fkp.umk.edu.my/organization-chart.cfm" target="_blank"><i class="fa fa-facebook"></i></a>
+							<a href="http://fkp.umk.edu.my/organization-chart.cfm" target="_blank"><i class="fa fa-instagram"></i></a>
+							<a href="http://fkp.umk.edu.my/organization-chart.cfm" target="_blank"><i class="fa fa-linkedin"></i></a>
+							
+						</div>
+						
+						
+							<br>
+						
+						
+					</div>
+				</div>
+				<div class="col-sm-4 col-lg-4 footer-widget">
+
 					<div class="dobule-link">
 						<ul>
-							<li><a href="<?=Url::to(['/site'])?>">Home</a></li>
-							<li><a href="<?=Url::to(['/student'])?>">Future Students</a></li>
-							<li><a href="<?=Url::to(['/student/current'])?>">Current Students</a></li>
-							<li><a href="<?=Url::to(['/academic'])?>">Undergraduate</a></li>
-							<li><a href="<?=Url::to(['/academic/post-graduate'])?>">Postgraduate</a></li>
-						</ul>
-						<ul>
-							<li><a href="http://jeb.umk.edu.my">JEB Journal</a></li>
-							<li><a href="<?=Url::to(['/research/caknawan'])?>">Caknawan</a></li>
-					
+							<li><a href="http://fkp.umk.edu.my/policy.cfm">Website Policy &amp; Security</a></li>
+							<li><a href="http://fkp.umk.edu.my/disclaimer.cfm">Disclaimer</a></li>
+							<li><a href="http://fkp.umk.edu.my/help.cfm">Helpdesk</a></li>
+							<li><a href="http://fkp.umk.edu.my/faq.cfm">FAQs</a></li>
+							<li><a href="http://fkp.umk.edu.my/sitemap.cfm">Site map</a></li>
+							
+							
+							
+							
+							
+						
 						</ul>
 					</div>
 				</div>
-		
-				<!-- widget -->
+				
 				<div class="col-sm-6 col-lg-3 footer-widget">
-					<h6 class="fw-title">CONTACT</h6>
+					
 					<ul class="contact">
-						<li><p><i class="fa fa-map-marker"></i> Kampus Kota,
-Pengkalan Chepa, 16100 Kota Bharu, 
-Kelantan, Malaysia</p></li>
-						<li><p><i class="fa fa-phone"></i> 609 771 7131
-</p></li>
-
-<li><p><i class="fa fa-phone"></i> 609 771 7126
-</p></li>
-						<li><p><i class="fa fa-fax"></i> 609 7717252</p></li>
+						
+						<li><p><i class="fa fa-map-marker"></i> Kampus Kota, Pengkalan Chepa</p></li>
+						<li><p><i class="fa fa-phone"></i> +6097717131</p></li>
+						<li><p><i class="fa fa-envelope"></i> </p></li>
+						<li><p><i class="fa fa-clock-o"></i> Sun - Thu, 08:00AM - 05:00 PM</p></li>
+						<li><p><i class="fa fa-envelope"></i> <a href="http://fkp.umk.edu.my/contact.cfm" title="Contact Us" style="color:white;">Contact Us</a></p></li>
 						
 					</ul>
+
+				</div>
+				<div class="col-sm-6 col-lg-2 footer-widget">
+					<div style="padding:10px;">
+					
+					<img src="<?=$directoryAsset?>/img/qrFKP.png" alt="FKP" width="150px">
+					
+				</div>
 				</div>
 			</div>
 		</div>
-		<!-- copyright -->
-		<div class="copyright">
+<div class="copyright">
 			<div class="container">
-				<p>
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> Faculty of Entrepreneurship and Business. All rights reserved  | <a href="<?=Url::to(['site/disclaimer'])?>">Disclaimer</a> - <a href="<?=Url::to(['site/privacy'])?>">Privacy Policy</a> - <a href="<?=Url::to(['site/privacy'])?>">Security Policy</a>
-
-<br /><br />
-
-Made by <a href="http://skyhint.com" target="_blank">Skyhint Design</a> | Template by <a href="https://colorlib.com" target="_blank" >Colorlib</a>
-
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+				<p>Copyright ©<script>document.write(new Date().getFullYear());</script> All rights reserved. Universiti Malaysia Kelantan</p>
 			</div>		
-		</div>
-	</footer>
+</div>
+</footer>

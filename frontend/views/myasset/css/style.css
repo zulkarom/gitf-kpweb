@@ -1,14 +1,3 @@
-/* =================================
-------------------------------------
-  Unica - University Template
-  Version: 1.0
- ------------------------------------ 
- ====================================*/
-
-/*----------------------------------------*/
-/* Template default CSS
-/*----------------------------------------*/
-
 html,
 body {
 	height: 100%;
@@ -77,8 +66,10 @@ a:focus {
 
 ul,
 ol {
-	padding: 0;
-	margin: 0;
+	/*padding: 0;
+	margin: 0; */
+	font-size:14px;
+	color: #636363;
 }
 
 /*---------------------
@@ -233,12 +224,14 @@ ol {
 -----------------------*/
 
 .header-section {
+	padding: 20px 0;
 	overflow: hidden;
 }
 
 .site-logo {
 	display: inline-block;
 	margin-right: 50px;
+	padding-top: 20px;
 }
 
 .header-info {
@@ -299,7 +292,8 @@ ol {
 }
 
 .nav-section {
-	background: #020031;
+	background: #353b87;
+	margin-bottom: -16px;
 }
 
 .nav-section .nav-right {
@@ -324,7 +318,7 @@ ol {
 .main-menu li a {
 	display: inline-block;
 	color: #fff;
-	font-size: 13px;
+	font-size: 11px;
 	text-transform: uppercase;
 	font-weight: 500;
 	padding: 25px 20px;
@@ -335,21 +329,56 @@ ol {
 }
 
 .main-menu li a:hover {
-	background: #f6783a;
+	background: #df0024;
 }
 
 .main-menu li.active a {
-	background: #f6783a;
+	background: #df0024;
 }
 
+.dropbtn {
+  color: white;
+  padding: 12px;
+  font-size: 14px;
+  border: none;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 10;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #ddd;}
+
+.dropdown:hover .dropdown-content {display: block;}
+
+.dropdown:hover .dropbtn {background-color: #df0024;color:#ffffff;}
+
+.dropbtn.active {background-color: #df0024;color:#ffffff;}
 /*---------------------
 	Hero Section
 -----------------------*/
 
 .hs-item {
-	min-height: 760px;
+	max-height: 500px;
 	position: relative;
-	display: table;
+	/*display: table; */
 	width: 100%;
 }
 
@@ -392,7 +421,7 @@ ol {
 }
 
 .hs-item .site-btn {
-	margin-top: 30px;
+	/*margin-top: 30px;*/
 	opacity: 0;
 	top: 50px;
 }
@@ -1666,8 +1695,6 @@ ol {
 	margin-bottom: 0;
 }
 
-
-
 /*------------------
 	Responsive
 ---------------------*/
@@ -1676,7 +1703,6 @@ ol {
 	.container {
 		max-width: 1170px;
 	}
-	
 }
 
 /* Medium screen : 992px. */
@@ -1699,7 +1725,6 @@ ol {
 /* Tablet :768px. */
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
-
 	.header-info .hf-item i {
 		float: left;
 	}
@@ -1746,10 +1771,6 @@ ol {
 /* Large Mobile :480px. */
 
 @media only screen and (max-width: 767px) {
-	.header-section {
-		display: none;
-	}
-
 	.header-info {
 		display: none;
 	}
@@ -1788,6 +1809,44 @@ ol {
 	.main-menu li.active a {
 		background-color: transparent;
 	}
+	.dropbtn {
+  color: white;
+  display: block;
+  padding: 16px;
+  font-size: 12px;
+  border-top: 1px solid #212031;
+  cursor: pointer;
+}
+
+.dropdown {
+  position: relative; 
+  display: block; 
+   margin: 0;
+}
+
+.dropdown-content {
+  display: none; 
+  position: absolute; 
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 10;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  position: relative;
+}
+
+.dropdown-content a:hover {background-color: #ddd;}
+
+.dropdown:hover .dropdown-content {display: block;width:100%;position: relative;}
+
+.dropdown:hover .dropbtn {background-color: #df0024;color:#ffffff;}
+
 	.hs-item {
 		min-height: auto;
 		padding: 100px 0;
@@ -1857,9 +1916,6 @@ ol {
 /* small Mobile :320px. */
 
 @media only screen and (max-width: 479px) {
-	.header-section {
-		display: none;
-	}
 	.hs-item .hs-title {
 		font-size: 27px;
 	}
@@ -1906,4 +1962,40 @@ ol {
 	.comment-warp .comment .comment-content {
 		padding-left: 0;
 	}
+}
+	/** RED **/
+#jevents_body .jev_red a {
+	color:#111;
+}
+.jev_daysnames_red , table.ev_table td.cal_td_daysnames_red {
+	background:url(../images/MainTopRowRed.jpg) repeat-x transparent top left!important;
+}
+.jev_red .jev_toprow .previousmonth, .jev_red  .jev_toprow .nextmonth {
+	background-color: #c20025!important;
+}
+.jev_red .jev_toprow .previousmonth a {
+	padding-left:20px;
+	background:url(../images/Left.png) no-repeat #c20025 center left !important;
+}
+.jev_red  .jev_toprow div.nextmonth a {
+	padding-right:20px;
+	background:url(../images/Right.png) no-repeat #c20025 center right !important;
+}
+
+.jev_red .jev_toprow .currentmonth {
+	background-color:#eee!important;
+	color:#c20025!important;
+}
+.jev_red .jev_toprow a, .jev_red  .jev_toprow a {
+	color:#ffffff!important;
+}
+.jev_red  .jevdateicon {
+	background-color: #c20025!important;
+	color:#fff!important;
+	border:solid 1px #c20025!important;
+}
+
+.jev_red .jevdateicon1 {
+	background-color: #fff!important;
+	color:#c20025!important;
 }

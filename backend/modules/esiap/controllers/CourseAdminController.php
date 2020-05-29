@@ -3,6 +3,8 @@
 namespace backend\modules\esiap\controllers;
 
 use Yii;
+
+use backend\modules\esiap\models\Tbl4Excel;
 use backend\modules\esiap\models\CourseAdminSearch;
 use backend\modules\esiap\models\CourseInactiveSearch;
 use backend\modules\esiap\models\Course;
@@ -224,7 +226,7 @@ class CourseAdminController extends Controller
 				CourseSlt::deleteAll(['crs_version_id' => $id]);
 				CourseAssessment::deleteAll(['crs_version_id' => $id]);
 				CourseProfile::deleteAll(['crs_version_id' => $id]);
-				CourseTransfer::deleteAll(['crs_version_id' => $id]);
+				CourseTransferable::deleteAll(['crs_version_id' => $id]);
 				CourseStaff::deleteAll(['crs_version_id' => $id]);
 				
 				if(CourseVersion::findOne($id)->delete()){
@@ -268,12 +270,12 @@ class CourseAdminController extends Controller
 				if($model->status == 20){
 					if($model->is_developed ==1){
 						Yii::$app->session->addFlash('error', "You can not publish and develop at the same time");
-						return $this->redirect(['course-version-update', 'id' => $id]);
+						return $this->redirect(['/esiap/course-admin/update', 'course' => $model->course->id]);
 					}
 					CourseVersion::updateAll(['is_published' => 0], ['course_id' => $model->course_id]);
 				}else{
 					Yii::$app->session->addFlash('error', "The status must be verified before publishing");
-					return $this->redirect(['course-version-update', 'id' => $id]);
+					return $this->redirect(['/esiap/course-admin/update', 'course' => $model->course->id]);
 				}
 			}
 			
@@ -281,6 +283,8 @@ class CourseAdminController extends Controller
 				Yii::$app->session->addFlash('success', "Course Version Updated");
 				return $this->redirect(['/esiap/course-admin/update', 'course' => $model->course->id]);
 			}
+			
+			
             
         }
 
@@ -342,11 +346,11 @@ class CourseAdminController extends Controller
         if ($model->load(Yii::$app->request->post())) {
 			$model->updated_at = new Expression('NOW()');    
 			if($model->save()){
-
+			$flag = true;
             $staff_pic_arr = Yii::$app->request->post('staff_pic');
 			
 			if($staff_pic_arr){
-				//echo 'hai';die();
+				
 				$kira_post = count($staff_pic_arr);
 				$kira_lama = count($model->coursePics);
 				if($kira_post > $kira_lama){
@@ -355,7 +359,9 @@ class CourseAdminController extends Controller
 					for($i=1;$i<=$bil;$i++){
 						$insert = new CoursePic;
 						$insert->course_id = $model->id;
-						$insert->save();
+						if(!$insert->save()){
+							$flag = false;
+						}
 					}
 				}else if($kira_post < $kira_lama){
 
@@ -432,7 +438,7 @@ class CourseAdminController extends Controller
 					}
 				}
 			}
-			
+			Yii::$app->session->addFlash('success', "Course Updated");
 			}else{
 				$model->flashError();
 			}
@@ -577,12 +583,39 @@ class CourseAdminController extends Controller
 		} */
 	}
 	
-		
-	public function actionBulkmqf2(){
-		
+	public function actionBulkCovidUpdateSlt(){
+		die();
 		$courses = Course::find()->where(['faculty_id' => Yii::$app->params['faculty_id']])->all();
 		foreach($courses as $course){
-			$mqf2 = CourseVersion::findOne(['course_id' => $course->id, 'version_type_id' => 2]);
+			$ver = CourseVersion::findOne(['course_id' => $course->id, 'version_name' => 'Covid Version']);
+			if($ver){
+				$syl = CourseSyllabus::find()
+				->where(['week_num' => ['6','7','8','9','10', '11', '12'], 'crs_version_id' => $ver->id])
+				->andWhere("topics NOT LIKE '%cuti%'")
+				->all();
+				if($syl){
+					foreach($syl as $s){
+						$s->pnp_lecture = 0;
+						$s->pnp_tutorial = 0;
+						$s->pnp_practical = 0;
+						$s->pnp_others = 0;
+						$s->nf2f = 2;
+						if($s->save()){
+							echo 'SLT good.';
+						}
+					}
+				}
+			}
+			
+		}
+		exit;
+	}
+		
+	public function actionBulkCovidClone(){
+		die();
+		$courses = Course::find()->where(['faculty_id' => Yii::$app->params['faculty_id']])->all();
+		foreach($courses as $course){
+			$mqf2 = CourseVersion::findOne(['course_id' => $course->id, 'version_name' => 'Covid Version']);
 			$ori = CourseVersion::find()->where(['course_id' => $course->id])
 					->orderBy('created_at DESC')->limit(1)->all();
 					
@@ -595,7 +628,7 @@ class CourseAdminController extends Controller
 				$nv = new CourseVersion;
 				$nv->course_id = $course->id;
 				$nv->version_type_id = 2;
-				$nv->version_name = 'MQF2 PLO11';
+				$nv->version_name = 'Covid Version';
 				$nv->study_week = '16';
 				$nv->final_week = '17-19';
 				$nv->created_at = new Expression('NOW()');
@@ -609,9 +642,9 @@ class CourseAdminController extends Controller
 						$clone->ori_version = $ori[0]->id;
 						$clone->copy_version = $nv->id;
 						if(!$clone->cloneVersion()){
-							echo 'clone failed <br />';
+							echo 'clone failed ';
 						}else{
-							echo 'clone good <br />';
+							echo 'clone good; ';
 						}
 						
 					}else{
@@ -622,14 +655,15 @@ class CourseAdminController extends Controller
 				}
 			}
 		}
+		exit;
 		
 	}
 	
-	public function actionBulkdeletemqf2(){
+	public function actionBulkDeleteCovid(){
 		die();/////////////////////////////
 		$courses = Course::find()->all();
 		foreach($courses as $course){
-			$ver = CourseVersion::findOne(['course_id' => $course->id, 'version_type_id' => 2]);
+			$ver = CourseVersion::findOne(['course_id' => $course->id, 'version_name' => 'Covid Version']);
 			if($ver){
 				$id = $ver->id;
 				$clos = CourseClo::find()->where(['crs_version_id' => $id])->all();
@@ -649,12 +683,13 @@ class CourseAdminController extends Controller
 				
 				CourseVersion::findOne($id)->delete();
 			}
+			echo 'delete good; ';
 		}
-		
+		exit;
 	}
 	
 	public function actionBulkupdatepusatko(){
-		//die();////////////////////////stop
+		die();////////////////////////stop
 		$courses = Course::find()->where(['faculty_id' => Yii::$app->params['faculty_id']])->all();
 		foreach($courses as $course){
 			$version = CourseVersion::findOne(['course_id' => $course->id, 'version_type_id' => 2]);
@@ -742,6 +777,18 @@ class CourseAdminController extends Controller
 		
 			}
 		}
+		
+	}
+	
+	public function actionTable4(){
+		if(Yii::$app->request->post()){
+			$pdf = new Tbl4Excel;
+			$pdf->multiple = true;
+			$pdf->courses = Yii::$app->request->post('selection');
+			$pdf->generateExcel();
+		}
+		
+
 		
 	}
 	

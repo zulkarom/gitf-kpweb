@@ -25,6 +25,12 @@ class SiteController extends Controller
            
         ];
     }
+	
+	public function actionIndex()
+    {
+		return $this->redirect('http://fkp.umk.edu.my');
+        
+    }
 
 
     /**
@@ -32,7 +38,7 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionIndex()
+ /*    public function actionIndex()
     {
 		$upcoming = Event::upcomingEvent();
 		$news = Event::latestNews();
@@ -44,7 +50,7 @@ class SiteController extends Controller
 			'slides' => $slides
 		]);
         
-    }
+    } */
 	
 	public function actionContact()
     {
