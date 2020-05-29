@@ -42,7 +42,7 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@frontend/views/myas
 	
 	  <?php $this->head() ?>
 	  
-	   
+	   <style>@media print {#ghostery-purple-box {display:none !important}}</style>
 
 
 	<!-- Stylesheets -->
