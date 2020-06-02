@@ -3,6 +3,7 @@
 namespace backend\modules\erpd\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "rp_status".
@@ -60,5 +61,9 @@ class Status extends \yii\db\ActiveRecord
 		}
 		return $array;
 		
-	} 
+	}
+	
+	public static function listStatusFilterAdmin(){
+		return ArrayHelper::map(self::find()->where(['<>', 'status_code', 0])->all(), 'status_code', 'status_name');
+	}
 }

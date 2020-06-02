@@ -43,7 +43,7 @@ class CourseSyllabus extends \yii\db\ActiveRecord
 			
 			[['pnp_lecture', 'pnp_tutorial', 'pnp_practical', 'pnp_others', 'independent',  'nf2f'], 'required', 'on' => 'slt'],
 			
-            [['crs_version_id', 'syl_order'], 'integer'],
+            [['crs_version_id', 'syl_order', 'duration'], 'integer'],
 			
             [['topics', 'week_num'], 'string'],
 			
@@ -75,7 +75,7 @@ class CourseSyllabus extends \yii\db\ActiveRecord
     }
 	
 	public static function createWeeks($version){
-		for($i=1;$i<=15;$i++){
+		for($i=1;$i<=14;$i++){
 			$week = new self();
 			$week->scenario = 'addweek';
 			$week->crs_version_id = $version;

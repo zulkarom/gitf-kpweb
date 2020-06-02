@@ -118,7 +118,7 @@ class PublicationController extends Controller
 						$tag->pub_id = $model->id;
 						$tag->staff_id = Yii::$app->user->identity->staff->id;
 						if (!($flag = $tag->save())) {
-                                break;
+                                $flag = false;
                             }
                       
                         

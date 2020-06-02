@@ -7,7 +7,7 @@ use yii\widgets\ActiveForm;
 /* @var $model backend\modules\erpd\models\Publication */
 
 $this->title = 'View Publication';
-$this->params['breadcrumbs'][] = ['label' => 'Publications', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Publications', 'url' => ['publication']];
 $this->params['breadcrumbs'][] = 'Upload';
 
 $model->file_controller = 'publication';
@@ -63,6 +63,16 @@ $model->file_controller = 'publication';
 
 
 <?php 
+
+	}else if($model->status == 50){
+		
+		echo Html::a('RETURN STATUS TO SUBMIT', ['publication-return-submit', 'id' => $model->id], [
+            'class' => 'btn btn-default',
+            'data' => [
+                'confirm' => 'Are you sure you want to return the status of this publication to \'Submitted\'?',
+                'method' => 'post',
+            ],
+        ]);
 
 	}
 ?>

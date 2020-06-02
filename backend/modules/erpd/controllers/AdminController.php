@@ -205,6 +205,15 @@ class AdminController extends Controller
         ]);
     }
 	
+	public function actionPublicationReturnSubmit($id){
+		$model = $this->findPublication($id);
+		$model->status = 20;
+		if($model->save()){
+			Yii::$app->session->addFlash('success', "The status has been changed to Submit");
+		}
+		return $this->redirect(['view-publication', 'id' => $id]);
+	}
+	
 	/**
      * Displays a single Publication model.
      * @param integer $id

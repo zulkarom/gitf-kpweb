@@ -530,6 +530,17 @@ class Publication extends \yii\db\ActiveRecord
 			return [];
 		}
 	}
+	
+	public function uniqueYear(){
+		$years = self::find()
+		->select('DISTINCT(pub_year)')
+		->all();
+		if($years){
+			return ArrayHelper::map($years, 'pub_year', 'pub_year');
+		}else{
+			return [];
+		}
+	}
 
 
 }
