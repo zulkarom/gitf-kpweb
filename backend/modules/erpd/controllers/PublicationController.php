@@ -9,6 +9,7 @@ use backend\modules\erpd\models\PubTag;
 use backend\modules\erpd\models\Editor;
 use backend\modules\erpd\models\PublicationSearch;
 use backend\modules\erpd\models\PublicationAllSearch;
+use backend\modules\erpd\models\Status;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use common\models\Model;
@@ -226,6 +227,19 @@ class PublicationController extends Controller
 		
         ]);
     }
+	
+	public function actionReUpdate($id){
+		$model = $this->findModel($id);
+		if(in_array($model->status, Status::userStatusEdit())){
+			//status correction
+			$model->status = 10;
+			$model->review_note = 'self-update';
+			if($model->save()){
+				return $this->redirect(['update', 'id' => $id]);
+			}
+		}
+		
+	}
 
     /**
      * Updates an existing Publication model.

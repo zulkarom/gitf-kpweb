@@ -4,9 +4,8 @@ namespace backend\modules\erpd\controllers;
 
 use Yii;
 use backend\modules\erpd\models\Membership;
-
 use backend\modules\erpd\models\MembershipSearch;
-
+use backend\modules\erpd\models\Status;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -107,6 +106,19 @@ class MembershipController extends Controller
             'model' => $model,
         ]);
     }
+	
+	public function actionReUpdate($id){
+		$model = $this->findModel($id);
+		if(in_array($model->status, Status::userStatusEdit())){
+			//status correction
+			$model->status = 10;
+			$model->review_note = 'self-update';
+			if($model->save()){
+				return $this->redirect(['update', 'id' => $id]);
+			}
+		}
+		
+	}
 
     /**
      * Updates an existing Membership model.

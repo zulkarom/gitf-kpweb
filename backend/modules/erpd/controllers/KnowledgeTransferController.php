@@ -6,7 +6,7 @@ use Yii;
 use backend\modules\erpd\models\KnowledgeTransfer;
 use backend\modules\erpd\models\KnowledgeTransferMember;
 use backend\modules\erpd\models\KnowledgeTransferSearch;
-
+use backend\modules\erpd\models\Status;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
@@ -156,6 +156,19 @@ class KnowledgeTransferController extends Controller
 			'members' => (empty($members)) ? [new KnowledgeTransferMember] : $members
         ]);
     }
+	
+	public function actionReUpdate($id){
+		$model = $this->findModel($id);
+		if(in_array($model->status, Status::userStatusEdit())){
+			//status correction
+			$model->status = 10;
+			$model->review_note = 'self-update';
+			if($model->save()){
+				return $this->redirect(['update', 'id' => $id]);
+			}
+		}
+		
+	}
 
     /**
      * Updates an existing KnowledgeTransfer model.

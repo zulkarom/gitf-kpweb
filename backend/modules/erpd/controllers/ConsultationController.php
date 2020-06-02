@@ -6,7 +6,7 @@ use Yii;
 use backend\modules\erpd\models\Consultation;
 use backend\modules\erpd\models\ConsultationTag;
 use backend\modules\erpd\models\ConsultationSearch;
-
+use backend\modules\erpd\models\Status;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use common\models\UploadFile as Upload;
@@ -147,6 +147,19 @@ class ConsultationController extends Controller
             'model' => $model,
         ]);
     }
+	
+	public function actionReUpdate($id){
+		$model = $this->findModel($id);
+		if(in_array($model->status, Status::userStatusEdit())){
+			//status correction
+			$model->status = 10;
+			$model->review_note = 'self-update';
+			if($model->save()){
+				return $this->redirect(['update', 'id' => $id]);
+			}
+		}
+		
+	}
 
     /**
      * Updates an existing Consultation model.

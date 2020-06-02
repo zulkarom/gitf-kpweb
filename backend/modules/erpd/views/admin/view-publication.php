@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\widgets\ActiveForm;
+use backend\modules\erpd\models\Status;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\erpd\models\Publication */
 
@@ -36,7 +37,7 @@ $model->file_controller = 'publication';
 	
 	
 	
-	if(in_array($model->status, \backend\modules\erpd\models\Status::adminStatusAction())){
+	if(in_array($model->status, Status::adminStatusAction())){
 		echo Html::submitButton('<span class="glyphicon glyphicon-ok"></span> VERIFY', 
 		['class' => 'btn btn-primary', 'name' => 'wfaction', 'value' => 'verify', 'data' => [
 					'confirm' => 'Are you sure to verify the publication?'

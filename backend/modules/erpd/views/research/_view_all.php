@@ -77,4 +77,10 @@ table.detail-view th {
 </div>
 
 
+<?php 
 
+if($model->userCanEdit()){
+	 echo Html::a('<span class="glyphicon glyphicon-pencil"></span> Re-Update Research', ['/erpd/research/re-update', 'id' => $model->id],['class'=>'btn btn-warning']);
+}
+
+?>

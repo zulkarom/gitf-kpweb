@@ -192,6 +192,19 @@ class ResearchController extends Controller
         ]);
 
     }
+	
+	public function actionReUpdate($id){
+		$model = $this->findModel($id);
+		if($model->userCanEdit()){
+			//status correction
+			$model->status = 10;
+			$model->review_note = 'self-update';
+			if($model->save()){
+				return $this->redirect(['update', 'id' => $id]);
+			}
+		}
+		
+	}
 
     /**
      * Updates an existing Research model.

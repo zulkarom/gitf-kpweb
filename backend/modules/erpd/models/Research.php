@@ -162,6 +162,16 @@ class Research extends \yii\db\ActiveRecord
 		return ArrayHelper::map($list, 'status_code', 'status_name');
 	}
 	
+	public function userCanEdit(){
+		if($this->res_progress == 0){
+			 return true;
+		 }else if($this->status <> 50){
+			 return true;
+		 }else{
+			 return false;
+		 }
+	}
+	
 	public function getStatusInfo(){
         return $this->hasOne(Status::className(), ['status_code' => 'status']);
     }

@@ -63,6 +63,17 @@ class Status extends \yii\db\ActiveRecord
 		
 	}
 	
+	public static function userStatusEdit(){
+		$array = array();
+		$list = self::find()->where(['user_edit' => 1])->all();
+		
+		foreach($list as $item){
+			$array[] = $item->status_code;
+		}
+		return $array;
+		
+	}
+	
 	public static function listStatusFilterAdmin(){
 		return ArrayHelper::map(self::find()->where(['<>', 'status_code', 0])->all(), 'status_code', 'status_name');
 	}
