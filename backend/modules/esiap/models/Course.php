@@ -143,6 +143,10 @@ class Course extends \yii\db\ActiveRecord
 		return $this->course_code . '<br />' . $this->course_name;
 	}
 	
+	public function getCodeCourseString(){
+		return $this->course_code . ' ' . strtoupper($this->course_name);
+	}
+	
 	public function allCoursesArray(){
 		$result = self::find()->orderBy('course_name ASC')
 		->where(['faculty_id' => Yii::$app->params['faculty_id'], 'is_dummy' => 0])

@@ -171,6 +171,8 @@ $menuItems = [
 					['label' => 'Proceedings', 'icon' => 'microphone', 'url' => ['/proceedings'], 'visible' => Yii::$app->user->can('proceedings-manager')],
 					
 					
+					
+					
 					[
                         'label' => 'User Management',
                         'icon' => 'lock',
@@ -192,6 +194,19 @@ $menuItems = [
                         ],
                     ],
 					
+					[
+                        'label' => 'Global Setting',
+                        'icon' => 'cog',
+						'visible' => Todo::can('sysadmin'),
+                        'url' => '#',
+                        'items' => [
+						
+							['label' => 'Semester', 'icon' => 'cog', 'url' => ['/semester'],],
+						
+                           
+
+                        ],
+                    ],
 					
 					['label' => 'Log Out', 'icon' => 'arrow-left', 'url' => ['/site/logout'], 'template' => '<a href="{url}" data-method="post">{icon} {label}</a>']
 

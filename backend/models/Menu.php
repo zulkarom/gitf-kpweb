@@ -176,9 +176,14 @@ class Menu
 		$esiap_admin = [
                         'label' => 'Teaching Admin',
                         'icon' => 'gears',
-						'visible' => Yii::$app->user->can('teaching-load-manager'),
+						'visible' => Todo::can('teaching-load-manager'),
                         'url' => '#',
                         'items' => [
+				
+				['label' => 'My Teaching', 'icon' => 'user', 'url' => ['/teaching-load/default/teaching-view']],
+				
+				['label' => 'Offered Courses', 'icon' => 'book', 'url' => ['/teaching-load/course-offered/index']],
+				
 				
 				['label' => 'Teaching By Staff', 'icon' => 'user', 'url' => ['/teaching-load/manager/by-staff']],
 				
