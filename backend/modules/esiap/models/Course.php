@@ -51,11 +51,9 @@ class Course extends \yii\db\ActiveRecord
 			
 			[['course_name', 'course_name_bi', 'course_code', 'credit_hour', 'is_dummy', 'faculty_id', 'course_type'], 'required', 'on' => 'create'],
 			
-			
 			[['course_name', 'course_name_bi', 'course_code', 'credit_hour', 'is_dummy'], 'required', 'on' => 'update'],
 			
-			
-            [['program_id', 'department_id', 'faculty_id', 'is_dummy', 'course_type', 'is_active', 'method_type', 'component_id'], 'integer'],
+            [['program_id', 'department_id', 'faculty_id', 'is_dummy', 'course_type', 'is_active', 'method_type', 'component_id', 'course_class'], 'integer'],
 			
             [['course_name', 'course_name_bi'], 'string', 'max' => 100],
 			
@@ -79,7 +77,8 @@ class Course extends \yii\db\ActiveRecord
 			'is_developed' => 'Is Active',
 			'program_id' => 'Program',
 			'faculty_id' => 'Faculty',
-			'department_id' => 'Department'
+			'department_id' => 'Department',
+			'course_class' => 'Course Classification'
         ];
     }
 	

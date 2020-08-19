@@ -43,6 +43,8 @@ class CourseAssessment extends \yii\db\ActiveRecord
 			
 			[['assess_nf2f'], 'required', 'on' => 'update_slt2'],
 			
+			[['assess_f2f_tech'], 'required', 'on' => 'update_slt_tech'],
+			
             [['crs_version_id', 'assess_cat', 'trash', 'created_by'], 'integer'],
 			
 			[['assess_f2f', 'assess_nf2f'], 'number'],

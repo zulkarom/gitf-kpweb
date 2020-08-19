@@ -37,7 +37,7 @@ class Menu
 						
 				['label' => 'Course Information', 'visible' => $show, 'icon' => 'pencil', 'url' => ['/esiap/course/update', 'course' => $course_id]],
 				
-				['label' => 'Course Profile', 'visible' => $show, 'icon' => 'book', 'url' => ['/esiap/course/profile', 'course' => $course_id]],
+				//['label' => 'Course Profile', 'visible' => $show, 'icon' => 'book', 'url' => ['/esiap/course/profile', 'course' => $course_id]],
 				
 				['label' => 'Course Learning Outcome', 'visible' => $show, 'icon' => 'book', 'url' => ['/esiap/course/course-clo', 'course' => $course_id]],
 				

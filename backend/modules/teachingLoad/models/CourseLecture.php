@@ -1,28 +1,26 @@
 <?php
 
-namespace backend\modules\esiap\models;
+namespace backend\modules\teachingLoad\models;
 
 use Yii;
-use backend\modules\staff\models\Staff;
-
 
 /**
- * This is the model class for table "sp_course_staff".
+ * This is the model class for table "tld_course_lec".
  *
  * @property int $id
- * @property int $crs_version_id
- * @property int $staff_id
+ * @property int $offered_id
+ * @property string $lec_name
+ * @property string $created_at
  * @property string $updated_at
- * @property int $staff_order
  */
-class CourseStaff extends \yii\db\ActiveRecord
+class CourseLecture extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'sp_course_staff';
+        return 'tld_course_lec';
     }
 
     /**
@@ -31,9 +29,11 @@ class CourseStaff extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['staff_id'], 'required'],
-            [['crs_version_id', 'staff_id', 'staff_order'], 'integer'],
-            [['updated_at'], 'safe'],
+            [['offered_id', 'created_at', 'updated_at'], 'required'],
+			
+            [['offered_id', 'student_num'], 'integer'],
+            [['created_at', 'updated_at'], 'safe'],
+            [['lec_name'], 'string', 'max' => 50],
         ];
     }
 
@@ -44,20 +44,12 @@ class CourseStaff extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'crs_version_id' => 'Crs Version ID',
-            'staff_id' => 'Staff Name',
+            'offered_id' => 'Offered ID',
+            'lec_name' => 'Lec Name',
+            'created_at' => 'Created At',
             'updated_at' => 'Updated At',
-            'staff_order' => 'Staff Order',
         ];
     }
-	
-	public function getStaff(){
-		return $this->hasOne(Staff::className(), ['id' => 'staff_id'])->orderBy('id ASC');
-	}
-	
-	public function getStaffName(){
-		return $this->staff->user->fullname;
-	}
 	
 	public function flashError(){
         if($this->getErrors()){
@@ -72,5 +64,4 @@ class CourseStaff extends \yii\db\ActiveRecord
 
     }
 
-	
 }

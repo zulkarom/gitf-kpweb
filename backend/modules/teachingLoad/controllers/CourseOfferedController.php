@@ -5,6 +5,8 @@ namespace backend\modules\teachingLoad\controllers;
 use Yii;
 use backend\modules\teachingLoad\models\CourseOffered;
 use backend\modules\teachingLoad\models\CourseOfferedSearch;
+use backend\modules\teachingLoad\models\AddLectureForm;
+use backend\modules\teachingLoad\models\CourseLecture;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -121,11 +123,33 @@ class CourseOfferedController extends Controller
 	public function actionAssign($id){
 		
 		$model = $this->findModel($id);
+		$lectures = CourseLecture::find(['offered_id' => $id])->all();
+		$addLecure = new AddLectureForm;
 		
+		if(Yii::$app->request->post()){
+			if(Yii::$app->request->post('AddLectureForm')){
+				$add = Yii::$app->request->post('AddLectureForm');
+				$num = $add['lecture_number'];
+				if(is_numeric($num) and $num > 0){
+					for($i = 1; $i<= $num; $i++){
+						$new = new CourseLecture;
+						$new->offered_id = $id;
+						$new->created_at = new Expression('NOW()');
+						$new->updated_at = new Expression('NOW()');
+						if(!$new->save()){
+							$new->flashError();
+						}
+					}
+					return $this->refresh();
+				}
+			}
+		}
 		
 		
 		return $this->render('assign', [
            'model' => $model, 
+		   'addLecure' => $addLecure,
+		   'lectures' => $lectures
         ]);
 	}
 

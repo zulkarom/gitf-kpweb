@@ -1,4 +1,31 @@
+UPDATE `sp_course_profile` SET `transfer_skill` = '', `transfer_skill_bi` = '' ;
 
+ALTER TABLE `sp_course_syllabus` ADD `tech_lecture` DOUBLE NOT NULL AFTER `pnp_others`, ADD `tech_tutorial` DOUBLE NOT NULL AFTER `tech_lecture`, ADD `tech_practical` DOUBLE NOT NULL AFTER `tech_tutorial`, ADD `tech_others` DOUBLE NOT NULL AFTER `tech_practical`;
+
+ALTER TABLE `sp_course_assessment` ADD `assess_f2f_tech` DOUBLE NOT NULL AFTER `assess_f2f`;
+ALTER TABLE `sp_course_profile` ADD `offer_remark` VARCHAR(255) NOT NULL AFTER `offer_year`;
+
+ALTER TABLE `sp_course` ADD `course_class` INT NOT NULL AFTER `course_level`;
+
+CREATE TABLE `sp_course_class` (
+  `id` int(11) NOT NULL,
+  `class_name` varchar(100) NOT NULL,
+  `class_name_bi` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `sp_course_class` (`id`, `class_name`, `class_name_bi`) VALUES
+(1, 'Wajib', 'Compulsory'),
+(2, 'Teras', 'Major (Core)'),
+(3, 'Minor', 'Minor'),
+(4, 'Elektif (teras)', 'Elective (core)'),
+(5, 'Elektif (bebas)', 'Elective (open/free)');
+
+ALTER TABLE `sp_course_class`
+  ADD PRIMARY KEY (`id`);
+  
+ALTER TABLE `sp_course_class`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+COMMIT;
 
 
 
