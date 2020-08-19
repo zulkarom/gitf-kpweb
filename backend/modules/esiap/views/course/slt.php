@@ -97,10 +97,30 @@ $aclo="";$asyll="";
 
 $arr_syll = "";
 $i=1;
+$week_num = 1;
 foreach($syll as $row){ ?>
 	<tr>
 	<td>
-	<b><?php echo $row->week_num ; ?></b>
+	<b><?php 
+	$show_week = '';
+	if($row->duration > 1){
+		$end = $week_num + $row->duration - 1;
+		$show_week = $week_num . ' - ' . $end;
+	}else{
+		$show_week = $week_num;
+	}
+	$arr_week[$week_num] = 'WEEK ' . $show_week;
+	
+	echo $show_week;
+	
+	$week_num = $week_num + $row->duration;
+	
+	
+	
+	
+	?>
+	
+	</b>
 	</td>
 	<td>
 	
