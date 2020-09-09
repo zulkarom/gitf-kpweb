@@ -1039,6 +1039,12 @@ class CourseController extends Controller
 			$pdf->generatePdf();
 	}
 	
+	public function actionTbl4Excel2($course, $dev = false, $version = false){
+			$pdf = new Tbl4Excel2;
+			$pdf->model = $this->decideVersion($course, $dev, $version);
+			$pdf->generateExcel();
+	}
+	
 	public function actionTbl4Excel($course, $dev = false, $version = false){
 			$pdf = new Tbl4Excel;
 			$pdf->model = $this->decideVersion($course, $dev, $version);

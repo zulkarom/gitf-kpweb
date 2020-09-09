@@ -28,6 +28,8 @@ ALTER TABLE `sp_course_class`
 COMMIT;
 
 
+UPDATE `sp_course_syllabus` SET `tech_others` = `sp_course_syllabus`.`nf2f`
+
 
 ------------------------------------------
 

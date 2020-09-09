@@ -92,8 +92,10 @@ class CourseProfile extends \yii\db\ActiveRecord
 	
 	public function getCoursePrerequisite(){
 		$result = Course::findOne($this->prerequisite);
+		$bm = $result->course_code . ' ' . $result->course_name;
+		$bi = $result->course_code . ' ' . $result->course_name_bi;
 		if($result){
-			return [$result->course_code, $result->course_code];
+			return [$bm, $bi];
 		}else{
 			return ['Tiada','Nil'];
 		}

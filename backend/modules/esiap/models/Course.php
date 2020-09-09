@@ -198,6 +198,10 @@ class Course extends \yii\db\ActiveRecord
         return $this->hasOne(Department::className(), ['id' => 'department_id']);
     }
 	
+	public function getClassification(){
+        return $this->hasOne(CourseClass::className(), ['id' => 'course_class']);
+    }
+	
 	public function getProgram(){
         return $this->hasOne(Program::className(), ['id' => 'program_id']);
     }
