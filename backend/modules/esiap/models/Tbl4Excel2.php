@@ -2206,11 +2206,11 @@ Independent Learning
 		$txtBlue->getFont()->setColor($blue);
 		$this->sheet->setCellValue('E' . $line6 , $textC); */
 		
-		$textC1 = new RichText();
+		/* $textC1 = new RichText();
 		$textC1->createText("% SLT for F2F Physical Practical Component \n");
 		$txtBlue = $textC1->createTextRun('[Total F2F Physical Practical /( Total F2F Physical + Total F2F Online + Total Independent Learning)  x 100)]');
 		$txtBlue->getFont()->setColor($blue);
-		$this->sheet->setCellValue('E' . $line7 , $textC1);
+		$this->sheet->setCellValue('E' . $line7 , $textC1); */
 		
 	/* 	$textC2 = new RichText();
 		$textC2->createText("% SLT for F2F Online Practical Component \n");
