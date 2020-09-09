@@ -2194,13 +2194,13 @@ Independent Learning
 		$txtBlue->getFont()->setColor($blue);
 		$this->sheet->setCellValue('E' . $line3 , $textA);
 		
-		/*$textB = new RichText();
+		$textB = new RichText();
 		$textB->createText("% SLT for Online & Independent Learning Component: \n");
 		$txtBlue = $textB->createTextRun('[(Total F2F Online + Total Independent Learning) /( Total F2F Physical + Total F2F Online + Total Independent Learning) x 100]');
 		$txtBlue->getFont()->setColor($blue);
 		$this->sheet->setCellValue('E' . $line5 , $textB);
 		
-		$textC = new RichText();
+		/*$textC = new RichText();
 		$textC->createText("% SLT for All Practical Component: \n");
 		$txtBlue = $textC->createTextRun('[% F2F Physical Practical + % F2F Online Practical]');
 		$txtBlue->getFont()->setColor($blue);
