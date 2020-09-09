@@ -107,7 +107,7 @@ class Tbl4Excel2
 		$this->item8PloMapping();
 		$this->item8PloCluster();
 		$this->item8PloFooter();
-	/* 	$this->item9Transferable();
+	 	$this->item9Transferable();
 		$this->item9TransferableOpen();
 		$this->item10Slt();
 		$this->item10SltHead();
@@ -116,7 +116,7 @@ class Tbl4Excel2
 		$this->item10SltAssessConHead();
 		$this->item10SltAssessConFooter();
 		$this->item10SltAssessSumHead();
-		$this->item10SltAssessSumFooter();
+		/*$this->item10SltAssessSumFooter();
 		$this->item10SltFooterTotal();
 		$this->item10SltFooterNote();
 		$this->item11Requirement();
