@@ -93,7 +93,7 @@ class Tbl4Excel2
 	public function generateSheet(){
 		$this->setStyle();
 		$this->setColumWidth();
-		$this->setDataDropDown();
+		//$this->setDataDropDown();
 		 $this->item0Head();
 		$this->item1Name();
 		$this->item2Synopsis();
@@ -1235,8 +1235,9 @@ class Tbl4Excel2
 		'C3C' => ' = Communication Skills, ', 
 		'C3D' => ' = Digital Skills,'];
 		
-		/* $text = new RichText();
+		$text = new RichText();
 		$blue = new Color( 'FF0070C0' );
+		
 		foreach($arr_line1 as $key => $val){
 			$bold = $text->createTextRun($key);
 			$bold->getFont()->setBold(true);
@@ -1260,7 +1261,7 @@ class Tbl4Excel2
 			$normal = $text->createTextRun($val);
 			$normal->getFont()->setColor($blue);
 		}
-		$this->sheet->setCellValue('D' . $line4 , $text); */
+		$this->sheet->setCellValue('D' . $line4 , $text);
 			
 		
 		
