@@ -2187,7 +2187,7 @@ Independent Learning
 		
 		
 		
-		$blue = new Color( 'FF0070C0' );
+		/* $blue = new Color( 'FF0070C0' );
 		$textA = new RichText();
 		$textA->createText("% SLT for F2F Physical Component: \n");
 		$txtBlue = $textA->createTextRun('[Total F2F Physical /(Total F2F Physical + Total F2F Online + Total Independent Learning) x 100)]');
@@ -2216,7 +2216,7 @@ Independent Learning
 		$textC2->createText("% SLT for F2F Online Practical Component \n");
 		$txtBlue = $textC2->createTextRun('[Total F2F Online Practical / (Total F2F Physical + Total F2F Online + Total Independent Learning) x 100]');
 		$txtBlue->getFont()->setColor($blue);
-		$this->sheet->setCellValue('E' . $line8 , $textC2);
+		$this->sheet->setCellValue('E' . $line8 , $textC2); */
 		
 		$this->row = $line8;
 		
