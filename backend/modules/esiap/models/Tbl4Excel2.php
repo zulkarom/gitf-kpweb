@@ -118,9 +118,9 @@ class Tbl4Excel2
 		$this->item10SltAssessSumHead();
 		$this->item10SltAssessSumFooter();
 		$this->item10SltFooterTotal();
-		$this->item10SltFooterNote();
+		/*$this->item10SltFooterNote();
 		$this->item11Requirement();
-		/*$this->item12Reference();
+		$this->item12Reference();
 		$this->item13Other();
 		$this->itemFooter(); */
 		$this->sheet->setCellValue('A1', ' '); 
