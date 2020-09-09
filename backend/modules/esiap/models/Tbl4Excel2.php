@@ -107,7 +107,7 @@ class Tbl4Excel2
 		$this->item8PloMapping();
 		$this->item8PloCluster();
 		$this->item8PloFooter();
-		$this->item9Transferable();
+	/* 	$this->item9Transferable();
 		$this->item9TransferableOpen();
 		$this->item10Slt();
 		$this->item10SltHead();
@@ -122,7 +122,7 @@ class Tbl4Excel2
 		$this->item11Requirement();
 		$this->item12Reference();
 		$this->item13Other();
-		$this->itemFooter();
+		$this->itemFooter(); */
 		$this->sheet->setCellValue('A1', ' '); 
 	}
 	
