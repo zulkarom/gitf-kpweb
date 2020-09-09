@@ -2166,7 +2166,7 @@ Independent Learning
 
 		$this->sheet->getStyle('X'.$line3.':X'. $line8)->getNumberFormat()->setFormatCode('#,##0.00');
 
-		/* $this->sheet
+		$this->sheet
 			->setCellValue('D' . $line1, 'SLT for Assessment:')
 			->setCellValue('X' . $line1, '=X'.$this->sltTotalAssessConRow.'+X'.$this->sltTotalAssessSumRow)
 			->setCellValue('D' . $line2, 'GRAND TOTAL SLT:')
@@ -2181,7 +2181,7 @@ Independent Learning
 			->setCellValue('X' . $line7, "=((SUM(O".$this->sltContentStart.":O".$this->sltContentEnd."))/X".$line2.")* 100")
 			->setCellValue('D' . $line8, 'C2')
 			->setCellValue('X' . $line8, "=((SUM(S".$this->sltContentStart.":S".$this->sltContentEnd."))/X".$line2.")* 100")
-			; */
+			; 
 			
 		//update credit hour
 		
