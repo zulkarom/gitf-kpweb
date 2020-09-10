@@ -2085,6 +2085,10 @@ Independent Learning
 		$line6 = $biru + 6;
 		$line7 = $biru + 7;
 		$line8 = $biru + 8;
+		$line9 = $biru + 9;
+		$line10 = $biru + 10;
+		$line11 = $biru + 11;
+		$line12 = $biru + 12;
 		
 		$this->slt = $line2;
 		
@@ -2092,10 +2096,14 @@ Independent Learning
 		$this->sheet->getRowDimension($line2)->setRowHeight(27.75 + $this->adjust);
 		$this->sheet->getRowDimension($line3)->setRowHeight(14.25 + $this->adjust);
 		$this->sheet->getRowDimension($line4)->setRowHeight(14.25 + $this->adjust);
-		$this->sheet->getRowDimension($line5)->setRowHeight(30 + $this->adjust);
-		$this->sheet->getRowDimension($line6)->setRowHeight(26.25 + $this->adjust);
-		$this->sheet->getRowDimension($line7)->setRowHeight(26.25 + $this->adjust);
-		$this->sheet->getRowDimension($line8)->setRowHeight(26.25 + $this->adjust);
+		$this->sheet->getRowDimension($line5)->setRowHeight(14.25 + $this->adjust);
+		$this->sheet->getRowDimension($line6)->setRowHeight(14.25 + $this->adjust);
+		$this->sheet->getRowDimension($line7)->setRowHeight(14.25 + $this->adjust);
+		$this->sheet->getRowDimension($line8)->setRowHeight(14.25 + $this->adjust);
+		$this->sheet->getRowDimension($line9)->setRowHeight(14.25 + $this->adjust);
+		$this->sheet->getRowDimension($line10)->setRowHeight(14.25 + $this->adjust);
+		$this->sheet->getRowDimension($line11)->setRowHeight(14.25 + $this->adjust);
+		$this->sheet->getRowDimension($line12)->setRowHeight(14.25 + $this->adjust);
 	
 
 		
@@ -2106,40 +2114,51 @@ Independent Learning
 		$this->sheet->mergeCells('X'.$line2 .':Z' . $line2);
 		
 		$this->sheet->mergeCells('D'.$line3 .':D' . $line4);
-		$this->sheet->mergeCells('E'.$line3 .':W' . $line4);
+		$this->sheet->mergeCells('E'.$line3 .':W' . $line3);
+		$this->sheet->mergeCells('E'.$line4 .':W' . $line4);
 		$this->sheet->mergeCells('X'.$line3 .':Z' . $line4);
 		
+		$this->sheet->mergeCells('D'.$line5 .':D' . $line6);
 		$this->sheet->mergeCells('E'.$line5 .':W' . $line5);
-		$this->sheet->mergeCells('X'.$line5.':Z' . $line5);
-		
 		$this->sheet->mergeCells('E'.$line6 .':W' . $line6);
-		$this->sheet->mergeCells('X'.$line6.':Z' . $line6);
+		$this->sheet->mergeCells('X'.$line5.':Z' . $line6);
 		
+		$this->sheet->mergeCells('D'.$line7 .':D' . $line8);
 		$this->sheet->mergeCells('E'.$line7 .':W' . $line7);
-		$this->sheet->mergeCells('X'.$line7.':Z' . $line7);
-		
 		$this->sheet->mergeCells('E'.$line8 .':W' . $line8);
-		$this->sheet->mergeCells('X'.$line8.':Z' . $line8);
+		$this->sheet->mergeCells('X'.$line7.':Z' . $line8);
+		
+		$this->sheet->mergeCells('D'.$line9 .':D' . $line10);
+		$this->sheet->mergeCells('E'.$line9 .':W' . $line9);
+		$this->sheet->mergeCells('E'.$line10 .':W' . $line10);
+		$this->sheet->mergeCells('X'.$line9.':Z' . $line10);
+		
+		$this->sheet->mergeCells('D'.$line11 .':D' . $line12);
+		$this->sheet->mergeCells('E'.$line11 .':W' . $line11);
+		$this->sheet->mergeCells('E'.$line12 .':W' . $line12);
+		$this->sheet->mergeCells('X'.$line11.':Z' . $line12);
 		
 		//BORDER
-		$this->sheet->getStyle('D'.$line1 .':Z' . $line6)->applyFromArray($this->border_all);
-		$this->sheet->getStyle('D'.$line3 .':D' . $line4)->applyFromArray($this->border);
-		$this->sheet->getStyle('D'.$line5 .':D' . $line6)->applyFromArray($this->border_all);
-		$this->sheet->getStyle('D'.$line7 .':D' . $line8)->applyFromArray($this->border);
+		$this->sheet->getStyle('D'.$line1 .':Z' . $line2)->applyFromArray($this->border_all);
+		$this->sheet->getStyle('D'.$line3 .':D' . $line8)->applyFromArray($this->border_all);
+		$this->sheet->getStyle('D'.$line9 .':D' . $line12)->applyFromArray($this->border);
+		
+		$this->sheet->getStyle('E'.$line3 .':W' . $line4)->applyFromArray($this->border);
+		$this->sheet->getStyle('E'.$line5 .':W' . $line6)->applyFromArray($this->border);
 		$this->sheet->getStyle('E'.$line7 .':W' . $line8)->applyFromArray($this->border);
-		$this->sheet->getStyle('X'.$line7 .':Z' . $line8)->applyFromArray($this->border_all);
+		$this->sheet->getStyle('E'.$line9 .':W' . $line10)->applyFromArray($this->border);
+		$this->sheet->getStyle('E'.$line11 .':W' . $line12)->applyFromArray($this->border);
 		
-		$this->sheet->getStyle('D'.$line2 .':W' . $line2)->applyFromArray($this->bold);
-		
-		$this->sheet->getStyle('X'.$line1 .':Z' . $line8)->applyFromArray($this->bold);
+		$this->sheet->getStyle('X'.$line1 .':Z' . $line12)->applyFromArray($this->border_all);
+		$this->sheet->getStyle('X'.$line1 .':Z' . $line12)->applyFromArray($this->bold);
 
 		//ALIGNMENT
-		$this->sheet->getStyle('D'.$line1 .':Z' . $line8)
+		$this->sheet->getStyle('D'.$line1 .':Z' . $line12)
 		->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT)
 		->setVertical(Alignment::VERTICAL_CENTER)
 		->setWrapText(true);
 		
-		$this->sheet->getStyle('D'.$line3 .':D' . $line8)
+		$this->sheet->getStyle('D'.$line3 .':D' . $line12)
 		->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)
 		->setVertical(Alignment::VERTICAL_CENTER)
 		->setWrapText(true);
@@ -2148,14 +2167,20 @@ Independent Learning
 		//STYLE
 		
 		$this->sheet
-			->getStyle('X'.$line1 .':Z'.$line8)->getFill()
+			->getStyle('X'.$line1 .':Z'.$line12)->getFill()
 			->setFillType(Fill::FILL_SOLID)
 			->getStartColor()->setARGB($this->bgcolor_green);
 
 			//font color white
-		$this->sheet->getStyle('X'.$line1 .':Z'.$line8)->applyFromArray($this->font_white);
+		$this->sheet->getStyle('X'.$line1 .':Z'.$line12)->applyFromArray($this->font_white);
 		
-		$this->sheet->getStyle('D'.$line1 .':D'.$line8)->applyFromArray($this->bold);
+		$this->sheet->getStyle('D'.$line1 .':D'.$line12)->applyFromArray($this->bold);
+		
+		$this->sheet->getStyle('E'.$line4 .':W'.$line4)->applyFromArray($this->font_blue);
+		$this->sheet->getStyle('E'.$line6 .':W'.$line6)->applyFromArray($this->font_blue);
+		$this->sheet->getStyle('E'.$line8 .':W'.$line8)->applyFromArray($this->font_blue);
+		$this->sheet->getStyle('E'.$line10 .':W'.$line10)->applyFromArray($this->font_blue);
+		$this->sheet->getStyle('E'.$line12 .':W'.$line12)->applyFromArray($this->font_blue);
 			
 		//CONTENT
 
@@ -2164,7 +2189,7 @@ Independent Learning
 			+SUM(M".$this->sltAssessConStart.":P".$this->sltAssessConEnd.")
 			+SUM(M".$this->sltAssessSumStart.":P".$this->sltAssessSumEnd."))/X".$line2.")* 100,\"\")") */
 
-		$this->sheet->getStyle('X'.$line3.':X'. $line8)->getNumberFormat()->setFormatCode('#,##0.00');
+		$this->sheet->getStyle('X'.$line3.':X'. $line12)->getNumberFormat()->setFormatCode('#,##0.00');
 
 		$this->sheet
 			->setCellValue('D' . $line1, 'SLT for Assessment:')
@@ -2172,22 +2197,32 @@ Independent Learning
 			->setCellValue('D' . $line2, 'GRAND TOTAL SLT:')
 			->setCellValue('X' . $line2, '=X'.$line1.'+X'.$this->sltTotalContentRow)
 			->setCellValue('D' . $line3, 'A')
+			->setCellValue('E' . $line3, '% SLT for F2F Physical Component:')
+			->setCellValue('E' . $line4, '[Total F2F Physical /(Total F2F Physical + Total F2F Online + Total Independent Learning) x 100)]')
 			->setCellValue('X' . $line3, "=((SUM(M".$this->sltContentStart.":P".$this->sltContentEnd.")+SUM(M".$this->sltAssessConStart.":P".$this->sltAssessConEnd.")+SUM(M".$this->sltAssessSumStart.":P".$this->sltAssessSumEnd."))/X".$line2.")* 100")
 			->setCellValue('X' . $line5, "=((SUM(Q".$this->sltContentStart.":W".$this->sltContentEnd.")+SUM(Q".$this->sltAssessConStart.":W".$this->sltAssessConEnd.")+SUM(Q".$this->sltAssessSumStart.":W".$this->sltAssessSumEnd."))/X".$line2.")* 100")
 			->setCellValue('D' . $line5, 'B')
-			->setCellValue('D' . $line6, 'C')
-			->setCellValue('X' . $line6, '=X'.$line7.'+X'.$line8)
-			->setCellValue('D' . $line7, 'C1')
-			->setCellValue('X' . $line7, "=((SUM(O".$this->sltContentStart.":O".$this->sltContentEnd."))/X".$line2.")* 100")
-			->setCellValue('D' . $line8, 'C2')
-			->setCellValue('X' . $line8, "=((SUM(S".$this->sltContentStart.":S".$this->sltContentEnd."))/X".$line2.")* 100")
+			->setCellValue('E' . $line5, '% SLT for Online & Independent Learning Component:')
+			->setCellValue('E' . $line6, '[(Total F2F Online + Total Independent Learning) /( Total F2F Physical + Total F2F Online + Total Independent Learning) x 100]')
+			->setCellValue('D' . $line7, 'C')
+			->setCellValue('E' . $line7, '% SLT for All Practical Component:')
+			->setCellValue('E' . $line8, '[% F2F Physical Practical + % F2F Online Practical]')
+			->setCellValue('X' . $line7, '=X'.$line9.'+X'.$line11)
+			->setCellValue('D' . $line9, 'C1')
+			->setCellValue('E' . $line9, '% SLT for F2F Physical Practical Component')
+			->setCellValue('E' . $line10, '[Total F2F Physical Practical /( Total F2F Physical + Total F2F Online + Total Independent Learning)  x 100)]')
+			->setCellValue('X' . $line9, "=((SUM(O".$this->sltContentStart.":O".$this->sltContentEnd."))/X".$line2.")* 100")
+			->setCellValue('D' . $line11, 'C2')
+			->setCellValue('E' . $line11, '% SLT for F2F Online Practical Component')
+			->setCellValue('E' . $line12, '[Total F2F Online Practical / (Total F2F Physical + Total F2F Online + Total Independent Learning) x 100]')
+			->setCellValue('X' . $line11, "=((SUM(S".$this->sltContentStart.":S".$this->sltContentEnd."))/X".$line2.")* 100")
 			; 
 			
 		//update credit hour
 		
 		
 		
-		 $blue = new Color( 'FF0070C0' );
+		/* $blue = new Color( 'FF0070C0' );
 		$textA = new RichText();
 		$textA->createText("% SLT for F2F Physical Component: \n");
 		$txtBlue = $textA->createTextRun('[Total F2F Physical /(Total F2F Physical + Total F2F Online + Total Independent Learning) x 100)]');
@@ -2200,7 +2235,7 @@ Independent Learning
 		$txtBlue->getFont()->setColor($blue);
 		$this->sheet->setCellValue('E' . $line5 , $textB);
 		
-		/*$textC = new RichText();
+		$textC = new RichText();
 		$textC->createText("% SLT for All Practical Component: \n");
 		$txtBlue = $textC->createTextRun('[% F2F Physical Practical + % F2F Online Practical]');
 		$txtBlue->getFont()->setColor($blue);
@@ -2218,7 +2253,7 @@ Independent Learning
 		$txtBlue->getFont()->setColor($blue);
 		$this->sheet->setCellValue('E' . $line8 , $textC2);
 		 */
-		$this->row = $line8;
+		$this->row = $line12;
 		
 	}
 	
