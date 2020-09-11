@@ -396,6 +396,16 @@ Practicum/ WBL using Effective Learning Time(ELT) of 50%
 	</td>
 	</tr>
 	
+	<tr><td colspan="4" align="right"><strong>Generated Credit Hour by SLT</strong>
+	</td>
+		<td style="text-align:center"><strong><span id="hour-slt">?</span></strong></td>
+	</tr>
+	
+	<tr><td colspan="4" align="right"><strong>Credit Hour set for this course</strong>
+	</td>
+		<td style="text-align:center"><strong><span id="hour-set"><?=$model->course->credit_hour?></span></strong></td>
+	</tr>
+	
 	<tr><td colspan="4" align="right"><strong>% SLT for F2F Physical Component</strong>
 	</td>
 		<td style="text-align:center"><strong><span id="per-physical">0</span>%</strong></td>
@@ -453,18 +463,6 @@ Practicum/ WBL using Effective Learning Time(ELT) of 50%
 	calcAll();
 	
 	$("#is_practical").click(function(){
-		var notional;
-		if($(this).is(":checked")){
-			notional = 80;
-		}else{
-			notional = 40;
-			
-		}
-		$("#notional_hour").text(notional);
-		var credit = myparse($("#credit_hour_val").text());
-		//alert(credit);
-		var total = notional * credit;
-		$("#total-slt").text(total);
 		
 		
 	calcAll();
@@ -486,6 +484,7 @@ function calcAll(){
 	calcPhysical();
 	calcTech();
 	calcPractical();
+	calcCreditHourSlt();
 }
 
 
@@ -635,6 +634,20 @@ function calcTechPractical(){
 	
 	$("#per-tech-practical").text(myfor(per));
 	return per;
+}
+
+function calcCreditHourSlt(){
+	var slt = getSlt();
+	//=IF(X102 ="√",INT(F14X94/80),INT(X94/40)) is_practical
+	var delimiter = 40;
+			if($("#is_practical").prop("checked") == true){
+               delimiter = 80;
+            }
+            else{
+                delimiter = 40;
+            }
+	var credit = Math.floor(slt / delimiter);
+	$("#hour-slt").text(myfor(credit));
 }
 
 function calcPractical(){

@@ -438,7 +438,11 @@ class Tbl4Excel2
 		//indent
 		$this->sheet->getStyle('C5:C7')->getAlignment()->setIndent(1);
 		
-			
+		if($this->model->course->classification){
+			$class = $this->model->course->classification->class_name_bi;
+		}else{
+			$class = '';
+		}	
 			
 		//CONTENT
 		$this->sheet
@@ -449,7 +453,7 @@ class Tbl4Excel2
 			
 			->setCellValue('F5', $this->model->course->course_code)
 			->setCellValue('F6', $this->model->course->course_name_bi)
-			->setCellValue('F7', $this->model->course->classification->class_name_bi)
+			->setCellValue('F7', $class)
 			;
 		
 		//dropdown

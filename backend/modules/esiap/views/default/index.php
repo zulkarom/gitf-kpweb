@@ -62,7 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
 					'tbl4'=>function ($url, $model) {
 						$version = $model->course->defaultVersion;
 						if($version){
-							return Html::a('TBL4',['/esiap/course/tbl4-excel/', 'course' => $model->course_id],['target' => '_blank','class'=>'btn btn-default btn-sm']);
+							return Html::a('TBL4',['/esiap/course/tbl4-excel2/', 'course' => $model->course_id],['target' => '_blank','class'=>'btn btn-default btn-sm']);
 						}else{
 							return '-';
 						}

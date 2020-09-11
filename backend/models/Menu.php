@@ -53,7 +53,7 @@ class Menu
 				
 				['label' => 'Assessment', 'visible' => $show, 'icon' => 'book', 'url' => ['/esiap/course/course-assessment', 'course' => $course_id]],
 				
-				['label' => 'CLO Assessment', 'visible' => $show, 'icon' => 'book', 'url' => ['/esiap/course/clo-assessment', 'course' => $course_id]],
+				['label' => 'Assessment Percentage', 'visible' => $show, 'icon' => 'book', 'url' => ['/esiap/course/clo-assessment', 'course' => $course_id]],
 				
 				['label' => 'Student Learning Time', 'visible' => $show, 'icon' => 'book', 'url' => ['/esiap/course/course-slt', 'course' => $course_id]],
 				
