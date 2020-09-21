@@ -5,6 +5,7 @@ namespace backend\models;
 use Yii;
 use common\models\Todo;
 use backend\modules\esiap\models\Course;
+use backend\modules\esiap\models\Menu as EsiapMenu;
 use backend\modules\erpd\models\Stats as ErpdStats;
 
 class Menu
@@ -12,63 +13,7 @@ class Menu
 	
 	
 	public static function courseFocus(){
-		$course_focus = [];
-		if(Yii::$app->controller->id == 'course' and Yii::$app->controller->module->id == 'esiap'){
-			switch(Yii::$app->controller->action->id){
-				case 'update': case 'profile':case 'course-clo':
-				case 'course-syllabus':case 'course-assessment':
-				case 'clo-assessment':case 'course-slt': case 'clo-plo':
-				case 'clo-taxonomy':case 'clo-softskill': case 'course-reference':
-				case 'clo-delivery':case 'report':
-				$course_id = Yii::$app->getRequest()->getQueryParam('course');
-				$course = Course::findOne($course_id);
-				$version = $course->developmentVersion;
-				$status = $version->status;
-				$show = false;
-				if($status == 0 and $course->IAmCoursePic()){
-					$show = true;
-				}
-				$course_focus  = [
-					'label' => $course->course_name,
-					'icon' => 'book',
-					'format' => 'html',
-					'url' => '#',
-					'items' => [
-						
-				['label' => 'Course Information', 'visible' => $show, 'icon' => 'pencil', 'url' => ['/esiap/course/update', 'course' => $course_id]],
-				
-				//['label' => 'Course Profile', 'visible' => $show, 'icon' => 'book', 'url' => ['/esiap/course/profile', 'course' => $course_id]],
-				
-				['label' => 'Course Learning Outcome', 'visible' => $show, 'icon' => 'book', 'url' => ['/esiap/course/course-clo', 'course' => $course_id]],
-				
-				['label' => 'CLO PLO', 'icon' => 'book', 'visible' => $show, 'url' => ['/esiap/course/clo-plo', 'course' => $course_id]],
-				
-				['label' => 'CLO Taxonomy', 'visible' => $show, 'icon' => 'book', 'url' => ['/esiap/course/clo-taxonomy', 'course' => $course_id]],
-				
-				['label' => 'CLO Softskill', 'visible' => $show, 'icon' => 'book', 'url' => ['/esiap/course/clo-softskill', 'course' => $course_id]],
-				
-				['label' => 'CLO Delivery', 'visible' => $show, 'icon' => 'book', 'url' => ['/esiap/course/clo-delivery', 'course' => $course_id]],
-				
-				['label' => 'Syllabus', 'visible' => $show, 'icon' => 'book', 'url' => ['/esiap/course/course-syllabus', 'course' => $course_id]],
-				
-				['label' => 'Assessment', 'visible' => $show, 'icon' => 'book', 'url' => ['/esiap/course/course-assessment', 'course' => $course_id]],
-				
-				['label' => 'Assessment Percentage', 'visible' => $show, 'icon' => 'book', 'url' => ['/esiap/course/clo-assessment', 'course' => $course_id]],
-				
-				['label' => 'Student Learning Time', 'visible' => $show, 'icon' => 'book', 'url' => ['/esiap/course/course-slt', 'course' => $course_id]],
-				
-				
-				['label' => 'References', 'visible' => $show, 'icon' => 'book', 'url' => ['/esiap/course/course-reference', 'course' => $course_id]],
-				
-				['label' => 'Preview & Submit', 'icon' => 'book', 'url' => ['/esiap/course/report', 'course' => $course_id]],
-
-                 ]
-                    ];
-				break;
-			}
-		}
-		
-		return $course_focus;
+		return EsiapMenu::courseFocus();
 	}
 	
 	public static function adminErpd(){
@@ -160,9 +105,13 @@ class Menu
 				
 				['label' => 'Summary', 'icon' => 'pie-chart', 'url' => ['/esiap/dashboard']],
 				
+				['label' => 'Course List', 'icon' => 'book', 'url' => ['/esiap/course-admin']],
+				
+				//['label' => 'Bulk Course Version', 'icon' => 'book', 'url' => ['/esiap/course-admin/bulk-version']],
+				
 				['label' => 'Program List', 'icon' => 'book', 'url' => ['/esiap/program-admin']],
 				
-				['label' => 'Course List', 'icon' => 'book', 'url' => ['/esiap/course-admin']],
+				
 				
 				['label' => 'Inactive Courses', 'icon' => 'remove', 'url' => ['/esiap/course-admin/inactive']],
 				

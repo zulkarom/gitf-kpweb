@@ -1,3 +1,13 @@
+INSERT INTO `sp_assessment_cat` (`id`, `cat_name`, `cat_name_bi`, `form_sum`, `is_direct`) VALUES (NULL, 'Formatif', 'Formative', '1', '1'), (NULL, 'Sumatif', 'Summative', '2', '1');
+ALTER TABLE `sp_assessment_cat` ADD `showing` TINYINT(1) NOT NULL AFTER `is_direct`;
+UPDATE `sp_assessment_cat` SET `showing` = '1' WHERE `sp_assessment_cat`.`id` = 8; UPDATE `sp_assessment_cat` SET `showing` = '1' WHERE `sp_assessment_cat`.`id` = 9;
+
+table 4 v2 sinopsis kena vertical top align
+clo text one line with in bracket mapping
+download table 4 v2 kat admin belum adjust
+view courses by department
+view courses by program
+
 kena confirm delete week tu
 clo delete memang kena ada warning message
 klu sempat:quick add for syllabus
@@ -16,71 +26,8 @@ Assessment Percentage	2		percentage kena 100%
  Student Learning Time	0		sama mcm credit hour
  References	0		
 	13	59.09090909	
------------------------------
-SQL KENA UPDATE KAT BAWAH UTK TABLE 4 V2.0
-----------------------------------------
 
 
-UPDATE `sp_course_profile` SET `transfer_skill` = '', `transfer_skill_bi` = '' ;
-
-ALTER TABLE `sp_course_syllabus` ADD `tech_lecture` DOUBLE NOT NULL AFTER `pnp_others`, ADD `tech_tutorial` DOUBLE NOT NULL AFTER `tech_lecture`, ADD `tech_practical` DOUBLE NOT NULL AFTER `tech_tutorial`, ADD `tech_others` DOUBLE NOT NULL AFTER `tech_practical`;
-
-ALTER TABLE `sp_course_assessment` ADD `assess_f2f_tech` DOUBLE NOT NULL AFTER `assess_f2f`;
-ALTER TABLE `sp_course_profile` ADD `offer_remark` VARCHAR(255) NOT NULL AFTER `offer_year`;
-
-ALTER TABLE `sp_course` ADD `course_class` INT NOT NULL AFTER `course_level`;
-
-CREATE TABLE `sp_course_class` (
-  `id` int(11) NOT NULL,
-  `class_name` varchar(100) NOT NULL,
-  `class_name_bi` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-INSERT INTO `sp_course_class` (`id`, `class_name`, `class_name_bi`) VALUES
-(1, 'Wajib', 'Compulsory'),
-(2, 'Teras', 'Major (Core)'),
-(3, 'Minor', 'Minor'),
-(4, 'Elektif (teras)', 'Elective (core)'),
-(5, 'Elektif (bebas)', 'Elective (open/free)');
-
-ALTER TABLE `sp_course_class`
-  ADD PRIMARY KEY (`id`);
-  
-ALTER TABLE `sp_course_class`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-COMMIT;
-
-
-UPDATE `sp_course_syllabus` SET `tech_others` = `sp_course_syllabus`.`nf2f`;
-
-UPDATE `sp_course_assessment` SET `assess_f2f_tech` = `sp_course_assessment`.`assess_nf2f`;
-
-UPDATE `sp_course_syllabus` SET `duration` = '1'
-
-
-ALTER TABLE `sp_course_version` ADD `pgrs_info` TINYINT(1) NOT NULL AFTER `senate_approve_at`, ADD `pgrs_clo` TINYINT(1) NOT NULL AFTER `pgrs_info`, ADD `pgrs_plo` TINYINT(1) NOT NULL AFTER `pgrs_clo`, ADD `pgrs_tax` TINYINT(1) NOT NULL AFTER `pgrs_plo`, ADD `pgrs_soft` TINYINT(1) NOT NULL AFTER `pgrs_tax`, ADD `pgrs_delivery` TINYINT(1) NOT NULL AFTER `pgrs_soft`, ADD `pgrs_syll` TINYINT(1) NOT NULL AFTER `pgrs_delivery`, ADD `pgrs_slt` TINYINT(1) NOT NULL AFTER `pgrs_syll`, ADD `pgrs_assess` TINYINT(1) NOT NULL AFTER `pgrs_slt`, ADD `pgrs_assess_per` TINYINT(1) NOT NULL AFTER `pgrs_assess`, ADD `pgrs_ref` TINYINT(1) NOT NULL AFTER `pgrs_assess_per`;
-
-------------------------------------------
-
-Knowledge and understanding
-Cognitive skills
-Practical skills
-Interpersonal skills
-Communication skills
-Digital skills
-Numeracy skills
-Leadership, autonomy and responsibility
-Personal skills
-Entrepreneurial skills
-Ethics and professionalism. 
-
-	
-'Numeracy skills',				
-'Leadership, autonomy and responsibility',						
-'Personal skills',	
-'Entrepreneurial skills',	
-'Ethics and professionalism',	
--------------------------------------
 
 menu, update at backend
 frontend - link - create page program
@@ -92,13 +39,6 @@ brief instruction on what to do at every stage
 
 
 default password redirect to change password page - untuk auto create
-
-++++++++++++++++++++++++++++++
-7.2 Editorial conflicts of interest
-a. The editors and the author(s) - only author
-+++++++++++++++++++++++++++++++++++++++
-
-
 
 
 finalise_at kosong : corrected not test

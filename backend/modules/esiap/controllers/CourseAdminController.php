@@ -5,6 +5,7 @@ namespace backend\modules\esiap\controllers;
 use Yii;
 
 use backend\modules\esiap\models\Tbl4Excel;
+use backend\modules\esiap\models\Tbl4Excel2;
 use backend\modules\esiap\models\CourseAdminSearch;
 use backend\modules\esiap\models\CourseInactiveSearch;
 use backend\modules\esiap\models\Course;
@@ -612,12 +613,28 @@ class CourseAdminController extends Controller
 		}
 		exit;
 	}
+	
+	public function actionRunBulkClone(){
+		$vname = 'TABLE 4 V2';
+		$transaction = Yii::$app->db->beginTransaction();
+        try {
+			$this->bulkCourseClone($vname);
+            $transaction->commit();
+            
+        }
+        catch (Exception $e) 
+        {
+            $transaction->rollBack();
+            Yii::$app->session->addFlash('info', 'TRY AGAIN : ' . $e->getMessage());
+        }
+		exit;
+	}
 		
-	public function actionBulkCovidClone(){
-		die();
+	private function bulkCourseClone($name){
+		//die();
 		$courses = Course::find()->where(['faculty_id' => Yii::$app->params['faculty_id']])->all();
 		foreach($courses as $course){
-			$mqf2 = CourseVersion::findOne(['course_id' => $course->id, 'version_name' => 'Covid Version']);
+			$mqf2 = CourseVersion::findOne(['course_id' => $course->id, 'version_name' => $name]);
 			$ori = CourseVersion::find()->where(['course_id' => $course->id])
 					->orderBy('created_at DESC')->limit(1)->all();
 					
@@ -630,7 +647,7 @@ class CourseAdminController extends Controller
 				$nv = new CourseVersion;
 				$nv->course_id = $course->id;
 				$nv->version_type_id = 2;
-				$nv->version_name = 'Covid Version';
+				$nv->version_name = $name;
 				$nv->study_week = '16';
 				$nv->final_week = '17-19';
 				$nv->created_at = new Expression('NOW()');
@@ -657,15 +674,15 @@ class CourseAdminController extends Controller
 				}
 			}
 		}
-		exit;
+		
 		
 	}
 	
-	public function actionBulkDeleteCovid(){
-		die();/////////////////////////////
+	public function actionBulkDeleteVersion(){
+		//die();/////////////////////////////
 		$courses = Course::find()->all();
 		foreach($courses as $course){
-			$ver = CourseVersion::findOne(['course_id' => $course->id, 'version_name' => 'Covid Version']);
+			$ver = CourseVersion::findOne(['course_id' => $course->id, 'version_name' => 'TABLE 4 V2']);
 			if($ver){
 				$id = $ver->id;
 				$clos = CourseClo::find()->where(['crs_version_id' => $id])->all();
@@ -711,8 +728,6 @@ class CourseAdminController extends Controller
 					}
 				}
 				//staff
-		
-		
 		//semester 1 -1 
 		
 		$profile = CourseProfile::findOne(['crs_version_id' => $version->id]);
@@ -784,10 +799,16 @@ class CourseAdminController extends Controller
 	
 	public function actionTable4(){
 		if(Yii::$app->request->post()){
-			$pdf = new Tbl4Excel;
-			$pdf->multiple = true;
-			$pdf->courses = Yii::$app->request->post('selection');
-			$pdf->generateExcel();
+			if(Yii::$app->request->post('selection')){
+				$pdf = new Tbl4Excel2;
+				$pdf->multiple = true;
+				$pdf->courses = Yii::$app->request->post('selection');
+				$pdf->generateExcel();
+			}else{
+				Yii::$app->session->addFlash('error', "Please select files first.");
+				return $this->redirect('index');
+			}
+			
 		}
 		
 

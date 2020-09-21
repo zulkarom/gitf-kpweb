@@ -29,9 +29,12 @@ class CourseReference extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['crs_version_id'], 'required'],
+            [['crs_version_id'], 'required', 'on' => 'add'],
+			
+			 [['crs_version_id', 'ref_full', 'ref_year'], 'required', 'on' => 'saveall'],
+			 
             [['crs_version_id', 'is_classic', 'is_main'], 'integer'],
-            [['ref_year'], 'safe'],
+            [['ref_year'], 'number'],
 			[['ref_full'], 'string'],
         ];
     }
@@ -45,7 +48,7 @@ class CourseReference extends \yii\db\ActiveRecord
             'id' => 'ID',
             'crs_version_id' => 'Crs Version ID',
 			'ref_full' => 'Full Reference',
-            'ref_year' => 'Ref Year',
+            'ref_year' => 'Reference Year',
             'is_classic' => 'Is Classic',
             'is_main' => 'Is Main',
         ];

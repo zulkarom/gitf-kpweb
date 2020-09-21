@@ -70,39 +70,58 @@ $script="[";
 if($ref){
 	$i = 1;
 	
-	foreach($ref as $row){
+	foreach($ref as $indexItem => $item){
 		if($i==1){$comm="";}else{$comm=", ";}
-		$script .= $comm.$row->id;
-		$yr = $row->ref_year;
-		echo '<tr>
-	<td>'.$i.'. <input type="hidden" value="'. $yr .'" id="curryear-'.$row->id.'" /></td>
-		<td><textarea class="form-control" name="ref['.$row->id .'][full]" id="ref-full-'.$row->id .'">'.$row->ref_full .'</textarea></td>
-		<td id="con-'.$row->id .'">';
 		
-		echo '<input type="text" name="ref['.$row->id .'][year]" id="ref-year-'.$row->id .'" class="form-control" value="'.$row->ref_year .'" />';
+		
+		echo '<tr>
+	<td>'.$i.'. </td>
+		<td>';
+		
+		echo Html::activeHiddenInput($item, "[{$indexItem}]id");
+		
+		echo $form->field($item, "[{$indexItem}]ref_full")->textarea(['rows' => '1'])->label(false);
 		
 		echo '</td>
-		';
-		$main = $row->is_main;
-		$check = $main == 1 ? "checked" : "" ;
-		echo '<td><input type="hidden" name="ref['.$row->id .'][main]" value="0" /><input type="checkbox" name="ref['.$row->id .'][main]" value="1" '.$check.' /></td>
+		<td>';
+		
+		
+		
+		//echo '<input type="text" name="ref['.$row->id .'][year]" id="ref-year-'.$row->id .'" class="form-control" value="'.$yr .'" />';
+		$item->ref_year = $item->ref_year == '0000' ?  '' : $item->ref_year;
+		echo $form->field($item, "[{$indexItem}]ref_year")->label(false);
+		
+		echo '</td><td>';
+		
+
+		echo $form->field($item, "[{$indexItem}]is_main")->checkbox(['value' => '1', 'label'=> '']); 
+		
+		echo '</td>
 		<td>
 		';
-		$clas = $row->is_classic;
-		if($clas == 1){
-			$chk = "checked";
-		}else{
-			$chk = "";
-		}
-		echo '<input type="hidden" value="0" name="ref['.$row->id .'][isclassic]" id="chk-'.$row->id .'" class="chk-classic" /><input type="checkbox" value="1" name="ref['.$row->id .'][isclassic]" id="chk-'.$row->id .'" '.$chk.' class="chk-classic" />';
+	
+		
+		echo $form->field($item, "[{$indexItem}]is_classic")->checkbox(['value' => '1', 'label'=> '']); 
 
 		echo '</td>
-		<td><a href="'. Url::to(['course/course-reference-delete', 'course' => $model->course->id, 'version' => $model->id, 'id'=> $row->id]).'" class="rmv-ref" id="remove-'.$row->id .'"><span class="glyphicon glyphicon-remove"></span></a></td>
+		<td>';
+		
+		echo Html::a('<span class="fa fa-remove"></span>', ['course/course-reference-delete', 'course' => $model->course->id, 'version' => $model->id, 'id' => $item->id], [
+            'class' => 'rmv-ref',
+			'id' => 'remove-'.$item->id,
+            'data' => [
+                'confirm' => 'Are you sure you want to delete this Reference?',
+                'method' => 'post',
+            ],
+        ]);
+		
+		
+		
+		echo '</td>
 		
 	</tr>
 	
-	<tr><td></td><td colspan="5"><b style="font-size:12px"><span class="glyphicon glyphicon-book"></span> 
-	'.$row->formatedReference .'</b>
+	<tr><td></td><td colspan="5">
 	</td></tr>
 	
 	';
@@ -112,16 +131,25 @@ if($ref){
 	
 }
 $script .="]";
+
+//<b style="font-size:12px"><span class="glyphicon glyphicon-book"></span> </b>'.$row->formatedReference .'
 ?>
 	
 </table>
-<br />
+<i>* To add or remove a reference, please save first if you have made any change.</i><br />
 <a href="<?=Url::to(['course/course-reference-add', 'course' => $model->course->id, 'version' => $model->id])?>" id="btn-add" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus"></span> Add Reference</a>
-<br /> <i>* please save before add or remove reference</i>
+
 
     
 </div>
 </div>
+
+<div class="form-group">
+<?php 
+$check = $model->pgrs_ref == 2 ? 'checked' : ''; ?>
+<label>
+<input type="checkbox" id="complete" name="complete" value="1" <?=$check?> /> Mark as complete
+</label></div>
 
 
     <div class="form-group">
