@@ -384,6 +384,9 @@ $(".btn-insert-quick").click(function(){
 	
 	$("#topic-" + id).html(html);
 	btnSubTopic();
+	$("textarea").each(function(){
+        autosize($(this));
+    });
 });
 
 

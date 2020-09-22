@@ -383,8 +383,9 @@ use yii\helpers\Url;
 				echo '<td>'.$assess.'</td>';
 				echo '<td>'.$clo->softskillStr.'</td>';
 				echo '</tr>';
+			$i++;	
 			}
-		$i++;
+		
 		}
 	  
 	  
@@ -626,7 +627,7 @@ INDEPENDENT LEARNING FOR ASSESSMENT<br />
 	<tr>
 	<td> <strong>TOTAL FORMATIVE</strong>
 	</td>
-		<td style="text-align:center" colspan="3"><strong id="form-total-ass"></strong></td>
+		<td style="text-align:center" colspan="4"><strong id="form-total-ass"></strong></td>
 		<td style="text-align:center"><strong id="form-total"><?=$fom?></strong></td>
 	</tr>
 	
@@ -699,7 +700,7 @@ INDEPENDENT LEARNING FOR ASSESSMENT<br />
 	<td> <strong>TOTAL SUMMATIVE</strong>
 	</td>
 	
-		<td style="text-align:center" colspan="3"><strong id="sum-total-ass"></strong></td>
+		<td style="text-align:center" colspan="4"><strong id="sum-total-ass"></strong></td>
 		
 
 		<td style="text-align:center"><strong id="sum-total"><?=$sum?></strong></td>
@@ -730,7 +731,7 @@ if($slt->is_practical == 1){
 }
 
 ?>
-	<td colspan="5" align="right"><strong>CREDIT HOUR BY SLT</strong>
+	<td colspan="5" align="right"><strong>CREDIT HOUR BY SLT</strong><br /><i><?='['.$hours.' / '.$notation.']'?></i>
 	<div id="slt-formula"></div>
 
 	</td>
@@ -739,7 +740,7 @@ if($slt->is_practical == 1){
 		
 		?></span></strong>
 		
-		<br /><i><?='['.$hours.' / '.$notation.']'?></i>
+		
 		</td>
 	</tr>
 	
