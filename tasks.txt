@@ -1,10 +1,8 @@
-INSERT INTO `sp_assessment_cat` (`id`, `cat_name`, `cat_name_bi`, `form_sum`, `is_direct`) VALUES (NULL, 'Formatif', 'Formative', '1', '1'), (NULL, 'Sumatif', 'Summative', '2', '1');
-ALTER TABLE `sp_assessment_cat` ADD `showing` TINYINT(1) NOT NULL AFTER `is_direct`;
-UPDATE `sp_assessment_cat` SET `showing` = '1' WHERE `sp_assessment_cat`.`id` = 8; UPDATE `sp_assessment_cat` SET `showing` = '1' WHERE `sp_assessment_cat`.`id` = 9;
+admin course list ada colum report
+staff view/update list pun ada report yg cantik
+masa nak update course pegi course view dulu
 
-table 4 v2 sinopsis kena vertical top align
-clo text one line with in bracket mapping
-download table 4 v2 kat admin belum adjust
+
 view courses by department
 view courses by program
 
@@ -12,20 +10,6 @@ kena confirm delete week tu
 clo delete memang kena ada warning message
 klu sempat:quick add for syllabus
 
-progress course development
------------------------course progress list -----------------------
-Course Information	1		kena ada semua
- Course Learning Outcome	2		at least satu clo
- CLO PLO Mapping	2		setiap clo satu plo
- CLO Taxonomy	0		asal ada mana2 clo
- CLO Softskill	1		asal ada mana2 clo
- CLO Delivery	2		setiap clo at least satu delivery
- Syllabus	2		at least 14 week ada sth both language
- Assessment	1		at least 1 assessment both language
-Assessment Percentage	2		percentage kena 100%
- Student Learning Time	0		sama mcm credit hour
- References	0		
-	13	59.09090909	
 
 
 

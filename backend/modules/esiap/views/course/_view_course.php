@@ -28,14 +28,6 @@ use yii\helpers\Url;
 	  
 	  
 	  
-	  if($current){
-		  ?>
-		  <tr>
-        <td width="20%"><b>DOCUMENTS</b></td>
-        <td><a href="<?=Url::to(['course/html-view', 'course' => $model->id, 'version' => $version->id])?>" target="_blank">HTML</a> <a href="<?=Url::to(['course/fk1', 'course' => $model->id, 'version' => $version->id])?>" target="_blank">FK01</a> <a href="<?=Url::to(['course/fk2', 'course' => $model->id, 'version' => $version->id])?>" target="_blank">FK02</a> <a href="<?=Url::to(['course/fk3', 'course' => $model->id, 'version' => $version->id])?>" target="_blank">FK03</a> <a href="<?=Url::to(['course/tbl4-excel', 'course' => $model->id, 'version' => $version->id])?>" target="_blank">TABLE4 v1</a> <a href="<?=Url::to(['course/tbl4-excel2', 'course' => $model->id, 'version' => $version->id])?>" target="_blank">TABLE4 v2</a></td>
-      </tr>
-		  <?php
-	  }
 	  
 	  ?>
 	  
