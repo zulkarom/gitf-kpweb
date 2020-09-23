@@ -1,14 +1,9 @@
-admin course list ada colum report
-staff view/update list pun ada report yg cantik
-masa nak update course pegi course view dulu
+UPDATE `sp_version_type` SET `type_name` = 'MQF 1.0 (PLO 8)' WHERE `sp_version_type`.`id` = 1;
 
 
 view courses by department
 view courses by program
 
-kena confirm delete week tu
-clo delete memang kena ada warning message
-klu sempat:quick add for syllabus
 
 
 
