@@ -1,1 +1,0 @@
-ALTER TABLE `rp_publication` ADD `pubother_file` TEXT NOT NULL AFTER `pubupload_file`;
