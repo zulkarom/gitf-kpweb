@@ -24,7 +24,15 @@ if($model->isNewRecord){
 
 echo $form->field($model, 'semester_id')->dropDownList(Semester::listSemesterArray()) ?></div>
 
-<div class="col-md-8"><?php
+<div class="col-md-8">
+</div>
+
+</div>
+
+
+<div class="row">
+
+<div class="col-md-6"> <?php
 
 echo $form->field($model, 'courses')->widget(Select2::classname(), [
     'data' => ArrayHelper::map(Course::activeCourses(), 'id', 'codeCourseString'),
@@ -36,14 +44,6 @@ echo $form->field($model, 'courses')->widget(Select2::classname(), [
 ]);
 
 ?>
-</div>
-
-</div>
-
-
-<div class="row">
-
-<div class="col-md-6"> <?= $form->field($model, 'coordinator')->textInput() ?>
 </div>
 
 </div>

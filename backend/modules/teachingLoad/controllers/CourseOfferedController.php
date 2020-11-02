@@ -78,13 +78,20 @@ class CourseOfferedController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
 			if($model->courses){
+				$flag = true;
 				foreach($model->courses as $course){
 					if($this->offeredNotExist($model->semester_id, $course)){
-						$this->addNew($model->semester_id, $course);
+						if(!$this->addNew($model->semester_id, $course)){
+							$flag = false;
+							exit;
+						}
 					}
 					
 				}
-				Yii::$app->session->addFlash('success', "Courses Offered Added");
+				if($flag){
+					Yii::$app->session->addFlash('success', "Courses Offered Added");
+				}
+				
 				return $this->redirect(['index']);
 			}
 
@@ -114,7 +121,8 @@ class CourseOfferedController extends Controller
 		$new->created_by = Yii::$app->user->identity->id;
 		
 		if(!$new->save()){
-			Yii::$app->session->addFlash('error', $course);
+			$new->flashError();
+			//Yii::$app->session->addFlash('error', $course);
 			return false;
 		}
 		return true;

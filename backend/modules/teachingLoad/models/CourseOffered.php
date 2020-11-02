@@ -32,7 +32,7 @@ class CourseOffered extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['semester_id', 'courses', 'created_at', 'created_by'], 'required'],
+            [['semester_id', 'course_id', 'created_at', 'created_by'], 'required'],
 			
             [['semester_id', 'course_id', 'created_by', 'coordinator'], 'integer'],
 			
@@ -58,6 +58,21 @@ class CourseOffered extends \yii\db\ActiveRecord
 	public function getCourse(){
          return $this->hasOne(Course::className(), ['id' => 'course_id']);
     }
+	
+	public function flashError(){
+        if($this->getErrors()){
+            foreach($this->getErrors() as $error){
+                if($error){
+                    foreach($error as $e){
+                        Yii::$app->session->addFlash('error', $e);
+                    }
+                }
+            }
+        }
+
+    }
+
+
 
 	
 	
