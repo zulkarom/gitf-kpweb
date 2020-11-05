@@ -73,6 +73,10 @@ class CourseOffered extends \yii\db\ActiveRecord
     }
 
 
+    public function getlectures()
+        {
+            return $this->hasMany(CourseLecture::className(), ['offered_id' => 'id']);
+        }
 
 	
 	

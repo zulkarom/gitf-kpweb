@@ -5,22 +5,23 @@ namespace backend\modules\teachingLoad\models;
 use Yii;
 
 /**
- * This is the model class for table "tld_course_lec".
+ * This is the model class for table "tld_tutorial_lec".
  *
  * @property int $id
- * @property int $offered_id
- * @property string $lec_name
+ * @property int $lecture_id
+ * @property string $tutorial_name
+ * @property int $student_num
  * @property string $created_at
  * @property string $updated_at
  */
-class CourseLecture extends \yii\db\ActiveRecord
+class TutorialLecture extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'tld_course_lec';
+        return 'tld_tutorial_lec';
     }
 
     /**
@@ -29,11 +30,10 @@ class CourseLecture extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['offered_id', 'created_at', 'updated_at'], 'required'],
-			
-            [['offered_id', 'student_num'], 'integer'],
+            [['lecture_id', 'created_at', 'updated_at'], 'required'],
+            [['lecture_id', 'student_num'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
-            [['lec_name'], 'string', 'max' => 50],
+            [['tutorial_name'], 'string', 'max' => 50],
         ];
     }
 
@@ -44,14 +44,15 @@ class CourseLecture extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'offered_id' => 'Offered ID',
-            'lec_name' => 'Lec Name',
+            'lecture_id' => 'Lecture ID',
+            'tutorial_name' => 'Tutorial Name',
+            'student_num' => 'Student Num',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
     }
-	
-	public function flashError(){
+
+    public function flashError(){
         if($this->getErrors()){
             foreach($this->getErrors() as $error){
                 if($error){
@@ -63,10 +64,4 @@ class CourseLecture extends \yii\db\ActiveRecord
         }
 
     }
-
-    public function getTutorials()
-        {
-            return $this->hasMany(TutorialLecture::className(), ['lecture_id' => 'id']);
-        }
-
 }

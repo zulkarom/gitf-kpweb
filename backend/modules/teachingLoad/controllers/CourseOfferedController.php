@@ -6,6 +6,8 @@ use Yii;
 use backend\modules\teachingLoad\models\CourseOffered;
 use backend\modules\teachingLoad\models\CourseOfferedSearch;
 use backend\modules\teachingLoad\models\AddLectureForm;
+use backend\modules\teachingLoad\models\AddTutorialForm;
+use backend\modules\teachingLoad\models\TutorialLecture;
 use backend\modules\teachingLoad\models\CourseLecture;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -129,12 +131,19 @@ class CourseOfferedController extends Controller
 	}
 	
 	public function actionAssign($id){
-		
+
 		$model = $this->findModel($id);
-		$lectures = CourseLecture::find(['offered_id' => $id])->all();
+
+        
+		$lectures = $model->lectures;
+        
 		$addLecure = new AddLectureForm;
+
+        //tutorial
+        $addTutorial = new AddTutorialForm;
 		
 		if(Yii::$app->request->post()){
+
 			if(Yii::$app->request->post('AddLectureForm')){
 				$add = Yii::$app->request->post('AddLectureForm');
 				$num = $add['lecture_number'];
@@ -148,16 +157,47 @@ class CourseOfferedController extends Controller
 							$new->flashError();
 						}
 					}
-					return $this->refresh();
+					
 				}
-			}
+            }
+
+
+            if(Yii::$app->request->post('AddTutorialForm')){
+                $add = Yii::$app->request->post('AddTutorialForm');
+                $num = $add['tutorial_number'];
+                $lec_id = $add['lecture_id'];
+                if(is_numeric($num) and $num > 0){
+                    for($i = 1; $i<= $num; $i++){
+                        $new = new TutorialLecture;
+                        $new->lecture_id = $lec_id;
+                        $new->created_at = new Expression('NOW()');
+                        $new->updated_at = new Expression('NOW()');
+                        if(!$new->save()){
+                            $new->flashError();
+                        }
+                    }
+                    
+                }
+            }
+            
+
+                
+
+
+                return $this->refresh();
+			
+
+            
+
 		}
+
 		
 		
 		return $this->render('assign', [
            'model' => $model, 
 		   'addLecure' => $addLecure,
-		   'lectures' => $lectures
+		   'lectures' => $lectures,
+           'addTutorial' => $addTutorial
         ]);
 	}
 
@@ -195,6 +235,34 @@ class CourseOfferedController extends Controller
         return $this->redirect(['index']);
     }
 
+     public function actionDeleteLecture($id)
+    {
+        $model = $this->findLecture($id);
+
+        TutorialLecture::deleteAll(['lecture_id' => $id]);
+
+        if($model->delete()){
+            
+            Yii::$app->session->addFlash('success', "Data Updated");
+        }
+
+        return $this->redirect(['assign','id'=> $model->offered_id]);
+    }
+
+    public function actionDeleteTutorial($id,$offered)
+    {
+        
+        $model = $this->findTutorialModel($id);
+        
+
+        if($model->delete()){
+            Yii::$app->session->addFlash('success', "Data Updated");
+        }
+
+        return $this->redirect(['assign','id'=> $offered]);
+    }
+
+
     /**
      * Finds the CourseOffered model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
@@ -210,4 +278,25 @@ class CourseOfferedController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    protected function findLecture($id)
+    {
+        if (($model = CourseLecture::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    protected function findTutorialModel($id)
+    {
+        if (($model = TutorialLecture::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+
+
 }
