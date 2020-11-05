@@ -141,9 +141,12 @@ class CourseOfferedController extends Controller
 
         //tutorial
         $addTutorial = new AddTutorialForm;
+
+        $modelLecture = new CourseLecture;
 		
 		if(Yii::$app->request->post()){
 
+           
 			if(Yii::$app->request->post('AddLectureForm')){
 				$add = Yii::$app->request->post('AddLectureForm');
 				$num = $add['lecture_number'];
@@ -179,9 +182,16 @@ class CourseOfferedController extends Controller
                     
                 }
             }
-            
 
-                
+
+            if(Yii::$app->request->post('Lecture')){
+                $post_lectures = Yii::$app->request->post('Lecture');
+                foreach ($lectures as $lec) {
+                    $lec->lec_name = $post_lectures[$lec->id]['lec_name'];
+                    $lec->student_num = $post_lectures[$lec->id]['student_num'];
+                    $lec->save();
+                }
+            }
 
 
                 return $this->refresh();
@@ -197,7 +207,8 @@ class CourseOfferedController extends Controller
            'model' => $model, 
 		   'addLecure' => $addLecure,
 		   'lectures' => $lectures,
-           'addTutorial' => $addTutorial
+           'addTutorial' => $addTutorial,
+           'modelLecture' => $modelLecture
         ]);
 	}
 
