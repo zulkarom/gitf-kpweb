@@ -18,9 +18,8 @@ $this->params['breadcrumbs'][] = $this->title;
 <h4><?=$model->course->codeCourseString?></h4>
 
 
-<!-- add lecture -->
-<?php $form = ActiveForm::begin(); ?>
-
+	<!-- add lecture -->
+	<?php $form = ActiveForm::begin(); ?>
 	<?php 
 	$addLecure->lecture_number = 1;
 	echo 'Add Lecture: ' . $form->field($addLecure, 'lecture_number', [
@@ -37,13 +36,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php ActiveForm::end(); ?>
 
-
+	<!-- add tutorial -->
     <?php $form = ActiveForm::begin(); ?>
-
 	<?php 
-
 	$addTutorial->tutorial_number = 1;
-
 	echo $form->field($addTutorial, 'lecture_json',['options' => ['tag' => false]])->hiddenInput(['value' => ''])->label(false);
 
 	echo 'Add Tutorials: ' . $form->field($addTutorial, 'tutorial_number', [
@@ -92,7 +88,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		 foreach($lectures as $lec){
 			 echo '<tr>
 
-			 	<td style="vertical-align: middle;"><input type="checkbox" class ="checkbxLec" name="cbkLecture" value="'.$lec->id.'" /></td> 
+			 	<td style="vertical-align: middle;"><input type="checkbox" class ="checkbxLec" name="cbkLecture" value='.$lec->id.' /></td> 
 			 	<td style="vertical-align: middle;">'.$i.'. </td> 
 
 		        <td style="vertical-align: middle;"><input name="Lecture['.$lec->id.'][lec_name]" type="text" style="width:100%" value="'.$lec->lec_name.'" /></td>
@@ -112,21 +108,8 @@ $this->params['breadcrumbs'][] = $this->title;
 				<td width="50%">';
 
 
-		// add tutorial
-		// $form = ActiveForm::begin();
-		// 	$addTutorial->tutorial_number = 1;
-		// 	echo $form->field($addTutorial, 'lecture_id',['options' => ['tag' => false]])->hiddenInput(['value' => $lec->id ])->label(false);
-		// 	echo 'Add Tutorials: ' . $form->field($addTutorial, 'tutorial_number', [
-		//                     'template' => '{input}',
-		//                     'options' => [
-								
-		//                         'tag' => false, // Don't wrap with "form-group" div
-		//                     ]])->textInput(['style' => 'width:50px', 'type' => 'number', 'class' => ''])->label(false);
-
-		// 	echo Html::submitButton('Go', ['class' => 'btn btn-sm btn-default']);
-
-		//    ActiveForm::end();
-
+		
+	
 		   if($lec->tutorials){
 		   	$j=1;
 		   	echo '<div class="table-responsive">
@@ -188,12 +171,6 @@ $this->params['breadcrumbs'][] = $this->title;
   </table>
 </div>
 
-
-
-      			
-	
-
-
 </div>
 
 </div>
@@ -206,17 +183,46 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php
 $js = "
 
-$('.checkbxLec ').click(function(e, data){
-	var id = $(this).val();
-    
-    var myJSON = JSON.stringify(id);
+
+
+function arrayChk(){ 
  
-    $('#addtutorialform-lecture_json').val(myJSON);
+    var arrAn = [];  
+  
+    var m = $('.checkbxLec'); 
+ 
+    var arrLen = $('.checkbxLec').length; 
+      
+    for ( var i= 0; i < arrLen ; i++){  
+        var  w = m[i];                     
+         if (w.checked){  
+          arrAn.push( w.value );  
+          console.log(w.value ); 
+        }  
+      }   
+    
+    var myJsonString = JSON.stringify(arrAn);  //convert javascript array to JSON string
+   
+ 
+ 	$('#addtutorialform-lecture_json').val(myJsonString);
+  
+   }
+
+
+
+
+$('.checkbxLec ').click(function(e, data){
+
+	arrayChk();
+ 
+   
 });
+
 
 ";
 
 $this->registerJs($js);
+
 
 ?>
 

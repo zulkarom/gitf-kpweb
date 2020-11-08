@@ -168,11 +168,16 @@ class CourseOfferedController extends Controller
             if(Yii::$app->request->post('AddTutorialForm')){
                 $add = Yii::$app->request->post('AddTutorialForm');
                 $num = $add['tutorial_number'];
-                $lec_id = $add['lecture_id'];
-                if(is_numeric($num) and $num > 0){
-                    for($i = 1; $i<= $num; $i++){
+
+                $lec_id = $add['lecture_json'];
+                $lec_array = json_decode($lec_id);
+               
+                if($lec_array){
+                    foreach ($lec_array as $lec) {
+                        if(is_numeric($num) and $num > 0){
+                        for($i = 1; $i<= $num; $i++){
                         $new = new TutorialLecture;
-                        $new->lecture_id = $lec_id;
+                        $new->lecture_id = $lec;
                         $new->created_at = new Expression('NOW()');
                         $new->updated_at = new Expression('NOW()');
                         if(!$new->save()){
@@ -181,6 +186,10 @@ class CourseOfferedController extends Controller
                     }
                     
                 }
+                        
+                    }
+                }
+                
             }
 
 
