@@ -9,6 +9,7 @@ use backend\modules\teachingLoad\models\AddLectureForm;
 use backend\modules\teachingLoad\models\AddTutorialForm;
 use backend\modules\teachingLoad\models\TutorialLecture;
 use backend\modules\teachingLoad\models\CourseLecture;
+use backend\modules\teachingLoad\models\LecLecturer;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -133,10 +134,9 @@ class CourseOfferedController extends Controller
 	public function actionAssign($id){
 
 		$model = $this->findModel($id);
-
         
 		$lectures = $model->lectures;
-        
+
 		$addLecure = new AddLectureForm;
 
         //tutorial
@@ -146,7 +146,8 @@ class CourseOfferedController extends Controller
 		
 		if(Yii::$app->request->post()){
 
-           
+             
+
 			if(Yii::$app->request->post('AddLectureForm')){
 				$add = Yii::$app->request->post('AddLectureForm');
 				$num = $add['lecture_number'];
@@ -198,11 +199,31 @@ class CourseOfferedController extends Controller
                 foreach ($lectures as $lec) {
                     $lec->lec_name = $post_lectures[$lec->id]['lec_name'];
                     $lec->student_num = $post_lectures[$lec->id]['student_num'];
-                    $lec->save();
+                    $lecturers = $post_lectures[$lec->id]['lecturers'];
+                    if($lecturers)
+                    {
+                       $this->saveLecturers($lec,$lecturers);
+                    }
+
+
+                    foreach ($lec->tutorials as $tutor) {
+
+                        $tutor->tutorial_name = $post_lectures[$lec->id]['tutorial'][$tutor->id]['tutorial_name'];
+                        $tutor->student_num = $post_lectures[$lec->id]['tutorial'][$tutor->id]['student_num'];
+                        $tutor->save();
+                    }
+                    
+                    if($lec->save()){
+                        
+                    }
                 }
             }
 
+            
 
+           
+
+                Yii::$app->session->addFlash('success', "Data Saved");
                 return $this->refresh();
 			
 
@@ -220,6 +241,47 @@ class CourseOfferedController extends Controller
            'modelLecture' => $modelLecture
         ]);
 	}
+
+    private function saveLecturers($lec,$lecturers){
+    if(Yii::$app->request->post('Lecture')){
+    $post_lectures = Yii::$app->request->post('Lecture');
+        $kira_post = count($lecturers);
+        $kira_lama = count($lec->lecturers);
+        if($kira_post > $kira_lama){
+            $bil = $kira_post - $kira_lama;
+            for($i=1;$i<=$bil;$i++){
+                $insert = new LecLecturer;
+                $insert->lecture_id = $lec->id;
+                $insert->save();
+            }
+        }else if($kira_post < $kira_lama){
+            $bil = $kira_lama - $kira_post;
+            $deleted = LecLecturer::find()
+                ->where(['lecture_id'=>$lec->id])
+                ->limit($bil)
+                ->all();
+                if($deleted){
+                    foreach($deleted as $del){
+                            $del->delete();
+                    }
+                }
+                     
+        }
+        $update_tag = LecLecturer::find()
+        ->where(['lecture_id'=>$lec->id])
+        ->all();
+    
+        $tag = $post_lectures[$lec->id]['lecturers'];
+        if($update_tag){
+            $i=0;
+            foreach($update_tag as $ut){
+                $ut->staff_id = $tag[$i];
+                $ut->save();
+                $i++;
+            }
+        }
+    }
+}
 
     /**
      * Updates an existing CourseOffered model.

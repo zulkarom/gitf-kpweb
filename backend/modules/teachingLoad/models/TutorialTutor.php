@@ -1,0 +1,46 @@
+<?php
+
+namespace backend\modules\teachingLoad\models;
+
+use Yii;
+
+/**
+ * This is the model class for table "tutorial_tutor".
+ *
+ * @property int $id
+ * @property int $tutorial_id
+ * @property int $staff_id
+ */
+class TutorialTutor extends \yii\db\ActiveRecord
+{
+    /**
+     * {@inheritdoc}
+     */
+    public static function tableName()
+    {
+        return 'tutorial_tutor';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
+        return [
+            [['tutorial_id'], 'required'],
+            [['tutorial_id', 'staff_id'], 'integer'],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'tutorial_id' => 'Tutorial ID',
+            'staff_id' => 'Staff ID',
+        ];
+    }
+}

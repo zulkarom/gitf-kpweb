@@ -96,8 +96,8 @@ $this->params['breadcrumbs'][] = $this->title;
 		        <td style="vertical-align: middle;">';
 
 					echo Select2::widget([
-				    'name' => 'tagged_staff',
-				    //'value' => ArrayHelper::map($model->pubTagsNotMe,'id','staff_id'),
+				    'name' => 'Lecture['.$lec->id.'][lecturers]',
+				    'value' => ArrayHelper::map($lec->lecturers,'id','staff_id'),
 				    'data' => ArrayHelper::map(Staff::activeStaffNotMe(), 'id', 'staff_name'),
 				    'options' => ['multiple' => true, 'placeholder' => 'Select Staff ...']
 				]);
@@ -126,13 +126,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
 		   	foreach ($lec->tutorials as $tutorial) {
 		   		echo'<tr>
-				    <td><input type="text" style="width:100%" value="" /></td>
-				    <td><input type="text" style="width:100%" value="" /></td>
+				    <td><input name="Lecture['.$lec->id.'][tutorial]['.$tutorial->id.'][tutorial_name]" type="text" style="width:100%" value="'.$tutorial->tutorial_name.'" /></td>
+				    <td><input name ="Lecture['.$lec->id.'][tutorial]['.$tutorial->id.'][student_num]" type="text" style="width:100%" value="'.$tutorial->student_num.'" /></td>
 				    <td>';
 
 				    echo Select2::widget([
-					    'name' => 'tagged_staff',
-					    //'value' => ArrayHelper::map($model->pubTagsNotMe,'id','staff_id'),
+					    'name' => 'Lecture['.$lec->id.'][tutorial]',
+					    'value' => ArrayHelper::map($tutorial->lecturers,'id','staff_id'),
 					    'data' => ArrayHelper::map(Staff::activeStaffNotMe(), 'id', 'staff_name'),
 					    'options' => ['multiple' => true, 'placeholder' => 'Select Staff ...']
 					]);

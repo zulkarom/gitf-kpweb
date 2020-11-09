@@ -64,4 +64,9 @@ class TutorialLecture extends \yii\db\ActiveRecord
         }
 
     }
+
+    public function getLecturers()
+    {
+        return $this->hasMany(TutorialTutor::className(), ['tutorial_id' => 'id']);
+    }
 }
