@@ -10,11 +10,13 @@ use backend\modules\teachingLoad\models\AddTutorialForm;
 use backend\modules\teachingLoad\models\TutorialLecture;
 use backend\modules\teachingLoad\models\CourseLecture;
 use backend\modules\teachingLoad\models\LecLecturer;
+use backend\modules\teachingLoad\models\TutorialTutor;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\db\Expression;
+use yii\helpers\ArrayHelper;
 
 /**
  * CourseOfferedController implements the CRUD actions for CourseOffered model.
@@ -146,8 +148,6 @@ class CourseOfferedController extends Controller
 		
 		if(Yii::$app->request->post()){
 
-             
-
 			if(Yii::$app->request->post('AddLectureForm')){
 				$add = Yii::$app->request->post('AddLectureForm');
 				$num = $add['lecture_number'];
@@ -176,18 +176,16 @@ class CourseOfferedController extends Controller
                 if($lec_array){
                     foreach ($lec_array as $lec) {
                         if(is_numeric($num) and $num > 0){
-                        for($i = 1; $i<= $num; $i++){
-                        $new = new TutorialLecture;
-                        $new->lecture_id = $lec;
-                        $new->created_at = new Expression('NOW()');
-                        $new->updated_at = new Expression('NOW()');
-                        if(!$new->save()){
-                            $new->flashError();
+                            for($i = 1; $i<= $num; $i++){
+                            $new = new TutorialLecture;
+                            $new->lecture_id = $lec;
+                            $new->created_at = new Expression('NOW()');
+                            $new->updated_at = new Expression('NOW()');
+                                if(!$new->save()){
+                                    $new->flashError();
+                                }
+                            }   
                         }
-                    }
-                    
-                }
-                        
                     }
                 }
                 
@@ -199,17 +197,32 @@ class CourseOfferedController extends Controller
                 foreach ($lectures as $lec) {
                     $lec->lec_name = $post_lectures[$lec->id]['lec_name'];
                     $lec->student_num = $post_lectures[$lec->id]['student_num'];
-                    $lecturers = $post_lectures[$lec->id]['lecturers'];
-                    if($lecturers)
-                    {
-                       $this->saveLecturers($lec,$lecturers);
+
+                    if(array_key_exists('lecturers',$post_lectures[$lec->id])){
+                        $lecturers = $post_lectures[$lec->id]['lecturers'];
+                            if($lecturers)
+                            {
+                               $this->saveLecturers($lec,$lecturers);
+                            }
+                    }else{
+                        $this->saveLecturers($lec,[]);
                     }
+                    
 
 
                     foreach ($lec->tutorials as $tutor) {
 
                         $tutor->tutorial_name = $post_lectures[$lec->id]['tutorial'][$tutor->id]['tutorial_name'];
                         $tutor->student_num = $post_lectures[$lec->id]['tutorial'][$tutor->id]['student_num'];
+
+                        if(array_key_exists('tutoriallecturers', $post_lectures[$lec->id]['tutorial'][$tutor->id])){
+                            $tutoriallecturers = $post_lectures[$lec->id]['tutorial'][$tutor->id]['tutoriallecturers'];
+                            if ($tutoriallecturers) {
+                                $this->saveTutorialLecturers($lec,$tutor,$tutoriallecturers);
+                            }
+                        }else{
+                            $this->saveTutorialLecturers($lec,$tutor,[]);
+                        }
                         $tutor->save();
                     }
                     
@@ -242,6 +255,7 @@ class CourseOfferedController extends Controller
         ]);
 	}
 
+    //Save lecturers for lecture
     private function saveLecturers($lec,$lecturers){
     if(Yii::$app->request->post('Lecture')){
     $post_lectures = Yii::$app->request->post('Lecture');
@@ -267,10 +281,12 @@ class CourseOfferedController extends Controller
                 }
                      
         }
+
+        if($lecturers){
         $update_tag = LecLecturer::find()
         ->where(['lecture_id'=>$lec->id])
         ->all();
-    
+        
         $tag = $post_lectures[$lec->id]['lecturers'];
         if($update_tag){
             $i=0;
@@ -281,7 +297,57 @@ class CourseOfferedController extends Controller
             }
         }
     }
+    }
 }
+
+    //Save lecturers for tutorial
+    private function saveTutorialLecturers($lec,$tutor,$tutoriallecturers)
+    {
+        if(Yii::$app->request->post('Lecture')){
+            $post_lectures = Yii::$app->request->post('Lecture');
+            $kira_post = count($tutoriallecturers);
+                $kira_lama = count($tutor->lecturers);
+                if($kira_post > $kira_lama){
+                    $bil = $kira_post - $kira_lama;
+                    for($i=1;$i<=$bil;$i++){
+                        $insert = new TutorialTutor;
+                        $insert->tutorial_id = $tutor->id;
+                        $insert->save();
+                    }
+                }else if($kira_post < $kira_lama){
+                $bil = $kira_lama - $kira_post;
+                $deleted = TutorialTutor::find()
+                ->where(['tutorial_id'=>$tutor->id])
+                ->limit($bil)
+                ->all();
+                    if($deleted){
+                        foreach($deleted as $del){
+                                $del->delete();
+                        }
+                    }
+                }
+
+                if($tutoriallecturers){
+                $update_tag = TutorialTutor::find()
+                ->where(['tutorial_id'=>$tutor->id])
+                ->all();
+            
+                $tag = $post_lectures[$lec->id]['tutorial'][$tutor->id]['tutoriallecturers'];
+                if($update_tag){
+                    $i=0;
+                    foreach($update_tag as $ut){
+                        $ut->staff_id = $tag[$i];
+                        $ut->save();
+                        $i++;
+                    }
+                }
+            }
+        }
+    }
+
+
+
+
 
     /**
      * Updates an existing CourseOffered model.
@@ -320,8 +386,18 @@ class CourseOfferedController extends Controller
      public function actionDeleteLecture($id)
     {
         $model = $this->findLecture($id);
+        $tutorial = $model->tutorials;
+        if($tutorial)
+        {
+            $ids = ArrayHelper::map($tutorial,'id','id');
+            TutorialTutor::deleteAll(['tutorial_id' =>$ids]);
+        }
+        
 
         TutorialLecture::deleteAll(['lecture_id' => $id]);
+        LecLecturer::deleteAll(['lecture_id' => $id]);
+        
+
 
         if($model->delete()){
             
@@ -336,6 +412,7 @@ class CourseOfferedController extends Controller
         
         $model = $this->findTutorialModel($id);
         
+        TutorialTutor::deleteAll(['tutorial_id' => $id]);
 
         if($model->delete()){
             Yii::$app->session->addFlash('success', "Data Updated");
@@ -372,7 +449,7 @@ class CourseOfferedController extends Controller
 
     protected function findTutorialModel($id)
     {
-        if (($model = TutorialLecture::findOne($id)) !== null) {
+        if (($model = TutorialLecture::findOne($id)) !== null ) {
             return $model;
         }
 

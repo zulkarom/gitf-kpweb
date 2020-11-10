@@ -131,7 +131,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				    <td>';
 
 				    echo Select2::widget([
-					    'name' => 'Lecture['.$lec->id.'][tutorial]',
+					    'name' => 'Lecture['.$lec->id.'][tutorial]['.$tutorial->id.'][tutoriallecturers]',
 					    'value' => ArrayHelper::map($tutorial->lecturers,'id','staff_id'),
 					    'data' => ArrayHelper::map(Staff::activeStaffNotMe(), 'id', 'staff_name'),
 					    'options' => ['multiple' => true, 'placeholder' => 'Select Staff ...']
@@ -139,7 +139,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 				    echo'</td>
 				    <td>
-				    <a href="' . Url::to(['course-offered/delete-tutorial', 'id' => $tutorial->id, 'offered' => $model->id]) . '" >
+				    <a href="' . Url::to(['course-offered/delete-tutorial', 'id' => $tutorial->id, 'offered' => $model->id,'']) . '" >
 					<span class="fa fa-trash"></span></a>
 					</td>
 					</tr>';
