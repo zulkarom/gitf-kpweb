@@ -132,6 +132,8 @@ class Menu
 				['label' => 'My Teaching', 'icon' => 'user', 'url' => ['/teaching-load/default/teaching-view']],
 				
 				['label' => 'Offered Courses', 'icon' => 'book', 'url' => ['/teaching-load/course-offered/index']],
+
+				['label' => 'Teaching Summary', 'icon' => 'book', 'url' => ['/teaching-load/course-offered/summary']],
 				
 				
 				['label' => 'Teaching By Staff', 'icon' => 'user', 'url' => ['/teaching-load/manager/by-staff']],
