@@ -3,7 +3,7 @@
 namespace backend\modules\teachingLoad\models;
 
 use Yii;
-
+use backend\modules\teachingLoad\models\CourseLecture;
 /**
  * This is the model class for table "tld_tutorial_lec".
  *
@@ -68,5 +68,10 @@ class TutorialLecture extends \yii\db\ActiveRecord
     public function getLecturers()
     {
         return $this->hasMany(TutorialTutor::className(), ['tutorial_id' => 'id']);
+    }
+
+    //16.11.2020
+    public function getLecture(){
+        return $this->hasOne(CourseLecture::className(), ['id' => 'lecture_id']);
     }
 }

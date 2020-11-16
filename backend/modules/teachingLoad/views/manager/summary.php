@@ -29,7 +29,7 @@ $columns = [
             [
                 //'contentOptions' => ['style' => 'width: 45%'],
                 //'format' => 'html',
-                'label' => 'Lecturers',
+                'label' => 'Lecturer',
                 'value' => function($model){
                     return $model->staff_title . ' ' . $model->user->fullname ;
                 }
@@ -37,21 +37,19 @@ $columns = [
             ],
             
             [
-                'label' => 'Lecture',
+                'label' => 'Lectures',
                 'format' => 'html',
                 'value' => function($model){
-            
-                    return $model->teaching_submit == 1 ? '<span class="label label-success">Yes</span>' : '<span class="label label-danger">No</span>';
-                    
+                    return $model->teachLectureStr;
                 }
             ],
            
             
             [
-                'label' => 'Tutorial',
+                'label' => 'Tutorials',
                 'format' => 'html',
                 'value' => function($model){
-                    return $model->taughtCoursesStr;
+                    return $model->teachTutorialStr;
                 }
             ],
             
@@ -60,7 +58,7 @@ $columns = [
                 'label' => 'Total',
                 'format' => 'html',
                 'value' => function($model){
-                    return $model->teachCoursesStr;
+                    return $model->totalLectureTutorial;
                 }
             ],
             //PastExperiencesStr
@@ -84,7 +82,33 @@ $columns = [
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     
- 
+    <div class="row">
+<div class="col-md-6">
+        
+        <?=ExportMenu::widget([
+    'dataProvider' => $dataProvider,
+    'columns' => $columns,
+    'filename' => 'STAFF_TEACHING_' . date('Y-m-d'),
+    'onRenderSheet'=>function($sheet, $grid){
+        $sheet->getStyle('A2:'.$sheet->getHighestColumn().$sheet->getHighestRow())
+        ->getAlignment()->setWrapText(true);
+    },
+    'exportConfig' => [
+        ExportMenu::FORMAT_PDF => false,
+        ExportMenu::FORMAT_EXCEL_X => false,
+    ],
+]);?>
+        
+        
+        
+ </div>
+
+<div class="col-md-6" align="right">
+
+<?php //=$this->render('_search', ['model' => $searchModel])?>
+</div>
+
+</div>
 <br />
 
     <div class="box">
@@ -100,18 +124,18 @@ $columns = [
             [
                 //'contentOptions' => ['style' => 'width: 45%'],
                 //'format' => 'html',
-                'label' => 'Lecturers',
+                'label' => 'Lecturer',
                 'value' => function($model){
                     return $model->staff_title . ' ' . $model->user->fullname ;
                 }
                 
             ],
             [
-                'label' => 'Lecture',
+                'label' => 'Lectures',
                 'format' => 'html',
                 'value' => function($model){
             
-                    return $model->teaching_submit == 1 ? '<span class="label label-success">Yes</span>' : '<span class="label label-danger">No</span>';
+                    return $model->getTeachLectureStr("<br />");
                     
                 }
             ],
@@ -121,7 +145,7 @@ $columns = [
                 'label' => 'Tutorial',
                 'format' => 'html',
                 'value' => function($model){
-                    return $model->getTaughtCoursesStr("<br />");
+                    return $model->getTeachTutorialStr("<br />");
                 }
             ],
             
@@ -129,7 +153,7 @@ $columns = [
                 'label' => 'Total',
                 'format' => 'html',
                 'value' => function($model){
-                    return $model->getTeachCoursesStr("<br />");
+                    return $model->getTotalLectureTutorial("<br />");
                 }
             ],
             //PastExperiencesStr

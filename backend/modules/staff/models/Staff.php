@@ -8,6 +8,8 @@ use yii\helpers\ArrayHelper;
 use backend\modules\erpd\models\Stats as ErpdStats;
 use backend\modules\teachingLoad\models\TaughtCourse;
 use backend\modules\teachingLoad\models\TeachCourse;
+use backend\modules\teachingLoad\models\LecLecturer;
+use backend\modules\teachingLoad\models\TutorialTutor;
 use backend\modules\teachingLoad\models\OutCourse;
 use backend\modules\teachingLoad\models\PastExperience;
 use common\models\Country;
@@ -306,6 +308,85 @@ class Staff extends \yii\db\ActiveRecord
 			}
 		}
 		return $str;
+	}
+
+	//Bru buat
+	public function getTeachLecture(){
+		return $this->hasMany(LecLecturer::className(), ['staff_id' => 'id']);
+	}
+
+	public function getTeachLectureStr($br = "\n"){
+		$list = $this->teachLecture;
+		$str = '';
+		if($list){
+			$i = 1;
+			foreach($list as $item){
+				
+				if($item->courseLecture){
+					$d = $i == 1 ? '' : $br;
+					$str .= $d.$item->courseLecture->lec_name;
+				}
+				
+			$i++;
+			}
+		}
+		return $str;
+	}
+
+	public function getTeachTutorial(){
+		return $this->hasMany(TutorialTutor::className(), ['staff_id' => 'id']);
+	}
+
+	public function getTeachTutorialStr($br = "\n"){
+		$list = $this->teachTutorial;
+		$str = '';
+		if($list){
+			$i = 1;
+			foreach($list as $item){
+				
+				if($item->tutorialLec){
+					$d = $i == 1 ? '' : $br;
+					$str .= $d.$item->tutorialLec->tutorial_name;
+				}
+				
+			$i++;
+			}
+		}
+		return $str;
+	}
+
+	public function getTotalLectureTutorial($br = "\n"){
+		$list1 = $this->teachLecture;
+		$countLecture = 0;
+		if($list1){
+			$i = 1;
+			foreach($list1 as $item){
+				
+				if($item->courseLecture){
+					$d = $i == 1 ? '' : $br;
+					$countLecture++;
+				}
+				
+			$i++;
+			}
+		}
+
+		$list2 = $this->teachTutorial;
+		$countTutorial = 0;
+		if($list2){
+			$j = 1;
+			foreach($list2 as $item){
+				
+				if($item->tutorialLec){
+					$d = $j == 1 ? '' : $br;
+					$countTutorial++;
+				}
+				
+			$j++;
+			}
+		}
+		$total = $countLecture + $countTutorial;
+		return $total;
 	}
 	
 	public function getOtherTaughtCourses(){
