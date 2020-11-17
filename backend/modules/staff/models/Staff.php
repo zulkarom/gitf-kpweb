@@ -323,8 +323,10 @@ class Staff extends \yii\db\ActiveRecord
 			foreach($list as $item){
 				
 				if($item->courseLecture){
+					
 					$d = $i == 1 ? '' : $br;
-					$str .= $d.$item->courseLecture->lec_name;
+					$code = $item->courseLecture->courseOffered->course->course_code;
+					$str .= $d.$code.' - '.$item->courseLecture->lec_name;
 				}
 				
 			$i++;
@@ -346,7 +348,9 @@ class Staff extends \yii\db\ActiveRecord
 				
 				if($item->tutorialLec){
 					$d = $i == 1 ? '' : $br;
-					$str .= $d.$item->tutorialLec->tutorial_name;
+					$code = $item->tutorialLec->lecture->courseOffered->course->course_code;
+					$codeLec = $item->tutorialLec->lecture->lec_name;
+					$str .= $d.$code.' - '.$codeLec.$item->tutorialLec->tutorial_name;
 				}
 				
 			$i++;
@@ -385,7 +389,7 @@ class Staff extends \yii\db\ActiveRecord
 			$j++;
 			}
 		}
-		$total = $countLecture + $countTutorial;
+		$total = ($countLecture*2) + $countTutorial;
 		return $total;
 	}
 	

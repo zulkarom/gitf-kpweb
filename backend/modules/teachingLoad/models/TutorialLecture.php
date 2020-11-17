@@ -3,6 +3,7 @@
 namespace backend\modules\teachingLoad\models;
 
 use Yii;
+use backend\modules\teachingLoad\models\TutorialTutor;
 use backend\modules\teachingLoad\models\CourseLecture;
 /**
  * This is the model class for table "tld_tutorial_lec".

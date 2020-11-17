@@ -3,7 +3,10 @@
 namespace backend\modules\teachingLoad\models;
 
 use Yii;
+use backend\modules\teachingLoad\models\TutorialLecture;
+use backend\modules\teachingLoad\models\LecLecturer;
 use backend\modules\teachingLoad\models\CourseOffered;
+
 /**
  * This is the model class for table "tld_course_lec".
  *
@@ -65,16 +68,15 @@ class CourseLecture extends \yii\db\ActiveRecord
     }
 
     public function getTutorials()
-        {
-            return $this->hasMany(TutorialLecture::className(), ['lecture_id' => 'id']);
-        }
+    {
+        return $this->hasMany(TutorialLecture::className(), ['lecture_id' => 'id']);
+    }
 
     public function getLecturers()
     {
         return $this->hasMany(LecLecturer::className(), ['lecture_id' => 'id']);
     }
-
-    //16.11.2020
+    
     public function getCourseOffered(){
         return $this->hasOne(CourseOffered::className(), ['id' => 'offered_id']);
     }
