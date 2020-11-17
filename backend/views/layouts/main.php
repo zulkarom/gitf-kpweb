@@ -27,7 +27,7 @@ use yii\helpers\Html;
 
         <?= $this->render(
             'header.php',
-            ['directoryAsset' => $directoryAsset]
+				['directoryAsset' => $directoryAsset]
         ) ?>
 
         <?= $this->render(
