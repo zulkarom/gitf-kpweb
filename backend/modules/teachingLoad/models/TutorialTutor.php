@@ -4,6 +4,8 @@ namespace backend\modules\teachingLoad\models;
 
 use Yii;
 use backend\modules\teachingLoad\models\TutorialLecture;
+use backend\modules\staff\models\Staff;
+
 
 /**
  * This is the model class for table "tutorial_tutor".
@@ -47,5 +49,9 @@ class TutorialTutor extends \yii\db\ActiveRecord
 
      public function getTutorialLec(){
         return $this->hasOne(TutorialLecture::className(), ['id' => 'tutorial_id']);
+    }
+
+    public function getStaffName(){
+        return $this->hasMany(Staff::className(), ['id' => 'staff_id']);
     }
 }

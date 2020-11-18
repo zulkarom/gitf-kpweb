@@ -131,9 +131,11 @@ class Menu
 				
 				['label' => 'My Teaching', 'icon' => 'user', 'url' => ['/teaching-load/default/teaching-view']],
 				
-				['label' => 'Offered Courses', 'icon' => 'book', 'url' => ['/teaching-load/course-offered/index']],
+				['label' => 'Course Assignment', 'icon' => 'book', 'url' => ['/teaching-load/course-offered/index']],
 
-				['label' => 'Teaching Summary', 'icon' => 'book', 'url' => ['/teaching-load/manager/summary']],
+				['label' => 'Summary By Staff', 'icon' => 'book', 'url' => ['/teaching-load/manager/summary-by-staff']],
+
+				['label' => 'Summary By Course', 'icon' => 'book', 'url' => ['/teaching-load/manager/summary-by-course']],
 								
 				['label' => 'Teaching By Staff', 'icon' => 'user', 'url' => ['/teaching-load/manager/by-staff']],
 				

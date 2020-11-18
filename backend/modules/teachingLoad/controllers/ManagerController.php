@@ -8,6 +8,7 @@ use yii\helpers\ArrayHelper;
 use yii\filters\AccessControl;
 use backend\modules\teachingLoad\models\TeachingStaffSearch;
 use backend\modules\teachingLoad\models\TeachingCourseSearch;
+use backend\modules\teachingLoad\models\CourseLectureStaffSearch;
 use backend\modules\teachingLoad\models\CourseLectureSearch;
 use backend\modules\teachingLoad\models\Setting;
 use yii\db\Expression;
@@ -55,12 +56,24 @@ class ManagerController extends Controller
 
     }
 
-    public function actionSummary()
+    public function actionSummaryByStaff()
+    {
+        $searchModel = new CourseLectureStaffSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('summarybystaff', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+
+    }
+
+      public function actionSummaryByCourse()
     {
         $searchModel = new CourseLectureSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('summary', [
+        return $this->render('summarybycourse', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);

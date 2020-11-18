@@ -390,7 +390,13 @@ class Staff extends \yii\db\ActiveRecord
 			}
 		}
 		$total = ($countLecture*2) + $countTutorial;
-		return $total;
+		$null ='';
+		if($total){
+			return $total;
+		}
+		else{
+			return $null;
+		}
 	}
 	
 	public function getOtherTaughtCourses(){

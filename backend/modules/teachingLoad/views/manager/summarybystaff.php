@@ -8,7 +8,7 @@ use kartik\export\ExportMenu;
 /* @var $searchModel backend\modules\esiap\models\CourseSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Teaching Summary';
+$this->title = 'Teaching Summary by Staff';
 $this->params['breadcrumbs'][] = $this->title;
 
 
@@ -88,7 +88,7 @@ $columns = [
         <?=ExportMenu::widget([
     'dataProvider' => $dataProvider,
     'columns' => $columns,
-    'filename' => 'STAFF_TEACHING_' . date('Y-m-d'),
+    'filename' => 'STAFF_SUMMARY_' . date('Y-m-d'),
     'onRenderSheet'=>function($sheet, $grid){
         $sheet->getStyle('A2:'.$sheet->getHighestColumn().$sheet->getHighestRow())
         ->getAlignment()->setWrapText(true);

@@ -4,6 +4,7 @@ namespace backend\modules\teachingLoad\models;
 
 use Yii;
 use backend\modules\teachingLoad\models\CourseLecture;
+use backend\modules\staff\models\Staff;
 
 /**
  * This is the model class for table "lec_lecturer".
@@ -51,5 +52,9 @@ class LecLecturer extends \yii\db\ActiveRecord
 
     public function getCourseLecture(){
         return $this->hasOne(CourseLecture::className(), ['id' => 'lecture_id']);
+    }
+
+     public function getStaffName(){
+        return $this->hasMany(Staff::className(), ['id' => 'staff_id']);
     }
 }

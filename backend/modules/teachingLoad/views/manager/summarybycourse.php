@@ -1,0 +1,130 @@
+<?php
+
+use yii\helpers\Html;
+use kartik\grid\GridView;
+use kartik\export\ExportMenu;
+
+/* @var $this yii\web\View */
+/* @var $searchModel backend\modules\esiap\models\CourseSearch */
+/* @var $dataProvider yii\data\ActiveDataProvider */
+
+$this->title = 'Teaching Summary by Course';
+$this->params['breadcrumbs'][] = $this->title;
+
+
+
+$columns = [
+            ['class' => 'yii\grid\SerialColumn'],
+			
+			'course_code',
+			'course_name',
+			
+
+			[
+                'label' => 'Lectures',
+                'format' => 'html',
+                'value' => function($model){
+                    return $model->teachLectureStr;
+                }
+            ],
+           
+           
+            
+            [
+                'label' => 'Tutorials',
+                'format' => 'html',
+                'value' => function($model){
+                    return $model->teachTutorialStr;
+                }
+            ],
+            
+            
+            [
+                'label' => 'Total',
+                'format' => 'html',
+                'value' => function($model){
+                    return $model->totalLectureTutorial;
+                }
+            ],
+
+        ];
+?>
+<div class="course-index">
+
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+	
+	<div class="row">
+<div class="col-md-6">
+		
+		<?=ExportMenu::widget([
+    'dataProvider' => $dataProvider,
+    'columns' => $columns,
+	'filename' => 'COURSE_SUMMARY_' . date('Y-m-d'),
+	'onRenderSheet'=>function($sheet, $grid){
+		$sheet->getStyle('A2:'.$sheet->getHighestColumn().$sheet->getHighestRow())
+		->getAlignment()->setWrapText(true);
+	},
+	'exportConfig' => [
+        ExportMenu::FORMAT_PDF => false,
+		ExportMenu::FORMAT_EXCEL_X => false,
+    ],
+]);?>
+		
+		
+		
+ </div>
+
+<div class="col-md-6" align="right">
+
+<?php //=$this->render('_search', ['model' => $searchModel])?>
+</div>
+
+</div>
+<br />
+
+    <div class="box">
+<div class="box-header"></div>
+<div class="box-body"><?= GridView::widget([
+        'dataProvider' => $dataProvider,
+		'export' => false,
+       // 'filterModel' => $searchModel,
+        'columns' => [
+	
+            ['class' => 'yii\grid\SerialColumn'],
+			
+			'course_code',
+			'course_name',
+			
+
+			[
+                'label' => 'Lectures',
+                'format' => 'html',
+                'value' => function($model){
+            
+                    return $model->getTeachLectureStr("<br />");
+                    
+                }
+            ],
+            
+            
+            [
+                'label' => 'Tutorial',
+                'format' => 'html',
+                'value' => function($model){
+                    return $model->getTeachTutorialStr("<br />");
+                }
+            ],
+            
+            [
+                'label' => 'Total',
+                'format' => 'html',
+                'value' => function($model){
+                    return $model->getTotalLectureTutorial("<br />");
+                }
+            ],
+	
+        ],
+    ]); ?></div>
+</div>
+
+</div>

@@ -5,14 +5,14 @@ namespace backend\modules\teachingLoad\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\modules\teachingLoad\models\Course;
+use backend\modules\staff\models\Staff;
 
 /**
  * CourseSearch represents the model behind the search form of `backend\modules\esiap\models\Course`.
  */
-class CourseLectureSearch extends Course
+class CourseLectureStaffSearch extends Staff
 {
-	public $search_staff;
+    public $search_staff;
     /**
      * @inheritdoc
      */
@@ -41,14 +41,15 @@ class CourseLectureSearch extends Course
      */
     public function search($params)
     {
-        $query = Course::find()
-		->where(['faculty_id' => Yii::$app->params['faculty_id'], 'is_active' => 1, 'is_dummy' => 0, 'method_type' => 1])->orderBy('course_code ASC');
+        $query = Staff::find()
+        ->joinWith('user')
+        ->where(['staff_active' => 1, 'is_academic' => 1, 'working_status' => 1])->orderBy('user.fullname ASC');
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-			'pagination' => [
+            'pagination' => [
                 'pageSize' => 200,
             ],
 
@@ -61,8 +62,8 @@ class CourseLectureSearch extends Course
             // $query->where('0=1');
             return $dataProvider;
         }
-		
-		/* // grid filtering conditions
+        
+        /* // grid filtering conditions
         $query->andFilterWhere(['like', 'course_code', $this->search_course]);
 
 
