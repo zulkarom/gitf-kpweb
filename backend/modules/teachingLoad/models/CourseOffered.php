@@ -4,6 +4,7 @@ namespace backend\modules\teachingLoad\models;
 
 use Yii;
 use backend\modules\esiap\models\Course;
+use backend\modules\staff\models\Staff;
 
 /**
  * This is the model class for table "tld_course_offered".
@@ -78,4 +79,8 @@ class CourseOffered extends \yii\db\ActiveRecord
         {
             return $this->hasMany(CourseLecture::className(), ['offered_id' => 'id']);
         }
+
+    public function getStaffName(){
+        return $this->hasMany(Staff::className(), ['id' => 'coordinator']);
+    }
 }

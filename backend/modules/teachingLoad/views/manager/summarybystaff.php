@@ -35,6 +35,8 @@ $columns = [
                 }
                 
             ],
+
+            
             
             [
                 'label' => 'Lectures',
@@ -130,6 +132,10 @@ $columns = [
                 }
                 
             ],
+
+           
+            
+
             [
                 'label' => 'Lectures',
                 'format' => 'html',

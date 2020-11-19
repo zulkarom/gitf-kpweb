@@ -6,6 +6,7 @@ use Yii;
 use common\models\User;
 use yii\helpers\ArrayHelper;
 use backend\modules\erpd\models\Stats as ErpdStats;
+use backend\modules\teachingLoad\models\CourseOffered;
 use backend\modules\teachingLoad\models\TaughtCourse;
 use backend\modules\teachingLoad\models\TeachCourse;
 use backend\modules\teachingLoad\models\LecLecturer;
@@ -310,7 +311,19 @@ class Staff extends \yii\db\ActiveRecord
 		return $str;
 	}
 
-	//Bru buat
+	public function getCoordinator(){
+		return $this->hasOne(CourseOffered::className(),['coordinator' => 'id']);
+	}
+
+	public function getCoordinatorStr()
+	{
+		$str = '';
+		if($this->coordinator){
+			$str = $this->staff_title . ' ' . $this->user->fullname ;
+		}
+		return $str;
+	}
+
 	public function getTeachLecture(){
 		return $this->hasMany(LecLecturer::className(), ['staff_id' => 'id']);
 	}

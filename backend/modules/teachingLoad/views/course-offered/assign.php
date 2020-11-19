@@ -17,12 +17,12 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <h4><?=$model->course->codeCourseString?></h4>
 
-
+	
 	<!-- add lecture -->
 	<?php $form = ActiveForm::begin(); ?>
 	<?php 
 	$addLecure->lecture_number = 1;
-	echo 'Add Lecture: ' . $form->field($addLecure, 'lecture_number', [
+	echo 'Add Lecture :' . $form->field($addLecure, 'lecture_number', [
                     'template' => '{input}',
                     'options' => [
 						
@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	$addTutorial->tutorial_number = 1;
 	echo $form->field($addTutorial, 'lecture_json',['options' => ['tag' => false]])->hiddenInput(['value' => ''])->label(false);
 
-	echo 'Add Tutorials: ' . $form->field($addTutorial, 'tutorial_number', [
+	echo 'Add Tutorials :' . $form->field($addTutorial, 'tutorial_number', [
 		                    'template' => '{input}',
 		                    'options' => [
 								
@@ -54,22 +54,39 @@ $this->params['breadcrumbs'][] = $this->title;
       
 	<?= Html::submitButton('Go', ['class' => 'btn btn-sm btn-default']) ?>
     <?php ActiveForm::end(); ?>
+    <br/>
 
+    <?php $form = ActiveForm::begin(); ?>
+    <div class="row">
+    <div class="col-sm-3">
+    
+    <?php
 
-<br />
-
+  
+	echo ' Add Coordinator :'. Select2::widget([
+				    'name' => 'coordinator',
+				    'value' => $model->coordinator,
+				    'data' => ArrayHelper::map(Staff::getAcademicStaff(), 'id', 'user.fullname'),
+				    'options' => ['placeholder' => 'Select Coordinator ...'],
+				    'pluginOptions' => [
+                		'allowClear' => true
+            		],
+				]);
+	?>
+	</div>
+	</div>
 
 <div class="course-offered-index">
-
-<?php $form = ActiveForm::begin(); ?>
+<br/>
     <div class="box">
 <div class="box-body">
+
 
 <div class="table-responsive">
   <table class="table table-striped table-hover">
     <thead>
       <tr>
-      	<th></th>
+      	<th><input type="checkbox" class ="checkbxLec" name="cbkLecture" value='' /></th>
         <th>#</th>
         <th>Lecture</th>
 		<th>No.Student</th>
@@ -97,7 +114,7 @@ $this->params['breadcrumbs'][] = $this->title;
 					echo Select2::widget([
 				    'name' => 'Lecture['.$lec->id.'][lecturers]',
 				    'value' => ArrayHelper::map($lec->lecturers,'id','staff_id'),
-				    'data' => ArrayHelper::map(Staff::activeStaffNotMe(), 'id', 'staff_name'),
+				    'data' => ArrayHelper::map(Staff::getAcademicStaff(), 'id', 'user.fullname'),
 				    'options' => ['multiple' => true, 'placeholder' => 'Select Staff ...']
 				]);
 
@@ -132,7 +149,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				    echo Select2::widget([
 					    'name' => 'Lecture['.$lec->id.'][tutorial]['.$tutorial->id.'][tutoriallecturers]',
 					    'value' => ArrayHelper::map($tutorial->lecturers,'id','staff_id'),
-					    'data' => ArrayHelper::map(Staff::activeStaffNotMe(), 'id', 'staff_name'),
+					    'data' => ArrayHelper::map(Staff::getAcademicStaff(), 'id', 'user.fullname'),
 					    'options' => ['multiple' => true, 'placeholder' => 'Select Staff ...']
 					]);
 
@@ -176,8 +193,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?= Html::submitButton('Save', ['class' => 'btn btn-sm btn-default']) ?>
 
-<?php ActiveForm::end(); ?>
+
 </div>
+<?php ActiveForm::end(); ?>
 
 <?php
 $js = "

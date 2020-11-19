@@ -18,6 +18,15 @@ $columns = [
 			
 			'course_code',
 			'course_name',
+
+            [
+                'label' => 'Coordinator',
+                'format' => 'html',
+                'value' => function($model){
+                    return $model->teachLectureStr;
+                }
+            ],
+
 			
 
 			[
@@ -26,6 +35,14 @@ $columns = [
                 'value' => function($model){
                     return $model->teachLectureStr;
                 }
+            ],
+
+            [
+                'label' => 'Lectures Assignment',
+                'value' => function($model){
+                    return $model->lecture;
+                }
+                
             ],
            
            
@@ -36,6 +53,12 @@ $columns = [
                 'value' => function($model){
                     return $model->teachTutorialStr;
                 }
+            ],
+
+            [
+                'label' => 'Tutorials Assigment',
+                'format' => 'html',
+               
             ],
             
             
@@ -94,7 +117,16 @@ $columns = [
 			
 			'course_code',
 			'course_name',
-			
+
+			[
+                'label' => 'Coordinator',
+                'format' => 'html',
+                'value' => function($model){
+            
+                    return $model->getCoordinatorStr("<br />");
+                    
+                }
+            ],
 
 			[
                 'label' => 'Lectures',
@@ -106,6 +138,17 @@ $columns = [
                 }
             ],
             
+
+            [
+                'label' => 'Lectures Assigment',
+                'format' => 'html',
+                'value' => function($model){
+            
+                    return $model->getLecture("<br />");
+                    
+                }
+                
+            ],
             
             [
                 'label' => 'Tutorial',
@@ -115,6 +158,12 @@ $columns = [
                 }
             ],
             
+            [
+                'label' => 'Tutorial Assigment',
+                'format' => 'html',
+                
+            ],
+
             [
                 'label' => 'Total',
                 'format' => 'html',

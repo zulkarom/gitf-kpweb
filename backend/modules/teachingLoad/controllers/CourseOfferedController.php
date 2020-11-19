@@ -145,8 +145,23 @@ class CourseOfferedController extends Controller
         $addTutorial = new AddTutorialForm;
 
         $modelLecture = new CourseLecture;
+
+        
 		
 		if(Yii::$app->request->post()){
+
+            //Save Coordinator
+            
+            if(Yii::$app->request->post('coordinator')){
+                
+
+                $post_coordinator = Yii::$app->request->post('coordinator');
+               
+                
+                $model->coordinator = $post_coordinator;
+                $model->save();
+
+            }
 
 			if(Yii::$app->request->post('AddLectureForm')){
 				$add = Yii::$app->request->post('AddLectureForm');
@@ -232,6 +247,8 @@ class CourseOfferedController extends Controller
                 }
             }
 
+          
+
             
 
            
@@ -251,7 +268,8 @@ class CourseOfferedController extends Controller
 		   'addLecure' => $addLecure,
 		   'lectures' => $lectures,
            'addTutorial' => $addTutorial,
-           'modelLecture' => $modelLecture
+           'modelLecture' => $modelLecture,
+           
         ]);
 	}
 

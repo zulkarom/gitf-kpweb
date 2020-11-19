@@ -31,10 +31,35 @@ class Course extends \backend\modules\esiap\models\Course
 		
 	}
 
+	public function getLecture(){
+		return self::find()
+			->leftJoin('tld_course_lec','tld_course_offered.id = tld_course_lec.offered_id, semester.id = tld_course_offered.semester_id,sp_course.id = semester.course_id')
+			->where(['semester.	is_current'=>'1'])
+			->one();
+	}
+
+	
 	public function getTeachLecture(){
 		return $this->hasMany(CourseOffered::className(), ['course_id' => 'id']);
 	}
 
+	public function getCoordinatorStr(){
+		$list = $this->teachLecture;
+		$str = '';
+		if($list){
+			$i = 1;
+			foreach($list as $item){
+				if($item->staffName){
+					foreach ($item->staffName as $staff) {
+						$d = $i == 1 ? '' : $br;
+						$str .= $staff->staff_title . ' ' . $staff->user->fullname;
+						$i++;
+					}
+			}
+		}
+	}
+	return $str;
+}
 
 	public function getTeachLectureStr($br = "\n"){
 		$list = $this->teachLecture;
