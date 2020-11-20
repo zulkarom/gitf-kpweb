@@ -21,7 +21,7 @@ class TutorialTutor extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'tutorial_tutor';
+        return 'tld_tutorial_tutor';
     }
 
     /**

@@ -129,13 +129,15 @@ class Menu
                         'url' => '#',
                         'items' => [
 				
-				['label' => 'My Teaching', 'icon' => 'user', 'url' => ['/teaching-load/default/teaching-view']],
+				['label' => 'My Course Selection', 'icon' => 'user', 'url' => ['/teaching-load/default/teaching-view']],
 				
-				['label' => 'Course Assignment', 'icon' => 'book', 'url' => ['/teaching-load/course-offered/index']],
+				['label' => 'Teaching Assignment', 'icon' => 'book', 'url' => ['/teaching-load/course-offered/index']],
+				
+				['label' => 'Assignment By Course', 'icon' => 'book', 'url' => ['/teaching-load/manager/summary-by-course']],
 
-				['label' => 'Summary By Staff', 'icon' => 'book', 'url' => ['/teaching-load/manager/summary-by-staff']],
+				['label' => 'Assignment By Staff', 'icon' => 'book', 'url' => ['/teaching-load/manager/summary-by-staff']],
 
-				['label' => 'Summary By Course', 'icon' => 'book', 'url' => ['/teaching-load/manager/summary-by-course']],
+				
 								
 				['label' => 'Teaching By Staff', 'icon' => 'user', 'url' => ['/teaching-load/manager/by-staff']],
 				

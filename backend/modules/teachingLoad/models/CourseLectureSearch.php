@@ -13,6 +13,7 @@ use backend\modules\teachingLoad\models\Course;
 class CourseLectureSearch extends Course
 {
 	public $search_staff;
+	public $semester;
     /**
      * @inheritdoc
      */
@@ -42,14 +43,19 @@ class CourseLectureSearch extends Course
     public function search($params)
     {
         $query = Course::find()
-		->where(['faculty_id' => Yii::$app->params['faculty_id'], 'is_active' => 1, 'is_dummy' => 0, 'method_type' => 1])->orderBy('course_code ASC');
+		->where([
+			'faculty_id' => Yii::$app->params['faculty_id'], 
+			'is_active' => 1, 'is_dummy' => 0, 
+			'method_type' => 1]
+		)
+		->orderBy('course_code ASC');
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
 			'pagination' => [
-                'pageSize' => 200,
+                'pageSize' => 50,
             ],
 
         ]);
@@ -71,4 +77,6 @@ class CourseLectureSearch extends Course
 
         return $dataProvider;
     }
+	
+	
 }

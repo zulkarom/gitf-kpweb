@@ -8,7 +8,7 @@ use kartik\export\ExportMenu;
 /* @var $searchModel backend\modules\esiap\models\CourseSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Teaching Summary by Course';
+$this->title = 'Teaching Assignment by Course';
 $this->params['breadcrumbs'][] = $this->title;
 
 
@@ -23,7 +23,7 @@ $columns = [
                 'label' => 'Coordinator',
                 'format' => 'html',
                 'value' => function($model){
-                    return $model->teachLectureStr;
+                    return $model->coordinatorStr();
                 }
             ],
 
@@ -40,7 +40,7 @@ $columns = [
             [
                 'label' => 'Lectures Assignment',
                 'value' => function($model){
-                    return $model->lecture;
+                    //return $model->lecture;
                 }
                 
             ],
@@ -77,7 +77,14 @@ $columns = [
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 	
 	<div class="row">
-<div class="col-md-6">
+	
+	<div class="col-md-10" align="right">
+
+<?= $this->render('../../../../views/semester/_semester_select', [
+        'model' => $semester,
+    ]) ?>
+</div>
+<div class="col-md-2">
 		
 		<?=ExportMenu::widget([
     'dataProvider' => $dataProvider,
@@ -97,13 +104,9 @@ $columns = [
 		
  </div>
 
-<div class="col-md-6" align="right">
 
-<?php //=$this->render('_search', ['model' => $searchModel])?>
-</div>
 
 </div>
-<br />
 
     <div class="box">
 <div class="box-header"></div>
@@ -121,9 +124,9 @@ $columns = [
 			[
                 'label' => 'Coordinator',
                 'format' => 'html',
-                'value' => function($model){
+                'value' => function($model) use ($semester){
             
-                    return $model->getCoordinatorStr("<br />");
+                    return $model->getCoordinatorStr($semester->semester_id);
                     
                 }
             ],
@@ -131,24 +134,24 @@ $columns = [
 			[
                 'label' => 'Lectures',
                 'format' => 'html',
-                'value' => function($model){
+                'value' => function($model) use ($semester){
             
-                    return $model->getTeachLectureStr("<br />");
+                    return $model->getTeachLectureStr($semester, "<br />");
                     
                 }
             ],
             
 
-            [
+            /* [
                 'label' => 'Lectures Assigment',
                 'format' => 'html',
                 'value' => function($model){
             
-                    return $model->getLecture("<br />");
+//return $model->getLecture("<br />");
                     
                 }
                 
-            ],
+            ], */
             
             [
                 'label' => 'Tutorial',
@@ -158,11 +161,11 @@ $columns = [
                 }
             ],
             
-            [
+            /* [
                 'label' => 'Tutorial Assigment',
                 'format' => 'html',
                 
-            ],
+            ], */
 
             [
                 'label' => 'Total',

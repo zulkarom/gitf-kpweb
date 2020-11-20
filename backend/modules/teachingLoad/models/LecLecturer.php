@@ -20,7 +20,7 @@ class LecLecturer extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'lec_lecturer';
+        return 'tld_lec_lecturer';
     }
 
     /**

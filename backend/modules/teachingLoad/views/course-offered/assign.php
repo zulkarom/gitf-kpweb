@@ -115,7 +115,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				    'name' => 'Lecture['.$lec->id.'][lecturers]',
 				    'value' => ArrayHelper::map($lec->lecturers,'id','staff_id'),
 				    'data' => ArrayHelper::map(Staff::getAcademicStaff(), 'id', 'user.fullname'),
-				    'options' => ['multiple' => true, 'placeholder' => 'Select Staff ...']
+				    'options' => ['multiple' => true, 'placeholder' => 'Select']
 				]);
 
 
@@ -150,7 +150,7 @@ $this->params['breadcrumbs'][] = $this->title;
 					    'name' => 'Lecture['.$lec->id.'][tutorial]['.$tutorial->id.'][tutoriallecturers]',
 					    'value' => ArrayHelper::map($tutorial->lecturers,'id','staff_id'),
 					    'data' => ArrayHelper::map(Staff::getAcademicStaff(), 'id', 'user.fullname'),
-					    'options' => ['multiple' => true, 'placeholder' => 'Select Staff ...']
+					    'options' => ['multiple' => true, 'placeholder' => 'Select']
 					]);
 
 				    echo'</td>
@@ -191,7 +191,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 </div>
 
-<?= Html::submitButton('Save', ['class' => 'btn btn-sm btn-default']) ?>
+<?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> Save Teaching Assignment', ['class' => 'btn btn-primary']) ?>
 
 
 </div>

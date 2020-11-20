@@ -13,9 +13,12 @@ use Yii;
  */
 class Course extends \backend\modules\esiap\models\Course
 {
+	public $semester;
+	
     /**
      * {@inheritdoc}
      */
+	 
     public function getStaffTeachers(){
 		return $this->hasMany(TeachCourse::className(), ['course_id' => 'id'])->orderBy('rank ASC');
 	}
@@ -31,37 +34,33 @@ class Course extends \backend\modules\esiap\models\Course
 		
 	}
 
-	public function getLecture(){
-		return self::find()
-			->leftJoin('tld_course_lec','tld_course_offered.id = tld_course_lec.offered_id, semester.id = tld_course_offered.semester_id,sp_course.id = semester.course_id')
-			->where(['semester.	is_current'=>'1'])
-			->one();
+	public function getOffer($semester){
+		return CourseOffered::find()
+			->where(['course_id' => $this->id, 'semester_id' => $semester ])
+			->one(); 
 	}
 
 	
 	public function getTeachLecture(){
-		return $this->hasMany(CourseOffered::className(), ['course_id' => 'id']);
+		return $this->hasMany(CourseOffered::className(), ['course_id' => 'id'])->where(['semester_id' => $this->semester]);
 	}
 
-	public function getCoordinatorStr(){
-		$list = $this->teachLecture;
-		$str = '';
-		if($list){
-			$i = 1;
-			foreach($list as $item){
-				if($item->staffName){
-					foreach ($item->staffName as $staff) {
-						$d = $i == 1 ? '' : $br;
-						$str .= $staff->staff_title . ' ' . $staff->user->fullname;
-						$i++;
-					}
+	public function getCoordinatorStr($semester){
+		$offer = $this->getOffer($semester);
+		$coor = '';
+		if($offer){
+			$coordinator = $offer->coor;
+			if($coordinator){
+				$user = $coordinator->user;
+				$coor = $coordinator->staff_title . ' ' . $user->fullname;
 			}
+			
 		}
+	return $coor; 
 	}
-	return $str;
-}
 
-	public function getTeachLectureStr($br = "\n"){
+	public function getTeachLectureStr($semester, $br = "\n"){
+		$this->semester = $semester;
 		$list = $this->teachLecture;
 		$str = '';
 		if($list){
@@ -72,18 +71,26 @@ class Course extends \backend\modules\esiap\models\Course
 					
 					foreach ($item->lectures as $lecture) {
 						
-						foreach ($lecture->lecturers as $lecturer){
-							if($lecturer->staffName)
-							{
-								foreach ($lecturer->staffName as $staff)
-									{
-										$d = $i == 1 ? '' : $br;
-										$code = $d.$lecture->lec_name.' ('.$lecture->student_num.') ';
-										$str .= $code.' - '.$staff->staff_title . ' ' . $staff->user->fullname;
-										$i++;
-									}
+						if($lecture->lecturers){
+							foreach ($lecture->lecturers as $lecturer){
+								if($lecturer->staffName)
+								{
+									foreach ($lecturer->staffName as $staff)
+										{
+											$d = $i == 1 ? '' : $br;
+											$code = $d.$lecture->lec_name.' ('.$lecture->student_num.') ';
+											$str .= $code.' - '.$staff->staff_title . ' ' . $staff->user->fullname;
+											$i++;
+										}
+								}
 							}
+						}else{
+							$d = $i == 1 ? '' : $br;
+							$code = $d.$lecture->lec_name.' ('.$lecture->student_num.') ';
+							$str .= $code.' - ???';
+							$i++;
 						}
+						
 						
 					}	
 				}
@@ -123,6 +130,11 @@ class Course extends \backend\modules\esiap\models\Course
 											}
 										}
 									}
+								}else{
+									$d = $i == 1 ? '' : $br;
+									$code = $d.$lecture->lec_name.$tutorial->tutorial_name.' ('.$tutorial->student_num.') ';
+									$str .= $code.' - ???';
+									$i++;
 								}
 								
 							}

@@ -12,6 +12,8 @@ use backend\modules\teachingLoad\models\CourseLectureStaffSearch;
 use backend\modules\teachingLoad\models\CourseLectureSearch;
 use backend\modules\teachingLoad\models\Setting;
 use yii\db\Expression;
+use backend\models\SemesterForm;
+use backend\models\Semester;
 
 /**
  * Default controller for the `teaching-load` module
@@ -68,14 +70,27 @@ class ManagerController extends Controller
 
     }
 
-      public function actionSummaryByCourse()
+    public function actionSummaryByCourse()
     {
+		$semester = new SemesterForm;
+		$semester->action = ['/teaching-load/manager/summary-by-course'];
+		
+		if(Yii::$app->getRequest()->getQueryParam('SemesterForm')){
+			$sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');
+			$semester->semester_id = $sem['semester_id'];
+		}else{
+			$semester->semester_id = Semester::getCurrentSemester()->id;
+		}
+		
+		
         $searchModel = new CourseLectureSearch();
+		$searchModel->semester = $semester->semester_id;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('summarybycourse', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+			'semester' => $semester
         ]);
 
     }

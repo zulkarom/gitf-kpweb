@@ -27,11 +27,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `lec_lecturer`
 --
 
-CREATE TABLE `lec_lecturer` (
-  `id` int(11) NOT NULL,
-  `lecture_id` int(11) NOT NULL,
-  `staff_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 
 -- --------------------------------------------------------
 
@@ -67,8 +63,7 @@ CREATE TABLE `tutorial_tutor` (
 --
 -- Indexes for table `lec_lecturer`
 --
-ALTER TABLE `lec_lecturer`
-  ADD PRIMARY KEY (`id`);
+
 
 --
 -- Indexes for table `tld_tutorial_lec`
@@ -89,8 +84,7 @@ ALTER TABLE `tutorial_tutor`
 --
 -- AUTO_INCREMENT for table `lec_lecturer`
 --
-ALTER TABLE `lec_lecturer`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
 
 --
 -- AUTO_INCREMENT for table `tld_tutorial_lec`

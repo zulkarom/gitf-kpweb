@@ -25,8 +25,17 @@ $this->params['breadcrumbs'][] = $this->title;
         //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            'course.codeCourseString',
-            'coordinator',
+			[
+				'attribute' => 'course.codeCourseString',
+				'label' => 'Course',
+				
+			],
+           [
+				'attribute' => 'coor.user.fullname',
+				'label' => 'Course',
+				
+			],
+            
 
             ['class' => 'yii\grid\ActionColumn',
                  'contentOptions' => ['style' => 'width: 12.7%'],
