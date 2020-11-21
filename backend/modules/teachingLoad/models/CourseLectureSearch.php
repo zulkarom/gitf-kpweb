@@ -12,15 +12,17 @@ use backend\modules\teachingLoad\models\Course;
  */
 class CourseLectureSearch extends Course
 {
-	public $search_staff;
+	public $search_course;
+	
 	public $semester;
+	
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['search_staff'], 'string'],
+            [['search_course'], 'string'],
         ];
     }
 
@@ -68,12 +70,14 @@ class CourseLectureSearch extends Course
             return $dataProvider;
         }
 		
-		/* // grid filtering conditions
+		
+		
+		// grid filtering conditions
         $query->andFilterWhere(['like', 'course_code', $this->search_course]);
 
 
         $query->orFilterWhere(['like', 'course_name', $this->search_course])
-            ->orFilterWhere(['like', 'course_name_bi', $this->search_course]); */
+            ->orFilterWhere(['like', 'course_name_bi', $this->search_course]);
 
         return $dataProvider;
     }

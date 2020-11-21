@@ -78,6 +78,7 @@ class ManagerController extends Controller
 		if(Yii::$app->getRequest()->getQueryParam('SemesterForm')){
 			$sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');
 			$semester->semester_id = $sem['semester_id'];
+			$semester->str_search = $sem['str_search'];
 		}else{
 			$semester->semester_id = Semester::getCurrentSemester()->id;
 		}
@@ -85,6 +86,7 @@ class ManagerController extends Controller
 		
         $searchModel = new CourseLectureSearch();
 		$searchModel->semester = $semester->semester_id;
+		$searchModel->search_course = $semester->str_search;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('summarybycourse', [

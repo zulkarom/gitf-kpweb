@@ -87,7 +87,7 @@ class Course extends \backend\modules\esiap\models\Course
 						}else{
 							$d = $i == 1 ? '' : $br;
 							$code = $d.$lecture->lec_name.' ('.$lecture->student_num.') ';
-							$str .= $code.' - ???';
+							$str .= $code.' - <span class="label label-danger">???</span>';
 							$i++;
 						}
 						
@@ -133,7 +133,7 @@ class Course extends \backend\modules\esiap\models\Course
 								}else{
 									$d = $i == 1 ? '' : $br;
 									$code = $d.$lecture->lec_name.$tutorial->tutorial_name.' ('.$tutorial->student_num.') ';
-									$str .= $code.' - ???';
+									$str .= $code.' - <span class="label label-danger">???</span>';
 									$i++;
 								}
 								

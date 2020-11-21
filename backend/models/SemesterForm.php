@@ -11,6 +11,7 @@ use yii\base\Model;
 class SemesterForm extends Model
 {
     public $semester_id;
+	public $str_search;
 	public $action;
 
     /**
@@ -20,6 +21,7 @@ class SemesterForm extends Model
     {
         return [
 			[['semester_id'], 'integer'],
+			[['str_search'], 'string'],
         ];
     }
 	

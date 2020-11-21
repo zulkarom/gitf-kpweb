@@ -80,7 +80,7 @@ $columns = [
 	
 	<div class="col-md-10" align="right">
 
-<?= $this->render('../../../../views/semester/_semester_select', [
+<?= $this->render('_semester_course', [
         'model' => $semester,
     ]) ?>
 </div>
@@ -167,13 +167,13 @@ $columns = [
                 
             ], */
 
-            [
+            /* [
                 'label' => 'Total',
                 'format' => 'html',
                 'value' => function($model){
                     return $model->getTotalLectureTutorial("<br />");
                 }
-            ],
+            ], */
 	
         ],
     ]); ?></div>
