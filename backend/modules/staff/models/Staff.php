@@ -66,6 +66,8 @@ class Staff extends \yii\db\ActiveRecord
 	public $position_name;
 	public $staff_label;
 
+	public $semester;
+
 	
     /**
      * @inheritdoc
@@ -311,24 +313,49 @@ class Staff extends \yii\db\ActiveRecord
 		return $str;
 	}
 
-	public function getCoordinator(){
-		return $this->hasOne(CourseOffered::className(),['coordinator' => 'id']);
+	// public function getCoordinator(){
+	// 	return $this->hasOne(CourseOffered::className(),['coordinator' => 'id']);
+	// }
+
+	// public function getCoordinatorStr()
+	// {
+	// 	$str = '';
+	// 	if($this->coordinator){
+	// 		$str = $this->staff_title . ' ' . $this->user->fullname ;
+	// 	}
+	// 	return $str;
+	// }
+
+
+	public function getOffer($semester){
+		return CourseOffered::find()
+			->where(['course_id' => $this->id, 'semester_id' => $semester ])
+			->one(); 
 	}
 
-	public function getCoordinatorStr()
-	{
-		$str = '';
-		if($this->coordinator){
-			$str = $this->staff_title . ' ' . $this->user->fullname ;
+	public function getCoordinatorStr($semester){
+		$offer = $this->getOffer($semester);
+		$coor = '';
+		if($offer){
+			$coordinator = $offer->coor;
+			if($coordinator){
+				$user = $coordinator->user;
+				$coor = $coordinator->staff_title . ' ' . $user->fullname;
+			}
+			
 		}
-		return $str;
+	return $coor; 
 	}
 
 	public function getTeachLecture(){
-		return $this->hasMany(LecLecturer::className(), ['staff_id' => 'id']);
+		return LecLecturer::find()
+		->joinWith('courseLecture.courseOffered')
+		->where(['staff_id' => $this->id, 'semester_id' => $this->semester])
+		->all();
 	}
 
-	public function getTeachLectureStr($br = "\n"){
+	public function getTeachLectureStr($semester,$br = "\n"){
+		$this->semester = $semester;
 		$list = $this->teachLecture;
 		$str = '';
 		if($list){
@@ -339,7 +366,7 @@ class Staff extends \yii\db\ActiveRecord
 					
 					$d = $i == 1 ? '' : $br;
 					$code = $item->courseLecture->courseOffered->course->course_code;
-					$str .= $d.$code.' - '.$item->courseLecture->lec_name;
+					$str .= $d.$code.' - '.$item->courseLecture->lec_name.' ('.$item->courseLecture->student_num.') ';
 				}
 				
 			$i++;
@@ -349,10 +376,14 @@ class Staff extends \yii\db\ActiveRecord
 	}
 
 	public function getTeachTutorial(){
-		return $this->hasMany(TutorialTutor::className(), ['staff_id' => 'id']);
+		return TutorialTutor::find()
+		->joinWith('tutorialLec.lecture.courseOffered')
+		->where(['staff_id' => $this->id, 'semester_id' => $this->semester])
+		->all();
 	}
 
-	public function getTeachTutorialStr($br = "\n"){
+	public function getTeachTutorialStr($semester,$br = "\n"){
+		$this->semester = $semester;
 		$list = $this->teachTutorial;
 		$str = '';
 		if($list){
@@ -363,7 +394,7 @@ class Staff extends \yii\db\ActiveRecord
 					$d = $i == 1 ? '' : $br;
 					$code = $item->tutorialLec->lecture->courseOffered->course->course_code;
 					$codeLec = $item->tutorialLec->lecture->lec_name;
-					$str .= $d.$code.' - '.$codeLec.$item->tutorialLec->tutorial_name;
+					$str .= $d.$code.' - '.$codeLec.$item->tutorialLec->tutorial_name.' ('.$item->tutorialLec->student_num.') ';
 				}
 				
 			$i++;

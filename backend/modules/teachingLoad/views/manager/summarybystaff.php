@@ -8,7 +8,7 @@ use kartik\export\ExportMenu;
 /* @var $searchModel backend\modules\esiap\models\CourseSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Teaching Summary by Staff';
+$this->title = 'Teaching Assignment by Staff';
 $this->params['breadcrumbs'][] = $this->title;
 
 
@@ -85,7 +85,15 @@ $columns = [
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     
     <div class="row">
-<div class="col-md-6">
+
+        <div class="col-md-10" align="right">
+
+<?= $this->render('_semester_staff', [
+        'model' => $semester,
+    ]) ?>
+</div>
+        
+<div class="col-md-2">
         
         <?=ExportMenu::widget([
     'dataProvider' => $dataProvider,
@@ -139,9 +147,9 @@ $columns = [
             [
                 'label' => 'Lectures',
                 'format' => 'html',
-                'value' => function($model){
+                'value' => function($model) use ($semester){
             
-                    return $model->getTeachLectureStr("<br />");
+                    return $model->getTeachLectureStr($semester,"<br />");
                     
                 }
             ],
@@ -150,8 +158,8 @@ $columns = [
             [
                 'label' => 'Tutorial',
                 'format' => 'html',
-                'value' => function($model){
-                    return $model->getTeachTutorialStr("<br />");
+                'value' => function($model) use ($semester){
+                    return $model->getTeachTutorialStr($semester,"<br />");
                 }
             ],
             

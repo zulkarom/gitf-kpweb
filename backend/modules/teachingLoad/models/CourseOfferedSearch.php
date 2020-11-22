@@ -2,6 +2,7 @@
 
 namespace backend\modules\teachingLoad\models;
 
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use backend\modules\teachingLoad\models\CourseOffered;
@@ -11,6 +12,9 @@ use backend\modules\teachingLoad\models\CourseOffered;
  */
 class CourseOfferedSearch extends CourseOffered
 {
+    public $semester;
+    public $search_course;
+
     /**
      * {@inheritdoc}
      */
@@ -19,6 +23,7 @@ class CourseOfferedSearch extends CourseOffered
         return [
             [['id', 'semester_id', 'course_id', 'created_by', 'coordinator'], 'integer'],
             [['created_at'], 'safe'],
+            [['search_course'], 'string'],
         ];
     }
 
@@ -40,12 +45,16 @@ class CourseOfferedSearch extends CourseOffered
      */
     public function search($params)
     {
-        $query = CourseOffered::find();
+        $query = CourseOffered::find()
+        ->joinWith('course');
 
-        // add conditions that should always apply here
+        // // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
-            'query' => $query,
+             'query' => $query,
+                'pagination' => [
+                    'pageSize' => 50,
+                ],
         ]);
 
         $this->load($params);
@@ -58,13 +67,17 @@ class CourseOfferedSearch extends CourseOffered
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'semester_id' => $this->semester_id,
-            'course_id' => $this->course_id,
-            'created_at' => $this->created_at,
-            'created_by' => $this->created_by,
-            'coordinator' => $this->coordinator,
+            
+            'semester_id' => $this->semester,
+            
         ]);
+
+        // grid filtering conditions
+        $query->andFilterWhere(['like', 'course_code', $this->search_course]);
+
+
+        $query->orFilterWhere(['like', 'course_name', $this->search_course])
+            ->orFilterWhere(['like', 'course_name_bi', $this->search_course]);
 
         return $dataProvider;
     }

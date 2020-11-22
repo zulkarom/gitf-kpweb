@@ -16,7 +16,18 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('New Course Offered', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Bulk Session', ['session'], ['class' => 'btn btn-success']) ?>
     </p>
+
+    <div class="row">
+
+        <div class="col-md-10" align="right">
+
+            <?= $this->render('_form_course', [
+                'model' => $semester,
+            ]) ?>
+        </div>
+    </div>
 
     <div class="box">
 <div class="box-header"></div>

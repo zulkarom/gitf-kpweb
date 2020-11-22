@@ -20,6 +20,7 @@ use backend\models\Semester;
 class CourseOffered extends \yii\db\ActiveRecord
 {
 	public $courses;
+    public $semester;
 	
     /**
      * {@inheritdoc}
@@ -58,6 +59,12 @@ class CourseOffered extends \yii\db\ActiveRecord
         ];
     }
 	
+    public function getOffer($semester){
+        return CourseOffered::find()
+            ->where(['course_id' => $this->id, 'semester_id' => $semester ])
+            ->one(); 
+    }
+    
 	public function getCourse(){
          return $this->hasOne(Course::className(), ['id' => 'course_id']);
     }

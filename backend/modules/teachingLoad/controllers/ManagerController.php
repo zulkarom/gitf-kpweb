@@ -60,12 +60,27 @@ class ManagerController extends Controller
 
     public function actionSummaryByStaff()
     {
+
+        $semester = new SemesterForm;
+        $semester->action = ['/teaching-load/manager/summary-by-staff'];
+        
+        if(Yii::$app->getRequest()->getQueryParam('SemesterForm')){
+            $sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');
+            $semester->semester_id = $sem['semester_id'];
+            $semester->str_search = $sem['str_search'];
+        }else{
+            $semester->semester_id = Semester::getCurrentSemester()->id;
+        }
+
         $searchModel = new CourseLectureStaffSearch();
+        $searchModel->semester = $semester->semester_id;
+        $searchModel->search_staff = $semester->str_search;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('summarybystaff', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'semester' => $semester
         ]);
 
     }

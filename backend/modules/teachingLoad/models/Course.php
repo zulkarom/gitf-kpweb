@@ -33,16 +33,15 @@ class Course extends \backend\modules\esiap\models\Course
 		return $str;
 		
 	}
-
-	public function getOffer($semester){
-		return CourseOffered::find()
-			->where(['course_id' => $this->id, 'semester_id' => $semester ])
-			->one(); 
-	}
-
 	
 	public function getTeachLecture(){
 		return $this->hasMany(CourseOffered::className(), ['course_id' => 'id'])->where(['semester_id' => $this->semester]);
+	}
+
+	public function getOffer($semester){
+			return CourseOffered::find()
+				->where(['course_id' => $this->id, 'semester_id' => $semester ])
+				->one(); 
 	}
 
 	public function getCoordinatorStr($semester){

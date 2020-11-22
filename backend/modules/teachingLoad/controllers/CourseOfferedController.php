@@ -11,6 +11,8 @@ use backend\modules\teachingLoad\models\TutorialLecture;
 use backend\modules\teachingLoad\models\CourseLecture;
 use backend\modules\teachingLoad\models\LecLecturer;
 use backend\modules\teachingLoad\models\TutorialTutor;
+use backend\models\SemesterForm;
+use backend\models\Semester;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -50,12 +52,26 @@ class CourseOfferedController extends Controller
      */
     public function actionIndex()
     {
+        $semester = new SemesterForm;
+        $semester->action = ['/teaching-load/course-offered/index'];
+
+        if(Yii::$app->getRequest()->getQueryParam('SemesterForm')){
+            $sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');
+            $semester->semester_id = $sem['semester_id'];
+            $semester->str_search = $sem['str_search'];
+        }else{
+            $semester->semester_id = Semester::getCurrentSemester()->id;
+        }
+
         $searchModel = new CourseOfferedSearch();
+        $searchModel->semester = $semester->semester_id;
+        $searchModel->search_course = $semester->str_search;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'semester' => $semester
         ]);
     }
 
@@ -363,6 +379,35 @@ class CourseOfferedController extends Controller
         }
     }
 
+     public function actionSession()
+    {
+        $model = new CourseOffered();
+
+        if ($model->load(Yii::$app->request->post())) {
+            if($model->courses){
+                $flag = true;
+                foreach($model->courses as $course){
+                    if($this->offeredNotExist($model->semester_id, $course)){
+                        if(!$this->addNew($model->semester_id, $course)){
+                            $flag = false;
+                            exit;
+                        }
+                    }
+                    
+                }
+                if($flag){
+                    Yii::$app->session->addFlash('success', "Courses Offered Added");
+                }
+                
+                return $this->redirect(['index']);
+            }
+
+        }
+
+        return $this->render('session', [
+            'model' => $model,
+        ]);
+    }
 
 
 
