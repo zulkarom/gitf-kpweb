@@ -6,7 +6,7 @@ use kartik\widgets\ActiveForm;
 <?php 
 
 $form = ActiveForm::begin([
-'id' => 'sel-sem-form',
+'id' => 'sel-sem-session-form',
 'action' => $model->action,
 'method' => 'get',
 
@@ -27,7 +27,7 @@ $form = ActiveForm::begin([
 $this->registerJs('
 
 $("#semesterform-semester_id").change(function(){
-	$("#sel-sem-form").submit();
+	$("#sel-sem-session-form").submit();
 });
 
 ');

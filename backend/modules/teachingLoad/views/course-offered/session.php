@@ -10,14 +10,14 @@ $this->title = 'Bulk Session';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="course-offered-session">
-<?php $form = ActiveForm::begin(); ?>
-
-
 <?= $this->render('_form_session', [
         'model' => $semester,
     ]) ?>
     
+<div class="course-offered-session">
+<?php $form = ActiveForm::begin(); ?>
+
+
 <div class="box">
 <div class="box-body">
 
