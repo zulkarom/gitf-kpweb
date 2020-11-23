@@ -9,6 +9,7 @@ use backend\modules\teachingLoad\models\AddLectureForm;
 use backend\modules\teachingLoad\models\AddTutorialForm;
 use backend\modules\teachingLoad\models\TutorialLecture;
 use backend\modules\teachingLoad\models\CourseLecture;
+use backend\modules\teachingLoad\models\Course;
 use backend\modules\teachingLoad\models\LecLecturer;
 use backend\modules\teachingLoad\models\TutorialTutor;
 use backend\models\SemesterForm;
@@ -381,28 +382,40 @@ class CourseOfferedController extends Controller
 
      public function actionSession()
     {
-        $model = new CourseOffered();
+        $model = new Course();
+        
+        $course = $model->course;
 
-        if ($model->load(Yii::$app->request->post())) {
-            if($model->courses){
-                $flag = true;
-                foreach($model->courses as $course){
-                    if($this->offeredNotExist($model->semester_id, $course)){
-                        if(!$this->addNew($model->semester_id, $course)){
-                            $flag = false;
-                            exit;
-                        }
-                    }
+                    // echo "<pre>";
+                    // print_r($post_session);
+                    // die();
+
+        if(Yii::$app->request->post('Course')){
+         
+                $post_session = Yii::$app->request->post('Course');
+               
+                if($course){
+                    $i=1;
+                    foreach ($course as $cour) {
                     
+                    $total_student = $post_session[$cour->id]['total_student'];
+
+                        if($cour->lectures)
+                        {
+                            foreach ($cour->lectures as $lecture) {
+                                die();
+                                
+                            }
+                        }
+                       
+                   
+                    }
+                    $i++;
                 }
-                if($flag){
-                    Yii::$app->session->addFlash('success', "Courses Offered Added");
-                }
-                
-                return $this->redirect(['index']);
+            
+
             }
 
-        }
 
         return $this->render('session', [
             'model' => $model,

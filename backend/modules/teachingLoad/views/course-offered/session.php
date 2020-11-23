@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 <br/>
-    <div class="box">
+<div class="box">
 <div class="box-body">
 
 
@@ -25,22 +25,32 @@ $this->params['breadcrumbs'][] = $this->title;
       <tr>
         <th>#</th>
         <th>Course Code</th>
-		<th>Course Name (BM)</th>
+    		<th>Course Name (BM)</th>
         <th>Total Number of Students</th>
-		<th>Maximum Student of a Lecture</th>
-		<th>Prefix Lecture Name</th>
-		<th>Maximum Student of a Tutorial</th>
-		<th>Prefix Tutorial Name</th>
+    		<th>Maximum Student of a Lecture</th>
+    		<th>Prefix Lecture Name</th>
+    		<th>Maximum Student of a Tutorial</th>
+    		<th>Prefix Tutorial Name</th>
       </tr>
-      <tr>
-      	<td></td>
-      	<td></td>
-      	<td></td>
-      	<td></td>
-      	<td></td>
-      	<td></td>
-      	<td></td>
-      	<td></td>
+    
+        <?php 
+    
+        if($model->course){
+        $i = 1;
+          foreach($model->course as $course){
+        	echo '<tr><td>'.$i.'</td>
+              	<td>'.$course->course_id.'</td>
+              	<td>'.$course->course_id.'</td>
+              	<td><input name="Course['.$course->id.'][total_student]" type="text" style="width:100%" value="" /></td>
+              	<td><input name="Course['.$course->id.'][max_lecture]" type="text" style="width:100%" value="" /></td>
+              	<td><input name="" type="text" style="width:100%" value="" /></td>
+              	<td><input name="" type="text" style="width:100%" value="" /></td>
+              	<td><input name="" type="text" style="width:100%" value="" /></td>';
+                $i++;
+          }
+        }
+              ?>
+
       </tr>
     </thead>
     <tbody>

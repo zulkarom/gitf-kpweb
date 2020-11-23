@@ -43,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
            [
 				'attribute' => 'coor.user.fullname',
-				'label' => 'Course',
+				'label' => 'Coordinator',
 				
 			],
             
