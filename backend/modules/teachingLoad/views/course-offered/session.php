@@ -14,9 +14,13 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php $form = ActiveForm::begin(); ?>
 
 
-<br/>
+<?= $this->render('_form_session', [
+        'model' => $semester,
+    ]) ?>
+    
 <div class="box">
 <div class="box-body">
+
 
 
 <div class="table-responsive">
@@ -39,8 +43,8 @@ $this->params['breadcrumbs'][] = $this->title;
         $i = 1;
           foreach($model->course as $course){
         	echo '<tr><td>'.$i.'</td>
-              	<td>'.$course->course_id.'</td>
-              	<td>'.$course->course_id.'</td>
+              	<td>'.$course->course->course_code.'</td>
+              	<td>'.$course->course->course_name.'</td>
               	<td><input name="Course['.$course->id.'][total_student]" type="text" style="width:100%" value="" /></td>
               	<td><input name="Course['.$course->id.'][max_lecture]" type="text" style="width:100%" value="" /></td>
               	<td><input name="" type="text" style="width:100%" value="" /></td>

@@ -382,13 +382,25 @@ class CourseOfferedController extends Controller
 
      public function actionSession()
     {
+
+        $semester = new SemesterForm;
+        $semester->action = ['/teaching-load/course-offered/session'];
+
+        if(Yii::$app->getRequest()->getQueryParam('SemesterForm')){
+            $sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');
+            $semester->semester_id = $sem['semester_id'];
+        }else{
+            $semester->semester_id = Semester::getCurrentSemester()->id;
+        }
+
+
         $model = new Course();
         
         $course = $model->course;
 
-                    // echo "<pre>";
-                    // print_r($post_session);
-                    // die();
+        $model->semester = $semester->semester_id; 
+
+       
 
         if(Yii::$app->request->post('Course')){
          
@@ -419,6 +431,7 @@ class CourseOfferedController extends Controller
 
         return $this->render('session', [
             'model' => $model,
+            'semester' => $semester
         ]);
     }
 

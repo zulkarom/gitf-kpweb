@@ -47,10 +47,11 @@ class Course extends \backend\modules\esiap\models\Course
 
 	public function getCourse(){
 		return CourseOffered::find()
+		->where(['semester_id' => $this->semester])
 		->all();
 	}
 
-	
+
 
 	public function getCoordinatorStr($semester){
 		$offer = $this->getOffer($semester);
