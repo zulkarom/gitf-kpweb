@@ -36,16 +36,6 @@ $columns = [
                     return $model->teachLectureStr;
                 }
             ],
-
-            [
-                'label' => 'Lectures Assignment',
-                'value' => function($model){
-                    //return $model->lecture;
-                }
-                
-            ],
-           
-           
             
             [
                 'label' => 'Tutorials',
@@ -55,20 +45,6 @@ $columns = [
                 }
             ],
 
-            [
-                'label' => 'Tutorials Assigment',
-                'format' => 'html',
-               
-            ],
-            
-            
-            [
-                'label' => 'Total',
-                'format' => 'html',
-                'value' => function($model){
-                    return $model->totalLectureTutorial;
-                }
-            ],
 
         ];
 ?>

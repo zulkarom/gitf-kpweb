@@ -10,6 +10,7 @@ use backend\modules\teachingLoad\models\TeachingStaffSearch;
 use backend\modules\teachingLoad\models\TeachingCourseSearch;
 use backend\modules\teachingLoad\models\CourseLectureStaffSearch;
 use backend\modules\teachingLoad\models\CourseLectureSearch;
+use backend\modules\teachingLoad\models\MaximumHourSearch;
 use backend\modules\teachingLoad\models\Setting;
 use yii\db\Expression;
 use backend\models\SemesterForm;
@@ -122,6 +123,18 @@ class ManagerController extends Controller
             'dataProvider' => $dataProvider,
         ]);
 
+    }
+
+    public function actionMaximumHour(){
+        
+        $searchModel = new MaximumHourSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
+        return $this->render('maximumhour', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+        
     }
 	
 	public function actionSetting(){

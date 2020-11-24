@@ -382,7 +382,6 @@ class CourseOfferedController extends Controller
 
      public function actionSession()
     {
-
         $semester = new SemesterForm;
         $semester->action = ['/teaching-load/course-offered/session'];
 
@@ -393,41 +392,46 @@ class CourseOfferedController extends Controller
             $semester->semester_id = Semester::getCurrentSemester()->id;
         }
 
-
         $model = new Course();
         
         $course = $model->course;
 
         $model->semester = $semester->semester_id; 
-
        
-
         if(Yii::$app->request->post('Course')){
-         
                 $post_session = Yii::$app->request->post('Course');
-               
-                if($course){
-                    $i=1;
-                    foreach ($course as $cour) {
-                    
-                    $total_student = $post_session[$cour->id]['total_student'];
+          
+                foreach ($post_session as $key => $offered) {
+            
+                    $total_student  = $offered['total_student'];
+                    if($total_student > 0){
+                        $max_lecture = $offered['max_lecture'];
+                        $offered_id = $key;
+                        $prefix = $offered['prefix_lecture'];
 
-                        if($cour->lectures)
-                        {
-                            foreach ($cour->lectures as $lecture) {
-                                die();
-                                
-                            }
+                        $numLec = (int)floor($total_student/$max_lecture);
+                        $bal = $total_student % $max_lecture;
+
+                        $max_tutorial = $offered['max_tutorial'];
+                        $prefix_tutorial = $offered['prefix_tutorial'];
+
+                        for ($i=1; $i <=$numLec ; $i++) { 
+                          
+                            $this->insertLecture($offered_id,$max_lecture,$prefix,$i,$max_tutorial,$prefix_tutorial);
+                            
                         }
-                       
-                   
+                        
+                        if($bal > 0){
+                            $j = $i;
+                            $this->insertLecture($offered_id,$bal,$prefix,$j,$max_tutorial,$prefix_tutorial);
+                        }
                     }
-                    $i++;
+                      
                 }
             
-
+                Yii::$app->session->addFlash('success', "Bulk Session Saved");
+                return $this->refresh();
             }
-
 
         return $this->render('session', [
             'model' => $model,
@@ -435,8 +439,47 @@ class CourseOfferedController extends Controller
         ]);
     }
 
+    private function insertLecture($offered_id,$max_lecture,$prefix,$i,$max_tutorial,$prefix_tutorial)
+    {
+        $insert = new CourseLecture;
+        $insert->offered_id = $offered_id ;
+        $insert->student_num = $max_lecture;
+        $insert->lec_name = $prefix.$i;
+        $insert->created_at = new Expression('NOW()');
+        $insert->updated_at = new Expression('NOW()');
+        $insert->save();
 
 
+        if($max_tutorial > 0){
+            $numTutorial = (int)floor($max_lecture/$max_tutorial);
+            $bal = $max_lecture % $max_tutorial;
+
+            for ($i=1; $i <=$numTutorial ; $i++) { 
+                    
+                $this->insertTutorial($insert,$max_tutorial,$prefix_tutorial,$i);
+            }
+                    
+            if($bal > 0){
+                $j = $i;
+                $this->insertTutorial($insert,$bal,$prefix_tutorial,$j);
+            }
+        }
+        
+
+        
+
+    }
+
+    private function insertTutorial($insert,$max_tutorial,$prefix_tutorial,$i)
+    {
+        $insertTutorial = new TutorialLecture;
+        $insertTutorial->lecture_id = $insert->id;
+        $insertTutorial->student_num = $max_tutorial;
+        $insertTutorial->tutorial_name = $prefix_tutorial.$i;
+        $insertTutorial->created_at = new Expression('NOW()');
+        $insertTutorial->updated_at = new Expression('NOW()');
+        $insertTutorial->save();
+    }
 
     /**
      * Updates an existing CourseOffered model.

@@ -143,6 +143,8 @@ class Menu
 				
 				['label' => 'Teaching By Course', 'icon' => 'book', 'url' => ['/teaching-load/manager/by-course']],
 				
+				['label' => 'Maximum Hour', 'icon' => 'cog', 'url' => ['/teaching-load/manager/maximum-hour']],
+
 				['label' => 'Setting', 'icon' => 'cog', 'url' => ['/teaching-load/manager/setting']],
 
                  ]
