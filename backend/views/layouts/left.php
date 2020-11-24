@@ -158,6 +158,8 @@ $menuItems = [
 					
 					['label' => 'Teaching', 'icon' => 'gears', 'url' => ['/teaching-load/default/teaching-view']],
 					
+					['label' => 'Course Files', 'icon' => 'files-o', 'url' => ['/course-files/default/index']],
+					
 					['label' => 'Staff', 'icon' => 'user', 'url' => ['/staff']],
 					
 					['label' => 'e-SIAP', 'icon' => 'mortar-board', 'url' => ['/esiap'],],
