@@ -13,6 +13,7 @@ use Yii;
  */
 class MaximumHour extends \yii\db\ActiveRecord
 {
+    public $staff;
     /**
      * {@inheritdoc}
      */
@@ -43,4 +44,9 @@ class MaximumHour extends \yii\db\ActiveRecord
             'max_hour' => 'Max Hour',
         ];
     }
+
+    public function getStaffName(){
+        return $this->hasMany(Staff::className(), ['id' => 'staff_id']);
+    }
+
 }

@@ -10,8 +10,8 @@ use backend\modules\teachingLoad\models\TeachingStaffSearch;
 use backend\modules\teachingLoad\models\TeachingCourseSearch;
 use backend\modules\teachingLoad\models\CourseLectureStaffSearch;
 use backend\modules\teachingLoad\models\CourseLectureSearch;
-use backend\modules\teachingLoad\models\MaximumHourSearch;
 use backend\modules\teachingLoad\models\Setting;
+use backend\modules\teachingLoad\models\MaximumHour;
 use yii\db\Expression;
 use backend\models\SemesterForm;
 use backend\models\Semester;
@@ -126,15 +126,43 @@ class ManagerController extends Controller
     }
 
     public function actionMaximumHour(){
-        
-        $searchModel = new MaximumHourSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        $model = new MaximumHour();
         
         return $this->render('maximumhour', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'model' => $model,
         ]);
         
+    }
+
+     public function actionAddStaff()
+    {
+        $model = new MaximumHour();
+
+        // if ($model->load(Yii::$app->request->post())) {
+        //     if($model->courses){
+        //         $flag = true;
+        //         foreach($model->courses as $course){
+        //             if($this->offeredNotExist($model->semester_id, $course)){
+        //                 if(!$this->addNew($model->semester_id, $course)){
+        //                     $flag = false;
+        //                     exit;
+        //                 }
+        //             }
+                    
+        //         }
+        //         if($flag){
+        //             Yii::$app->session->addFlash('success', "Courses Offered Added");
+        //         }
+                
+        //         return $this->redirect(['index']);
+        //     }
+
+        // }
+
+        return $this->render('addstaff', [
+            'model' => $model,
+        ]);
     }
 	
 	public function actionSetting(){

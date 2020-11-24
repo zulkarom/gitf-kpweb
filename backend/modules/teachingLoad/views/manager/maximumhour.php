@@ -1,64 +1,62 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $searchModel backend\modules\teachingLoad\models\CourseOfferedSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $model backend\modules\teachingLoad\models\CourseOffered */
 
 $this->title = 'Maximum Hour';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="course-offered-index">
+    
+<div class="course-offered-session">
+<?php $form = ActiveForm::begin(); ?>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-        <?= Html::a('New Maximum Hour', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-    <div class="box">
-<div class="box-header"></div>
-<div class="box-body"><?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-            [
-                'attribute' => 'course.codeCourseString',
-                'label' => 'Course',
-                
-            ],
-           [
-                'attribute' => 'coor.user.fullname',
-                'label' => 'Coordinator',
-                
-            ],
-            
-
-            ['class' => 'yii\grid\ActionColumn',
-                 'contentOptions' => ['style' => 'width: 12.7%'],
-                'template' => '{assign} {update}',
-                //'visible' => false,
-                'buttons'=>[
-                    'update'=>function ($url, $model){
-                        return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete', 'id' => $model->id], [
-                        'class' => 'btn btn-danger btn-sm',
-                            'data' => [
-                                'confirm' => 'Are you sure you want to delete this course?',
-                                'method' => 'post',
-                            ],
-                        ]) 
-                ;
-                    }
-
-                ],
-            
-            ],
-
-        ],
-    ]); ?></div>
+<a class="btn btn-success" href="/training/gitf-kpweb/backend/web/teaching-load/manager/add-staff">Add Staff</a>
+<br/><br/>
+<div class="row">
+  <div class="col-md-2">
+    General Max Hour <input name="" type="text" style="width:100%"  value="" />
+  </div>
 </div>
+<br/>
+
+<div class="box">
+<div class="box-body">
+
+
+
+<div class="table-responsive">
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Staff Name</th>
+        <th>Maximum Hour</th>
+      </tr>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+<?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> Save Maximum Hour', ['class' => 'btn btn-primary']) ?>
+
+
+</div>
+<?php ActiveForm::end(); ?>
+
 
 </div>
