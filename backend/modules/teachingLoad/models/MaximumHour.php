@@ -14,7 +14,7 @@ use backend\modules\staff\models\Staff;
  */
 class MaximumHour extends \yii\db\ActiveRecord
 {
-    public $staff;
+    public $staffM;
     /**
      * {@inheritdoc}
      */
@@ -31,7 +31,7 @@ class MaximumHour extends \yii\db\ActiveRecord
         return [
             [['staff_id'], 'required'],
             [['staff_id', 'max_hour'], 'integer'],
-            [['staff'], 'safe'],
+            [['staffM'], 'safe'],
         ];
     }
 
@@ -47,13 +47,7 @@ class MaximumHour extends \yii\db\ActiveRecord
         ];
     }
 
-    public function getstaff(){
-        return Staff::find()
-        ->where(['id' => 'staff_id'])
-        ->all();
-    }
-
-    public function flashError(){
+        public function flashError(){
         if($this->getErrors()){
             foreach($this->getErrors() as $error){
                 if($error){
@@ -66,8 +60,9 @@ class MaximumHour extends \yii\db\ActiveRecord
 
     }
 
-   
-
-   
-
+   public function getstaff(){
+        return Staff::find()
+        ->where(['id' => 'staff_id'])
+        ->all();
+    }
 }

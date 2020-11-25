@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="col-md-6"> <?php
 
-echo $form->field($model, 'staff')->widget(Select2::classname(), [
+echo $form->field($model, 'staffM')->widget(Select2::classname(), [
     'data' =>  ArrayHelper::map(Staff::getAcademicStaff(), 'id', 'user.fullname'),
     'language' => 'en',
     'options' => ['multiple' => true,'placeholder' => 'Select...'],

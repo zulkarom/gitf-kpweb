@@ -142,9 +142,9 @@ class ManagerController extends Controller
 
          if ($model->load(Yii::$app->request->post())) {
 
-            if($model->staff){
+            if($model->staffM){
                 $flag = true;
-                foreach($model->staff as $staff){
+                foreach($model->staffM as $staff){
                     if($this->staffNotExist($staff)){
                         if(!$this->addNew($staff)){
                             $flag = false;

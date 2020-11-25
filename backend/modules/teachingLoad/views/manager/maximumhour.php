@@ -10,10 +10,13 @@ $this->title = 'Maximum Hour';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
     
-<div class="course-offered-session">
-<?php $form = ActiveForm::begin(); ?>
+<div class="maximum_hour">
 
 <a class="btn btn-success" href="/training/gitf-kpweb/backend/web/teaching-load/manager/add-staff">Add Staff</a>
+
+<?php $form = ActiveForm::begin(); ?>
+
+
 <br/><br/>
 <div class="row">
   <div class="col-md-2">
@@ -35,13 +38,13 @@ $this->params['breadcrumbs'][] = $this->title;
         <th>Staff Name</th>
         <th>Maximum Hour</th>
       </tr>
-          <?php
-         if($model->staff){
+        <?php
+         if($model){
          $i = 1;
-         foreach($model->staff as $staff){
+         foreach($model as $staff){
             echo'<tr>
             <td>'.$i.'</td>
-            <td>'.$staff->staff_title . ' ' . $staff->user->fullname.'</td>
+            <td>'.print_r($staff).'</td>
             <td><input name="" type="text" style="width:100%" value="" /></td>';
             $i++;
           }
