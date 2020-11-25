@@ -16,6 +16,7 @@ use yii\db\Expression;
 use backend\models\SemesterForm;
 use backend\models\Semester;
 
+
 /**
  * Default controller for the `teaching-load` module
  */
@@ -128,7 +129,7 @@ class ManagerController extends Controller
     public function actionMaximumHour(){
 
         $model = new MaximumHour();
-        
+
         return $this->render('maximumhour', [
             'model' => $model,
         ]);
@@ -139,30 +140,53 @@ class ManagerController extends Controller
     {
         $model = new MaximumHour();
 
-        // if ($model->load(Yii::$app->request->post())) {
-        //     if($model->courses){
-        //         $flag = true;
-        //         foreach($model->courses as $course){
-        //             if($this->offeredNotExist($model->semester_id, $course)){
-        //                 if(!$this->addNew($model->semester_id, $course)){
-        //                     $flag = false;
-        //                     exit;
-        //                 }
-        //             }
-                    
-        //         }
-        //         if($flag){
-        //             Yii::$app->session->addFlash('success', "Courses Offered Added");
-        //         }
-                
-        //         return $this->redirect(['index']);
-        //     }
+         if ($model->load(Yii::$app->request->post())) {
 
-        // }
+            if($model->staff){
+                $flag = true;
+                foreach($model->staff as $staff){
+                    if($this->staffNotExist($staff)){
+                        if(!$this->addNew($staff)){
+                            $flag = false;
+                            exit;
+                        }    
+                    }
+                }
+                if($flag){
+                    Yii::$app->session->addFlash('success', "Staff Added");
+                }
+                
+                return $this->redirect(['maximum-hour']);
+            }
+
+        }
 
         return $this->render('addstaff', [
             'model' => $model,
         ]);
+    }
+
+    protected function staffNotExist($staff){
+        $model = MaximumHour::findOne(['staff_id' => $staff]);
+        
+        if ($model) {
+            return false;
+        }else{
+            return true;
+        }
+        
+    }
+
+    protected function addNew($staff){
+        $new = new MaximumHour();
+        $new->staff_id = $staff;
+        
+        if(!$new->save()){
+            $new->flashError();
+            //Yii::$app->session->addFlash('error', $course);
+            return false;
+        }
+        return true;
     }
 	
 	public function actionSetting(){

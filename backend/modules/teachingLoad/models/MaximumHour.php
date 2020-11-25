@@ -3,6 +3,7 @@
 namespace backend\modules\teachingLoad\models;
 
 use Yii;
+use backend\modules\staff\models\Staff;
 
 /**
  * This is the model class for table "tld_max_hour".
@@ -28,8 +29,9 @@ class MaximumHour extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['staff_id', 'max_hour'], 'required'],
+            [['staff_id'], 'required'],
             [['staff_id', 'max_hour'], 'integer'],
+            [['staff'], 'safe'],
         ];
     }
 
@@ -45,8 +47,27 @@ class MaximumHour extends \yii\db\ActiveRecord
         ];
     }
 
-    public function getStaffName(){
-        return $this->hasMany(Staff::className(), ['id' => 'staff_id']);
+    public function getstaff(){
+        return Staff::find()
+        ->where(['id' => 'staff_id'])
+        ->all();
     }
+
+    public function flashError(){
+        if($this->getErrors()){
+            foreach($this->getErrors() as $error){
+                if($error){
+                    foreach($error as $e){
+                        Yii::$app->session->addFlash('error', $e);
+                    }
+                }
+            }
+        }
+
+    }
+
+   
+
+   
 
 }

@@ -35,9 +35,18 @@ $this->params['breadcrumbs'][] = $this->title;
         <th>Staff Name</th>
         <th>Maximum Hour</th>
       </tr>
-        <td></td>
-        <td></td>
-        <td></td>
+          <?php
+         if($model->staff){
+         $i = 1;
+         foreach($model->staff as $staff){
+            echo'<tr>
+            <td>'.$i.'</td>
+            <td>'.$staff->staff_title . ' ' . $staff->user->fullname.'</td>
+            <td><input name="" type="text" style="width:100%" value="" /></td>';
+            $i++;
+          }
+        }
+        ?>
       </tr>
     </thead>
     <tbody>
@@ -50,12 +59,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
 </div>
 
-</div>
 
 <?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> Save Maximum Hour', ['class' => 'btn btn-primary']) ?>
 
 
-</div>
 <?php ActiveForm::end(); ?>
 
 
