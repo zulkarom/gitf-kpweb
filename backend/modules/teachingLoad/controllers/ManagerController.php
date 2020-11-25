@@ -129,16 +129,22 @@ class ManagerController extends Controller
     public function actionMaximumHour(){
 
         $model = MaximumHour::find()->all();
-       
+		
+		//setting kena duk sini, klu dlm post tu klu view page biasa dia tak masuk
+		//nnti buat delete staff dari max hour table pulak
+       $setting = Setting::findOne(1);
+	   
        if(Yii::$app->request->post('Max')){
             $post_max = Yii::$app->request->post('Max');
-            $setting = Setting::findOne(1);
+            
             $setting->max_hour = $post_max['max_general_hour'];
             $setting->save();
             foreach ($model as $staff) {
                 $staff->max_hour = $post_max[$staff->id]['max_hour'];
                 $staff->save();
             }
+			//buat flash sikit
+			Yii::$app->session->addFlash('success', "Data Updated");
         }
 
 
