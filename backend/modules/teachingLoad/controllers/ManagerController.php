@@ -129,9 +129,23 @@ class ManagerController extends Controller
     public function actionMaximumHour(){
 
         $model = MaximumHour::find()->all();
+       
+       if(Yii::$app->request->post('Max')){
+            $post_max = Yii::$app->request->post('Max');
+            $setting = Setting::findOne(1);
+            $setting->max_hour = $post_max['max_general_hour'];
+            $setting->save();
+            foreach ($model as $staff) {
+                $staff->max_hour = $post_max[$staff->id]['max_hour'];
+                $staff->save();
+            }
+        }
+
 
         return $this->render('maximumhour', [
             'model' => $model,
+            'setting' => $setting,
+
         ]);
         
     }

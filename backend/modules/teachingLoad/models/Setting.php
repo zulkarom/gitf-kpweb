@@ -31,7 +31,7 @@ class Setting extends \yii\db\ActiveRecord
         return [
             [['date_start', 'date_end', 'updated_at', 'updated_by'], 'required'],
             [['date_start', 'date_end', 'updated_at'], 'safe'],
-            [['updated_by'], 'integer'],
+            [['updated_by','max_hour'], 'integer'],
         ];
     }
 
@@ -46,6 +46,7 @@ class Setting extends \yii\db\ActiveRecord
             'date_end' => 'Date End',
             'updated_at' => 'Updated At',
             'updated_by' => 'Updated By',
+            'max_hour' => 'Maximum Hour',
         ];
     }
 	

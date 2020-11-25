@@ -18,10 +18,12 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php $form = ActiveForm::begin(); ?>
 
 
-<br/><br/>
+<br/>
 <div class="row">
   <div class="col-md-2">
-    General Max Hour <input name="" type="text" style="width:100%"  value="" />
+    <?php
+    echo'General Max Hour<input name="Max[max_general_hour]" type="text" style="width:100%" value="'.$setting->max_hour.'" />';
+    ?>
   </div>
 </div>
 <br/>
@@ -46,7 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
             echo'<tr>
             <td>'.$i.'</td>
             <td>'.$staff->staff->staff_title .' '.$staff->staff->user->fullname.'</td>
-            <td><input name="" type="text" style="width:100%" value="" /></td>';
+            <td><input name="Max['.$staff->id.'][max_hour]" type="text" style="width:100%" value="'.$staff->max_hour.'" /></td>';
             $i++;
           }
         }
