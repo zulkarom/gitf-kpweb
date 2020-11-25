@@ -128,7 +128,7 @@ class ManagerController extends Controller
 
     public function actionMaximumHour(){
 
-        $model = new MaximumHour();
+        $model = MaximumHour::find()->all();
 
         return $this->render('maximumhour', [
             'model' => $model,

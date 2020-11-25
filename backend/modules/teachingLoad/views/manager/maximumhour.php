@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -12,7 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
     
 <div class="maximum_hour">
 
-<a class="btn btn-success" href="/training/gitf-kpweb/backend/web/teaching-load/manager/add-staff">Add Staff</a>
+<a class="btn btn-success" href="<?=Url::to(['add-staff'])?>">Add Staff</a>
 
 <?php $form = ActiveForm::begin(); ?>
 
@@ -44,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
          foreach($model as $staff){
             echo'<tr>
             <td>'.$i.'</td>
-            <td>'.print_r($staff).'</td>
+            <td>'.$staff->staff->staff_title .' '.$staff->staff->user->fullname.'</td>
             <td><input name="" type="text" style="width:100%" value="" /></td>';
             $i++;
           }

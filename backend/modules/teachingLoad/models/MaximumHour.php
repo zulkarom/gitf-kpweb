@@ -61,8 +61,6 @@ class MaximumHour extends \yii\db\ActiveRecord
     }
 
    public function getstaff(){
-        return Staff::find()
-        ->where(['id' => 'staff_id'])
-        ->all();
+         return $this->hasOne(Staff::className(), ['id' => 'staff_id']);
     }
 }
