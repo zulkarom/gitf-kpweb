@@ -53,8 +53,9 @@ class LecLecturer extends \yii\db\ActiveRecord
     public function getCourseLecture(){
         return $this->hasOne(CourseLecture::className(), ['id' => 'lecture_id']);
     }
-
-     public function getStaffName(){
+	
+	//pelik method ni
+    public function getStaffName(){
         return $this->hasMany(Staff::className(), ['id' => 'staff_id']);
     }
 }

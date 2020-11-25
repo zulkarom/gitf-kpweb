@@ -336,12 +336,12 @@ class CourseOfferedController extends Controller
 }
 
     //Save lecturers for tutorial
-    private function saveTutorialLecturers($lec,$tutor,$tutoriallecturers)
+    private function saveTutorialLecturers($lec,$tutorial,$tutoriallecturers)
     {
         if(Yii::$app->request->post('Lecture')){
             $post_lectures = Yii::$app->request->post('Lecture');
             $kira_post = count($tutoriallecturers);
-                $kira_lama = count($tutor->lecturers);
+                $kira_lama = count($tutorial->tutors);
                 if($kira_post > $kira_lama){
                     $bil = $kira_post - $kira_lama;
                     for($i=1;$i<=$bil;$i++){
@@ -364,10 +364,10 @@ class CourseOfferedController extends Controller
 
                 if($tutoriallecturers){
                 $update_tag = TutorialTutor::find()
-                ->where(['tutorial_id'=>$tutor->id])
+                ->where(['tutorial_id'=>$tutorial->id])
                 ->all();
             
-                $tag = $post_lectures[$lec->id]['tutorial'][$tutor->id]['tutoriallecturers'];
+                $tag = $post_lectures[$lec->id]['tutorial'][$tutorial->id]['tutoriallecturers'];
                 if($update_tag){
                     $i=0;
                     foreach($update_tag as $ut){

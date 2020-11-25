@@ -17,54 +17,17 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <h4><?=$model->course->codeCourseString?></h4>
 
-	
-	<!-- add lecture -->
-	<?php $form = ActiveForm::begin(); ?>
-	<?php 
-	$addLecure->lecture_number = 1;
-	echo 'Add Lecture :' . $form->field($addLecure, 'lecture_number', [
-                    'template' => '{input}',
-                    'options' => [
-						
-                        'tag' => false, // Don't wrap with "form-group" div
-                    ]])->textInput(['style' => 'width:50px', 'type' => 'number', 'class' => ''])->label(false)
-
-	
-	?>
-      
-	<?= Html::submitButton('Go', ['class' => 'btn btn-sm btn-default']) ?>
-
-    <?php ActiveForm::end(); ?>
-
-	<!-- add tutorial -->
-    <?php $form = ActiveForm::begin(); ?>
-	<?php 
-	$addTutorial->tutorial_number = 1;
-	echo $form->field($addTutorial, 'lecture_json',['options' => ['tag' => false]])->hiddenInput(['value' => ''])->label(false);
-
-	echo 'Add Tutorials :' . $form->field($addTutorial, 'tutorial_number', [
-		                    'template' => '{input}',
-		                    'options' => [
-								
-		                        'tag' => false, // Don't wrap with "form-group" div
-		                    ]])->textInput(['style' => 'width:50px', 'type' => 'number', 'class' => ''])->label(false);
-
-	
-	?>
-      
-	<?= Html::submitButton('Go', ['class' => 'btn btn-sm btn-default']) ?>
-    <?php ActiveForm::end(); ?>
-    <br/>
 
     <?php $form = ActiveForm::begin(); ?>
     <div class="row">
-    <div class="col-sm-3">
+    <div class="col-sm-4">
     
     <?php
 
   
-	echo ' Add Coordinator :'. Select2::widget([
+	echo 'Coordinator :'. Select2::widget([
 				    'name' => 'coordinator',
+					
 				    'value' => $model->coordinator,
 				    'data' => ArrayHelper::map(Staff::getAcademicStaff(), 'id', 'user.fullname'),
 				    'options' => ['placeholder' => 'Select Coordinator ...'],
@@ -74,6 +37,39 @@ $this->params['breadcrumbs'][] = $this->title;
 				]);
 	?>
 	</div>
+	
+	 <div class="col-sm-4"><!-- add lecture -->
+	<?php $form = ActiveForm::begin(); 
+	
+	$addLecure->lecture_number = 1;
+	echo $form->field($addLecure, 'lecture_number', [
+                    'template' => 'Add Lectures: {input}',
+                    'options' => [
+						
+                        'tag' => false, // Don't wrap with "form-group" div
+                    ]])->textInput(['style' => 'width:50px', 'type' => 'number', 'class' => ''])->label(false);
+
+	echo Html::submitButton('Go', ['class' => 'btn btn-sm btn-default']);
+	ActiveForm::end(); ?>
+	
+	<?php $form = ActiveForm::begin(); 
+	$addTutorial->tutorial_number = 1;
+	echo $form->field($addTutorial, 'lecture_json',['options' => ['tag' => false]])->hiddenInput(['value' => ''])->label(false);
+
+	echo $form->field($addTutorial, 'tutorial_number', [
+		                    'template' => 'Add Tutorials : {input}',
+		                    'options' => [
+								
+		                        'tag' => false, // Don't wrap with "form-group" div
+		                    ]])->textInput(['style' => 'width:50px', 'type' => 'number', 'class' => ''])->label(false);
+
+	echo Html::submitButton('Go', ['class' => 'btn btn-sm btn-default']);
+	ActiveForm::end(); ?>
+	
+	</div>
+	
+	
+	
 	</div>
 
 <div class="course-offered-index">
@@ -148,7 +144,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 				    echo Select2::widget([
 					    'name' => 'Lecture['.$lec->id.'][tutorial]['.$tutorial->id.'][tutoriallecturers]',
-					    'value' => ArrayHelper::map($tutorial->lecturers,'id','staff_id'),
+					    'value' => ArrayHelper::map($tutorial->tutors,'id','staff_id'),
 					    'data' => ArrayHelper::map(Staff::getAcademicStaff(), 'id', 'user.fullname'),
 					    'options' => ['multiple' => true, 'placeholder' => 'Select']
 					]);

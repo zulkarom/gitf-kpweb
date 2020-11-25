@@ -78,27 +78,27 @@ class Course extends \backend\modules\esiap\models\Course
 				if($item->lectures){
 					
 					foreach ($item->lectures as $lecture) {
+						$d = $i == 1 ? '' : $br;
+						$str .= $d.$lecture->lec_name.' ('.$lecture->student_num.') - ';
+						$str_lec = '';
+						$i++;
 						
 						if($lecture->lecturers){
+							$x = 1;
 							foreach ($lecture->lecturers as $lecturer){
-								if($lecturer->staffName)
-								{
-									foreach ($lecturer->staffName as $staff)
-										{
-											$d = $i == 1 ? '' : $br;
-											$code = $d.$lecture->lec_name.' ('.$lecture->student_num.') ';
-											$str .= $code.' - '.$staff->staff_title . ' ' . $staff->user->fullname;
-											$i++;
-										}
+								if($lecturer->staff){
+									$slash = $x == 1 ? '' : '/';
+									$str_lec .= $slash .  ' ' .$lecturer->staff->staff_title . ' ' . $lecturer->staff->user->fullname . ' ';
+									$x++;
 								}
+								
 							}
+							
 						}else{
-							$d = $i == 1 ? '' : $br;
-							$code = $d.$lecture->lec_name.' ('.$lecture->student_num.') ';
-							$str .= $code.' - <span class="label label-danger">???</span>';
-							$i++;
+							$str_lec .= '<span class="label label-danger">???</span>';
 						}
 						
+						$str .= $str_lec;
 						
 					}	
 				}
@@ -113,39 +113,29 @@ class Course extends \backend\modules\esiap\models\Course
 		if($list){
 			$i = 1;
 			foreach($list as $item){
-				
 				if($item->lectures){
-					
 					foreach ($item->lectures as $lecture) {
-					
 						if($lecture->tutorials){
 							
-							foreach ($lecture->tutorials as $tutorial) {
+							foreach ($lecture->tutorials as $tutorial){
 								
-								
-								
-								if($tutorial->lecturers)
-								{
-									foreach ($tutorial->lecturers as $lecturer)
-									{
-										if($lecturer->staffName){
-											foreach ($lecturer->staffName as $staff)
-											{
-												$d = $i == 1 ? '' : $br;
-												$code = $d.$lecture->lec_name.$tutorial->tutorial_name.' ('.$tutorial->student_num.') ';
-												$str .= $code.' - '.$staff->staff_title . ' ' . $staff->user->fullname;
-												$i++;
-											}
-										}
+								$d = $i == 1 ? '' : $br;
+								$str .= $d.$lecture->lec_name . $tutorial->tutorial_name.' ('.$tutorial->student_num.') - ';
+								$i++;
+								$str_tut = '';
+								if($tutorial->tutors){
+									$x = 1;
+									foreach ($tutorial->tutors as $tutor){
+										$slash = $x == 1 ? '' : '/';
+										$str_tut .= $slash .  ' ' .$tutor->staff->staff_title . ' ' . $tutor->staff->user->fullname . ' ';
+										$x++;
 									}
 								}else{
-									$d = $i == 1 ? '' : $br;
-									$code = $d.$lecture->lec_name.$tutorial->tutorial_name.' ('.$tutorial->student_num.') ';
-									$str .= $code.' - <span class="label label-danger">???</span>';
-									$i++;
+									$str_tut .= '<span class="label label-danger">???</span>';
 								}
-								
+								$str .= $str_tut;
 							}
+							
 						}
 					}
 			
