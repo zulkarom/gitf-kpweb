@@ -156,6 +156,19 @@ class ManagerController extends Controller
         
     }
 
+     public function actionDeleteMaximumHour($id)
+    {
+        
+        $model = $this->findMaximumHour($id);
+        
+        MaximumHour::deleteAll(['id' => $id]);
+
+        Yii::$app->session->addFlash('success', "Data Updated");
+        
+
+        return $this->redirect(['maximum-hour','id'=> $id]);
+    }
+
      public function actionAddStaff()
     {
         $model = new MaximumHour();
@@ -227,5 +240,14 @@ class ManagerController extends Controller
         ]);
 		
 	}
+
+     protected function findMaximumHour($id)
+    {
+        if (($model = MaximumHour::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
 	
 }

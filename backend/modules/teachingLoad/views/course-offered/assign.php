@@ -18,27 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <h4><?=$model->course->codeCourseString?></h4>
 
 
-    <?php $form = ActiveForm::begin(); ?>
-    <div class="row">
-    <div class="col-sm-4">
-    
-    <?php
-
-  
-	echo 'Coordinator :'. Select2::widget([
-				    'name' => 'coordinator',
-					
-				    'value' => $model->coordinator,
-				    'data' => ArrayHelper::map(Staff::getAcademicStaff(), 'id', 'user.fullname'),
-				    'options' => ['placeholder' => 'Select Coordinator ...'],
-				    'pluginOptions' => [
-                		'allowClear' => true
-            		],
-				]);
-	?>
-	</div>
-	
-	 <div class="col-sm-4"><!-- add lecture -->
+	<!-- add lecture -->
 	<?php $form = ActiveForm::begin(); 
 	
 	$addLecure->lecture_number = 1;
@@ -66,10 +46,26 @@ $this->params['breadcrumbs'][] = $this->title;
 	echo Html::submitButton('Go', ['class' => 'btn btn-sm btn-default']);
 	ActiveForm::end(); ?>
 	
+	
+    <?php $form = ActiveForm::begin(); ?>
+    <div class="row">
+    <div class="col-sm-4">
+    
+    <?php
+
+  
+	echo 'Coordinator :'. Select2::widget([
+				    'name' => 'coordinator',
+					
+				    'value' => $model->coordinator,
+				    'data' => ArrayHelper::map(Staff::getAcademicStaff(), 'id', 'user.fullname'),
+				    'options' => ['placeholder' => 'Select Coordinator ...'],
+				    'pluginOptions' => [
+                		'allowClear' => true
+            		],
+				]);
+	?>
 	</div>
-	
-	
-	
 	</div>
 
 <div class="course-offered-index">

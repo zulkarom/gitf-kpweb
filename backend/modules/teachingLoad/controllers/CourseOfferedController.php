@@ -346,13 +346,13 @@ class CourseOfferedController extends Controller
                     $bil = $kira_post - $kira_lama;
                     for($i=1;$i<=$bil;$i++){
                         $insert = new TutorialTutor;
-                        $insert->tutorial_id = $tutor->id;
+                        $insert->tutorial_id = $tutorial->id;
                         $insert->save();
                     }
                 }else if($kira_post < $kira_lama){
                 $bil = $kira_lama - $kira_post;
                 $deleted = TutorialTutor::find()
-                ->where(['tutorial_id'=>$tutor->id])
+                ->where(['tutorial_id'=>$tutorial->id])
                 ->limit($bil)
                 ->all();
                     if($deleted){
@@ -510,7 +510,29 @@ class CourseOfferedController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $lectures = $model->lectures;
+        if($lectures)
+        {
+            $ids = ArrayHelper::map($lectures,'id','id');
+            LecLecturer::deleteAll(['lecture_id' =>$ids]);
+
+                foreach ($lectures as $lec) {
+                    $tutorials = $lec->tutorials;
+                    if($tutorials){
+                        $idt = ArrayHelper::map($tutorials,'id','id');
+                         TutorialTutor::deleteAll(['tutorial_id' => $idt]);
+                    }
+                }
+                
+            TutorialLecture::deleteAll(['lecture_id' => $ids]);
+        }
+        CourseLecture::deleteAll(['offered_id' => $id]);
+
+        if($model->delete()){
+            
+            Yii::$app->session->addFlash('success', "Data Updated");
+        }
 
         return $this->redirect(['index']);
     }
