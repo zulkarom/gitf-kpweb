@@ -11,14 +11,21 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 
-    
+<style>
+  div.a {
+  text-align: center;
+}
+</style>    
 <div class="course-offered-session">
 <?php $form = ActiveForm::begin(); ?>
 
 
 <div class="box">
 <div class="box-header">
-	<div class="box-title">Peringkat Perancangan/Planning Level (PLAN)
+  <div class="a">
+	<div class="box-title"><b>Peringkat Perancangan/Planning Level
+    <br/><div class="box-title">(PLAN)</b></div>
+</div>
 </div>
 </div>
 <div class="box-body">
@@ -50,7 +57,10 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 </div>
 <div class="box-header">
-	<div class="box-title">Peringkat Pelaksanaan/ Implementation Level (DO)
+  <div class="a">
+	<div class="box-title"><b>Peringkat Pelaksanaan/ Implementation Level
+    <br/><div class="box-title">(DO)</b></div>
+</div>
 </div>
 </div>
 <div class="box-body">
@@ -84,7 +94,10 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 <div class="box-header">
-	<div class="box-title">Peringkat Semak/ Evaluation Level (CHECK)
+  <div class="a">
+	<div class="box-title"><b>Peringkat Semak/ Evaluation Level
+     <br/><div class="box-title">(CHECK)</b></div>
+</div>
 </div>
 </div>
 <div class="box-body">
@@ -118,7 +131,10 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 <div class="box-header">
-	<div class="box-title">Peringkat Tindakan/ Review Level (ACT)
+  <div class="a">
+	<div class="box-title"><b>Peringkat Tindakan/ Review Level
+    <br/><div class="box-title">(ACT)</b></div>
+</div>
 </div>
 </div>
 <div class="box-body">
