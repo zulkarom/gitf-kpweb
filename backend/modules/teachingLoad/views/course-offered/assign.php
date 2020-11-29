@@ -79,7 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
   <table class="table table-striped table-hover">
     <thead>
       <tr>
-      	<th><input type="checkbox" class ="checkbxLec" name="cbkLecture" value='' /></th>
+      	<th><input type="checkbox" class ="checkAll" name="cbkLecture" value='' /></th>
         <th>#</th>
         <th>Lecture</th>
 		<th>No.Student</th>
@@ -164,7 +164,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				    
     	echo '</td>
 		<td>
-		<a href="' . Url::to(['course-offered/delete-lecture', 'id' => $lec->id]) . '" ><span class="fa fa-trash"></span></a>
+		<a href="' . Url::to(['course-offered/delete-lecture', 'id' => $lec->id]) . '" " data-confirm="Are you sure you want to delete this lecture?"  ><span class="fa fa-trash"></span></a>
 		</td>
       </tr>';
 
@@ -218,6 +218,10 @@ function arrayChk(){
   
    }
 
+    $('.checkAll').click(function() {
+        $('.checkbxLec').prop('checked', this.checked);
+        arrayChk();
+    });
 
 
 

@@ -195,6 +195,7 @@ class CourseOfferedController extends Controller
 					}
 					
 				}
+                Yii::$app->session->addFlash('success', "Data Saved");
             }
 
 
@@ -219,6 +220,11 @@ class CourseOfferedController extends Controller
                             }   
                         }
                     }
+                     Yii::$app->session->addFlash('success', "Data Saved");
+                }
+                else
+                {   
+                     Yii::$app->session->addFlash('danger', "Please tick checkbox first to add tutorial");
                 }
                 
             }
@@ -258,23 +264,13 @@ class CourseOfferedController extends Controller
                         $tutor->save();
                     }
                     
-                    if($lec->save()){
-                        
-                    }
+                    
                 }
+                 $lec->save();
+                 Yii::$app->session->addFlash('success', "Data Saved");
             }
 
-          
-
-            
-
-           
-
-                Yii::$app->session->addFlash('success', "Data Saved");
-                return $this->refresh();
-			
-
-            
+        return $this->refresh();
 
 		}
 
