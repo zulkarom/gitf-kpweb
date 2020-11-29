@@ -380,7 +380,7 @@ class Staff extends \yii\db\ActiveRecord
 				if($item->courseLecture){
 					
 					$d = $i == 1 ? '' : $br;
-					$code = $item->courseLecture->courseOffered->course->course_code;
+					$code = $item->courseLecture->courseOffered->course->course_code . ' ' . $item->courseLecture->courseOffered->course->course_name;
 					$str .= $d.$code.' - '.$item->courseLecture->lec_name.' ('.$item->courseLecture->student_num.') ';
 				}
 				
