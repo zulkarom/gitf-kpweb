@@ -15,6 +15,7 @@ use backend\modules\staff\models\Staff;
  */
 class LecLecturer extends \yii\db\ActiveRecord
 {
+	public $course_id;
     /**
      * {@inheritdoc}
      */
