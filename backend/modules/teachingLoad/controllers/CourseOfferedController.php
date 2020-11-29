@@ -246,6 +246,7 @@ class CourseOfferedController extends Controller
                         $this->saveLecturers($lec,[]);
                     }
                     
+                    $lec->save();
 
 
                     foreach ($lec->tutorials as $tutor) {
@@ -266,9 +267,10 @@ class CourseOfferedController extends Controller
                     
                     
                 }
-                 $lec->save();
+                 
                  Yii::$app->session->addFlash('success', "Data Saved");
             }
+
 
         return $this->refresh();
 

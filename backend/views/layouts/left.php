@@ -71,9 +71,12 @@ use backend\models\Menu;
 			break;
 			
 			case 'teaching-load':
-			//$focus = Menu::coursePic();
+			$focus = Menu::teachingLoad();
 			$admin_focus = Menu::adminTeachingLoad();
 			break;
+
+	
+
 			
 
 		}
@@ -157,6 +160,7 @@ $menuItems = [
 					['label' => 'MODULES', 'options' => ['class' => 'header']],
 					
 					['label' => 'Teaching', 'icon' => 'gears', 'url' => ['/teaching-load/default/teaching-view']],
+					
 					
 					['label' => 'Course Files', 'icon' => 'files-o', 'url' => ['/course-files/default/index']],
 					

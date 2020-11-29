@@ -135,7 +135,7 @@ class Menu
 				
 				['label' => 'Assignment By Course', 'icon' => 'book', 'url' => ['/teaching-load/manager/summary-by-course']],
 
-				['label' => 'Assignment By Staff', 'icon' => 'book', 'url' => ['/teaching-load/manager/summary-by-staff']],
+				['label' => 'Assignment By Staff', 'icon' => 'user', 'url' => ['/teaching-load/manager/summary-by-staff']],
 
 				
 								
@@ -152,6 +152,21 @@ class Menu
 		return $esiap_admin;
 	}
 	
+	public static function teachingLoad(){
+		return [
+                        'label' => 'My Teaching',
+                        'icon' => 'list-ul',
+                        'url' => '#',
+                        'items' => [
+				
+				['label' => 'Teaching Assignment', 'icon' => 'book', 'url' => ['/teaching-load/default/teaching-assignment']],
+				
+				['label' => 'Teaching Selection', 'icon' => 'book', 'url' => ['/teaching-load/']],
+
+                 ]
+                    ];	
+	}
+
 	public static function website(){
 		$website = [
                         'label' => 'Website Menu',
