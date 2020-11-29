@@ -13,6 +13,7 @@ use backend\modules\staff\models\Staff;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Course Assignment';
+$this->params['breadcrumbs'][] = ['label' => 'Courses Offered', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <h4><?=$model->course->codeCourseString?></h4>

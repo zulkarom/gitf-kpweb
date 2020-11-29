@@ -7,6 +7,7 @@ use yii\widgets\ActiveForm;
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
 
 $this->title = 'Bulk Session';
+$this->params['breadcrumbs'][] = ['label' => 'Courses Offered', 'url' => ['/teaching-load/course-offered/index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
