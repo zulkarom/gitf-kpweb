@@ -4,6 +4,7 @@ namespace backend\modules\teachingLoad\controllers;
 
 use Yii;
 use yii\web\Controller;
+use yii\helpers\ArrayHelper;
 use yii\db\Expression;
 use yii\filters\AccessControl;
 use backend\models\SemesterForm;
@@ -11,6 +12,7 @@ use backend\models\Semester;
 use backend\modules\teachingLoad\models\AutoLoad;
 use backend\modules\teachingLoad\models\TutorialTutor;
 use backend\modules\teachingLoad\models\LecLecturer;
+use backend\modules\teachingLoad\models\CourseLecture;
 use backend\modules\teachingLoad\models\TemAutoload;
 /**
  * Default controller for the `teaching-load` module
@@ -40,22 +42,18 @@ class BulkController extends Controller
     {
 		$semester = new SemesterForm;
 		$semester->semester_id = Semester::getCurrentSemester()->id;
-		$result = '';
-		
-		
-		
+		$result = [];
 		if($semester->load(Yii::$app->request->post())){
 			//print_r(Yii::$app->request->post());die();
 			$action = Yii::$app->request->post('btn-action');
 			if($action == 0){
-				$result = $this->deleteAllLoading();
+				$result = $this->deleteAllLoading($semester->semester_id);
 			}
 			if($action == 1){
 				$auto = new AutoLoad;
 				$auto->semester = $semester->semester_id;
 				$result = $auto->runLoading();
 			}
-			
 		}
 		
         return $this->render('index',[
@@ -64,11 +62,26 @@ class BulkController extends Controller
 		]);
     }
 	
-	public function deleteAllLoading(){
-		TutorialTutor::deleteAll();
-		LecLecturer::deleteAll();
-		TemAutoload::deleteAll();
-		//Yii::$app->session->addFlash('success', "Loading Deleted");
-		return ['Deleting all teaching loads successful'];
+	public function deleteAllLoading($semester){
+		
+		$tutorials = TutorialTutor::find()
+		->select('tld_tutorial_tutor.id')
+		->joinWith(['tutorialLec.lecture.courseOffered'])
+		->where(['semester_id' => $semester])
+		->all();
+		if($tutorials){
+			TutorialTutor::deleteAll(['in', 'id', ArrayHelper::map($tutorials, 'id', 'id')]);
+		} 
+		
+		
+		$lectures = LecLecturer::find()
+		->select('tld_lec_lecturer.id')
+		->joinWith(['courseLecture.courseOffered'])
+		->where(['semester_id' => $semester])
+		->all();
+		if($lectures){
+			LecLecturer::deleteAll(['in', 'id', ArrayHelper::map($lectures, 'id', 'id') ]);
+		}
+		return ['Deleting all teaching loads successful for semester ' . $semester];
 	}
 }

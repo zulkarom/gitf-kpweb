@@ -21,7 +21,7 @@ class AutoLoad extends Model
 	public $assign_log = array();
 	
 	public function runLoading(){
-		$this->assign_log[] = 'Start running auto-load...';
+		$this->assign_log[] = 'Start running auto-load for semester ' . $this->semester;
 		$this->max_hour = $this->maxHour;
 		
 		$random = $this->randomise();
@@ -90,11 +90,15 @@ class AutoLoad extends Model
 			$staffs = $this->staffListRandomHasLecture();
 			if($staffs){
 				foreach($staffs as $staff){
-				
+					do {
+					  $result = $this->findAndAssignLecture($staff);
+					} while ($result and $this->staffStillNotMax($staff->staff_id));
 				}
 			}
 			
 		}
+		$this->assign_log[] = 'Auto-load finished.';
+		//$this->assign_log[] = 'Auto-load result : Assigning # coordinators, # lecturers and # tutors for # of courses offered with # active academic staff';
 		return $this->assign_log;
 	}
 	
@@ -283,38 +287,7 @@ class AutoLoad extends Model
 		return false;
 	}
 	
-	public function findAndAssignLectureCont($staff){
-		for($i=1;$i<=4;$i++){
-			if(!$this->staffStillNotMax($staff->staff_id)){
-				return false;
-				break;
-			}
-			$choice_avail = $this->findCourseChoice($staff->staff_id, $i);
-			//print_r($first);die();
-			if($choice_avail){
-				$course_id = $choice_avail->course_id;
-				//klu ada availabe slot masukkan jer
-				if($this->addLecturer($course_id, $staff)){
-				}
-			}
-		}
-		
-		//cari yang already taught pulak
-		$taughts = $this->listOtherTaughtCourse($staff->staff_id);
-		if($taughts){
-			foreach($taughts as $taught){
-				if(!$this->staffStillNotMax($staff->staff_id)){
-					return false;
-					break;
-				}
-				if($this->addLecturer($taught->course_id, $staff)){
-					return true;
-					break;
-				}
-			}
-		}
-		return false;
-	}
+	
 	
 	public function listOtherTaughtCourse($staff_id){
 		$array = array();
