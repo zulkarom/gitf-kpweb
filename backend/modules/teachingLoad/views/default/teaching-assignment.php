@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
@@ -14,25 +15,48 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $semester,
     ]) ?>
  
+
+ <style>
+#course {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#course td, #course th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#course tr:nth-child(even){background-color: #f2f2f2;}
+
+#course tr:hover {background-color: #ddd;}
+
+#course th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+}
+</style>
+
 <div class="teaching-assignment">
 <?php $form = ActiveForm::begin(); ?>
 
   <div class="row">
     <div class="col-sm-12">
-      <div class="box">
+      <div class="box box-primary">
         <div class="box-header">
           <div class="a">
             <div class="box-title"><b>Coordinator</b></div>
           </div>
         </div>
           <div class="box-body">
-            <div class="table-responsive">
-              <table class="table table-striped table-hover">
+            <table id="course">
                 <thead>
                   <tr>
-                    <th>No.</th>
-                    <th>Course Code</th>
-                    <th>Course Name</th>
+                    <th style="width:5%">No.</th>
+                    <th style="width:15%">Course Code</th>
+                    <th style="width:54.3%">Course Name</th>
                     <th>Progress</th>
                     <th>Action</th>
                   </tr>
@@ -47,8 +71,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             <td>'.$coor->course->course_code.'</td>
                             <td>'.$coor->course->course_name.'</td>
                             <td></td>
-                            <td><a href="" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> View</a></td>';
-                   
+                            <td><a href="' . Url::to(['default/teaching-assignment-course-file', 'id' => $coor->coordinator]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> View</a></td>';
+                                    
                             $i++;
                        }
                      }
@@ -56,7 +80,6 @@ $this->params['breadcrumbs'][] = $this->title;
                   </tr>
                 </thead>
               </table>
-            </div>
           </div>
         </div>
       </div>
@@ -64,19 +87,19 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="row">
     <div class="col-sm-12">
-      <div class="box">
+      <div class="box box-danger">
         <div class="box-header">
           <div class="a">
             <div class="box-title"><b>Lectures</b></div>
           </div>
         </div>
           <div class="box-body">
-            <div class="table-responsive">
-              <table class="table table-striped table-hover">
+            
+              <table id="course">
                 <thead>
                   <tr>
-                    <th>No.</th>
-                    <th>Course Code</th>
+                    <th style="width:5%">No.</th>
+                    <th style="width:15%">Course Code</th>
                     <th>Course Name</th>
                     <th>Lecture Name</th>
                     <th>Progress</th>
@@ -94,7 +117,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <td>'.$lecture->courseLecture->courseOffered->course->course_name.'</td>
                             <td>'.$lecture->courseLecture->lec_name.'</td>
                             <td></td>
-                            <td><a href="" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> View</a></td>';
+                            <td><a href="' . Url::to(['default/teaching-assignment-course-file', 'id' => $lecture->staff_id]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> View</a></td>';
                    
                             $i++;
                       }
@@ -103,7 +126,7 @@ $this->params['breadcrumbs'][] = $this->title;
                   </tr>
                 </thead>
               </table>
-            </div>
+          
           </div>
         </div>
       </div>
@@ -111,19 +134,18 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="row">
     <div class="col-sm-12">
-      <div class="box">
+      <div class="box box-success">
         <div class="box-header">
           <div class="a">
             <div class="box-title"><b>Tutorials</b></div>
           </div>
         </div>
           <div class="box-body">
-            <div class="table-responsive">
-              <table class="table table-striped table-hover">
+              <table id="course">
                 <thead>
                   <tr>
-                    <th>No.</th>
-                    <th>Course Code</th>
+                    <th style="width:5%">No.</th>
+                    <th style="width:15%">Course Code</th>
                     <th>Course Name</th>
                     <th>Tutorial Name</th>
                     <th>Progress</th>
@@ -141,7 +163,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <td>'.$tutorial->tutorialLec->lecture->courseOffered->course->course_name.'</td>
                             <td>'.$tutorial->tutorialLec->tutorial_name.'</td>
                             <td></td>
-                            <td><a href="" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> View</a></td>';
+                            <td><a href="' . Url::to(['default/teaching-assignment-course-file', 'id' => $tutorial->staff_id]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> View</a></td>';
                    
                             $i++;
                       }
@@ -150,7 +172,7 @@ $this->params['breadcrumbs'][] = $this->title;
                   </tr>
                 </thead>
               </table>
-            </div>
+            
           </div>
         </div>
       </div>

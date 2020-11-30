@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
@@ -41,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="box box-primary">
 <div class="box-header">
-  <div class="box-title"><b>Peringkat Perancangan/Planning Level
+	<div class="box-title"><b>Peringkat Perancangan/Planning Level
     <br/><div class="box-title">(PLAN)</b></div>
 </div>
 </div>
@@ -50,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <thead>
       <tr>
         <th style="width:5%">No.</th>
-        <th style="width:85%">Item</th>
+    	  <th style="width:85%">Item</th>
         <th>Action</th>
       </tr>
     
@@ -61,9 +62,9 @@ $this->params['breadcrumbs'][] = $this->title;
        if($model->itemPlan){
         $i = 1;
           foreach($model->itemPlan as $item){
-          echo '<tr><td>'.$item->id.'</td>
-                <td>'.$item->item.'<i><br/>'.$item->item_bi.'</i></td>
-                <td></td>';
+        	echo '<tr><td>'.$item->id.'</td>
+              	<td>'.$item->item.'<i><br/>'.$item->item_bi.'</i></td>
+                <td><a href="" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> Upload</a></td>';
        
                 $i++;
           }
@@ -75,7 +76,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 </div>
 <div class="box-header">
-  <div class="box-title"><b>Peringkat Pelaksanaan/ Implementation Level
+	<div class="box-title"><b>Peringkat Pelaksanaan/ Implementation Level
     <br/><div class="box-title">(DO)</b></div>
 </div>
 </div>
@@ -96,9 +97,9 @@ $this->params['breadcrumbs'][] = $this->title;
         if($model->itemDo){
         $i = 1;
           foreach($model->itemDo as $item){
-          echo '<tr><td>'.$item->id.'</td>
-                <td>'.$item->item.'<i><br/>'.$item->item_bi.'</i></td>
-                <td></td>';
+        	echo '<tr><td>'.$item->id.'</td>
+              	<td>'.$item->item.'<i><br/>'.$item->item_bi.'</i></td>
+                <td><a href="" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> Upload</a></td>';
        
                 $i++;
           }
@@ -111,7 +112,7 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 <div class="box-header">
-  <div class="box-title"><b>Peringkat Semak/ Evaluation Level
+	<div class="box-title"><b>Peringkat Semak/ Evaluation Level
      <br/><div class="box-title">(CHECK)</b></div>
 </div>
 </div>
@@ -131,9 +132,9 @@ $this->params['breadcrumbs'][] = $this->title;
         if($model->itemCheck){
         $i = 1;
           foreach($model->itemCheck as $item){
-          echo '<tr><td>'.$item->id.'</td>
-                <td>'.$item->item.'<i><br/>'.$item->item_bi.'</i></td>
-                <td></td>';
+        	echo '<tr><td>'.$item->id.'</td>
+              	<td>'.$item->item.'<i><br/>'.$item->item_bi.'</i></td>
+                <td><a href="" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> Upload</a></td>';
        
                 $i++;
           }
@@ -146,7 +147,7 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 <div class="box-header">
-  <div class="box-title"><b>Peringkat Tindakan/ Review Level
+	<div class="box-title"><b>Peringkat Tindakan/ Review Level
     <br/><div class="box-title">(ACT)</b></div>
 </div>
 </div>
@@ -166,9 +167,9 @@ $this->params['breadcrumbs'][] = $this->title;
         if($model->itemAct){
         $i = 1;
           foreach($model->itemAct as $item){
-          echo '<tr><td>'.$item->id.'</td>
-                <td>'.$item->item.'<i><br/>'.$item->item_bi.'</i></td>
-                <td></td>';
+        	echo '<tr><td>'.$item->id.'</td>
+              	<td>'.$item->item.'<i><br/>'.$item->item_bi.'</i></td>
+                <td><a href="" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> Upload</a></td>';
        
                 $i++;
           }

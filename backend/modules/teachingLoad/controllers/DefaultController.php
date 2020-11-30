@@ -11,6 +11,7 @@ use backend\modules\teachingLoad\models\LecLecturer;
 use backend\modules\teachingLoad\models\OutCourse;
 use backend\modules\teachingLoad\models\PastExperience;
 use backend\modules\teachingLoad\models\Setting;
+use backend\modules\courseFiles\models\Checklist;
 use backend\models\SemesterForm;
 use backend\models\Semester;
 use backend\modules\teachingLoad\models\Course;
@@ -96,6 +97,18 @@ class DefaultController extends Controller
 
 
 	}
+
+
+	public function actionTeachingAssignmentCourseFile()
+    {
+        $model = new Checklist();
+        
+        
+
+        return $this->render('teaching-assignment-course-file', [
+            'model' => $model,
+        ]);
+    }
 	
 	public function actionTeachingForm(){
 		
