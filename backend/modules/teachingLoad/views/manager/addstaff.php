@@ -12,7 +12,7 @@ use backend\modules\staff\models\Staff;
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
 /* @var $form yii\widgets\ActiveForm */
 $this->title = 'Add Staff';
-$this->params['breadcrumbs'][] = ['label' => 'Add Staff', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Maximum Hour', 'url' => ['/teaching-load/manager/maximum-hour']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 

@@ -164,7 +164,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				    
     	echo '</td>
 		<td>
-		<a href="' . Url::to(['course-offered/delete-lecture', 'id' => $lec->id]) . '" " data-confirm="Are you sure you want to delete this lecture?"  ><span class="fa fa-trash"></span></a>
+		<a href="' . Url::to(['course-offered/delete-lecture', 'id' => $lec->id]) . '"><span class="fa fa-trash"></span></a>
 		</td>
       </tr>';
 

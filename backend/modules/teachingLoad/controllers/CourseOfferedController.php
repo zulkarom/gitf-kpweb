@@ -378,7 +378,7 @@ class CourseOfferedController extends Controller
         }
     }
 
-     public function actionSession()
+     public function actionRunBulkSession()
     {
         $semester = new SemesterForm;
         $semester->action = ['/teaching-load/course-offered/session'];
@@ -430,6 +430,48 @@ class CourseOfferedController extends Controller
                 Yii::$app->session->addFlash('success', "Bulk Session Saved");
                 return $this->refresh();
             }
+
+        return $this->render('session', [
+            'model' => $model,
+            'semester' => $semester
+        ]);
+    }
+
+
+    public function actionSession()
+    {
+        $semester = new SemesterForm;
+        
+
+        if(Yii::$app->getRequest()->getQueryParam('SemesterForm')){
+            $sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');
+            $semester->semester_id = $sem['semester_id'];
+        }else{
+            $semester->semester_id = Semester::getCurrentSemester()->id;
+        }
+
+        $model = new Course();
+        
+        $model->semester = $semester->semester_id; 
+
+        if(Yii::$app->request->post('Course')){
+            $post_session = Yii::$app->request->post('Course');
+
+                foreach ($model->course as $course) {
+                           
+                    $course->total_students  = $post_session[$course->id]['total_student'];
+                    $course->max_lec = $post_session[$course->id]['max_lecture'];
+                    $course->prefix_lec = $post_session[$course->id]['prefix_lecture'];
+                    $course->max_tut = $post_session[$course->id]['max_tutorial'];
+                    $course->prefix_tut = $post_session[$course->id]['prefix_tutorial'];
+                    $course->save(); 
+                }                     
+            
+                    Yii::$app->session->addFlash('success', "Bulk Session Saved");
+                    return $this->refresh();     
+        }
+
+    
 
         return $this->render('session', [
             'model' => $model,

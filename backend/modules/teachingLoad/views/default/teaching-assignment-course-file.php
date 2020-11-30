@@ -8,6 +8,7 @@ use yii\helpers\Url;
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
 
 $this->title = 'Course Files';
+$this->params['breadcrumbs'][] = ['label' => 'Teaching Assignment', 'url' => ['/teaching-load/default/teaching-assignment']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 

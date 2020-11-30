@@ -57,8 +57,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     <th style="width:5%">No.</th>
                     <th style="width:15%">Course Code</th>
                     <th style="width:54.3%">Course Name</th>
-                    <th>Progress</th>
-                    <th>Action</th>
+                    <th style="width:13%">Progress</th>
+                    <th style="width:12.7%">Action</th>
                   </tr>
                 
                      <?php 
@@ -100,10 +100,10 @@ $this->params['breadcrumbs'][] = $this->title;
                   <tr>
                     <th style="width:5%">No.</th>
                     <th style="width:15%">Course Code</th>
-                    <th>Course Name</th>
-                    <th>Lecture Name</th>
-                    <th>Progress</th>
-                    <th>Action</th>
+                    <th style="width:27.15%">Course Name</th>
+                    <th style="width:27.15%">Lecture Name</th>
+                    <th style="width:13%">Progress</th>
+                    <th style="width:12.7%">Action</th>
                   </tr>
                 
                      <?php 
@@ -146,10 +146,10 @@ $this->params['breadcrumbs'][] = $this->title;
                   <tr>
                     <th style="width:5%">No.</th>
                     <th style="width:15%">Course Code</th>
-                    <th>Course Name</th>
-                    <th>Tutorial Name</th>
-                    <th>Progress</th>
-                    <th>Action</th>
+                    <th style="width:27.15%">Course Name</th>
+                    <th style="width:27.15%">Tutorial Name</th>
+                    <th style="width:13%">Progress</th>
+                    <th style="width:12.7%">Action</th>
                   </tr>
                 
                      <?php 

@@ -63,7 +63,7 @@ $this->params['breadcrumbs'][] = $this->title;
           foreach($model->itemPlan as $item){
           echo '<tr><td>'.$item->id.'</td>
                 <td>'.$item->item.'<i><br/>'.$item->item_bi.'</i></td>
-                <td></td>';
+                <td><a href="" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> Upload</a></td>';
        
                 $i++;
           }
@@ -98,7 +98,7 @@ $this->params['breadcrumbs'][] = $this->title;
           foreach($model->itemDo as $item){
           echo '<tr><td>'.$item->id.'</td>
                 <td>'.$item->item.'<i><br/>'.$item->item_bi.'</i></td>
-                <td></td>';
+                <td><a href="" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> Upload</a></td>';
        
                 $i++;
           }
@@ -133,7 +133,7 @@ $this->params['breadcrumbs'][] = $this->title;
           foreach($model->itemCheck as $item){
           echo '<tr><td>'.$item->id.'</td>
                 <td>'.$item->item.'<i><br/>'.$item->item_bi.'</i></td>
-                <td></td>';
+                <td><a href="" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> Upload</a></td>';
        
                 $i++;
           }
@@ -168,7 +168,7 @@ $this->params['breadcrumbs'][] = $this->title;
           foreach($model->itemAct as $item){
           echo '<tr><td>'.$item->id.'</td>
                 <td>'.$item->item.'<i><br/>'.$item->item_bi.'</i></td>
-                <td></td>';
+                <td><a href="" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> Upload</a></td>';
        
                 $i++;
           }
