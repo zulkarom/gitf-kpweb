@@ -135,13 +135,13 @@ class Menu
 				
 				['label' => 'Assignment By Course', 'icon' => 'book', 'url' => ['/teaching-load/manager/summary-by-course']],
 
-				['label' => 'Assignment By Staff', 'icon' => 'book', 'url' => ['/teaching-load/manager/summary-by-staff']],
+				['label' => 'Assignment By Staff', 'icon' => 'user', 'url' => ['/teaching-load/manager/summary-by-staff']],
 
 				
 								
-				['label' => 'Teaching By Staff', 'icon' => 'user', 'url' => ['/teaching-load/manager/by-staff']],
+				['label' => 'Selection By Staff', 'icon' => 'user', 'url' => ['/teaching-load/manager/by-staff']],
 				
-				['label' => 'Teaching By Course', 'icon' => 'book', 'url' => ['/teaching-load/manager/by-course']],
+				['label' => 'Selection By Course', 'icon' => 'book', 'url' => ['/teaching-load/manager/by-course']],
 				
 				['label' => 'Maximum Hour', 'icon' => 'cog', 'url' => ['/teaching-load/manager/maximum-hour']],
 
@@ -152,6 +152,21 @@ class Menu
 		return $esiap_admin;
 	}
 	
+	public static function teachingLoad(){
+		return [
+                        'label' => 'My Teaching',
+                        'icon' => 'list-ul',
+                        'url' => '#',
+                        'items' => [
+				
+				['label' => 'Teaching Assignment', 'icon' => 'book', 'url' => ['/teaching-load/default/teaching-assignment']],
+				
+				['label' => 'Teaching Selection', 'icon' => 'book', 'url' => ['/teaching-load/']],
+
+                 ]
+                    ];	
+	}
+
 	public static function website(){
 		$website = [
                         'label' => 'Website Menu',

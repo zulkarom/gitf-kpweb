@@ -13,6 +13,7 @@ use backend\modules\teachingLoad\models\LecLecturer;
 use backend\modules\teachingLoad\models\TutorialTutor;
 use backend\modules\teachingLoad\models\OutCourse;
 use backend\modules\teachingLoad\models\PastExperience;
+use backend\modules\teachingLoad\models\Course;
 use common\models\Country;
 
 /**
@@ -347,6 +348,20 @@ class Staff extends \yii\db\ActiveRecord
 	return $coor; 
 	}
 
+	public function getCoordinatorIdentity(){
+		return CourseOffered::find()
+		->joinWith('course')
+		->where(['coordinator' => Yii::$app->user->identity->staff->id , 'semester_id' => $this->semester])
+		->all();
+	}
+
+	public function getTeachLectureIdentity(){
+		return LecLecturer::find()
+		->joinWith('courseLecture.courseOffered')
+		->where(['staff_id' => Yii::$app->user->identity->staff->id , 'semester_id' => $this->semester])
+		->all();
+	}
+
 	public function getTeachLecture(){
 		return LecLecturer::find()
 		->joinWith('courseLecture.courseOffered')
@@ -365,7 +380,7 @@ class Staff extends \yii\db\ActiveRecord
 				if($item->courseLecture){
 					
 					$d = $i == 1 ? '' : $br;
-					$code = $item->courseLecture->courseOffered->course->course_code;
+					$code = $item->courseLecture->courseOffered->course->course_code . ' ' . $item->courseLecture->courseOffered->course->course_name;
 					$str .= $d.$code.' - '.$item->courseLecture->lec_name.' ('.$item->courseLecture->student_num.') ';
 				}
 				
@@ -373,6 +388,13 @@ class Staff extends \yii\db\ActiveRecord
 			}
 		}
 		return $str;
+	}
+
+	public function getTeachTutorialIdentity(){
+		return TutorialTutor::find()
+		->joinWith('tutorialLec.lecture.courseOffered')
+		->where(['staff_id' => Yii::$app->user->identity->staff->id, 'semester_id' => $this->semester])
+		->all();
 	}
 
 	public function getTeachTutorial(){

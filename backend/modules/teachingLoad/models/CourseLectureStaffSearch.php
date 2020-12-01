@@ -51,7 +51,7 @@ class CourseLectureStaffSearch extends Staff
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 50,
+                'pageSize' => 200,
             ],
 
         ]);

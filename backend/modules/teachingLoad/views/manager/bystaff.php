@@ -8,7 +8,7 @@ use kartik\export\ExportMenu;
 /* @var $searchModel backend\modules\esiap\models\CourseSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Teaching Information by Staff';
+$this->title = 'Selection by Staff';
 $this->params['breadcrumbs'][] = $this->title;
 
 

@@ -40,6 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <th>#</th>
         <th>Staff Name</th>
         <th>Maximum Hour</th>
+        <th></th>
       </tr>
         <?php
          if($model){
@@ -48,7 +49,8 @@ $this->params['breadcrumbs'][] = $this->title;
             echo'<tr>
             <td>'.$i.'</td>
             <td>'.$staff->staff->staff_title .' '.$staff->staff->user->fullname.'</td>
-            <td><input name="Max['.$staff->id.'][max_hour]" type="text" style="width:100%" value="'.$staff->max_hour.'" /></td>';
+            <td><input name="Max['.$staff->id.'][max_hour]" type="text" style="width:50%" value="'.$staff->max_hour.'" /></td>
+            <td><a class="btn btn-danger btn-sm" href="' . Url::to(['manager/delete-maximum-hour', 'id' => $staff->id]) . '" data-confirm="Are you sure you want to delete this staff?" ><span class="fa fa-trash"></span></a></td>';
             $i++;
           }
         }

@@ -13,32 +13,13 @@ use backend\modules\staff\models\Staff;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Course Assignment';
+$this->params['breadcrumbs'][] = ['label' => 'Courses Offered', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <h4><?=$model->course->codeCourseString?></h4>
 
 
-    <?php $form = ActiveForm::begin(); ?>
-    <div class="row">
-    <div class="col-sm-4">
-    
-    <?php
-
-  
-	echo 'Coordinator :'. Select2::widget([
-				    'name' => 'coordinator',
-					
-				    'value' => $model->coordinator,
-				    'data' => ArrayHelper::map(Staff::getAcademicStaff(), 'id', 'user.fullname'),
-				    'options' => ['placeholder' => 'Select Coordinator ...'],
-				    'pluginOptions' => [
-                		'allowClear' => true
-            		],
-				]);
-	?>
-	</div>
-	
-	 <div class="col-sm-4"><!-- add lecture -->
+	<!-- add lecture -->
 	<?php $form = ActiveForm::begin(); 
 	
 	$addLecure->lecture_number = 1;
@@ -66,10 +47,26 @@ $this->params['breadcrumbs'][] = $this->title;
 	echo Html::submitButton('Go', ['class' => 'btn btn-sm btn-default']);
 	ActiveForm::end(); ?>
 	
+	
+    <?php $form = ActiveForm::begin(); ?>
+    <div class="row">
+    <div class="col-sm-4">
+    
+    <?php
+
+  
+	echo 'Coordinator :'. Select2::widget([
+				    'name' => 'coordinator',
+					
+				    'value' => $model->coordinator,
+				    'data' => ArrayHelper::map(Staff::getAcademicStaff(), 'id', 'user.fullname'),
+				    'options' => ['placeholder' => 'Select Coordinator ...'],
+				    'pluginOptions' => [
+                		'allowClear' => true
+            		],
+				]);
+	?>
 	</div>
-	
-	
-	
 	</div>
 
 <div class="course-offered-index">
@@ -82,7 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
   <table class="table table-striped table-hover">
     <thead>
       <tr>
-      	<th><input type="checkbox" class ="checkbxLec" name="cbkLecture" value='' /></th>
+      	<th><input type="checkbox" class ="checkAll" name="cbkLecture" value='' /></th>
         <th>#</th>
         <th>Lecture</th>
 		<th>No.Student</th>
@@ -167,7 +164,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				    
     	echo '</td>
 		<td>
-		<a href="' . Url::to(['course-offered/delete-lecture', 'id' => $lec->id]) . '" ><span class="fa fa-trash"></span></a>
+		<a href="' . Url::to(['course-offered/delete-lecture', 'id' => $lec->id]) . '"><span class="fa fa-trash"></span></a>
 		</td>
       </tr>';
 
@@ -221,6 +218,10 @@ function arrayChk(){
   
    }
 
+    $('.checkAll').click(function() {
+        $('.checkbxLec').prop('checked', this.checked);
+        arrayChk();
+    });
 
 
 

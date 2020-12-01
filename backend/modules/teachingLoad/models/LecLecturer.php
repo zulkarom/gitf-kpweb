@@ -15,6 +15,7 @@ use backend\modules\staff\models\Staff;
  */
 class LecLecturer extends \yii\db\ActiveRecord
 {
+	public $course_id;
     /**
      * {@inheritdoc}
      */
@@ -54,8 +55,4 @@ class LecLecturer extends \yii\db\ActiveRecord
         return $this->hasOne(CourseLecture::className(), ['id' => 'lecture_id']);
     }
 	
-	//pelik method ni
-    public function getStaffName(){
-        return $this->hasMany(Staff::className(), ['id' => 'staff_id']);
-    }
 }

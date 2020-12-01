@@ -195,6 +195,7 @@ class CourseOfferedController extends Controller
 					}
 					
 				}
+                Yii::$app->session->addFlash('success', "Data Saved");
             }
 
 
@@ -219,6 +220,11 @@ class CourseOfferedController extends Controller
                             }   
                         }
                     }
+                     Yii::$app->session->addFlash('success', "Data Saved");
+                }
+                else
+                {   
+                     Yii::$app->session->addFlash('danger', "Please tick checkbox first to add tutorial");
                 }
                 
             }
@@ -240,6 +246,7 @@ class CourseOfferedController extends Controller
                         $this->saveLecturers($lec,[]);
                     }
                     
+                    $lec->save();
 
 
                     foreach ($lec->tutorials as $tutor) {
@@ -258,23 +265,14 @@ class CourseOfferedController extends Controller
                         $tutor->save();
                     }
                     
-                    if($lec->save()){
-                        
-                    }
+                    
                 }
+                 
+                 Yii::$app->session->addFlash('success', "Data Saved");
             }
 
-          
 
-            
-
-           
-
-                Yii::$app->session->addFlash('success', "Data Saved");
-                return $this->refresh();
-			
-
-            
+        return $this->refresh();
 
 		}
 
@@ -346,13 +344,13 @@ class CourseOfferedController extends Controller
                     $bil = $kira_post - $kira_lama;
                     for($i=1;$i<=$bil;$i++){
                         $insert = new TutorialTutor;
-                        $insert->tutorial_id = $tutor->id;
+                        $insert->tutorial_id = $tutorial->id;
                         $insert->save();
                     }
                 }else if($kira_post < $kira_lama){
                 $bil = $kira_lama - $kira_post;
                 $deleted = TutorialTutor::find()
-                ->where(['tutorial_id'=>$tutor->id])
+                ->where(['tutorial_id'=>$tutorial->id])
                 ->limit($bil)
                 ->all();
                     if($deleted){
@@ -380,7 +378,7 @@ class CourseOfferedController extends Controller
         }
     }
 
-     public function actionSession()
+     public function actionRunBulkSession()
     {
         $semester = new SemesterForm;
         $semester->action = ['/teaching-load/course-offered/session'];
@@ -432,6 +430,48 @@ class CourseOfferedController extends Controller
                 Yii::$app->session->addFlash('success', "Bulk Session Saved");
                 return $this->refresh();
             }
+
+        return $this->render('session', [
+            'model' => $model,
+            'semester' => $semester
+        ]);
+    }
+
+
+    public function actionSession()
+    {
+        $semester = new SemesterForm;
+        
+
+        if(Yii::$app->getRequest()->getQueryParam('SemesterForm')){
+            $sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');
+            $semester->semester_id = $sem['semester_id'];
+        }else{
+            $semester->semester_id = Semester::getCurrentSemester()->id;
+        }
+
+        $model = new Course();
+        
+        $model->semester = $semester->semester_id; 
+
+        if(Yii::$app->request->post('Course')){
+            $post_session = Yii::$app->request->post('Course');
+
+                foreach ($model->course as $course) {
+                           
+                    $course->total_students  = $post_session[$course->id]['total_student'];
+                    $course->max_lec = $post_session[$course->id]['max_lecture'];
+                    $course->prefix_lec = $post_session[$course->id]['prefix_lecture'];
+                    $course->max_tut = $post_session[$course->id]['max_tutorial'];
+                    $course->prefix_tut = $post_session[$course->id]['prefix_tutorial'];
+                    $course->save(); 
+                }                     
+            
+                    Yii::$app->session->addFlash('success', "Bulk Session Saved");
+                    return $this->refresh();     
+        }
+
+    
 
         return $this->render('session', [
             'model' => $model,
@@ -510,7 +550,29 @@ class CourseOfferedController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $lectures = $model->lectures;
+        if($lectures)
+        {
+            $ids = ArrayHelper::map($lectures,'id','id');
+            LecLecturer::deleteAll(['lecture_id' =>$ids]);
+
+                foreach ($lectures as $lec) {
+                    $tutorials = $lec->tutorials;
+                    if($tutorials){
+                        $idt = ArrayHelper::map($tutorials,'id','id');
+                         TutorialTutor::deleteAll(['tutorial_id' => $idt]);
+                    }
+                }
+                
+            TutorialLecture::deleteAll(['lecture_id' => $ids]);
+        }
+        CourseLecture::deleteAll(['offered_id' => $id]);
+
+        if($model->delete()){
+            
+            Yii::$app->session->addFlash('success', "Data Updated");
+        }
 
         return $this->redirect(['index']);
     }

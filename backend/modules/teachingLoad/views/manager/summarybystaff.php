@@ -29,7 +29,7 @@ $columns = [
             [
                 //'contentOptions' => ['style' => 'width: 45%'],
                 //'format' => 'html',
-                'label' => 'Lecturer',
+                'label' => 'Lecturers',
                 'value' => function($model){
                     return $model->staff_title . ' ' . $model->user->fullname ;
                 }

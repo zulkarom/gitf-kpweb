@@ -55,8 +55,5 @@ class TutorialTutor extends \yii\db\ActiveRecord
         return $this->hasOne(Staff::className(), ['id' => 'staff_id']);
     }
 	
-	//yg ni pun method yg pelik
-    public function getStaffName(){
-        return $this->hasMany(Staff::className(), ['id' => 'staff_id']);
-    }
+	
 }

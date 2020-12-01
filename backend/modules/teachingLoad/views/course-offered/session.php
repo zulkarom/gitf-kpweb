@@ -2,13 +2,17 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
 
 $this->title = 'Bulk Session';
+$this->params['breadcrumbs'][] = ['label' => 'Courses Offered', 'url' => ['/teaching-load/course-offered/index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
+
 
 <?= $this->render('_form_session', [
         'model' => $semester,
@@ -17,6 +21,12 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="course-offered-session">
 <?php $form = ActiveForm::begin(); ?>
 
+<p>
+  <?= Html::submitButton(' Save Bulk Session', ['class' => 'btn btn-primary']) ?>
+  <?php
+  echo'<a class="btn btn-success" href="' . Url::to(['course-offered/run-bulk-session']) . '">';
+  ?>Run Bulk Session</a>
+</p>
 
 <div class="box">
 <div class="box-body">
@@ -45,12 +55,12 @@ $this->params['breadcrumbs'][] = $this->title;
         	echo '<tr><td>'.$i.'</td>
               	<td>'.$course->course->course_code.'</td>
               	<td>'.$course->course->course_name.'</td>
-              	<td><input name="Course['.$course->id.'][total_student]" type="text" style="width:100%" value="0" />
+              	<td><input name="Course['.$course->id.'][total_student]" type="text" style="width:100%" value="'.$course->total_students.'" />
                 </td>
-              	<td><input name="Course['.$course->id.'][max_lecture]" type="text" style="width:100%" value="0" /></td>
-              	<td><input name="Course['.$course->id.'][prefix_lecture]" type="text" style="width:100%" value="L" /></td>
-                <td><input name="Course['.$course->id.'][max_tutorial]" type="text" style="width:100%" value="0" /></td>
-                <td><input name="Course['.$course->id.'][prefix_tutorial]" type="text" style="width:100%" value="T" /></td>';
+              	<td><input name="Course['.$course->id.'][max_lecture]" type="text" style="width:100%" value="'.$course->max_lec.'" /></td>
+              	<td><input name="Course['.$course->id.'][prefix_lecture]" type="text" style="width:100%" value="'.$course->prefix_lec.'" /></td>
+                <td><input name="Course['.$course->id.'][max_tutorial]" type="text" style="width:100%" value="'.$course->max_tut.'" /></td>
+                <td><input name="Course['.$course->id.'][prefix_tutorial]" type="text" style="width:100%" value="'.$course->prefix_tut.'" /></td>';
        
                 $i++;
           }
@@ -72,7 +82,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 </div>
 
-<?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> Save Bulk Session', ['class' => 'btn btn-primary']) ?>
+
 
 
 </div>
