@@ -378,64 +378,7 @@ class CourseOfferedController extends Controller
         }
     }
 
-     public function actionRunBulkSession()
-    {
-        $semester = new SemesterForm;
-        $semester->action = ['/teaching-load/course-offered/session'];
-
-        if(Yii::$app->getRequest()->getQueryParam('SemesterForm')){
-            $sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');
-            $semester->semester_id = $sem['semester_id'];
-        }else{
-            $semester->semester_id = Semester::getCurrentSemester()->id;
-        }
-
-        $model = new Course();
-        
-        $course = $model->course;
-
-        $model->semester = $semester->semester_id; 
-       
-        if(Yii::$app->request->post('Course')){
-                $post_session = Yii::$app->request->post('Course');
-          
-                foreach ($post_session as $key => $offered) {
-            
-                    $total_student  = $offered['total_student'];
-                    if($total_student > 0){
-                        $max_lecture = $offered['max_lecture'];
-                        $offered_id = $key;
-                        $prefix = $offered['prefix_lecture'];
-
-                        $numLec = (int)floor($total_student/$max_lecture);
-                        $bal = $total_student % $max_lecture;
-
-                        $max_tutorial = $offered['max_tutorial'];
-                        $prefix_tutorial = $offered['prefix_tutorial'];
-
-                        for ($i=1; $i <=$numLec ; $i++) { 
-                          
-                            $this->insertLecture($offered_id,$max_lecture,$prefix,$i,$max_tutorial,$prefix_tutorial);
-                            
-                        }
-                        
-                        if($bal > 0){
-                            $j = $i;
-                            $this->insertLecture($offered_id,$bal,$prefix,$j,$max_tutorial,$prefix_tutorial);
-                        }
-                    }
-                      
-                }
-            
-                Yii::$app->session->addFlash('success', "Bulk Session Saved");
-                return $this->refresh();
-            }
-
-        return $this->render('session', [
-            'model' => $model,
-            'semester' => $semester
-        ]);
-    }
+   
 
 
     public function actionSession()
@@ -454,30 +397,175 @@ class CourseOfferedController extends Controller
         
         $model->semester = $semester->semester_id; 
 
+
         if(Yii::$app->request->post('Course')){
             $post_session = Yii::$app->request->post('Course');
 
-                foreach ($model->course as $course) {
-                           
-                    $course->total_students  = $post_session[$course->id]['total_student'];
-                    $course->max_lec = $post_session[$course->id]['max_lecture'];
-                    $course->prefix_lec = $post_session[$course->id]['prefix_lecture'];
-                    $course->max_tut = $post_session[$course->id]['max_tutorial'];
-                    $course->prefix_tut = $post_session[$course->id]['prefix_tutorial'];
-                    $course->save(); 
-                }                     
-            
-                    Yii::$app->session->addFlash('success', "Bulk Session Saved");
-                    return $this->refresh();     
-        }
+            $action = Yii::$app->request->post('btn-action');
+            if($action == 0){
+               $this->saveSession($model,$post_session);
+               Yii::$app->session->addFlash('success', "Bulk Session Saved");
+                return $this->refresh();
+            }
+            if($action == 1){
+                 $this->runBulkSession($model,$post_session);
+                  return $this->refresh();
+            }
+            if($action == 2)
+            {
+                $this->deleteBulkSession($semester);
 
-    
+            }
+
+        }
 
         return $this->render('session', [
             'model' => $model,
             'semester' => $semester
         ]);
     }
+
+    public function saveSession($model,$post_session)
+    {
+        foreach ($model->course as $course) {
+                           
+            $course->total_students  = $post_session[$course->id]['total_student'];
+            $course->max_lec = $post_session[$course->id]['max_lecture'];
+            $course->prefix_lec = $post_session[$course->id]['prefix_lecture'];
+            $course->max_tut = $post_session[$course->id]['max_tutorial'];
+            $course->prefix_tut = $post_session[$course->id]['prefix_tutorial'];
+            $course->save(); 
+        }                            
+    }
+
+    public function runBulkSession($model,$post_session)
+    {
+     
+
+      $this->saveSession($model,$post_session);
+
+        foreach ($post_session as $key => $offered) {
+            $offered_id = $key;
+            $offer = $this->findModel($offered_id);
+
+            $transaction = Yii::$app->db->beginTransaction();
+
+            try {
+             $total_student  = $offered['total_student'];
+            if($total_student > 0){
+                $max_lecture = $offered['max_lecture'];
+                
+                $prefix = $offered['prefix_lecture'];
+
+                if($max_lecture > $total_student){
+                    Yii::$app->session->addFlash('error', 'Problem creating bulk session for '.$offer->course->course_name);
+                    $transaction->rollBack();
+                    continue;
+                }
+
+                if($max_lecture > 0){
+                    $numLec = (int)floor($total_student/$max_lecture);
+                    $bal = $total_student % $max_lecture;
+
+                    $max_tutorial = $offered['max_tutorial'];
+                    $prefix_tutorial = $offered['prefix_tutorial'];
+
+                    for ($i=1; $i <=$numLec ; $i++) {       
+                        if(!$this->insertLecture($offered_id,$max_lecture,$prefix,$i,$max_tutorial,$prefix_tutorial)){
+                            Yii::$app->session->addFlash('error', 'Problem creating bulk session for '.$offer->course->course_name);
+                            $transaction->rollBack();
+                            continue 2;
+                        }            
+                    }       
+                    if($bal > 0){
+                        $j = $i;
+                        if(!$this->insertLecture($offered_id,$bal,$prefix,$j,$max_tutorial,$prefix_tutorial)){
+                            Yii::$app->session->addFlash('error', 'Problem creating bulk session for '.$offer->course->course_name);
+                            $transaction->rollBack();
+                            continue;
+                        }
+                        
+                    }
+
+                 
+                    
+                }                         
+            }   
+            $offer->total_students  = '0';
+            $offer->max_lec = '0';
+            $offer->prefix_lec = 'L';
+            $offer->max_tut = '0';
+            $offer->prefix_tut = 'T';
+            if(!$offer->save())
+            {
+                Yii::$app->session->addFlash('error', 'Problem creating bulk session for '.$offer->course->course_name);
+                            $transaction->rollBack();
+                            continue;
+            }
+             
+
+            $transaction->commit();
+            
+            }
+            catch (Exception $e) 
+            {
+                $transaction->rollBack();
+                Yii::$app->session->addFlash('error', $e->getMessage());
+            }
+            
+        }
+
+             
+          
+                    
+            Yii::$app->session->addFlash('success', "Run Bulk Session Success");        
+                      
+    }
+
+        
+
+    public function deleteBulkSession($semester)
+    {
+        $tutorial_tutor = TutorialTutor::find()
+        ->select('tld_tutorial_tutor.id')
+        ->joinWith(['tutorialLec.lecture.courseOffered'])
+        ->where(['semester_id' => $semester])
+        ->all();
+        if($tutorial_tutor){
+            TutorialTutor::deleteAll(['in', 'id', ArrayHelper::map($tutorial_tutor, 'id', 'id')]);
+           
+            
+        }
+
+        $tutorials = TutorialLecture::find()
+        ->select('tld_tutorial_lec.id')
+        ->joinWith(['lecture.courseOffered'])
+        ->where(['semester_id' => $semester])
+        ->all();
+        if($tutorials){
+            TutorialLecture::deleteAll(['id' =>$tutorials]);
+        }
+
+        $lecturers = LecLecturer::find()
+        ->select('tld_lec_lecturer.id')
+        ->joinWith(['courseLecture.courseOffered'])
+        ->where(['semester_id' => $semester])
+        ->all();
+        if($lecturers){
+            LecLecturer::deleteAll(['in', 'id', ArrayHelper::map($lecturers, 'id', 'id') ]);
+        }
+
+        $lectures = CourseLecture::find()
+        ->select('tld_course_lec.id')
+        ->joinWith(['courseOffered'])
+        ->where(['semester_id' => $semester])
+        ->all();
+        if($lectures){
+            CourseLecture::deleteAll(['id' =>$lectures]);
+        }
+         Yii::$app->session->addFlash('success', "All Bulk Session Have Been Delete");
+                
+    }     
 
     private function insertLecture($offered_id,$max_lecture,$prefix,$i,$max_tutorial,$prefix_tutorial)
     {
@@ -487,27 +575,39 @@ class CourseOfferedController extends Controller
         $insert->lec_name = $prefix.$i;
         $insert->created_at = new Expression('NOW()');
         $insert->updated_at = new Expression('NOW()');
-        $insert->save();
+        if(!$insert->save()){
+            return false;
+        }
+        
 
+      
 
         if($max_tutorial > 0){
+            if($max_tutorial > $max_lecture)
+            {
+                return false;
+            }
+
             $numTutorial = (int)floor($max_lecture/$max_tutorial);
             $bal = $max_lecture % $max_tutorial;
 
             for ($i=1; $i <=$numTutorial ; $i++) { 
                     
-                $this->insertTutorial($insert,$max_tutorial,$prefix_tutorial,$i);
+                if(!$this->insertTutorial($insert,$max_tutorial,$prefix_tutorial,$i))
+                {
+                    return false;
+                }
+               
             }
                     
             if($bal > 0){
                 $j = $i;
-                $this->insertTutorial($insert,$bal,$prefix_tutorial,$j);
+                if(!$this->insertTutorial($insert,$bal,$prefix_tutorial,$j)){
+                    return false;
+                }
             }
         }
-        
-
-        
-
+        return true;
     }
 
     private function insertTutorial($insert,$max_tutorial,$prefix_tutorial,$i)
@@ -518,7 +618,14 @@ class CourseOfferedController extends Controller
         $insertTutorial->tutorial_name = $prefix_tutorial.$i;
         $insertTutorial->created_at = new Expression('NOW()');
         $insertTutorial->updated_at = new Expression('NOW()');
-        $insertTutorial->save();
+
+        if(!$insertTutorial->save()){
+            return false;
+        }
+        else{
+            return true;
+        }
+        
     }
 
     /**
@@ -649,7 +756,5 @@ class CourseOfferedController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
-
-
 
 }

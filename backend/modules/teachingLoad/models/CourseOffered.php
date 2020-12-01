@@ -109,6 +109,19 @@ class CourseOffered extends \yii\db\ActiveRecord
 
     }
 
+    public function getCountLectures(){
+        return CourseLecture::find()
+        ->where(['offered_id' => $this->id])
+        ->count();
+    }
+
+     public function getCountTutorials(){
+        return TutorialLecture::find()
+        ->joinWith(['lecture'])
+        ->where(['offered_id' => $this->id])
+        ->count();
+    }
+
     public function getCoor(){
         return $this->hasOne(Staff::className(), ['id' => 'coordinator']);
     }
