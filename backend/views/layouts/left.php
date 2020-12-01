@@ -172,6 +172,8 @@ $menuItems = [
 					
 					['label' => 'Proceedings', 'icon' => 'microphone', 'url' => ['/proceedings'], 'visible' => Yii::$app->user->can('proceedings-manager')],
 					
+					['label' => 'Chapter in Book', 'icon' => 'book', 'url' => ['/chapterinbook'], 'visible' => Yii::$app->user->can('chapterinbook-manager')],
+					
 					
 					
 					
