@@ -40,7 +40,7 @@ class Paper extends \yii\db\ActiveRecord
             [['paper_title', 'author'], 'string', 'max' => 255],
             [['paper_page'], 'string', 'max' => 100],
 			[['paper_file'], 'required', 'on' => 'paper_upload'],
-            [['paper_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
+            [['paper_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 10000000],
             [['updated_at'], 'required', 'on' => 'paper_delete'],
 
 			
