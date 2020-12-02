@@ -30,6 +30,8 @@ $this->params['breadcrumbs'][] = $this->title;
 <button type="button" id="btn-run" class="btn btn-warning"><span class="fa fa-gears"></span> RUN BULK SESSION </button>
 
 <button type="button" id="btn-delete" class="btn btn-danger" ><span class="glyphicon glyphicon-trash"></span> DELETE BULK SESSION </button>
+
+<button type="button" id="btn-excel" class="btn btn-success" ><span class="glyphicon glyphicon-export"></span> EXPORT EXCEL </button>
 </div>
 
 <input type="hidden" name="btn-action" id="btn-action" value="" />
@@ -118,6 +120,12 @@ $("#btn-delete").click(function(){
     $("#form-bulksession").submit();
   }
 });
+
+$("#btn-excel").click(function(){
+  $("#btn-action").val(3);
+  $("#form-bulksession").submit();
+});
+
 
 
 

@@ -12,6 +12,7 @@ use backend\modules\teachingLoad\models\CourseLecture;
 use backend\modules\teachingLoad\models\Course;
 use backend\modules\teachingLoad\models\LecLecturer;
 use backend\modules\teachingLoad\models\TutorialTutor;
+use backend\modules\teachingLoad\models\BulkSessionExcel;
 use backend\models\SemesterForm;
 use backend\models\Semester;
 use yii\web\Controller;
@@ -416,6 +417,11 @@ class CourseOfferedController extends Controller
                 $this->deleteBulkSession($semester);
 
             }
+            if($action == 3)
+            {
+                $this->exportExcel($semester,$model,$post_session);
+
+            }
 
         }
 
@@ -565,6 +571,18 @@ class CourseOfferedController extends Controller
         }
          Yii::$app->session->addFlash('success', "All Bulk Session Have Been Delete");
                 
+    }
+
+    public function exportExcel($semester,$model,$post_session){
+        $this->saveSession($model,$post_session);
+        if(Yii::$app->request->post()){
+                $pdf = new BulkSessionExcel;
+                $pdf->multiple = true;
+                $pdf->semester = $semester;
+                $pdf->courses = Yii::$app->request->post();
+                $pdf->model = $model;
+                $pdf->generateExcel();
+        } 
     }     
 
     private function insertLecture($offered_id,$max_lecture,$prefix,$i,$max_tutorial,$prefix_tutorial)
