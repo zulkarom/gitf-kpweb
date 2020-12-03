@@ -419,7 +419,7 @@ class CourseOfferedController extends Controller
             }
             if($action == 3)
             {
-                $this->exportExcel($semester,$model,$post_session);
+                $this->exportExcel($model,$post_session);
 
             }
 
@@ -539,8 +539,6 @@ class CourseOfferedController extends Controller
         ->all();
         if($tutorial_tutor){
             TutorialTutor::deleteAll(['in', 'id', ArrayHelper::map($tutorial_tutor, 'id', 'id')]);
-           
-            
         }
 
         $tutorials = TutorialLecture::find()
@@ -573,16 +571,11 @@ class CourseOfferedController extends Controller
                 
     }
 
-    public function exportExcel($semester,$model,$post_session){
+    public function exportExcel($model,$post_session){
         $this->saveSession($model,$post_session);
-        if(Yii::$app->request->post()){
                 $pdf = new BulkSessionExcel;
-                $pdf->multiple = true;
-                $pdf->semester = $semester;
-                $pdf->courses = Yii::$app->request->post();
                 $pdf->model = $model;
                 $pdf->generateExcel();
-        } 
     }     
 
     private function insertLecture($offered_id,$max_lecture,$prefix,$i,$max_tutorial,$prefix_tutorial)
