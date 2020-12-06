@@ -11,6 +11,9 @@ use Yii;
  * @property string $level
  * @property string $item
  * @property string $item_bi
+ * @property int $lec_upload
+ * @property int $coor_upload
+ * @property int $staff_upload
  */
 class Checklist extends \yii\db\ActiveRecord
 {
@@ -28,8 +31,10 @@ class Checklist extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['level', 'item', 'item_bi'], 'required'],
-            [['level', 'item', 'item_bi'], 'string', 'max' => 250],
+            [['level', 'item', 'item_bi', 'lec_upload', 'coor_upload', 'staff_upload'], 'required'],
+            [['item', 'item_bi'], 'string'],
+            [['lec_upload', 'coor_upload', 'staff_upload'], 'integer'],
+            [['level'], 'string', 'max' => 250],
         ];
     }
 
@@ -43,6 +48,9 @@ class Checklist extends \yii\db\ActiveRecord
             'level' => 'Level',
             'item' => 'Item',
             'item_bi' => 'Item Bi',
+            'lec_upload' => 'Lec Upload',
+            'coor_upload' => 'Coor Upload',
+            'staff_upload' => 'Staff Upload',
         ];
     }
 
@@ -67,4 +75,20 @@ class Checklist extends \yii\db\ActiveRecord
         ->all();
     }
 
+    public function getItemStaff(){
+        return Checklist::find()
+        ->where(['staff_upload' => 1])
+        ->all();
+    }
+    public function getItemLecture(){
+        return Checklist::find()
+        ->where(['lec_upload' => 1])
+        ->all();
+    }
+
+    public function getItemCoor(){
+        return Checklist::find()
+        ->where(['coor_upload' => 1])
+        ->all();
+    }
 }

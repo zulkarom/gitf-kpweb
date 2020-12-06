@@ -159,9 +159,9 @@ class Menu
                         'url' => '#',
                         'items' => [
 				
-				['label' => 'Teaching Assignment', 'icon' => 'book', 'url' => ['/teaching-load/default/teaching-assignment']],
+				['label' => 'Teaching Assignment', 'icon' => 'book', 'url' => ['/course-files/default/teaching-assignment']],
 				
-				['label' => 'Teaching Selection', 'icon' => 'book', 'url' => ['/teaching-load/']],
+				['label' => 'Teaching Selection', 'icon' => 'book', 'url' => ['/course-files/']],
 
                  ]
                     ];	

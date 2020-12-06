@@ -42,9 +42,48 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="teaching-assignment">
 <?php $form = ActiveForm::begin(); ?>
 
-  <div class="row">
+<div class="row">
     <div class="col-sm-12">
       <div class="box box-primary">
+        <div class="box-header">
+          <div class="a">
+            <div class="box-title"><b>Staff Upload</b></div>
+          </div>
+        </div>
+          <div class="box-body">
+            <table id="course">
+                <thead>
+                  <tr>
+                    <th style="width:5%">No.</th>
+                    <th style="width:69.3%">Item Name</th>
+                    <th style="width:13%">Progress</th>
+                    <th style="width:12.7%">Action</th>
+                  </tr>
+                
+                     <?php 
+    
+                       if($modelItem->itemStaff){
+                        $i = 1;
+                          foreach($modelItem->itemStaff as $item){
+                          echo '<tr><td>'.$i.'</td>
+                                <td>'.$item->item.'<i><br/>'.$item->item_bi.'</i></td>
+                                <td></td>
+                                <td><a href="' . Url::to(['default/teaching-assignment-course-file-upload']) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> Upload</a></td>';
+                                $i++;
+                          }
+                        }
+                              ?>
+                  </tr>
+                </thead>
+              </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="box box-success">
         <div class="box-header">
           <div class="a">
             <div class="box-title"><b>Coordinator</b></div>
@@ -71,7 +110,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <td>'.$coor->course->course_code.'</td>
                             <td>'.$coor->course->course_name.'</td>
                             <td></td>
-                            <td><a href="' . Url::to(['default/teaching-assignment-course-file', 'id' => $coor->coordinator]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> View</a></td>';
+                            <td><a href="' . Url::to(['default/teaching-assignment-coordinator', 'id' => $coor->coordinator]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> View</a></td>';
                                     
                             $i++;
                        }
@@ -87,7 +126,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="row">
     <div class="col-sm-12">
-      <div class="box box-danger">
+      <div class="box box-info">
         <div class="box-header">
           <div class="a">
             <div class="box-title"><b>Lectures</b></div>
@@ -117,7 +156,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <td>'.$lecture->courseLecture->courseOffered->course->course_name.'</td>
                             <td>'.$lecture->courseLecture->lec_name.'</td>
                             <td></td>
-                            <td><a href="' . Url::to(['default/teaching-assignment-course-file', 'id' => $lecture->staff_id]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> View</a></td>';
+                            <td><a href="' . Url::to(['default/teaching-assignment-lecture', 'id' => $lecture->lecture_id]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> View</a></td>';
                    
                             $i++;
                       }
@@ -134,7 +173,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="row">
     <div class="col-sm-12">
-      <div class="box box-success">
+      <div class="box box-danger">
         <div class="box-header">
           <div class="a">
             <div class="box-title"><b>Tutorials</b></div>

@@ -11,7 +11,6 @@ use backend\modules\teachingLoad\models\LecLecturer;
 use backend\modules\teachingLoad\models\OutCourse;
 use backend\modules\teachingLoad\models\PastExperience;
 use backend\modules\teachingLoad\models\Setting;
-use backend\modules\courseFiles\models\Checklist;
 use backend\models\SemesterForm;
 use backend\models\Semester;
 use backend\modules\teachingLoad\models\Course;
@@ -70,45 +69,7 @@ class DefaultController extends Controller
 		]);
 	}
 
-	public function actionTeachingAssignment(){
-		
-        $semester = new SemesterForm;
-        $semester->action = ['/teaching-load/default/teaching-assignment'];
-
-        if(Yii::$app->getRequest()->getQueryParam('SemesterForm')){
-            $sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');
-            $semester->semester_id = $sem['semester_id'];
-        }else{
-            $semester->semester_id = Semester::getCurrentSemester()->id;
-        }
-
-
-
-        // print_r($semester->semester_id);
-        // die();
-
-        $model = new Staff();
-        $model->semester = $semester->semester_id;
-
-		return $this->render('teaching-assignment', [
-			'model' => $model,
-            'semester' => $semester
-		]);
-
-
-	}
-
-
-	public function actionTeachingAssignmentCourseFile()
-    {
-        $model = new Checklist();
-        
-        
-
-        return $this->render('teaching-assignment-course-file', [
-            'model' => $model,
-        ]);
-    }
+	
 	
 	public function actionTeachingForm(){
 		

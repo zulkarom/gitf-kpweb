@@ -6,6 +6,7 @@ use Yii;
 use yii\web\Controller;
 use backend\models\SemesterForm;
 use backend\models\Semester;
+use backend\modules\staff\models\Staff;
 use backend\modules\courseFiles\models\CourseFilesSearch;
 use backend\modules\courseFiles\models\Checklist;
 /**
@@ -45,10 +46,62 @@ class DefaultController extends Controller
     public function actionViewFiles()
     {
         $model = new Checklist();
-        
-        
-
         return $this->render('viewfiles', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionTeachingAssignment(){
+        
+        $semester = new SemesterForm;
+        $semester->action = ['/teaching-load/default/teaching-assignment'];
+
+        if(Yii::$app->getRequest()->getQueryParam('SemesterForm')){
+            $sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');
+            $semester->semester_id = $sem['semester_id'];
+        }else{
+            $semester->semester_id = Semester::getCurrentSemester()->id;
+        }
+
+        // print_r($semester->semester_id);
+        // die();
+
+        $model = new Staff();
+        $modelItem = new Checklist();
+        $model->semester = $semester->semester_id;
+
+        return $this->render('teaching-assignment', [
+            'model' => $model,
+            'modelItem' => $modelItem,
+            'semester' => $semester
+        ]);
+
+
+    }
+
+
+    public function actionTeachingAssignmentLecture($id)
+    {
+        $model = new Checklist();
+        
+        return $this->render('teaching-assignment-lecture', [
+            'model' => $model,
+        ]);
+    }
+
+     public function actionTeachingAssignmentCoordinator($id)
+    {
+        $model = new Checklist();
+        
+        return $this->render('teaching-assignment-coordinator', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionTeachingAssignmentCourseFileUpload()
+    {
+    
+        return $this->render('teaching-assignment-course-file-upload', [
             'model' => $model,
         ]);
     }
