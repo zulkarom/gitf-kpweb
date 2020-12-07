@@ -108,6 +108,7 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@frontend/views/myas
 	
 		<section>
 		
+		
 		<div class="container services">
 			<div style="padding:30px;">
 			<div class="row">
@@ -122,6 +123,7 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@frontend/views/myas
 			</div>
 			</div>
 		</div>
+		<?= Alert::widget() ?>
 		<div style="min-height:50px;"></div>
 	
 	</section>
