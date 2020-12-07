@@ -1,0 +1,1 @@
+ALTER TABLE `cf_checklist` ADD `upload_url` VARCHAR(225) NOT NULL AFTER `staff_upload`;

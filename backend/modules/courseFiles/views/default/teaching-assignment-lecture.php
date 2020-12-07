@@ -37,12 +37,10 @@ $this->params['breadcrumbs'][] = $this->title;
 }
 </style>
 
-<div class="teaching-assignment-course-file">
 <?php $form = ActiveForm::begin(); ?>
 
 
 <div class="box box-primary">
-
 <div class="box-header">
 	<div class="box-title"><b>Peringkat Pelaksanaan/ Implementation Level
     <br/><div class="box-title">(DO)</b></div>
@@ -68,7 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
             if($item->lec_upload == 1){
               echo '<tr><td>'.$i.'</td>
                 <td>'.$item->item.'<i><br/>'.$item->item_bi.'</i></td>
-                <td><a href="' . Url::to(['default/teaching-assignment-lecture-upload','id' => $lecture_id]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> Upload</a></td>';
+                <td><a href="' . Url::to([$item->upload_url.'/page','id' => $lecture_id]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> Upload</a></td>';
        
                 $i++;
             }
@@ -82,13 +80,5 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 </div>
 
-</div>
-
-
-
-
-</div>
 <?php ActiveForm::end(); ?>
 
-
-</div>
