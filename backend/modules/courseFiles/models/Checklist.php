@@ -74,21 +74,5 @@ class Checklist extends \yii\db\ActiveRecord
         ->where(['level' => 'Act'])
         ->all();
     }
-
-    public function getItemStaff(){
-        return Checklist::find()
-        ->where(['staff_upload' => 1])
-        ->all();
-    }
-    public function getItemLecture(){
-        return Checklist::find()
-        ->where(['lec_upload' => 1])
-        ->all();
-    }
-
-    public function getItemCoor(){
-        return Checklist::find()
-        ->where(['coor_upload' => 1])
-        ->all();
-    }
+    
 }

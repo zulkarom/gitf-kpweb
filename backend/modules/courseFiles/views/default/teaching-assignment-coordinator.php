@@ -37,9 +37,52 @@ $this->params['breadcrumbs'][] = $this->title;
 }
 </style>
 
-<div class="teaching-assignment-course-file">
 <?php $form = ActiveForm::begin(); ?>
 
+
+<div class="box box-primary">
+<div class="box-header">
+  <div class="box-title"><b>Peringkat Perancangan/Planning Level 
+    <br/><div class="box-title">(PLAN)</b></div>
+</div>
+</div>
+
+<div class="box-body">
+
+  <table id="course">
+    <thead>
+      <tr>
+        <th style="width:5%">No.</th>
+        <th style="width:85%">Item</th>
+        <th>Action</th>
+      </tr>
+    
+        
+        <tr>
+        <?php 
+    
+        if($model->itemPlan){
+        $i = 1;
+          
+            foreach($model->itemPlan as $item){
+              if($item->coor_upload == 1){
+                echo '<tr><td>'.$i.'</td>
+                  <td>'.$item->item.'<i><br/>'.$item->item_bi.'</i></td>
+                  <td><a href="" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> Upload</a></td>';
+         
+                  $i++;
+              }
+            
+            }
+          
+        }
+              ?>
+      </tr>
+    </thead>
+   
+  </table>
+</div>
+</div>
 
 <div class="box box-primary">
 
@@ -62,15 +105,18 @@ $this->params['breadcrumbs'][] = $this->title;
         <tr>
         <?php 
     
-        if($model->itemCoor && $model->itemDo){
+        if($model->itemDo){
         $i = 1;
           
-            foreach($model->itemCoor as $item){
-            echo '<tr><td>'.$i.'</td>
+            foreach($model->itemDo as $item){
+              if($item->coor_upload == 1){
+                echo '<tr><td>'.$i.'</td>
                   <td>'.$item->item.'<i><br/>'.$item->item_bi.'</i></td>
                   <td><a href="" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> Upload</a></td>';
          
                   $i++;
+              }
+            
             }
           
         }
@@ -82,13 +128,95 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 </div>
 
+<div class="box box-primary">
+<div class="box-header">
+  <div class="box-title"><b>Peringkat Semak/ Evaluation Level
+    <br/><div class="box-title">(CHECK)</b></div>
+</div>
+</div>
+<div class="box-body">
+
+  <table id="course">
+    <thead>
+      <tr>
+        <th style="width:5%">No.</th>
+        <th style="width:85%">Item</th>
+        <th>Action</th>
+      </tr>
+    
+        
+        <tr>
+        <?php 
+    
+        if($model->itemCheck){
+        $i = 1;
+          
+            foreach($model->itemCheck as $item){
+              if($item->coor_upload == 1){
+                echo '<tr><td>'.$i.'</td>
+                  <td>'.$item->item.'<i><br/>'.$item->item_bi.'</i></td>
+                  <td><a href="" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> Upload</a></td>';
+         
+                  $i++;
+              }
+            
+            }
+          
+        }
+              ?>
+      </tr>
+    </thead>
+   
+  </table>
+</div>
+</div>
+
+<div class="box box-primary">
+
+<div class="box-header">
+  <div class="box-title"><b>Peringkat Tindakan/ Review Level
+    <br/><div class="box-title">(ACT)</b></div>
+</div>
+</div>
+
+<div class="box-body">
+
+  <table id="course">
+    <thead>
+      <tr>
+        <th style="width:5%">No.</th>
+        <th style="width:85%">Item</th>
+        <th>Action</th>
+      </tr>
+    
+        
+        <tr>
+        <?php 
+    
+        if($model->itemAct){
+        $i = 1;
+          
+            foreach($model->itemAct as $item){
+              if($item->coor_upload == 1){
+                echo '<tr><td>'.$i.'</td>
+                  <td>'.$item->item.'<i><br/>'.$item->item_bi.'</i></td>
+                  <td><a href="" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> Upload</a></td>';
+         
+                  $i++;
+              }
+            
+            }
+          
+        }
+              ?>
+      </tr>
+    </thead>
+   
+  </table>
+</div>
 </div>
 
 
 
-
-</div>
 <?php ActiveForm::end(); ?>
 
-
-</div>

@@ -62,14 +62,16 @@ $this->params['breadcrumbs'][] = $this->title;
         <tr>
         <?php 
     
-        if($model->itemLecture){
+        if($model->itemDo){
         $i = 1;
-          foreach($model->itemLecture as $item){
-        	echo '<tr><td>'.$i.'</td>
-              	<td>'.$item->item.'<i><br/>'.$item->item_bi.'</i></td>
-                <td><a href="" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> Upload</a></td>';
+          foreach($model->itemDo as $item){
+            if($item->lec_upload == 1){
+              echo '<tr><td>'.$i.'</td>
+                <td>'.$item->item.'<i><br/>'.$item->item_bi.'</i></td>
+                <td><a href="' . Url::to(['default/teaching-assignment-lecture-upload','id' => $lecture_id]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> Upload</a></td>';
        
                 $i++;
+            }
           }
         }
               ?>

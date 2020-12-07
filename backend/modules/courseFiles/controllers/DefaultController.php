@@ -9,6 +9,7 @@ use backend\models\Semester;
 use backend\modules\staff\models\Staff;
 use backend\modules\courseFiles\models\CourseFilesSearch;
 use backend\modules\courseFiles\models\Checklist;
+use backend\modules\courseFiles\models\LectureCancel;
 /**
  * Default controller for the `course-files` module
  */
@@ -83,25 +84,28 @@ class DefaultController extends Controller
     public function actionTeachingAssignmentLecture($id)
     {
         $model = new Checklist();
-        
+        $lecture_id = $id;
         return $this->render('teaching-assignment-lecture', [
             'model' => $model,
+            'lecture_id' => $lecture_id,
         ]);
     }
 
      public function actionTeachingAssignmentCoordinator($id)
     {
         $model = new Checklist();
+
         
         return $this->render('teaching-assignment-coordinator', [
             'model' => $model,
         ]);
     }
 
-    public function actionTeachingAssignmentCourseFileUpload()
+    public function actionTeachingAssignmentLectureUpload()
     {
     
-        return $this->render('teaching-assignment-course-file-upload', [
+        $model = new LectureCancel;
+        return $this->render('teaching-assignment-lecture-upload', [
             'model' => $model,
         ]);
     }
