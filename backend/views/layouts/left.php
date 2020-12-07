@@ -71,6 +71,7 @@ use backend\models\Menu;
 			break;
 			
 			case 'teaching-load':
+			case 'course-files':
 			$focus = Menu::teachingLoad();
 			$admin_focus = Menu::adminTeachingLoad();
 			break;
