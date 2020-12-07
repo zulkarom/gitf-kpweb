@@ -128,7 +128,7 @@ if($model->{$db_file}){
 
 $js = "
 
-$('#remove_$unique ').click(function(e, data){
+$('#remove_$unique').click(function(e, data){
 	  e.preventDefault();
 	  
 

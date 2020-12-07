@@ -6,6 +6,7 @@ use Yii;
 use backend\modules\teachingLoad\models\TutorialLecture;
 use backend\modules\teachingLoad\models\LecLecturer;
 use backend\modules\teachingLoad\models\CourseOffered;
+use backend\modules\courseFiles\models\LectureExemptFile;
 
 /**
  * This is the model class for table "tld_course_lec".
@@ -80,5 +81,9 @@ class CourseLecture extends \yii\db\ActiveRecord
     public function getCourseOffered(){
         return $this->hasOne(CourseOffered::className(), ['id' => 'offered_id']);
     }
+	
+	public function getLectureExemptFiles(){
+		return $this->hasMany(LectureExemptFile::className(), ['lecture_id' => 'id']);
+	}
 
 }
