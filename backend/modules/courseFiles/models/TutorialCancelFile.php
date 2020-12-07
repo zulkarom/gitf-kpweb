@@ -3,7 +3,7 @@
 namespace backend\modules\courseFiles\models;
 
 use Yii;
-use backend\modules\teachingLoad\models\CourseLecture;
+use backend\modules\teachingLoad\models\TutorialLecture;
 
 /**
  * This is the model class for table "cf_lec_cancel_class".
@@ -12,7 +12,7 @@ use backend\modules\teachingLoad\models\CourseLecture;
  * @property int $lecture_id
  * @property string $path_file
  */
-class LectureExemptFile extends \yii\db\ActiveRecord
+class TutorialCancelFile extends \yii\db\ActiveRecord
 {
 
     public $file_controller;
@@ -22,7 +22,7 @@ class LectureExemptFile extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'cf_lec_exempt_class';
+        return 'cf_tut_cancel_class';
     }
 
     /**
@@ -35,11 +35,11 @@ class LectureExemptFile extends \yii\db\ActiveRecord
             //path upload///
             [['path_file'], 'required', 'on' => 'path_upload'],
             [['path_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
-			
-			[['lecture_id', 'updated_at'], 'required', 'on' => 'add_exempt'],
+            
+            [['tutorial_id', 'updated_at'], 'required', 'on' => 'add_cancel'],
 
-            [['lecture_id'], 'required'],
-            [['lecture_id'], 'integer'],
+            [['tutorial_id'], 'required'],
+            [['tutorial_id'], 'integer'],
             [['path_file'], 'string'],
         ];
     }
@@ -51,12 +51,12 @@ class LectureExemptFile extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'lecture_id' => 'Lecture ID',
+            'tutorial_id' => 'Tutorial ID',
             'path_file' => 'Path File',
         ];
     }
-	
-	public function flashError(){
+
+    public function flashError(){
         if($this->getErrors()){
             foreach($this->getErrors() as $error){
                 if($error){
@@ -69,8 +69,7 @@ class LectureExemptFile extends \yii\db\ActiveRecord
 
     }
 
-    public function getLecture(){
-        return $this->hasOne(CourseLecture::className(), ['id' => 'lecture_id']);
+    public function getTutorial(){
+        return $this->hasOne(TutorialLecture::className(), ['id' => 'tutorial_id']);
     }
-
 }

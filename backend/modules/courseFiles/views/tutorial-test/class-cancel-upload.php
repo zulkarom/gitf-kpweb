@@ -10,13 +10,13 @@ use common\models\UploadFile;
 
 $this->title = 'Upload Files';
 $this->params['breadcrumbs'][] = ['label' => 'Teaching Assignment', 'url' => ['/course-files/default/teaching-assignment']];
-$this->params['breadcrumbs'][] = ['label' => 'Course Files', 'url' => ['/course-files/default/teaching-assignment-lecture', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => 'Course Files', 'url' => ['/course-files/default/teaching-assignment-tutorial', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = $this->title;
-$course = $model->courseOffered->course;
+$course = $model->lecture->courseOffered->course;
 ?>
 
 <div><div style="font-size:14px;font-weight:bold"><?=$course->course_code?> <?=$course->course_name?></div>
-<div style="margin-bottom:10px;font-size:14px">Record of Student’s Medical Checkup/ Class Exemption</div>
+<div style="margin-bottom:10px;font-size:14px">Record of Class Cancellation and Replacement (if applicable)</div>
 
 
 </div>
@@ -30,9 +30,9 @@ $course = $model->courseOffered->course;
 
 <tbody>
 	<?php 
-	if($model->lectureExemptFiles){
-		foreach($model->lectureExemptFiles as $file){
-			$file->file_controller = 'lecture-exempt-file';
+	if($model->tutorialCancelFiles){
+		foreach($model->tutorialCancelFiles as $file){
+			$file->file_controller = 'tutorial-cancel-file';
 			?>
 			<tr>
 				<td><?=UploadFile::fileInput($file, 'path', false, true)?></td>
@@ -45,6 +45,6 @@ $course = $model->courseOffered->course;
 </tbody>
 </table>
 <br />
-<a href="<?=Url::to(['lecture-exempt-file/add', 'id' => $model->id])?>" class="btn btn-default" ><span class="glyphicon glyphicon-plus"></span> Add Exemption Document</a>
+<a href="<?=Url::to(['tutorial-cancel-file/add', 'id' => $model->id])?>" class="btn btn-default" ><span class="glyphicon glyphicon-plus"></span> Add Cancellation Document</a>
 </div></div>
 

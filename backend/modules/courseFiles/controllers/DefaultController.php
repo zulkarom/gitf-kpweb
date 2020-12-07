@@ -91,6 +91,16 @@ class DefaultController extends Controller
         ]);
     }
 
+    public function actionTeachingAssignmentTutorial($id)
+    {
+        $model = new Checklist();
+        $tutorial_id = $id;
+        return $this->render('teaching-assignment-tutorial', [
+            'model' => $model,
+            'tutorial_id' => $tutorial_id,
+        ]);
+    }
+
      public function actionTeachingAssignmentCoordinator($id)
     {
         $model = new Checklist();

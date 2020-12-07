@@ -3,6 +3,7 @@
 namespace backend\modules\courseFiles\models;
 
 use Yii;
+use backend\modules\teachingLoad\models\CourseLecture;
 
 /**
  * This is the model class for table "cf_lec_cancel_class".
@@ -11,7 +12,7 @@ use Yii;
  * @property int $lecture_id
  * @property string $path_file
  */
-class LectureCancel extends \yii\db\ActiveRecord
+class LectureCancelFile extends \yii\db\ActiveRecord
 {
 
     public $file_controller;
@@ -33,10 +34,12 @@ class LectureCancel extends \yii\db\ActiveRecord
 
             //path upload///
             [['path_file'], 'required', 'on' => 'path_upload'],
-            [['path_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf, png, jpg, gif', 'maxSize' => 5000000],
+            [['path_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
+            
+            [['lecture_id', 'updated_at'], 'required', 'on' => 'add_cancel'],
 
-            [['id', 'lecture_id'], 'required'],
-            [['id', 'lecture_id'], 'integer'],
+            [['lecture_id'], 'required'],
+            [['lecture_id'], 'integer'],
             [['path_file'], 'string'],
         ];
     }
@@ -51,5 +54,22 @@ class LectureCancel extends \yii\db\ActiveRecord
             'lecture_id' => 'Lecture ID',
             'path_file' => 'Path File',
         ];
+    }
+
+    public function flashError(){
+        if($this->getErrors()){
+            foreach($this->getErrors() as $error){
+                if($error){
+                    foreach($error as $e){
+                        Yii::$app->session->addFlash('error', $e);
+                    }
+                }
+            }
+        }
+
+    }
+
+    public function getLecture(){
+        return $this->hasOne(CourseLecture::className(), ['id' => 'lecture_id']);
     }
 }

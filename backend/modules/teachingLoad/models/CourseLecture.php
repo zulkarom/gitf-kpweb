@@ -7,6 +7,8 @@ use backend\modules\teachingLoad\models\TutorialLecture;
 use backend\modules\teachingLoad\models\LecLecturer;
 use backend\modules\teachingLoad\models\CourseOffered;
 use backend\modules\courseFiles\models\LectureExemptFile;
+use backend\modules\courseFiles\models\LectureCancelFile;
+use backend\modules\courseFiles\models\LectureReceiptFile;
 
 /**
  * This is the model class for table "tld_course_lec".
@@ -85,5 +87,14 @@ class CourseLecture extends \yii\db\ActiveRecord
 	public function getLectureExemptFiles(){
 		return $this->hasMany(LectureExemptFile::className(), ['lecture_id' => 'id']);
 	}
+
+    public function getLectureCancelFiles(){
+        return $this->hasMany(LectureCancelFile::className(), ['lecture_id' => 'id']);
+    }
+
+    public function getLectureReceiptFiles(){
+        return $this->hasMany(LectureReceiptFile::className(), ['lecture_id' => 'id']);
+    }
+
 
 }

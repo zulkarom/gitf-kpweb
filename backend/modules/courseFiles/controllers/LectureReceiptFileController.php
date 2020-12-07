@@ -4,7 +4,7 @@ namespace backend\modules\courseFiles\controllers;
 
 use Yii;
 use yii\web\Controller;
-use backend\modules\courseFiles\models\LectureExemptFile;
+use backend\modules\courseFiles\models\LectureReceiptFile;
 use backend\modules\teachingLoad\models\CourseLecture;
 use yii\filters\AccessControl;
 use yii\db\Expression;
@@ -16,7 +16,7 @@ use yii\helpers\Json;
 /**
  * Default controller for the `course-files` module
  */
-class LectureExemptFileController extends Controller
+class LectureReceiptFileController extends Controller
 {
     /**
      * Renders the index view for the module
@@ -42,7 +42,7 @@ class LectureExemptFileController extends Controller
     {
         $model = $this->findLecture($id);
 		
-        return $this->render('/lecture-test/class-exempt-upload', [
+        return $this->render('/lecture-test/class-receipt-upload', [
             'model' => $model,
         ]);
     }
@@ -59,8 +59,8 @@ class LectureExemptFileController extends Controller
 
     public function actionAdd($id){
 		
-		$model = new LectureExemptFile;
-		$model->scenario = 'add_exempt';
+		$model = new LectureReceiptFile;
+		$model->scenario = 'add_receipt';
 		
 		$model->lecture_id = $id;
 		$model->updated_at = new Expression('NOW()');
@@ -73,7 +73,7 @@ class LectureExemptFileController extends Controller
 	}
 	
 	public function actionDeleteRow($id){
-		$model = $this->findLectureExempt($id);
+		$model = $this->findLectureReceipt($id);
 		if($model->delete()){
 			return $this->redirect(['page', 'id' => $model->lecture_id]);
 		}
@@ -81,26 +81,26 @@ class LectureExemptFileController extends Controller
 	
 	public function actionUploadFile($attr, $id){
 		$attr = $this->clean($attr);
-        $model = $this->findLectureExempt($id);
-		$model->file_controller = 'lecture-exempt-file';
-		$path = 'course-files/'.$model->lecture->courseOffered->semester_id.'/'.$model->lecture->courseOffered->course->course_code.'/'.$model->lecture->lec_name.'/16-class-exemption';
+        $model = $this->findLectureReceipt($id);
+		$model->file_controller = 'lecture-receipt-file';
+		$path = 'course-files/'.$model->lecture->courseOffered->semester_id.'/'.$model->lecture->courseOffered->course->course_code.'/'.$model->lecture->lec_name.'/11-receipt-exemption';
 		return UploadFile::upload($model, $attr, 'updated_at', $path);
 
 	}
 	
 	public function actionDownload($attr, $id){
 		$attr = $this->clean($attr);
-        $model = $this->findLectureExempt($id);
-		$filename = 'Class Exemption ' . $id;
+        $model = $this->findLectureReceipt($id);
+		$filename = 'Receipt of Students’ Assignment ' . $id;
 		
 		
 		
 		UploadFile::download($model, $attr, $filename);
 	}
 
-    protected function findLectureExempt($id)
+    protected function findLectureReceipt($id)
     {
-        if (($model = LectureExemptFile::findOne($id)) !== null) {
+        if (($model = LectureReceiptFile::findOne($id)) !== null) {
             return $model;
         }
 
@@ -111,7 +111,7 @@ class LectureExemptFileController extends Controller
 	{
 					
 		$attr = $this->clean($attr);
-        $model = $this->findLectureExempt($id);
+        $model = $this->findLectureReceipt($id);
 
 		$attr_db = $attr . '_file';
 		

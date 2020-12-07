@@ -12,7 +12,7 @@ use backend\modules\teachingLoad\models\CourseLecture;
  * @property int $lecture_id
  * @property string $path_file
  */
-class LectureExemptFile extends \yii\db\ActiveRecord
+class LectureReceiptFile extends \yii\db\ActiveRecord
 {
 
     public $file_controller;
@@ -22,7 +22,7 @@ class LectureExemptFile extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'cf_lec_exempt_class';
+        return 'cf_lec_receipt_class';
     }
 
     /**
@@ -35,8 +35,8 @@ class LectureExemptFile extends \yii\db\ActiveRecord
             //path upload///
             [['path_file'], 'required', 'on' => 'path_upload'],
             [['path_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
-			
-			[['lecture_id', 'updated_at'], 'required', 'on' => 'add_exempt'],
+            
+            [['lecture_id', 'updated_at'], 'required', 'on' => 'add_receipt'],
 
             [['lecture_id'], 'required'],
             [['lecture_id'], 'integer'],
@@ -55,8 +55,8 @@ class LectureExemptFile extends \yii\db\ActiveRecord
             'path_file' => 'Path File',
         ];
     }
-	
-	public function flashError(){
+
+    public function flashError(){
         if($this->getErrors()){
             foreach($this->getErrors() as $error){
                 if($error){
@@ -72,5 +72,4 @@ class LectureExemptFile extends \yii\db\ActiveRecord
     public function getLecture(){
         return $this->hasOne(CourseLecture::className(), ['id' => 'lecture_id']);
     }
-
 }

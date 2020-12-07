@@ -204,7 +204,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <td>'.$tutorial->tutorialLec->lecture->courseOffered->course->course_name.'</td>
                             <td>'.$tutorial->tutorialLec->tutorial_name.'</td>
                             <td></td>
-                            <td><a href="' . Url::to(['default/teaching-assignment-course-file', 'id' => $tutorial->staff_id]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> View</a></td>';
+                            <td><a href="' . Url::to(['default/teaching-assignment-tutorial', 'id' => $tutorial->tutorial_id]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> View</a></td>';
                    
                             $i++;
                       }

@@ -16,7 +16,7 @@ $course = $model->courseOffered->course;
 ?>
 
 <div><div style="font-size:14px;font-weight:bold"><?=$course->course_code?> <?=$course->course_name?></div>
-<div style="margin-bottom:10px;font-size:14px">Record of Student’s Medical Checkup/ Class Exemption</div>
+<div style="margin-bottom:10px;font-size:14px">Record of Receipt of Students’ Assignment</div>
 
 
 </div>
@@ -30,9 +30,9 @@ $course = $model->courseOffered->course;
 
 <tbody>
 	<?php 
-	if($model->lectureExemptFiles){
-		foreach($model->lectureExemptFiles as $file){
-			$file->file_controller = 'lecture-exempt-file';
+	if($model->lectureReceiptFiles){
+		foreach($model->lectureReceiptFiles as $file){
+			$file->file_controller = 'lecture-receipt-file';
 			?>
 			<tr>
 				<td><?=UploadFile::fileInput($file, 'path', false, true)?></td>
@@ -45,6 +45,6 @@ $course = $model->courseOffered->course;
 </tbody>
 </table>
 <br />
-<a href="<?=Url::to(['lecture-exempt-file/add', 'id' => $model->id])?>" class="btn btn-default" ><span class="glyphicon glyphicon-plus"></span> Add Exemption Document</a>
+<a href="<?=Url::to(['lecture-receipt-file/add', 'id' => $model->id])?>" class="btn btn-default" ><span class="glyphicon glyphicon-plus"></span> Add Receipt Document</a>
 </div></div>
 
