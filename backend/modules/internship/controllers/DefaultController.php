@@ -88,6 +88,7 @@ class DefaultController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
 			if($model->save()){
+				Yii::$app->session->addFlash('success', "Data Updated");
 				return $this->redirect(['view', 'id' => $model->id]);
 			}
             
@@ -110,6 +111,7 @@ class DefaultController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+			Yii::$app->session->addFlash('success', "Data Updated");
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
