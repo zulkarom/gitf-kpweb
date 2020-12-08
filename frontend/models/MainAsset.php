@@ -9,7 +9,7 @@ class MainAsset extends \yii\web\AssetBundle
         "css/bootstrap.min.css",
 		"css/font-awesome.min.css",
 		"css/themify-icons.css",
-		"css/style.css",	
+		"css/style3.css",	
 		
     ];
 	
@@ -18,7 +18,7 @@ class MainAsset extends \yii\web\AssetBundle
     public $js = [
 		//"js/rem.min.js",
 		//"js/jssor.slider.min.js",
-		"js/jquery-3.2.1.min.js",
+		//"js/jquery-3.2.1.min.js",
 		"js/main.js",
 		
 		

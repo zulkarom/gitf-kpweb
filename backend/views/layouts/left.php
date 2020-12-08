@@ -179,6 +179,8 @@ $menuItems = [
 					
 					['label' => 'Chapter in Book', 'icon' => 'book', 'url' => ['/chapterinbook'], 'visible' => Yii::$app->user->can('chapterinbook-manager')],
 					
+					['label' => 'Internship', 'icon' => 'book', 'url' => ['/internship'], 'visible' => Yii::$app->user->can('internship-manager')],
+					
 					
 					
 					
