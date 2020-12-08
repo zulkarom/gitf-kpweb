@@ -70,6 +70,10 @@ class SiteController extends Controller
         
     }
 	
+	public function actionMyError(){
+		
+		$this->layout = 'error';
+	}
 
 	
 	
