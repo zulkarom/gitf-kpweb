@@ -6,8 +6,17 @@ use Yii;
 use backend\modules\esiap\models\Course;
 use backend\modules\staff\models\Staff;
 use backend\models\Semester;
-
-
+use backend\modules\courseFiles\models\CoordinatorRubricsFile;
+use backend\modules\courseFiles\models\CoordinatorMaterialFile;
+use backend\modules\courseFiles\models\CoordinatorAssessmentMaterialFile;
+use backend\modules\courseFiles\models\CoordinatorAssessmentScriptFile;
+use backend\modules\courseFiles\models\CoordinatorSummativeAssessmentFile;
+use backend\modules\courseFiles\models\CoordinatorAnswerScriptFile;
+use backend\modules\courseFiles\models\CoordinatorAssessResultFile;
+use backend\modules\courseFiles\models\CoordinatorEvaluationFile;
+use backend\modules\courseFiles\models\CoordinatorResultCloFile;
+use backend\modules\courseFiles\models\CoordinatorAnalysisCloFile;
+use backend\modules\courseFiles\models\CoordinatorImproveFile;
 /**
  * This is the model class for table "tld_course_offered".
  *
@@ -128,5 +137,49 @@ class CourseOffered extends \yii\db\ActiveRecord
     
     public function getSemester(){
         return $this->hasOne(Semester::className(), ['id' => 'semester_id']);
+    }
+
+    public function getCoordinatorRubricsFiles(){
+        return $this->hasMany(CoordinatorRubricsFile::className(), ['offered_id' => 'id']);
+    }
+
+    public function getCoordinatorMaterialFiles(){
+        return $this->hasMany(CoordinatorMaterialFile::className(), ['offered_id' => 'id']);
+    }
+
+     public function getCoordinatorAssessmentMaterialFiles(){
+        return $this->hasMany(CoordinatorAssessmentMaterialFile::className(), ['offered_id' => 'id']);
+    }
+
+    public function getCoordinatorAssessmentScriptFiles(){
+        return $this->hasMany(CoordinatorAssessmentScriptFile::className(), ['offered_id' => 'id']);
+    }
+
+     public function getCoordinatorSummativeAssessmentFiles(){
+        return $this->hasMany(CoordinatorSummativeAssessmentFile::className(), ['offered_id' => 'id']);
+    }
+
+    public function getCoordinatorAnswerScriptFiles(){
+        return $this->hasMany(CoordinatorAnswerScriptFile::className(), ['offered_id' => 'id']);
+    }
+
+    public function getCoordinatorAssessResultFiles(){
+        return $this->hasMany(CoordinatorAssessResultFile::className(), ['offered_id' => 'id']);
+    }
+
+    public function getCoordinatorEvaluationFiles(){
+        return $this->hasMany(CoordinatorEvaluationFile::className(), ['offered_id' => 'id']);
+    }
+
+    public function getCoordinatorResultCloFiles(){
+        return $this->hasMany(CoordinatorResultCloFile::className(), ['offered_id' => 'id']);
+    }
+    
+    public function getCoordinatorAnalysisCloFiles(){
+        return $this->hasMany(CoordinatorAnalysisCloFile::className(), ['offered_id' => 'id']);
+    }
+
+    public function getCoordinatorImproveFiles(){
+        return $this->hasMany(CoordinatorImproveFile::className(), ['offered_id' => 'id']);
     }
 }

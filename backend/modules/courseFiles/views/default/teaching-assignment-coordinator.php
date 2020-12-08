@@ -8,7 +8,7 @@ use yii\helpers\Url;
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
 
 $this->title = 'Course Files';
-$this->params['breadcrumbs'][] = ['label' => 'Teaching Assignment', 'url' => ['/teaching-load/default/teaching-assignment']];
+$this->params['breadcrumbs'][] = ['label' => 'Teaching Assignment', 'url' => ['/course-files/default/teaching-assignment']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -68,7 +68,7 @@ $this->params['breadcrumbs'][] = $this->title;
               if($item->coor_upload == 1){
                 echo '<tr><td>'.$i.'</td>
                   <td>'.$item->item.'<i><br/>'.$item->item_bi.'</i></td>
-                  <td><a href="" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> Upload</a></td>';
+                  <td><a href="' . Url::to([$item->upload_url.'/page','id' => $offered_id]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> Upload</a></td>';
          
                   $i++;
               }
@@ -112,7 +112,7 @@ $this->params['breadcrumbs'][] = $this->title;
               if($item->coor_upload == 1){
                 echo '<tr><td>'.$i.'</td>
                   <td>'.$item->item.'<i><br/>'.$item->item_bi.'</i></td>
-                  <td><a href="" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> Upload</a></td>';
+                  <td><a href="' . Url::to([$item->upload_url.'/page','id' => $offered_id]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> Upload</a></td>';
          
                   $i++;
               }
@@ -155,7 +155,7 @@ $this->params['breadcrumbs'][] = $this->title;
               if($item->coor_upload == 1){
                 echo '<tr><td>'.$i.'</td>
                   <td>'.$item->item.'<i><br/>'.$item->item_bi.'</i></td>
-                  <td><a href="" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> Upload</a></td>';
+                  <td><a href="' . Url::to([$item->upload_url.'/page','id' => $offered_id]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> Upload</a></td>';
          
                   $i++;
               }
@@ -200,7 +200,7 @@ $this->params['breadcrumbs'][] = $this->title;
               if($item->coor_upload == 1){
                 echo '<tr><td>'.$i.'</td>
                   <td>'.$item->item.'<i><br/>'.$item->item_bi.'</i></td>
-                  <td><a href="" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> Upload</a></td>';
+                  <td><a href="' . Url::to([$item->upload_url.'/page','id' => $offered_id]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> Upload</a></td>';
          
                   $i++;
               }

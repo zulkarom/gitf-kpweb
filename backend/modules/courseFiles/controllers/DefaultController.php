@@ -104,19 +104,11 @@ class DefaultController extends Controller
      public function actionTeachingAssignmentCoordinator($id)
     {
         $model = new Checklist();
-
+        $offered_id = $id;
         
         return $this->render('teaching-assignment-coordinator', [
             'model' => $model,
-        ]);
-    }
-
-    public function actionTeachingAssignmentLectureUpload()
-    {
-    
-        $model = new LectureCancel;
-        return $this->render('teaching-assignment-lecture-upload', [
-            'model' => $model,
+            'offered_id' => $offered_id,
         ]);
     }
 
