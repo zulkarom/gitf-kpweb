@@ -53,19 +53,6 @@ class DefaultController extends Controller
         ]);
     }
 	
-	public function actionToken()
-    {
-        $list = InternshipList::find()->all();
-		foreach($list as $row){
-			$token = $this->generateRandomString();
-			if(InternshipList::findOne(['token' => $token]) === null){
-				$row->token = $token;
-				$row->save();
-			}
-		}
-
-        return $this->redirect(['index']);
-    }
 	
 	public function generateRandomString($length = 20) {
 		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';

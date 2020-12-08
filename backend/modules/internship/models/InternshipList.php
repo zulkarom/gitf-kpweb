@@ -38,7 +38,6 @@ class InternshipList extends \yii\db\ActiveRecord
             [['jilid'], 'string', 'max' => 5],
             [['surat'], 'string', 'max' => 8],
 			
-			[['token'], 'string',],
         ];
     }
 

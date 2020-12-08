@@ -27,11 +27,11 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'error'],
+                        'actions' => ['login', 'error', 'my-error'],
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index', 'test', 'jeb-web'],
+                        'actions' => ['logout', 'index', 'test', 'jeb-web', 'my-error'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -45,6 +45,8 @@ class SiteController extends Controller
             ],
         ];
     }
+	
+	
 
     /**
      * @inheritdoc
@@ -129,4 +131,11 @@ class SiteController extends Controller
 
         return $this->goHome();
     }
+	
+	public function actionMyError(){
+		
+		$this->layout = 'error';
+	}
+	
+	
 }
