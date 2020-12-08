@@ -6,6 +6,8 @@ use Yii;
 use backend\modules\teachingLoad\models\TutorialTutor;
 use backend\modules\teachingLoad\models\CourseLecture;
 use backend\modules\courseFiles\models\TutorialCancelFile;
+use backend\modules\courseFiles\models\TutorialReceiptFile;
+use backend\modules\courseFiles\models\TutorialExemptFile;
 /**
  * This is the model class for table "tld_tutorial_lec".
  *
@@ -79,5 +81,13 @@ class TutorialLecture extends \yii\db\ActiveRecord
 
     public function getTutorialCancelFiles(){
         return $this->hasMany(TutorialCancelFile::className(), ['tutorial_id' => 'id']);
+    }
+
+    public function getTutorialReceiptFiles(){
+        return $this->hasMany(TutorialReceiptFile::className(), ['tutorial_id' => 'id']);
+    }
+
+    public function getTutorialExemptFiles(){
+        return $this->hasMany(TutorialExemptFile::className(), ['tutorial_id' => 'id']);
     }
 }
