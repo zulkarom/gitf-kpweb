@@ -21,17 +21,17 @@ class StudentsController extends Controller
 		$model = new InternshipForm;
 		if ($model->load(Yii::$app->request->post())) {
 			$attr = 'paper';
-			$model = $this->findModel($model->matric, $model->nric);
-			if(!$model){
-				Yii::$app->session->addFlash('error', "Student record not exist!");
-				return $this->refresh();
-			}
-
-				if(!UploadFile::download($model, $attr, $model->nric)){
+			$student = $this->findModel($model->matric, $model->nric);
+			if($student){
+				if(!UploadFile::download($student, $attr, $student->nric)){
 					Yii::$app->session->addFlash('error', "File not exist!");
-					return $this->refresh();
+					//return $this->refresh();
 				}
+			}else{
+				Yii::$app->session->addFlash('error', "Student record not exist!");
+				//return $this->refresh();
 			}
+		}
 
         return $this->render('internship', [
 			'model' => $model
