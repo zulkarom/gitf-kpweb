@@ -10,6 +10,8 @@ use backend\modules\website\models\Event;
 use backend\modules\website\models\FrontSlider;
 use common\models\Upload;
 use backend\models\Urlredirect;
+use yii\db\Expression;
+
 
 
 /**
@@ -81,7 +83,10 @@ class SiteController extends Controller
 		if($model){
 			if($model->url_to){
 				$counter =  $model->hit_counter;
-				
+				$counter = $counter + 1;
+				$model->hit_counter = $counter;
+				$model->last_hit = new Expression('NOW()');
+				$model->save();
 				return $this->redirect($model->url_to);
 				exit;
 			}
