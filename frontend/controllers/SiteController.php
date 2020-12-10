@@ -85,7 +85,7 @@ class SiteController extends Controller
 				$counter =  $model->hit_counter;
 				$counter = $counter + 1;
 				$model->hit_counter = $counter;
-				$model->last_hit = new Expression('NOW()');
+				$model->latest_hit = new Expression('NOW()');
 				$model->save();
 				return $this->redirect($model->url_to);
 				exit;
