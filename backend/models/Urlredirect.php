@@ -29,7 +29,7 @@ class Urlredirect extends \yii\db\ActiveRecord
     {
         return [
             [['url_to'], 'string'],
-            [['hit_counter', 'latest_hit'], 'integer'],
+            [['hit_counter'], 'integer'],
         ];
     }
 
