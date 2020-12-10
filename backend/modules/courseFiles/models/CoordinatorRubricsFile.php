@@ -73,4 +73,6 @@ class CoordinatorRubricsFile extends \yii\db\ActiveRecord
         return $this->hasOne(CourseOffered::className(), ['id' => 'offered_id']);
     }
 
+   
+
 }

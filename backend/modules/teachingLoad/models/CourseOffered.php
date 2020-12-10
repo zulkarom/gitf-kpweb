@@ -17,6 +17,7 @@ use backend\modules\courseFiles\models\CoordinatorEvaluationFile;
 use backend\modules\courseFiles\models\CoordinatorResultCloFile;
 use backend\modules\courseFiles\models\CoordinatorAnalysisCloFile;
 use backend\modules\courseFiles\models\CoordinatorImproveFile;
+use backend\modules\teachingLoad\models\CourseLecture;
 /**
  * This is the model class for table "tld_course_offered".
  *

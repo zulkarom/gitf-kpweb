@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'template' => '{files}',
                 'buttons'=>[
                     'files'=>function ($url, $model){
-                        return Html::a('<span class="glyphicon glyphicon-th-list"></span> View', ['view-files', 'id' => $model->id], ['class' => 'btn btn-warning btn-sm'
+                        return Html::a('<span class="glyphicon glyphicon-th-list"></span> View', ['admin/course-files-view', 'id' => $model->id], ['class' => 'btn btn-warning btn-sm'
                         ]) 
                 ;
                     }

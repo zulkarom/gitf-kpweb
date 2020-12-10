@@ -10,6 +10,8 @@ use backend\modules\staff\models\Staff;
 use backend\modules\courseFiles\models\CourseFilesSearch;
 use backend\modules\courseFiles\models\Checklist;
 use backend\modules\courseFiles\models\LectureCancel;
+use backend\modules\teachingLoad\models\CourseOffered;
+use backend\modules\courseFiles\models\CoordinatorRubricsFile;
 /**
  * Default controller for the `course-files` module
  */
@@ -44,13 +46,7 @@ class DefaultController extends Controller
         ]);
     }
 
-    public function actionViewFiles()
-    {
-        $model = new Checklist();
-        return $this->render('viewfiles', [
-            'model' => $model,
-        ]);
-    }
+    
 
     public function actionTeachingAssignment(){
         
