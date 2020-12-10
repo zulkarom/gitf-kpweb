@@ -9,6 +9,7 @@ use yii\web\Controller;
 use backend\modules\website\models\Event;
 use backend\modules\website\models\FrontSlider;
 use common\models\Upload;
+use backend\models\Urlredirect;
 
 
 /**
@@ -73,6 +74,20 @@ class SiteController extends Controller
 	public function actionMyError(){
 		
 		$this->layout = 'error';
+	}
+	
+	public function actionRedirect($id){
+		$model = Urlredirect::findOne($id);
+		if($model){
+			if($model->url_to){
+				$counter =  $model->hit_counter;
+				
+				return $this->redirect($model->url_to);
+				exit;
+			}
+		}
+		
+		return $this->redirect('http://fkp.umk.edu.my');
 	}
 
 	
