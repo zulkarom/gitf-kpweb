@@ -51,7 +51,7 @@ class DefaultController extends Controller
     public function actionTeachingAssignment(){
         
         $semester = new SemesterForm;
-        $semester->action = ['/teaching-load/default/teaching-assignment'];
+        $semester->action = ['/course-files/default/teaching-assignment'];
 
         if(Yii::$app->getRequest()->getQueryParam('SemesterForm')){
             $sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');
@@ -59,9 +59,6 @@ class DefaultController extends Controller
         }else{
             $semester->semester_id = Semester::getCurrentSemester()->id;
         }
-
-        // print_r($semester->semester_id);
-        // die();
 
         $model = new Staff();
         $modelItem = new Checklist();

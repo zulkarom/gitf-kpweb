@@ -410,6 +410,7 @@ class CourseOfferedController extends Controller
             }
             if($action == 1){
                  $this->runBulkSession($model,$post_session);
+                 Yii::$app->session->addFlash('success', "Run Bulk Session Success");    
                   return $this->refresh();
             }
             if($action == 2)
@@ -519,12 +520,7 @@ class CourseOfferedController extends Controller
                 Yii::$app->session->addFlash('error', $e->getMessage());
             }
             
-        }
-
-             
-          
-                    
-            Yii::$app->session->addFlash('success', "Run Bulk Session Success");        
+        }    
                       
     }
 
