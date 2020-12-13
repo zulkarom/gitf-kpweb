@@ -185,6 +185,7 @@ var X = XLSX;
               $("#"+row[1]+"-max_tutorial").val(row[8]);
               $("#"+row[1]+"-prefix_tutorial").val(row[9]);
             }
+            break;
           }
           
       };
