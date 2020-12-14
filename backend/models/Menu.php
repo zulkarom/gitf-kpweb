@@ -137,6 +137,7 @@ class Menu
 
 				['label' => 'Assignment By Staff', 'icon' => 'user', 'url' => ['/teaching-load/manager/summary-by-staff']],
 
+				['label' => 'Appointment Letter', 'icon' => 'book', 'url' => ['/course-files/staff-inv/']],
 				
 								
 				['label' => 'Selection By Staff', 'icon' => 'user', 'url' => ['/teaching-load/manager/by-staff']],

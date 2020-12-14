@@ -43,6 +43,7 @@ class CourseOffered extends \yii\db\ActiveRecord
 {
     public $courses;
     public $semester;
+    public $staff_id;
     /**
      * {@inheritdoc}
      */
