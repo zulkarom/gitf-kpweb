@@ -18,6 +18,12 @@ use backend\modules\courseFiles\models\CoordinatorResultCloFile;
 use backend\modules\courseFiles\models\CoordinatorAnalysisCloFile;
 use backend\modules\courseFiles\models\CoordinatorImproveFile;
 use backend\modules\teachingLoad\models\CourseLecture;
+use backend\modules\courseFiles\models\LectureExemptFile;
+use backend\modules\courseFiles\models\LectureCancelFile;
+use backend\modules\courseFiles\models\LectureReceiptFile;
+use backend\modules\courseFiles\models\TutorialCancelFile;
+use backend\modules\courseFiles\models\TutorialReceiptFile;
+use backend\modules\courseFiles\models\TutorialExemptFile;
 /**
  * This is the model class for table "tld_course_offered".
  *
@@ -131,6 +137,116 @@ class CourseOffered extends \yii\db\ActiveRecord
         ->where(['offered_id' => $this->id])
         ->count();
     }
+
+    public function getCountLecCancelFiles(){
+        return LectureCancelFile::find()
+        ->joinWith(['lecture'])
+        ->where(['offered_id' => $this->id])
+        ->count();
+    }
+
+    public function getCountLecExemptFiles(){
+        return LectureExemptFile::find()
+        ->joinWith(['lecture'])
+        ->where(['offered_id' => $this->id])
+        ->count();
+    }
+
+    public function getCountLecReceiptFiles(){
+        return LectureReceiptFile::find()
+        ->joinWith(['lecture'])
+        ->where(['offered_id' => $this->id])
+        ->count();
+    }
+
+    public function getCountTutCancelFiles(){
+        return TutorialCancelFile::find()
+        ->joinWith(['tutorial.lecture'])
+        ->where(['offered_id' => $this->id])
+        ->count();
+    }
+
+    public function getCountTutExemptFiles(){
+        return TutorialExemptFile::find()
+        ->joinWith(['tutorial.lecture'])
+        ->where(['offered_id' => $this->id])
+        ->count();
+    }
+
+     public function getCountTutReceiptFiles(){
+        return TutorialReceiptFile::find()
+        ->joinWith(['tutorial.lecture'])
+        ->where(['offered_id' => $this->id])
+        ->count();
+    }
+
+    public function getCountRubricFiles(){
+        return CoordinatorRubricsFile::find()
+        ->where(['offered_id' => $this->id])
+        ->count();
+    }
+
+    public function getCountMaterialFiles(){
+        return CoordinatorMaterialFile::find()
+        ->where(['offered_id' => $this->id])
+        ->count();
+    }
+
+    public function getCountAssessmentMaterialFiles(){
+        return CoordinatorAssessmentMaterialFile::find()
+        ->where(['offered_id' => $this->id])
+        ->count();
+    }
+
+    public function getCountAssessmentScriptFiles(){
+        return CoordinatorAssessmentScriptFile::find()
+        ->where(['offered_id' => $this->id])
+        ->count();
+    }
+
+    public function getCountSummativeAssessmentFiles(){
+        return CoordinatorSummativeAssessmentFile::find()
+        ->where(['offered_id' => $this->id])
+        ->count();
+    }
+
+
+    public function getCountAnswerScriptFiles(){
+        return CoordinatorAnswerScriptFile::find()
+        ->where(['offered_id' => $this->id])
+        ->count();
+    }
+
+    public function getCountAssessResultFiles(){
+        return CoordinatorAssessResultFile::find()
+        ->where(['offered_id' => $this->id])
+        ->count();
+    }
+
+    public function getCountEvaluationFiles(){
+        return CoordinatorEvaluationFile::find()
+        ->where(['offered_id' => $this->id])
+        ->count();
+    }
+
+    public function getCountResultCloFiles(){
+        return CoordinatorResultCloFile::find()
+        ->where(['offered_id' => $this->id])
+        ->count();
+    }
+
+    public function getCountAnalysisCloFiles(){
+        return CoordinatorAnalysisCloFile::find()
+        ->where(['offered_id' => $this->id])
+        ->count();
+    }
+
+     public function getCountImproveFiles(){
+        return CoordinatorImproveFile::find()
+        ->where(['offered_id' => $this->id])
+        ->count();
+    }
+
 
     public function getCoor(){
         return $this->hasOne(Staff::className(), ['id' => 'coordinator']);

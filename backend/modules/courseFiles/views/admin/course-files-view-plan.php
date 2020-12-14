@@ -16,8 +16,8 @@ use yii\helpers\Html;
     <thead>
       <tr>
         <th style="width:5%">No.</th>
-        <th style="width:70%">Item</th>
-        <th style="width:20%">Files</th>
+        <th style="width:85%">Item</th>
+        <th style="width:10%">Files</th>
         <th>Action</th>
       </tr>
     
@@ -26,6 +26,7 @@ use yii\helpers\Html;
         <?php 
     
        $item = $model->itemPlan;
+       $offer =  $modelOffer;
           
           echo '<tr><td>'.$item[0]->id.'</td>
                 <td>'.$item[0]->item.'<i><br/>'.$item[0]->item_bi.'</i></td>
@@ -44,13 +45,13 @@ use yii\helpers\Html;
 
           echo '<tr><td>'.$item[3]->id.'</td>
                 <td>'.$item[3]->item.'<i><br/>'.$item[3]->item_bi.'</i></td>
-                <td></td>
+                <td>'.$offer->countRubricFiles.'</td>
                 <td>';
                   Modal::begin([
                       'header' => '<h5>'.$item[3]->item.'</h5>',
                       'toggleButton' => ['label' => '<span class="glyphicon glyphicon-th-list"></span> View Files', 'class'=>'btn btn-sm btn-warning'],
                   ]);
-                      $offer =  $modelOffer;
+                      
                       if($offer->coordinatorRubricsFiles)
                       {
                         $i=1;
@@ -65,13 +66,13 @@ use yii\helpers\Html;
 
           echo '<tr><td>'.$item[4]->id.'</td>
                 <td>'.$item[4]->item.'<i><br/>'.$item[4]->item_bi.'</i></td>
-                <td></td>
+                <td>'.$offer->countMaterialFiles.'</td>
                 <td>';
                   Modal::begin([
                       'header' => '<h5>'.$item[4]->item.'</h5>',
                       'toggleButton' => ['label' => '<span class="glyphicon glyphicon-th-list"></span> View Files', 'class'=>'btn btn-sm btn-warning'],
                   ]);
-                      $offer =  $modelOffer;
+                      
                       if($offer->coordinatorMaterialFiles)
                       {
                         $i=1;

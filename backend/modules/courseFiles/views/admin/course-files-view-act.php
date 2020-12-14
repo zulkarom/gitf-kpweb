@@ -15,6 +15,7 @@ use yii\helpers\Html;
       <tr>
         <th style="width:5%">No.</th>
         <th style="width:85%">Item</th>
+        <th style="width:10%">Files</th>
         <th>Action</th>
       </tr>
     
@@ -23,15 +24,17 @@ use yii\helpers\Html;
         <?php 
     
         $item = $model->itemAct;
+        $offer =  $modelOffer;
         
         echo '<tr><td>'.$item[0]->id.'</td>
                 <td>'.$item[0]->item.'<i><br/>'.$item[0]->item_bi.'</i></td>
+                <td>'.$offer->countImproveFiles.'</td>
                 <td>';
                   Modal::begin([
                       'header' => '<h5>'.$item[0]->item.'</h5>',
                       'toggleButton' => ['label' => '<span class="glyphicon glyphicon-th-list"></span> View Files', 'class'=>'btn btn-sm btn-warning'],
                   ]);
-                      $offer =  $modelOffer;
+                      
                       if($offer->coordinatorImproveFiles)
                       {
                         $i=1;

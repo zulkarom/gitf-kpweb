@@ -15,8 +15,8 @@ use yii\helpers\Html;
     <thead>
       <tr>
         <th style="width:5%">No.</th>
-        <th style="width:70%">Item</th>
-        <th style="width:20%">Files</th>
+        <th style="width:85%">Item</th>
+        <th style="width:10%">Files</th>
         <th>Action</th>
       </tr>
     
@@ -25,6 +25,11 @@ use yii\helpers\Html;
         <?php 
     
         $item = $model->itemDo;
+        $offer =  $modelOffer;
+        $totalCancelFiles = $offer->countLecCancelFiles+$offer->countTutCancelFiles;
+        $totalExemptFiles = $offer->countLecExemptFiles+$offer->countTutExemptFiles;
+        $totalReceiptFiles = $offer->countLecReceiptFiles+$offer->countTutReceiptFiles;
+
         
           echo '<tr><td>'.$item[0]->id.'</td>
                 <td>'.$item[0]->item.'<i><br/>'.$item[0]->item_bi.'</i></td>
@@ -39,7 +44,7 @@ use yii\helpers\Html;
 
           echo '<tr><td>'.$item[2]->id.'</td>
                 <td>'.$item[2]->item.'<i><br/>'.$item[2]->item_bi.'</i></td>
-                <td></td>
+                <td>'.$totalCancelFiles.'</td>
                 <td>';
                   Modal::begin([
                       'header' => '<h5>'.$item[2]->item.'</h5>',
@@ -54,7 +59,7 @@ use yii\helpers\Html;
                         <th style="width:22%">Files</th>
                         </tr>
                         ';
-                            $offer =  $modelOffer;
+                            
                             if($offer->lectures)
                             {
                               $i=1;
@@ -137,7 +142,7 @@ use yii\helpers\Html;
 
           echo '<tr><td>'.$item[3]->id.'</td>
                 <td>'.$item[3]->item.'<i><br/>'.$item[3]->item_bi.'</i></td>
-                <td></td>
+                <td>'.$totalReceiptFiles.'</td>
                 <td>';
                   Modal::begin([
                       'header' => '<h5>'.$item[3]->item.'</h5>',
@@ -235,7 +240,7 @@ use yii\helpers\Html;
 
           echo '<tr><td>'.$item[4]->id.'</td>
                 <td>'.$item[4]->item.'<i><br/>'.$item[4]->item_bi.'</i></td>
-                <td></td>
+                <td>'.$offer->countAssessmentMaterialFiles.'</td>
                 <td>';
                   Modal::begin([
                       'header' => '<h5>'.$item[4]->item.'</h5>',
@@ -256,7 +261,7 @@ use yii\helpers\Html;
 
           echo '<tr><td>'.$item[5]->id.'</td>
                 <td>'.$item[5]->item.'<i><br/>'.$item[5]->item_bi.'</i></td>
-                <td></td>
+                <td>'.$offer->countAssessmentScriptFiles.'</td>
                 <td>';
                   Modal::begin([
                       'header' => '<h5>'.$item[5]->item.'</h5>',
@@ -277,7 +282,7 @@ use yii\helpers\Html;
 
           echo '<tr><td>'.$item[6]->id.'</td>
                 <td>'.$item[6]->item.'<i><br/>'.$item[6]->item_bi.'</i></td>
-                <td></td>
+                <td>'.$offer->countSummativeAssessmentFiles.'</td>
                 <td>';
                   Modal::begin([
                       'header' => '<h5>'.$item[6]->item.'</h5>',
@@ -298,7 +303,7 @@ use yii\helpers\Html;
 
           echo '<tr><td>'.$item[7]->id.'</td>
                 <td>'.$item[7]->item.'<i><br/>'.$item[7]->item_bi.'</i></td>
-                <td></td>
+                <td>'.$offer->countAnswerScriptFiles.'</td>
                 <td>';
                   Modal::begin([
                       'header' => '<h5>'.$item[7]->item.'</h5>',
@@ -319,7 +324,7 @@ use yii\helpers\Html;
 
           echo '<tr><td>'.$item[8]->id.'</td>
                 <td>'.$item[8]->item.'<i><br/>'.$item[8]->item_bi.'</i></td>
-                <td></td>
+                <td>'.$totalExemptFiles.'</td>
                 <td>';
                   Modal::begin([
                       'header' => '<h5>'.$item[8]->item.'</h5>',
