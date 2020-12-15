@@ -1,8 +1,9 @@
 <?php
 
-namespace backend\modules\courseFiles\models;
+namespace backend\modules\teachingLoad\models;
 
 use Yii;
+use backend\modules\staff\models\Staff;
 
 /**
  * This is the model class for table "staff_inv".
@@ -19,7 +20,7 @@ class StaffInvolved extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'staff_inv';
+        return 'tld_staff_inv';
     }
 
     /**
@@ -29,7 +30,7 @@ class StaffInvolved extends \yii\db\ActiveRecord
     {
         return [
             [['staff_id', 'semester_id'], 'required'],
-            [['staff_id', 'semester_id'], 'integer'],
+            [['staff_id', 'semester_id', 'staff_check'], 'integer'],
             [['timetable_file'], 'string'],
         ];
     }
@@ -45,5 +46,9 @@ class StaffInvolved extends \yii\db\ActiveRecord
             'semester_id' => 'Semester ID',
             'timetable_file' => 'Timetable File',
         ];
+    }
+
+    public function getStaff(){
+        return $this->hasOne(Staff::className(), ['id' => 'staff_id']);
     }
 }

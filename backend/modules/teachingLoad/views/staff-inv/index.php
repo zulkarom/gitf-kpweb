@@ -1,6 +1,8 @@
 <?php
 use backend\models\Semester;
 use kartik\widgets\ActiveForm;
+use yii\helpers\Html;
+use kartik\grid\GridView;
 
 $this->title = 'Appointment Letter';
 $this->params['breadcrumbs'][] = $this->title;
@@ -24,9 +26,42 @@ $form = ActiveForm::begin([
 </div>
 
 <input type="hidden" name="btn-action" id="btn-action" value="" />
-<?php 
 
-?>
+<br />
+
+    <div class="box">
+<div class="box-header"></div>
+<div class="box-body"><?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'export' => false,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+            
+            
+            [
+                'label' => 'Staff',
+                'value' => function($model){
+                    return $model->staff->staff_title . ' ' . $model->staff->user->fullname ;
+                }
+                
+            ],
+
+            [
+                'label' => 'Appointment',
+                'value' => function($model){
+                    return "" ;
+                }
+                
+            ],
+
+           
+            
+
+            
+        ],
+    ]); ?>
+    </div>
+</div>
 
 <?php
 ActiveForm::end(); 
@@ -34,6 +69,11 @@ ActiveForm::end();
 
 <?php 
 $this->registerJs('
+
+$("#semesterform-semester_id").change(function(){
+	$("#sel-sem-form").submit();
+});
+
 $("#btn-run").click(function(){
 	$("#btn-action").val(0);
 	if(confirm("Are you sure to run staff involved?")){
