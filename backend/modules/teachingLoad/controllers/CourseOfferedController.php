@@ -563,6 +563,16 @@ class CourseOfferedController extends Controller
         if($lectures){
             CourseLecture::deleteAll(['id' =>$lectures]);
         }
+
+        $coordinator = CourseOffered::find()
+        ->where(['semester_id' => $semester])
+        ->all();
+        if($coordinator){
+            foreach ($coordinator as $coor) {
+                $coor->coordinator = null;
+                $coor->save();
+            }
+        }
          Yii::$app->session->addFlash('success', "All Bulk Session Have Been Delete");
                 
     }
