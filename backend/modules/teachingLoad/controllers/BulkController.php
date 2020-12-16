@@ -82,6 +82,9 @@ class BulkController extends Controller
 		if($lectures){
 			LecLecturer::deleteAll(['in', 'id', ArrayHelper::map($lectures, 'id', 'id') ]);
 		}
+
+		TemAutoload::deleteAll();
+
 		return ['Deleting all teaching loads successful for semester ' . $semester];
 	}
 }
