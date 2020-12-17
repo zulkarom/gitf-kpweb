@@ -42,7 +42,7 @@ class Semester extends \yii\db\ActiveRecord
 			[['is_current', 'date_start', 'date_end', 'open_at', 'close_at', 'result_date'], 'required', 'on' => 'update'],
 			
 			
-            [['id', 'is_current', 'is_open'], 'integer'],
+            [['id', 'is_current', 'is_open', 'template_appoint_letter'], 'integer'],
             [['description'], 'string'],
             [['date_start', 'date_end', 'open_at', 'close_at'], 'safe'],
             [['id'], 'unique'],

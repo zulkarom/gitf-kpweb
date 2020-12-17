@@ -3,7 +3,8 @@
 namespace backend\modules\teachingLoad\models;
 
 use Yii;
-
+use backend\modules\teachingLoad\models\StaffInvolved;
+use backend\modules\teachingLoad\models\CourseOffered;
 /**
  * This is the model class for table "tld_appoint_letter".
  *
@@ -48,5 +49,13 @@ class AppointmentLetter extends \yii\db\ActiveRecord
             'ref_no' => 'Ref No',
             'date_appoint' => 'Date Appoint',
         ];
+    }
+
+    public function getStaffInvolved(){
+        return $this->hasOne(StaffInvolved::className(), ['id' => 'inv_id']);
+    }
+
+    public function getCourseOffered(){
+        return $this->hasOne(CourseOffered::className(), ['id' => 'offered_id']);
     }
 }

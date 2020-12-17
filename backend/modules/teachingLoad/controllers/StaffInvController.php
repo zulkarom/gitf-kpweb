@@ -13,6 +13,9 @@ use backend\modules\teachingLoad\models\CourseOffered;
 use backend\modules\teachingLoad\models\StaffInvolved;
 use backend\modules\teachingLoad\models\StaffInvolvedSearch;
 use backend\modules\teachingLoad\models\AppointmentLetter;
+use backend\modules\teachingLoad\models\AppointmentLetterSearch;
+use backend\modules\teachingLoad\models\GenerateReferenceForm  ;
+
 
 
 class StaffInvController extends Controller
@@ -50,7 +53,7 @@ class StaffInvController extends Controller
         $searchModel = new StaffInvolvedSearch();
         $searchModel->semester = $semester->semester_id;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $model = new StaffInvolved;
+       
 
 		if($semester->load(Yii::$app->request->post())){	
 			$action = Yii::$app->request->post('btn-action');
@@ -58,14 +61,10 @@ class StaffInvController extends Controller
 
 				$this->staffInvolved($semester->semester_id);
 			}
-			if($action == 1){
-					
-			}
 		}
         return $this->render('index',[
 			'semester' => $semester,
 			'searchModel' => $searchModel,
-			'model' => $model,
 			'dataProvider' => $dataProvider,
 		]);
     }
@@ -173,4 +172,59 @@ class StaffInvController extends Controller
          }
 
     }
+
+    public function actionGenerateReference()
+    {
+         $semester = new SemesterForm;
+        if(Yii::$app->getRequest()->getQueryParam('SemesterForm')){
+            $sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');
+            $semester->semester_id = $sem['semester_id'];
+
+        }else{
+            $semester->semester_id = Semester::getCurrentSemester()->id;
+        }
+
+        $searchModel = new AppointmentLetterSearch();
+        $searchModel->semester = $semester->semester_id;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        // $appointModel = new AppointmentLetter();
+
+
+        $model = new GenerateReferenceForm;
+        if ($model->load(Yii::$app->request->post())) {
+            $post = Yii::$app->request->post();
+
+            if(isset($post['selection'])){
+                $selection = $post['selection'];
+                $form = $post['GenerateReferenceForm'];
+                $start = $form['start_number'] + 0;
+                foreach($selection as $select){
+                    $app = AppointmentLetter::findOne($select);
+                    if($post['actiontype'] == 'generate'){
+                        $ref = $form['ref_letter'];
+                        $date = $form['date'];
+                        $app->ref_no = $ref . '('.$start.')';
+                        $app->date_appoint = $date;
+                    }
+                    $app->save();
+                    
+                $start++;
+                    
+                }
+            }
+            
+
+        }
+
+
+        return $this->render('generate',[
+            'semester' => $semester,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'model' => $model,
+        ]);
+    }
+
+    
 }

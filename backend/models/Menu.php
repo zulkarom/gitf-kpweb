@@ -145,6 +145,7 @@ class Menu
 				['label' => 'Selection By Course', 'icon' => 'book', 'url' => ['/teaching-load/manager/by-course']],
 				
 				['label' => 'Maximum Hour', 'icon' => 'cog', 'url' => ['/teaching-load/manager/maximum-hour']],
+				['label' => 'Letter Template', 'icon' => 'cog', 'url' => ['/teaching-load/tmpl-appointment']],
 
 				['label' => 'Setting', 'icon' => 'cog', 'url' => ['/teaching-load/manager/setting']],
 

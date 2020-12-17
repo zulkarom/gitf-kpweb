@@ -20,8 +20,8 @@ $form = ActiveForm::begin([
 </div>
 
 <div class="form-group">   
-<button type="button" class="btn btn-warning" id="btn-run"><span class="fa fa-gears"></span>  RUN STAFF INVOLVED</button>
-<button type="button" id="btn-create" class="btn btn-primary"><span class="fa fa-navicon"></span> CREATE APPOINTMENT LETTER</button>
+<button type="button" id="btn-run" class="btn btn-primary"><span class="fa fa-navicon"></span>  RUN STAFF INVOLVED</button>
+<?= Html::a('GENERATE REFERENCE', ['/teaching-load/staff-inv/generate-reference'], ['class' => 'btn btn-warning']) ?>
 
 </div>
 
@@ -39,7 +39,7 @@ $form = ActiveForm::begin([
             
             
             [
-                'label' => 'Staff',
+                'label' => 'Staff Name',
                 'value' => function($model){
                     return $model->staff->staff_title . ' ' . $model->staff->user->fullname ;
                 }
@@ -83,11 +83,7 @@ $("#btn-run").click(function(){
 });
 
 $("#btn-create").click(function(){
-	$("#btn-action").val(0);
-	if(confirm("Are you sure to run this autoload?")){
-		$("#form-appointment").submit();
-	}
-	
+	$("#btn-action").val(1);
 });
 
 ');
