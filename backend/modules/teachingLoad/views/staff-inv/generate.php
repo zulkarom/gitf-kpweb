@@ -111,7 +111,7 @@ $form = ActiveForm::begin([
     
                     'surat'=>function ($url, $model) {
 
-                        return '<a href="'.Url::to(['/offer-letter/pdf/', 'id' => $model->id]).'" target="_blank" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-download-alt"></span></a>';
+                        return '<a href="'.Url::to(['/teaching-load/appointment-letter/pdf/', 'id' => $model->id]).'" target="_blank" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-download-alt"></span></a>';
                     },
                 ],
             

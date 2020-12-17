@@ -13,16 +13,14 @@ class AppointmentLetterFile
 	public $model;
 	public $pdf;
 	public $tuan = 'tuan';
-	public $directoryAsset;
 	public $template;
 	public $fontSize = 9.5;
 	
 	public function generatePdf(){
 		
-		$this->template = $this->model->semester->offerTemplate;
+		$this->template = $this->model->semester->appointTemplate;
 		
 
-		$this->directoryAsset = Yii::$app->assetManager->getPublishedUrl('@frontend/views/myasset');
 		
 		$this->pdf = new Tcpdf(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 		
@@ -43,7 +41,7 @@ class AppointmentLetterFile
 		$this->pdf->AddPage("P");
 		$this->writeTask();
 
-		$this->pdf->Output('surat-tawaran.pdf', 'I');
+		$this->pdf->Output('surat-perlantikan.pdf', 'I');
 	}
 	
 	public function writeHeaderFooter(){

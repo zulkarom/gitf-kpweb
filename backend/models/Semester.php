@@ -262,4 +262,8 @@ class Semester extends \yii\db\ActiveRecord
 		$str_month = Common::months();
 		return strtoupper($str_month[$month]) . ' ' . $year;
 	}
+
+	public function getAppointTemplate(){
+         return $this->hasOne(TmplAppointment::className(), ['id' => 'template_appoint_letter']);
+    }
 }
