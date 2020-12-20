@@ -49,19 +49,20 @@ class StaffInvController extends Controller
         }else{
             $semester->semester_id = Semester::getCurrentSemester()->id;
         }
-
+        echo $semester->semester_id;
         $searchModel = new StaffInvolvedSearch();
         $searchModel->semester = $semester->semester_id;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-       
 
-		if($semester->load(Yii::$app->request->post())){	
-			$action = Yii::$app->request->post('btn-action');
-			if($action == 0){
+        if(Yii::$app->request->post()){
+            
+            $action = Yii::$app->request->post('btn-action');
+            if($action == 2){
 
-				$this->staffInvolved($semester->semester_id);
-			}
-		}
+                $this->staffInvolved($semester->semester_id);
+            }
+        }
+
         return $this->render('index',[
 			'semester' => $semester,
 			'searchModel' => $searchModel,

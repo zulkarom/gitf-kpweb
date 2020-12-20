@@ -51,6 +51,10 @@ class LecLecturer extends \yii\db\ActiveRecord
         return $this->hasOne(Staff::className(), ['id' => 'staff_id']);
     }
 
+     public function getStaffInvolved(){
+        return $this->hasOne(StaffInvolved::className(), ['staff_id' => 'staff_id']);
+    }
+
     public function getCourseLecture(){
         return $this->hasOne(CourseLecture::className(), ['id' => 'lecture_id']);
     }

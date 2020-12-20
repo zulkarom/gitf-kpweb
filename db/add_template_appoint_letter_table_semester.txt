@@ -1,0 +1,1 @@
+ALTER TABLE `semester` ADD `template_appoint_letter` INT NOT NULL AFTER `result_date`;

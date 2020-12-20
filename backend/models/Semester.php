@@ -5,6 +5,7 @@ namespace backend\models;
 use Yii;
 use yii\db\Expression;
 use common\models\Common;
+use backend\modules\teachingLoad\models\TmplAppointment;
 
 /**
  * This is the model class for table "semester".
@@ -122,11 +123,19 @@ class Semester extends \yii\db\ActiveRecord
 		}
 		return $sn;
 	}
-	
+
+	public function getSessionLong(){
+		return $this->sessionLong();
+	}
+
 	public function years(){
 		$year1 = substr($this->id, 0, 4);
 		$year2 = substr($this->id, 4, 4);
 		return $year1. '/'. $year2;
+	}
+
+	public function getYear(){
+		return $this->years();
 	}
 	
 	public function niceFormat(){
@@ -263,7 +272,7 @@ class Semester extends \yii\db\ActiveRecord
 		return strtoupper($str_month[$month]) . ' ' . $year;
 	}
 
-	public function getAppointTemplate(){
+	public function getAppointLetterTemplate(){
          return $this->hasOne(TmplAppointment::className(), ['id' => 'template_appoint_letter']);
     }
 }

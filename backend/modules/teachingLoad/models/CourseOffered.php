@@ -24,6 +24,7 @@ use backend\modules\courseFiles\models\LectureReceiptFile;
 use backend\modules\courseFiles\models\TutorialCancelFile;
 use backend\modules\courseFiles\models\TutorialReceiptFile;
 use backend\modules\courseFiles\models\TutorialExemptFile;
+use backend\modules\teachingLoad\models\AppointmentLetter;
 /**
  * This is the model class for table "tld_course_offered".
  *
@@ -132,8 +133,8 @@ class CourseOffered extends \yii\db\ActiveRecord
         ->where(['offered_id' => $this->id])
         ->count();
     }
-
-     public function getCountTutorials(){
+    
+    public function getCountTutorials(){
         return TutorialLecture::find()
         ->joinWith(['lecture'])
         ->where(['offered_id' => $this->id])
@@ -301,4 +302,8 @@ class CourseOffered extends \yii\db\ActiveRecord
     public function getCoordinatorImproveFiles(){
         return $this->hasMany(CoordinatorImproveFile::className(), ['offered_id' => 'id']);
     }
+
+    public function getAppointmentLetter(){
+        return $this->hasMany(AppointmentLetter::className(), ['offered_id' => 'id']);
+    }    
 }

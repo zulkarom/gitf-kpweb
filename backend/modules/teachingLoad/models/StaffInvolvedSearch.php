@@ -42,6 +42,7 @@ class StaffInvolvedSearch extends StaffInvolved
      */
     public function search($params)
     {
+        
         $query = StaffInvolved::find()
 		->joinWith('staff.user')
 		->where(['semester_id' => $this->semester])->orderBy('user.fullname ASC');

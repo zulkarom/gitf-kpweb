@@ -4,6 +4,9 @@ namespace backend\modules\teachingLoad\models;
 
 use Yii;
 use backend\modules\staff\models\Staff;
+use backend\models\Semester;
+use backend\modules\teachingLoad\models\LecLecturer;
+use backend\modules\teachingLoad\models\TutorialTutor;
 
 /**
  * This is the model class for table "staff_inv".
@@ -51,4 +54,13 @@ class StaffInvolved extends \yii\db\ActiveRecord
     public function getStaff(){
         return $this->hasOne(Staff::className(), ['id' => 'staff_id']);
     }
+
+    public function getSemester(){
+        return $this->hasOne(Semester::className(), ['id' => 'semester_id']);
+    }
+
+    public function getLecturer(){
+        return $this->hasOne(LecLecture::className(), ['staff_id' => 'staff_id']);
+    }
+    
 }

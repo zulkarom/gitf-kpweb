@@ -97,7 +97,7 @@ class Staff extends \yii\db\ActiveRecord
 			//['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email has already been taken'],
 			
 			
-            [['user_id', 'is_academic', 'position_id', 'position_status', 'working_status',  'staff_department', 'publish', 'staff_active', 'hq_year', 'teaching_submit'], 'integer'],
+            [['user_id', 'is_academic', 'position_id', 'position_status', 'working_status',  'staff_department', 'publish', 'staff_active', 'hq_year', 'teaching_submit', 'gender'], 'integer'],
 			
             [['leave_start', 'leave_end', 'staff_dob', 'date_begin_umk', 'date_begin_service', 'teaching_submit_at'], 'safe'],
 			

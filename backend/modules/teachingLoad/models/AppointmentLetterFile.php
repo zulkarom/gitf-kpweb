@@ -12,13 +12,17 @@ class AppointmentLetterFile
 {
 	public $model;
 	public $pdf;
-	public $tuan = 'tuan';
+	public $tuan = 'Tuan';
 	public $template;
 	public $fontSize = 9.5;
 	
 	public function generatePdf(){
 		
-		$this->template = $this->model->semester->appointTemplate;
+		$this->template = $this
+		->model
+		->staffInvolved
+		->semester
+		->appointLetterTemplate;
 		
 
 		
@@ -31,15 +35,15 @@ class AppointmentLetterFile
 		$this->writeTitle();
 		$this->writeTable();
 		
-		$this->pdf->AddPage("P");
+		// $this->pdf->AddPage("P");
 		$this->writeEnding();
-		//$this->writeSlogan();
+		// $this->writeSlogan();
 		$this->writeSigniture();
-		$this->writeSignitureImg();
-		$this->writeSk();
+		// $this->writeSignitureImg();
+		// $this->writeSk();
 		
-		$this->pdf->AddPage("P");
-		$this->writeTask();
+		// $this->pdf->AddPage("P");
+		// $this->writeTask();
 
 		$this->pdf->Output('surat-perlantikan.pdf', 'I');
 	}
@@ -52,13 +56,13 @@ class AppointmentLetterFile
 		$this->pdf->footer_html ='<img src="images/letterfoot.jpg" />';
 	}
 	public function writeRef(){
-		$status = $this->model->getWfStatus();
-		if($status == 'release' or $status == 'accept'){
-			$release = $this->model->released_at;
-			$date = strtoupper(Common::date_malay($release));
-		}else{
+		if($this->model->date_appoint == ""){
 			$date = 'TO BE DETERMINED';
+		}else
+		{
+			$date = $this->model->date_appoint;
 		}
+		
 		
 		
 		$html = '<br /><br /><br />
@@ -66,7 +70,7 @@ class AppointmentLetterFile
 		<tr>
 			<td width="280"></td>
 			<td width="120"></td>
-			<td width="300" align="right">'.$this->model->ref_letter . '</td>
+			<td width="300" align="right">'.$this->model->ref_no . '</td>
 		</tr>
 		<tr>
 			<td></td>
@@ -75,10 +79,13 @@ class AppointmentLetterFile
 		</tr>
 		</table>
 		<br /><br /><br /><br />
-		'. strtoupper($this->model->fasi->user->fullname) .'<br />
+		<b>'.strtoupper($this->model->staffInvolved->staff->user->fullname) .'<br /></b>
 		<table>
 		<tr>
-			<td width="220">'. nl2br(ucwords(strtolower($this->model->fasi->address_postal))) .'</td>
+			<td><b>'. strtoupper($this->model->staffInvolved->staff->staffPosition->position_name).' '.'('.strtoupper($this->model->staffInvolved->staff->staffPosition->position_gred).')'.'</b></td>
+		</tr>
+		<tr>
+			<td>Fakulti Keusahawanan dan Perniagaan <br/> Universiti Malaysia Kelantan </td>
 		</tr>
 		</table>
 		
@@ -87,7 +94,7 @@ class AppointmentLetterFile
 		
 		$this->pdf->SetMargins(20, 10, 20);
 		
-		$this->pdf->SetFont('arial', '', $this->fontSize);
+		$this->pdf->SetFont('arial','', $this->fontSize);
 		$tbl = <<<EOD
 		$html
 EOD;
@@ -96,7 +103,7 @@ EOD;
 	}
 	
 	public function getSemester(){
-		$session = $this->model->semester->session() ;
+		$session = $this->model->staffInvolved->semester->session() ;
 		$years = $this->model->semester->years();
 		return $session . ' Sesi ' . $years;
 	}
@@ -113,25 +120,25 @@ EOD;
 	
 	public function writeTitle(){
 		
-		$gender = $this->model->fasi->gender;
+		$gender = $this->model->staffInvolved->staff->gender;
 		if($gender == 0){
 			$this->tuan = 'puan';
 		}
 		
 		
 		$html = '
-		'.ucfirst($this->tuan) .',<br /><br />
+		'.ucfirst($this->tuan).',<br /><br />
 		
-		<b>TAWARAN PERLANTIKAN SEBAGAI '.strtoupper($this->fasiType()).' SAMBILAN KURSUS KOKURIKULUM BERKREDIT BAGI SEMESTER '. strtoupper($this->getSemester()) .' DI UNIVERSITI MALAYSIA KELANTAN</b>
+		<b>PELANTIKAN SEBAGAI PENGAJAR DI FAKULTI KEUSAHAWANAN DAN PERNIAGAAN</b>
 		<br /><br />
 		
-		Dengan hormatnya, saya diarah merujuk kepada perkara di atas.
+		Dengan hormatnya saya merujuk kepada perkara di atas.
 		<br /><br />
 		
-		2. &nbsp;&nbsp;&nbsp;Sukacita dimaklumkan bahawa Universiti Malaysia Kelantan bersetuju melantik '.$this->tuan .' sebagai '.ucwords($this->fasiType()).' Sambilan seperti butir-butir berikut:
+		2. &nbsp;&nbsp;&nbsp;Sukacita dimaklumkan bahawa '.$this->tuan .' dilantik sebagai Pengajar bagi kursus berikut:
 		<br /><br />
 		';
-		$this->pdf->SetFont('arial', '', $this->fontSize);
+		$this->pdf->SetFont( 'arial','', $this->fontSize);
 		$tbl = <<<EOD
 		$html
 EOD;
@@ -146,64 +153,49 @@ EOD;
 		$w3 = 140;
 		$w4 = 40;
 		$w5 = $all - $w1 - $w2 - $w3 - $w4;
-		$course = $this->model->getAcceptedCourse()->course;
+		$course = $this->model->courseOffered->course;
 		$html = '
-		<table cellpadding="5">
+		<table cellpadding="1">
 		<tr>
 			<td width="'.$w1.'"></td>
-			<td width="'.$w2.'">a)</td>
-			<td width="'.$w3.'">Komponen</td>
+			<td width="'.$w3.'">Kod Kursus</td>
 			<td width="'.$w4.'">:</td>
-			<td width="'.$w5.'">'.$course->component->name .'</td>
+			<td width="'.$w5.'">'.$course->course_code .'</td>
 		</tr>';
 		$html .='<tr>
 			<td></td>
-			<td>b)</td>
-			<td>Kod dan Nama Kursus</td>
+			<td>Nama Kursus</td>
 			<td>:</td>
-			<td>'.$course->course_code .' '.$course->course_name .' ('. $this->model->applicationGroup->group_name .')</td>
+			<td width="'.$w5.'">'.$course->course_name.'</td>
 		</tr>
 		<tr>
 			<td></td>
-			<td>c)</td>
-			<td>Fakulti/Pusat</td>
+			<td>Semester</td>
 			<td>:</td>
-			<td>Pusat Kokurikulum</td>
+			<td>'.$this->model->staffInvolved->semester->sessionLong.'</td>
 		</tr>
 		<tr>
 			<td></td>
-			<td>d)</td>
-			<td>Tempoh Lantikan</td>
+			<td>Sesi</td>
 			<td>:</td>
-			<td>Satu Semester<br/>(Semester '.$this->getSemester().')</td>
+			<td>'.$this->model->staffInvolved->semester->year.'</td>
 		</tr>
 		<tr>
 			<td></td>
-			<td>e)</td>
-			<td>Lokasi</td>
+			<td>Jumlah Kuliah</td>
 			<td>:</td>
-			<td>'.$this->model->campus->campus_name .'</td>
-		</tr>
-		<tr>
-			<td></td>
-			<td>f)</td>
-			<td>Tarikh Kuatkuasa</td>
-			<td>:</td>
-			<td>'.Common::date_malay_short($this->model->semester->date_start) .' - '.Common::date_malay_short($this->model->semester->date_end).'</td>
+			<td>'.$this->model->countLecturesByStaff.'</td>
 		</tr>';
-		
-		$elaun_note = $this->template->nota_elaun;
 		
 		$html .= '<tr>
 			<td></td>
-			<td>g)</td>
-			<td>Kadar Elaun</td>
+			<td>Jumlah Tutorial</td>
 			<td>:</td>
-			<td>RM'.$this->model->rate_amount .' Sejam<br/>('.$elaun_note.')</td>
+			<td>'.$this->model->countTutorialsByStaff.'</td>
 		</tr>
 		</table>
 		';
-		$this->pdf->SetFont('arial', 'B', $this->fontSize);
+		$this->pdf->SetFont('arial','B', $this->fontSize);
 		$tbl = <<<EOD
 		$html
 EOD;
@@ -212,28 +204,21 @@ EOD;
 	}
 	
 	public function writeEnding(){
-		$per3 = $this->template->per3;
-		$per3 = str_replace('{FASILITATOR}', $this->fasiType(), $per3);
-		
-		$per4 = $this->template->per4;
-		$per4 = str_replace('{FASILITATOR}', $this->fasiType(), $per4);
 		
 		
-		//$this->fasiType()
+		$per4 = $this->template->per1;
+
 		$html = '<br />
 		<table width="700"><tr><td><span style="text-align:justify;">3. &nbsp;&nbsp;&nbsp;
-		'.$per3.'
+		Untuk makluman, pelantikan ini adalah berkuatkuasa mengikut perubahan dari semasa ke semasa.
 		<br /><br />
-		4. &nbsp;&nbsp;&nbsp;
-		'.$per4.'
+		4. &nbsp;'.str_replace('{TUANPUAN}', $this->tuan, $per4).'
 		<br /><br /></span>
-		Segala kerjasama dan komitmen '.$this->tuan.' adalah amatlah dihargai.
-		<br /><br />
-		Sekian, terima kasih.
+		Sekian.
 		<br />
 		</td></tr></table>';
 
-		$this->pdf->SetFont('arial', '', $this->fontSize);
+		$this->pdf->SetFont('arial','', $this->fontSize);
 		$tbl = <<<EOD
 		$html
 EOD;
@@ -272,107 +257,31 @@ EOD;
 		$tema = $this->template->tema;
 		$tema = nl2br($tema);
 		$benar = $this->template->yg_benar;
-		$pengarah = $this->template->pengarah;
+		$dekan = $this->template->dekan;
 		
-		$html = '<b>'.$tema.'</b>
-<br /><br />
-'.$benar.',<br />
-<br /><br /><br />
-<b>'.$pengarah.'</b><br />
-Pengarah<br />
-Pusat Kokurikulum<br />
-		';
-		$this->pdf->SetFont('arial', '', $this->fontSize);
-		$tbl = <<<EOD
-		$html
-EOD;
-		
-		$this->pdf->writeHTML($tbl, true, false, false, false, '');
-		
-		
-	}
-	
-	
-	
-	public function writeSk(){
-		$html = '
-		<br /><br /><br /><br /><br />
-		<table cellpadding="5">
-		<tr>
-			<td width="60">s.k</td><td width="500">Fail Peribadi</td>
-		</tr>
-		
-		</table>
-		';
-		$this->pdf->SetFont('arial', '', $this->fontSize);
-		$tbl = <<<EOD
-		$html
-EOD;
-		
-		$this->pdf->writeHTML($tbl, true, false, false, false, '');
-	}
-	
-	public function writeTask(){
-		
-		$html = '<br /><table cellpadding="1">
-		<tr>
-			<td>PUSAT KOKURIKULUM</td>
-		</tr>
-		<tr>
-			<td style="border-bottom: #000000 solid 3px">UNIVERSITI MALAYSIA KELANTAN</td>
-		</tr>
-		<tr>
-			<td></td>
-		</tr>
-		<tr>
-			<td>SENARAI TUGAS '.strtoupper($this->fasiType()).' SAMBILAN</td>
-		</tr>
-		<tr>
-			<td>KURSUS KOKURIKULUM BERKREDIT</td>
-		</tr>
-		</table>
-
+				$html = '<b>'.$tema.'</b>
 		<br /><br />
-		
-		
+		'.$benar.',<br />
+		<br /><br /><br />
+		<b>'.$dekan.'</b><br />
+		Dekan<br />
 		';
-		$this->pdf->SetFont('arial', 'B', $this->fontSize);
+		$this->pdf->SetFont('arial','', $this->fontSize);
 		$tbl = <<<EOD
 		$html
 EOD;
 		
 		$this->pdf->writeHTML($tbl, true, false, false, false, '');
 		
-		$html = '<table cellpadding="2">';
-		$tasks = FasiTask::find()->all();
-		
-		$i = 1;
-		foreach($tasks as $task){
-			$html .='<tr>
-			<td width="40">'.$i.'. </td>
-			<td width="540"><span style="text-align:justify;">'.$task->task_text .'</span><br /></td>
-		</tr>';
-		$i++;
-		}
-		
-		
-		$html .= '</table>';
-		$this->pdf->SetFont('arial', '', $this->fontSize);
-		$tbl = <<<EOD
-		$html
-EOD;
-		
-		$this->pdf->writeHTML($tbl, true, false, false, false, '');
 	}
-	
 	
 	
 	public function startPage(){
 		// set document information
 		$this->pdf->SetCreator(PDF_CREATOR);
 		$this->pdf->SetAuthor('Pusat Kokurikulum');
-		$this->pdf->SetTitle('SURAT TAWARAN');
-		$this->pdf->SetSubject('SURAT TAWARAN');
+		$this->pdf->SetTitle('SURAT PERLANTIKAN');
+		$this->pdf->SetSubject('SURAT PERLANTIKAN');
 		$this->pdf->SetKeywords('');
 
 		// set default header data

@@ -2,6 +2,8 @@
 
 
 use kartik\date\DatePicker;
+use yii\helpers\ArrayHelper;
+use backend\modules\teachingLoad\models\TmplAppointment;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Semester */
@@ -118,5 +120,16 @@ echo $form->field($model, 'result_date')->widget(DatePicker::classname(), [
 <div class="col-md-6"><?=$form->field($model, 'description')->textarea(['rows' => 3]) ?></div>
 
 </div>
+
+
+<div class="row">
+<div class="col-md-6">
+	<?php
+	echo $form->field($model, 'template_appoint_letter')->dropDownList(
+        ArrayHelper::map(TmplAppointment::find()->orderBy('created_at DESC')->all(), 'id', 'template_name')
+    ) ?>
+</div>
+</div>
+
 
 <?= $this->render('_note') ?>

@@ -1,0 +1,1 @@
+ALTER TABLE `staff` ADD `gender` TINYINT(1) NOT NULL AFTER `staff_title`;

@@ -8,7 +8,8 @@ $this->title = 'Appointment Letter';
 $this->params['breadcrumbs'][] = $this->title;
 
 $form = ActiveForm::begin([
-'id' => 'form-appointment'
+'id' => 'form-semester',
+'method' => 'get',
 ]); ?>  
 <div class="row">
 	
@@ -16,16 +17,24 @@ $form = ActiveForm::begin([
 <?= $form->field($semester, 'semester_id')->dropDownList(
         Semester::listSemesterArray()
     )->label(false) ?>
+    <input type="hidden" name="btn-action" id="btn-action" value="1" />
 </div>
 </div>
+<?php
+ActiveForm::end(); 
+?>
 
+<?php
+$form = ActiveForm::begin([
+'id' => 'form-appointment'
+]); ?>  
 <div class="form-group">   
 <button type="button" id="btn-run" class="btn btn-primary"><span class="fa fa-navicon"></span>  RUN STAFF INVOLVED</button>
 <?= Html::a('GENERATE REFERENCE', ['/teaching-load/staff-inv/generate-reference'], ['class' => 'btn btn-warning']) ?>
 
 </div>
 
-<input type="hidden" name="btn-action" id="btn-action" value="" />
+<input type="hidden" name="btn-action" id="btn-action" value="2" />
 
 <br />
 
@@ -71,19 +80,16 @@ ActiveForm::end();
 $this->registerJs('
 
 $("#semesterform-semester_id").change(function(){
-	$("#sel-sem-form").submit();
+  
+	$("#form-semester").submit();
 });
 
 $("#btn-run").click(function(){
-	$("#btn-action").val(0);
+
 	if(confirm("Are you sure to run staff involved?")){
 		$("#form-appointment").submit();
 	}
 	
-});
-
-$("#btn-create").click(function(){
-	$("#btn-action").val(1);
 });
 
 ');

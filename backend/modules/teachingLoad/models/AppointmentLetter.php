@@ -5,6 +5,10 @@ namespace backend\modules\teachingLoad\models;
 use Yii;
 use backend\modules\teachingLoad\models\StaffInvolved;
 use backend\modules\teachingLoad\models\CourseOffered;
+use backend\models\Semester;
+use backend\modules\teachingLoad\models\LecLecturer;
+use backend\modules\teachingLoad\models\TutorialTutor;
+
 /**
  * This is the model class for table "tld_appoint_letter".
  *
@@ -58,4 +62,21 @@ class AppointmentLetter extends \yii\db\ActiveRecord
     public function getCourseOffered(){
         return $this->hasOne(CourseOffered::className(), ['id' => 'offered_id']);
     }
+
+    public function getCountLecturesByStaff(){
+        $staff_id = $this->staffInvolved->staff_id;
+        return LecLecturer::find()
+        ->joinWith('courseLecture.courseOffered')
+        ->where(['staff_id' => $staff_id, 'offered_id' => $this->offered_id])
+        ->count();
+    }
+
+    public function getCountTutorialsByStaff(){
+        $staff_id = $this->staffInvolved->staff_id;
+        return TutorialTutor::find()
+        ->joinWith('tutorialLec.lecture.courseOffered')
+        ->where(['staff_id' => $staff_id, 'offered_id' => $this->offered_id])
+        ->count();
+    }
+
 }

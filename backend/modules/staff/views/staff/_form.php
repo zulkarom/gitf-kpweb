@@ -53,9 +53,12 @@ if($model->id){
 <div class="row">
 <div class="col-md-3"><?= $form->field($model, 'staff_no')->textInput(['maxlength' => true]) ?></div>
 
-<div class="col-md-7"><?= $form->field($user, 'email')->textInput(['maxlength' => true]) ?>
+<div class="col-md-5"><?= $form->field($user, 'email')->textInput(['maxlength' => true]) ?>
 
 </div>
+
+<div class="col-md-3"><?= $form->field($model, 'gender')->dropDownList([1=>'Lelaki', 0 => 'Perempuan'], ['prompt' => 'Please Select' ]
+    ) ?></div>
 
 </div>
 
