@@ -160,7 +160,7 @@ $menuItems = [
 					
 					['label' => 'MODULES', 'options' => ['class' => 'header']],
 					
-					['label' => 'Teaching Loads', 'icon' => 'book', 'visible' => Yii::$app->user->can('teaching-loads-manager'), 'url' => ['/teaching-load/default/teaching-view']],
+					['label' => 'Teaching Loads', 'icon' => 'book', 'visible' => Yii::$app->user->can('teaching-load-manager'), 'url' => ['/teaching-load/default/teaching-view']],
 					
 					
 					['label' => 'Course Files', 'icon' => 'files-o', 'url' => ['/course-files/default/index']],
