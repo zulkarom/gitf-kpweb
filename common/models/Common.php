@@ -83,7 +83,7 @@ class Common {
 	public static function date_malay($str){
 		$day = date('d', strtotime($str));
 		$month = date('m', strtotime($str)) + 0;
-		$month_malay = self::months()[$month];
+		$month_malay = self::bulan()[$month];
 		$year = date('Y', strtotime($str));
 		return $day . ' ' . $month_malay . ' ' . $year;
 	}

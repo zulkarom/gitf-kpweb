@@ -73,7 +73,7 @@ use yii\helpers\Html;
                                 if($lectures->lecturers)
                                 {
                                   foreach ($lectures->lecturers as $lecturer) {
-                                  echo $lecturer->staff->user->fullname.'<br/>';
+                                  echo $lecturer->staff->staff_title . ' ' .$lecturer->staff->user->fullname.'<br/>';
                                   }
                                 }
 
@@ -115,7 +115,7 @@ use yii\helpers\Html;
                                 if($tutorial->tutors)
                                 {
                                   foreach ($tutorial->tutors as $tutor) {
-                                  echo $tutor->staff->user->fullname.'<br/>';
+                                  echo $tutor->staff->staff_title . ' ' .$tutor->staff->user->fullname.'<br/>';
                                   }
                                 }
 
@@ -171,7 +171,7 @@ use yii\helpers\Html;
                                 if($lectures->lecturers)
                                 {
                                   foreach ($lectures->lecturers as $lecturer) {
-                                  echo $lecturer->staff->user->fullname.'<br/>';
+                                  echo $lecturer->staff->staff_title . ' ' .$lecturer->staff->user->fullname.'<br/>';
                                   }
                                 }
 
@@ -213,7 +213,7 @@ use yii\helpers\Html;
                                 if($tutorial->tutors)
                                 {
                                   foreach ($tutorial->tutors as $tutor) {
-                                  echo $tutor->staff->user->fullname.'<br/>';
+                                  echo $tutor->staff->staff_title . ' ' .$tutor->staff->user->fullname.'<br/>';
                                   }
                                 }
 
@@ -353,7 +353,7 @@ use yii\helpers\Html;
                                 if($lectures->lecturers)
                                 {
                                   foreach ($lectures->lecturers as $lecturer) {
-                                  echo $lecturer->staff->user->fullname.'<br/>';
+                                  echo $lecturer->staff->staff_title . ' ' .$lecturer->staff->user->fullname.'<br/>';
                                   }
                                 }
 
@@ -395,7 +395,7 @@ use yii\helpers\Html;
                                 if($tutorial->tutors)
                                 {
                                   foreach ($tutorial->tutors as $tutor) {
-                                  echo $tutor->staff->user->fullname.'<br/>';
+                                  echo $tutor->staff->staff_title . ' ' .$tutor->staff->user->fullname.'<br/>';
                                   }
                                 }
 

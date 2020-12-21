@@ -130,7 +130,7 @@ $columns = [
             ], */
             
             [
-                'label' => 'Tutorial',
+                'label' => 'Tutorials',
                 'format' => 'html',
                 'value' => function($model){
                     return $model->getTeachTutorialStr("<br />");

@@ -41,6 +41,8 @@ class TmplAppointment extends \yii\db\ActiveRecord
             [['template_name'], 'string', 'max' => 200],
             [['dekan'], 'string', 'max' => 100],
 
+            [['adj_y'], 'number'],
+
             [['signiture_file'], 'required', 'on' => 'signiture_upload'],
             [['signiture_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png', 'maxSize' => 5000000],
             [['updated_at'], 'required', 'on' => 'signiture_delete'],

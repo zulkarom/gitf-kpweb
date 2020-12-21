@@ -39,7 +39,7 @@ class AppointmentLetterFile
 		$this->writeEnding();
 		// $this->writeSlogan();
 		$this->writeSigniture();
-		// $this->writeSignitureImg();
+		$this->writeSignitureImg();
 		// $this->writeSk();
 		
 		// $this->pdf->AddPage("P");
@@ -56,11 +56,14 @@ class AppointmentLetterFile
 		$this->pdf->footer_html ='<img src="images/letterfoot.jpg" />';
 	}
 	public function writeRef(){
-		if($this->model->date_appoint == ""){
+
+		
+		if($this->model->date_appoint == "0000-00-00"){
 			$date = 'TO BE DETERMINED';
 		}else
 		{
-			$date = $this->model->date_appoint;
+			$release = $this->model->date_appoint;
+			$date = strtoupper(Common::date_malay($release));
 		}
 		
 		
@@ -82,7 +85,7 @@ class AppointmentLetterFile
 		<b>'.strtoupper($this->model->staffInvolved->staff->user->fullname) .'<br /></b>
 		<table>
 		<tr>
-			<td><b>'. strtoupper($this->model->staffInvolved->staff->staffPosition->position_name).' '.'('.strtoupper($this->model->staffInvolved->staff->staffPosition->position_gred).')'.'</b></td>
+			<td><b>'. ($this->model->staffInvolved->staff->staffPosition->position_name).' '.'('.strtoupper($this->model->staffInvolved->staff->staffPosition->position_gred).')'.'</b></td>
 		</tr>
 		<tr>
 			<td>Fakulti Keusahawanan dan Perniagaan <br/> Universiti Malaysia Kelantan </td>
@@ -102,22 +105,6 @@ EOD;
 		$this->pdf->writeHTML($tbl, true, false, false, false, '');
 	}
 	
-	public function getSemester(){
-		$session = $this->model->staffInvolved->semester->session() ;
-		$years = $this->model->semester->years();
-		return $session . ' Sesi ' . $years;
-	}
-	
-	public function fasiType(){
-		$fasi = array();
-		$type = $this->model->fasi_type_id;
-		if($type == 1){
-			return 'fasilitator';
-		}else{
-			return 'pembantu fasilitator';
-		}
-	}
-	
 	public function writeTitle(){
 		
 		$gender = $this->model->staffInvolved->staff->gender;
@@ -125,8 +112,26 @@ EOD;
 			$this->tuan = 'puan';
 		}
 		
+		$coordinator = $this->model->courseOffered->coordinator;
+		if($coordinator ==  $this->model->staffInvolved->staff_id){
+			$html = '
+		'.ucfirst($this->tuan).',<br /><br />
 		
-		$html = '
+		<b>PELANTIKAN SEBAGAI PENYELARAS DAN PENGAJAR DI FAKULTI KEUSAHAWANAN DAN PERNIAGAAN</b>
+		<br /><br />
+		
+		Dengan hormatnya saya merujuk kepada perkara di atas.
+		<br /><br />
+		
+		2. &nbsp;&nbsp;&nbsp;Sukacita dimaklumkan bahawa '.$this->tuan .' dilantik sebagai Penyelaras dan Pengajar bagi kursus berikut:
+		<br /><br />
+		';
+		$this->pdf->SetFont( 'arial','', $this->fontSize);
+		$tbl = <<<EOD
+		$html
+EOD;
+		}else{
+			$html = '
 		'.ucfirst($this->tuan).',<br /><br />
 		
 		<b>PELANTIKAN SEBAGAI PENGAJAR DI FAKULTI KEUSAHAWANAN DAN PERNIAGAAN</b>
@@ -142,6 +147,8 @@ EOD;
 		$tbl = <<<EOD
 		$html
 EOD;
+		}
+		
 		
 		$this->pdf->writeHTML($tbl, true, false, false, false, '');
 	}
@@ -172,28 +179,34 @@ EOD;
 			<td></td>
 			<td>Semester</td>
 			<td>:</td>
-			<td>'.$this->model->staffInvolved->semester->sessionLong.'</td>
+			<td>'.strtoupper($this->model->staffInvolved->semester->sessionLong).'</td>
 		</tr>
 		<tr>
 			<td></td>
 			<td>Sesi</td>
 			<td>:</td>
 			<td>'.$this->model->staffInvolved->semester->year.'</td>
-		</tr>
-		<tr>
+		</tr>';
+
+		if($this->model->countLecturesByStaff > 0){
+		$html .='<tr>
 			<td></td>
 			<td>Jumlah Kuliah</td>
 			<td>:</td>
 			<td>'.$this->model->countLecturesByStaff.'</td>
-		</tr>';
+			</tr>';
+		}
 		
-		$html .= '<tr>
-			<td></td>
-			<td>Jumlah Tutorial</td>
-			<td>:</td>
-			<td>'.$this->model->countTutorialsByStaff.'</td>
-		</tr>
-		</table>
+		if($this->model->countTutorialsByStaff > 0){
+			$html .= '<tr>
+				<td></td>
+				<td>Jumlah Tutorial</td>
+				<td>:</td>
+				<td>'.$this->model->countTutorialsByStaff.'</td>
+			</tr>';	
+		}
+		
+		$html .= '</table>
 		';
 		$this->pdf->SetFont('arial','B', $this->fontSize);
 		$tbl = <<<EOD

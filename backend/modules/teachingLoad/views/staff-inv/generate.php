@@ -10,6 +10,26 @@ $this->title = 'Generate Reference ';
 $this->params['breadcrumbs'][] = ['label' => 'Appointment Letter', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
+
+
+$form = ActiveForm::begin([
+'id' => 'form-semester',
+'method' => 'get',
+]); ?>  
+<div class="row">
+    
+<div class="col-md-5">
+<?= $form->field($semester, 'semester_id')->dropDownList(
+        Semester::listSemesterArray()
+    )->label(false) ?>
+    <input type="hidden" name="btn-action" id="btn-action" value="1" />
+</div>
+</div>
+<?php
+ActiveForm::end(); 
+?>
+
+<?php
 $form = ActiveForm::begin([
 'id' => 'form-reference'
 ]); ?>  
@@ -116,10 +136,6 @@ $form = ActiveForm::begin([
                 ],
             
             ],
-
-           
-            
-
             
         ],
     ]); ?>
@@ -130,4 +146,16 @@ $form = ActiveForm::begin([
 
 <?php
 ActiveForm::end(); 
+?>
+
+<?php 
+$this->registerJs('
+
+$("#semesterform-semester_id").change(function(){
+  
+    $("#form-semester").submit();
+});
+
+');
+
 ?>

@@ -8,11 +8,10 @@ use yii\bootstrap\Modal;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
-
-$this->title = 'Course Files View';
+$this->title = $modelOffer->course->course_name;
 $this->params['breadcrumbs'][] = ['label' => 'Course Files', 'url' => ['/course-files/default/index']];
 $this->params['breadcrumbs'][] = $this->title;
-$course = $modelOffer->course; 
+
 ?>
 
 <style>

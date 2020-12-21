@@ -3,6 +3,7 @@ use backend\models\Semester;
 use kartik\widgets\ActiveForm;
 use yii\helpers\Html;
 use kartik\grid\GridView;
+use yii\helpers\Url;
 
 $this->title = 'Appointment Letter';
 $this->params['breadcrumbs'][] = $this->title;
@@ -56,12 +57,15 @@ $form = ActiveForm::begin([
             ],
 
             [
-                'label' => 'Appointment',
+                'label' => 'Course Name',
+                'format' => 'raw',
                 'value' => function($model){
-                    return "" ;
+                    return $model->getAppointLetterStr("<br />");
                 }
-                
             ],
+
+
+            
 
            
             

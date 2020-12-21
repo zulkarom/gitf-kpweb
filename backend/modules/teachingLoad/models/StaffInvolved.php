@@ -7,6 +7,8 @@ use backend\modules\staff\models\Staff;
 use backend\models\Semester;
 use backend\modules\teachingLoad\models\LecLecturer;
 use backend\modules\teachingLoad\models\TutorialTutor;
+use yii\helpers\Url;
+
 
 /**
  * This is the model class for table "staff_inv".
@@ -18,6 +20,7 @@ use backend\modules\teachingLoad\models\TutorialTutor;
  */
 class StaffInvolved extends \yii\db\ActiveRecord
 {
+   
     /**
      * {@inheritdoc}
      */
@@ -63,4 +66,23 @@ class StaffInvolved extends \yii\db\ActiveRecord
         return $this->hasOne(LecLecture::className(), ['staff_id' => 'staff_id']);
     }
     
+    public function getAppointLetter(){
+        return $this->hasMany(AppointmentLetter::className(), ['inv_id' => 'id']);
+    }
+
+    public function getAppointLetterStr( $br = "\n"){
+        
+        $list = $this->appointLetter;
+        $str = '';
+        if($list){
+            $i = 1;
+            foreach($list as $item){
+                $d = $i == 1 ? '' : $br;
+                $str_link='<a href="'.Url::to(['/teaching-load/appointment-letter/pdf/', 'id' => $item->id]).'" target="_blank">'.$d.$item->courseOffered->course->codeCourseString.'</a>';
+                $str .= $str_link;
+                        $i++;     
+            }
+        }
+        return $str ;
+    }
 }

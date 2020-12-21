@@ -40,6 +40,10 @@ $model->file_controller = 'tmpl-appointment';
     <br /><br />
     </div>
 
+    <div class="col-md-3">
+    <?= $form->field($model, 'adj_y')->textInput(['maxlength' => true]) ?>
+    </div>
+
 </div>
     
     
