@@ -165,7 +165,7 @@ $menuItems = [
 					
 					['label' => 'Course Files', 'icon' => 'files-o', 'url' => ['/course-files/default/index']],
 					
-					['label' => 'Staff', 'icon' => 'user', 'url' => ['/staff']],
+					['label' => 'Staff Info', 'icon' => 'user', 'url' => ['/staff']],
 					
 					['label' => 'e-SIAP', 'icon' => 'mortar-board', 'url' => ['/esiap'],],
 					
@@ -192,11 +192,13 @@ $menuItems = [
 					
 					
 					[
-                        'label' => 'User Management',
+                        'label' => 'System Management',
                         'icon' => 'lock',
 						'visible' => Todo::can('sysadmin'),
                         'url' => '#',
                         'items' => [
+						
+							['label' => 'Semester', 'icon' => 'cog', 'url' => ['/semester'],],
 						
 							['label' => 'User Assignment', 'icon' => 'user', 'url' => ['/admin'],],
 						
@@ -212,19 +214,6 @@ $menuItems = [
                         ],
                     ],
 					
-					[
-                        'label' => 'Global Setting',
-                        'icon' => 'cog',
-						'visible' => Todo::can('sysadmin'),
-                        'url' => '#',
-                        'items' => [
-						
-							['label' => 'Semester', 'icon' => 'cog', 'url' => ['/semester'],],
-						
-                           
-
-                        ],
-                    ],
 					
 					['label' => 'Log Out', 'icon' => 'arrow-left', 'url' => ['/site/logout'], 'template' => '<a href="{url}" data-method="post">{icon} {label}</a>']
 
