@@ -123,8 +123,8 @@ class Menu
 	
 	public static function adminTeachingLoad(){
 		$esiap_admin = [
-                        'label' => 'Teaching Admin',
-                        'icon' => 'gears',
+                        'label' => 'Teaching Loads Admin',
+                        'icon' => 'book',
 						'visible' => Todo::can('teaching-load-manager'),
                         'url' => '#',
                         'items' => [
@@ -140,14 +140,27 @@ class Menu
 				['label' => 'Appointment Letter', 'icon' => 'file', 'url' => ['/teaching-load/staff-inv/index']],
 				
 								
-				['label' => 'Selection By Staff', 'icon' => 'user', 'url' => ['/teaching-load/manager/by-staff']],
 				
-				['label' => 'Selection By Course', 'icon' => 'book', 'url' => ['/teaching-load/manager/by-course']],
 				
 				['label' => 'Maximum Hour', 'icon' => 'cog', 'url' => ['/teaching-load/manager/maximum-hour']],
 				['label' => 'Letter Template', 'icon' => 'cog', 'url' => ['/teaching-load/tmpl-appointment']],
 
-				['label' => 'Setting', 'icon' => 'cog', 'url' => ['/teaching-load/manager/setting']],
+				
+				
+				
+				[
+					'label' => 'Course Selection',
+					'visible' => Yii::$app->user->can('staff-management'),
+					'icon' => 'book',
+					'url' => '#',
+					'items' => [
+						['label' => 'Selection By Staff', 'icon' => 'user', 'url' => ['/teaching-load/manager/by-staff']],
+						['label' => 'Selection By Course', 'icon' => 'book', 'url' => ['/teaching-load/manager/by-course']],
+						['label' => 'Date Setting', 'icon' => 'cog', 'url' => ['/teaching-load/manager/setting']],
+						
+
+					]
+                ]
 
                  ]
                     ];	
@@ -157,7 +170,7 @@ class Menu
 	public static function teachingLoad(){
 		return [
                         'label' => 'My Teaching',
-                        'icon' => 'list-ul',
+                        'icon' => 'book',
                         'url' => '#',
                         'items' => [
 				

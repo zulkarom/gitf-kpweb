@@ -1,0 +1,3 @@
+https://portal.umk.edu.my/api/timetable/student?semester=201920201&subject=APT2043&group=L4
+https://portal.umk.edu.my/api/timetable/list?semester=201920201&subject=APT2043&group=L4
+https://portal.umk.edu.my/api/timetable/attend?semester=201920201&subject=APT2043&group=L4&id=1569945600APT2043L4L

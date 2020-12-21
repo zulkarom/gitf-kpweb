@@ -160,7 +160,7 @@ $menuItems = [
 					
 					['label' => 'MODULES', 'options' => ['class' => 'header']],
 					
-					['label' => 'Teaching', 'icon' => 'gears', 'url' => ['/teaching-load/default/teaching-view']],
+					['label' => 'Teaching Loads', 'icon' => 'book', 'visible' => Yii::$app->user->can('teaching-loads-manager'), 'url' => ['/teaching-load/default/teaching-view']],
 					
 					
 					['label' => 'Course Files', 'icon' => 'files-o', 'url' => ['/course-files/default/index']],
@@ -173,15 +173,22 @@ $menuItems = [
 					
 					['label' => 'JEB Journal', 'icon' => 'book', 'url' => ['/site/jeb-web'], 'template'=>'<a href="{url}" target="_blank">{icon} {label}</a>'],
 					
-					['label' => 'Website', 'icon' => 'tv', 'url' => ['/website'], 'visible' => Yii::$app->user->can('website-manager')],
+					[
+                        'label' => 'Website',
+                        'icon' => 'tv',
+                        'url' => '#',
+                        'items' => [
+						
+							['label' => 'Proceedings', 'icon' => 'microphone', 'url' => ['/proceedings'], 'visible' => Yii::$app->user->can('proceedings-manager')],
+						
+                            ['label' => 'Chapter in Book', 'icon' => 'book', 'url' => ['/chapterinbook'], 'visible' => Yii::$app->user->can('chapterinbook-manager')],
+							
+							['label' => 'Internship', 'icon' => 'book', 'url' => ['/internship'], 'visible' => Yii::$app->user->can('internship-manager')],
+
+                        ],
+                    ],
 					
-					['label' => 'Proceedings', 'icon' => 'microphone', 'url' => ['/proceedings'], 'visible' => Yii::$app->user->can('proceedings-manager')],
-					
-					['label' => 'Chapter in Book', 'icon' => 'book', 'url' => ['/chapterinbook'], 'visible' => Yii::$app->user->can('chapterinbook-manager')],
-					
-					['label' => 'Internship', 'icon' => 'book', 'url' => ['/internship'], 'visible' => Yii::$app->user->can('internship-manager')],
-					
-					
+
 					
 					
 					[
