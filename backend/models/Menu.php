@@ -121,6 +121,24 @@ class Menu
 		return $esiap_admin;
 	}
 	
+	public static function adminCourseFiles(){
+		$esiap_admin = [
+                        'label' => 'Course Files Admin',
+                        'icon' => 'book',
+						'visible' => Todo::can('teaching-load-manager'),
+                        'url' => '#',
+                        'items' => [
+				
+				['label' => 'Summary', 'icon' => 'user', 'url' => ['/course-files/default/summary']],
+				
+				['label' => 'All Courses', 'icon' => 'book', 'url' => ['/course-files/default/index']],
+				
+
+                 ]
+                    ];	
+		return $esiap_admin;
+	}
+	
 	public static function adminTeachingLoad(){
 		$esiap_admin = [
                         'label' => 'Teaching Loads Admin',
@@ -129,7 +147,7 @@ class Menu
                         'url' => '#',
                         'items' => [
 				
-				['label' => 'My Course Selection', 'icon' => 'user', 'url' => ['/teaching-load/default/teaching-view']],
+				//['label' => 'My Course Selection', 'icon' => 'user', 'url' => ['/teaching-load/default/teaching-view']],
 				
 				['label' => 'Teaching Assignment', 'icon' => 'book', 'url' => ['/teaching-load/course-offered/index']],
 				
@@ -176,7 +194,7 @@ class Menu
 				
 				['label' => 'Teaching Assignment', 'icon' => 'book', 'url' => ['/course-files/default/teaching-assignment']],
 				
-				['label' => 'Teaching Selection', 'icon' => 'book', 'url' => ['/course-files/']],
+				['label' => 'Teaching Selection', 'icon' => 'book', 'url' => ['/teaching-load/default/teaching-view']],
 
                  ]
                     ];	

@@ -16,90 +16,84 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
  
 
- <style>
-#course {
-  font-family: Arial, Helvetica, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
 
-#course td, #course th {
-  border: 1px solid #ddd;
-  padding: 8px;
-}
-
-#course tr:nth-child(even){background-color: #f2f2f2;}
-
-#course tr:hover {background-color: #ddd;}
-
-#course th {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: left;
-}
-</style>
 
 <div class="teaching-assignment">
 <?php $form = ActiveForm::begin(); ?>
 
 <div class="row">
-    <div class="col-sm-12">
-      <div class="box box-primary">
+    <div class="col-sm-6">
+      <div class="box">
         <div class="box-header">
           <div class="a">
-            <div class="box-title"><b>Staff Upload</b></div>
+            <div class="box-title"><b>My Teaching</b></div>
           </div>
         </div>
           <div class="box-body">
-            <table id="course">
+            <table class="table">
                 <thead>
                   <tr>
-                    <th style="width:5%">No.</th>
-                    <th style="width:69.3%">Item Name</th>
-                    <th style="width:13%">Progress</th>
-                    <th style="width:12.7%">Action</th>
+                    <th style="width:5%">#</th>
+                    <th style="width:69.3%">Appointment Letter</th>
+                    <th style="width:12.7%"></th>
                   </tr>
-                
                      <?php 
-    
-                       if($modelItem->itemPlan){
-                        $i = 1;
-                          foreach($modelItem->itemPlan as $item){
-                            if($item->staff_upload == 1){
-                              echo '<tr><td>'.$i.'</td>
-                                <td>'.$item->item.'<i><br/>'.$item->item_bi.'</i></td>
-                                <td></td>
-                                <td><a href="' . Url::to(['default/teaching-assignment-lecture-upload']) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> Upload</a></td>';
-                                $i++;
-                            }
-                          }
-                        }
+						$items = $modelItem->itemPlan;
+						 echo '
+						 <tr>
+						 <td>1. </td>
+                           <td>Appointment Letter</td>
+                           <td><a href="' . Url::to(['default/teaching-assignment-lecture-upload']) . '" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-download-alt"></span> Download</a></td>
+						</tr>';
+						 echo '
+						 <tr>
+						 <td>2. </td>
+                           <td>'.$items[6]->item_bi.'</td>
+                           <td><a href="' . Url::to(['default/teaching-assignment-lecture-upload']) . '" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-download-alt"></span> Download</a></td>
+						</tr>';
                               ?>
-                  </tr>
                 </thead>
               </table>
+			  
+			   <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width:5%">#</th>
+                    <th style="width:69.3%">Timetable</th>
+                    <th style="width:12.7%"></th>
+                  </tr>
+                     <?php 
+						$items = $modelItem->itemPlan;
+						 echo '
+						 <tr>
+						 <td>1. </td>
+                           <td>Timetable for Individual Teaching Classes</td>
+                           <td><a href="' . Url::to(['default/teaching-assignment-lecture-upload']) . '" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-download-alt"></span> Download</a></td>
+						</tr>';
+                              ?>
+                </thead>
+              </table>
+              </table>
+			  
           </div>
         </div>
-      </div>
-    </div>
-
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="box box-success">
+		
+		
+		  <div class="box">
         <div class="box-header">
           <div class="a">
             <div class="box-title"><b>Coordinator</b></div>
           </div>
         </div>
           <div class="box-body">
-            <table id="course">
+            <table class="table">
                 <thead>
                   <tr>
                     <th style="width:5%">No.</th>
                     <th style="width:15%">Course Code</th>
                     <th style="width:54.3%">Course Name</th>
                     <th style="width:13%">Progress</th>
-                    <th style="width:12.7%">Action</th>
+                    <th style="width:12.7%"></th>
                   </tr>
                 
                      <?php 
@@ -112,7 +106,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <td>'.$coor->course->course_code.'</td>
                             <td>'.$coor->course->course_name.'</td>
                             <td></td>
-                            <td><a href="' . Url::to(['default/teaching-assignment-coordinator', 'id' => $coor->id]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> View</a></td>';
+                            <td><a href="' . Url::to(['default/teaching-assignment-coordinator', 'id' => $coor->id]) . '" class="btn btn-primary btn-sm" ><span class="glyphicon glyphicon-eye-open"></span> View</a></td>';
                                     
                             $i++;
                        }
@@ -121,14 +115,18 @@ $this->params['breadcrumbs'][] = $this->title;
                   </tr>
                 </thead>
               </table>
+			  
+			  
+			  
           </div>
         </div>
+		
+		
       </div>
-    </div>
-
-    <div class="row">
-    <div class="col-sm-12">
-      <div class="box box-info">
+	  
+	      <div class="col-sm-6">
+		  
+		  <div class="box">
         <div class="box-header">
           <div class="a">
             <div class="box-title"><b>Lectures</b></div>
@@ -136,15 +134,15 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
           <div class="box-body">
             
-              <table id="course">
+              <table class="table">
                 <thead>
                   <tr>
-                    <th style="width:5%">No.</th>
-                    <th style="width:15%">Course Code</th>
-                    <th style="width:27.15%">Course Name</th>
-                    <th style="width:27.15%">Lecture Name</th>
-                    <th style="width:13%">Progress</th>
-                    <th style="width:12.7%">Action</th>
+                    <th >No.</th>
+                    <th >Course Code</th>
+                    <th >Course Name</th>
+                    <th >Lecture Name</th>
+                    <th >Progress</th>
+                    <th ></th>
                   </tr>
                 
                      <?php 
@@ -158,7 +156,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <td>'.$lecture->courseLecture->courseOffered->course->course_name.'</td>
                             <td>'.$lecture->courseLecture->lec_name.'</td>
                             <td></td>
-                            <td><a href="' . Url::to(['default/teaching-assignment-lecture', 'id' => $lecture->lecture_id]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> View</a></td>';
+                            <td><a href="' . Url::to(['default/teaching-assignment-lecture', 'id' => $lecture->lecture_id]) . '" class="btn btn-primary btn-sm" ><span class="glyphicon glyphicon-eye-open"></span> View</a></td>';
                    
                             $i++;
                       }
@@ -170,27 +168,23 @@ $this->params['breadcrumbs'][] = $this->title;
           
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="row">
-    <div class="col-sm-12">
-      <div class="box box-danger">
+		
+		 <div class="box">
         <div class="box-header">
           <div class="a">
             <div class="box-title"><b>Tutorials</b></div>
           </div>
         </div>
           <div class="box-body">
-              <table id="course">
+              <table class="table">
                 <thead>
                   <tr>
-                    <th style="width:5%">No.</th>
-                    <th style="width:15%">Course Code</th>
-                    <th style="width:27.15%">Course Name</th>
-                    <th style="width:27.15%">Tutorial Name</th>
-                    <th style="width:13%">Progress</th>
-                    <th style="width:12.7%">Action</th>
+                     <th >No.</th>
+                    <th >Course Code</th>
+                    <th >Course Name</th>
+                    <th >Lecture Name</th>
+                    <th >Progress</th>
+                    <th ></th>
                   </tr>
                 
                      <?php 
@@ -204,7 +198,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <td>'.$tutorial->tutorialLec->lecture->courseOffered->course->course_name.'</td>
                             <td>'.$tutorial->tutorialLec->tutorial_name.'</td>
                             <td></td>
-                            <td><a href="' . Url::to(['default/teaching-assignment-tutorial', 'id' => $tutorial->tutorial_id]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> View</a></td>';
+                            <td><a href="' . Url::to(['default/teaching-assignment-tutorial', 'id' => $tutorial->tutorial_id]) . '" class="btn btn-primary btn-sm" ><span class="glyphicon glyphicon-eye-open"></span> View</a></td>';
                    
                             $i++;
                       }
@@ -216,8 +210,24 @@ $this->params['breadcrumbs'][] = $this->title;
             
           </div>
         </div>
+    
+      </div>
+	  
+    </div>
+
+
+    <div class="row">
+    <div class="col-sm-6">
+      
+      </div>
+	  
+	      <div class="col-sm-6">
+     
       </div>
     </div>
-</div>
+	
+    </div>
+
+
 
 <?php ActiveForm::end(); ?>

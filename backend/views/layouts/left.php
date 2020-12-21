@@ -71,9 +71,13 @@ use backend\models\Menu;
 			break;
 			
 			case 'teaching-load':
-			case 'course-files':
 			$focus = Menu::teachingLoad();
 			$admin_focus = Menu::adminTeachingLoad();
+			break;
+			
+			case 'course-files':
+			$focus = Menu::teachingLoad();
+			$admin_focus = Menu::adminCourseFiles();
 			break;
 
 	
@@ -160,10 +164,9 @@ $menuItems = [
 					
 					['label' => 'MODULES', 'options' => ['class' => 'header']],
 					
-					['label' => 'Teaching Loads', 'icon' => 'book', 'visible' => Yii::$app->user->can('teaching-load-manager'), 'url' => ['/teaching-load/default/teaching-view']],
+					['label' => 'Teaching Loads', 'icon' => 'book', 'visible' => Yii::$app->user->can('teaching-load-manager'), 'url' => ['/teaching-load/course-offered/index']],
 					
-					
-					['label' => 'Course Files', 'icon' => 'files-o', 'url' => ['/course-files/default/index']],
+					['label' => 'Course Files', 'icon' => 'files-o', 'url' => ['/course-files/default/teaching-assignment']],
 					
 					['label' => 'Staff Info', 'icon' => 'user', 'url' => ['/staff']],
 					

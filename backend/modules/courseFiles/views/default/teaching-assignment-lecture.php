@@ -12,35 +12,11 @@ $this->params['breadcrumbs'][] = ['label' => 'Teaching Assignment', 'url' => ['/
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<style>
-#course {
-  font-family: Arial, Helvetica, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
-
-#course td, #course th {
-  border: 1px solid #ddd;
-  padding: 8px;
-}
-
-#course tr:nth-child(even){background-color: #f2f2f2;}
-
-#course tr:hover {background-color: #ddd;}
-
-#course th {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: left;
-  background-color: #3c8dbc;
-  color: white;
-}
-</style>
 
 <?php $form = ActiveForm::begin(); ?>
 
 
-<div class="box box-primary">
+<div class="box">
 <div class="box-header">
 	<div class="box-title"><b>Peringkat Pelaksanaan/ Implementation Level
     <br/><div class="box-title">(DO)</b></div>
@@ -48,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 <div class="box-body">
 
-  <table id="course">
+  <table class="table">
     <thead>
       <tr>
         <th style="width:5%">No.</th>
