@@ -522,7 +522,7 @@ class Staff extends \yii\db\ActiveRecord
 	}
 	
 	
-	public function getAcademicStaff(){
+	public static function getAcademicStaff(){
 		return self::find()
 		->joinWith('user')
 		->where(['staff_active' => 1, 'is_academic' => 1, 'working_status' => 1])->orderBy('user.fullname ASC')->all();
