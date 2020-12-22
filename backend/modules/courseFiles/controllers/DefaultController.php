@@ -11,6 +11,7 @@ use backend\modules\courseFiles\models\CourseFilesSearch;
 use backend\modules\courseFiles\models\Checklist;
 use backend\modules\courseFiles\models\LectureCancel;
 use backend\modules\teachingLoad\models\CourseOffered;
+use backend\modules\teachingLoad\models\StaffInvolved;
 use backend\modules\courseFiles\models\CoordinatorRubricsFile;
 /**
  * Default controller for the `course-files` module
@@ -63,6 +64,7 @@ class DefaultController extends Controller
         $model = new Staff();
         $modelItem = new Checklist();
         $model->semester = $semester->semester_id;
+		$inv = StaffInvolved::find()->one();
 
         return $this->render('teaching-assignment', [
             'model' => $model,

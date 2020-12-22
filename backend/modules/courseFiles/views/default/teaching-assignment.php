@@ -42,15 +42,21 @@ $this->params['breadcrumbs'][] = $this->title;
 						 echo '
 						 <tr>
 						 <td>1. </td>
-                           <td>Appointment Letter</td>
+                           <td>AFT1043 ASAS PERAKAUNAN</td>
                            <td><a href="' . Url::to(['default/teaching-assignment-lecture-upload']) . '" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-download-alt"></span> Download</a></td>
 						</tr>';
-						 echo '
+						echo '
+						 <tr>
+						 <td>1. </td>
+                           <td>APT2013 GELAGAT USAHAWAN</td>
+                           <td><a href="' . Url::to(['default/teaching-assignment-lecture-upload']) . '" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-download-alt"></span> Download</a></td>
+						</tr>';
+						 /* echo '
 						 <tr>
 						 <td>2. </td>
                            <td>'.$items[6]->item_bi.'</td>
                            <td><a href="' . Url::to(['default/teaching-assignment-lecture-upload']) . '" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-download-alt"></span> Download</a></td>
-						</tr>';
+						</tr>'; */
                               ?>
                 </thead>
               </table>
