@@ -245,7 +245,7 @@ EOD;
 		
 		$sign = $this->template->signiture_file;
 		if(!$sign){
-			die('no signiture - plz upload the signature properly');
+			return false;
 		}
 
 		$file = Yii::getAlias('@upload/'. $sign);
