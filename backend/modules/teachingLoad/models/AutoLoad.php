@@ -221,7 +221,7 @@ class AutoLoad extends Model
 			return true;
 		}else{
 			//update tem data
-			$s = TemAutoLoad::findOne(['staff_id' => $staff_id]);
+			$s = TemAutoload::findOne(['staff_id' => $staff_id]);
 			$s->stop_run = 1;
 			$s->save();
 			return false;
@@ -242,7 +242,7 @@ class AutoLoad extends Model
 	}
 	
 	public function findTemAutoload($staff_id){
-		return TemAutoLoad::findOne(['staff_id' => $staff_id]);
+		return TemAutoload::findOne(['staff_id' => $staff_id]);
 	}
 	
 	public function assignFirstLecture($staff){
@@ -423,7 +423,7 @@ class AutoLoad extends Model
 		
 		
 		//kena check dulu ada data ke tak
-		$count = TemAutoLoad::find()->count();
+		$count = TemAutoload::find()->count();
 		if($count > 0){
 			return [2, 'Delete current operation first.'];
 		}
@@ -432,7 +432,7 @@ class AutoLoad extends Model
         try {
 			$flag = true;
 			foreach($array as $staff){
-				$load = new TemAutoLoad;
+				$load = new TemAutoload;
 				$load->staff_id = $staff;
 				if(!$load->save()){
 					$flag = false;
@@ -456,11 +456,11 @@ class AutoLoad extends Model
 	}
 	
 	public function staffListRandom(){
-		return TemAutoLoad::find()->where(['stop_run' => 0])->all();
+		return TemAutoload::find()->where(['stop_run' => 0])->all();
 	}
 	
 	public function staffListRandomHasLecture(){
-		return TemAutoLoad::find()->where(['no_lecture' => 0, 'stop_run' => 0])->all();
+		return TemAutoload::find()->where(['no_lecture' => 0, 'stop_run' => 0])->all();
 	}
 	
 	public function staffList(){
