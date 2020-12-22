@@ -49,7 +49,6 @@ class StaffInvController extends Controller
         }else{
             $semester->semester_id = Semester::getCurrentSemester()->id;
         }
-        echo $semester->semester_id;
         $searchModel = new StaffInvolvedSearch();
         $searchModel->semester = $semester->semester_id;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
