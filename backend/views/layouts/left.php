@@ -197,11 +197,12 @@ $menuItems = [
                         'url' => '#',
                         'items' => [
 
-                            
+                            ['label' => 'Active Students', 'icon' => 'user', 'url' => ['/students/student'], 'visible' => Yii::$app->user->can('students-manager')],
+
 							
 							['label' => 'Internship', 'icon' => 'book', 'url' => ['/internship'], 'visible' => Yii::$app->user->can('internship-manager')],
 							
-							['label' => 'Dean\'s List Certificate', 'icon' => 'trophy', 'url' => ['/chapterinbook'], 'visible' => Yii::$app->user->can('chapterinbook-manager')],
+							['label' => 'Dean\'s List Certificate', 'icon' => 'trophy', 'url' => ['/students/deanlist'], 'visible' => Yii::$app->user->can('students-manager')],
 
                         ],
                     ],

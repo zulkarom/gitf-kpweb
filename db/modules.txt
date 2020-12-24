@@ -1,0 +1,3 @@
+'students' => [
+            'class' => 'backend\modules\students',
+        ],
