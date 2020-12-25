@@ -1,5 +1,5 @@
 <?php
-namespace backend\modules\internship\models;
+namespace backend\modules\students\models;
 
 use Yii;
 use yii\helpers\Url;
@@ -224,15 +224,20 @@ class UploadFile
 		return '';
 	}
 	
-	public static function download($model, $attr, $filename){
+	public static function download($model, $attr, $filename, $subfolder = false){
 		
 		$attr_db = $attr . '_file';
 		
-        $file = Yii::getAlias('@upload/internship/' . $model->matrik . '.pdf');
+		if($subfolder){
+			$file = Yii::getAlias('@upload/'. $model->folder .'/'.$subfolder.'/' . $model->matric_no . '.pdf');
+		}else{
+			 $file = Yii::getAlias('@upload/'. $model->folder .'/' . $model->matric_no . '.pdf');
+		}
+		
 		//echo $file;die();
-		if($model->matrik){
+		if($model->matric_no){
 			if (file_exists($file)) {
-			$ext = pathinfo($model->matrik, PATHINFO_EXTENSION);
+			$ext = pathinfo($model->matric_no, PATHINFO_EXTENSION);
 
 			$filename = $filename . '.' . $ext ;
 			

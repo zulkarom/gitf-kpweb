@@ -121,6 +121,23 @@ class Menu
 		return $esiap_admin;
 	}
 	
+	public static function adminStudents(){
+		return [
+			'label' => 'Students',
+			'icon' => 'users',
+			'url' => '#',
+			'items' => [
+
+				['label' => 'Active Students', 'icon' => 'user', 'url' => ['/students/student'], 'visible' => Yii::$app->user->can('students-manager')],
+
+				
+				['label' => 'Internship', 'icon' => 'book', 'url' => ['/students/internship'], 'visible' => Yii::$app->user->can('internship-manager')],
+				
+				['label' => 'Dean\'s List Cert', 'icon' => 'trophy', 'url' => ['/students/deanlist'], 'visible' => Yii::$app->user->can('students-manager')],
+			],
+		];	
+	}
+	
 	public static function adminCourseFiles(){
 		$esiap_admin = [
                         'label' => 'Course Files Admin',

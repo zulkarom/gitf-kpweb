@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
 			[
 				'attribute' => 'is_current',
-				'label' => 'Current *',
+				'label' => 'Current',
 				'format' => 'html',
 				'value' => function($model){
 					if($model->is_current == 1){
@@ -45,12 +45,10 @@ $this->params['breadcrumbs'][] = $this->title;
 				}
 			]
             ,
-			
-            'date_start:date',
-            'date_end:date',
+		
 			[
 				'attribute' => 'is_open',
-				'label' => 'Open ***',
+				'label' => 'Publish',
 				'format' => 'html',
 				'value' => function($model){
 					if($model->is_open == 1){
@@ -62,10 +60,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				}
 			]
             ,
-            'open_at:date',
-            'close_at:date',
 
-			
 			['class' => 'yii\grid\ActionColumn',
 				 'contentOptions' => ['style' => 'width: 8.7%'],
 				'template' => '{update}',
@@ -82,7 +77,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
 	
-	<?= $this->render('_note') ?>
+
 	
 	
 	</div>

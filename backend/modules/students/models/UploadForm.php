@@ -1,5 +1,5 @@
 <?php
-namespace backend\modules\internship\models;
+namespace backend\modules\students\models;
 
 use yii\base\Model;
 use yii\web\UploadedFile;

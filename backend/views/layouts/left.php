@@ -79,6 +79,10 @@ use backend\models\Menu;
 			$focus = Menu::teachingLoad();
 			$admin_focus = Menu::adminCourseFiles();
 			break;
+			
+			case 'students':
+			$admin_focus = Menu::adminStudents();
+			break;
 
 	
 
@@ -176,6 +180,8 @@ $menuItems = [
 					
 					['label' => 'JEB Journal', 'icon' => 'book', 'url' => ['/site/jeb-web'], 'template'=>'<a href="{url}" target="_blank">{icon} {label}</a>'],
 					
+					
+					
 					[
                         'label' => 'Website',
                         'icon' => 'tv',
@@ -186,29 +192,12 @@ $menuItems = [
 						
                             ['label' => 'Chapter in Book', 'icon' => 'book', 'url' => ['/chapterinbook'], 'visible' => Yii::$app->user->can('chapterinbook-manager')],
 							
-							['label' => 'Caknawan', 'icon' => 'book', 'url' => ['/internship'], 'visible' => Yii::$app->user->can('internship-manager')],
+							['label' => 'Caknawan', 'icon' => 'book', 'url' => ['/website/caknawan'], 'visible' => Yii::$app->user->can('internship-manager')],
 
                         ],
                     ],
 					
-					[
-                        'label' => 'Students',
-                        'icon' => 'users',
-                        'url' => '#',
-                        'items' => [
-
-                            ['label' => 'Active Students', 'icon' => 'user', 'url' => ['/students/student'], 'visible' => Yii::$app->user->can('students-manager')],
-
-							
-							['label' => 'Internship', 'icon' => 'book', 'url' => ['/internship'], 'visible' => Yii::$app->user->can('internship-manager')],
-							
-							['label' => 'Dean\'s List Certificate', 'icon' => 'trophy', 'url' => ['/students/deanlist'], 'visible' => Yii::$app->user->can('students-manager')],
-
-                        ],
-                    ],
-					
-
-					
+					['label' => 'Students', 'icon' => 'users', 'url' => ['/students/student'], 'visible' => Yii::$app->user->can('students-manager')],
 					
 					[
                         'label' => 'System Management',
@@ -226,10 +215,6 @@ $menuItems = [
 							['label' => 'Route List', 'icon' => 'user', 'url' => ['/admin/route'],],
 							
 							['label' => 'Login As', 'icon' => 'lock', 'url' => ['/user-admin/login-as'],],
-							
-	
-							
-
                         ],
                     ],
 					

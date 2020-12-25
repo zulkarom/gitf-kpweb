@@ -38,12 +38,13 @@ class Semester extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id' , 'session', 'year_start', 'is_current', 'date_start', 'date_end', 'open_at', 'close_at', 'created_at', 'created_by', 'result_date'], 'required', 'on' => 'create'],
+            [['session', 'year_start', 'is_current', 'created_at', 'created_by'], 'required', 'on' => 'create'],
 			
-			[['is_current', 'date_start', 'date_end', 'open_at', 'close_at', 'result_date'], 'required', 'on' => 'update'],
+			[['is_current'], 'required', 'on' => 'update'],
 			
 			
             [['id', 'is_current', 'is_open', 'template_appoint_letter'], 'integer'],
+			
             [['description'], 'string'],
             [['date_start', 'date_end', 'open_at', 'close_at'], 'safe'],
             [['id'], 'unique'],
@@ -63,7 +64,7 @@ class Semester extends \yii\db\ActiveRecord
             'id' => 'ID',
             'description' => 'Description',
 			'month' => 'Sesi',
-			'is_open' => 'Is this semester open for application? ***',
+			'is_open' => 'Publish',
             'is_current' => 'Is this current semester? *',
             'date_start' => 'Start Date **',
             'date_end' => 'End Date **',
@@ -82,10 +83,7 @@ class Semester extends \yii\db\ActiveRecord
 			Semester::updateAll(['is_current' => 0]);
 
 		}
-		if($this->is_open == 1){
-			Semester::updateAll(['is_open' => 0]);
-
-		}
+		
 	}
 	
 	public function session(){
@@ -256,7 +254,9 @@ class Semester extends \yii\db\ActiveRecord
 	
 	public static function listSemesterArray(){
 		$array = [];
-		$list = self::find()->orderBy('id DESC')->all();
+		$list = self::find()
+		->where(['is_open' => 1])
+		->orderBy('id DESC')->all();
 		if($list){
 			foreach($list as $row){
 				$array[$row->id] = $row->longFormat();

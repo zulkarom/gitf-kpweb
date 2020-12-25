@@ -1,27 +1,29 @@
 <?php
 
-namespace backend\modules\internship\controllers;
+namespace backend\modules\students\controllers;
 
 use Yii;
-use backend\modules\internship\models\InternshipList;
-use backend\modules\internship\models\InternshipSearch;
-use backend\modules\internship\models\UploadForm;
+use backend\models\SemesterForm;
+use backend\modules\students\models\Student;
+use backend\modules\students\models\DeanList;
+use backend\modules\students\models\DeanListSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use backend\models\Semester;
 use yii\filters\AccessControl;
-use backend\modules\internship\models\UploadFile;
-use yii\web\UploadedFile;
+use yii\db\Expression;
+use backend\modules\students\models\UploadFile;
 
 /**
- * DefaultController implements the CRUD actions for InternshipList model.
+ * DeanlistController implements the CRUD actions for DeanList model.
  */
-class DefaultController extends Controller
+class DeanlistController extends Controller
 {
     /**
      * {@inheritdoc}
      */
-        
+       
 
 	public function behaviors()
     {
@@ -39,33 +41,36 @@ class DefaultController extends Controller
     }
 
     /**
-     * Lists all InternshipList models.
+     * Lists all DeanList models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new InternshipSearch();
+		 $semester = new SemesterForm;
+        if(Yii::$app->getRequest()->getQueryParam('SemesterForm')){
+            $sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');
+            $semester->semester_id = $sem['semester_id'];
+			$semester->str_search = $sem['str_search'];
+
+        }else{
+            $semester->semester_id = Semester::getCurrentSemester()->id;
+        }
+		
+		
+        $searchModel = new DeanListSearch();
+		$searchModel->semester = $semester->semester_id;
+		$searchModel->str_search = $semester->str_search;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+			'semester' => $semester,
         ]);
     }
-	
-	
-	public function generateRandomString($length = 20) {
-		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-		$charactersLength = strlen($characters);
-		$randomString = '';
-		for ($i = 0; $i < $length; $i++) {
-			$randomString .= $characters[rand(0, $charactersLength - 1)];
-		}
-		return $randomString;
-	}
 
     /**
-     * Displays a single InternshipList model.
+     * Displays a single DeanList model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -78,20 +83,29 @@ class DefaultController extends Controller
     }
 
     /**
-     * Creates a new InternshipList model.
+     * Creates a new DeanList model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new InternshipList();
+        $model = new DeanList();
 
         if ($model->load(Yii::$app->request->post())) {
-			if($model->save()){
-				Yii::$app->session->addFlash('success', "Data Updated");
-				return $this->redirect(['view', 'id' => $model->id]);
+			
+			//check ada data
+			$matric = $model->matric_no;
+			$student = Student::findOne(['matric_no' => $matric]);
+			if($student){
+				$model->created_at = new Expression('NOW()');
+				$model->created_by = Yii::$app->user->identity->id;
+				if($model->save()){
+					Yii::$app->session->addFlash('success', "Data Updated");
+					return $this->redirect(['index']);
+				}
+			}else{
+				Yii::$app->session->addFlash('error', "Student not found!");
 			}
-            
         }
 
         return $this->render('create', [
@@ -100,7 +114,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * Updates an existing InternshipList model.
+     * Updates an existing DeanList model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -111,7 +125,6 @@ class DefaultController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-			Yii::$app->session->addFlash('success', "Data Updated");
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -121,7 +134,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * Deletes an existing InternshipList model.
+     * Deletes an existing DeanList model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -130,29 +143,29 @@ class DefaultController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
+		Yii::$app->session->addFlash('success', "Data Updated");
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the InternshipList model based on its primary key value.
+     * Finds the DeanList model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return InternshipList the loaded model
+     * @return DeanList the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = InternshipList::findOne($id)) !== null) {
+        if (($model = DeanList::findOne($id)) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 	
-	public function actionDownloadLetter($id){
+	public function actionDownloadFile($id){
 		$model = $this->findModel($id);
-		if(!UploadFile::download($model, 'file', $model->nric)){
+		if(!UploadFile::download($model, 'file', $model->matric_no, $model->semester_id)){
 			echo 'File not exist!';
 		}
 	}
@@ -171,6 +184,4 @@ class DefaultController extends Controller
 
         return $this->render('upload', ['model' => $model]);
     }
-	
-	
 }

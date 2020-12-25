@@ -1,6 +1,6 @@
 <?php
 
-namespace backend\modules\internship\models;
+namespace backend\modules\students\models;
 
 use Yii;
 
@@ -17,6 +17,8 @@ use Yii;
  */
 class InternshipList extends \yii\db\ActiveRecord
 {
+	
+	public $folder = 'internship';
     /**
      * {@inheritdoc}
      */
@@ -24,6 +26,10 @@ class InternshipList extends \yii\db\ActiveRecord
     {
         return 'li_senarai';
     }
+	
+	public function getMatric_no(){
+		return $this->matrik;
+	}
 
     /**
      * {@inheritdoc}

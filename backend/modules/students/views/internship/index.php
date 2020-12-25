@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel backend\modules\internship\models\InternshipSearch */
+/* @var $searchModel backend\modules\students\models\InternshipSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Internship Lists';
