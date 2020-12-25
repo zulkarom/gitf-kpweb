@@ -3,11 +3,11 @@
 namespace frontend\controllers;
 
 use Yii;
-use backend\modules\internship\models\InternshipList;
+use backend\modules\students\models\InternshipList;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use backend\modules\internship\models\UploadFile;
+use backend\modules\students\models\UploadFile;
 use frontend\models\InternshipForm;
 
 /**
