@@ -3,13 +3,13 @@ namespace frontend\models;
 
 use yii\base\Model;
 use common\models\User;
-use common\models\Fasi;
 
 /**
  * Signup form
  */
-class InternshipForm extends Model
+class DeanListForm extends Model
 {
+	public $semester;
     public $matric;
 	public $nric;
 
@@ -21,8 +21,7 @@ class InternshipForm extends Model
     {
         return [
 		
-			[['matric', 'nric'], 'required'],
-			
+			[['matric', 'nric', 'semester'], 'required'],
             [['matric', 'nric'], 'trim'],
             [['matric',], 'string', 'max' => 15],
 			[['nric'], 'string'],
