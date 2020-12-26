@@ -7,7 +7,7 @@ use backend\models\Semester;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\students\models\DeanList */
 /* @var $form yii\widgets\ActiveForm */
-$model->semester_id = Semester::getCurrentSemester()->id;
+
 ?>
 
 <div class="dean-list-form">

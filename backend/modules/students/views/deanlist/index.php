@@ -13,6 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="dean-list-index">
     <p>
         <?= Html::a('Create Dean List', ['create'], ['class' => 'btn btn-success']) ?>
+		 <?= Html::a('Upload', ['upload'], ['class' => 'btn btn-info']) ?>
     </p>
 	
 	<div class="row">

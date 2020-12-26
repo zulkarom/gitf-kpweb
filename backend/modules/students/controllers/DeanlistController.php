@@ -14,6 +14,8 @@ use backend\models\Semester;
 use yii\filters\AccessControl;
 use yii\db\Expression;
 use backend\modules\students\models\UploadFile;
+use backend\modules\students\models\UploadDeanListForm;
+use yii\web\UploadedFile;
 
 /**
  * DeanlistController implements the CRUD actions for DeanList model.
@@ -172,9 +174,9 @@ class DeanlistController extends Controller
 	
 	public function actionUpload()
     {
-        $model = new UploadForm();
+        $model = new UploadDeanListForm();
 
-        if (Yii::$app->request->isPost) {
+        if ($model->load(Yii::$app->request->post())) {
             $model->imageFiles = UploadedFile::getInstances($model, 'imageFiles');
             if ($model->upload()) {
                 Yii::$app->session->addFlash('success', "file is uploaded successfully"); 

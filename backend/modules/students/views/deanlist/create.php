@@ -8,6 +8,7 @@ use yii\helpers\Html;
 $this->title = 'Create Dean List';
 $this->params['breadcrumbs'][] = ['label' => 'Dean Lists', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+$model->semester_id = Semester::getCurrentSemester()->id;
 ?>
 <div class="dean-list-create">
 
