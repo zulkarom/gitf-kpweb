@@ -3,6 +3,8 @@
 namespace frontend\controllers;
 
 use Yii;
+use backend\modules\students\models\InternshipList;
+use frontend\models\InternshipForm;
 use backend\modules\students\models\DeanList;
 use frontend\models\DeanListForm;
 use yii\web\Controller;
