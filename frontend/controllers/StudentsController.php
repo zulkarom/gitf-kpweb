@@ -80,7 +80,7 @@ class StudentsController extends Controller
     {
         $model = DeanList::find()
 		->joinWith(['student'])
-		->where(['st_dean_list.semester_id' => $semester 'st_student.matric_no' => $matric, 'st_student.nric' => $nric])
+		->where(['st_dean_list.semester_id' => $semester, 'st_student.matric_no' => $matric, 'st_student.nric' => $nric])
 		->one();
 		
 		if($model !== null){
