@@ -20,9 +20,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'st_name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'program')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'program')->textInput(['maxlength' => true])->label('Program Code e.g. SAK, SAB')?>
 
-    <?= $form->field($model, 'is_active')->textInput() ?>
+    <?= $form->field($model, 'is_active')->dropDownList([1=>'Yes', 0 => 'No']) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

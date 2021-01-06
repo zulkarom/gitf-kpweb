@@ -64,7 +64,6 @@ class ManagerController extends Controller
     {
 
         $semester = new SemesterForm;
-        $semester->action = ['/teaching-load/manager/summary-by-staff'];
         
         if(Yii::$app->getRequest()->getQueryParam('SemesterForm')){
             $sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');

@@ -6,18 +6,20 @@ use Yii;
 use yii\web\Controller;
 use backend\models\SemesterForm;
 use backend\models\Semester;
-use backend\modules\staff\models\Staff;
+use backend\modules\teachingLoad\models\Staff;
 use backend\modules\courseFiles\models\CourseFilesSearch;
 use backend\modules\courseFiles\models\Checklist;
 use backend\modules\courseFiles\models\LectureCancel;
 use backend\modules\teachingLoad\models\CourseOffered;
 use backend\modules\teachingLoad\models\StaffInvolved;
 use backend\modules\courseFiles\models\CoordinatorRubricsFile;
+
 /**
  * Default controller for the `course-files` module
  */
 class DefaultController extends Controller
 {
+	
     /**
      * Renders the index view for the module
      * @return string
@@ -46,8 +48,6 @@ class DefaultController extends Controller
             'semester' => $semester
         ]);
     }
-
-    
 
     public function actionTeachingAssignment(){
         

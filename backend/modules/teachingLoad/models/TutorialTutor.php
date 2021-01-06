@@ -4,7 +4,6 @@ namespace backend\modules\teachingLoad\models;
 
 use Yii;
 use backend\modules\teachingLoad\models\TutorialLecture;
-use backend\modules\staff\models\Staff;
 
 
 /**

@@ -33,10 +33,22 @@ $this->params['breadcrumbs'][] = $this->title;
                 <thead>
                   <tr>
                     <th style="width:5%">#</th>
-                    <th style="width:69.3%">Appointment Letter</th>
+                    <th style="width:69.3%">Courses</th>
                     <th style="width:12.7%"></th>
                   </tr>
                      <?php 
+					 
+					 if($inv){
+						 
+					 }else{
+						 echo '
+						 <tr>
+						 <td></td>
+                           <td>No Subjects</td>
+                           <td></td>
+						</tr>';
+					 }
+					 
 						$items = $modelItem->itemPlan;
 						 echo '<tr>
 						 <td>1. </td>
@@ -45,10 +57,11 @@ $this->params['breadcrumbs'][] = $this->title;
 						</tr>';
 						echo '
 						 <tr>
-						 <td>1. </td>
+						 <td>2. </td>
                            <td>APT2013 GELAGAT USAHAWAN</td>
                            <td><a href="' . Url::to(['default/teaching-assignment-lecture-upload']) . '" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-download-alt"></span> Download</a></td>
 						</tr>';
+
                               ?>
                 </thead>
               </table>

@@ -63,21 +63,7 @@ $columns = [
                     return $model->totalLectureTutorial;
                 }
             ],
-            //PastExperiencesStr
-            
 
-            /* ['class' => 'yii\grid\ActionColumn',
-                 'contentOptions' => ['style' => 'width: 9%'],
-                'template' => '{update}',
-                //'visible' => false,
-                'buttons'=>[
-                    'update'=>function ($url, $model) {
-                        return Html::a('<span class="glyphicon glyphicon-pencil"></span> Update',['/esiap/course-admin/update/', 'course' => $model->id],['class'=>'btn btn-warning btn-sm']);
-                    },
-
-                ],
-            
-            ], */
         ];
 ?>
 <div class="course-index">
