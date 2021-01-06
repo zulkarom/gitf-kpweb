@@ -28,7 +28,6 @@ $this->params['breadcrumbs'][] = $this->title;
           </div>
         </div>
           <div class="box-body">
-		  <?=count($myInv->)?>
             <table class="table">
                 <thead>
                   <tr>
@@ -37,9 +36,17 @@ $this->params['breadcrumbs'][] = $this->title;
                     <th style="width:12.7%"></th>
                   </tr>
                      <?php 
-					 
-					 if($inv){
-						 
+					 if($myInv->appointLetters){
+						 $i = 1;
+						 foreach($myInv->appointLetters as $app){
+							$crs = $app->courseOffered->course;
+							 echo '<tr>
+						 <td>'.$i.'. </td>
+                           <td>'.$crs->course_code .' '.$crs->course_name .'</td>
+                           <td><a href="' . Url::to(['/teaching-load/appointment-letter/pdf', 'id' => $app->id]) . '" class="btn btn-default btn-sm" target="_blank"><span class="glyphicon glyphicon-download-alt"></span> Download</a></td>
+						</tr>';
+						$i++;
+						 }
 					 }else{
 						 echo '
 						 <tr>
@@ -48,19 +55,8 @@ $this->params['breadcrumbs'][] = $this->title;
                            <td></td>
 						</tr>';
 					 }
-					 
-						$items = $modelItem->itemPlan;
-						 echo '<tr>
-						 <td>1. </td>
-                           <td>AFT1043 ASAS PERAKAUNAN</td>
-                           <td><a href="' . Url::to(['default/teaching-assignment-lecture-upload']) . '" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-download-alt"></span> Download</a></td>
-						</tr>';
-						echo '
-						 <tr>
-						 <td>2. </td>
-                           <td>APT2013 GELAGAT USAHAWAN</td>
-                           <td><a href="' . Url::to(['default/teaching-assignment-lecture-upload']) . '" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-download-alt"></span> Download</a></td>
-						</tr>';
+						 
+
 
                               ?>
                 </thead>

@@ -65,13 +65,13 @@ class StaffInvolved extends \yii\db\ActiveRecord
         return $this->hasOne(LecLecture::className(), ['staff_id' => 'staff_id']);
     }
     
-    public function getAppointLetter(){
+    public function getAppointLetters(){
         return $this->hasMany(AppointmentLetter::className(), ['inv_id' => 'id']);
     }
 
     public function getAppointLetterStr( $br = "\n"){
         
-        $list = $this->appointLetter;
+        $list = $this->appointLetters;
         $str = '';
         if($list){
             $i = 1;
