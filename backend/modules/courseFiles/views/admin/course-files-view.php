@@ -14,30 +14,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 
-<style>
-#course {
-  font-family: Arial, Helvetica, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
-
-#course td, #course th {
-  border: 1px solid #ddd;
-  padding: 8px;
-}
-
-#course tr:nth-child(even){background-color: #f2f2f2;}
-
-#course tr:hover {background-color: #ddd;}
-
-#course th {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: left;
-  background-color: #3c8dbc;
-  color: white;
-}
-</style>
 
 <div class="course-files-view">
 <?php $form = ActiveForm::begin(); ?>

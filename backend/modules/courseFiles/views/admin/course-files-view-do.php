@@ -11,7 +11,7 @@ use yii\helpers\Html;
 </div>
 <div class="box-body">
 
-  <table id="course">
+  <table class="table">
     <thead>
       <tr>
         <th style="width:5%">No.</th>

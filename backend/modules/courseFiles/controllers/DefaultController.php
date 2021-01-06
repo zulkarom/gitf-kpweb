@@ -52,7 +52,6 @@ class DefaultController extends Controller
     public function actionTeachingAssignment(){
         
         $semester = new SemesterForm;
-        $semester->action = ['/course-files/default/teaching-assignment'];
 
         if(Yii::$app->getRequest()->getQueryParam('SemesterForm')){
             $sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');
@@ -64,12 +63,13 @@ class DefaultController extends Controller
         $model = new Staff();
         $modelItem = new Checklist();
         $model->semester = $semester->semester_id;
-		$inv = StaffInvolved::find()->one();
+		$myInv = StaffInvolved::find(['staff_id' => Yii::$app->user->identity->staff->id, 'semester_id' => $semester->semester_id])->one();
 
         return $this->render('teaching-assignment', [
             'model' => $model,
             'modelItem' => $modelItem,
-            'semester' => $semester
+            'semester' => $semester,
+			'myInv' => $myInv
         ]);
 
 

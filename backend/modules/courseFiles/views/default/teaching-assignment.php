@@ -16,8 +16,6 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
  
 
-
-
 <div class="teaching-assignment">
 <?php $form = ActiveForm::begin(); ?>
 
@@ -30,6 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
           </div>
         </div>
           <div class="box-body">
+		  <?=count($myInv->)?>
             <table class="table">
                 <thead>
                   <tr>
@@ -39,8 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
                   </tr>
                      <?php 
 						$items = $modelItem->itemPlan;
-						 echo '
-						 <tr>
+						 echo '<tr>
 						 <td>1. </td>
                            <td>AFT1043 ASAS PERAKAUNAN</td>
                            <td><a href="' . Url::to(['default/teaching-assignment-lecture-upload']) . '" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-download-alt"></span> Download</a></td>
@@ -51,12 +49,6 @@ $this->params['breadcrumbs'][] = $this->title;
                            <td>APT2013 GELAGAT USAHAWAN</td>
                            <td><a href="' . Url::to(['default/teaching-assignment-lecture-upload']) . '" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-download-alt"></span> Download</a></td>
 						</tr>';
-						 /* echo '
-						 <tr>
-						 <td>2. </td>
-                           <td>'.$items[6]->item_bi.'</td>
-                           <td><a href="' . Url::to(['default/teaching-assignment-lecture-upload']) . '" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-download-alt"></span> Download</a></td>
-						</tr>'; */
                               ?>
                 </thead>
               </table>

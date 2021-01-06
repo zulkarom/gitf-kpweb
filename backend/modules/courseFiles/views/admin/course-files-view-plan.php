@@ -6,14 +6,14 @@ use yii\helpers\Url;
 ?>
 
 
-<div class="box box-primary">
+<div class="box">
 <div class="box-header">
   <div class="box-title"><b>Peringkat Perancangan/Planning Level
     <br/><div class="box-title">(PLAN)</b></div>
 </div>
 </div>
 <div class="box-body">
-<table id="course">
+ <table class="table">
     <thead>
       <tr>
         <th style="width:5%">No.</th>
