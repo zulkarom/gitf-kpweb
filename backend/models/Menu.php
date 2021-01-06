@@ -134,6 +134,8 @@ class Menu
 				['label' => 'Internship', 'icon' => 'book', 'url' => ['/students/internship'], 'visible' => Yii::$app->user->can('internship-manager')],
 				
 				['label' => 'Dean\'s List Cert', 'icon' => 'trophy', 'url' => ['/students/deanlist'], 'visible' => Yii::$app->user->can('students-manager')],
+				
+				['label' => 'Matric Cards', 'icon' => 'credit-card', 'url' => ['/students/deanlist'], 'visible' => Yii::$app->user->can('students-manager')],
 			],
 		];	
 	}

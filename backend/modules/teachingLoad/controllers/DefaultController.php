@@ -14,7 +14,6 @@ use backend\modules\teachingLoad\models\Setting;
 use backend\models\SemesterForm;
 use backend\models\Semester;
 use backend\modules\teachingLoad\models\Course;
-use backend\modules\staff\models\Staff;
 use yii\helpers\ArrayHelper;
 use yii\db\Expression;
 use yii\filters\AccessControl;

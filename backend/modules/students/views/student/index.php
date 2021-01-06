@@ -12,7 +12,9 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="student-index">
 
-  
+<p><?= Html::a('Add Student', ['create'], ['class' => 'btn btn-success']) ?>
+
+</p>
 
 <div class="box">
 <div class="box-header"></div>
