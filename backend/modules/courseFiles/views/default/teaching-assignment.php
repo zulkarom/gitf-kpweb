@@ -32,11 +32,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 <thead>
                   <tr>
                     <th style="width:5%">#</th>
-                    <th style="width:69.3%">Courses</th>
+                    <th style="width:69.3%">Appointment Letters</th>
                     <th style="width:12.7%"></th>
                   </tr>
                      <?php 
-					 if($myInv->appointLetters){
+					 $boo = false;
+					 if($myInv){
+						 if($myInv->appointLetters){
+						$boo = true;
 						 $i = 1;
 						 foreach($myInv->appointLetters as $app){
 							$crs = $app->courseOffered->course;
@@ -47,7 +50,10 @@ $this->params['breadcrumbs'][] = $this->title;
 						</tr>';
 						$i++;
 						 }
-					 }else{
+					 }
+					 }
+					 
+					 if(!$boo){
 						 echo '
 						 <tr>
 						 <td></td>
