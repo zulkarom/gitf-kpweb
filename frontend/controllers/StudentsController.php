@@ -46,7 +46,7 @@ class StudentsController extends Controller
 		$model = new DeanListForm;
 		if ($model->load(Yii::$app->request->post())) {
 			$attr = 'paper';
-			$student = $this->findDeanList($model->matric, $model->nric);
+			$student = $this->findDeanList($model->semester, $model->matric, $model->nric);
 			if($student){
 				if(!UploadFile::download($student, $attr, $student->matric_no, $student->semester_id)){
 					Yii::$app->session->addFlash('error', "File not exist!");
@@ -76,11 +76,11 @@ class StudentsController extends Controller
         return false;
     }
 	
-	protected function findDeanList($matric, $nric)
+	protected function findDeanList($semester, $matric, $nric)
     {
         $model = DeanList::find()
 		->joinWith(['student'])
-		->where(['st_student.matric_no' => $matric, 'st_student.nric' => $nric])
+		->where(['st_dean_list.semester_id' => $semester, 'st_student.matric_no' => $matric, 'st_student.nric' => $nric])
 		->one();
 		
 		if($model !== null){
