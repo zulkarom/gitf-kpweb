@@ -102,11 +102,11 @@ $this->params['breadcrumbs'][] = $this->title;
             <table class="table">
                 <thead>
                   <tr>
-                    <th style="width:5%">No.</th>
-                    <th style="width:15%">Course Code</th>
-                    <th style="width:54.3%">Course Name</th>
-                    <th style="width:13%">Progress</th>
-                    <th style="width:12.7%"></th>
+                    <th>No.</th>
+                    <th>Course Code</th>
+                    <th>Course Name</th>
+                    <th>Progress</th>
+                    <th></th>
                   </tr>
                 
                      <?php 
@@ -119,7 +119,11 @@ $this->params['breadcrumbs'][] = $this->title;
                             <td>'.$coor->course->course_code.'</td>
                             <td>'.$coor->course->course_name.'</td>
                             <td></td>
-                            <td><a href="' . Url::to(['default/teaching-assignment-coordinator', 'id' => $coor->id]) . '" class="btn btn-primary btn-sm" ><span class="glyphicon glyphicon-eye-open"></span> View</a></td>';
+                            <td>
+							
+			
+							
+							<a href="' . Url::to(['default/teaching-assignment-coordinator', 'id' => $coor->id]) . '" class="btn btn-primary btn-sm" ><span class="glyphicon glyphicon-eye-open"></span> View</a></td>';
                                     
                             $i++;
                        }

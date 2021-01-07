@@ -12,8 +12,48 @@ $this->params['breadcrumbs'][] = ['label' => 'Teaching Assignment', 'url' => ['/
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
+<div class="box">
+<div class="box-header">
+  <div class="box-title">Maklumat Kursus</div>
+</div>
+</div>
 
-<?php $form = ActiveForm::begin(); ?>
+<div class="box-body">
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th style="width:5%">No.</th>
+        <th style="width:85%">Item</th>
+        <th>Action</th>
+      </tr>
+    
+        
+        <tr>
+        <?php 
+    
+        if($model->itemPlan){
+        $i = 1;
+          
+            foreach($model->itemPlan as $item){
+              if($item->coor_upload == 1){
+                echo '<tr><td>'.$i.'</td>
+                  <td>'.$item->item.'<i><br/>'.$item->item_bi.'</i></td>
+                  <td><a href="' . Url::to([$item->upload_url.'/page','id' => $offered_id]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> Upload</a></td>';
+         
+                  $i++;
+              }
+            
+            }
+          
+        }
+              ?>
+      </tr>
+    </thead>
+   
+  </table>
+</div>
+</div>
 
 
 <div class="box">
@@ -194,5 +234,4 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 
-<?php ActiveForm::end(); ?>
 
