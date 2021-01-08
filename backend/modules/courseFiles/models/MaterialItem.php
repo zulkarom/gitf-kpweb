@@ -33,6 +33,10 @@ class MaterialItem extends \yii\db\ActiveRecord
     {
         return [
             [['material_id', 'item_category'], 'required'],
+			
+			[['item_name'], 'required', 'on' => 'saveall'],
+			
+			
             [['material_id', 'item_category'], 'integer'],
             [['item_file'], 'string'],
             [['item_name'], 'string', 'max' => 200],

@@ -3,19 +3,22 @@
 namespace backend\modules\courseFiles\controllers;
 
 use Yii;
-use backend\modules\courseFiles\models\Material;
-use backend\modules\courseFiles\models\MaterialItem;
-use backend\modules\esiap\models\Course;
-use backend\modules\courseFiles\models\MaterialSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\Expression;
-use backend\modules\courseFiles\models\AddMaterialForm;
 use yii\filters\AccessControl;
-use common\models\UploadFile;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
+
+use common\models\UploadFile;
+use common\models\Model;
+
+use backend\modules\courseFiles\models\Material;
+use backend\modules\courseFiles\models\MaterialItem;
+use backend\modules\esiap\models\Course;
+use backend\modules\courseFiles\models\MaterialSearch;
+use backend\modules\courseFiles\models\AddMaterialForm;
 
 /**
  * MaterialController implements the CRUD actions for Material model.
@@ -66,8 +69,11 @@ class MaterialController extends Controller
      */
     public function actionView($id)
     {
+		$model = $this->findModel($id);
+		$materialItems = $model->items;
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+			'materialItems' => $materialItems
         ]);
     }
 
@@ -111,10 +117,21 @@ class MaterialController extends Controller
 		$course_id = $model->course_id;
 		$course = $this->findCourse($course_id);
 		$addMaterial = new AddMaterialForm;
+		$materialItems = $model->items;
+		
 		
         if ($model->load(Yii::$app->request->post())) {
+			$model->updated_at = new Expression('NOW()');    
+			
+			Model::loadMultiple($materialItems, Yii::$app->request->post());
+			foreach ($materialItems as $item) {
+				$item->save();
+			}
+
+			
 			if($model->save()){
-				return $this->redirect(['update', 'id' => $model->id]);
+				Yii::$app->session->addFlash('success', "Data Updated");
+				return $this->redirect(['view', 'id' => $model->id]);
 			}
         }
 		
@@ -135,7 +152,8 @@ class MaterialController extends Controller
         return $this->render('update', [
             'model' => $model,
 			'course' => $course,
-			'addMaterial' => $addMaterial
+			'addMaterial' => $addMaterial,
+			'materialItems' => $materialItems
         ]);
     }
 
@@ -210,8 +228,9 @@ class MaterialController extends Controller
 	
 	public function actionDeleteRow($id){
         $model = $this->findMaterialItem($id);
+		
         if($model->delete()){
-            return $this->redirect(['update', 'id' => $model->id]);
+            return $this->redirect(['update', 'id' => $model->material_id]);
         }
     }
     

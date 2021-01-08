@@ -8,7 +8,7 @@ use common\models\UploadFile;
 /* @var $model backend\modules\courseFiles\models\Material */
 
 $this->title = 'Update: ' . $model->material_name;
-$this->params['breadcrumbs'][] = ['label' => 'Materials', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Materials', 'url' => ['index', 'course' => $model->course_id]];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = 'Update';
 	
 <div class="box">
 <div class="box-header">
-<h3 class="box-title">List of Materials</h3>
+<h3 class="box-title">Teaching Materials for Course File (.pdf)</h3>
 </div>
 <div class="box-body">
 <?php $form = ActiveForm::begin(); 
@@ -53,18 +53,36 @@ $this->params['breadcrumbs'][] = 'Update';
 	echo Html::submitButton('Go', ['class' => 'btn btn-sm btn-default']);
 	ActiveForm::end(); ?>
 
-  <table class="table table-striped table-hover">
 
+<?php $form = ActiveForm::begin(); ?>
+  <table class="table table-striped table-hover">
+  <thead>
+  <tr>
+  <th>#</th>
+  <th width="30%">File Name</th>
+  <th>Upload File</th>
+  </tr>
+</thead>
 <tbody>
 	<?php 
-	if($model->items){
-		foreach($model->items as $item){
+	if($materialItems){
+		$i = 1;
+		foreach($materialItems as $x => $item){
+			$item->scenario = 'saveall';
 			$item->file_controller = 'material';
 			?>
 			<tr>
+			<td><?=$i?>. </td>
+			<td>
+			<?=Html::activeHiddenInput($item, "[{$i}]id");?>
+			<?=Html::activeHiddenInput($model, "id");?>
+			<?= $form->field($item, "[{$x}]item_name")->label(false) ?>
+			
+			</td>
 				<td><?=UploadFile::fileInput($item, 'item', false, true, 'material-item')?></td>
 			</tr>
 			<?php
+		$i++;
 		}
 	}
 	
@@ -72,7 +90,11 @@ $this->params['breadcrumbs'][] = 'Update';
 </tbody>
 </table>
 
+ <div class="form-group">
+        <?= Html::submitButton('Save Materials (Course File)', ['class' => 'btn btn-success']) ?>
+    </div>
 
+    <?php ActiveForm::end(); ?>
 
 </div>
 </div>

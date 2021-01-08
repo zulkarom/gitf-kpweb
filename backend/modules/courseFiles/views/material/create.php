@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $model backend\modules\courseFiles\models\Material */
 
 $this->title = 'Create Material Group';
-$this->params['breadcrumbs'][] = ['label' => 'Materials', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Materials', 'url' => ['index', 'course' => $course->id]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="material-create">

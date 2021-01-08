@@ -11,8 +11,6 @@ use yii\db\Expression;
 
 class UploadFile
 {
-	
-   
 	public static function fileInput($model, $attr, $image = false, $multiple = false, $customView = false){
 		$accept = '/*';
 		if($image){
@@ -28,8 +26,6 @@ class UploadFile
 				$view = '@frontend/views/upload/main-file';
 			}
 		}
-		
-		
 		
 		$max = 0;
 		$ext = array();
