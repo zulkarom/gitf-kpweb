@@ -42,7 +42,7 @@ use backend\modules\teachingLoad\models\AppointmentLetter;
 class CourseOffered extends \yii\db\ActiveRecord
 {
     public $courses;
-    public $semester;
+    public $sem;
     public $staff_id;
     public $offered_id;
     /**
@@ -60,7 +60,10 @@ class CourseOffered extends \yii\db\ActiveRecord
     {
         return [
             [['semester_id', 'course_id','created_at', 'created_by'], 'required'],
-            [['semester_id', 'course_id', 'total_students', 'max_lec', 'max_tut', 'created_by', 'coordinator'], 'integer'],
+			
+			[['course_version', 'material_version'], 'required', 'on' => 'coor'],
+			
+            [['semester_id', 'course_id', 'total_students', 'max_lec', 'max_tut', 'created_by', 'coordinator', 'course_version', 'material_version'], 'integer'],
             [['created_at', 'courses'], 'safe'],
             [['prefix_lec', 'prefix_tut'], 'string', 'max' => 225],
         ];

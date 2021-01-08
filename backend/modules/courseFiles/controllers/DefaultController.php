@@ -99,12 +99,30 @@ class DefaultController extends Controller
      public function actionTeachingAssignmentCoordinator($id)
     {
         $model = new Checklist();
-        $offered_id = $id;
+        $offer = $this->findOffered($id);
+		$offer->scenario = 'coor';
+		
+		if ($offer->load(Yii::$app->request->post())) {
+			if($offer->save()){
+				Yii::$app->session->addFlash('success', "Data Updated");
+			}else{
+				$offer->flashError();
+			}
+		}
         
         return $this->render('teaching-assignment-coordinator', [
             'model' => $model,
-            'offered_id' => $offered_id,
+            'offer' => $offer,
         ]);
+    }
+	
+	protected function findOffered($id)
+    {
+        if (($model = CourseOffered::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 
 }

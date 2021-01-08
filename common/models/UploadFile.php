@@ -11,17 +11,24 @@ use yii\db\Expression;
 
 class UploadFile
 {
+	
    
-	public static function fileInput($model, $attr, $image = false, $multiple = false, $redirect = false){
+	public static function fileInput($model, $attr, $image = false, $multiple = false, $customView = false){
 		$accept = '/*';
 		if($image){
 			$accept = 'image/*';
 		}
-		if($multiple){
-			$view = '@frontend/views/upload/main-multiple';
+		
+		if($customView){
+			$view = '@frontend/views/upload/' . $customView;
 		}else{
-			$view = '@frontend/views/upload/main-file';
+			if($multiple){
+				$view = '@frontend/views/upload/main-multiple';
+			}else{
+				$view = '@frontend/views/upload/main-file';
+			}
 		}
+		
 		
 		
 		$max = 0;
@@ -124,7 +131,7 @@ class UploadFile
             }",
             'progressall'=> "function (e, data) {
 				
-                var progress = parseInt(data.loaded / data.total * 100, 10);
+                var progress = parseInt(data.loaded / data.total * 99, 10);
                 $('#progress_".$attr."_".$model->id ." .progress-bar').css(
                     'width',
                     progress + '%'
@@ -154,8 +161,11 @@ class UploadFile
 		
 		
 		
+					
 		$ext = $upFile->extension;
 		$fileName = $attr . '_' . $uid . '.' . $ext;
+		
+		
 		
 		if(!$path){
 			
@@ -181,6 +191,7 @@ class UploadFile
 		}
 		
 		//$model->save();
+		
 		
 		if($model->save()){
 			

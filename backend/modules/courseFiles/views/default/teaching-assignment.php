@@ -121,9 +121,11 @@ $this->params['breadcrumbs'][] = $this->title;
                             <td></td>
                             <td>
 							
-			
 							
-							<a href="' . Url::to(['default/teaching-assignment-coordinator', 'id' => $coor->id]) . '" class="btn btn-primary btn-sm" ><span class="glyphicon glyphicon-eye-open"></span> View</a></td>';
+							
+							<a href="' . Url::to(['default/teaching-assignment-coordinator', 'id' => $coor->id]) . '" class="btn btn-primary btn-sm" ><span class="glyphicon glyphicon-eye-open"></span> View</a>
+							
+							</td>';
                                     
                             $i++;
                        }

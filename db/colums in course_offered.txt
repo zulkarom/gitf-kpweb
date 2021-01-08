@@ -1,1 +1,4 @@
 ALTER TABLE `tld_course_offered` ADD `total_students` INT NOT NULL AFTER `coordinator`, ADD `max_lec` INT NOT NULL AFTER `total_students`, ADD `prefix_lec` VARCHAR(10) NOT NULL AFTER `max_lec`, ADD `max_tut` INT NOT NULL AFTER `prefix_lec`, ADD `prefix_tut` VARCHAR(10) NOT NULL AFTER `max_tut`;
+
+
+ALTER TABLE `tld_course_offered` ADD `course_version` INT NOT NULL AFTER `prefix_tut`, ADD `material_version` INT NOT NULL AFTER `course_version`;
