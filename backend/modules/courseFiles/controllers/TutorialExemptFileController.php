@@ -13,6 +13,8 @@ use common\models\UploadFile;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 
+use backend\modules\courseFiles\models\AddFileForm;
+use common\models\Model;
 /**
  * Default controller for the `course-files` module
  */
@@ -41,9 +43,62 @@ class TutorialExemptFileController extends Controller
     public function actionPage($id)
     {
         $model = $this->findTutorial($id);
-        
+        $addFile = new AddFileForm;
+        $files = $model->tutorialExemptFiles;
+
+        if ($model->load(Yii::$app->request->post())) {
+            
+            $model->updated_at = new Expression('NOW()');    
+            
+            Model::loadMultiple($files, Yii::$app->request->post());
+            //print_r($files);die();
+            
+            $valid = $model->validate();
+            $valid = Model::validateMultiple($files) && $valid;
+            
+            if($valid){
+                if($model->save()){
+                    $flag = true;
+                    foreach ($files as $item) {
+                        //Yii::$app->session->addFlash('success', $item->file_name);
+                        if(!$item->save()){
+                            $item->flashError();
+                            $flag = false;
+                            break;
+                            
+                        }
+                    }
+                    if($flag){
+                        Yii::$app->session->addFlash('success', "Data Updated");
+                        return $this->redirect(['page', 'id' => $model->id]);
+                    }
+                    
+                }
+            }
+
+        }
+
+        if ($addFile->load(Yii::$app->request->post())) {
+            $count = $addFile->file_number;
+            if($count>0){
+                for($i=1;$i<=$count;$i++){
+                    $file = new TutorialExemptFile;
+                    $file->scenario = 'add_exempt';
+                    $file->tutorial_id = $id;
+                    $file->updated_at = new Expression('NOW()');
+                    if(!$file->save()){
+                        $file->flashError();
+                    }
+                }               
+            }
+            Yii::$app->session->addFlash('success', 'File Slots Added');
+            return $this->redirect(['page', 'id' => $id]);
+        }
+
         return $this->render('/tutorial-test/class-exempt-upload', [
             'model' => $model,
+            'files' => $files,
+            'addFile' => $addFile
         ]);
     }
     
@@ -74,7 +129,13 @@ class TutorialExemptFileController extends Controller
     
     public function actionDeleteRow($id){
         $model = $this->findTutorialExempt($id);
+        $file = Yii::getAlias('@upload/' . $model->path_file);
+
         if($model->delete()){
+            if (is_file($file)) {
+                unlink($file);
+                
+            }
             return $this->redirect(['page', 'id' => $model->tutorial_id]);
         }
     }
@@ -83,12 +144,12 @@ class TutorialExemptFileController extends Controller
         $attr = $this->clean($attr);
         $model = $this->findTutorialExempt($id);
         $model->file_controller = 'tutorial-exempt-file';
-        $path = 'course-files/'.$model->tutorial->lecture->courseOffered->semester_id.'/'.$model->tutorial->lecture->courseOffered->course->course_code.'/'.$model->tutorial->tutorial_name.'/16-class-cancellation';
+        $path = 'course-files/'.$model->tutorial->lecture->courseOffered->semester_id.'/'.$model->tutorial->lecture->courseOffered->course->course_code.'/'.$model->tutorial->tutorial_name.'/16-class-exemption';
         return UploadFile::upload($model, $attr, 'updated_at', $path);
 
     }
     
-    public function actionDownload($attr, $id){
+    public function actionDownloadFile($attr, $id){
         $attr = $this->clean($attr);
         $model = $this->findTutorialExempt($id);
         $filename = 'Class Exemption ' . $id;

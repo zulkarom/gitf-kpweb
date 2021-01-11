@@ -9,15 +9,15 @@ use common\models\UploadFile;
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
 $course = $model->course;
 $title = 'Summative Assessment';
-$this->title = $course->course_code . ' ' . $course->course_name;
+$this->title = 'Coordinator';
 $this->params['breadcrumbs'][] = ['label' => 'Course Files', 'url' => ['/course-files/default/teaching-assignment-coordinator', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = $title;
 
 ?>
 
-<h4>
-<?=$title?>
-</h4>
+<h4><?=$course->course_code . ' ' . $course->course_name?></h4>
+<h4><?=$model->semester->longFormat()?></h4><br/>
+<h4><?=$title?></h4>
 
 <div class="form-group"><?php $form = ActiveForm::begin(); 
 	

@@ -152,7 +152,7 @@ class CoordinatorSummativeAssessmentFileController extends Controller
 
     }
     
-    public function actionDownload($attr, $id){
+    public function actionDownloadFile($attr, $id){
         $attr = $this->clean($attr);
         $model = $this->findCoordinatorSummativeAssessment($id);
         $filename = 'Summative Assessment ' . $id;

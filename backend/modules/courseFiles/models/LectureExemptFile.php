@@ -31,16 +31,17 @@ class LectureExemptFile extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-
+            [['matrix_no'], 'required', 'on' => 'saveall'],
             //path upload///
             [['path_file'], 'required', 'on' => 'path_upload'],
             [['path_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
-			
-			[['lecture_id', 'updated_at'], 'required', 'on' => 'add_exempt'],
+            
+            [['lecture_id', 'updated_at'], 'required', 'on' => 'add_exempt'],
+            [['date'], 'safe'],
 
             [['lecture_id'], 'required'],
             [['lecture_id'], 'integer'],
-            [['path_file'], 'string'],
+            [['path_file', 'matrix_no'], 'string'],
         ];
     }
 
@@ -55,8 +56,8 @@ class LectureExemptFile extends \yii\db\ActiveRecord
             'path_file' => 'Path File',
         ];
     }
-	
-	public function flashError(){
+    
+    public function flashError(){
         if($this->getErrors()){
             foreach($this->getErrors() as $error){
                 if($error){

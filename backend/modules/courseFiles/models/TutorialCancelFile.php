@@ -31,7 +31,7 @@ class TutorialCancelFile extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-
+            [['file_name'], 'required', 'on' => 'saveall'],
             //path upload///
             [['path_file'], 'required', 'on' => 'path_upload'],
             [['path_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
@@ -40,7 +40,7 @@ class TutorialCancelFile extends \yii\db\ActiveRecord
 
             [['tutorial_id'], 'required'],
             [['tutorial_id'], 'integer'],
-            [['path_file'], 'string'],
+            [['path_file', 'file_name'], 'string'],
         ];
     }
 
