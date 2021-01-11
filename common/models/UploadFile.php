@@ -18,12 +18,12 @@ class UploadFile
 		}
 		
 		if($customView){
-			$view = '@backend/views/upload/' . $customView;
+			$view = '@backend/views/upload-tmpl/' . $customView;
 		}else{
 			if($multiple){
-				$view = '@backend/views/upload/main-multiple';
+				$view = '@backend/views/upload-tmpl/main-multiple';
 			}else{
-				$view = '@backend/views/upload/main-file';
+				$view = '@backend/views/upload-tmpl/main-file';
 			}
 		}
 		
