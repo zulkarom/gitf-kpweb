@@ -41,7 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	<tr>
     <td>1. </td>
 	<td>Student List</td>
-<td><a href="<?=Url::to(['lecture/page','id' => $lecture->id])?>" class="btn btn-warning btn-sm" ><span class="fa fa-pencil"></span> Update</a></td>
+<td><a href="<?=Url::to(['lecture-student-list','id' => $lecture->id])?>" class="btn btn-warning btn-sm" ><span class="fa fa-pencil"></span> Update</a></td>
         
         </tr>
 		

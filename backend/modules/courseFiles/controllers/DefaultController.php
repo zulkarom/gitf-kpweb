@@ -136,5 +136,13 @@ class DefaultController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+	
+	 public function actionLectureStudentList($id){
+		$lecture = $this->findLecture($id);
+        return $this->render('lecture-student-list', [
+			'lecture' => $lecture,
+        ]);
+		
+    }
 
 }
