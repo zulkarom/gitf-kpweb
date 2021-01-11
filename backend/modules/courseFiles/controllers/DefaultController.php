@@ -12,6 +12,7 @@ use backend\modules\courseFiles\models\Checklist;
 use backend\modules\courseFiles\models\LectureCancel;
 use backend\modules\teachingLoad\models\CourseOffered;
 use backend\modules\teachingLoad\models\StaffInvolved;
+use backend\modules\teachingLoad\models\CourseLecture;
 use backend\modules\courseFiles\models\CoordinatorRubricsFile;
 
 /**
@@ -79,10 +80,12 @@ class DefaultController extends Controller
     public function actionTeachingAssignmentLecture($id)
     {
         $model = new Checklist();
-        $lecture_id = $id;
+		
+        $lecture = $this->findLecture($id);
+		
         return $this->render('teaching-assignment-lecture', [
             'model' => $model,
-            'lecture_id' => $lecture_id,
+            'lecture' => $lecture,
         ]);
     }
 
@@ -119,6 +122,15 @@ class DefaultController extends Controller
 	protected function findOffered($id)
     {
         if (($model = CourseOffered::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+	
+	protected function findLecture($id)
+    {
+        if (($model = CourseLecture::findOne($id)) !== null) {
             return $model;
         }
 

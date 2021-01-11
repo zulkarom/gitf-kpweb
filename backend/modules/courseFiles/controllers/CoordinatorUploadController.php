@@ -4,23 +4,19 @@ namespace backend\modules\courseFiles\controllers;
 
 use Yii;
 use yii\web\Controller;
-use backend\modules\courseFiles\models\CoordinatorRubricsFile;
+use backend\modules\courseFiles\models\CoordinatorAnswerScriptFile;
 use backend\modules\teachingLoad\models\CourseOffered;
 use yii\filters\AccessControl;
 use yii\db\Expression;
 use yii\web\NotFoundHttpException;
 use common\models\UploadFile;
-
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
-
-use backend\modules\courseFiles\models\AddFileForm;
-use common\models\Model;
 
 /**
  * Default controller for the `course-files` module
  */
-class CoordinatorRubricsFileController extends Controller
+class CoordinatorUploadController extends Controller
 {
     /**
      * Renders the index view for the module
@@ -45,64 +41,9 @@ class CoordinatorRubricsFileController extends Controller
     public function actionPage($id)
     {
         $model = $this->findOffered($id);
-		$addFile = new AddFileForm;
-		$files = $model->coordinatorRubricsFiles;
-		
-		
-		if ($model->load(Yii::$app->request->post())) {
-			
-			$model->updated_at = new Expression('NOW()');    
-			
-			Model::loadMultiple($files, Yii::$app->request->post());
-			//print_r($files);die();
-			
-			$valid = $model->validate();
-            $valid = Model::validateMultiple($files) && $valid;
-			
-			if($valid){
-				if($model->save()){
-					$flag = true;
-					foreach ($files as $item) {
-						//Yii::$app->session->addFlash('success', $item->file_name);
-						if(!$item->save()){
-							$item->flashError();
-							$flag = false;
-							break;
-							
-						}
-					}
-					if($flag){
-						Yii::$app->session->addFlash('success', "Data Updated");
-						return $this->redirect(['page', 'id' => $model->id]);
-					}
-					
-				}
-			}
-
-        }
-		
-		
-		if ($addFile->load(Yii::$app->request->post())) {
-			$count = $addFile->file_number;
-			if($count>0){
-				for($i=1;$i<=$count;$i++){
-					$file = new CoordinatorRubricsFile;
-					$file->scenario = 'add_rubrics';
-					$file->offered_id = $id;
-					$file->updated_at = new Expression('NOW()');
-					if(!$file->save()){
-						$file->flashError();
-					}
-				}				
-			}
-			Yii::$app->session->addFlash('success', 'File Slots Added');
-			return $this->redirect(['page', 'id' => $id]);
-        }
         
-        return $this->render('/coordinator/class-rubrics-upload', [
+        return $this->render('/coordinator/class-answer-script-upload', [
             'model' => $model,
-			'files' => $files,
-			'addFile' => $addFile
         ]);
     }
     
@@ -118,8 +59,8 @@ class CoordinatorRubricsFileController extends Controller
 
     public function actionAdd($id){
         
-        $model = new CoordinatorRubricsFile;
-        $model->scenario = 'add_rubrics';
+        $model = new CoordinatorAnswerScriptFile;
+        $model->scenario = 'add_answer_script';
         
         $model->offered_id = $id;
         $model->updated_at = new Expression('NOW()');
@@ -132,65 +73,62 @@ class CoordinatorRubricsFileController extends Controller
     }
     
     public function actionDeleteRow($id){
-        $model = $this->findCoordinatorRubrics($id);
-        
-        $file = Yii::getAlias('@upload/' . $model->path_file);
-            
+        $model = $this->findCoordinatorAnswerScript($id);
         if($model->delete()){
-			if (is_file($file)) {
-                unlink($file);
-                
-            }
             return $this->redirect(['page', 'id' => $model->offered_id]);
         }
     }
     
     public function actionUploadFile($attr, $id){
         $attr = $this->clean($attr);
-        $model = $this->findCoordinatorRubrics($id);
-        $model->file_controller = 'coordinator-rubrics-file';
-        $path = 'course-files/'.$model->offered->semester_id.'/'.$model->offered->course->course_code.'/'.$model->offered->id.'/4-class-continuous-assessment-rubrics';
+        $model = $this->findOffered($id);
+        $model->file_controller = 'coordinator-upload';
+        $path = 'course-files/'.$model->semester_id.'/'.$model->course->course_code.'/'.$model->id.'/15-class-student-final-exam-answer-script';
         return UploadFile::upload($model, $attr, 'updated_at', $path);
 
     }
     
-    public function actionDownload($attr, $id){
+    public function actionDownloadFile($attr, $id){
         $attr = $this->clean($attr);
-        $model = $this->findCoordinatorRubrics($id);
-        $filename = 'Continuous Assessment Rubrics ' . $id;
+        $model = $this->findOffered($id);
+        $filename = $attr;
         
         
         
         UploadFile::download($model, $attr, $filename);
     }
 
-    protected function findCoordinatorRubrics($id)
+    protected function findCoordinatorAnswerScript($id)
     {
-        if (($model = CoordinatorRubricsFile::findOne($id)) !== null) {
+        if (($model = CoordinatorAnswerScriptFile::findOne($id)) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
     
-    public function actionDelete($attr, $id)
+    public function actionDeleteFile($attr, $id)
     {
                     
         $attr = $this->clean($attr);
-        $model = $this->findCoordinatorRubrics($id);
+        $model = $this->findOffered($id);
 
         $attr_db = $attr . '_file';
         
         $file = Yii::getAlias('@upload/' . $model->{$attr_db});
+		$model->scenario = $attr . '_delete';
+        $model->{$attr_db} = '';
+        $model->updated_at = new Expression('NOW()');
 
-        if($model->delete()){
+
+        if($model->save()){
             if (is_file($file)) {
                 unlink($file);
                 
             }
             
             return Json::encode([
-                        'good' => 2,
+                        'good' => 1,
                     ]);
             
         }else{

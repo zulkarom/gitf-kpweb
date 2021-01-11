@@ -31,16 +31,16 @@ class CoordinatorAssessmentMaterialFile extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-
+			[['file_name'], 'required', 'on' => 'saveall'],
             //path upload///
             [['path_file'], 'required', 'on' => 'path_upload'],
-            [['path_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
+            [['path_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 2000000],
 			
 			[['offered_id', 'updated_at'], 'required', 'on' => 'add_assessment_material'],
 
             [['offered_id'], 'required'],
             [['offered_id'], 'integer'],
-            [['path_file'], 'string'],
+            [['path_file', 'file_name'], 'string'],
         ];
     }
 

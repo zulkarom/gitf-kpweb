@@ -45,6 +45,18 @@ class CourseOffered extends \yii\db\ActiveRecord
     public $sem;
     public $staff_id;
     public $offered_id;
+	public $file_controller;
+	
+	public $scriptbest1_instance;
+	public $scriptbest2_instance;
+	public $scriptbest3_instance;
+	public $scriptmod1_instance;
+	public $scriptmod2_instance;
+	public $scriptmod3_instance;
+	public $scriptlow1_instance;
+	public $scriptlow2_instance;
+	public $scriptlow3_instance;
+
     /**
      * {@inheritdoc}
      */
@@ -64,8 +76,52 @@ class CourseOffered extends \yii\db\ActiveRecord
 			[['course_version', 'material_version'], 'required', 'on' => 'coor'],
 			
             [['semester_id', 'course_id', 'total_students', 'max_lec', 'max_tut', 'created_by', 'coordinator', 'course_version', 'material_version'], 'integer'],
+			
             [['created_at', 'courses'], 'safe'],
+			
             [['prefix_lec', 'prefix_tut'], 'string', 'max' => 225],
+			
+			 [['course_cqi'], 'string'],
+			
+			
+			[['scriptbest1_file', 'scriptbest2_file', 'scriptbest3_file', 'scriptmod1_file', 'scriptmod2_file', 'scriptmod3_file', 'scriptlow1_file', 'scriptlow2_file', 'scriptlow3_file'], 'string'],
+			
+			[['scriptbest1_file'], 'required', 'on' => 'scriptbest1_upload'],
+            [['scriptbest1_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
+            [['updated_at'], 'required', 'on' => 'scriptbest1_delete'],
+			
+			[['scriptbest2_file'], 'required', 'on' => 'scriptbest2_upload'],
+            [['scriptbest2_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
+            [['updated_at'], 'required', 'on' => 'scriptbest2_delete'],
+			
+			[['scriptbest3_file'], 'required', 'on' => 'scriptbest3_upload'],
+            [['scriptbest3_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
+            [['updated_at'], 'required', 'on' => 'scriptbest3_delete'],
+			
+			[['scriptmod1_file'], 'required', 'on' => 'scriptmod1_upload'],
+            [['scriptmod1_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
+            [['updated_at'], 'required', 'on' => 'scriptmod1_delete'],
+			
+			[['scriptmod2_file'], 'required', 'on' => 'scriptmod2_upload'],
+            [['scriptmod2_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
+            [['updated_at'], 'required', 'on' => 'scriptmod2_delete'],
+			
+			[['scriptmod3_file'], 'required', 'on' => 'scriptmod3_upload'],
+            [['scriptmod3_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
+            [['updated_at'], 'required', 'on' => 'scriptmod3_delete'],
+			
+			[['scriptlow1_file'], 'required', 'on' => 'scriptlow1_upload'],
+            [['scriptlow1_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
+            [['updated_at'], 'required', 'on' => 'scriptlow1_delete'],
+			
+			[['scriptlow2_file'], 'required', 'on' => 'scriptlow2_upload'],
+            [['scriptlow2_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
+            [['updated_at'], 'required', 'on' => 'scriptlow2_delete'],
+			
+			[['scriptlow3_file'], 'required', 'on' => 'scriptlow3_upload'],
+            [['scriptlow3_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
+            [['updated_at'], 'required', 'on' => 'scriptlow3_delete'],
+			
         ];
     }
 
@@ -86,6 +142,18 @@ class CourseOffered extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'created_by' => 'Created By',
             'coordinator' => 'Coordinator',
+			'material_version' => 'Material Group',
+			'course_version' => 'Course Version',
+			
+			'scriptbest1_file' => 'Scriptbest1 File',
+            'scriptbest2_file' => 'Scriptbest2 File',
+            'scriptbest3_file' => 'Scriptbest3 File',
+            'scriptmod1_file' => 'Scriptmod1 File',
+            'scriptmod2_file' => 'Scriptmod2 File',
+            'scriptmod3_file' => 'Scriptmod3 File',
+            'scriptlow1_file' => 'Scriptlow1 File',
+            'scriptlow2_file' => 'Scriptlow2 File',
+            'scriptlow3_file' => 'Scriptlow3 File',
         ];
     }
 

@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="material-view">
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Update Teaching Materials', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -68,7 +68,17 @@ $this->params['breadcrumbs'][] = $this->title;
 			<?=$item->item_name?>
 			
 			</td>
-				<td><?=Html::a('<span class="glyphicon glyphicon-download-alt"></span> Download', ['download', 'attr'=> 'item', 'id' => $item->id] , ['class' => 'btn btn-sm btn-warning', 'target' => '_blank'])?></td>
+				<td><?php 
+				
+				if($item->item_file){
+					echo Html::a('<span class="glyphicon glyphicon-download-alt"></span> Download', ['download', 'attr'=> 'item', 'id' => $item->id] , ['class' => 'btn btn-sm btn-warning', 'target' => '_blank']);
+				}else{
+					echo 'No File';
+				}
+				
+				
+				
+				?></td>
 			</tr>
 			<?php
 		$i++;

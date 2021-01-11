@@ -58,9 +58,7 @@ class MaterialSearch extends Material
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'created_by' => $this->created_by,
-            'created_at' => $this->created_at,
+            'course_id' => $this->course_id,
         ]);
 
         $query->andFilterWhere(['like', 'material_name', $this->material_name]);

@@ -53,6 +53,36 @@ class Checklist extends \yii\db\ActiveRecord
             'staff_upload' => 'Staff Upload',
         ];
     }
+	
+	public function getAssessMaterials(){
+        return Checklist::find()
+        ->where(['category' => 'assess-materials'])
+        ->all();
+    }
+	
+	public function getAssessScripts(){
+        return Checklist::find()
+        ->where(['category' => 'assess-scripts'])
+        ->all();
+    }
+	
+	public function getAssessResults(){
+        return Checklist::find()
+        ->where(['category' => 'assess-results'])
+        ->all();
+    }
+	
+	public function getAssessAnalysis(){
+        return Checklist::find()
+        ->where(['category' => 'assess-analysis'])
+        ->all();
+    }
+	
+	public function getCqi(){
+        return Checklist::find()
+        ->where(['category' => 'cqi'])
+        ->all();
+    }
 
     public function getItemPlan(){
         return Checklist::find()

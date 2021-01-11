@@ -1,27 +1,77 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
+$offer = $lecture->courseOffered;
+$course = $offer->course;
 
-$this->title = 'Course Files';
+$this->title = 'Lecturer ['.$lecture->lec_name.']';
 $this->params['breadcrumbs'][] = ['label' => 'Teaching Assignment', 'url' => ['/course-files/default/teaching-assignment']];
 $this->params['breadcrumbs'][] = $this->title;
+
+
 ?>
 
 
-<?php $form = ActiveForm::begin(); ?>
+<h4><?=$course->course_code . ' ' . $course->course_name?></h4>
+<h4><?=$offer->semester->longFormat()?></h4>
+<br />
 
 
+<h4>Student / Attendance / Result Data</h4>
 <div class="box">
-<div class="box-header">
-	<div class="box-title"><b>Peringkat Pelaksanaan/ Implementation Level
-    <br/><div class="box-title">(DO)</b></div>
+
+<div class="box-body">
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th style="width:5%">No.</th>
+        <th style="width:85%">Item</th>
+        <th>Action</th>
+      
+        
+      </tr>
+    </thead>
+	
+	
+	<tr>
+    <td>1. </td>
+	<td>Student List</td>
+<td><a href="<?=Url::to(['lecture/page','id' => $lecture->id])?>" class="btn btn-warning btn-sm" ><span class="fa fa-pencil"></span> Update</a></td>
+        
+        </tr>
+		
+	<tr>
+    <td>2. </td>
+	<td>Student Attendance</td>
+	<td><a href="<?=Url::to(['lecture/page','id' => $lecture->id])?>" class="btn btn-warning btn-sm" ><span class="fa fa-pencil"></span> Update</a></td>
+        
+        </tr>
+	
+	<tr>
+    <td>3. </td>
+	<td>Student Assessment Result</td>
+
+	<td>
+	<a href="<?=Url::to(['lecture/page','id' => $lecture->id])?>" class="btn btn-warning btn-sm" ><span class="fa fa-pencil"></span> Update</a>
+	</td>
+        
+        </tr>
+	
+   
+  </table>
 </div>
 </div>
+
+
+
+<h4>Upload Documents</h4>
+<div class="box">
+
 <div class="box-body">
 
   <table class="table">
@@ -33,7 +83,6 @@ $this->params['breadcrumbs'][] = $this->title;
       </tr>
     
         
-        <tr>
         <?php 
     
         if($model->itemDo){
@@ -41,20 +90,18 @@ $this->params['breadcrumbs'][] = $this->title;
           foreach($model->itemDo as $item){
             if($item->lec_upload == 1){
               echo '<tr><td>'.$i.'</td>
-                <td>'.$item->item.'<i><br/>'.$item->item_bi.'</i></td>
-                <td><a href="' . Url::to(['lecture-'.$item->upload_url.'/page','id' => $lecture_id]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> Upload</a></td>';
+                <td>'.$item->item_bi.'</td>
+                <td><a href="' . Url::to(['lecture-'.$item->upload_url.'/page','id' => $lecture->id]) . '" class="btn btn-warning btn-sm" ><span class="fa fa-upload"></span> Upload</a></td>';
        
                 $i++;
             }
           }
         }
               ?>
-      </tr>
     </thead>
    
   </table>
 </div>
 </div>
 
-<?php ActiveForm::end(); ?>
 

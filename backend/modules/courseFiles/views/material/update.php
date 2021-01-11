@@ -74,7 +74,7 @@ $this->params['breadcrumbs'][] = 'Update';
 			<tr>
 			<td><?=$i?>. </td>
 			<td>
-			<?=Html::activeHiddenInput($item, "[{$i}]id");?>
+			<?=Html::activeHiddenInput($item, "[{$x}]id");?>
 			<?=Html::activeHiddenInput($model, "id");?>
 			<?= $form->field($item, "[{$x}]item_name")->label(false) ?>
 			

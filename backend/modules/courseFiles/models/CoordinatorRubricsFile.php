@@ -31,16 +31,20 @@ class CoordinatorRubricsFile extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-
-            //path upload///
-            [['path_file'], 'required', 'on' => 'path_upload'],
-            [['path_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
+			[['offered_id'], 'required'],
+			
+			[['file_name'], 'required', 'on' => 'saveall'],
 			
 			[['offered_id', 'updated_at'], 'required', 'on' => 'add_rubrics'],
 
-            [['offered_id'], 'required'],
+            
             [['offered_id'], 'integer'],
-            [['path_file'], 'string'],
+			
+            [['path_file', 'file_name'], 'string'],
+			
+			[['path_file'], 'required', 'on' => 'path_upload'],
+			
+			[['path_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 2000000],
         ];
     }
 

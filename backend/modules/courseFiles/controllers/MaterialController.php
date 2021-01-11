@@ -50,6 +50,7 @@ class MaterialController extends Controller
     public function actionIndex($course)
     {
         $searchModel = new MaterialSearch();
+		$searchModel->course_id = $course;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 		$course = $this->findCourse($course);
 		

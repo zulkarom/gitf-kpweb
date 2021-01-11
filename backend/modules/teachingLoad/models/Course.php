@@ -3,6 +3,7 @@
 namespace backend\modules\teachingLoad\models;
 
 use Yii;
+use backend\modules\courseFiles\models\Material;
 
 /**
  * This is the model class for table "tld_out_course".
@@ -196,5 +197,8 @@ class Course extends \backend\modules\esiap\models\Course
 			return $null;
 		}
 		
+	}
+	public function getMaterials(){
+		return $this->hasMany(Material::className(), ['course_id' => 'id']);
 	}
 }

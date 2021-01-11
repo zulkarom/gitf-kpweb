@@ -25,17 +25,16 @@ $this->params['breadcrumbs'][] = $this->title;
 							
 <a href="<?=Url::to(['material/index', 'course' => $course->id])?>" class="btn btn-info" ><span class="glyphicon glyphicon-book"></span> Teaching Materials</a></div>
 
+
+<h4>Course Configuration</h4>
 <div class="box">
-<div class="box-header">
-  <div class="box-title">Course Configuration</div>
-</div>
 
 
 <div class="box-body">
 <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($offer, 'course_version')->dropDownList(ArrayHelper::map($offer->course->versions, 'id', 'version_name')) ?>
-	<?= $form->field($offer, 'material_version')->textInput() ?>
+	<?= $form->field($offer, 'material_version')->dropDownList(ArrayHelper::map($offer->course->materials, 'id', 'material_name')) ?>
 <div class="form-group">
         
 <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
@@ -47,14 +46,89 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 </div>
 
-
-
+<h4>Assessment Materials & Rubrics</h4>
 <div class="box">
-<div class="box-header">
-  <div class="box-title"><b>Peringkat Perancangan/Planning Level 
-    <br/><div class="box-title">(PLAN)</b></div>
+
+<div class="box-body">
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th style="width:5%">No.</th>
+        <th style="width:85%">Item</th>
+        <th>Action</th>
+      </tr>
+	  
+	  </thead>
+    
+      <?php 
+    
+        if($model->assessMaterials){
+        $i = 1;
+          
+            foreach($model->assessMaterials as $item){
+              if($item->coor_upload == 1){
+                echo '<tr><td>'.$i.'. </td>
+                  <td>'.$item->item_bi.'</td>
+                  <td><a href="' . Url::to([$item->upload_url.'/page','id' => $offered_id]) . '" class="btn btn-warning btn-sm" ><span class="fa fa-upload"></span> Upload</a></td>';
+         
+                  $i++;
+              }
+            
+            }
+          
+        }
+              ?>
+   
+   
+  </table>
 </div>
 </div>
+
+<h4>Assessment Scripts</h4>
+<div class="box">
+
+<div class="box-body">
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th style="width:5%">No.</th>
+        <th style="width:85%">Item</th>
+        <th>Action</th>
+      </tr>
+	  </thead>
+	  
+	  <?php 
+    
+        $i = 1;
+          
+            foreach($model->assessScripts as $item){
+              if($item->coor_upload == 1){
+                echo '<tr><td>'.$i.'. </td>
+                  <td>'.$item->item_bi.'</td>
+                  <td><a href="' . Url::to([$item->upload_url.'/page','id' => $offered_id]) . '" class="btn btn-warning btn-sm" ><span class="fa fa-upload"></span> Upload</a></td>';
+         
+                  $i++;
+              }
+            
+            }
+          
+              ?>
+    
+      
+   
+   
+  </table>
+</div>
+</div>
+
+
+
+
+<h4>Continuous Quality Improvement (CQI)</h4>
+<div class="box">
+
 
 <div class="box-body">
 
@@ -69,154 +143,10 @@ $this->params['breadcrumbs'][] = $this->title;
         
         <tr>
         <?php 
-    
-        if($model->itemPlan){
-        $i = 1;
-          
-            foreach($model->itemPlan as $item){
-              if($item->coor_upload == 1){
                 echo '<tr><td>'.$i.'</td>
-                  <td>'.$item->item.'<i><br/>'.$item->item_bi.'</i></td>
-                  <td><a href="' . Url::to([$item->upload_url.'/page','id' => $offered_id]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> Upload</a></td>';
+                  <td>Plan for Course Improvement (if any)</td>
+                  <td><a href="' . Url::to(['coordinator/course-cqi','id' => $offered_id]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-pencil"></span> Update</a></td>';
          
-                  $i++;
-              }
-            
-            }
-          
-        }
-              ?>
-      </tr>
-    </thead>
-   
-  </table>
-</div>
-</div>
-
-<div class="box">
-
-<div class="box-header">
-  <div class="box-title"><b>Peringkat Pelaksanaan/ Implementation Level
-    <br/><div class="box-title">(DO)</b></div>
-</div>
-</div>
-<div class="box-body">
-
-  <table class="table">
-    <thead>
-      <tr>
-        <th style="width:5%">No.</th>
-        <th style="width:85%">Item</th>
-        <th></th>
-      </tr>
-    
-        
-        <tr>
-        <?php 
-    
-        if($model->itemDo){
-        $i = 1;
-          
-            foreach($model->itemDo as $item){
-              if($item->coor_upload == 1){
-                echo '<tr><td>'.$i.'</td>
-                  <td>'.$item->item.'<i><br/>'.$item->item_bi.'</i></td>
-                  <td><a href="' . Url::to([$item->upload_url.'/page','id' => $offered_id]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> Upload</a></td>';
-         
-                  $i++;
-              }
-            
-            }
-          
-        }
-              ?>
-      </tr>
-    </thead>
-   
-  </table>
-</div>
-</div>
-
-<div class="box">
-<div class="box-header">
-  <div class="box-title"><b>Peringkat Semak/ Evaluation Level
-    <br/><div class="box-title">(CHECK)</b></div>
-</div>
-</div>
-<div class="box-body">
-
-  <table class="table">
-    <thead>
-      <tr>
-        <th style="width:5%">No.</th>
-        <th style="width:85%">Item</th>
-        <th></th>
-      </tr>
-    
-        
-        <tr>
-        <?php 
-    
-        if($model->itemCheck){
-        $i = 1;
-          
-            foreach($model->itemCheck as $item){
-              if($item->coor_upload == 1){
-                echo '<tr><td>'.$i.'</td>
-                  <td>'.$item->item.'<i><br/>'.$item->item_bi.'</i></td>
-                  <td><a href="' . Url::to([$item->upload_url.'/page','id' => $offered_id]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> Upload</a></td>';
-         
-                  $i++;
-              }
-            
-            }
-          
-        }
-              ?>
-      </tr>
-    </thead>
-   
-  </table>
-</div>
-</div>
-
-<div class="box">
-
-<div class="box-header">
-  <div class="box-title"><b>Peringkat Tindakan/ Review Level
-    <br/><div class="box-title">(ACT)</b></div>
-</div>
-</div>
-
-<div class="box-body">
-
-  <table class="table">
-    <thead>
-      <tr>
-        <th style="width:5%">No.</th>
-        <th style="width:85%">Item</th>
-        <th>Action</th>
-      </tr>
-    
-        
-        <tr>
-        <?php 
-    
-        if($model->itemAct){
-        $i = 1;
-          
-            foreach($model->itemAct as $item){
-              if($item->coor_upload == 1){
-                echo '<tr><td>'.$i.'</td>
-                  <td>'.$item->item.'<i><br/>'.$item->item_bi.'</i></td>
-                  <td><a href="' . Url::to([$item->upload_url.'/page','id' => $offered_id]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-th-list"></span> Upload</a></td>';
-         
-                  $i++;
-              }
-            
-            }
-          
-        }
               ?>
       </tr>
     </thead>

@@ -39,9 +39,11 @@ class MaterialItem extends \yii\db\ActiveRecord
 			
             [['material_id', 'item_category'], 'integer'],
             [['item_file'], 'string'],
+			
             [['item_name'], 'string', 'max' => 200],
 			
 			[['item_file'], 'required', 'on' => 'item_upload'],
+			
             [['item_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 2000000],
 			
 			
