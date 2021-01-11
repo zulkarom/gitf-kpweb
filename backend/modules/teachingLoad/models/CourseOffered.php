@@ -3,7 +3,6 @@
 namespace backend\modules\teachingLoad\models;
 
 use Yii;
-use backend\modules\staff\models\Staff;
 use backend\models\Semester;
 use backend\modules\courseFiles\models\CoordinatorRubricsFile;
 use backend\modules\courseFiles\models\CoordinatorMaterialFile;
