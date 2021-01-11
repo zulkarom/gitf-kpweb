@@ -246,7 +246,7 @@ class MaterialController extends Controller
 
     }
     
-    public function actionDownload($attr, $id){
+    public function actionDownloadFile($attr, $id){
         $attr = $this->clean($attr);
         $model = $this->findMaterialItem($id);
         $filename = $model->item_name;

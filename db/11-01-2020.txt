@@ -1,0 +1,80 @@
+CREATE TABLE `cf_material` (
+  `id` int(11) NOT NULL,
+  `material_name` varchar(200) NOT NULL,
+  `course_id` int(11) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `created_by` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cf_material_item`
+--
+
+CREATE TABLE `cf_material_item` (
+  `id` int(11) NOT NULL,
+  `item_category` int(11) NOT NULL,
+  `material_id` int(11) NOT NULL,
+  `item_name` varchar(200) NOT NULL,
+  `item_file` text NOT NULL,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `cf_material`
+--
+ALTER TABLE `cf_material`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `cf_material_item`
+--
+ALTER TABLE `cf_material_item`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `cf_material`
+--
+ALTER TABLE `cf_material`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `cf_material_item`
+--
+ALTER TABLE `cf_material_item`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+
+ALTER TABLE `cf_coor_rubrics_class` ADD `file_name` VARCHAR(200) NOT NULL AFTER `path_file`;
+
+ALTER TABLE `tld_course_offered` ADD `updated_at` DATETIME NULL DEFAULT NULL AFTER `course_cqi`;
+
+ALTER TABLE `cf_coor_assess_material_class` ADD `file_name` VARCHAR(200) NOT NULL AFTER `offered_id`;
+
+ALTER TABLE `cf_coor_sum_assess_class` ADD `file_name` VARCHAR(200) NOT NULL AFTER `path_file`;
+
+ALTER TABLE `cf_coor_assess_script_class` ADD `file_name` VARCHAR(200) NOT NULL AFTER `offered_id`;
+
+ALTER TABLE `tld_course_offered` ADD `script_best_1` TEXT NOT NULL AFTER `material_version`, ADD `script_best_2` TEXT NOT NULL AFTER `script_best_1`, ADD `script_best_3` TEXT NOT NULL AFTER `script_best_2`, ADD `script_moderate_1` TEXT NOT NULL AFTER `script_best_3`, ADD `script_moderate_2` TEXT NOT NULL AFTER `script_moderate_1`, ADD `script_moderate_3` TEXT NOT NULL AFTER `script_moderate_2`, ADD `script_lowest_1` TEXT NOT NULL AFTER `script_moderate_3`, ADD `script_lowest_2` TEXT NOT NULL AFTER `script_lowest_1`, ADD `script_lowest_3` TEXT NOT NULL AFTER `script_lowest_2`;
+
+ALTER TABLE `tld_course_offered` CHANGE `script_best_1` `scriptbest1_file` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, CHANGE `script_best_2` `scriptbest2_file` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, CHANGE `script_best_3` `scriptbest3_file` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, CHANGE `script_moderate_1` `scriptmod1_file` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, CHANGE `script_moderate_2` `scriptmod2_file` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, CHANGE `script_moderate_3` `scriptmod3_file` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, CHANGE `script_lowest_1` `scriptlow1_file` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, CHANGE `script_lowest_2` `scriptlow2_file` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, CHANGE `script_lowest_3` `scriptlow3_file` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
+
+
+ALTER TABLE `tld_course_offered` ADD `course_cqi` TEXT NOT NULL AFTER `scriptlow3_file`;
+
+ALTER TABLE `tld_course_offered` ADD `course_version` INT NOT NULL AFTER `prefix_tut`, ADD `material_version` INT NOT NULL AFTER `course_version`;
+
+ALTER TABLE `cf_checklist` ADD `category` VARCHAR(20) NOT NULL AFTER `upload_url`;
+
+UPDATE `cf_checklist` SET `category` = 'assess-materials' WHERE `cf_checklist`.`id` = 4; UPDATE `cf_checklist` SET `category` = 'assess-materials' WHERE `cf_checklist`.`id` = 12; UPDATE `cf_checklist` SET `category` = 'assess-scripts' WHERE `cf_checklist`.`id` = 13; UPDATE `cf_checklist` SET `category` = 'assess-materials' WHERE `cf_checklist`.`id` = 14; UPDATE `cf_checklist` SET `category` = 'assess-scripts' WHERE `cf_checklist`.`id` = 15; UPDATE `cf_checklist` SET `category` = 'assess-results' WHERE `cf_checklist`.`id` = 17; UPDATE `cf_checklist` SET `category` = 'assess-analysis' WHERE `cf_checklist`.`id` = 19; UPDATE `cf_checklist` SET `category` = 'assess-analysis' WHERE `cf_checklist`.`id` = 20;
+
+UPDATE `cf_checklist` SET `category` = 'cqi' WHERE `cf_checklist`.`id` = 21;
