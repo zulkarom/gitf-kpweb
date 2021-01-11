@@ -113,9 +113,9 @@ if($model->{$db_file}){
 
 </div>
 <div class="col-md-4">
-<div class="form-group" id="action_<?=$unique?>" >
+<div class="form-group" >
 
-<a <?=$style_file?> href="<?=Url::to([$model->file_controller . '/download-file', 'attr' => $attr_name, 'id' => $model->id])?>" id="download_<?=$attr?>" target="_blank" class="btn btn-success"><span class="fa fa-download"></span></a> 
+<a  href="<?=Url::to([$model->file_controller . '/download-file', 'attr' => $attr_name, 'id' => $model->id])?>" id="action_<?=$unique?>" <?=$style_file?> target="_blank" class="btn btn-success"><span class="fa fa-download"></span></a> 
 
 <a href="#" id="remove_<?=$unique?>" class="btn btn-danger" data-type="DELETE" data-url="<?=Url::to([$model->file_controller . '/delete-row', 'attr' => $attr_name, 'id' => $model->id])?>" title="Delete"><span class="fa fa-remove"></span></a>
 
