@@ -81,3 +81,32 @@ UPDATE `cf_checklist` SET `category` = 'assess-materials' WHERE `cf_checklist`.`
 UPDATE `cf_checklist` SET `category` = 'cqi' WHERE `cf_checklist`.`id` = 21;
 
 UPDATE `cf_checklist` SET `upload_url` = 'coordinator-upload' WHERE `cf_checklist`.`id` = 15;
+
+
+
+CREATE TABLE `cf_student_lec` (
+  `id` int(11) NOT NULL,
+  `lecture_id` int(11) NOT NULL,
+  `matric_no` varchar(20) NOT NULL,
+  `assess_result` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `cf_student_lec`
+--
+ALTER TABLE `cf_student_lec`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `cf_student_lec`
+--
+ALTER TABLE `cf_student_lec`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
