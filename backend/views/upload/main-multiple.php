@@ -72,7 +72,7 @@ $unique = $attr_name . '_' . $model->id;
 
 <div id="file_<?=$unique ?>"  <?=$style_file?>>
 <div class="file" >
-<p id="img_<?=$unique ?>" class="file-img">
+<p id="img_<?=$unique ?>">
 <?php 
 if($model->{$db_file}){
 	//pdf Url::to('@web/images/')
@@ -128,7 +128,7 @@ if($model->{$db_file}){
 
 $js = "
 
-$('#remove_$unique ').click(function(e, data){
+$('#remove_$unique').click(function(e, data){
 	  e.preventDefault();
 	  
 
