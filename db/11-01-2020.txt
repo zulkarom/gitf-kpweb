@@ -53,10 +53,11 @@ ALTER TABLE `cf_material`
 ALTER TABLE `cf_material_item`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
+ALTER TABLE `tld_course_offered` ADD `course_version` INT NOT NULL AFTER `prefix_tut`, ADD `material_version` INT NOT NULL AFTER `course_version`;
 
 ALTER TABLE `cf_coor_rubrics_class` ADD `file_name` VARCHAR(200) NOT NULL AFTER `path_file`;
 
-ALTER TABLE `tld_course_offered` ADD `updated_at` DATETIME NULL DEFAULT NULL AFTER `course_cqi`;
+ALTER TABLE `tld_course_offered` ADD `updated_at` DATETIME NULL DEFAULT NULL;
 
 ALTER TABLE `cf_coor_assess_material_class` ADD `file_name` VARCHAR(200) NOT NULL AFTER `offered_id`;
 
@@ -71,7 +72,7 @@ ALTER TABLE `tld_course_offered` CHANGE `script_best_1` `scriptbest1_file` TEXT 
 
 ALTER TABLE `tld_course_offered` ADD `course_cqi` TEXT NOT NULL AFTER `scriptlow3_file`;
 
-ALTER TABLE `tld_course_offered` ADD `course_version` INT NOT NULL AFTER `prefix_tut`, ADD `material_version` INT NOT NULL AFTER `course_version`;
+
 
 ALTER TABLE `cf_checklist` ADD `category` VARCHAR(20) NOT NULL AFTER `upload_url`;
 
