@@ -282,8 +282,7 @@ class CourseOffered extends \yii\db\ActiveRecord
         ->count();
     }
 
-
-    public function getCountAnswerScriptFiles(){
+     public function  getCountAnswerScriptFiles(){
         return CoordinatorAnswerScriptFile::find()
         ->where(['offered_id' => $this->id])
         ->count();

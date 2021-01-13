@@ -88,7 +88,7 @@ class CoordinatorAnswerScriptFileController extends Controller
 
     }
     
-    public function actionDownload($attr, $id){
+    public function actionDownloadFile($attr, $id){
         $attr = $this->clean($attr);
         $model = $this->findCoordinatorAnswerScript($id);
         $filename = 'Student’s Final Exam Answer Script ' . $id;

@@ -153,7 +153,7 @@ class CoordinatorAssessmentScriptFileController extends Controller
 
     }
     
-    public function actionDownload($attr, $id){
+    public function actionDownloadFile($attr, $id){
         $attr = $this->clean($attr);
         $model = $this->findCoordinatorAssessmentScript($id);
         $filename = 'Continous Assessment Script ' . $id;
