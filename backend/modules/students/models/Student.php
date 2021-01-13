@@ -29,12 +29,12 @@ class Student extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['matric_no', 'nric', 'st_name', 'program'], 'required'],
+            [['matric_no', 'st_name'], 'required'],
             [['matric_no', 'nric'], 'string', 'max' => 20],
             [['st_name'], 'string', 'max' => 100],
             [['program'], 'string', 'max' => 10],
             [['matric_no'], 'unique'],
-			[['is_active'], 'integer'],
+			[['is_active','complete','sync'], 'integer'],
         ];
     }
 

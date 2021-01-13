@@ -3,7 +3,9 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
+use kartik\grid\GridView;
 use backend\assets\ExcelAsset;
+use kartik\export\ExportMenu;
 
 
 $offer = $lecture->courseOffered;
@@ -27,27 +29,100 @@ $this->params['breadcrumbs'][] = 'Student List';
 
 <h4>Student List</h4>
 
-<div class="form-group"> <input type="file" id="xlf" style="display:none;" />
+
+
+  <?php
+  $columns = [
+            ['class' => 'yii\grid\SerialColumn'],
+
+            [
+                'label' => 'Student Id',
+                'format' => 'html',
+                'value' => function($model){
+                    return $model->matric_no;
+                }
+            ],
+      [
+                'label' => 'Name',
+                'format' => 'html',
+                'value' => function($model){
+                    return $model->student->st_name;
+                }
+            ],
+
+
+        ];
+?>
+
+<div class="row">
+
+<div class="col-md-10">
+  <div class="form-group"> <input type="file" id="xlf" style="display:none;" />
 <button type="button" id="btn-importexcel" class="btn btn-info"><span class="glyphicon glyphicon-import"></span> IMPORT EXCEL </button></div>
+
+<?php $form = ActiveForm::begin(['id' => 'form-students']); ?>
+  <input type="hidden" id="json_student" name="json_student">
+  <?php ActiveForm::end(); ?>
+</div>
+
+<div class="col-md-2">
+    
+    <?=ExportMenu::widget([
+    'dataProvider' => $dataProvider,
+    'columns' => $columns,
+  'filename' => 'Student_List_' . date('Y-m-d'),
+  'onRenderSheet'=>function($sheet, $grid){
+    $sheet->getStyle('A2:'.$sheet->getHighestColumn().$sheet->getHighestRow())
+    ->getAlignment()->setWrapText(true);
+  },
+  'exportConfig' => [
+        ExportMenu::FORMAT_PDF => false,
+    ExportMenu::FORMAT_EXCEL_X => false,
+    ],
+]);?>
+    
+    
+    
+ </div>
+
+
+
+</div>
+
+
 
 <div class="box">
 
-<div class="box-body">
+<div class="box-body"><?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'export' => false,
+        'columns' => [
+            
+            ['class' => 'yii\grid\SerialColumn'],
+            
+            
+            [
+                'label' => 'Student Id',
+                'value' => function($model){
+                    return $model->matric_no;
+                }
+                
+            ],
 
-  <table class="table">
-    <thead>
-      <tr>
-        <th style="width:5%">No.</th>
-        <th style="width:10%">Student Id</th>
-        <th>Student Name</th>
-      </tr>
-    </thead>
-   <tbody id="loaded-students">
+            [
+                'label' => 'Name',
+                'value' => function($model){
+                    return $model->student->st_name;
+                }
+                
+            ],
+            
+        ],
+    ]); ?>
+    </div>
+</div>
 
-   </tbody>
-  </table>
-</div>
-</div>
+
 
 
 <?php 
@@ -95,18 +170,11 @@ var X = XLSX;
           for (var key in obj) {
             var sheet = obj[key];
 			var i = 1;
-            for(var row in sheet){
-				
-              row = sheet[row];
-              num = i - 1;
-			  if(i > 1){
-				  str = \'<tr><td>\'+ num +\'</td><td>\' + row[0] + \'</td><td>\' + row[1] + \'</td></tr>\';
-					$("#loaded-students").append(str);
-			  }
-			  
+      var myJSON = JSON.stringify(sheet);
+      // console.log(myJSON);
 
-			  i++;
-            }
+            $("#json_student").val(myJSON);
+            $("#form-students").submit();
             break;
           }
           
@@ -122,6 +190,7 @@ var X = XLSX;
 
   }
 
+  
 ');
 
 ?>

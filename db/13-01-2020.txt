@@ -1,0 +1,3 @@
+ALTER TABLE `cf_student_lec` ADD `stud_check` TINYINT(1) NOT NULL AFTER `assess_result`;
+
+ALTER TABLE `st_student` ADD `sync` TINYINT(1) NOT NULL AFTER `complete`;

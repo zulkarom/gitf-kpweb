@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use kartik\export\ExportMenu;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\modules\students\models\StudentSearch */
@@ -10,11 +11,55 @@ use yii\grid\GridView;
 $this->title = 'Students';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
+<?php
+  $columns = [
+            ['class' => 'yii\grid\SerialColumn'],
+            'st_name',
+            'matric_no',
+            'nric',
+            
+            'program',
+        ];
+?>
 <div class="student-index">
 
-<p><?= Html::a('Add Student', ['create'], ['class' => 'btn btn-success']) ?>
+<div class="row">
+<div class="col-md-10">
+<p>
+    <?= Html::a('Add Student', ['create'], ['class' => 'btn btn-success']) ?>
+    <?= Html::a('Synchronize', ['synchronize'], ['class' => 'btn btn-info']) ?>
 
 </p>
+</div>
+
+
+
+
+<div class="col-md-2">
+    
+    <?=ExportMenu::widget([
+    'dataProvider' => $dataProvider,
+    'columns' => $columns,
+  'filename' => 'Students_' . date('Y-m-d'),
+  'onRenderSheet'=>function($sheet, $grid){
+    $sheet->getStyle('A2:'.$sheet->getHighestColumn().$sheet->getHighestRow())
+    ->getAlignment()->setWrapText(true);
+  },
+  'exportConfig' => [
+        ExportMenu::FORMAT_PDF => false,
+    ExportMenu::FORMAT_EXCEL_X => false,
+    ],
+]);?>
+    
+    
+    
+ </div>
+
+
+
+</div>
+<br/>
 
 <div class="box">
 <div class="box-header"></div>

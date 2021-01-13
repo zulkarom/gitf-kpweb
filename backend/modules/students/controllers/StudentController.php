@@ -95,6 +95,91 @@ class StudentController extends Controller
         ]);
     }
 
+    public function actionSynchronize(){
+
+        if (Yii::$app->request->post()) {
+            $csv = array();
+        // check there are no errors
+        if($_FILES['csv']['error'] == 0){
+            $name = $_FILES['csv']['name'];
+            
+            $arr = explode('.', $name);
+            $en = end($arr);
+
+            $ext = strtolower($en);
+
+            $type = $_FILES['csv']['type'];
+            $tmpName = $_FILES['csv']['tmp_name'];
+
+            // check the file is a csv
+            if($ext === 'csv'){
+                if(($handle = fopen($tmpName, 'r')) !== FALSE) {
+                    // necessary if a large csv file
+                    set_time_limit(0);
+
+                    $row = 0;
+
+                    while(($data = fgetcsv($handle, 1000, ',')) !== FALSE) {
+                        // number of fields in the csv
+                        $col_count = count($data);
+
+                        // get the values from the csv
+                        $csv[$row][] = $data[0];
+                        $csv[$row][] = $data[1];
+                        $csv[$row][] = $data[2];
+                        $csv[$row][] = $data[3];
+                        $csv[$row][] = $data[4];
+
+                        // inc the row
+                        $row++;
+                    }
+                    fclose($handle);
+                }
+            }
+        }
+
+        if($csv){
+            Student::updateAll(['sync' => 0],['like', 'is_active', 1]);
+
+            foreach(array_slice($csv,1) as $stud){
+                $name = $stud[1];
+                $matric = $stud[2];
+                $nric = $stud[3];
+                $program = $stud[4];
+
+                if(!empty($stud)){
+                    $st = Student::findOne(['matric_no' => $matric]);
+                    if($st === null){
+                        $new = new Student;
+                        $new->st_name = $name;
+                        $new->matric_no = $matric;
+                        $new->nric = $nric;
+                        $new->program = $program;
+                        $new->sync = 1;
+                        if(!$new->save())
+                        {
+                            print_r($new->getErrors()); 
+                        }
+                        echo "success";
+                    }
+                    else{
+                        $st->sync = 1;
+                        $st->save();
+                    }
+                }
+
+                
+            }
+        }
+
+        
+    }
+        
+        return $this->render('synchronize', [
+
+        ]);
+    }
+
     /**
      * Deletes an existing Student model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
