@@ -3,6 +3,10 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
+
+$this->title = 'Synchronize';
+$this->params['breadcrumbs'][] = ['label' => 'Student', 'url' => ['/students/student/index']];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="box">
@@ -14,7 +18,12 @@ use yii\helpers\Url;
     <input type="file" name="csv" value="" />
 
     <div class="form-group">
+        <br/>
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
+
+</div>
+</div>
+</div>

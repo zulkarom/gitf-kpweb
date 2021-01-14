@@ -139,8 +139,10 @@ class StudentController extends Controller
         }
 
         if($csv){
-            Student::updateAll(['sync' => 0],['like', 'is_active', 1]);
-
+            Student::updateAll(['sync' => 0],['is_active' => 1]);
+            $new_student = array();
+            $active = array();
+            $nactive = array();
             foreach(array_slice($csv,1) as $stud){
                 $name = $stud[1];
                 $matric = $stud[2];
@@ -156,25 +158,63 @@ class StudentController extends Controller
                         $new->nric = $nric;
                         $new->program = $program;
                         $new->sync = 1;
-                        if(!$new->save())
+                        if($new->save())
                         {
+                            $new_student[] = 1;
+                            
+                        }else{
                             print_r($new->getErrors()); 
                         }
-                        echo "success";
+                        
                     }
                     else{
-                        $st->sync = 1;
-                        $st->save();
+                        if($st->is_active == 1){
+                            $st->sync = 1; 
+                            if($st->save())
+                            {
+                                
+                            }
+                            else{
+                                print_r($st->getErrors());  
+                            }
+                        }else{
+                            $st->is_active = 1;
+                            $st->sync = 1;
+                            if($st->save())
+                            {
+                                $active[] = 1;
+                            }
+                            else{
+                                print_r($st->getErrors());  
+                            }
+                        }
                     }
                 }
-
-                
             }
-        }
+            
 
-        
+            $inactive = Student::find()->where(['is_active' => 1,'sync' => 0])->count();
+
+            Student::updateAll(['is_active' => 0],['is_active' => 1,'sync' => 0]);
+
+            
+            $new_student = count($new_student);
+            $active = count($active);
+
+            if($new_student > 0){
+                Yii::$app->session->addFlash('success', "New Student: ".$new_student);
+            }
+
+            if($active > 0){
+                Yii::$app->session->addFlash('info', "Revert to active:  ".$active);
+            }
+
+            if($inactive > 0){
+                Yii::$app->session->addFlash('info', "Become Inactive: ".$inactive);
+            }
+
+        }
     }
-        
         return $this->render('synchronize', [
 
         ]);
