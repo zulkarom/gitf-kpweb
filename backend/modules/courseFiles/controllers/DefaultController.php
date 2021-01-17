@@ -15,8 +15,10 @@ use backend\modules\teachingLoad\models\StaffInvolved;
 use backend\modules\teachingLoad\models\CourseLecture;
 use backend\modules\courseFiles\models\CoordinatorRubricsFile;
 use backend\modules\students\models\Student;
+use backend\modules\students\models\StudentSearch;
 use backend\modules\courseFiles\models\StudentLecture;
 use backend\modules\courseFiles\models\StudentLectureSearch;
+use backend\modules\courseFiles\models\AddStudentLectureDateForm;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -193,6 +195,55 @@ class DefaultController extends Controller
             'dataProvider' => $dataProvider,
         ]);
 		
+    }
+
+    public function actionLectureStudentAttendance($id){
+        $lecture = $this->findLecture($id);
+
+        $model =  new StudentLecture;
+
+        return $this->render('lecture-student-attendance', [
+            'lecture' => $lecture,
+            'model' => $model,
+        ]);
+    }
+
+    public function actionLectureStudentAttendanceDate(){
+        
+
+        $model = new AddStudentLectureDateForm;
+
+         $startdate='2014-05-17';
+            $enddate='2014-09-20';
+
+            getSundays($startdate,$enddate);
+
+
+        return $this->render('lecture-student-attendance-form-date', [
+            
+            'model' => $model,
+        ]);
+    }
+
+   
+
+    private function getSundays($startdate,$enddate) {
+        $startweek=date("W",strtotime($startdate));
+        $endweek=date("W",strtotime($enddate));
+        $year=date("Y",strtotime($startdate));
+
+        for($i=$startweek;$i<=$endweek;$i++) {
+            $result=getWeek($i,$year);
+            if($result>$startdate&&$result<$enddate) {
+                echo "Sunday:".$result."<br>";
+            }
+        }
+    }
+
+    private function getWeek($week, $year) {
+      $dto = new DateTime();
+      $result = $dto->setISODate($year, $week, 0)->format('Y-m-d');
+      return $result;
     }
 
     public function checkStudentLec($matric,$lecture)

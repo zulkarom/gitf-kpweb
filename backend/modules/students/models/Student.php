@@ -3,6 +3,7 @@
 namespace backend\modules\students\models;
 
 use Yii;
+use backend\modules\courseFiles\models\StudentLecture;
 
 /**
  * This is the model class for table "st_student".
@@ -51,4 +52,8 @@ class Student extends \yii\db\ActiveRecord
             'program' => 'Program',
         ];
     }
+
+     public function getStudentLecture(){
+        return $this->hasMany(StudentLecture::className(), ['matric_no' => 'matric_no']);
+    } 
 }
