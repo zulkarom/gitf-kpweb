@@ -45,14 +45,13 @@ $form = ActiveForm::begin([
 
 
 <div class="box">
-<div class="box-header"></div>
 <div class="box-body">
 
 
 <div class="row">
 <div class="col-md-4"><?=$form->field($model, 'ref_letter')?></div>
-<div class="col-md-4"><?=$form->field($model, 'start_number')?></div>
-<div class="col-md-4">
+<div class="col-md-2"><?=$form->field($model, 'start_number')?></div>
+<div class="col-md-3">
  <?=$form->field($model, 'date')->widget(DatePicker::classname(), [
     'removeButton' => false,
     'pluginOptions' => [
@@ -69,13 +68,15 @@ $form = ActiveForm::begin([
 
 </div>
 
-</div>
-</div>
-
 <div class="form-group">
         
 <?= Html::submitButton('Generate Reference', ['class' => 'btn btn-warning', 'name'=> 'actiontype', 'value' => 'generate']) ?>
     </div>
+
+</div>
+</div>
+
+
 
 
 </div>
@@ -92,7 +93,7 @@ $form = ActiveForm::begin([
             
             
             [
-                'label' => 'Nama Staff',
+                'label' => 'Staff',
                 'value' => function($model){
                     return $model->staffInvolved->staff->staff_title . ' ' . $model->staffInvolved->staff->user->fullname ;
                 }
@@ -100,7 +101,7 @@ $form = ActiveForm::begin([
             ],
 
             [
-                'label' => 'Nama',
+                'label' => 'Course',
                 'value' => function($model){
                     return $model->courseOffered->course->codeCourseString ;
                 }
@@ -108,15 +109,20 @@ $form = ActiveForm::begin([
             ],
 
             [
-                'label' => 'Tarikh',
+                'label' => 'Date',
                 'value' => function($model){
-                    return $model->date_appoint ;
+					if($model->date_appoint == '0000-00-00'){
+						return '';
+					}else{
+						return date('d M Y', strtotime($model->date_appoint)) ;
+					}
+                    
                 }
                 
             ],
 
             [
-                'label' => 'Rujukan Surat',
+                'label' => 'Reference Letter',
                 'value' => function($model){
                     return $model->ref_no ;
                 }
