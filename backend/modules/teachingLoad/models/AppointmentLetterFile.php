@@ -14,7 +14,7 @@ class AppointmentLetterFile
 	public $pdf;
 	public $tuan = 'Tuan';
 	public $template;
-	public $fontSize = 9.5;
+	public $fontSize = 10;
 	
 	public function generatePdf(){
 		
@@ -71,14 +71,12 @@ class AppointmentLetterFile
 		$html = '<br /><br /><br />
 		<table cellpadding="1">
 		<tr>
-			<td width="280"></td>
-			<td width="120"></td>
-			<td width="300" align="right">'.$this->model->ref_no . '</td>
+			<td width="490"></td>
+			<td width="300" align="left">'.$this->model->ref_no . '</td>
 		</tr>
 		<tr>
 			<td></td>
-			<td></td>
-			<td align="right">'. $date .'</td>
+			<td align="left">'. $date .'</td>
 		</tr>
 		</table>
 		<br /><br /><br /><br />

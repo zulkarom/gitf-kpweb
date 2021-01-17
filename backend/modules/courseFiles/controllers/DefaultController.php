@@ -68,7 +68,8 @@ class DefaultController extends Controller
         $model = new Staff();
         $modelItem = new Checklist();
         $model->semester = $semester->semester_id;
-		$myInv = StaffInvolved::find(['staff_id' => Yii::$app->user->identity->staff->id, 'semester_id' => $semester->semester_id])->one();
+
+		$myInv = StaffInvolved::findOne(['staff_id' => Yii::$app->user->identity->staff->id, 'semester_id' => $semester->semester_id]);
 
         return $this->render('teaching-assignment', [
             'model' => $model,

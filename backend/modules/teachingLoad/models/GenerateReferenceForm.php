@@ -32,9 +32,9 @@ class GenerateReferenceForm extends Model
     public function attributeLabels()
     {
         return [
-            'ref_letter' => 'Rujukan Surat',
-            'start_number' => 'Bermula dari',
-            'date' => 'Tarikh',
+            'ref_letter' => 'Reference Letter',
+            'start_number' => 'Start Number',
+            'date' => 'Date',
         ];
     }
 

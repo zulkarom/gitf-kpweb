@@ -242,5 +242,6 @@ class Staff extends \backend\modules\staff\models\Staff
 		}
 		return $str;
 	}
+	
    
 }
