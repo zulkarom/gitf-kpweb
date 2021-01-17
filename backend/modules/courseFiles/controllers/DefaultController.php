@@ -158,18 +158,17 @@ class DefaultController extends Controller
 
             if($data){
 
-                StudentLecture::updateAll(['stud_check' => 0]);
+                StudentLecture::updateAll(['stud_check' => 0], ['lecture_id' => $id]);
 
                 $i=0;
                 foreach (array_slice($data,1) as $stud) {
-                     
-                    $matric = $stud[0];
+					
+                    if(is_array($stud) and array_key_exists(0,$stud)){
+						
+					$matric = trim($stud[0]);
                     $name = $stud[1];
-                    // echo "<pre>";
-                    // print_r($matric);
-
-                    if(!empty($stud)){
-                        $st = Student::findOne(['matric_no' => $matric, 'st_name' => $name]);
+						
+                        $st = Student::findOne(['matric_no' => $matric]);
                         if($st === null){
                            $new = new Student;
                            $new->matric_no = $matric;
@@ -177,7 +176,7 @@ class DefaultController extends Controller
                            $new->complete = 0; 
                            if(!$new->save())
                             {
-                                print_r($new->getErrors()); 
+                                $new->flashError();
                             }
                            
                         }
@@ -190,6 +189,7 @@ class DefaultController extends Controller
                   
             }
             Yii::$app->session->addFlash('success', "Import success");
+			return $this->refresh();
         }
         return $this->render('lecture-student-list', [
 			'lecture' => $lecture,
@@ -209,41 +209,60 @@ class DefaultController extends Controller
         ]);
     }
 
-    public function actionLectureStudentAttendanceDate(){
-        
-
+    public function actionLectureStudentAttendanceDate($id){
+	/* 	echo date("W",strtotime('2021-01-04'));
+		$dto = new \DateTime();
+      echo $dto->setISODate(2021, 53, 5)->format('Y-m-d');
+	  die();
+	  
+	   */
         $model = new AddStudentLectureDateForm;
-
-         $startdate='2014-05-17';
-            $enddate='2014-09-20';
-
-            getSundays($startdate,$enddate);
-
-
+		$lecture = $this->findLecture($id);
+        //$startdate = '2014-05-17';
+		//$number = 14;
+		
+		if ($model->load(Yii::$app->request->post())) {
+			$startdate = $model->start_date;
+			$exdate = $model->exclude_date;
+			$number = $model->number_of_class;
+			//echo $startdate;echo $number;
+			$data = $this->getSundays($startdate, $number, $exdate);
+			$lecture->attendance_header = json_encode($data);
+			if($lecture->save()){
+				return $this->refresh();
+			}
+			
+		}
+        
         return $this->render('lecture-student-attendance-form-date', [
-            
+            'lecture' => $lecture,
             'model' => $model,
         ]);
     }
 
    
 
-    private function getSundays($startdate,$enddate) {
+    private function getSundays($startdate, $number, $exclude_date) {
         $startweek=date("W",strtotime($startdate));
-        $endweek=date("W",strtotime($enddate));
         $year=date("Y",strtotime($startdate));
-
-        for($i=$startweek;$i<=$endweek;$i++) {
-            $result=getWeek($i,$year);
-            if($result>$startdate&&$result<$enddate) {
-                echo "Sunday:".$result."<br>";
+		$arr = array();
+		$arr[] = $startdate;
+		$day = date("w",strtotime($startdate));
+		$limit = $startweek + $number - 1;
+		
+        for($i=$startweek;$i<=$limit;$i++) {
+            $result=$this->getWeek($i,$year, $day);
+            if($result>$startdate) {
+                $arr[] =  $result;
             }
         }
+		return $arr;
     }
 
-    private function getWeek($week, $year) {
-      $dto = new DateTime();
-      $result = $dto->setISODate($year, $week, 0)->format('Y-m-d');
+    private function getWeek($week, $year, $day) {
+      $dto = new \DateTime();
+	  echo $year. $week. $day;
+      $result = $dto->setISODate($year, $week, $day)->format('Y-m-d');
       return $result;
     }
 

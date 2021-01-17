@@ -10,7 +10,8 @@ use yii\base\Model;
  */
 class AddStudentLectureDateForm extends Model
 {
-    public $date;
+    public $start_date;
+	public $exclude_date;
     public $number_of_class;
 
     /**
@@ -19,9 +20,9 @@ class AddStudentLectureDateForm extends Model
      public function rules()
     {
         return [
-            [['date','number_of_class'], 'required'],
+            [['start_date','number_of_class'], 'required'],
             [['number_of_class'], 'integer'],
-            [['date'], 'safe'],
+            [['start_date', 'exclude_date'], 'safe'],
         ];
     }
     

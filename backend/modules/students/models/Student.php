@@ -56,4 +56,18 @@ class Student extends \yii\db\ActiveRecord
      public function getStudentLecture(){
         return $this->hasMany(StudentLecture::className(), ['matric_no' => 'matric_no']);
     } 
+	
+	public function flashError(){
+        if($this->getErrors()){
+            foreach($this->getErrors() as $error){
+                if($error){
+                    foreach($error as $e){
+                        Yii::$app->session->addFlash('error', $e);
+                    }
+                }
+            }
+        }
+
+    }
+
 }

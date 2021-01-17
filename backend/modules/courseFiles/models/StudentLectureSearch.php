@@ -46,6 +46,10 @@ class StudentLectureSearch extends StudentLecture
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+			'pagination' => [
+                'pageSize' => 150,
+            ],
+
         ]);
 
         $this->load($params);

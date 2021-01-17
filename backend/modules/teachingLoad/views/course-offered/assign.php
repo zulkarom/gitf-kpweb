@@ -17,26 +17,27 @@ $this->params['breadcrumbs'][] = ['label' => 'Courses Offered', 'url' => ['index
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <h4><?=$model->course->codeCourseString?></h4>
+<h4><?=$model->semester->longFormat()?></h4>
 
-
-	<!-- add lecture -->
-	<?php $form = ActiveForm::begin(); 
+<div class="row">
+<div class="col-md-3">	<!-- add lecture -->
+	<?php 
 	
+	$form = ActiveForm::begin(); 
 	$addLecure->lecture_number = 1;
 	echo $form->field($addLecure, 'lecture_number', [
                     'template' => 'Add Lectures: {input}',
                     'options' => [
-						
                         'tag' => false, // Don't wrap with "form-group" div
                     ]])->textInput(['style' => 'width:50px', 'type' => 'number', 'class' => ''])->label(false);
 
 	echo Html::submitButton('Go', ['class' => 'btn btn-sm btn-default']);
 	ActiveForm::end(); ?>
-	
-	<?php $form = ActiveForm::begin(); 
-	$addTutorial->tutorial_number = 1;
-	echo $form->field($addTutorial, 'lecture_json',['options' => ['tag' => false]])->hiddenInput(['value' => ''])->label(false);
+</div>
 
+<div class="col-md-6">
+<?php $form = ActiveForm::begin(); 
+	$addTutorial->tutorial_number = 1;
 	echo $form->field($addTutorial, 'tutorial_number', [
 		                    'template' => 'Add Tutorials : {input}',
 		                    'options' => [
@@ -45,19 +46,26 @@ $this->params['breadcrumbs'][] = $this->title;
 		                    ]])->textInput(['style' => 'width:50px', 'type' => 'number', 'class' => ''])->label(false);
 
 	echo Html::submitButton('Go', ['class' => 'btn btn-sm btn-default']);
+	echo $form->field($addTutorial, 'lecture_json',['options' => ['tag' => false]])->hiddenInput(['value' => ''])->label(false);
 	ActiveForm::end(); ?>
-	
-	
-    <?php $form = ActiveForm::begin(); ?>
-    <div class="row">
-    <div class="col-sm-4">
-    
-    <?php
+</div>
 
-  
-	echo 'Coordinator :'. Select2::widget([
+</div>
+    <?php $form = ActiveForm::begin(); ?>
+
+<div class="course-offered-index">
+    <div class="box">
+<div class="box-body">
+
+  <table class="table table-striped">
+    <tbody>
+      <tr>
+	   <td></td>
+        <td width="20%"> Select Course Coordinator: </td>
+        <td>
+		<?php
+	echo Select2::widget([
 				    'name' => 'coordinator',
-					
 				    'value' => $model->coordinator,
 				    'data' => ArrayHelper::map(Staff::getAcademicStaff(), 'id', 'user.fullname'),
 				    'options' => ['placeholder' => 'Select Coordinator ...'],
@@ -65,14 +73,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 		'allowClear' => true
             		],
 				]);
-	?>
-	</div>
-	</div>
-
-<div class="course-offered-index">
-<br/>
-    <div class="box">
-<div class="box-body">
+?>
+		
+		</td>
+		<td width="10%">
+		</td>
+      </tr>
+      
+    </tbody>
+  </table>
 
 
 <div class="table-responsive">

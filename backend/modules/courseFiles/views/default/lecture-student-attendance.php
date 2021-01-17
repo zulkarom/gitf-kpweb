@@ -23,9 +23,8 @@ $this->params['breadcrumbs'][] = 'Student List';
 <h4><?=$offer->semester->longFormat()?></h4>
 <br />
 
-<?= Html::a('Date', ['/course-files/default/lecture-student-attendance-date'], ['class' => 'btn btn-primary']) ?>
+<div class="form-group"><?= Html::a('Manage Class Date', ['/course-files/default/lecture-student-attendance-date', 'id' => $lecture->id], ['class' => 'btn btn-success']) ?></div>
 
-<br />
 
 <div class="box">
         <div class="box-header">
@@ -38,8 +37,8 @@ $this->params['breadcrumbs'][] = 'Student List';
                 <thead>
                   <tr>
                     <th>No.</th>
-                    <th>Matric No</th>
-                    
+                    <th>Matric No.</th>
+                    <th>Name</th>
                   </tr>
                   <?php
                     $i=1;
