@@ -12,89 +12,203 @@ $this->title = 'Dashboard';
 
 ?>
 <div class="row">
-<div class="col-md-12"><div class="form-group"><img src="<?=$dirAsset?>/img/umktag.png" width="100%" /></div></div>
-</div>
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-aqua">
+            <div class="inner">
+              <h3>&nbsp;</h3>
 
-<div class="box">
-<div class="box-header">
-<h3 class="box-title">Staff</h3>
-</div>
-<div class="box-body">
-
-
-
-<div class="row">
-
-<div class="hidden-xs col-md-2">
-<img width="100%" src="<?=Url::to(['/staff/profile/image'])?>" />
-
-</div>
-
-
-
-<div class="col-md-5">
-
-<div class="table-responsive">
-  <table class="table table-striped table-hover">
-
-    <tbody>
-      <tr>
-        <td><b>Staff Name</b></td>
-        <td><?=$user->fullname?></td>
-      </tr>
-	  <tr>
-        <td><b>Staff No.</b></td>
-        <td><?=$user->staff->staff_no?></td>
-      </tr>
-      <tr>
-        <td><b>Email</b></td>
-        <td><?=$user->email?></td>
-      </tr>
-	  <tr>
-        <td><b>Education (abbr.)</b></td>
-        <td><?=$user->staff->staff_edu?></td>
-      </tr>
-	  
-
-    </tbody>
-  </table>
-</div>
-</div>
-
-<div class="col-md-5">
-
-<div class="table-responsive">
-  <table class="table table-striped table-hover">
-    <tbody>
-	<tr>
-	  
-        <td><b>Type</b></td>
-        <td><?=$user->staff->typeName?></td>
-      </tr>
-	<tr>
-        <td><b>Position</b></td>
-        <td><?=$user->staff->staffPosition->position_name?></td>
-      </tr>
+              <h4>My Info</h4>
+            </div>
+            <div class="icon">
+              <i class="fa fa-user"></i>
+            </div>
       
-	  <tr>
-        <td><b>Office Location</b></td>
-        <td><?=$user->staff->ofis_location?></td>
-      </tr>
+            <a href="<?=Url::to(['/staff/profile'])?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-green">
+            <div class="inner">
+              <h3><?=Stats::countMyPublication()?></h3>
 
-    </tbody>
-  </table>
-</div>
+              <p>Staff Data</p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-users"></i>
+            </div>
+            <a href="<?=Url::to(['/staff'])?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-yellow">
+            <div class="inner">
+              <h3><?=Stats::countMyMembership()?></h3>
 
-<a href="<?=Url::to(['/staff/profile'])?>" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil"></span> Edit Information</a>
+              <p>Teaching Loads</p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-users"></i>
+            </div>
+            <a href="<?=Url::to(['/teaching-load/course-offered/index'])?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-red">
+            <div class="inner">
+              <h3><?=Stats::countMyAward()?></h3>
 
+              <p>Course Files</p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-trophy"></i>
+            </div>
+            <a href="<?=Url::to(['/course-files/default/teaching-assignment'])?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        </div>
+        <!-- ./col -->
 
-</div>
+        <div class="row">
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box bg-aqua">
+            <span class="info-box-icon"><i class="fa fa-bookmark-o"></i></span>
 
-</div>
+            <div class="info-box-content">
+              <span class="info-box-text">&nbsp;</span>
+              <span class="info-box-number">Manage Courses</span>
 
+              
+                  <span class="progress-description">
+                    <a href="<?=Url::to(['/staff'])?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                  </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box bg-green">
+            <span class="info-box-icon"><i class="fa fa-thumbs-o-up"></i></span>
 
-</div>
-</div>
+            <div class="info-box-content">
+              <span class="info-box-text">&nbsp;</span>
+              <span class="info-box-number">Manage Program</span>
+
+            
+                  <span class="progress-description">
+                    <a href="<?=Url::to(['/staff'])?>" class="small-box-footer"><font color="white">More info</<i class="fa fa-arrow-circle-right"></i><font></a>
+                  </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box bg-yellow">
+            <span class="info-box-icon"><i class="fa fa-calendar"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Events</span>
+              <span class="info-box-number">41,410</span>
+
+              <div class="progress">
+                <div class="progress-bar" style="width: 70%"></div>
+              </div>
+                  <span class="progress-description">
+                    70% Increase in 30 Days
+                  </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box bg-red">
+            <span class="info-box-icon"><i class="fa fa-comments-o"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Comments</span>
+              <span class="info-box-number">41,410</span>
+
+              <div class="progress">
+                <div class="progress-bar" style="width: 70%"></div>
+              </div>
+                  <span class="progress-description">
+                    70% Increase in 30 Days
+                  </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+      </div>
+
+      <div class="row">
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="fa fa-envelope-o"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Messages</span>
+              <span class="info-box-number">1,410</span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-green"><i class="fa fa-flag-o"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Bookmarks</span>
+              <span class="info-box-number">410</span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-yellow"><i class="fa fa-files-o"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Uploads</span>
+              <span class="info-box-number">13,648</span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-red"><i class="fa fa-star-o"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Likes</span>
+              <span class="info-box-number">93,139</span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      
 
 <?php if($user->staff->is_academic == 1) {?>
 <div class="box">

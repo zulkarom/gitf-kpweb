@@ -30,8 +30,8 @@ class StudentLecture extends \yii\db\ActiveRecord
     {
         return [
             [['lecture_id', 'matric_no'], 'required'],
-            [['lecture_id'], 'integer'],
-            [['assess_result'], 'string'],
+            [['lecture_id', 'stud_check'], 'integer'],
+            [['assess_result','attendance_check'], 'string'],
             [['matric_no'], 'string', 'max' => 20],
         ];
     }
