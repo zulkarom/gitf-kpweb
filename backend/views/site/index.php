@@ -32,9 +32,9 @@ $this->title = 'Dashboard';
           <!-- small box -->
           <div class="small-box bg-green">
             <div class="inner">
-              <h3><?=Stats::countMyPublication()?></h3>
+              <h3>&nbsp;</h3>
 
-              <p>Staff Data</p>
+              <h4>Staff Data</h4>
             </div>
             <div class="icon">
               <i class="fa fa-users"></i>
@@ -47,12 +47,12 @@ $this->title = 'Dashboard';
           <!-- small box -->
           <div class="small-box bg-yellow">
             <div class="inner">
-              <h3><?=Stats::countMyMembership()?></h3>
+              <h3>&nbsp;</h3>
 
-              <p>Teaching Loads</p>
+              <h4>Teaching Loads</h4>
             </div>
             <div class="icon">
-              <i class="fa fa-users"></i>
+              <i class="fa fa-book"></i>
             </div>
             <a href="<?=Url::to(['/teaching-load/course-offered/index'])?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
@@ -62,12 +62,12 @@ $this->title = 'Dashboard';
           <!-- small box -->
           <div class="small-box bg-red">
             <div class="inner">
-              <h3><?=Stats::countMyAward()?></h3>
+              <h3>&nbsp;</h3>
 
-              <p>Course Files</p>
+              <h4>Course Files</h4>
             </div>
             <div class="icon">
-              <i class="fa fa-trophy"></i>
+              <i class="fa fa-files-o"></i>
             </div>
             <a href="<?=Url::to(['/course-files/default/teaching-assignment'])?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
@@ -86,7 +86,7 @@ $this->title = 'Dashboard';
 
               
                   <span class="progress-description">
-                    <a href="<?=Url::to(['/staff'])?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                    <a href="<?=Url::to([''])?>" class="small-box-footer"><font color="white">More info </font><i class="fa fa-arrow-circle-right" style="color:white;"></i></a>
                   </span>
             </div>
             <!-- /.info-box-content -->
@@ -96,7 +96,7 @@ $this->title = 'Dashboard';
         <!-- /.col -->
         <div class="col-md-3 col-sm-6 col-xs-12">
           <div class="info-box bg-green">
-            <span class="info-box-icon"><i class="fa fa-thumbs-o-up"></i></span>
+            <span class="info-box-icon"><i class="fa fa-sticky-note"></i></span>
 
             <div class="info-box-content">
               <span class="info-box-text">&nbsp;</span>
@@ -104,7 +104,7 @@ $this->title = 'Dashboard';
 
             
                   <span class="progress-description">
-                    <a href="<?=Url::to(['/staff'])?>" class="small-box-footer"><font color="white">More info</<i class="fa fa-arrow-circle-right"></i><font></a>
+                    <a href="<?=Url::to([''])?>" class="small-box-footer"><font color="white">More info </font><i class="fa fa-arrow-circle-right" style="color:white;"></i></a>
                   </span>
             </div>
             <!-- /.info-box-content -->
@@ -114,17 +114,15 @@ $this->title = 'Dashboard';
         <!-- /.col -->
         <div class="col-md-3 col-sm-6 col-xs-12">
           <div class="info-box bg-yellow">
-            <span class="info-box-icon"><i class="fa fa-calendar"></i></span>
+            <span class="info-box-icon"><i class="fa fa-graduation-cap"></i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text">Events</span>
-              <span class="info-box-number">41,410</span>
+              <span class="info-box-text">&nbsp;</span>
+              <span class="info-box-number">Student Data</span>
 
-              <div class="progress">
-                <div class="progress-bar" style="width: 70%"></div>
-              </div>
+              
                   <span class="progress-description">
-                    70% Increase in 30 Days
+                    <a href="<?=Url::to([''])?>" class="small-box-footer"><font color="white">More info </font><i class="fa fa-arrow-circle-right" style="color:white;"></i></a>
                   </span>
             </div>
             <!-- /.info-box-content -->
@@ -134,17 +132,14 @@ $this->title = 'Dashboard';
         <!-- /.col -->
         <div class="col-md-3 col-sm-6 col-xs-12">
           <div class="info-box bg-red">
-            <span class="info-box-icon"><i class="fa fa-comments-o"></i></span>
+            <span class="info-box-icon"><i class="fa fa-flask"></i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text">Comments</span>
-              <span class="info-box-number">41,410</span>
+              <span class="info-box-text">&nbsp;</span>
+              <span class="info-box-number">e-RPD</span>
 
-              <div class="progress">
-                <div class="progress-bar" style="width: 70%"></div>
-              </div>
                   <span class="progress-description">
-                    70% Increase in 30 Days
+                    <a href="<?=Url::to([''])?>" class="small-box-footer"><font color="white">More info </font><i class="fa fa-arrow-circle-right" style="color:white;"></i></a>
                   </span>
             </div>
             <!-- /.info-box-content -->
@@ -157,11 +152,15 @@ $this->title = 'Dashboard';
       <div class="row">
         <div class="col-md-3 col-sm-6 col-xs-12">
           <div class="info-box">
-            <span class="info-box-icon bg-aqua"><i class="fa fa-envelope-o"></i></span>
+            <span class="info-box-icon bg-aqua"><i class="fa fa-list-alt"></i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text">Messages</span>
-              <span class="info-box-number">1,410</span>
+              <span class="info-box-text">&nbsp;</span>
+              <span class="info-box-number">JEB Journal</span>
+
+              <span class="progress-description">
+                    <a href="<?=Url::to([''])?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                  </span>
             </div>
             <!-- /.info-box-content -->
           </div>
@@ -173,8 +172,12 @@ $this->title = 'Dashboard';
             <span class="info-box-icon bg-green"><i class="fa fa-flag-o"></i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text">Bookmarks</span>
-              <span class="info-box-number">410</span>
+              <span class="info-box-text">&nbsp;</span>
+              <span class="info-box-number">Website</span>
+
+              <span class="progress-description">
+                    <a href="<?=Url::to([''])?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                  </span>
             </div>
             <!-- /.info-box-content -->
           </div>
@@ -183,11 +186,15 @@ $this->title = 'Dashboard';
         <!-- /.col -->
         <div class="col-md-3 col-sm-6 col-xs-12">
           <div class="info-box">
-            <span class="info-box-icon bg-yellow"><i class="fa fa-files-o"></i></span>
+            <span class="info-box-icon bg-yellow"><i class="fa fa-list"></i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text">Uploads</span>
-              <span class="info-box-number">13,648</span>
+              <span class="info-box-text">&nbsp;</span>
+              <span class="info-box-number">eAduan</span>
+
+              <span class="progress-description">
+                    <a href="<?=Url::to([''])?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                  </span>
             </div>
             <!-- /.info-box-content -->
           </div>
@@ -196,11 +203,15 @@ $this->title = 'Dashboard';
         <!-- /.col -->
         <div class="col-md-3 col-sm-6 col-xs-12">
           <div class="info-box">
-            <span class="info-box-icon bg-red"><i class="fa fa-star-o"></i></span>
+            <span class="info-box-icon bg-red"><i class="fa fa-download"></i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text">Likes</span>
-              <span class="info-box-number">93,139</span>
+              <span class="info-box-text">&nbsp;</span>
+              <span class="info-box-number">My Download</span>
+
+              <span class="progress-description">
+                    <a href="<?=Url::to([''])?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                  </span>
             </div>
             <!-- /.info-box-content -->
           </div>
