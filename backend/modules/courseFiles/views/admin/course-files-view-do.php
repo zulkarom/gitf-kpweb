@@ -83,7 +83,7 @@ use yii\helpers\Html;
                                 if($lectures->lectureCancelFiles){
                                   foreach ($lectures->lectureCancelFiles as $files) {
                                   
-                                    echo Html::a("File ".$j, ['lecture-cancel-file/download', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
+                                    echo Html::a("File ".$j, ['lecture-cancel-file/download-file', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
                                     echo '<br/>';
                                     $j++;
                                   }
@@ -124,7 +124,7 @@ use yii\helpers\Html;
                                 $j=1;
                                     if($tutorial->tutorialCancelFiles){
                                       foreach ($tutorial->tutorialCancelFiles as $files) {
-                                        echo Html::a("File ".$j, ['tutorial-cancel-file/download', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
+                                        echo Html::a("File ".$j, ['tutorial-cancel-file/download-file', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
                                         echo '<br/>';
                                         $j++;
                                       }
@@ -181,7 +181,7 @@ use yii\helpers\Html;
                                 if($lectures->lectureReceiptFiles){
                                   foreach ($lectures->lectureReceiptFiles as $files) {
                                   
-                                    echo Html::a("File ".$j, ['lecture-receipt-file/download', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
+                                    echo Html::a("File ".$j, ['lecture-receipt-file/download-file', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
                                     echo '<br/>';
                                     $j++;
                                   }
@@ -222,7 +222,7 @@ use yii\helpers\Html;
                                 $j=1;
                                     if($tutorial->tutorialReceiptFiles){
                                       foreach ($tutorial->tutorialReceiptFiles as $files) {
-                                        echo Html::a("File ".$j, ['tutorial-receipt-file/download', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
+                                        echo Html::a("File ".$j, ['tutorial-receipt-file/download-file', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
                                         echo '<br/>';
                                         $j++;
                                       }
@@ -251,7 +251,7 @@ use yii\helpers\Html;
                       {
                         $i=1;
                         foreach ($offer->coordinatorAssessmentMaterialFiles as $files) {
-                          echo Html::a("File ".$i, ['coordinator-assessment-material-file/download', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
+                          echo Html::a("File ".$i, ['coordinator-assessment-material-file/download-file', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
                           echo '<br/>';
                           $i++;
                         }
@@ -272,7 +272,7 @@ use yii\helpers\Html;
                       {
                         $i=1;
                         foreach ($offer->coordinatorAssessmentScriptFiles as $files) {
-                          echo Html::a("File ".$i, ['coordinator-assessment-script-file/download', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
+                          echo Html::a("File ".$i, ['coordinator-assessment-script-file/download-file', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
                           echo '<br/>';
                           $i++;
                         }
@@ -293,7 +293,7 @@ use yii\helpers\Html;
                       {
                         $i=1;
                         foreach ($offer->coordinatorSummativeAssessmentFiles as $files) {
-                          echo Html::a("File ".$i, ['coordinator-summative-assessment-file/download', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
+                          echo Html::a("File ".$i, ['coordinator-summative-assessment-file/download-file', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
                           echo '<br/>';
                           $i++;
                         }
@@ -314,7 +314,7 @@ use yii\helpers\Html;
                       {
                         $i=1;
                         foreach ($offer->coordinatorAnswerScriptFiles as $files) {
-                          echo Html::a("File ".$i, ['coordinator-answer-script-file/download', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
+                          echo Html::a("File ".$i, ['coordinator-answer-script-file/download-file', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
                           echo '<br/>';
                           $i++;
                         }
@@ -363,7 +363,7 @@ use yii\helpers\Html;
                                 if($lectures->lectureExemptFiles){
                                   foreach ($lectures->lectureExemptFiles as $files) {
                                   
-                                    echo Html::a("File ".$j, ['lecture-exempt-file/download', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
+                                    echo Html::a("File ".$j, ['lecture-exempt-file/download-file', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
                                     echo '<br/>';
                                     $j++;
                                   }
@@ -404,7 +404,7 @@ use yii\helpers\Html;
                                 $j=1;
                                     if($tutorial->tutorialExemptFiles){
                                       foreach ($tutorial->tutorialExemptFiles as $files) {
-                                        echo Html::a("File ".$j, ['tutorial-exempt-file/download', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
+                                        echo Html::a("File ".$j, ['tutorial-exempt-file/download-file', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
                                         echo '<br/>';
                                         $j++;
                                       }

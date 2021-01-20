@@ -57,7 +57,7 @@ use yii\helpers\Url;
                       {
                         $i=1;
                         foreach ($offer->coordinatorRubricsFiles as $files) {
-                          echo Html::a("File ".$i, ['coordinator-rubrics-file/download', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
+                          echo Html::a("File ".$i, ['coordinator-rubrics-file/download-file', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
                           echo '<br/>';
                           $i++;
                         }

@@ -243,7 +243,10 @@ class DefaultController extends Controller
    
 
     private function getSundays($startdate, $number, $exclude_date) {
+        $firstOfMonth = date("Y-m-01", strtotime(str_replace('-','/',$startdate)));
+        
         $startweek=date("W",strtotime($startdate));
+
         $year=date("Y",strtotime($startdate));
 		$arr = array();
 		$arr[] = $startdate;
