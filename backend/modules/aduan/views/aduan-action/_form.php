@@ -14,11 +14,6 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <div class="row">
-        <div class="col-md-6">
-    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
-        </div>
-    </div>
 
     <div class="row">
         <div class="col-md-6">

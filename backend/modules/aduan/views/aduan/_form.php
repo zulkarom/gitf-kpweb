@@ -3,7 +3,6 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use backend\modules\aduan\models\AduanTopic;
-use backend\modules\aduan\models\AduanProgress;
 use yii\helpers\ArrayHelper;
 use yii\captcha\Captcha;
 
@@ -16,7 +15,7 @@ use yii\captcha\Captcha;
 <div class="box-body">
 <div class="aduan-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
 
     <div class="row">
         <div class="col-md-6">

@@ -26,7 +26,6 @@ class AduanProgress extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['progress'], 'required'],
             [['progress'], 'string', 'max' => 30],
         ];
     }

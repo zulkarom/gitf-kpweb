@@ -31,11 +31,10 @@ class AduanAction extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'action_text'], 'required'],
+            [['action_text'], 'required'],
             [['aduan_id', 'created_by'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
             [['action_text'], 'string'],
-            [['title'], 'string', 'max' => 225],
         ];
     }
 
@@ -50,8 +49,7 @@ class AduanAction extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'created_by' => 'Created By',
-            'title' => 'Title',
-            'action_text' => 'Action Text',
+            'action_text' => 'Write a reply',
         ];
     }
 }

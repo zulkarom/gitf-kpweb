@@ -4,6 +4,7 @@ namespace frontend\controllers;
 
 use Yii;
 use backend\modules\aduan\models\Aduan;
+use backend\modules\aduan\models\AduanAction;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -72,21 +73,13 @@ class AduanController extends Controller
 
             $uploadFile = UploadedFile::getInstance($model,'upload_url');
 
-            if(!$uploadFile){
-                $model->upload_url = $uploadFile->name; 
-                $uploadFile->saveAs(Yii::$app->basePath . '/web/upload/' . $uploadFile->name);
-                
-                $model->progress_id = 1;
-                $model->created_at = new Expression('NOW()'); 
+            $model->upload_url = $uploadFile->name; 
+            $model->progress_id = 1;
+            $model->created_at = new Expression('NOW()'); 
 
-                $model->save(false);
-            }else{
-                $model->progress_id = 1;
-                $model->created_at = new Expression('NOW()'); 
+            $model->save(false);
 
-                $model->save(false);
-            }
-            
+            $uploadFile->saveAs(Yii::$app->basePath . '/web/upload/' . $uploadFile->name);
 
             return $this->redirect(['index']);
         }
@@ -99,15 +92,20 @@ class AduanController extends Controller
     public function actionCheck()
     {
         $model = new Aduan();
-        $modelAction =  AduanAction::find()->where(['aduan_id' => $id])->all();
-
+        $modelAduan = "";
+        
         if ($model->load(Yii::$app->request->post())) {
-
-
+            $post = Yii::$app->request->post();
+            $aduan_id = $model->id;
+            $email = $model->email;
+            
+            $modelAduan =  Aduan::find()->where(['id' => $aduan_id, 'email' => $email])->all();  
         }
 
         return $this->render('check', [
             'model' => $model,
+            'modelAduan' => $modelAduan,
+
         ]);
     }
 

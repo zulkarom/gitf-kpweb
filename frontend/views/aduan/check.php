@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="row">
 <div class="col-md-6">
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
-	
+
 	<?= $form->field($model, 'id')->textInput(['maxlength' => true]) ?>
 </div>
 
@@ -35,9 +35,46 @@ $this->params['breadcrumbs'][] = $this->title;
 
 </div>
 
+
+
 <div class="form-group">
         
 	<?= Html::submitButton('Check Status', ['class' => 'btn btn-success']) ?>
+</div>
+
+<div class="row">
+<div class="col-md-6">
+<div class="box box-primary">
+<div class="box-body">
+  	
+		<?php
+		if($modelAduan){
+
+			echo'<table class="table table-striped table-hover">
+				<tbody>
+				<tr>
+				<th>Aduan Id</th>
+				<th>Email</th>
+				<th>Status</th>
+				<th>Action</th>';
+
+			foreach ($modelAduan as $list) {
+				echo'<tr>
+					<td>'.$list->id.'</td>
+					<td>'.$list->email.'</td>
+					<td>'.$list->progress->progress.'</td>
+					<td>'.Html::a('Update', ['update', 'id' => $list->id]).'</td>
+					</tr>
+				';	
+			}
+		}
+
+		?>
+	</tbody>
+	</table>
+</div>
+</div>
+</div>
 </div>
 
     <?php ActiveForm::end(); ?>

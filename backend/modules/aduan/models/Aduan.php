@@ -42,7 +42,7 @@ class Aduan extends \yii\db\ActiveRecord
             [['name', 'nric', 'address', 'email', 'phone', 'topic_id', 'title', 'aduan', 'declaration', 'captcha', 'progress_id', 'created_at', 'updated_at'], 'required'],
             ['email', 'email'],
             [['address', 'aduan', 'upload_url'], 'string'],
-            [['declaration', 'progress_id'], 'integer'],
+            [['id','declaration', 'progress_id'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
             [['name', 'email', 'title', 'captcha'], 'string', 'max' => 225],
             [['nric', 'phone'], 'string', 'max' => 20],
@@ -82,4 +82,6 @@ class Aduan extends \yii\db\ActiveRecord
     public function getProgress(){
         return $this->hasOne(AduanProgress::className(), ['id' => 'progress_id']);
     }
+
+    
 }

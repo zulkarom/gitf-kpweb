@@ -12,6 +12,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 use yii\db\Expression;
+use yii\helpers\FileHelper;
 
 /**
  * AduanController implements the CRUD actions for Aduan model.
@@ -56,11 +57,26 @@ class AduanController extends Controller
      */
     public function actionView($id)
     {
-        $modelAction =  AduanAction::find()->where(['aduan_id' => $id])->all();
+        
+        $action =  AduanAction::find()->where(['aduan_id' => $id])->all();
+        $actionCreate = new AduanAction();
+        $aduan = $this->findModel($id);
+        
+        if ($actionCreate->load(Yii::$app->request->post()) && $aduan->load(Yii::$app->request->post())) {
+            $post = $actionCreate->load(Yii::$app->request->post());
+            $actionCreate->aduan_id = $id;
+            $actionCreate->created_at = new Expression('NOW()'); 
+            $actionCreate->created_by = 0;
+            $actionCreate->save();
+            $aduan->save();
+            return $this->refresh();
+        }
 
         return $this->render('view', [
-            'model' => $this->findModel($id),
-            'modelAction' => $modelAction,
+            'model' => $aduan,
+            'action' => $action,
+            'actionCreate' => $actionCreate,
+
         ]);
     }
 
@@ -72,18 +88,27 @@ class AduanController extends Controller
     public function actionCreate()
     {
         $model = new Aduan();
+        $modelAction = new AduanAction();
 
         if ($model->load(Yii::$app->request->post())) {
+            $year = date('Y') + 0 ;
+            $time = time();
+            $path = $year.'/'.$time.'/';
+            $directory = Yii::getAlias('@upload/aduan/'.$path);
+
+            if (!is_dir($directory)) {
+                FileHelper::createDirectory($directory);
+            }
 
             $uploadFile = UploadedFile::getInstance($model,'upload_url');
 
-            $model->upload_url = $uploadFile->name; 
+            $model->upload_url = $path.$uploadFile->name; 
             $model->progress_id = 1;
             $model->created_at = new Expression('NOW()'); 
 
-            $model->save(false);
+            $uploadFile->saveAs($directory.'/'. $uploadFile->name);
 
-            $uploadFile->saveAs(Yii::$app->basePath . '/web/upload/' . $uploadFile->name);
+            $model->save(false);
 
             return $this->redirect(['index']);
         }
@@ -91,6 +116,68 @@ class AduanController extends Controller
         return $this->render('create', [
             'model' => $model,
         ]);
+    }
+
+    public function actionDownload($id){
+        $model = $this->findModel($id);
+        
+        $file = Yii::getAlias('@upload/aduan/' . $model->upload_url);
+        
+        
+        if($model->upload_url){
+            if (file_exists($file)) {
+            $ext = pathinfo($model->upload_url, PATHINFO_EXTENSION);
+
+            $filename = 'Aduan.' . $ext ;
+            
+            self::sendFile($file, $filename, $ext);
+            
+            
+            }else{
+                echo 'file not exist!';
+            }
+        }else{
+            echo 'file not exist!';
+        }
+        
+    }
+
+    public static function sendFile($file, $filename, $ext){
+        header("Cache-Control: public");
+        header("Content-Description: File Transfer");
+        header("Content-Disposition: inline; filename=" . $filename);
+        header("Content-Type: " . self::mimeType($ext));
+        header("Content-Length: " . filesize($file));
+        header("Content-Transfer-Encoding: binary");
+        readfile($file);
+        exit;
+    }
+
+    public static function mimeType($ext){
+        switch($ext){
+            case 'pdf':
+            $mime = 'application/pdf';
+            break;
+            
+            case 'jpg':
+            case 'jpeg':
+            $mime = 'image/jpeg';
+            break;
+            
+            case 'gif':
+            $mime = 'image/gif';
+            break;
+            
+            case 'png':
+            $mime = 'image/png';
+            break;
+            
+            default:
+            $mime = '';
+            break;
+        }
+        
+        return $mime;
     }
 
     /**
@@ -127,12 +214,7 @@ class AduanController extends Controller
         ]);
     }
 
-    public function actionDownload($filename)
-    {
-        $filepath = \Yii::getalias('@webroot') . DIRECTORY_SEPARATOR
-            . 'uploads' . DIRECTORY_SEPARATOR . $filename;
-        return \Yii::$app->response->sendFile($filepath);
-    }
+  
 
     /**
      * Deletes an existing Aduan model.

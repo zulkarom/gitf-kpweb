@@ -3,6 +3,9 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\helpers\Url;
+use yii\widgets\ActiveForm;
+use backend\modules\aduan\models\AduanProgress;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\aduan\models\Aduan */
@@ -22,124 +25,206 @@ table.detail-view th {
 
 <div class="aduan-view">
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
+        <?php 
+        // Html::a('Delete', ['download', 'id' => $model->id], [
+        //     'class' => 'btn btn-danger',
+        //     'data' => [
+        //         'confirm' => 'Are you sure you want to delete this item?',
+        //         'method' => 'post',
+        //     ],
+        // ]) 
+        ?>
     </p>
 
-<div class="box">
-<div class="box-header">
-<div class="box-body">
+    <ul class="timeline">
+
+    <!-- timeline time label -->
+    <li class="time-label">
+        <span class="bg-red">
+            <?=
+            $date = date("d M Y", strtotime($model->created_at));
+            $date
+            ?>
 
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            // 'id',
-            'created_at',
-            [
-                'label' => 'Status',
-                'value' => function($model){
-                    return $model->progress->progress ;
-                }
-                
-            ],
-            [
-                'label' => 'Information',
-                'value' => function($model){
-                    return $model->nric.' / '.$model->name.' / '.$model->email.' / '.$model->address;
-                }
-            ],
+        </span>
+    </li>
+    <!-- /.timeline-label -->
 
-            // 'name',
-            // 'nric',
-            // 'address:ntext',
-            // 'email:email',
-            // 'phone',
-            [
-                'label' => 'Topic',
-                'value' => function($model){
-                    return $model->topic->topic_name ;
-                }
-                
-            ],
-            'title',
-            'aduan:ntext',
-            // 'declaration',
-            'upload_url:ntext',
-            // 'captcha',
-            
-            
-        ],
-    ]) ?>
+    <!-- timeline item -->
+    <li>
+        <!-- timeline icon -->
+        <i class="fa fa-user bg-aqua"></i>
+        <div class="timeline-item">
 
+            <span class="time"><i class="fa fa-clock-o"></i></span>
 
-</div>
-</div>
-</div>
-</div>
+            <h3 class="timeline-header"><a href="">Information</a></h3>
 
-<p>
-<?= Html::a('Create Action', ['/aduan/aduan-action/create', 'id' => $model->id], ['class' => 'btn btn-warning']) ?>
-</p>
-    <div class="box">
-        <div class="box-header">
-          <div class="a">
-            <div class="box-title"><b>Aduan Action</b></div>
-          </div>
-        </div>
-          <div class="box-body">
-            <table class="table">
-                <thead>
-                  <tr>
-                    <th style="width:5%">No.</th>
-                    <th>Title</th>
-                    <th>Action Text</th>
-                    <th>Action</th>
-                  </tr>
-                
-                     <?php 
-                
-                    if($modelAction){
-                    $i = 1;
-                      foreach($modelAction as $action){
-                        
-                      echo '<tr><td>'.$i.'</td>
-                            <td>'.$action->title.'</td>
-                            <td>'.$action->action_text.'</td>
-                            <td>
-                            <a href="' . Url::to(['/aduan/aduan-action/update', 'id' => $action->id, 'sid' => $model->id]) . '" class="btn btn-primary btn-sm" ><span class="glyphicon glyphicon-pencil"></span></a>
-
-                            <a href="' . Url::to(['/aduan/aduan-action/delete', 'id' => $action->id]) . '" class="btn btn-danger btn-sm" ><span class="glyphicon glyphicon-trash"></span></a>
-
+            <div class="timeline-body">
+                <?= DetailView::widget([
+                    'model' => $model,
+                    'attributes' => [
+                        // 'id',
+                        // 'created_at',
+                        [
+                            'label' => 'Status',
+                            'value' => function($model){
+                                return $model->progress->progress ;
+                            }
                             
+                        ],
+                        [
+                            'label' => 'Category',
+                            'value' => function($model){
+                                return $model->topic->topic_name ;
+                            }
+                            
+                        ],
+                        
+                        [
+                            'label' => 'Personal',
+                            'format' => 'html',
+                            'value' => function($model){
+                                return $model->name."<br/>".$model->nric."<br/>".$model->email."<br/>".$model->address;
+                            }
+                        ],
 
-                            </td>';
-                                    
-                            $i++;
-                       }
-                     }
-                          ?>
-                  </tr>
-                </thead>
-              </table>
-              
-              
-              
-          </div>
+                        // 'name',
+                        // 'nric',
+                        // 'address:ntext',
+                        // 'email:email',
+                        // 'phone',
+                        
+                        
+                        // 'aduan:ntext',
+                        // 'declaration',
+                        
+                        [
+                            'label' => 'Attached File',
+                            'format' => 'raw',
+                            'value' => function($model){
+                                return Html::a('Download', ['download', 'id' => $model->id], [
+                                'class' => 'btn btn-default btn-sm', 'target' => '_blank'])
+                                ;
+                            }
+                        ],
+                        // 'captcha',   
+                        ],
+                         
+    ]) ?>
+            </div>
+
+            
         </div>
-        
+    </li>
+    <!-- END timeline item -->
 
-    
+            <li>
+              <i class="fa fa-comments bg-yellow"></i>
 
-    
+              <div class="timeline-item">
 
+                <h3 class="timeline-header"><a href=""><?=$model->title?></a></h3>
+
+                <div class="timeline-body">
+                  <?=$model->aduan?>
+                </div>
+                
+              </div>
+            </li>
+
+            <?php
+            
+            if($action){
+                    $i = 1;
+                    $olddate='x';
+                      foreach($action as $act){
+                        $currentdate = date("d M Y", strtotime($act->created_at));
+                        $time =  date("g.iA", strtotime($act->created_at));
+                        if($i == 1 && $currentdate != $date){
+                           
+                            echo'
+                                <li class="time-label">
+                                    <span class="bg-green">
+                                        '.$currentdate.'
+                                    </span>
+                                </li>
+                                ';
+                               
+                        }
+                        else if($currentdate != $olddate){
+                            echo'
+                                <li class="time-label">
+                                    <span class="bg-green">
+                                        '.$currentdate.'
+                                    </span>
+                                </li>';
+                         
+                        }
+                        $olddate = $currentdate;
+
+                        echo'
+
+                        <!-- timeline item -->
+                        <li>
+                            <!-- timeline icon -->
+                            <i class="fa fa-comments bg-yellow"></i>
+                            <div class="timeline-item">
+                                <span class="time"><i class="fa fa-clock-o"></i>'.' ' .''.$time.'</span>
+
+                                <h3 class="timeline-header"><a href="">Support Team</a></h3>
+
+                                <div class="timeline-body">
+                                    '.$act->action_text.'
+                                </div>
+
+                                
+                            </div>
+                        </li>
+                        <!-- END timeline item -->
+
+';
+                    $i++;
+                      }
+                  }
+            ?>
+
+            <li>
+              <i class="fa fa-envelope bg-blue"></i>
+
+              <div class="timeline-item">
+                
+                <div class="timeline-body">
+                
+
+
+                <?php $form = ActiveForm::begin(); ?>
+                <div class="row">
+                        <div class="col-md-6">
+                    <?= $form->field($actionCreate, 'action_text')->textarea(['rows' => 6]) ?>
+                    <?= $form->field($model, 'progress_id')->dropDownList(
+                            ArrayHelper::map(AduanProgress::find()->where(['admin_action'  => 1])->all(),'id','progress'), ['prompt' => 'Pilih salah satu' ] ) ?>
+                        </div>
+
+                    </div>   
+                
+
+                <h3 class="timeline-header">
+                    
+                    <?= Html::submitButton('Add Feedback', ['class' => 'btn btn-info btn-sm']) ?>
+ 
+
+                </h3>
+
+                <?php ActiveForm::end(); ?>
+                </div>
+                                
+                </div>
+            </li>
+</ul>
+                  
 </div>
 
 
