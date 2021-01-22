@@ -7,19 +7,19 @@ use yii\grid\GridView;
 /* @var $searchModel backend\modules\aduan\models\AduanSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Feedback';
+$this->title = 'Senarai Aduan';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-
+ <p>
+        <?= Html::a('Create Aduan', ['create'], ['class' => 'btn btn-success']) ?>
+    </p>
 <div class="box">
 <div class="box-header">
 <div class="aduan-index">
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a('Create Aduan', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+   
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -33,6 +33,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'nric',
             // 'address:ntext',
             'email:email',
+			'created_at:date',
+			'progress.progress',
             //'phone',
             //'topic',
             
@@ -42,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'captcha',
 
             ['class' => 'yii\grid\ActionColumn',
-                'contentOptions' => ['style' => 'width: 20.7%'],
+                'contentOptions' => ['style' => 'width: 10.7%'],
                 'template' => '{files}',
                 'buttons'=>[
                     'files'=>function ($url, $model){

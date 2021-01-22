@@ -6,8 +6,6 @@ use yii\helpers\Html;
 /* @var $model backend\modules\aduan\models\Aduan */
 
 $this->title = 'Create Aduan';
-$this->params['breadcrumbs'][] = ['label' => 'Aduan', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="aduan-create">
 

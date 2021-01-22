@@ -41,6 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
         
 	<?= Html::submitButton('Check Status', ['class' => 'btn btn-success']) ?>
 </div>
+   <?php ActiveForm::end(); ?>
 
 <div class="row">
 <div class="col-md-6">
@@ -77,7 +78,7 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 </div>
 
-    <?php ActiveForm::end(); ?>
+ 
 
 	</div>
 </section>

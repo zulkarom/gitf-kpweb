@@ -1,12 +1,11 @@
 <div class="aduan-default-index">
-    <h1><?= $this->context->action->uniqueId ?></h1>
+
     <p>
-        This is the view content for action "<?= $this->context->action->id ?>".
-        The action belongs to the controller "<?= get_class($this->context) ?>"
-        in the "<?= $this->context->module->id ?>" module.
+        eAduan merupakan platform untuk pelajar, staff atau pihak berkepentingan lain untuk cadangan, maklumbalas, pertanyaan atau aduan anda untuk meningkatkan kualiti dan mutu penyampaian FKP terutama dari segi perkhidmatan, pentadbiran dan pengurusan.
     </p>
-    <p>
-        You may customize this page by editing the following file:<br>
-        <code><?= __FILE__ ?></code>
+	
+	<p>
+        Pautan borang aduan boleh didapati di <a href="https://fkp-portal.umk.edu.my/web/aduan" target="_blank">https://fkp-portal.umk.edu.my/web/aduan</a>.
     </p>
+ 
 </div>

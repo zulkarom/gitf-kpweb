@@ -38,75 +38,89 @@ class AduanController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Aduan::find(),
-        ]);
-
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-        ]);
-    }
-
-    /**
-     * Displays a single Aduan model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-    /**
-     * Creates a new Aduan model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
         $model = new Aduan();
+		$model->scenario = 'frontend';
+		
+		$kemaskini = new Aduan();
+		$kemaskini->scenario = 'kemaskini';
 
         if ($model->load(Yii::$app->request->post())) {
-
-            $uploadFile = UploadedFile::getInstance($model,'upload_url');
-
-            $model->upload_url = $uploadFile->name; 
-            $model->progress_id = 1;
+			$random = Yii::$app->security->generateRandomString();
+			$model->token = $random;
+			$code = rand(1000,9999);
+			$model->email_code = $code;
+			$model->progress_id = 1;
             $model->created_at = new Expression('NOW()'); 
+			$model->updated_at = new Expression('NOW()'); 
+			if($model->save()){
+				
+				if(!$model->upload()){
+					Yii::$app->session->addFlash('error', "Fail lampiran gagal dimuatnaik");
+				}
+				
+				$model->sendCode();
+				
+				return $this->redirect(['verify', 'id' => $model->id, 't' => $random]);
+				
+			}else{
+				$model->flashError();
+			}
 
-            $model->save(false);
-
-            $uploadFile->saveAs(Yii::$app->basePath . '/web/upload/' . $uploadFile->name);
-
-            return $this->redirect(['index']);
+            
         }
 
-        return $this->render('create', [
+        return $this->render('index', [
+            'model' => $model,
+			'kemaskini' => $kemaskini
+        ]);
+    }
+	
+	public function actionVerify($id, $t)
+    {
+        $model = $this->findModel($id, $t);
+		$model->scenario = 'verify';
+		
+        if ($model->load(Yii::$app->request->post())) {
+			if($model->email_code == $model->post_code){
+				$model->progress_id = 20;
+				if($model->save()){
+					$model->sendEmail();
+					Yii::$app->session->addFlash('success', "Aduan telah berjaya dihantar. Nombor aduan anda (Aduan#) anda adalah <b>".$model->id."</b>. Sila simpan nombor ini untuk tujuan rujukan masa hadapan.");
+					return $this->redirect(['index']);
+				
+				}else{
+					$model->flashError();
+				}
+			}else{
+				Yii::$app->session->addFlash('error', "Kod verifikasi tidak tepat!");
+			}
+			
+        }
+
+        return $this->render('verify', [
             'model' => $model,
         ]);
     }
 
     public function actionCheck()
     {
-        $model = new Aduan();
-        $modelAduan = "";
-        
+		$model = new Aduan;
+		
         if ($model->load(Yii::$app->request->post())) {
-            $post = Yii::$app->request->post();
+			
             $aduan_id = $model->id;
             $email = $model->email;
             
-            $modelAduan =  Aduan::find()->where(['id' => $aduan_id, 'email' => $email])->all();  
-        }
-
-        return $this->render('check', [
-            'model' => $model,
-            'modelAduan' => $modelAduan,
-
-        ]);
+            $modelAduan =  Aduan::find()->where(['id' => $aduan_id, 'email' => $email])->one();
+			
+			if($modelAduan){
+				$token = $modelAduan->token;
+				return $this->redirect(['kemaskini', 'id' =>  $modelAduan->id ,'t' => $token]);
+			}else{
+				Yii::$app->session->addFlash('error', "Maaf, aduan tidak dijumpai, pastikan maklumat email dan nombor aduan yang diisi tepat.");
+				return $this->redirect(['index']);
+			}
+        } 
     }
 
 
@@ -117,30 +131,27 @@ class AduanController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionKemaskini($id, $t)
     {
-        $model = $this->findModel($id);
+        $model = $this->findModel($id, $t);
+		
+		$action =  AduanAction::find()->where(['aduan_id' => $id])->all();
+        $actionCreate = new AduanAction();
 
-        if ($model->load(Yii::$app->request->post())) {
-
-            $oldfile = $model->upload_url;
-            if($oldfile != ""){
-                unlink(Yii::$app->basePath . '/web/upload/' . $oldfile);
-            }
-
-            $uploadFile = UploadedFile::getInstance($model,'upload_url');
-            
-            $model->upload_url = $uploadFile->name; 
-
-            $model->save(false);
-
-            $uploadFile->saveAs(Yii::$app->basePath . '/web/upload/' . $uploadFile->name);
-
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($actionCreate->load(Yii::$app->request->post()) && $model->load(Yii::$app->request->post())) {
+            $actionCreate->aduan_id = $id;
+            $actionCreate->created_at = new Expression('NOW()'); 
+            $actionCreate->created_by = 0;
+			$actionCreate->progress_id = $model->progress_id;
+            $actionCreate->save();
+            $model->save();
+            return $this->refresh();
         }
 
         return $this->render('update', [
             'model' => $model,
+			'action' => $action,
+            'actionCreate' => $actionCreate,
         ]);
     }
 
@@ -151,7 +162,9 @@ class AduanController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    /* 
+	
+	public function actionDelete($id)
     {
         $model = $this->findModel($id);
         $oldfile = $model->upload_url;
@@ -159,7 +172,9 @@ class AduanController extends Controller
         $model->delete();
 
         return $this->redirect(['index']);
-    }
+    } 
+	
+	*/
     /**
      * Finds the Aduan model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
@@ -167,9 +182,9 @@ class AduanController extends Controller
      * @return Aduan the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id, $t)
     {
-        if (($model = Aduan::findOne($id)) !== null) {
+        if (($model = Aduan::findOne(['id' => $id, 'token' => $t])) !== null) {
             return $model;
         }
 

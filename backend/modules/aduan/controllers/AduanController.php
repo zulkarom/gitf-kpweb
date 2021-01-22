@@ -12,7 +12,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 use yii\db\Expression;
-use yii\helpers\FileHelper;
+
 
 /**
  * AduanController implements the CRUD actions for Aduan model.
@@ -66,7 +66,8 @@ class AduanController extends Controller
             $post = $actionCreate->load(Yii::$app->request->post());
             $actionCreate->aduan_id = $id;
             $actionCreate->created_at = new Expression('NOW()'); 
-            $actionCreate->created_by = 0;
+            $actionCreate->created_by = Yii::$app->user->identity->id;
+			$actionCreate->progress_id = $aduan->progress_id;
             $actionCreate->save();
             $aduan->save();
             return $this->refresh();
@@ -89,28 +90,26 @@ class AduanController extends Controller
     {
         $model = new Aduan();
         $modelAction = new AduanAction();
-
+		
         if ($model->load(Yii::$app->request->post())) {
-            $year = date('Y') + 0 ;
-            $time = time();
-            $path = $year.'/'.$time.'/';
-            $directory = Yii::getAlias('@upload/aduan/'.$path);
-
-            if (!is_dir($directory)) {
-                FileHelper::createDirectory($directory);
-            }
-
-            $uploadFile = UploadedFile::getInstance($model,'upload_url');
-
-            $model->upload_url = $path.$uploadFile->name; 
-            $model->progress_id = 1;
+            $model->progress_id = 30;
             $model->created_at = new Expression('NOW()'); 
-
-            $uploadFile->saveAs($directory.'/'. $uploadFile->name);
-
-            $model->save(false);
-
-            return $this->redirect(['index']);
+			$model->updated_at = new Expression('NOW()'); 
+			$random = Yii::$app->security->generateRandomString();
+			$model->token = $random;
+			$code = rand(1000,9999);
+			$model->email_code = $code;
+			if($model->save()){
+				Yii::$app->session->addFlash('success', "Aduan telah berjaya dihantar.");
+				if(!$model->upload()){
+					Yii::$app->session->addFlash('error', "Fail lampiran gagal dimuatnaik");
+				}
+				return $this->redirect(['index']);
+				
+			}else{
+				$model->flashError();
+			}
+            
         }
 
         return $this->render('create', [
@@ -120,65 +119,10 @@ class AduanController extends Controller
 
     public function actionDownload($id){
         $model = $this->findModel($id);
-        
-        $file = Yii::getAlias('@upload/aduan/' . $model->upload_url);
-        
-        
-        if($model->upload_url){
-            if (file_exists($file)) {
-            $ext = pathinfo($model->upload_url, PATHINFO_EXTENSION);
-
-            $filename = 'Aduan.' . $ext ;
-            
-            self::sendFile($file, $filename, $ext);
-            
-            
-            }else{
-                echo 'file not exist!';
-            }
-        }else{
-            echo 'file not exist!';
-        }
-        
+        $model->download();
     }
 
-    public static function sendFile($file, $filename, $ext){
-        header("Cache-Control: public");
-        header("Content-Description: File Transfer");
-        header("Content-Disposition: inline; filename=" . $filename);
-        header("Content-Type: " . self::mimeType($ext));
-        header("Content-Length: " . filesize($file));
-        header("Content-Transfer-Encoding: binary");
-        readfile($file);
-        exit;
-    }
-
-    public static function mimeType($ext){
-        switch($ext){
-            case 'pdf':
-            $mime = 'application/pdf';
-            break;
-            
-            case 'jpg':
-            case 'jpeg':
-            $mime = 'image/jpeg';
-            break;
-            
-            case 'gif':
-            $mime = 'image/gif';
-            break;
-            
-            case 'png':
-            $mime = 'image/png';
-            break;
-            
-            default:
-            $mime = '';
-            break;
-        }
-        
-        return $mime;
-    }
+    
 
     /**
      * Updates an existing Aduan model.

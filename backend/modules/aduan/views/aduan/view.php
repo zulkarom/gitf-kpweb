@@ -10,7 +10,7 @@ use yii\helpers\ArrayHelper;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\aduan\models\Aduan */
 
-$this->title = $model->name;
+$this->title = 'Aduan#' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Aduan', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -42,9 +42,10 @@ table.detail-view th {
     <!-- timeline time label -->
     <li class="time-label">
         <span class="bg-red">
-            <?=
-            $date = date("d M Y", strtotime($model->created_at));
-            $date
+            <?php 
+			$dateSubmit = date("d M Y", strtotime($model->created_at));
+			$time =  date("g.iA", strtotime($model->created_at));
+			echo $dateSubmit;
             ?>
 
 
@@ -58,9 +59,7 @@ table.detail-view th {
         <i class="fa fa-user bg-aqua"></i>
         <div class="timeline-item">
 
-            <span class="time"><i class="fa fa-clock-o"></i></span>
-
-            <h3 class="timeline-header"><a href="">Information</a></h3>
+        
 
             <div class="timeline-body">
                 <?= DetailView::widget([
@@ -76,7 +75,7 @@ table.detail-view th {
                             
                         ],
                         [
-                            'label' => 'Category',
+                            'label' => 'Kategori',
                             'value' => function($model){
                                 return $model->topic->topic_name ;
                             }
@@ -84,7 +83,7 @@ table.detail-view th {
                         ],
                         
                         [
-                            'label' => 'Personal',
+                            'label' => 'Maklumat Pengadu',
                             'format' => 'html',
                             'value' => function($model){
                                 return $model->name."<br/>".$model->nric."<br/>".$model->email."<br/>".$model->address;
@@ -101,7 +100,7 @@ table.detail-view th {
                         // 'aduan:ntext',
                         // 'declaration',
                         
-                        [
+                        /* [
                             'label' => 'Attached File',
                             'format' => 'raw',
                             'value' => function($model){
@@ -109,7 +108,7 @@ table.detail-view th {
                                 'class' => 'btn btn-default btn-sm', 'target' => '_blank'])
                                 ;
                             }
-                        ],
+                        ], */
                         // 'captcha',   
                         ],
                          
@@ -124,13 +123,29 @@ table.detail-view th {
             <li>
               <i class="fa fa-comments bg-yellow"></i>
 
-              <div class="timeline-item">
+              <div class="timeline-item" >
+			  
+			  <span class="time">Submit <i class="fa fa-clock-o"></i> <?=$time?></span>
 
-                <h3 class="timeline-header"><a href=""><?=$model->title?></a></h3>
+                <h3 class="timeline-header"><a href="">Aduan: <?=Html::encode($model->title)?></a></h3>
 
                 <div class="timeline-body">
-                  <?=$model->aduan?>
+				<?=Html::encode($model->aduan)?>
+				
+				<div>
+				<?php 
+				if($model->upload_url){
+					echo '<br />Attached File: ' . Html::a(' Download <span class="glyphicon glyphicon-download-alt"></span>', ['download', 'id' => $model->id], [
+                               'target' => '_blank']);
+				}
+				
+			
+				
+				?>
                 </div>
+                </div>
+				
+				
                 
               </div>
             </li>
@@ -140,21 +155,25 @@ table.detail-view th {
             if($action){
                     $i = 1;
                     $olddate='x';
+					
                       foreach($action as $act){
+						  
                         $currentdate = date("d M Y", strtotime($act->created_at));
                         $time =  date("g.iA", strtotime($act->created_at));
-                        if($i == 1 && $currentdate != $date){
+						
+						
+                        if($i == 1 and ($currentdate != $dateSubmit)){
                            
                             echo'
                                 <li class="time-label">
-                                    <span class="bg-green">
-                                        '.$currentdate.'
+                                    <span class="bg-red">
+                                        '. $currentdate.'
                                     </span>
                                 </li>
                                 ';
                                
                         }
-                        else if($currentdate != $olddate){
+                        else if($i > 1 and ($currentdate != $olddate)){
                             echo'
                                 <li class="time-label">
                                     <span class="bg-green">
@@ -165,16 +184,20 @@ table.detail-view th {
                         }
                         $olddate = $currentdate;
 
-                        echo'
-
-                        <!-- timeline item -->
-                        <li>
+                        echo '<li>
                             <!-- timeline icon -->
                             <i class="fa fa-comments bg-yellow"></i>
                             <div class="timeline-item">
-                                <span class="time"><i class="fa fa-clock-o"></i>'.' ' .''.$time.'</span>
+                               <span class="time">'.$act->progress->progress .' <i class="fa fa-clock-o"></i>'.' ' .''.$time.'</span>
 
-                                <h3 class="timeline-header"><a href="">Support Team</a></h3>
+                                 <h3 class="timeline-header"><a href="">';
+							if($act->created_by == 0){
+								echo Html::encode($model->name);
+							}else{
+								echo 'Penyelia Aduan';
+							}
+								
+							echo '</a></h3>
 
                                 <div class="timeline-body">
                                     '.$act->action_text.'
@@ -183,15 +206,20 @@ table.detail-view th {
                                 
                             </div>
                         </li>
-                        <!-- END timeline item -->
 
 ';
                     $i++;
                       }
                   }
             ?>
-
-            <li>
+			
+			
+			
+			<?php 
+			if(!in_array($model->progress_id,[100,80])){
+			?>
+			
+			<li>
               <i class="fa fa-envelope bg-blue"></i>
 
               <div class="timeline-item">
@@ -202,8 +230,8 @@ table.detail-view th {
 
                 <?php $form = ActiveForm::begin(); ?>
                 <div class="row">
-                        <div class="col-md-6">
-                    <?= $form->field($actionCreate, 'action_text')->textarea(['rows' => 6]) ?>
+                        <div class="col-md-8">
+                    <?= $form->field($actionCreate, 'action_text')->textarea(['rows' => 6])->label('Write Actions / Progress / Feedback:') ?>
                     <?= $form->field($model, 'progress_id')->dropDownList(
                             ArrayHelper::map(AduanProgress::find()->where(['admin_action'  => 1])->all(),'id','progress'), ['prompt' => 'Pilih salah satu' ] ) ?>
                         </div>
@@ -213,7 +241,7 @@ table.detail-view th {
 
                 <h3 class="timeline-header">
                     
-                    <?= Html::submitButton('Add Feedback', ['class' => 'btn btn-info btn-sm']) ?>
+                    <?= Html::submitButton('Submit', ['class' => 'btn btn-success']) ?>
  
 
                 </h3>
@@ -223,6 +251,12 @@ table.detail-view th {
                                 
                 </div>
             </li>
+			
+			<?php
+			}
+			?>
+
+            
 </ul>
                   
 </div>

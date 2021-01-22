@@ -1,0 +1,9 @@
+ALTER TABLE `adu_aduan` ADD `token` VARCHAR(200) NOT NULL AFTER `progress_id`;
+ALTER TABLE `adu_aduan` ADD `email_code` VARCHAR(10) NOT NULL AFTER `updated_at`, ADD `email_verfied` TINYINT(1) NOT NULL AFTER `email_code`;
+
+ALTER TABLE `adu_aduan` ADD `type` TINYINT(1) NOT NULL COMMENT '1=staff,2=student,3=others' AFTER `name`;
+
+
+ALTER TABLE `adu_aduan_progress` ADD `user_action` TINYINT(1) NOT NULL AFTER `admin_action`;
+
+UPDATE `adu_aduan_progress` SET `user_action` = '1' WHERE `adu_aduan_progress`.`id` = 40; UPDATE `adu_aduan_progress` SET `user_action` = '1' WHERE `adu_aduan_progress`.`id` = 80; UPDATE `adu_aduan_progress` SET `user_action` = '1' WHERE `adu_aduan_progress`.`id` = 100;

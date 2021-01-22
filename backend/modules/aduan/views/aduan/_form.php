@@ -22,6 +22,12 @@ use yii\captcha\Captcha;
             <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
         </div>
     </div>
+	
+	<div class="row">
+        <div class="col-md-6">
+            <?= $form->field($model, 'type')->dropDownList([1=>'Pelajar', 2=>'Staff', 3 => 'Lain-lain'], ['prompt' => 'Sila Pilih']) ?>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-md-6">
@@ -29,11 +35,7 @@ use yii\captcha\Captcha;
          </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-4">
-            <?= $form->field($model, 'address')->textarea(['rows' => 6]) ?>
-          </div>
-    </div>
+ 
 
     <div class="row">
         <div class="col-md-4">
@@ -73,24 +75,6 @@ use yii\captcha\Captcha;
           </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-6">
-        Saya mengaku bahawa saya telah membaca dan memahami <b>takrif aduan</b> dan <b>Tatacara Pengaduan</b>.<br/>
-        Segala maklumat diri dan maklumat perkara yang dikemukakan oleh saya adalah benar dan saya bertanggungjawab ke atasnya.
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <?= $form->field($model, "declaration")->checkbox(['value' => '1', 'label'=> '']); ?>
-        </div>
-    </div>
-  
-    <div class="row">
-        <div class="col-md-6">
-            <?= $form->field($model, 'captcha')->textInput(['maxlength' => true]) ?>
-
-          </div>
-    </div>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

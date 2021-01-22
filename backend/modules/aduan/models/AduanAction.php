@@ -31,8 +31,8 @@ class AduanAction extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['action_text'], 'required'],
-            [['aduan_id', 'created_by'], 'integer'],
+            [['action_text', 'progress_id'], 'required'],
+            [['aduan_id', 'created_by', 'progress_id'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
             [['action_text'], 'string'],
         ];
@@ -51,5 +51,9 @@ class AduanAction extends \yii\db\ActiveRecord
             'created_by' => 'Created By',
             'action_text' => 'Write a reply',
         ];
+    }
+	
+	public function getProgress(){
+        return $this->hasOne(AduanProgress::className(), ['id' => 'progress_id']);
     }
 }

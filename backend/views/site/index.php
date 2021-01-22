@@ -8,21 +8,23 @@ use backend\modules\erpd\models\Stats as Erpd;
 $dirAsset = Yii::$app->assetManager->getPublishedUrl('@backend/views/myasset');
 /* @var $this yii\web\View */
 
-$this->title = 'Dashboard';
+$this->title = 'Modules';
 
 ?>
         <div class="row">
         <div class="col-md-3 col-sm-6 col-xs-12">
-          <a href="<?=Url::to(['/staff/profile'])?>">
-          <div class="info-box">
-            <span class="info-box-icon bg-aqua"><i class="fa fa-user"></i></span>
+         
+		 <a href="<?=Url::to(['/staff/profile'])?>">
+          <div class="info-box bg-aqua">
+            <span class="info-box-icon"><i class="fa fa fa-user"></i></span>
 
             <div class="info-box-content">
               <span class="info-box-text">&nbsp;</span>
-              <span class="info-box-number"><font color="Black">My Info</font></span>
+              <span class="info-box-number">My Profile</span>
 
-              <span class="progress-description">
-                    More info <i class="fa fa-arrow-circle-right"></i>
+              
+                  <span class="progress-description">
+                    <font color="white">More info </font><i class="fa fa-arrow-circle-right" style="color:white;"></i>
                   </span>
             </div>
             <!-- /.info-box-content -->
@@ -51,21 +53,24 @@ $this->title = 'Dashboard';
         </div>
         <!-- /.col -->
         <div class="col-md-3 col-sm-6 col-xs-12">
-          <a href="<?=Url::to(['/teaching-load/course-offered/index'])?>">
-          <div class="info-box">
-            <span class="info-box-icon bg-yellow"><i class="fa fa-book"></i></span>
+		<a href="<?=Url::to(['/teaching-load/course-offered/index'])?>">
+          <div class="info-box bg-yellow">
+            <span class="info-box-icon"><i class="fa fa-book"></i></span>
 
             <div class="info-box-content">
               <span class="info-box-text">&nbsp;</span>
-              <span class="info-box-number"><font color="Black">Teaching Loads</font></span>
+              <span class="info-box-number">Teaching Loads</span>
 
-              <span class="progress-description">
-                    More info <i class="fa fa-arrow-circle-right"></i>
+              
+                  <span class="progress-description">
+                    <font color="white">More info </font><i class="fa fa-arrow-circle-right" style="color:white;"></i>
                   </span>
             </div>
             <!-- /.info-box-content -->
           </div>
+          <!-- /.info-box -->
           </a>
+          
           <!-- /.info-box -->
         </div>
         <!-- /.col -->
@@ -79,9 +84,10 @@ $this->title = 'Dashboard';
               <span class="info-box-number"><font color="Black">Course Files</font></span>
 
               <span class="progress-description">
-                    More info <i class="fa fa-arrow-circle-right"></i></a>
+                    More info <i class="fa fa-arrow-circle-right"></i>
                   </span>
             </div>
+			</a>
             <!-- /.info-box-content -->
           </div>
           <!-- /.info-box -->
@@ -92,23 +98,24 @@ $this->title = 'Dashboard';
 
         <div class="row">
         <div class="col-md-3 col-sm-6 col-xs-12">
-          <a href="<?=Url::to(['/esiap'])?>">
-          <div class="info-box bg-aqua">
-            <span class="info-box-icon"><i class="fa fa-mortar-board"></i></span>
+		
+		<a href="<?=Url::to(['/esiap'])?>">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="fa fa-mortar-board"></i></span>
 
             <div class="info-box-content">
               <span class="info-box-text">&nbsp;</span>
-              <span class="info-box-number">Manage Courses</span>
+              <span class="info-box-number"><font color="Black">Manage Courses</font></span>
 
-              
-                  <span class="progress-description">
-                    <font color="white">More info </font><i class="fa fa-arrow-circle-right" style="color:white;"></i>
+              <span class="progress-description">
+                    More info <i class="fa fa-arrow-circle-right"></i>
                   </span>
             </div>
             <!-- /.info-box-content -->
           </div>
           <!-- /.info-box -->
           </a>
+		
         </div>
         <!-- /.col -->
         <div class="col-md-3 col-sm-6 col-xs-12">
@@ -132,23 +139,26 @@ $this->title = 'Dashboard';
         </div>
         <!-- /.col -->
         <div class="col-md-3 col-sm-6 col-xs-12">
-          <a href="<?=Url::to(['/students/student'])?>">
-          <div class="info-box bg-yellow">
-            <span class="info-box-icon"><i class="fa fa-users"></i></span>
+		
+		<a href="<?=Url::to(['/students/student'])?>">
+		
+          <div class="info-box">
+            <span class="info-box-icon bg-yellow"><i class="fa fa-users"></i></span>
 
             <div class="info-box-content">
               <span class="info-box-text">&nbsp;</span>
-              <span class="info-box-number">Student Data</span>
+              <span class="info-box-number"><font color="Black">Student Data</font></span>
 
-              
-                  <span class="progress-description">
-                    <font color="white">More info </font><i class="fa fa-arrow-circle-right" style="color:white;"></i>
+              <span class="progress-description">
+                    More info <i class="fa fa-arrow-circle-right"></i>
                   </span>
             </div>
             <!-- /.info-box-content -->
           </div>
           <!-- /.info-box -->
           </a>
+		  
+          
         </div>
         <!-- /.col -->
         <div class="col-md-3 col-sm-6 col-xs-12">
@@ -174,22 +184,24 @@ $this->title = 'Dashboard';
 
       <div class="row">
         <div class="col-md-3 col-sm-6 col-xs-12">
-          <a href="<?=Url::to(['/site/jeb-web'])?>" target="_blank">
-          <div class="info-box">
-            <span class="info-box-icon bg-aqua"><i class="fa fa-book"></i></span>
+		 <a href="<?=Url::to(['/site/jeb-web'])?>" target="_blank">
+          <div class="info-box bg-aqua">
+            <span class="info-box-icon"><i class="fa fa fa-book"></i></span>
 
             <div class="info-box-content">
               <span class="info-box-text">&nbsp;</span>
-              <span class="info-box-number"><font color="Black">JEB Journal</font></span>
+              <span class="info-box-number">JEB Journal</span>
 
-              <span class="progress-description">
-                    More info <i class="fa fa-arrow-circle-right"></i>
+              
+                  <span class="progress-description">
+                    <font color="white">More info </font><i class="fa fa-arrow-circle-right" style="color:white;"></i>
                   </span>
             </div>
             <!-- /.info-box-content -->
           </div>
           <!-- /.info-box -->
           </a>
+          
         </div>
         <!-- /.col -->
         <div class="col-md-3 col-sm-6 col-xs-12">
@@ -212,22 +224,26 @@ $this->title = 'Dashboard';
         </div>
         <!-- /.col -->
         <div class="col-md-3 col-sm-6 col-xs-12">
-          <a href="<?=Url::to([''])?>">
-          <div class="info-box">
-            <span class="info-box-icon bg-yellow"><i class="fa fa-list"></i></span>
+		
+		  <a href="<?=Url::to(['/aduan'])?>">
+          <div class="info-box bg-yellow">
+            <span class="info-box-icon"><i class="fa fa-comments"></i></span>
 
             <div class="info-box-content">
               <span class="info-box-text">&nbsp;</span>
-              <span class="info-box-number"><font color="Black">eAduan</font></span>
+              <span class="info-box-number">eAduan</span>
 
-              <span class="progress-description">
-                    More info <i class="fa fa-arrow-circle-right"></i>
+              
+                  <span class="progress-description">
+                    <font color="white">More info </font><i class="fa fa-arrow-circle-right" style="color:white;"></i>
                   </span>
             </div>
             <!-- /.info-box-content -->
           </div>
           <!-- /.info-box -->
           </a>
+		
+         
         </div>
         <!-- /.col -->
         <div class="col-md-3 col-sm-6 col-xs-12">
@@ -252,7 +268,7 @@ $this->title = 'Dashboard';
       </div>
       
 
-<?php if($user->staff->is_academic == 1) {?>
+<?php /* if($user->staff->is_academic == 1) {?>
 <div class="box">
 <div class="box-header">
 <h3 class="box-title">e-RPD</h3>
@@ -386,4 +402,4 @@ echo ChartJs::widget([
 </div>
 </div>
 
-<?php } ?>
+<?php } */ ?>

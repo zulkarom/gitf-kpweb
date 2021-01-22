@@ -1,0 +1,135 @@
+
+CREATE TABLE `adu_aduan` (
+  `id` int(11) NOT NULL,
+  `name` varchar(225) NOT NULL,
+  `nric` varchar(20) NOT NULL,
+  `address` text NOT NULL,
+  `email` varchar(225) NOT NULL,
+  `phone` varchar(20) NOT NULL,
+  `topic_id` varchar(100) NOT NULL,
+  `title` varchar(225) NOT NULL,
+  `aduan` text NOT NULL,
+  `declaration` tinyint(1) NOT NULL,
+  `upload_url` text NOT NULL,
+  `captcha` varchar(225) NOT NULL,
+  `progress_id` int(11) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `adu_aduan`
+--
+ALTER TABLE `adu_aduan`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `adu_aduan`
+--
+ALTER TABLE `adu_aduan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
+  
+  
+CREATE TABLE `adu_aduan_action` (
+  `id` int(11) NOT NULL,
+  `aduan_id` int(11) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `created_by` int(11) NOT NULL,
+  `action_text` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `adu_aduan_action`
+--
+ALTER TABLE `adu_aduan_action`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `adu_aduan_action`
+--
+ALTER TABLE `adu_aduan_action`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  
+
+CREATE TABLE `adu_aduan_progress` (
+  `id` int(11) NOT NULL,
+  `progress` varchar(30) NOT NULL,
+  `admin_action` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `adu_aduan_progress`
+--
+
+INSERT INTO `adu_aduan_progress` (`id`, `progress`, `admin_action`) VALUES
+(1, 'Draft', 0),
+(20, 'Submit', 0),
+(30, 'Review', 0),
+(40, 'In Progress', 1),
+(50, 'Pending', 1),
+(60, 'Action Taken', 1),
+(100, 'Complete', 1);
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `adu_aduan_progress`
+--
+ALTER TABLE `adu_aduan_progress`
+  ADD PRIMARY KEY (`id`);
+  
+  
+
+CREATE TABLE `adu_aduan_topic` (
+  `id` int(11) NOT NULL,
+  `topic_name` varchar(225) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `adu_aduan_topic`
+--
+
+INSERT INTO `adu_aduan_topic` (`id`, `topic_name`) VALUES
+(1, 'Aduan'),
+(2, 'Cadangan'),
+(3, 'Maklumbalas'),
+(4, 'Pertanyaan');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `adu_aduan_topic`
+--
+ALTER TABLE `adu_aduan_topic`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `adu_aduan_topic`
+--
+ALTER TABLE `adu_aduan_topic`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
