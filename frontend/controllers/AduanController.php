@@ -4,6 +4,7 @@ namespace frontend\controllers;
 
 use Yii;
 use backend\modules\aduan\models\Aduan;
+use backend\modules\aduan\models\Guideline;
 use backend\modules\aduan\models\AduanAction;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
@@ -39,6 +40,7 @@ class AduanController extends Controller
     public function actionIndex()
     {
         $model = new Aduan();
+		$panduan = Guideline::find()->all();
 		$model->scenario = 'frontend';
 		
 		$kemaskini = new Aduan();
@@ -71,7 +73,8 @@ class AduanController extends Controller
 
         return $this->render('index', [
             'model' => $model,
-			'kemaskini' => $kemaskini
+			'kemaskini' => $kemaskini,
+			'panduan' => $panduan
         ]);
     }
 	
@@ -79,6 +82,7 @@ class AduanController extends Controller
     {
         $model = $this->findModel($id, $t);
 		$model->scenario = 'verify';
+		
 		
         if ($model->load(Yii::$app->request->post())) {
 			if($model->email_code == $model->post_code){
@@ -99,6 +103,7 @@ class AduanController extends Controller
 
         return $this->render('verify', [
             'model' => $model,
+			
         ]);
     }
 

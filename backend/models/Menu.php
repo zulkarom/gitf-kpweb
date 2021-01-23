@@ -252,10 +252,16 @@ class Menu
 						
 				['label' => 'Intro', 'icon' => 'code', 'url' => ['/aduan']],
 				
-				//['label' => 'Stats', 'icon' => 'pie-chart', 'url' => ['/aduan/default/stats']],
+				['label' => 'Stats', 'icon' => 'pie-chart', 'url' => ['/aduan/aduan/stats']],
 				
 				
 				['label' => 'Senarai Aduan', 'icon' => 'list', 'url' => ['/aduan/aduan/index']],
+				
+				['label' => 'Daftar Aduan', 'icon' => 'plus', 'url' => ['/aduan/aduan/create']],
+				
+				['label' => 'Panduan', 'icon' => 'book', 'url' => ['/aduan/guideline/index']],
+				
+				['label' => 'Setting', 'icon' => 'gear', 'url' => ['/aduan/aduan/setting']],
 				
 
                  ]

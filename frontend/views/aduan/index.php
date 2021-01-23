@@ -31,16 +31,18 @@ $this->params['breadcrumbs'][] = $this->title;
 	
 	
 <ol style="font-size:17px; text-align:justify">
-	<li>Pihak Fakulti Keusahawanan dan Perniagaan (FKP) amat mengalu-alukan sebarang cadangan, maklumbalas, pertanyaan atau aduan anda untuk meningkatkan kualiti dan mutu penyampaian FKP terutama dari segi perkhidmatan, pentadbiran dan pengurusan.</li>
-	<li>
-	Semua aduan yang ingin dihantar mestilah di bawah bidang kuasa Fakulti Keusahawanan dan Perniagaan.
-	</li>
-<li>Semua aduan adalah dianggap SULIT. Segala maklumat peribadi berkenaan anda adalah dijamin kerahsiannya daripada pengetahuan pihak lain selain daripada Pegawai Penyelia Aduan.</li>
-<li>Semua pengadu diminta menggunakan perkataan atau ayat yang sopan sesuai dengan budaya Negara Malaysia. Sekiranya anda menggunakan bahasa yang kasar atau tidak bersesuaian dengan budaya Negara Malaysia yang mementingkan kesopanan, pihak FKP berhak untuk tidak melayan pengaduan anda.</li>
-<li>Semua pengadu diminta untuk memberikan nama, nombor kad pengenalan, alamat, e-mail dan nombor telefon untuk dihubungi bagi memastikan anda mendapat maklumbalas daripada pihak FKP berkenaan aduan yang anda adukan.</li>
-<li>Sila pastikan aduan anda adalah spesifik dan jelas mengenai perkara yanag diadukan serta pihak yang ditujukan aduan tersebut untuk mengelakkan salah faham pihak kami dalam meneliti aduan anda.</li>
-<li>Pihak FKP menjamin setiap aduan anda akan diproses dan diambil tindakan yang sebaik-baiknya dalam masa yang telah ditetapkan dan maklumbalas akan diberikan secepat mungkin.</li>
-<li>Pihak FKP akan mengemaskini status aduan dari semasa ke semasa. Jika sekiranya tiada maklum balas dari pengadu dalam sistem eAduan FKP lebih dari 7 hari, aduan tersebut dianggap telah selesai.</li>
+
+<?php 
+
+if($panduan){
+foreach($panduan as $p){
+	echo '<li>'.Html::encode($p->guideline_text) .'</li>';
+}
+}
+
+?>
+	
+	
 </ol>
 </div>
 

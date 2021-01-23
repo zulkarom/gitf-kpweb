@@ -1,0 +1,11 @@
+
+CREATE TABLE `adu_guideline` (
+  `id` int(11) NOT NULL,
+  `guideline_text` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE `adu_guideline`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `adu_guideline`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;

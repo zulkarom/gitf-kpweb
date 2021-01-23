@@ -7,6 +7,7 @@ use backend\modules\aduan\models\Aduan;
 use backend\modules\aduan\models\AduanTopic;
 use backend\modules\aduan\models\AduanSearch;
 use backend\modules\aduan\models\AduanAction;
+use backend\modules\aduan\models\Setting;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -61,6 +62,7 @@ class AduanController extends Controller
         $action =  AduanAction::find()->where(['aduan_id' => $id])->all();
         $actionCreate = new AduanAction();
         $aduan = $this->findModel($id);
+		$aduan->scenario = 'admin_update';
         
         if ($actionCreate->load(Yii::$app->request->post()) && $aduan->load(Yii::$app->request->post())) {
             $post = $actionCreate->load(Yii::$app->request->post());
@@ -68,9 +70,20 @@ class AduanController extends Controller
             $actionCreate->created_at = new Expression('NOW()'); 
             $actionCreate->created_by = Yii::$app->user->identity->id;
 			$actionCreate->progress_id = $aduan->progress_id;
-            $actionCreate->save();
-            $aduan->save();
-            return $this->refresh();
+			
+            if($actionCreate->save() and $aduan->save()){
+				if($actionCreate->progress_id == 90){
+					$actionCreate->sendActionEmail();
+				}
+				
+				
+				Yii::$app->session->addFlash('success', "Data Updated");
+				return $this->refresh();
+			}else{
+				$actionCreate->flashError();
+				$aduan->flashError();
+			}
+            
         }
 
         return $this->render('view', [
@@ -121,6 +134,19 @@ class AduanController extends Controller
         $model = $this->findModel($id);
         $model->download();
     }
+	
+	public function actionSetting(){
+		$model = Setting::findOne(1);
+		 if ($model->load(Yii::$app->request->post())) {
+			 if($model->save()){
+				 Yii::$app->session->addFlash('success', "Data Updated");
+				 return $this->refresh();
+			 }
+		 }
+		return $this->render('setting', [
+            'model' => $model,
+        ]);
+	}
 
     
 
@@ -131,7 +157,7 @@ class AduanController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    /* public function actionUpdate($id)
     {
         $model = $this->findModel($id);
 
@@ -156,7 +182,7 @@ class AduanController extends Controller
         return $this->render('update', [
             'model' => $model,
         ]);
-    }
+    } */
 
   
 
@@ -192,4 +218,11 @@ class AduanController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+	
+	public function actionStats(){
+		$model = new Aduan;
+		return $this->render('stats', [
+            'model' => $model,
+        ]);
+	}
 }

@@ -21,6 +21,9 @@ $this->params['breadcrumbs'][] = 'Update';
         <div class="container">
 
 <h3><?= Html::encode($this->title) ?>#<?=$model->id?></h3>  
+<div align="right"><a href="https://fkp-portal.umk.edu.my/web/aduan">Kembali ke Halaman Aduan</a>
+</div>
+
 <br />
 		
 <div class="aduan-update">
@@ -299,7 +302,7 @@ timeline>li>.timeline-item>.time {
 							echo '</a></h3>
 
                                 <div class="timeline-body">
-                                    '.$act->action_text.'
+                                    '.Html::encode($act->action_text) .'
                                 </div>
 
                                 

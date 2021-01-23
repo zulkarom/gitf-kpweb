@@ -56,4 +56,50 @@ class AduanAction extends \yii\db\ActiveRecord
 	public function getProgress(){
         return $this->hasOne(AduanProgress::className(), ['id' => 'progress_id']);
     }
+	
+	public function getAduan(){
+        return $this->hasOne(Aduan::className(), ['id' => 'aduan_id']);
+    }
+	
+	public function sendActionEmail(){
+		$link = 'https://fkp-portal.umk.edu.my/web/aduan/kemaskini?id='.$this->aduan->id.'&t='.$this->aduan->token;
+		Yii::$app->mailer->compose()
+		->setFrom(['fkp.umk.email@gmail.com' => 'eAduan FKP'])
+		->setTo($this->aduan->email)
+		->setSubject('Maklumat Tindakan Aduan#' . $this->aduan->id)
+		
+		->setHtmlBody('Salam Sejahtera, <br />
+		'. $this->aduan->name . '<br />
+		<br />Terima kasih kerana menggunakan eAduan FKP.
+		<br />Berikut adalah maklumat tindakan terhadap aduan anda. <br/><br/>
+		Aduan#: '.$this->id .'<br/>
+		Maklum balas tindakan: <br />
+		'.$this->action_text .'
+		<br /><br />
+		Anda boleh mengemaskini atau memberi maklum balas aduan anda di <a href="'.$link.'">'.$link.'</a>
+		
+		
+		<br /><br />
+		Email ini dihantar melalui sistem eAduan FKP. Sebarang email balas melalui email ini tidak akan sampai kepada pihak pengurusan FKP.<br /><br />
+		
+		<br /><br />Terima kasih
+		<br />Pengurusan FKP.
+		
+		')
+		->send();
+	}
+	
+	public function flashError(){
+        if($this->getErrors()){
+            foreach($this->getErrors() as $error){
+                if($error){
+                    foreach($error as $e){
+                        Yii::$app->session->addFlash('error', $e);
+                    }
+                }
+            }
+        }
+
+    }
+
 }
