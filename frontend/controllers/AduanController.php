@@ -89,6 +89,7 @@ class AduanController extends Controller
 				$model->progress_id = 20;
 				if($model->save()){
 					$model->sendEmail();
+					$model->sendEmailAdmin();
 					Yii::$app->session->addFlash('success', "Aduan telah berjaya dihantar. Nombor aduan anda (Aduan#) anda adalah <b>".$model->id."</b>. Sila simpan nombor ini untuk tujuan rujukan masa hadapan.");
 					return $this->redirect(['index']);
 				
