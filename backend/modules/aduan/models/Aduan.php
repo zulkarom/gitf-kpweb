@@ -202,24 +202,31 @@ class Aduan extends \yii\db\ActiveRecord
     }
 	
 	public function sendEmail(){
+		$link = 'https://fkp-portal.umk.edu.my/web/aduan/kemaskini?id='.$this->id.'&t='.$this->token;
 		Yii::$app->mailer->compose()
 		->setFrom(['fkp.umk.email@gmail.com' => 'eAduan FKP'])
-		->setTo('to@domain.com')
+		->setTo($this->email)
 		->setSubject('Maklumat Aduan')
 		//->setTextBody('Salam Sejahtera, '. $this->name . ' \n Terima kasih kerana menggunakan eAduan FKP. Berikut adalah salinan maklumat aduan anda. \n\n
 		//Text aduan: ' . $this->aduan . ' \n\nTerima kasih')
 		
 		->setHtmlBody('Salam Sejahtera, '. $this->name . '
-		<br />Terima kasih kerana menggunakan eAduan FKP. Berikut adalah maklumat aduan anda. <br/><br/>
+		<br />Terima kasih kerana menggunakan eAduan FKP.
+		<br />Berikut adalah maklumat aduan anda. <br/><br/>
 		Aduan#: '.$this->id .'<br/>
 		Text Aduan: <br />
 		'.$this->aduan .'
 		<br /><br />
-		Anda boleh mengemaskini maklumat aduan anda di https://fkp-portal.umk.edu.my/web/aduan/kemaskini?id='.$this->id.'&t='.$this->token.'
+		Anda boleh mengemaskini atau memberi maklum balas aduan anda di <a href="'.$link.'">'.$link.'</a>
 		
 		
+		<br /><br />
+		Email ini dihantar secara automatik. Sebarang email balas melalui email ini tidak akan sampai kepada pihak pengurusan FKP.<br /><br />
 		
-		<br /><br />Terima kasih')
+		<br /><br />Terima kasih
+		<br />Pengurusan FKP.
+		
+		')
 		->send();
 	}
 	
@@ -228,7 +235,11 @@ class Aduan extends \yii\db\ActiveRecord
 		->setFrom(['fkp.umk.email@gmail.com' => 'eAduan FKP'])
 		->setTo($this->email)
 		->setSubject('Kod Verifikasi')
-		->setTextBody('Salam Sejahtera, '. $this->name . ' \n Verifikasi Kod: ' . $this->email_code . ' \n\nTerima kasih')
+		->setHtmlBody('Salam Sejahtera, '. $this->name . ' <br />
+		Berikut merupakan kod verifikasi aduan anda:<br /><br />
+		Kod Verifikasi: ' . $this->email_code . '
+		<br /><br />
+		Terima kasih')
 		//->setHtmlBody('Hi, ' . $this->name . '<br />')
 		->send();
 	}

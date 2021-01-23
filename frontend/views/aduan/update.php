@@ -272,7 +272,7 @@ timeline>li>.timeline-item>.time {
                         else if($i > 1 and ($currentdate != $olddate)){
                             echo'
                                 <li class="time-label">
-                                    <span class="bg-green">
+                                    <span class="bg-red">
                                         '.$currentdate.'
                                     </span>
                                 </li>';
@@ -330,7 +330,9 @@ timeline>li>.timeline-item>.time {
                 <div class="row">
                         <div class="col-md-10">
                     <?= $form->field($actionCreate, 'action_text')->textarea(['rows' => 6])->label('Write Actions / Progress / Feedback:') ?>
-                    <?= $form->field($model, 'progress_id')->dropDownList(
+                    <?php 
+					$model->progress_id = 40;
+					echo $form->field($model, 'progress_id')->dropDownList(
                             ArrayHelper::map(AduanProgress::find()->where(['user_action'  => 1])->all(),'id','progress'), ['prompt' => 'Pilih salah satu' ] ) ?>
                         </div>
 

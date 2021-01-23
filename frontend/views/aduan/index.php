@@ -40,6 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <li>Semua pengadu diminta untuk memberikan nama, nombor kad pengenalan, alamat, e-mail dan nombor telefon untuk dihubungi bagi memastikan anda mendapat maklumbalas daripada pihak FKP berkenaan aduan yang anda adukan.</li>
 <li>Sila pastikan aduan anda adalah spesifik dan jelas mengenai perkara yanag diadukan serta pihak yang ditujukan aduan tersebut untuk mengelakkan salah faham pihak kami dalam meneliti aduan anda.</li>
 <li>Pihak FKP menjamin setiap aduan anda akan diproses dan diambil tindakan yang sebaik-baiknya dalam masa yang telah ditetapkan dan maklumbalas akan diberikan secepat mungkin.</li>
+<li>Pihak FKP akan mengemaskini status aduan dari semasa ke semasa. Jika sekiranya tiada maklum balas dari pengadu dalam sistem eAduan FKP lebih dari 7 hari, aduan tersebut dianggap telah selesai.</li>
 </ol>
 </div>
 

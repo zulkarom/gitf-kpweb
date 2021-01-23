@@ -190,4 +190,9 @@ class AduanController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+	
+	public function actionDownload($id){
+        $model = $this->findModel($id);
+        $model->download();
+    }
 }
