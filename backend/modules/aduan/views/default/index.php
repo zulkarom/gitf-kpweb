@@ -7,5 +7,7 @@
 	<p>
         Pautan borang aduan boleh didapati di <a href="https://fkp-portal.umk.edu.my/web/aduan" target="_blank">https://fkp-portal.umk.edu.my/web/aduan</a>.
     </p>
+	
+	<a href="https://fkp-portal.umk.edu.my/web/downloads/TATACARA_E-ADUAN_FKP.pdf" target="_blank"><i class="fa fa-download"></i> Muat Turun Tatacara eAduan FKP</a>
  
 </div>

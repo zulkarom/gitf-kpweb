@@ -48,6 +48,10 @@ foreach($panduan as $p){
 
 <div class="col-md-4">
 
+<a href="https://fkp-portal.umk.edu.my/web/downloads/TATACARA_E-ADUAN_FKP.pdf" target="_blank"><i class="fa fa-download"></i> Muat Turun Tatacara eAduan FKP</a>
+
+<br /><br />
+
 <h4>Kemaskini Status Aduan</h4>
 <br />
 <?php $form = ActiveForm::begin(['action' => ['check']]); ?>
