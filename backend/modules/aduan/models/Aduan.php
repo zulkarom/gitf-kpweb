@@ -218,7 +218,7 @@ class Aduan extends \yii\db\ActiveRecord
 		//->setTextBody('Salam Sejahtera, '. $this->name . ' \n Terima kasih kerana menggunakan eAduan FKP. Berikut adalah salinan maklumat aduan anda. \n\n
 		//Text aduan: ' . $this->aduan . ' \n\nTerima kasih')
 		
-		->setHtmlBody('Assalamualaikum dan Salam Sejahtera, <br />
+		->setHtmlBody('Salam Sejahtera, <br />
 		'. $this->name . '<br />
 		<br />Terima kasih kerana menggunakan eAduan FKP.
 		<br /><br />Berikut adalah maklumat aduan anda. <br/><br/>
@@ -244,14 +244,14 @@ class Aduan extends \yii\db\ActiveRecord
 		->setFrom(['fkp.umk.email@gmail.com' => 'eAduan FKP'])
 		->setTo($this->email)
 		->setSubject('Kod Verifikasi Aduan#'.$this->id)
-		->setHtmlBody('Assalamualaikum dan Salam Sejahtera, 
+		->setHtmlBody('Salam Sejahtera, 
 		<br />'. $this->name . ' <br /><br />
-		Berikut merupakan kod verifikasi aduan anda:<br /><br />
-		Kod Verifikasi: ' . $this->email_code . '
+		Berikut merupakan kod verifikasi aduan anda:<br />
+		<b>Kod Verifikasi: ' . $this->email_code . '</b>
 		<br /><br />
 		Email ini dihantar secara automatik. Sebarang email balas melalui email ini tidak akan sampai kepada pihak pengurusan.<br /><br />
 		
-		Terima kasih<br />
+		Terima kasih
 		<br />Pengurusan FKP.
 		
 		

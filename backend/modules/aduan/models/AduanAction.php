@@ -68,7 +68,7 @@ class AduanAction extends \yii\db\ActiveRecord
 		->setTo($this->aduan->email)
 		->setSubject('Maklumat Tindakan Aduan#' . $this->aduan->id)
 		
-		->setHtmlBody('Assalamualaikum dan Salam Sejahtera, <br />
+		->setHtmlBody('Salam Sejahtera, <br />
 		'. $this->aduan->name . '<br />
 		<br />Terima kasih kerana menggunakan eAduan FKP.
 		<br />Berikut adalah maklumat tindakan terhadap aduan anda. <br/><br/>
