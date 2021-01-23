@@ -68,7 +68,7 @@ class AduanAction extends \yii\db\ActiveRecord
 		->setTo($this->aduan->email)
 		->setSubject('Maklumat Tindakan Aduan#' . $this->aduan->id)
 		
-		->setHtmlBody('Salam Sejahtera, <br />
+		->setHtmlBody('Assalamualaikum dan Salam Sejahtera, <br />
 		'. $this->aduan->name . '<br />
 		<br />Terima kasih kerana menggunakan eAduan FKP.
 		<br />Berikut adalah maklumat tindakan terhadap aduan anda. <br/><br/>
@@ -80,7 +80,7 @@ class AduanAction extends \yii\db\ActiveRecord
 		
 		
 		<br /><br />
-		Email ini dihantar melalui sistem eAduan FKP. Sebarang email balas melalui email ini tidak akan sampai kepada pihak pengurusan FKP.<br /><br />
+		Email ini dihantar melalui sistem eAduan FKP. Sebarang email balas melalui email ini tidak akan sampai kepada pihak pengurusan.<br /><br />
 		
 		<br /><br />Terima kasih
 		<br />Pengurusan FKP.

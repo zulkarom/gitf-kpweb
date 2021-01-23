@@ -218,7 +218,7 @@ class Aduan extends \yii\db\ActiveRecord
 		//->setTextBody('Salam Sejahtera, '. $this->name . ' \n Terima kasih kerana menggunakan eAduan FKP. Berikut adalah salinan maklumat aduan anda. \n\n
 		//Text aduan: ' . $this->aduan . ' \n\nTerima kasih')
 		
-		->setHtmlBody('Salam Sejahtera, <br />
+		->setHtmlBody('Assalamualaikum dan Salam Sejahtera, <br />
 		'. $this->name . '<br />
 		<br />Terima kasih kerana menggunakan eAduan FKP.
 		<br />Berikut adalah maklumat aduan anda. <br/><br/>
@@ -230,7 +230,7 @@ class Aduan extends \yii\db\ActiveRecord
 		
 		
 		<br /><br />
-		Email ini dihantar secara automatik. Sebarang email balas melalui email ini tidak akan sampai kepada pihak pengurusan FKP.<br /><br />
+		Email ini dihantar secara automatik. Sebarang email balas melalui email ini tidak akan sampai kepada pihak pengurusan.<br /><br />
 		
 		<br /><br />Terima kasih
 		<br />Pengurusan FKP.
@@ -244,11 +244,19 @@ class Aduan extends \yii\db\ActiveRecord
 		->setFrom(['fkp.umk.email@gmail.com' => 'eAduan FKP'])
 		->setTo($this->email)
 		->setSubject('Kod Verifikasi Aduan#'.$this->id)
-		->setHtmlBody('Salam Sejahtera, '. $this->name . ' <br />
+		->setHtmlBody('Assalamualaikum dan Salam Sejahtera, <br />'. $this->name . ' <br />
 		Berikut merupakan kod verifikasi aduan anda:<br /><br />
 		Kod Verifikasi: ' . $this->email_code . '
 		<br /><br />
-		Terima kasih')
+		Email ini dihantar secara automatik. Sebarang email balas melalui email ini tidak akan sampai kepada pihak pengurusan.<br /><br />
+		
+		Terima kasih<br />
+		<br />Pengurusan FKP.
+		
+		
+		
+		
+		')
 		//->setHtmlBody('Hi, ' . $this->name . '<br />')
 		->send();
 	}
@@ -283,7 +291,7 @@ class Aduan extends \yii\db\ActiveRecord
 		//->setTextBody('Salam Sejahtera, '. $this->name . ' \n Terima kasih kerana menggunakan eAduan FKP. Berikut adalah salinan maklumat aduan anda. \n\n
 		//Text aduan: ' . $this->aduan . ' \n\nTerima kasih')
 		
-		->setHtmlBody('Salam Sejahtera, <br />
+		->setHtmlBody('Assalamualaikum dan Salam Sejahtera, <br />
 		Penyelia Aduan<br />
 		Berikut adalah maklumat aduan yang baru diterima. <br/><br/>
 		Aduan#: '.$this->id .'<br/>
