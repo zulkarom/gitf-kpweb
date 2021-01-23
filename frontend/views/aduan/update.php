@@ -332,7 +332,7 @@ timeline>li>.timeline-item>.time {
                 <?php $form = ActiveForm::begin(); ?>
                 <div class="row">
                         <div class="col-md-10">
-                    <?= $form->field($actionCreate, 'action_text')->textarea(['rows' => 6])->label('Write Actions / Progress / Feedback:') ?>
+                    <?= $form->field($actionCreate, 'action_text')->textarea(['rows' => 6])->label('Hantar maklum balas atas tindakan') ?>
                     <?php 
 					$model->progress_id = 40;
 					echo $form->field($model, 'progress_id')->dropDownList(
