@@ -221,7 +221,7 @@ class Aduan extends \yii\db\ActiveRecord
 		->setHtmlBody('Assalamualaikum dan Salam Sejahtera, <br />
 		'. $this->name . '<br />
 		<br />Terima kasih kerana menggunakan eAduan FKP.
-		<br />Berikut adalah maklumat aduan anda. <br/><br/>
+		<br /><br />Berikut adalah maklumat aduan anda. <br/><br/>
 		Aduan#: '.$this->id .'<br/>
 		Text Aduan: <br />
 		'.$this->aduan .'
@@ -244,7 +244,8 @@ class Aduan extends \yii\db\ActiveRecord
 		->setFrom(['fkp.umk.email@gmail.com' => 'eAduan FKP'])
 		->setTo($this->email)
 		->setSubject('Kod Verifikasi Aduan#'.$this->id)
-		->setHtmlBody('Assalamualaikum dan Salam Sejahtera, <br />'. $this->name . ' <br />
+		->setHtmlBody('Assalamualaikum dan Salam Sejahtera, 
+		<br />'. $this->name . ' <br /><br />
 		Berikut merupakan kod verifikasi aduan anda:<br /><br />
 		Kod Verifikasi: ' . $this->email_code . '
 		<br /><br />
@@ -292,7 +293,7 @@ class Aduan extends \yii\db\ActiveRecord
 		//Text aduan: ' . $this->aduan . ' \n\nTerima kasih')
 		
 		->setHtmlBody('Assalamualaikum dan Salam Sejahtera, <br />
-		Penyelia Aduan<br />
+		Penyelia Aduan<br /><br />
 		Berikut adalah maklumat aduan yang baru diterima. <br/><br/>
 		Aduan#: '.$this->id .'<br/>
 		Text Aduan: <br />
