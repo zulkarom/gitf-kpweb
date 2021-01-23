@@ -336,7 +336,7 @@ timeline>li>.timeline-item>.time {
                     <?php 
 					$model->progress_id = 40;
 					echo $form->field($model, 'progress_id')->dropDownList(
-                            ArrayHelper::map(AduanProgress::find()->where(['user_action'  => 1])->all(),'id','progress'), ['prompt' => 'Pilih salah satu' ] ) ?>
+                            ArrayHelper::map(AduanProgress::find()->where(['user_action'  => 1])->all(),'id','progress'), ['prompt' => 'Pilih salah satu' ] )->label('Pilihan Status') ?>
                         </div>
 
                     </div>   
