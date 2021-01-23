@@ -29,7 +29,7 @@ Emel notifikasi dihantar ke email pegawai penyelia.
 
 
 echo $form->field($model, 'penyelia')->widget(Select2::classname(), [
-    'data' => ArrayHelper::map(Staff::activeStaff(),'id','nameAndEmail'), 
+    'data' => ArrayHelper::map(Staff::activeStaff(),'user_id','nameAndEmail'), 
     'options' => ['placeholder' => 'Select a staff ...'],
     'pluginOptions' => [
         'allowClear' => true

@@ -7,8 +7,7 @@ use backend\modules\aduan\models\Guideline;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-
+use yii\filters\AccessControl;
 /**
  * GuidelineController implements the CRUD actions for Guideline model.
  */
@@ -17,13 +16,18 @@ class GuidelineController extends Controller
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
+        
+
+	public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
                 ],
             ],
         ];

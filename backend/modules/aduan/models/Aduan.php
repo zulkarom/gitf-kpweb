@@ -214,7 +214,7 @@ class Aduan extends \yii\db\ActiveRecord
 		Yii::$app->mailer->compose()
 		->setFrom(['fkp.umk.email@gmail.com' => 'eAduan FKP'])
 		->setTo($this->email)
-		->setSubject('Maklumat Aduan')
+		->setSubject('Maklumat Aduan#' . $this->id)
 		//->setTextBody('Salam Sejahtera, '. $this->name . ' \n Terima kasih kerana menggunakan eAduan FKP. Berikut adalah salinan maklumat aduan anda. \n\n
 		//Text aduan: ' . $this->aduan . ' \n\nTerima kasih')
 		
@@ -255,8 +255,10 @@ class Aduan extends \yii\db\ActiveRecord
 	
 	public function getEmailAdmin(){
 		$set = Setting::findOne(1);
+		
 		if($set){
 			if($set->penyelia > 0){
+				
 				if($set->user){
 					if($set->user->email){
 						if (filter_var($set->user->email, FILTER_VALIDATE_EMAIL)) {
