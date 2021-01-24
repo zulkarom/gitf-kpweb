@@ -72,7 +72,7 @@ class AduanAction extends \yii\db\ActiveRecord
 		'. $this->aduan->name . '<br />
 		<br />Terima kasih kerana menggunakan eAduan FKP.
 		<br />Berikut adalah maklumat tindakan terhadap aduan anda. <br/><br/>
-		Aduan#: '.$this->id .'<br/>
+		Aduan#: '.$this->aduan->id .'<br/>
 		Maklum balas tindakan: <br />
 		'.$this->action_text .'
 		<br /><br />
