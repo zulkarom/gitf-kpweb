@@ -1,0 +1,5 @@
+
+'aduan' => [
+            'class' => 'backend\modules\aduan\Module',
+        ],
+

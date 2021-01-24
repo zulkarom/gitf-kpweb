@@ -242,6 +242,33 @@ class Menu
 		return $website;
 	}
 	
+	public static function adminAduan(){
+		$website = [
+                        'label' => 'Aduan Admin',
+                        'icon' => 'list-ul',
+						'visible' => Yii::$app->user->can('manage-aduan'),
+                        'url' => '#',
+                        'items' => [
+						
+				['label' => 'Intro', 'icon' => 'code', 'url' => ['/aduan']],
+				
+				['label' => 'Stats', 'icon' => 'pie-chart', 'url' => ['/aduan/aduan/stats']],
+				
+				
+				['label' => 'Senarai Aduan', 'icon' => 'list', 'url' => ['/aduan/aduan/index']],
+				
+				['label' => 'Daftar Aduan', 'icon' => 'plus', 'url' => ['/aduan/aduan/create']],
+				
+				['label' => 'Panduan', 'icon' => 'book', 'url' => ['/aduan/guideline/index']],
+				
+				['label' => 'Setting', 'icon' => 'gear', 'url' => ['/aduan/aduan/setting']],
+				
+
+                 ]
+                    ];
+		return $website;
+	}
+	
 	public static function staff(){
 		$staff = [
                         'label' => 'Staff Menu',

@@ -8,93 +8,118 @@ use backend\modules\erpd\models\Stats as Erpd;
 $dirAsset = Yii::$app->assetManager->getPublishedUrl('@backend/views/myasset');
 /* @var $this yii\web\View */
 
-$this->title = 'Dashboard';
+$this->title = 'Modules';
 
 ?>
-<div class="row">
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-aqua">
-            <div class="inner">
-              <h3>&nbsp;</h3>
-
-              <h4>My Info</h4>
-            </div>
-            <div class="icon">
-              <i class="fa fa-user"></i>
-            </div>
-      
-            <a href="<?=Url::to(['/staff/profile'])?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-green">
-            <div class="inner">
-              <h3>&nbsp;</h3>
-
-              <h4>Staff Data</h4>
-            </div>
-            <div class="icon">
-              <i class="fa fa-users"></i>
-            </div>
-            <a href="<?=Url::to(['/staff'])?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-yellow">
-            <div class="inner">
-              <h3>&nbsp;</h3>
-
-              <h4>Teaching Loads</h4>
-            </div>
-            <div class="icon">
-              <i class="fa fa-book"></i>
-            </div>
-            <a href="<?=Url::to(['/teaching-load/course-offered/index'])?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-red">
-            <div class="inner">
-              <h3>&nbsp;</h3>
-
-              <h4>Course Files</h4>
-            </div>
-            <div class="icon">
-              <i class="fa fa-files-o"></i>
-            </div>
-            <a href="<?=Url::to(['/course-files/default/teaching-assignment'])?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        </div>
-        <!-- ./col -->
-
         <div class="row">
         <div class="col-md-3 col-sm-6 col-xs-12">
+         
+		 <a href="<?=Url::to(['/staff/profile'])?>">
           <div class="info-box bg-aqua">
-            <span class="info-box-icon"><i class="fa fa-bookmark-o"></i></span>
+            <span class="info-box-icon"><i class="fa fa fa-user"></i></span>
 
             <div class="info-box-content">
               <span class="info-box-text">&nbsp;</span>
-              <span class="info-box-number">Manage Courses</span>
+              <span class="info-box-number">My Profile</span>
 
               
                   <span class="progress-description">
-                    <a href="<?=Url::to([''])?>" class="small-box-footer"><font color="white">More info </font><i class="fa fa-arrow-circle-right" style="color:white;"></i></a>
+                    <font color="white">More info </font><i class="fa fa-arrow-circle-right" style="color:white;"></i>
                   </span>
             </div>
             <!-- /.info-box-content -->
           </div>
           <!-- /.info-box -->
+          </a>
         </div>
         <!-- /.col -->
         <div class="col-md-3 col-sm-6 col-xs-12">
+          <a href="<?=Url::to(['/staff'])?>">
+          <div class="info-box">
+            <span class="info-box-icon bg-green"><i class="fa fa-users"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">&nbsp;</span>
+              <span class="info-box-number"><font color="Black">Staff Data</font></span>
+
+              <span class="progress-description">
+                    More info <i class="fa fa-arrow-circle-right"></i>
+                  </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+          </a>
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-xs-12">
+		<a href="<?=Url::to(['/teaching-load/course-offered/index'])?>">
+          <div class="info-box bg-yellow">
+            <span class="info-box-icon"><i class="fa fa-book"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">&nbsp;</span>
+              <span class="info-box-number">Teaching Loads</span>
+
+              
+                  <span class="progress-description">
+                    <font color="white">More info </font><i class="fa fa-arrow-circle-right" style="color:white;"></i>
+                  </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+          </a>
+          
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <a href="<?=Url::to(['/course-files/default/teaching-assignment'])?>">
+          <div class="info-box">
+            <span class="info-box-icon bg-red"><i class="fa fa-files-o"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">&nbsp;</span>
+              <span class="info-box-number"><font color="Black">Course Files</font></span>
+
+              <span class="progress-description">
+                    More info <i class="fa fa-arrow-circle-right"></i>
+                  </span>
+            </div>
+			</a>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        </div>
+        <!-- ./col -->
+
+        <div class="row">
+        <div class="col-md-3 col-sm-6 col-xs-12">
+		
+		<a href="<?=Url::to(['/esiap'])?>">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="fa fa-mortar-board"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">&nbsp;</span>
+              <span class="info-box-number"><font color="Black">Manage Courses</font></span>
+
+              <span class="progress-description">
+                    More info <i class="fa fa-arrow-circle-right"></i>
+                  </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+          </a>
+		
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <a href="<?=Url::to([''])?>">
           <div class="info-box bg-green">
             <span class="info-box-icon"><i class="fa fa-sticky-note"></i></span>
 
@@ -104,33 +129,40 @@ $this->title = 'Dashboard';
 
             
                   <span class="progress-description">
-                    <a href="<?=Url::to([''])?>" class="small-box-footer"><font color="white">More info </font><i class="fa fa-arrow-circle-right" style="color:white;"></i></a>
+                    <font color="white">More info </font><i class="fa fa-arrow-circle-right" style="color:white;"></i>
                   </span>
             </div>
             <!-- /.info-box-content -->
           </div>
           <!-- /.info-box -->
+          </a>
         </div>
         <!-- /.col -->
         <div class="col-md-3 col-sm-6 col-xs-12">
-          <div class="info-box bg-yellow">
-            <span class="info-box-icon"><i class="fa fa-graduation-cap"></i></span>
+		
+		<a href="<?=Url::to(['/students/student'])?>">
+		
+          <div class="info-box">
+            <span class="info-box-icon bg-yellow"><i class="fa fa-users"></i></span>
 
             <div class="info-box-content">
               <span class="info-box-text">&nbsp;</span>
-              <span class="info-box-number">Student Data</span>
+              <span class="info-box-number"><font color="Black">Student Data</font></span>
 
-              
-                  <span class="progress-description">
-                    <a href="<?=Url::to([''])?>" class="small-box-footer"><font color="white">More info </font><i class="fa fa-arrow-circle-right" style="color:white;"></i></a>
+              <span class="progress-description">
+                    More info <i class="fa fa-arrow-circle-right"></i>
                   </span>
             </div>
             <!-- /.info-box-content -->
           </div>
           <!-- /.info-box -->
+          </a>
+		  
+          
         </div>
         <!-- /.col -->
         <div class="col-md-3 col-sm-6 col-xs-12">
+          <a href="<?=Url::to([''])?>">
           <div class="info-box bg-red">
             <span class="info-box-icon"><i class="fa fa-flask"></i></span>
 
@@ -139,89 +171,104 @@ $this->title = 'Dashboard';
               <span class="info-box-number">e-RPD</span>
 
                   <span class="progress-description">
-                    <a href="<?=Url::to([''])?>" class="small-box-footer"><font color="white">More info </font><i class="fa fa-arrow-circle-right" style="color:white;"></i></a>
+                    <font color="white">More info </font><i class="fa fa-arrow-circle-right" style="color:white;"></i>
                   </span>
             </div>
             <!-- /.info-box-content -->
           </div>
           <!-- /.info-box -->
+          </a>
         </div>
         <!-- /.col -->
       </div>
 
       <div class="row">
         <div class="col-md-3 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-aqua"><i class="fa fa-list-alt"></i></span>
+		 <a href="<?=Url::to(['/site/jeb-web'])?>" target="_blank">
+          <div class="info-box bg-aqua">
+            <span class="info-box-icon"><i class="fa fa fa-book"></i></span>
 
             <div class="info-box-content">
               <span class="info-box-text">&nbsp;</span>
               <span class="info-box-number">JEB Journal</span>
 
-              <span class="progress-description">
-                    <a href="<?=Url::to([''])?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+              
+                  <span class="progress-description">
+                    <font color="white">More info </font><i class="fa fa-arrow-circle-right" style="color:white;"></i>
                   </span>
             </div>
             <!-- /.info-box-content -->
           </div>
           <!-- /.info-box -->
+          </a>
+          
         </div>
         <!-- /.col -->
         <div class="col-md-3 col-sm-6 col-xs-12">
+          <a href="<?=Url::to([''])?>">
           <div class="info-box">
-            <span class="info-box-icon bg-green"><i class="fa fa-flag-o"></i></span>
+            <span class="info-box-icon bg-green"><i class="fa fa-tv"></i></span>
 
             <div class="info-box-content">
               <span class="info-box-text">&nbsp;</span>
-              <span class="info-box-number">Website</span>
+              <span class="info-box-number"><font color="Black">Website</font></span>
 
               <span class="progress-description">
-                    <a href="<?=Url::to([''])?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                    More info <i class="fa fa-arrow-circle-right"></i>
                   </span>
             </div>
             <!-- /.info-box-content -->
           </div>
           <!-- /.info-box -->
+          </a>
         </div>
         <!-- /.col -->
         <div class="col-md-3 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-yellow"><i class="fa fa-list"></i></span>
+		
+		  <a href="<?=Url::to(['/aduan'])?>">
+          <div class="info-box bg-yellow">
+            <span class="info-box-icon"><i class="fa fa-comments"></i></span>
 
             <div class="info-box-content">
               <span class="info-box-text">&nbsp;</span>
               <span class="info-box-number">eAduan</span>
 
-              <span class="progress-description">
-                    <a href="<?=Url::to([''])?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+              
+                  <span class="progress-description">
+                    <font color="white">More info </font><i class="fa fa-arrow-circle-right" style="color:white;"></i>
                   </span>
             </div>
             <!-- /.info-box-content -->
           </div>
           <!-- /.info-box -->
+          </a>
+		
+         
         </div>
         <!-- /.col -->
         <div class="col-md-3 col-sm-6 col-xs-12">
+          <a href="<?=Url::to([''])?>">
           <div class="info-box">
             <span class="info-box-icon bg-red"><i class="fa fa-download"></i></span>
 
             <div class="info-box-content">
               <span class="info-box-text">&nbsp;</span>
-              <span class="info-box-number">My Download</span>
+              <span class="info-box-number"><font color="Black">My Download</font></span>
 
               <span class="progress-description">
-                    <a href="<?=Url::to([''])?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                    More info <i class="fa fa-arrow-circle-right"></i>
                   </span>
             </div>
             <!-- /.info-box-content -->
           </div>
           <!-- /.info-box -->
+          </a>
         </div>
         <!-- /.col -->
       </div>
       
 
-<?php if($user->staff->is_academic == 1) {?>
+<?php /* if($user->staff->is_academic == 1) {?>
 <div class="box">
 <div class="box-header">
 <h3 class="box-title">e-RPD</h3>
@@ -355,4 +402,4 @@ echo ChartJs::widget([
 </div>
 </div>
 
-<?php } ?>
+<?php } */ ?>

@@ -173,6 +173,10 @@ class Staff extends \yii\db\ActiveRecord
 		return $this->staff_title . ' ' . $this->user->fullname;
 	}
 	
+	public function getNameAndEmail(){
+		return $this->staff_title . ' ' . $this->user->fullname . ' ('.$this->user->email .')';
+	}
+	
 	public function getListTitles(){
 		$array = ['Encik','Cik', 'Puan' ,'Dr.', 'Prof. Madya', 'Prof. Madya Dr.', 'Prof.', 'Prof. Dr.'];
 		$return = [];
@@ -201,7 +205,7 @@ class Staff extends \yii\db\ActiveRecord
 	
 	public static function activeStaff(){
 		return self::find()
-		->select('staff.id, user.fullname as staff_name, user.id as user_id')
+		->select('staff.id, user.fullname as staff_name, user.id as user_id, user.email')
 		->innerJoin('user', 'user.id = staff.user_id')
 		->where(['staff.staff_active' => 1])->orderBy('user.fullname ASC')
 		->all();

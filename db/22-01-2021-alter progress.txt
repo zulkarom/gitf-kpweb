@@ -1,0 +1,14 @@
+TRUNCATE `fkp_portal_yfv`.`adu_aduan_progress`;
+
+INSERT INTO `adu_aduan_progress` (`id`, `progress`, `admin_action`) VALUES
+(1, 'Unverified', 0),
+(20, 'Submit', 0),
+(30, 'Review', 0),
+(40, 'In Progress', 1),
+(70, 'Clarification Request', 1),
+(80, 'Withdraw', 0),
+(90, 'Action Taken', 1),
+(100, 'Complete', 0);
+
+
+ALTER TABLE `adu_aduan_action` ADD `progress_id` INT NOT NULL AFTER `action_text`;

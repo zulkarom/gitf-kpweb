@@ -83,6 +83,10 @@ use backend\models\Menu;
 			case 'students':
 			$admin_focus = Menu::adminStudents();
 			break;
+			
+			case 'aduan':
+			$admin_focus = Menu::adminAduan();
+			break;
 
 	
 
@@ -174,9 +178,11 @@ $menuItems = [
 					
 					['label' => 'Staff Info', 'icon' => 'user', 'url' => ['/staff']],
 					
-					['label' => 'e-SIAP', 'icon' => 'mortar-board', 'url' => ['/esiap'],],
+					['label' => 'Manage Courses', 'icon' => 'mortar-board', 'url' => ['/esiap'],],
 					
 					['label' => 'e-RPD', 'icon' => 'flask', 'url' => ['/erpd'],],	
+					
+					['label' => 'eAduan', 'icon' => 'comments', 'url' => ['/aduan'],],
 					
 					['label' => 'JEB Journal', 'icon' => 'book', 'url' => ['/site/jeb-web'], 'template'=>'<a href="{url}" target="_blank">{icon} {label}</a>'],
 					
