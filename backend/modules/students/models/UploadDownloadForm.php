@@ -35,26 +35,36 @@ class UploadDownloadForm extends Model
 			}
 			
             foreach ($this->imageFiles as $file) {
+				
 				$matric = $file->baseName;
 				$student = Student::findOne(['matric_no' => $matric]);
 				if($student){
+					
 					if(empty($student->nric)){
 						ii::$app->session->addFlash('error', "Student Ic Number for (".$matric.") is empty. Make sure the the student ic number is set in student data!");
 					}else{
+						
 						$curr = Download::findOne(['matric_no' => $matric, 'category_id' => $this->category]);
 						if($curr){
+							
 							if($file->saveAs($path .  $file->baseName . '.' . $file->extension)){
+								
 								Yii::$app->session->addFlash('success', "A file for ". $student->st_name ." (". $matric .") has been successfully uploaded");
 							}
 						}else{
+							
 							$new = new Download;
 							$new->matric_no = $matric;
 							$new->created_at = new Expression('NOW()');
+							$new->category_id = $this->category;
 							$new->created_by = Yii::$app->user->identity->id;
 							if($new->save()){
 								if($file->saveAs($path .  $file->baseName . '.' . $file->extension)){
 									Yii::$app->session->addFlash('success', "A file for ". $student->st_name ." (". $matric .") has been successfully uploaded");
 								}
+							}else{
+								print_r($new->getErrors());
+								die();
 							}
 						}
 						

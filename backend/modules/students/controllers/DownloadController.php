@@ -151,9 +151,22 @@ class DownloadController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-		Yii::$app->session->addFlash('success', "Data Updated");
-        return $this->redirect(['index']);
+		$model = $this->findModel($id);
+		$file = Yii::getAlias('@upload/student-download/'. $model->category_id .'/' . $model->matric_no . '.pdf');
+
+        if($model->delete()){
+            if (is_file($file)) {
+                unlink($file);
+                
+            }
+            Yii::$app->session->addFlash('success', "Data Deleted");
+			return $this->redirect(['index']);
+        }
+		
+		
+
+		
+		
     }
 
     /**
@@ -174,7 +187,7 @@ class DownloadController extends Controller
 	
 	public function actionDownloadFile($id){
 		$model = $this->findModel($id);
-		if(!UploadFile::download($model, 'file', $model->matric_no, $model->category_id)){
+		if(!UploadFile::downloadCategory($model)){
 			echo 'File not exist!';
 		}
 	}

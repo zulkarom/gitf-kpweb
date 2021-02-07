@@ -256,6 +256,28 @@ class UploadFile
 		
 	}
 	
+	public static function downloadCategory($model){
+		$file = Yii::getAlias('@upload/student-download/'. $model->category_id .'/' . $model->matric_no . '.pdf');
+		//echo $file;die();
+		if($model->matric_no){
+			if (file_exists($file)) {
+			$ext = pathinfo($file, PATHINFO_EXTENSION);
+			$filename = $model->matric_no . '.' . $ext ;
+	
+			self::sendFile($file, $filename , $ext);
+			
+			}else{
+				return false;
+			}
+		}else{
+			return false;
+		}
+		
+        
+		
+		
+	}
+	
 	public static function sendFile($file, $filename, $ext){
 		header("Cache-Control: public");
 		header("Content-Description: File Transfer");

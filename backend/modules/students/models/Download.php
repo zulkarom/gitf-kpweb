@@ -13,6 +13,7 @@ use Yii;
  */
 class Download extends \yii\db\ActiveRecord
 {
+	public $folder;
     /**
      * {@inheritdoc}
      */
