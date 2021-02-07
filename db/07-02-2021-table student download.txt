@@ -1,0 +1,55 @@
+CREATE TABLE `st_download` (
+  `id` int(11) NOT NULL,
+  `category_id` int(11) NOT NULL,
+  `matric_no` varchar(20) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `created_by` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `st_download_cat`
+--
+
+CREATE TABLE `st_download_cat` (
+  `id` int(11) NOT NULL,
+  `category_name` varchar(200) NOT NULL,
+  `is_default` tinyint(1) NOT NULL,
+  `description` text NOT NULL,
+  `created_by` int(11) NOT NULL,
+  `created_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `st_download`
+--
+ALTER TABLE `st_download`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `st_download_cat`
+--
+ALTER TABLE `st_download_cat`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `st_download`
+--
+ALTER TABLE `st_download`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `st_download_cat`
+--
+ALTER TABLE `st_download_cat`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  

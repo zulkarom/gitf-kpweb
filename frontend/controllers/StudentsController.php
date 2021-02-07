@@ -6,7 +6,9 @@ use Yii;
 use backend\modules\students\models\InternshipList;
 use frontend\models\InternshipForm;
 use backend\modules\students\models\DeanList;
+use backend\modules\students\models\Download;
 use frontend\models\DeanListForm;
+use frontend\models\DownloadForm;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -63,9 +65,28 @@ class StudentsController extends Controller
         ]);
     }
 	
-	public function actionDownloadFile($id){
-        
+	public function actionDownloads()
+    {
+		$model = new DownloadForm;
+		if ($model->load(Yii::$app->request->post())) {
+			
+			$student = $this->findDownload($model->category, $model->matric, $model->nric);
+			if($student){
+				if(!UploadFile::downloadCategory($student)){
+					Yii::$app->session->addFlash('error', "File not found!");
+					//return $this->refresh();
+				}
+			}else{
+				Yii::$app->session->addFlash('error', "No document found for this student under the selected category!");
+				//return $this->refresh();
+			}
+		}
+
+        return $this->render('downloads', [
+			'model' => $model
+        ]);
     }
+	
 
     protected function findInternship($matric, $nric)
     {
@@ -81,6 +102,20 @@ class StudentsController extends Controller
         $model = DeanList::find()
 		->joinWith(['student'])
 		->where(['st_dean_list.semester_id' => $semester, 'st_student.matric_no' => $matric, 'st_student.nric' => $nric])
+		->one();
+		
+		if($model !== null){
+			return $model;
+		}
+
+        return false;
+    }
+	
+	protected function findDownload($category, $matric, $nric)
+    {
+        $model = Download::find()
+		->joinWith(['student'])
+		->where(['category_id' => $category, 'st_student.matric_no' => $matric, 'st_student.nric' => $nric])
 		->one();
 		
 		if($model !== null){

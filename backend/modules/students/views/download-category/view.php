@@ -32,7 +32,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
 		'id',
 		'category_name',
-		'is_default',
+		'showDefault',
+		'showActive',
 		'description:ntext',
 		'created_at',
         ],

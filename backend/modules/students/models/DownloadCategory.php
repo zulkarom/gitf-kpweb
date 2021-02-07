@@ -3,6 +3,7 @@
 namespace backend\modules\students\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "st_download_cat".
@@ -30,7 +31,7 @@ class DownloadCategory extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['category_name', 'is_default', 'created_by', 'created_at'], 'required'],
+            [['category_name', 'is_default', 'is_active', 'created_by', 'created_at'], 'required'],
             [['is_default', 'created_by'], 'integer'],
             [['description'], 'string'],
             [['created_at'], 'safe'],
@@ -44,9 +45,12 @@ class DownloadCategory extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
+            'id' => 'Category ID',
             'category_name' => 'Category Name',
             'is_default' => 'Default',
+			'is_active' => 'Active',
+			'showDefault' => 'Default',
+			'showActive' => 'Active',
             'description' => 'Description',
             'created_by' => 'Created By',
             'created_at' => 'Created At',
@@ -59,6 +63,18 @@ class DownloadCategory extends \yii\db\ActiveRecord
 		}else{
 			return 'No';
 		}
+	}
+	
+	public function getShowActive(){
+		if($this->is_active == 1){
+			return 'Yes';
+		}else{
+			return 'No';
+		}
+	}
+	
+	public static function activeCategories(){
+		return ArrayHelper::map(self::find()->where(['is_active' => 1])->all(), 'id', 'category_name');
 	}
 	
 	public static function getDefaultCategory(){

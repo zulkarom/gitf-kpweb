@@ -16,6 +16,7 @@ $this->params['breadcrumbs'][] = 'Categories';
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
+	<?= Html::a('Download List', ['/students/download'], ['class' => 'btn btn-info']) ?>
         <?= Html::a('Create Category', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
@@ -33,9 +34,25 @@ $this->params['breadcrumbs'][] = 'Categories';
 			'value' => 'showDefault',
 		],
 		
+		[
+			'attribute' => 'is_active',
+			'value' => 'showActive',
+		],
+		
 		'created_at:date',
 		
-		['class' => 'yii\grid\ActionColumn'],
+		['class' => 'yii\grid\ActionColumn',
+                 'contentOptions' => ['style' => 'width: 10%'],
+                'template' => '{update}',
+                //'visible' => false,
+                'buttons'=>[
+                    'update'=>function ($url, $model) {
+                        return Html::a('<span class="glyphicon glyphicon-pencil"></span> Update',['update', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
+                    },
+
+                ],
+            
+            ],
         ],
     ]); ?></div>
 	</div>

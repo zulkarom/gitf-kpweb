@@ -62,7 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 //'visible' => false,
                 'buttons'=>[
                     'update'=>function ($url, $model) {
-                        return Html::a('VIEW',['view', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
+                        return Html::a('<span class="glyphicon glyphicon-search"></span> VIEW',['view', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
                     },
 					'download' => function ($url, $model) {
                         return Html::a('<span class="glyphicon glyphicon-download-alt"></span> Download',['download-file', 'id' => $model->id],['class'=>'btn btn-success btn-sm', 'target' => '_blank']);
