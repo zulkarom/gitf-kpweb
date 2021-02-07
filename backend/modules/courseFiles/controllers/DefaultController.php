@@ -306,12 +306,14 @@ class DefaultController extends Controller
     }
 
     public function actionLectureStudentAttendanceDate($id){
-	/* 	echo date("W",strtotime('2021-01-04'));
+		$date = '2021-01-01';
+		$year=date("Y",strtotime($date));
+		$week =  date("W",strtotime($date));
 		$dto = new \DateTime();
-      echo $dto->setISODate(2021, 53, 5)->format('Y-m-d');
+		echo $dto->setISODate($year, $week, 5)->format('Y-m-d');
 	  die();
 	  
-	   */
+	  
         $model = new AddStudentLectureDateForm;
 		$lecture = $this->findLecture($id);
         //$startdate = '2014-05-17';
