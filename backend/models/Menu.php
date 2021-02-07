@@ -129,6 +129,8 @@ class Menu
 			'items' => [
 
 				['label' => 'Active Students', 'icon' => 'user', 'url' => ['/students/student'], 'visible' => Yii::$app->user->can('students-manager')],
+				
+				['label' => 'Downloads', 'icon' => 'download', 'url' => ['/students/download'], 'visible' => Yii::$app->user->can('students-manager')],
 
 				
 				['label' => 'Internship', 'icon' => 'book', 'url' => ['/students/internship'], 'visible' => Yii::$app->user->can('internship-manager')],

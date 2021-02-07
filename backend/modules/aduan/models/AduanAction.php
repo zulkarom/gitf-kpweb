@@ -89,6 +89,34 @@ class AduanAction extends \yii\db\ActiveRecord
 		->send();
 	}
 	
+	public function sendClarificationEmail(){
+		$link = 'https://fkp-portal.umk.edu.my/web/aduan/kemaskini?id='.$this->aduan->id.'&t='.$this->aduan->token;
+		Yii::$app->mailer->compose()
+		->setFrom(['fkp.umk.email@gmail.com' => 'eAduan FKP'])
+		->setTo($this->aduan->email)
+		->setSubject('Mohon Penjelasan Lanjut Terhadap Aduan#' . $this->aduan->id)
+		
+		->setHtmlBody('Salam Sejahtera, <br />
+		'. $this->aduan->name . '<br />
+		<br />Terima kasih kerana menggunakan eAduan FKP.
+		<br />Pihak kami memerlukan sedikit penjelasan berkaitan dengan aduan anda. <br/><br/>
+		Aduan#: '.$this->aduan->id .'<br/>
+		Penjelasan terhadap aduan: <br />
+		'.$this->action_text .'
+		<br /><br />
+		Anda boleh memberi penjelasan di pautan <a href="'.$link.'">'.$link.'</a>
+		
+		
+		<br /><br />
+		Email ini dihantar melalui sistem eAduan FKP. Sebarang email balas melalui email ini tidak akan sampai kepada pihak pengurusan.<br /><br />
+		
+		<br /><br />Terima kasih
+		<br />Pengurusan FKP.
+		
+		')
+		->send();
+	}
+	
 	public function flashError(){
         if($this->getErrors()){
             foreach($this->getErrors() as $error){

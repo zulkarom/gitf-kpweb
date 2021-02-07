@@ -80,6 +80,9 @@ class AduanController extends Controller
 				if($actionCreate->progress_id == 90){
 					$actionCreate->sendActionEmail();
 				}
+				if($actionCreate->progress_id == 90){
+					$actionCreate->sendActionEmail();
+				}
 				
 				
 				Yii::$app->session->addFlash('success', "Data Updated");

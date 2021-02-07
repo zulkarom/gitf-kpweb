@@ -2,14 +2,10 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 
-$this->title = 'e-SIAP MODULE';
+$this->title = 'Manage Courses';
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
-
-<i>Electronic Structured and Integrated Academic Package</i>
-<br /><br />
-
 
 <div class="box box-primary">
 <div class="box-header">
