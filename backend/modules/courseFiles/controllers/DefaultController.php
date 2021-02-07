@@ -7,6 +7,7 @@ use yii\web\Controller;
 use backend\models\SemesterForm;
 use backend\models\Semester;
 use backend\modules\teachingLoad\models\Staff;
+use backend\modules\courseFiles\models\Api;
 use backend\modules\courseFiles\models\CourseFilesSearch;
 use backend\modules\courseFiles\models\Checklist;
 use backend\modules\courseFiles\models\LectureCancel;
@@ -146,12 +147,106 @@ class DefaultController extends Controller
 	
 	 public function actionLectureStudentList($id){
 		$lecture = $this->findLecture($id);
+		
+		$kira = StudentLecture::find()->where(['lecture_id' => $id])->count();
+        if($kira == 0){
+			$this->importStudentListApi($lecture);
+
+        }
 
         $searchModel = new StudentLectureSearch();
         $searchModel->lecture_id = $lecture->id;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+		
+		
+		
+		//nak check ada data ke tak
+		
+        return $this->render('lecture-student-list', [
+			'lecture' => $lecture,
+            'dataProvider' => $dataProvider,
+			
+        ]);
+		
+    }
+	
+	public function actionResyncStudent($id){
+		$lecture = $this->findLecture($id);
+		$this->importStudentListApi($lecture);
+		return $this->redirect(['lecture-student-list', 'id' => $id]);
+	}
+	
+	public function importStudentListApi($lecture){
+		$api = new Api;
+		$api->semester = $lecture->courseOffered->semester_id;
+		$api->subject = $lecture->courseOffered->course->course_code;
+		$api->group = $lecture->lec_name;
+		$data = $api->student();
+		/* echo '<pre>';
+		print_r($data->result);
+		die(); */
+			
+		if($data->result){
 
+			StudentLecture::updateAll(['stud_check' => 0], ['lecture_id' => $lecture->id]);
 
+			$i=0;
+			foreach ($data->result as $stud) {
+				$matric = trim($stud->id);
+				$name = $stud->name;
+					
+					$st = Student::findOne(['matric_no' => $matric]);
+					if($st === null){
+					   $new = new Student;
+					   $new->matric_no = $matric;
+					   $new->st_name = $name;
+					   $new->complete = 0; 
+					   if(!$new->save())
+						{
+							$new->flashError();
+						}
+					   
+					}
+					 
+					$st = StudentLecture::findOne(['matric_no' => $matric]);
+
+					if($st === null){
+						$new = new StudentLecture;
+						$new->lecture_id = $lecture->id;
+						$new->matric_no = $matric;
+						$new->stud_check = 1;
+						if(!$new->save())
+						{
+							print_r($new->getErrors()); 
+						}
+					}
+					else
+					{
+						$st->stud_check = 1;
+						$st->save();
+					}
+					
+					
+					
+				
+				$i++;  
+				
+				
+				
+			}
+			
+			StudentLecture::deleteAll(['stud_check' => 0]);
+
+		}
+	}
+	
+	 public function importStudentListExcel($id){
+		$lecture = $this->findLecture($id);
+
+        $searchModel = new StudentLectureSearch();
+        $searchModel->lecture_id = $lecture->id;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+		
         if(Yii::$app->request->post()){
             $data = Yii::$app->request->post('json_student');
             $data = json_decode($data);
@@ -194,6 +289,7 @@ class DefaultController extends Controller
         return $this->render('lecture-student-list', [
 			'lecture' => $lecture,
             'dataProvider' => $dataProvider,
+			
         ]);
 		
     }
@@ -272,24 +368,7 @@ class DefaultController extends Controller
     public function checkStudentLec($matric,$lecture)
     {
 
-        $st = StudentLecture::findOne(['matric_no' => $matric]);
-
-        if($st === null){
-            $new = new StudentLecture;
-            $new->lecture_id = $lecture->id;
-            $new->matric_no = $matric;
-            $new->stud_check = 1;
-            if(!$new->save())
-            {
-                print_r($new->getErrors()); 
-            }
-        }
-        else
-        {
-            $st->stud_check = 1;
-            $st->save();
-        }
-        StudentLecture::deleteAll(['stud_check' => 0]);
+        
     }
 
 }

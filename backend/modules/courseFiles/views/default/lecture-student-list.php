@@ -21,13 +21,13 @@ $this->params['breadcrumbs'][] = 'Student List';
 
 <h4><?=$course->course_code . ' ' . $course->course_name?></h4>
 <h4><?=$offer->semester->longFormat()?></h4>
-<br />
 
 
 
 
 
-<h4>Student List</h4>
+
+
 
 
 
@@ -56,16 +56,27 @@ $this->params['breadcrumbs'][] = 'Student List';
 
 <div class="row">
 
-<div class="col-md-10">
-  <div class="form-group"> <input type="file" id="xlf" style="display:none;" />
-<button type="button" id="btn-importexcel" class="btn btn-info"><span class="glyphicon glyphicon-import"></span> IMPORT EXCEL </button></div>
+<div class="col-md-8">
+<h4>Student List</h4>
+
+<?php 
+
+/* <div class="form-group"> <input type="file" id="xlf" style="display:none;" />
+<button type="button" id="btn-importexcel" class="btn btn-info"><span class="glyphicon glyphicon-import"></span> IMPORT EXCEL </button>
+
+</div>
 
 <?php $form = ActiveForm::begin(['id' => 'form-students']); ?>
   <input type="hidden" id="json_student" name="json_student">
-  <?php ActiveForm::end(); ?>
+  <?php ActiveForm::end(); ?> */
+
+?>
+  
 </div>
 
-<div class="col-md-2">
+<div class="col-md-4" align="right">
+
+<a href="<?=Url::to(['resync-student', 'id' => $lecture->id])?>" class="btn btn-success"><i class="fa fa-refresh"></i> Re-Sync</a>
     
     <?=ExportMenu::widget([
     'dataProvider' => $dataProvider,
@@ -126,6 +137,7 @@ $this->params['breadcrumbs'][] = 'Student List';
 
 
 <?php 
+/* 
 $this->registerJs('
 
 $("#btn-importexcel").click(function(){
@@ -197,7 +209,7 @@ var X = XLSX;
 
 <?php
     
-    ExcelAsset::register($this);
+    ExcelAsset::register($this); */
 ?>
 
 
