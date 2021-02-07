@@ -12,22 +12,28 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="dean-list-index">
     <p>
+	
        
-		 <?= Html::a('Upload Files', ['upload'], ['class' => 'btn btn-info']) ?>
+		 <div class="row">
+<div class="col-md-3"><?= Html::a('Upload Files', ['upload'], ['class' => 'btn btn-info']) ?>
 		 
 		 
-		 <?= Html::a('Categories', ['/students/download-category'], ['class' => 'btn btn-warning']) ?>
+		 <?= Html::a('Categories', ['/students/download-category'], ['class' => 'btn btn-warning']) ?> </div>
+
+<div class="col-md-6" > Download Page: <a href="https://fkp-portal.umk.edu.my/web/students/downloads" target="_blank">https://fkp-portal.umk.edu.my/web/students/downloads</a>
+</div>
+
+</div>
+		 
+		
     </p>
 	
-	<div class="row">
-
-        <div class="col-md-10" align="right">
+	
 
 <?= $this->render('_category_search', [
         'model' => $category,
     ]) ?>
-</div>
-</div>
+
 
   <div class="box">
 <div class="box-header"></div>

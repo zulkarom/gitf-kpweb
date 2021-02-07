@@ -18,6 +18,8 @@ use yii\widgets\ActiveForm;
 		
 		<?= $form->field($model, 'is_default')->dropdownList([1 => 'Yes', 0 => 'No']) ?>
 		
+		<?= $form->field($model, 'is_active')->dropdownList([1 => 'Yes', 0 => 'No']) ?>
+		
 		<?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 		
 		
