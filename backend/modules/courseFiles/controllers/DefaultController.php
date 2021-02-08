@@ -295,13 +295,33 @@ class DefaultController extends Controller
     }
 
     public function actionLectureStudentAttendance($id){
-        $lecture = $this->findLecture($id);
+		$lecture = $this->findLecture($id);
+		if(empty($lecture->attendance_header)){
+			$api = new Api;
+			$api->semester = $lecture->courseOffered->semester_id;
+			$api->subject = $lecture->courseOffered->course->course_code;
+			$api->group = $lecture->lec_name;
+			$data = $api->attendList();
+			/* echo '<pre>';
+			print_r($data->result);
+			die();  */
+			
+			if($data->result){
+				$arr = array();
+				foreach($data->result as $class){
+					$arr[] = $class->date;
+				}
+				
+				$lecture->attendance_header = json_encode($arr);
+				$lecture->save();
+			}
+		}
+		
+        
 
-        $model =  new StudentLecture;
 
         return $this->render('lecture-student-attendance', [
             'lecture' => $lecture,
-            'model' => $model,
         ]);
     }
 

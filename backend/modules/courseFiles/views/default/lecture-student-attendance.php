@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = 'Student List';
 <h4><?=$offer->semester->longFormat()?></h4>
 <br />
 
-<div class="form-group"><?= Html::a('Manage Class Date', ['/course-files/default/lecture-student-attendance-date', 'id' => $lecture->id], ['class' => 'btn btn-success']) ?></div>
+<?php /* <div class="form-group"><?= Html::a('Manage Class Date', ['/course-files/default/lecture-student-attendance-date', 'id' => $lecture->id], ['class' => 'btn btn-success']) ?></div> */?>
 
 
 <div class="box">
@@ -49,13 +49,15 @@ $this->params['breadcrumbs'][] = 'Student List';
                           echo'<th>'. date('d-m', strtotime($attend)) .'</th>';
                         }
                       }
-                  echo'</tr>';
+                  echo'<th>%</th></tr>
+				   </thead>
+				  ';
                   ?>
 
                   <?php
                     $i=1;
-                    if($model->studentLecture){
-                      foreach ($model->studentLecture as $student) {
+                    if($lecture->students){
+                      foreach ($lecture->students as $student) {
                         if($student->lecture_id == $lecture->id){
                           echo'<tr><td>'.$i.'</td>
                           <td>'.$student->matric_no.'</td>
@@ -68,21 +70,26 @@ $this->params['breadcrumbs'][] = 'Student List';
                                
                                 echo'<td>
                                 <input type="hidden" class ="checkbxAtt" name="cbkAttendance" value='.date('d-m', strtotime($attend)).'(0)'.'/>
-                                <input type="checkbox" class ="checkbxAtt" name="cbkAttendance" value='.date('d-m', strtotime($attend)).'(1)'.'/></td>';
+                                <input type="checkbox" class ="checkbxAtt" name="cbkAttendance" value='.date('d-m', strtotime($attend)).'(1)'.'/></td>
+								
+								';
                               }
                             }
 
                           $i++;
                         }
+						echo '<td>>80%</td></tr>';
                       }
                     }
 
-                  echo'</tr>
-                </thead>
+                  echo'
+				  
+				  
+               
               </table>';
               ?>
             </div>
-            <?=$form->field($model, 'attendance_json',['options' => ['tag' => false]])->hiddenInput(['value' => ''])->label(false)?>
+            <?php /*  =$form->field($model, 'attendance_json',['options' => ['tag' => false]])->hiddenInput(['value' => ''])->label(false) */?>
               <div class="form-group">
                   <br/>
                   <?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span>  Save', ['class' => 'btn btn-success']) ?>

@@ -9,6 +9,7 @@ use backend\modules\teachingLoad\models\CourseOffered;
 use backend\modules\courseFiles\models\LectureExemptFile;
 use backend\modules\courseFiles\models\LectureCancelFile;
 use backend\modules\courseFiles\models\LectureReceiptFile;
+use backend\modules\courseFiles\models\StudentLecture;
 
 /**
  * This is the model class for table "tld_course_lec".
@@ -78,6 +79,11 @@ class CourseLecture extends \yii\db\ActiveRecord
     public function getLecturers()
     {
         return $this->hasMany(LecLecturer::className(), ['lecture_id' => 'id']);
+    }
+	
+	public function getStudents()
+    {
+        return $this->hasMany(StudentLecture::className(), ['lecture_id' => 'id']);
     }
     
     public function getCourseOffered(){
