@@ -5,6 +5,7 @@ namespace backend\modules\teachingLoad\models;
 use Yii;
 use common\models\Common;
 use yii\helpers\Url;
+use backend\modules\teachingLoad\models\AppointmentLetter;
 
 
 
@@ -38,8 +39,13 @@ class AppointmentLetterFile
 		// $this->pdf->AddPage("P");
 		$this->writeEnding();
 		// $this->writeSlogan();
+
 		$this->writeSigniture();
-		$this->writeSignitureImg();
+		if($this->model->status == 10){
+			
+			$this->writeSignitureImg();
+		}
+		
 		// $this->writeSk();
 		
 		// $this->pdf->AddPage("P");

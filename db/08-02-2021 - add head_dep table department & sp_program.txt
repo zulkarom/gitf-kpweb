@@ -1,0 +1,3 @@
+ALTER TABLE `department` ADD `head_dep` INT NOT NULL AFTER `faculty`;
+
+ALTER TABLE `sp_program` ADD `head_program` INT NOT NULL AFTER `career_bi`;
