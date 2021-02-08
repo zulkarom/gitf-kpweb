@@ -7,8 +7,7 @@ use backend\modules\students\models\DownloadCategory;
 use backend\modules\students\models\DownloadCategorySearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\AccessControl;
-use yii\db\Expression;
+use yii\filters\VerbFilter;
 
 /**
  * DownloadCategoryController implements the CRUD actions for DownloadCategory model.
@@ -21,13 +20,10 @@ class DownloadCategoryController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
                 ],
             ],
         ];
@@ -70,19 +66,8 @@ class DownloadCategoryController extends Controller
     {
         $model = new DownloadCategory();
 
-        if ($model->load(Yii::$app->request->post())) {
-			
-			
-			$model->created_at = new Expression('NOW()');
-			$model->created_by = Yii::$app->user->identity->id;
-			if($model->save()){
-				if($model->is_default == 1){
-					DownloadCategory::updateAll(['is_default' => 0], ['<>', 'id', $model->id]);
-				}
-				return $this->redirect(['view', 'id' => $model->id]);
-			}
-			
-            
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
@@ -102,11 +87,6 @@ class DownloadCategoryController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-			
-			if($model->is_default == 1){
-				DownloadCategory::updateAll(['is_default' => 0], ['<>', 'id', $model->id]);
-			}
-			
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

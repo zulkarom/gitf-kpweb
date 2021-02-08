@@ -28,7 +28,7 @@ $form = ActiveForm::begin([
 
 $this->registerJs('
 
-$("#semesterform-semester_id").change(function(){
+$("#downloadcategoryform-category_id").change(function(){
 	$("#sel-sem-form").submit();
 });
 
