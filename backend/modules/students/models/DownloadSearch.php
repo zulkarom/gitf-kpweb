@@ -63,7 +63,7 @@ class DownloadSearch extends Download
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'category_id' => $this->category_id,
+            'category_id' => $this->category,
         ]);
 
 		
