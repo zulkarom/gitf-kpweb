@@ -24,7 +24,16 @@ $this->params['breadcrumbs'][] = 'Student List';
 <br />
 
 <?php /* <div class="form-group"><?= Html::a('Manage Class Date', ['/course-files/default/lecture-student-attendance-date', 'id' => $lecture->id], ['class' => 'btn btn-success']) ?></div> */?>
+<div class="row">
+  <div class="col-md-6" align="right">
+  </div>
+  <div class="col-md-6" align="right">
 
+   <a href="<?=Url::to(['attendance-sync', 'id' => $lecture->id])?>" class="btn btn-success"><i class="fa fa-refresh"></i> Re-Sync</a>
+
+    <br/>
+  </div>
+</div>
 
 <div class="box">
         <div class="box-header">
@@ -54,7 +63,7 @@ $this->params['breadcrumbs'][] = 'Student List';
 				  ';
                   ?>
 
-                  <?php
+                     <?php
                     $i=1;
                     if($lecture->students){
                       foreach ($lecture->students as $student) {
@@ -63,28 +72,34 @@ $this->params['breadcrumbs'][] = 'Student List';
                           <td>'.$student->matric_no.'</td>
                           <td>'.$student->student->st_name.'</td>';
 
-                            $attendance = json_decode($lecture->attendance_header);
+                            $attendance = json_decode($student->attendance_check);
                             if($attendance){
                               foreach($attendance as $attend){
 
-                               
+                               if($attend == 1)
+                               {
+                                $check = 'checked';
+                               }else{
+                                $check ='';
+                               }
+
                                 echo'<td>
-                                <input type="hidden" class ="checkbxAtt" name="cbkAttendance" value='.date('d-m', strtotime($attend)).'(0)'.'/>
-                                <input type="checkbox" class ="checkbxAtt" name="cbkAttendance" value='.date('d-m', strtotime($attend)).'(1)'.'/></td>
-								
-								';
+                                  <input type="checkbox" class ="checkbxAtt" name="cbkAttendance" value="1" '.$check.'/>
+                                </td>
+                
+                ';
                               }
                             }
 
                           $i++;
                         }
-						echo '<td>>80%</td></tr>';
+            echo '<td>>80%</td></tr>';
                       }
                     }
 
                   echo'
-				  
-				  
+          
+          
                
               </table>';
               ?>

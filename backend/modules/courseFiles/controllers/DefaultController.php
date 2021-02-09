@@ -151,7 +151,6 @@ class DefaultController extends Controller
 		$kira = StudentLecture::find()->where(['lecture_id' => $id])->count();
         if($kira == 0){
 			$this->importStudentListApi($lecture);
-
         }
 
         $searchModel = new StudentLectureSearch();
@@ -169,6 +168,31 @@ class DefaultController extends Controller
         ]);
 		
     }
+
+    public function actionLectureStudentAssessment($id){
+		$lecture = $this->findLecture($id);
+		
+		$kira = StudentLecture::find()->where(['lecture_id' => $id])->count();
+        if($kira == 0){
+			$this->importStudentListApi($lecture);
+        }
+
+        $searchModel = new StudentLectureSearch();
+        $searchModel->lecture_id = $lecture->id;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+		
+		
+		
+		//nak check ada data ke tak
+		
+        return $this->render('lecture-student-assessment', [
+			'lecture' => $lecture,
+            'dataProvider' => $dataProvider,
+			
+        ]);
+		
+    }
+	
 	
 	public function actionResyncStudent($id){
 		$lecture = $this->findLecture($id);
@@ -296,15 +320,13 @@ class DefaultController extends Controller
 
     public function actionLectureStudentAttendance($id){
 		$lecture = $this->findLecture($id);
+
 		if(empty($lecture->attendance_header)){
 			$api = new Api;
 			$api->semester = $lecture->courseOffered->semester_id;
 			$api->subject = $lecture->courseOffered->course->course_code;
 			$api->group = $lecture->lec_name;
 			$data = $api->attendList();
-			/* echo '<pre>';
-			print_r($data->result);
-			die();  */
 			
 			if($data->result){
 				$arr = array();
@@ -315,14 +337,65 @@ class DefaultController extends Controller
 				$lecture->attendance_header = json_encode($arr);
 				$lecture->save();
 			}
-		}
-		
-        
 
+			
+
+		}
 
         return $this->render('lecture-student-attendance', [
             'lecture' => $lecture,
+            
         ]);
+    }
+
+
+    public function actionAttendanceSync($id){
+    	
+		$lecture = $this->findLecture($id);
+
+	
+
+    	$api = new Api;
+    	
+    		
+    	
+		$api->semester = $lecture->courseOffered->semester_id;
+		$api->subject = $lecture->courseOffered->course->course_code;
+		$api->group = $lecture->lec_name;
+		$response = $api->summary();
+
+		 	$i=1;
+            if($lecture->students){
+              foreach ($lecture->students as $student) {
+               		$array = array();
+
+                      foreach($response->colums->result as $col){
+                        $res = $response->attend[$col->id]->students[$student->matric_no]->status;
+                        if(strtotime($col->date) <= time()){
+                          
+                          if($res == 1){
+                            $hadir = 1;
+                          }else{
+                            $hadir = 0;
+                          }
+                        
+                        }else{
+                          $hadir = 0;
+                        }
+                        
+    
+                      $array[] = $hadir;
+                      }
+                    	$student->attendance_check = json_encode($array);
+                    	$student->save();
+                  $i++;
+                	
+              }
+            }
+       
+
+            return $this->redirect(['lecture-student-attendance', 'id' => $id]);
+
     }
 
     public function actionLectureStudentAttendanceDate($id){
@@ -331,7 +404,7 @@ class DefaultController extends Controller
 		$week =  date("W",strtotime($date));
 		$dto = new \DateTime();
 		echo $dto->setISODate($year, $week, 5)->format('Y-m-d');
-	  die();
+	  	die();
 	  
 	  
         $model = new AddStudentLectureDateForm;

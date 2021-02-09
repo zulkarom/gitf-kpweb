@@ -4,6 +4,7 @@ namespace backend\modules\courseFiles\models;
 
 use Yii;
 use backend\modules\students\models\Student;
+use backend\modules\teachingLoad\models\CourseLecture;
 
 /**
  * This is the model class for table "cf_student_lec".
@@ -56,5 +57,9 @@ class StudentLecture extends \yii\db\ActiveRecord
     public function getStudentLecture(){
         return StudentLecture::find()
         ->all();
+    }
+
+    public function getCourseLecture(){
+        return $this->hasOne(CourseLecture::className(), ['id' => 'lecture_id']);
     }
 }
