@@ -203,6 +203,19 @@ class CourseOffered extends \yii\db\ActiveRecord
         return $this->hasOne(CourseVersion::className(), ['id' => 'course_version']);
     }
 
+    public function listClo()
+    {
+        $list = $this->courseVersion->clos;
+        $array = array();
+        if($list){
+            $i =1;
+            foreach ($list as $clo) {
+                $array[] = $i;
+            }
+        }
+        return $array;
+    }
+
     public function getAssessment(){
         return $this->hasMany(CourseAssessment::className(), ['crs_version_id' => 'course_version']);
     }

@@ -11,6 +11,7 @@ use kartik\export\ExportMenu;
 $offer = $lecture->courseOffered;
 $assessment = $offer->assessment;
 $course = $offer->course;
+$listClo = $offer->listClo();
 /* @var $this yii\web\View */
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
 
@@ -35,7 +36,7 @@ $this->params['breadcrumbs'][] = 'Student Assessment';
                     return $model->matric_no;
                 }
             ],
-      [
+          [
                 'label' => 'Name',
                 'format' => 'html',
                 'value' => function($model){
@@ -51,19 +52,17 @@ $this->params['breadcrumbs'][] = 'Student Assessment';
 
 <div class="col-md-8">
 
-<?php 
 
-/* <div class="form-group"> <input type="file" id="xlf" style="display:none;" />
+
+ <div class="form-group"> <input type="file" id="xlf" style="display:none;" />
 <button type="button" id="btn-importexcel" class="btn btn-info"><span class="glyphicon glyphicon-import"></span> IMPORT EXCEL </button>
 
 </div>
 
-<?php $form = ActiveForm::begin(['id' => 'form-students']); ?>
-  <input type="hidden" id="json_student" name="json_student">
-  <?php ActiveForm::end(); ?> */
+<?php $form = ActiveForm::begin(['id' => 'form-assessment']); ?>
+  <input type="hidden" id="json_assessment" name="json_assessment">
+  <?php ActiveForm::end(); ?> 
 
-?>
-  
 </div>
 
 <div class="col-md-3" align="right">
@@ -71,7 +70,7 @@ $this->params['breadcrumbs'][] = 'Student Assessment';
     <?=ExportMenu::widget([
     'dataProvider' => $dataProvider,
     'columns' => $columns,
-  'filename' => 'Student_List_' . date('Y-m-d'),
+  'filename' => 'Student_Assessment' . date('Y-m-d'),
   'onRenderSheet'=>function($sheet, $grid){
     $sheet->getStyle('A2:'.$sheet->getHighestColumn().$sheet->getHighestRow())
     ->getAlignment()->setWrapText(true);
@@ -109,8 +108,103 @@ $this->params['breadcrumbs'][] = 'Student Assessment';
                     <?php
                     if($assessment)
                     {
+                      $cloSet = array();
                       foreach ($assessment as $assess) {
-                        echo'<th>'.$assess->assess_name_bi.'</th>';
+                        $cloSet[] = $assess->cloNumber;
+                        echo'<th>'.$assess->assess_name_bi.'<br/>
+                        (CLO'.$assess->cloNumber.')
+                        </th>';
+
+                      }
+                    }
+                    ?>
+                  </tr>
+                </thead>
+                <tr>
+                  <?php
+                    $i=1;
+                    if($lecture->students){
+
+                      foreach ($lecture->students as $student) {
+                        $result = json_decode($student->assess_result);
+                        
+
+                        echo'<tr><td>'.$i.'</td>
+                          <td>'.$student->matric_no.'</td>
+                          <td>'.$student->student->st_name.'</td>';
+                          
+
+                           if($assessment)
+                            {
+                              $x = 0;
+                              foreach ($assessment as $assess) {
+                                
+                                if($result){
+                                  if(array_key_exists($x, $result)){
+                                    $mark = $result[$x];
+                                    echo'<td>'.$mark.'</td>';
+                                  }
+                                  else{
+                                    echo'<td></td>';
+                                  }
+                                  
+                                }
+                                else{
+                                   echo'<td></td>';
+                                }
+                               
+                                $x++;
+                              }
+                            }
+
+                        $array_matric = $student->matric_no;
+                        $$array_matric = array();
+
+                        if($listClo){
+                          foreach ($listClo as $clo) {
+                            $$array_matric[$clo] = cloValue($clo,$result,$cloSet);
+                          }
+                        }
+                        echo'</tr>';
+                        $i++;
+                      }
+
+                    }
+
+
+                ?>
+            </table>
+
+            </div>
+            <?php ActiveForm::end(); ?>
+          </div>
+        </div>
+
+
+        <!-- Group by Clo -->
+        <div class="box">
+        <div class="box-header">
+          <div class="a">
+            <div class="box-title"><b>Student Assessment<br/>(Group by CLO)</b></div>
+          </div>
+        </div>
+          <div class="box-body">
+            <?php $form = ActiveForm::begin() ?>
+            <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th>No.</th>
+                    <th>Matric No.</th>
+                    <th>Name</th>
+                    <?php
+                    if($assessment)
+                    {
+                      foreach ($assessment as $assess) {
+                      
+                        echo'<th>'.'<br/>
+                        (CLO'.$assess->cloNumber.')
+                        </th>';
                       }
                     }
                     ?>
@@ -124,10 +218,28 @@ $this->params['breadcrumbs'][] = 'Student Assessment';
                         echo'<tr><td>'.$i.'</td>
                           <td>'.$student->matric_no.'</td>
                           <td>'.$student->student->st_name.'</td>';
+                          $result = json_decode($student->assess_result);
+
                            if($assessment)
                             {
+                              $x = 0;
                               foreach ($assessment as $assess) {
-                                echo'<td></td>';
+                                
+                                if($result){
+                                  if(array_key_exists($x, $result)){
+                                    $mark = $result[$x];
+                                    echo'<td>'.$mark.'</td>';
+                                  }
+                                  else{
+                                    echo'<td></td>';
+                                  }
+                                  
+                                }
+                                else{
+                                   echo'<td></td>';
+                                }
+                               
+                                $x++;
                               }
                             }
                         echo'</tr>';
@@ -141,10 +253,6 @@ $this->params['breadcrumbs'][] = 'Student Assessment';
             </table>
 
             </div>
-              <div class="form-group">
-                  <br/>
-                  <?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span>  Save', ['class' => 'btn btn-success']) ?>
-              </div>
             <?php ActiveForm::end(); ?>
           </div>
         </div>
@@ -153,12 +261,20 @@ $this->params['breadcrumbs'][] = 'Student Assessment';
 
 
 <?php 
-/* 
+ 
+function cloValue($clo,$result,$cloSet)
+{
+  
+}
+
 $this->registerJs('
+
 
 $("#btn-importexcel").click(function(){
 	document.getElementById("xlf").click();     
 });
+
+
 
 var X = XLSX;
   
@@ -193,16 +309,16 @@ var X = XLSX;
         var wb;
         var arr = fixdata(data);
           wb = X.read(btoa(arr), {type: \'base64\'});
-          //console.log(to_jsObject(wb)); 
+          // console.log(to_jsObject(wb)); 
           var obj = to_jsObject(wb) ;
           for (var key in obj) {
             var sheet = obj[key];
 			var i = 1;
       var myJSON = JSON.stringify(sheet);
-      // console.log(myJSON);
+      console.log(myJSON);
 
-            $("#json_student").val(myJSON);
-            $("#form-students").submit();
+            $("#json_assessment").val(myJSON);
+            $("#form-assessment").submit();
             break;
           }
           
@@ -222,10 +338,10 @@ var X = XLSX;
 ');
 
 ?>
-*/
 
 
-    
+
+<?php
     ExcelAsset::register($this); 
 ?>
 
