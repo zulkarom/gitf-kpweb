@@ -23,6 +23,7 @@ use backend\modules\courseFiles\models\AddStudentLectureDateForm;
 use yii\helpers\ArrayHelper;
 use backend\modules\courseFiles\models\pdf\AttendanceSummary;
 use backend\modules\courseFiles\models\pdf\AttendanceSummaryStart;
+use backend\modules\courseFiles\models\excel\AssessmentExcel;
 
 /**
  * Default controller for the `course-files` module
@@ -184,6 +185,7 @@ class DefaultController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 		
 		if(Yii::$app->request->post()){
+
             $data = Yii::$app->request->post('json_assessment');
             $data = json_decode($data);
             
@@ -219,6 +221,15 @@ class DefaultController extends Controller
         ]);
 		
     }
+
+    public function actionExportExcel($id){
+    	$lecture = $this->findLecture($id);
+    	$studentLec = StudentLecture::find()->where(['lecture_id' => $id])->all();
+        $pdf = new AssessmentExcel;
+        $pdf->model = $lecture;
+        
+        $pdf->generateExcel();
+    }  
 	
 	
 	public function actionResyncStudent($id){

@@ -1,0 +1,1 @@
+ALTER TABLE `tld_course_lec` ADD `total_mark` DOUBLE NOT NULL AFTER `attendance_header`;

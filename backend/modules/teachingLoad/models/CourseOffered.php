@@ -211,6 +211,7 @@ class CourseOffered extends \yii\db\ActiveRecord
             $i =1;
             foreach ($list as $clo) {
                 $array[] = $i;
+                $i++;
             }
         }
         return $array;

@@ -39,6 +39,7 @@ class CourseLecture extends \yii\db\ActiveRecord
             [['offered_id', 'created_at', 'updated_at'], 'required'],
 			
             [['offered_id', 'student_num'], 'integer'],
+            [['total_mark'], 'double'],
             [['created_at', 'updated_at'], 'safe'],
             [['lec_name'], 'string', 'max' => 50],
         ];
