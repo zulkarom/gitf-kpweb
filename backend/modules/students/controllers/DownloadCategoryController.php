@@ -8,6 +8,7 @@ use backend\modules\students\models\DownloadCategorySearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\db\Expression;
 
 /**
  * DownloadCategoryController implements the CRUD actions for DownloadCategory model.
@@ -66,7 +67,13 @@ class DownloadCategoryController extends Controller
     {
         $model = new DownloadCategory();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+			
+			$model->created_by = Yii::$app->user->identity->id;
+			$model->created_at = new Expression('NOW()');
+			if($model->save()){
+				Yii::$app->session->addFlash('success', "A category created");
+			}
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

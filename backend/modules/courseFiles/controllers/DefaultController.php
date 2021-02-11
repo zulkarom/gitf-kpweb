@@ -246,7 +246,7 @@ class DefaultController extends Controller
 		$data = $api->student();
 		/* echo '<pre>';
 		print_r($data->result);
-		die(); */
+		die();  */
 			
 		if($data->result){
 
