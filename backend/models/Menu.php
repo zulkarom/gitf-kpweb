@@ -177,9 +177,8 @@ class Menu
 				['label' => 'Assignment By Staff', 'icon' => 'user', 'url' => ['/teaching-load/manager/summary-by-staff']],
 
 				['label' => 'Appointment Letter', 'icon' => 'file', 'url' => ['/teaching-load/staff-inv/index']],
-				
 								
-				
+				['label' => 'Letter Approval', 'icon' => 'file', 'url' => ['/teaching-load/staff-inv/approve-letter']],
 				
 				['label' => 'Maximum Hour', 'icon' => 'cog', 'url' => ['/teaching-load/manager/maximum-hour']],
 				['label' => 'Letter Template', 'icon' => 'cog', 'url' => ['/teaching-load/tmpl-appointment']],
@@ -285,6 +284,8 @@ class Menu
 				
 				['label' => 'Staff List', 'icon' => 'user', 'url' => ['/staff/staff']],
 				
+				['label' => 'Main Position', 'icon' => 'plus', 'url' => ['/staff/default/main-position']],
+
 				['label' => 'Transfered/Quit', 'icon' => 'user', 'url' => ['/staff/staff/inactive']],
 				
 

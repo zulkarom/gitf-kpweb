@@ -29,7 +29,7 @@ class Department extends \yii\db\ActiveRecord
     {
         return [
             [['dep_name', 'dep_name_bi', 'faculty'], 'required'],
-            [['faculty'], 'integer'],
+            [['faculty', 'head_dep'], 'integer'],
             [['dep_name', 'dep_name_bi'], 'string', 'max' => 200],
         ];
     }

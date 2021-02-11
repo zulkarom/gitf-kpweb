@@ -35,7 +35,7 @@ class AppointmentLetter extends \yii\db\ActiveRecord
     {
         return [
             [['inv_id', 'offered_id'], 'required'],
-            [['inv_id', 'offered_id'], 'integer'],
+            [['inv_id', 'offered_id', 'status'], 'integer'],
             [['date_appoint'], 'safe'],
             [['ref_no'], 'string', 'max' => 225],
         ];
@@ -55,12 +55,39 @@ class AppointmentLetter extends \yii\db\ActiveRecord
         ];
     }
 
+    public function status(){
+        return [
+            1 => 'Draft',
+            10 =>'Approve'
+        ];
+    }
+
+    public function getStatusText(){
+        $arr = $this->status();
+        if(array_key_exists($this->status, $this->status())){
+             return $arr[$this->status];
+        }
+       
+    }
+
     public function getStaffInvolved(){
         return $this->hasOne(StaffInvolved::className(), ['id' => 'inv_id']);
     }
 
     public function getCourseOffered(){
         return $this->hasOne(CourseOffered::className(), ['id' => 'offered_id']);
+    }
+
+    
+
+    public function getAppointed(){
+        $coordinator = $this->courseOffered->coordinator;
+        if($coordinator ==  $this->staffInvolved->staff_id){
+            $type = "Coordinator & Lecturer";
+        }else{
+            $type = "Lecturer";
+        }
+        return $type;
     }
 
     public function getCountLecturesByStaff(){

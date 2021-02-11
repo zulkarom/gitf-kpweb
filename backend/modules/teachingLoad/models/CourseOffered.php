@@ -23,6 +23,8 @@ use backend\modules\courseFiles\models\TutorialCancelFile;
 use backend\modules\courseFiles\models\TutorialReceiptFile;
 use backend\modules\courseFiles\models\TutorialExemptFile;
 use backend\modules\teachingLoad\models\AppointmentLetter;
+use backend\modules\esiap\models\CourseVersion;
+use backend\modules\esiap\models\CourseAssessment;
 /**
  * This is the model class for table "tld_course_offered".
  *
@@ -195,6 +197,27 @@ class CourseOffered extends \yii\db\ActiveRecord
         }
         return $totalStudent;
 
+    }
+
+    public function getCourseVersion(){
+        return $this->hasOne(CourseVersion::className(), ['id' => 'course_version']);
+    }
+
+    public function listClo()
+    {
+        $list = $this->courseVersion->clos;
+        $array = array();
+        if($list){
+            $i =1;
+            foreach ($list as $clo) {
+                $array[] = $i;
+            }
+        }
+        return $array;
+    }
+
+    public function getAssessment(){
+        return $this->hasMany(CourseAssessment::className(), ['crs_version_id' => 'course_version']);
     }
 
     public function getCountLectures(){

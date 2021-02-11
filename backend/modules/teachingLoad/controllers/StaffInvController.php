@@ -190,7 +190,6 @@ class StaffInvController extends Controller
 
         // $appointModel = new AppointmentLetter();
 
-
         $model = new GenerateReferenceForm;
         if ($model->load(Yii::$app->request->post())) {
             $post = Yii::$app->request->post();
@@ -223,6 +222,56 @@ class StaffInvController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'model' => $model,
+        ]);
+    }
+
+    public function actionApproveLetter()
+    {
+        $semester = new SemesterForm;
+        if(Yii::$app->getRequest()->getQueryParam('SemesterForm')){
+            $sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');
+            $semester->semester_id = $sem['semester_id'];
+
+        }else{
+            $semester->semester_id = Semester::getCurrentSemester()->id;
+        }
+
+        $searchModel = new AppointmentLetterSearch();
+        $searchModel->semester = $semester->semester_id;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+
+        if(Yii::$app->request->post()){
+            $post = Yii::$app->request->post();
+
+            if(isset($post['selection'])){
+                $selection = $post['selection'];
+               
+               
+                foreach($selection as $select){
+
+                    $app = AppointmentLetter::findOne($select);
+                    if($post['actiontype'] == 'approve'){
+                        $app->status = 10;
+                    }
+                    else if($post['actiontype'] == 'draft'){
+                        $app->status = 1;
+                    }
+                    $app->save();
+                }
+                Yii::$app->session->addFlash('success', "Status Updated");
+            }
+        }
+
+            
+
+        
+
+        return $this->render('approve-letter',[
+            'semester' => $semester,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            
         ]);
     }
 

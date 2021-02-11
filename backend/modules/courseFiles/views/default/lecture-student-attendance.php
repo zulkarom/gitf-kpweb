@@ -16,15 +16,31 @@ $course = $offer->course;
 $this->title = 'Lecture ['.$lecture->lec_name.']';
 $this->params['breadcrumbs'][] = ['label' => 'Teaching Assignment', 'url' => ['/course-files/default/teaching-assignment']];
 $this->params['breadcrumbs'][] = ['label' => $this->title, 'url' => ['teaching-assignment-lecture', 'id' => $lecture->id]];
-$this->params['breadcrumbs'][] = 'Student List';
+$this->params['breadcrumbs'][] = 'Student Attendance';
 ?>
 
 <h4><?=$course->course_code . ' ' . $course->course_name?></h4>
 <h4><?=$offer->semester->longFormat()?></h4>
-<br />
 
-<div class="form-group"><?= Html::a('Manage Class Date', ['/course-files/default/lecture-student-attendance-date', 'id' => $lecture->id], ['class' => 'btn btn-success']) ?></div>
+<?php /* <div class="form-group"><?= Html::a('Manage Class Date', ['/course-files/default/lecture-student-attendance-date', 'id' => $lecture->id], ['class' => 'btn btn-success']) ?></div> */?>
+<div class="row">
+  <div class="col-md-6" align="right">
+  </div>
+  <div class="col-md-6" align="right">
 
+   
+
+   <div class="form-group" align="right">
+
+    <a href="<?=Url::to(['attendance-summary-pdf', 'id' => $lecture->id])?>" class="btn btn-danger" target="_blank"><i class="fa fa-download"></i> Attendance</a>
+
+    <a href="<?=Url::to(['attendance-sync', 'id' => $lecture->id])?>" class="btn btn-success"><i class="fa fa-refresh"></i> Re-Sync</a>
+
+</div>
+
+    <br/>
+  </div>
+</div>
 
 <div class="box">
         <div class="box-header">
@@ -40,49 +56,79 @@ $this->params['breadcrumbs'][] = 'Student List';
                   <tr>
                     <th>No.</th>
                     <th>Matric No.</th>
-                    <th>Name</th>
+                    <th>Student Name</th>
                   
                       <?php 
                       $attendance = json_decode($lecture->attendance_header);
                       if($attendance){
                         foreach($attendance as $attend){
-                          echo'<th>'. date('d-m', strtotime($attend)) .'</th>';
+                          echo'<th><center>'. date('d-m', strtotime($attend)) .'</center></th>';
                         }
                       }
-                  echo'</tr>';
+                  echo'<th>%</th></tr>
+				   </thead>
+				  ';
                   ?>
 
-                  <?php
+                     <?php
                     $i=1;
-                    if($model->studentLecture){
-                      foreach ($model->studentLecture as $student) {
+                    
+                    if($lecture->students){
+                      foreach ($lecture->students as $student) {
                         if($student->lecture_id == $lecture->id){
+                          
                           echo'<tr><td>'.$i.'</td>
                           <td>'.$student->matric_no.'</td>
                           <td>'.$student->student->st_name.'</td>';
 
-                            $attendance = json_decode($lecture->attendance_header);
+                            $attendance = json_decode($student->attendance_check);
                             if($attendance){
+                              $count = 0;
                               foreach($attendance as $attend){
 
-                               
-                                echo'<td>
-                                <input type="hidden" class ="checkbxAtt" name="cbkAttendance" value='.date('d-m', strtotime($attend)).'(0)'.'/>
-                                <input type="checkbox" class ="checkbxAtt" name="cbkAttendance" value='.date('d-m', strtotime($attend)).'(1)'.'/></td>';
+                               if($attend == 1)
+                               {
+                                $check = 'checked';
+                                $count++;
+                               }else{
+                                $check ='';
+                               }
+
+                                echo'<td><center>
+                                  <input type="checkbox" class ="checkbxAtt" name="cbkAttendance" value="1" '.$check.'/></center>
+                                </td>
+                
+                ';
                               }
+                              echo '<td>'.round(($count / 14)*100).'%</td>';
+                             
+                            }else
+                            {
+                                $column = json_decode($lecture->attendance_header);
+                                if($column){
+                                    foreach($column as $col){
+                                        echo'<td></td>';
+                                    }
+                                    echo'<td></td>';
+                                }
+                               
                             }
 
                           $i++;
                         }
+                        
+            echo '</tr>';
                       }
                     }
 
-                  echo'</tr>
-                </thead>
+                  echo'
+          
+          
+               
               </table>';
               ?>
             </div>
-            <?=$form->field($model, 'attendance_json',['options' => ['tag' => false]])->hiddenInput(['value' => ''])->label(false)?>
+            <?php /*  =$form->field($model, 'attendance_json',['options' => ['tag' => false]])->hiddenInput(['value' => ''])->label(false) */?>
               <div class="form-group">
                   <br/>
                   <?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span>  Save', ['class' => 'btn btn-success']) ?>

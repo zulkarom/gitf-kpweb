@@ -6,7 +6,7 @@ use yii\helpers\Url;
 use kartik\grid\GridView;
 use kartik\date\DatePicker;
 
-$this->title = 'Generate Reference ';
+$this->title = 'Approval Letter';
 $this->params['breadcrumbs'][] = ['label' => 'Appointment Letter', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
@@ -39,47 +39,23 @@ $form = ActiveForm::begin([
 
 </div>
 
-<div class="row">
-
-<div class="col-md-12">
 
 
-<div class="box">
-<div class="box-body">
 
-
-<div class="row">
-<div class="col-md-4"><?=$form->field($model, 'ref_letter')?></div>
-<div class="col-md-2"><?=$form->field($model, 'start_number')?></div>
-<div class="col-md-3">
- <?=$form->field($model, 'date')->widget(DatePicker::classname(), [
-    'removeButton' => false,
-    'pluginOptions' => [
-        'autoclose'=>true,
-        'format' => 'yyyy-mm-dd',
-        'todayHighlight' => true,
-    ],
-]);
-?>
-
-
-</div>
-
-
-</div>
 
 <div class="form-group">
-        
-<?= Html::submitButton('Generate Reference', ['class' => 'btn btn-warning', 'name'=> 'actiontype', 'value' => 'generate']) ?>
-    </div>
-</div>
+<p>
+<?= Html::submitButton('Approve', ['class' => 'btn btn-success', 'name'=> 'actiontype', 'value' => 'approve']) ?>
+&nbsp
+<?= Html::submitButton('Back to Draft', ['class' => 'btn btn-primary', 'name'=> 'actiontype', 'value' => 'draft']) ?>
+</p>
+
 </div>
 
 
 
 
-</div>
-</div>
+
 
   <div class="box">
 <div class="box-header"></div>
@@ -108,25 +84,37 @@ $form = ActiveForm::begin([
             ],
 
             [
-                'label' => 'Date',
+                'label' => 'Total Lecture',
                 'value' => function($model){
-					if($model->date_appoint == '0000-00-00'){
-						return '';
-					}else{
-						return date('d M Y', strtotime($model->date_appoint)) ;
-					}
-                    
+                    return $model->countLecturesByStaff ;
                 }
                 
             ],
 
             [
-                'label' => 'Reference Letter',
+                'label' => 'Total Tutorial',
                 'value' => function($model){
-                    return $model->ref_no ;
+                    return $model->countLecturesByStaff  ;
                 }
                 
             ],
+
+            [
+                'label' => 'Appointed',
+                'value' => function($model){
+                    return $model->appointed ;
+                }
+                
+            ],
+
+            [
+                'label' => 'Status',
+                'value' => function($model){
+                    return $model->statusText;
+                }
+                
+            ],
+
 
             ['class' => 'yii\grid\ActionColumn',
                  'contentOptions' => ['style' => 'width: 8.7%'],
