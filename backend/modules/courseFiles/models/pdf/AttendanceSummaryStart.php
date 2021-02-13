@@ -49,7 +49,7 @@ class AttendanceSummaryStart extends \TCPDF {
 		<tr height="'.$height.'" style="line-height:'.$line_height.'%">
 		<td>&nbsp;&nbsp;<b>SEMESTER: </b>'. strtoupper($this->semester->fullFormat()).'
 		</td>
-		<td>&nbsp;&nbsp;eFasi (QRcode)</td>
+		<td></td>
 		</tr>
 		
 		<tr height="'.$height.'" style="line-height:'.$line_height.'%">

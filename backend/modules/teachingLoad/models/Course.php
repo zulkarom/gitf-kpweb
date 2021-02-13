@@ -4,6 +4,7 @@ namespace backend\modules\teachingLoad\models;
 
 use Yii;
 use backend\modules\courseFiles\models\Material;
+use backend\models\Semester;
 
 /**
  * This is the model class for table "tld_out_course".
@@ -50,6 +51,19 @@ class Course extends \backend\modules\esiap\models\Course
 		return CourseOffered::find()
 		->where(['semester_id' => $this->semester])
 		->all();
+	}
+	
+	public function currentCoordinator(){
+		$result = CourseOffered::find()
+				->joinWith('semester')
+				->where(['course_id' => $this->id, 'is_current' => 1 ])
+				->one(); 
+		if($result){
+			return $result->coordinator;
+		}
+		
+		return false;
+		
 	}
 
 

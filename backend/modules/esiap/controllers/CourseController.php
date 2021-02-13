@@ -811,7 +811,7 @@ class CourseController extends Controller
 		$model = $this->findDevelopmentVersion($course);
 		$items = $model->assessments;
 		if($model->putOneCloAssessment()){
-			return $this->redirect(['course-assessment', 'course' => $course]);
+			return $this->redirect(['clo-assessment', 'course' => $course]);
 		}
 		
 		$clos = $model->clos;

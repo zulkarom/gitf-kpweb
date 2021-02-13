@@ -13,41 +13,40 @@ $course = $offer->course;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
 
-$this->title = 'Lecture ['.$lecture->lec_name.']';
+$this->title = 'Student Attendance ['.$lecture->lec_name.']';
 $this->params['breadcrumbs'][] = ['label' => 'Teaching Assignment', 'url' => ['/course-files/default/teaching-assignment']];
-$this->params['breadcrumbs'][] = ['label' => $this->title, 'url' => ['teaching-assignment-lecture', 'id' => $lecture->id]];
+$this->params['breadcrumbs'][] = ['label' => 'Lecture['.$lecture->lec_name.']', 'url' => ['teaching-assignment-lecture', 'id' => $lecture->id]];
 $this->params['breadcrumbs'][] = 'Student Attendance';
 ?>
 
-<h4><?=$course->course_code . ' ' . $course->course_name?></h4>
-<h4><?=$offer->semester->longFormat()?></h4>
+
 
 <?php /* <div class="form-group"><?= Html::a('Manage Class Date', ['/course-files/default/lecture-student-attendance-date', 'id' => $lecture->id], ['class' => 'btn btn-success']) ?></div> */?>
 <div class="row">
-  <div class="col-md-6" align="right">
+  <div class="col-md-6">
+  
+  <h4><?=$course->course_code . ' ' . $course->course_name?></h4>
+<h4><?=$offer->semester->longFormat()?></h4>
   </div>
   <div class="col-md-6" align="right">
+  <br />
 
    
 
    <div class="form-group" align="right">
 
-    <a href="<?=Url::to(['attendance-summary-pdf', 'id' => $lecture->id])?>" class="btn btn-danger" target="_blank"><i class="fa fa-download"></i> Attendance</a>
+    <a href="<?=Url::to(['attendance-summary-pdf', 'id' => $lecture->id])?>" class="btn btn-danger btn-sm" target="_blank"><i class="fa fa-download"></i> Download</a>
 
-    <a href="<?=Url::to(['attendance-sync', 'id' => $lecture->id])?>" class="btn btn-success"><i class="fa fa-refresh"></i> Re-Sync</a>
+    <a href="<?=Url::to(['attendance-sync', 'id' => $lecture->id])?>" class="btn btn-success btn-sm"><i class="fa fa-refresh"></i> Re-Sync</a>
 
 </div>
 
-    <br/>
+
   </div>
 </div>
 
 <div class="box">
-        <div class="box-header">
-          <div class="a">
-            <div class="box-title"><b>Student Attendance</b></div>
-          </div>
-        </div>
+
           <div class="box-body">
             <?php $form = ActiveForm::begin() ?>
             <div class="table-responsive">
@@ -84,6 +83,7 @@ $this->params['breadcrumbs'][] = 'Student Attendance';
                             $attendance = json_decode($student->attendance_check);
                             if($attendance){
                               $count = 0;
+							  $i = 1;
                               foreach($attendance as $attend){
 
                                if($attend == 1)
@@ -95,10 +95,9 @@ $this->params['breadcrumbs'][] = 'Student Attendance';
                                }
 
                                 echo'<td><center>
-                                  <input type="checkbox" class ="checkbxAtt" name="cbkAttendance" value="1" '.$check.'/></center>
-                                </td>
-                
-                ';
+                                  <input type="checkbox" class ="checkbxAtt" name="cb_'.$student->matric_no.'_'.$i.'" value="1" '.$check.'/></center>
+                                </td>';
+								$i++;
                               }
                               echo '<td>'.round(($count / 14)*100).'%</td>';
                              
@@ -142,7 +141,10 @@ $this->params['breadcrumbs'][] = 'Student Attendance';
 <?php
 $js = "
 
-
+$('.checkbxAtt').click(function(){
+	var val = $(this).prop('checked');
+	alert(val);
+});
 
 function arrayChk(){ 
  

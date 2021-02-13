@@ -205,15 +205,21 @@ class CourseOffered extends \yii\db\ActiveRecord
 
     public function listClo()
     {
-        $list = $this->courseVersion->clos;
-        $array = array();
-        if($list){
-            $i =1;
-            foreach ($list as $clo) {
-                $array[] = $i;
-                $i++;
-            }
-        }
+		$array = array();
+		if($this->courseVersion){
+			if($this->courseVersion->clos){
+				$list = $this->courseVersion->clos;
+				if($list){
+					$i =1;
+					foreach ($list as $clo) {
+						$array[] = $i;
+						$i++;
+					}
+				}
+			}
+			
+		}
+        
         return $array;
     }
 

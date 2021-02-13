@@ -17,6 +17,7 @@ class Menu
 				case 'clo-assessment':case 'course-slt': case 'clo-plo':
 				case 'clo-taxonomy':case 'clo-softskill': case 'course-reference':
 				case 'clo-delivery':case 'report':case 'view-course':
+				
 				$course_id = Yii::$app->getRequest()->getQueryParam('course');
 				$course = Course::findOne($course_id);
 				$version = $course->developmentVersion;

@@ -86,27 +86,33 @@ class CourseAssessment extends \yii\db\ActiveRecord
     }
 
     public function cloList(){
-        $list = $this->courseVersion->clos;
-        $array = array();
-        if($list){
-            $i = 1;
-            foreach ($list as $clo) {
-                $array[$clo->id] = $i;
-                $i++;
-            }
-        }
+		if($this->courseVersion->clos){
+			$list = $this->courseVersion->clos;
+			$array = array();
+			if($list){
+				$i = 1;
+				foreach ($list as $clo) {
+					$array[$clo->id] = $i;
+					$i++;
+				}
+			}
+		}
+        
         return $array;
     }
 
     public function getCloNumber(){
         $list = $this->cloList();
-        $clo = $this->cloId;
-        if(array_key_exists($clo->clo_id, $list)){
-           return $list[$clo->clo_id]; 
-        }
-        else{
-            return 0;
-        }
+        
+		if($this->cloId){
+			$clo = $this->cloId;
+			if(array_key_exists($clo->clo_id, $list)){
+			   return $list[$clo->clo_id]; 
+			}
+		}
+		
+		return 0;
+        
     }
 	
 	public function getAssessmentPercentage(){

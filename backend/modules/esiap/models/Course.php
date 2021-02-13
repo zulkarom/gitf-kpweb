@@ -5,11 +5,11 @@ namespace backend\modules\esiap\models;
 
 use Yii;
 use yii\helpers\Url;
+use yii\bootstrap\Modal;
 use backend\models\Faculty;
 use backend\models\Department;
 use common\models\User;
 use backend\models\Component;
-use yii\bootstrap\Modal;
 
 
 
@@ -137,6 +137,18 @@ class Course extends \yii\db\ActiveRecord
 				}
 			}
 		}
+		
+		if(array_key_exists('teaching-load',Yii::$app->modules)){
+			$crs = new \backend\modules\teachingLoad\models\Course;
+			$crs->id = $this->id;
+			$coor = $crs->currentCoordinator();
+			
+			if( $coor > 0 and $coor = Yii::$app->user->identity->staff->id ) {
+				
+				return true;
+			}
+		}
+		
 		return false;
 	}
 	

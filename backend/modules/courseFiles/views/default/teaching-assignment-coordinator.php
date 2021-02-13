@@ -18,13 +18,23 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 ?>
-<h4><?=$course->course_code . ' ' . $course->course_name?></h4>
-<h4><?=$offer->semester->longFormat()?></h4>
 
 
-<div class="form-group"><a href="<?=Url::to(['default/teaching-assignment-coordinator', 'id' => 1])?>" class="btn btn-warning" ><span class="fa fa-book"></span> Course Management</a>
+<div class="row">
+<div class="col-md-6"><h4><?=$course->course_code . ' ' . $course->course_name?></h4>
+<h4><?=$offer->semester->longFormat()?></h4></div>
+
+<div class="col-md-6" align="right">
+<br />
+<div class="form-group"><a href="<?=Url::to(['/esiap/course/view-course', 'course' => $course->id])?>" class="btn btn-warning" ><span class="fa fa-book"></span> Course Management</a>
 							
 <a href="<?=Url::to(['material/index', 'course' => $course->id])?>" class="btn btn-info" ><span class="glyphicon glyphicon-book"></span> Teaching Materials</a></div>
+</div>
+
+</div>
+
+
+
 
 
 <h4>Course Configuration</h4>
@@ -38,7 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	<?= $form->field($offer, 'material_version')->dropDownList(ArrayHelper::map($offer->course->materials, 'id', 'material_name')) ?>
 <div class="form-group">
         
-<?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+<?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span>  Save Configuration', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

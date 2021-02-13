@@ -7,6 +7,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 use backend\modules\staff\models\Staff;
+use backend\modules\teachingLoad\models\Staff as StaffTeaching;
 use backend\modules\jeb\models\Associate;
 use backend\modules\jeb\models\UserScope;
 
@@ -251,6 +252,10 @@ class User extends ActiveRecord implements IdentityInterface
 	
 	public function getStaff(){
 		return $this->hasOne(Staff::className(), ['user_id' => 'id']);
+	}
+	
+	public function getStaffTeaching(){
+		return $this->hasOne(StaffTeaching::className(), ['user_id' => 'id']);
 	}
 	
 	

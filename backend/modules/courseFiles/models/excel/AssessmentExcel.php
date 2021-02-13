@@ -17,16 +17,27 @@ class AssessmentExcel
 	public $model;
 	public $sheet;
 	public $border;
-
-	
+	public $course;
+	public $assessment;
+	public $listClo;
 
 	public function generateExcel(){
+		$offer = $this->model->courseOffered;
+		$this->assessment = $offer->assessment;
+		$this->course = $offer->course;
+		$this->listClo = $offer->listClo();
+
 		$this->start();
 		$this->setStyle();
 		$this->createSheet();
 		$this->setColumWidth();
-		$this->item1Name();
-		$this->generate('Student Assessment'.'-'.$this->model->courseOffered->semester->longFormat());
+		$this->setHeader();
+		$this->setClos();
+		$this->setWeigtage();
+		$this->setTotalMark();
+		$this->setAssessment();
+		$this->studentList();
+		$this->generate('Student Assessment');
 		
 		
 	}
@@ -34,7 +45,7 @@ class AssessmentExcel
 	
 	public function start(){
 		
-		$title = 'Student Assessment'.'-'.$this->model->courseOffered->semester->longFormat();
+		$title = 'Student Assessment';
 		$this->spreadsheet = new Spreadsheet();
 		$this->spreadsheet->getProperties()->setCreator('FKP PORTAL')
 			->setLastModifiedBy('FKP PORTAL')
@@ -49,7 +60,7 @@ class AssessmentExcel
 		$this->spreadsheet->createSheet();
 		$this->spreadsheet->setActiveSheetIndex(0);
 	
-		$this->spreadsheet->getActiveSheet()->setTitle("testing");
+		$this->spreadsheet->getActiveSheet()->setTitle($this->course->course_code . ' ' . $this->model->lec_name);
 		$this->sheet = $this->spreadsheet->getActiveSheet();
 	}
 
@@ -62,80 +73,146 @@ class AssessmentExcel
 					'name'  => 'Calibri'
 					),
 			);
-		}
+		$this->normal = array(
+				'font'  => array(
+					'size'  => 11,
+					'name'  => 'Calibri'
+					),
+			);
+	}
 	
 	public function setColumWidth(){
 		$normal = 24.29;//9.43
 		$this->sheet->getColumnDimension('A')->setWidth(5.57);
 		$this->sheet->getColumnDimension('B')->setWidth(10.57);
-		$this->sheet->getColumnDimension('C')->setWidth(70);
-		$this->sheet->getColumnDimension('D')->setWidth(70);
-		$this->sheet->getColumnDimension('E')->setWidth(16.22);
-		$this->sheet->getColumnDimension('F')->setWidth(16.22);
-		$this->sheet->getColumnDimension('G')->setWidth($normal);
-		$this->sheet->getColumnDimension('H')->setWidth(28.29);
-		$this->sheet->getColumnDimension('I')->setWidth(19.29);
-		$this->sheet->getColumnDimension('J')->setWidth(28.29);
-		$this->sheet->getColumnDimension('K')->setWidth(19.29);
-	}
+		$this->sheet->getColumnDimension('C')->setWidth(50);
 
-	public function item1Name(){
+	}
+	
+	public function setHeader(){
 		//ROW HEIGHT
 		$this->sheet->getRowDimension('1')->setRowHeight(24);
 		$this->sheet->getRowDimension('5')->setRowHeight(24);
 		
 		//SET SYTLE
-		$this->sheet->getStyle('B1')->applyFromArray($this->bold)
-		->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-		$this->sheet->getStyle('C1')->applyFromArray($this->bold)
-		->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-		$this->sheet->getStyle('D1')->applyFromArray($this->bold)
-		->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-		$this->sheet->getStyle('E1')->applyFromArray($this->bold)
-		->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-		$this->sheet->getStyle('F1')->applyFromArray($this->bold)
-		->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-		$this->sheet->getStyle('G1')->applyFromArray($this->bold)
-		->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-		$this->sheet->getStyle('H1')->applyFromArray($this->bold)
-		->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-		$this->sheet->getStyle('I1')->applyFromArray($this->bold)
-		->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-		$this->sheet->getStyle('J1')->applyFromArray($this->bold)
-		->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-		$this->sheet->getStyle('K1')->applyFromArray($this->bold)
-		->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+		$this->sheet->getStyle('A1:P4')->applyFromArray($this->bold);
+		
+		/* $this->sheet->getStyle('D:P')
+		->applyFromArray($this->normal)
+		->getAlignment()
+		->setVertical(Alignment::VERTICAL_CENTER)
+		->setHorizontal(Alignment::HORIZONTAL_CENTER)
+		; */
+		
+		$this->sheet->getStyle('C1:C3')->applyFromArray($this->normal)
+		->getAlignment()
+			->setVertical(Alignment::VERTICAL_CENTER)
+			->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+		
+		$this->sheet->getStyle('D1:P3')
+		->getAlignment()
+		->setVertical(Alignment::VERTICAL_CENTER)
+		->setHorizontal(Alignment::HORIZONTAL_CENTER);
+		
+
 
 		//CONTENT
 		$this->sheet
 			->setCellValue('A4', 'No.')
 			->setCellValue('B4', 'Matric No.')
-			->setCellValue('C4', 'Name 				Total: ')
-			->setCellValue('C1', 'Assessment Name: ')
-			->setCellValue('C2', 'CLO: ')
-			->setCellValue('C3', 'Weightage: ');
+			->setCellValue('C4', 'Name')
+			->setCellValue('C1', 'Course Learning Outcome')
+			->setCellValue('C2', 'Weightage')
+			->setCellValue('C3', 'Total Mark');
+	}
+	
+	public function setClos(){
+		if($this->assessment){
 			
-			
+			$col = 4;
+			foreach ($this->assessment as $assess) {
+				
+				$a = $this->abc($col);
+				$str = 'CLO'.$assess->cloNumber;
+				$this->sheet->setCellValue($a.'1', $str);
+			$col++;
+			}
+		}
+		
+	}
+	
+	public function setWeigtage(){
+		if($this->assessment){
+			$col = 4;
+			foreach ($this->assessment as $assess) {
+				
+				$a = $this->abc($col);
+				$str = $assess->assessmentPercentage . '%';
+				$this->sheet->setCellValue($a.'2', $str);
+			$col++;
+			}
+		}
+		
+	}
+	
+	public function setTotalMark(){
+		if($this->assessment){
+			$col = 4;
+			foreach ($this->assessment as $assess) {
+				
+				$a = $this->abc($col);
+				$str = $assess->assessmentPercentage ;
+				$this->sheet->setCellValue($a.'3', $str);
+			$col++;
+			}
+		}
+	}
+	
+	public function setAssessment(){
+		if($this->assessment){
+			$col = 4;
+			foreach ($this->assessment as $assess) {
+				
+				$a = $this->abc($col);
+				$str = $assess->assess_name_bi;
+				$this->sheet->setCellValue($a.'4', $str);
+			$col++;
+			}
+		}
+	}
+
+	public function studentList(){
+
 			if($this->model->students)
 			{
 				$row =5;
-				
 				foreach ($this->model->students as $student) {
 					$i=$row-4;
 					$this->sheet
 					->setCellValue('A'.$row, $i)
 					->setCellValue('B'.$row, $student->matric_no)
 					->setCellValue('C'.$row, $student->student->st_name);
-					// ->setCellValue('C'.$row, $offer->course->course_code)
-					// ->setCellValue('D'.$row, $offer->course->course_name)
-					// ->setCellValue('E'.$row, $offer->countLectures)
-					// ->setCellValue('F'.$row, $offer->countTutorials)
-					// ->setCellValue('G'.$row, $offer->total_students)
-					// ->setCellValue('H'.$row, $offer->max_lec)
-					// ->setCellValue('I'.$row, $offer->prefix_lec)
-					// ->setCellValue('J'.$row, $offer->max_tut)
-					// ->setCellValue('K'.$row, $offer->prefix_tut);
-					$row++;
+					
+					$result = json_decode($student->assess_result);
+					
+					$col = 4;
+					
+					foreach ($this->assessment as $assess) {
+						$x = $col -4;
+						if($result){
+						  if(array_key_exists($x, $result)){
+							$mark = $result[$x];
+							$a = $this->abc($col);
+							$this->sheet->setCellValue($a.$row, $mark);
+						  }
+						}
+						
+						
+					$col++;
+					}
+					
+					
+				$row++;
 				}
 			
 	}
@@ -166,5 +243,30 @@ class AssessmentExcel
 		$writer->save('php://output');
 		exit;
 	}
+	
+	public function abc($col){
+		$arr = [
+			1 => 'A',
+			2 => 'B',
+			3 => 'C',
+			4 => 'D',
+			5 => 'E',
+			6 => 'F',
+			7 => 'G',
+			8 => 'H',
+			9 => 'I',
+			10 => 'J',
+			11 => 'K',
+			12 => 'L',
+			13 => 'M',
+			14 => 'N',
+			15 => 'O',
+			16 => 'P',
+			17 => 'Q'
+		];
+		
+		return $arr[$col];
+	}
+	
 
 }

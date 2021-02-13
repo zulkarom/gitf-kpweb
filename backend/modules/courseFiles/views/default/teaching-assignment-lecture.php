@@ -8,7 +8,7 @@ use yii\helpers\Url;
 $offer = $lecture->courseOffered;
 $course = $offer->course;
 
-$this->title = 'Lecturer ['.$lecture->lec_name.']';
+$this->title = 'Lecture ['.$lecture->lec_name.']';
 $this->params['breadcrumbs'][] = ['label' => 'Teaching Assignment', 'url' => ['/course-files/default/teaching-assignment']];
 $this->params['breadcrumbs'][] = $this->title;
 

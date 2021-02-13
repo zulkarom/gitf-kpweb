@@ -48,7 +48,7 @@ class DefaultController extends Controller
 	
 	public function actionTeachingView(){
 		$user = Yii::$app->user->identity;
-		$model = $user->staff;
+		$model = $user->staffTeaching;
 		$setting = Setting::findOne(1);
 		
 		

@@ -7,9 +7,12 @@ use kartik\grid\GridView;
 use backend\assets\ExcelAsset;
 use kartik\export\ExportMenu;
 
+ExcelAsset::register($this); 
+
 
 $offer = $lecture->courseOffered;
 $assessment = $offer->assessment;
+
 $course = $offer->course;
 $listClo = $offer->listClo();
 /* @var $this yii\web\View */
@@ -21,124 +24,129 @@ $this->params['breadcrumbs'][] = ['label' => $this->title, 'url' => ['teaching-a
 $this->params['breadcrumbs'][] = 'Student Assessment';
 ?>
 
-<h4><?=$course->course_code . ' ' . $course->course_name?></h4>
-<h4><?=$offer->semester->longFormat()?></h4>
 
-
-  <?php
-  $columns = [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            [
-                'label' => 'Student Id',
-                'format' => 'html',
-                'value' => function($model){
-                    return $model->matric_no;
-                }
-            ],
-          [
-                'label' => 'Name',
-                'format' => 'html',
-                'value' => function($model){
-                    return $model->student->st_name;
-                }
-            ],
-
-
-        ];
-?>
+<style>
+.label{
+	font-size:12px;
+}
+</style>
 
 <div class="row">
 
-<div class="col-md-8">
-
-
-
- <div class="form-group"> <input type="file" id="xlf" style="display:none;" />
-<button type="button" id="btn-importexcel" class="btn btn-info"><span class="glyphicon glyphicon-import"></span> IMPORT EXCEL </button>
-
-<a href=<?=Url::to(['default/export-excel', 'id' => $lecture->id])?> class="btn btn-success"><span class="glyphicon glyphicon-download-alt"></span> EXPORT EXCEL</a>
+<div class="col-md-4">
+<h4><?=$course->course_code . ' ' . $course->course_name?></h4>
+<h4><?=$offer->semester->longFormat()?></h4>
 
 </div>
 
-<?php $form = ActiveForm::begin(['id' => 'form-assessment']); ?>
-  <input type="hidden" id="json_assessment" name="json_assessment">
-  <?php ActiveForm::end(); ?> 
+<div class="col-md-8" align="right">
+<br />
+ <div class="form-group"> 
+<a href=<?=Url::to(['default/export-excel', 'id' => $lecture->id])?> class="btn btn-success btn-sm" target="_blank"><span class="glyphicon glyphicon-download-alt"></span> DOWNLOAD TEMPLATE</a> 
+
+<input type="file" id="xlf" style="display:none;" />
+<button type="button" id="btn-importexcel" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-import"></span> IMPORT MARKS </button>
+
+<a href=<?=Url::to(['default/clo-analysis-pdf', 'id' => $lecture->id])?> class="btn btn-danger btn-sm" target="_blank"><span class="glyphicon glyphicon-download-alt"></span> DOWNLOAD ANALYSIS</a> 
+
+
+
+</div>
+
+
 
 </div>
 
 </div>
 
-<br/>
 
 
 <div class="box">
         <div class="box-header">
-          <div class="a">
+      
             <div class="box-title"><b>Student Assessment</b></div>
-          </div>
+     
         </div>
           <div class="box-body">
-            <?php $form = ActiveForm::begin() ?>
             <div class="table-responsive">
             <table class="table table-striped table-hover">
                 <thead>
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td style="float: right;"><b>Assessment Name :</b></td>
+          
                     <?php
-                    if($assessment)
-                    {
-                      $cloSet = array();
-                      foreach ($assessment as $assess) {
+					
+					$empty_clo = '';
+					$header_clo = '';
+					if($listClo){
+                          foreach ($listClo as $clo) {
+                            $empty_clo .= '<td></td>';
+							$header_clo .= '<td><span class="label label-primary">CLO'.$clo.'</span></td>';
+							$strtotal = 'clo'.$clo.'_total';
+							$strcount = 'clo'.$clo.'_count';
+							$$strtotal = 0;
+							$$strcount = 0;
+                          }
+                    }
+					
+					 echo'</tr> 
+                    <tr align="center">
+                   
+                    <td colspan="3" align="right">Course Learning Outcome</td>';
+					$cloSet = array();
+					$count_assess = count($assessment);
+					foreach ($assessment as $assess) {
                         $cloSet[] = $assess->cloNumber;
-                        echo'<td>'.$assess->assess_name_bi.'
+                        echo'<td><span class="label label-primary">CLO'.$assess->cloNumber.'</span>
                         </td>';
+						
 
                       }
+                   echo $empty_clo;
                     
                     echo'</tr> 
-                    <tr>
-                    <td></td>
-                    <td></td>
-                    <td style="float: right;"><b>CLO :</b></td>';
-                    
-                      foreach ($assessment as $assess) {
-                        $cloSet[] = $assess->cloNumber;
-                        echo'<td>CLO'.$assess->cloNumber.'
-                        </td>';
-
-                      }
-                    
-                    echo'</tr> 
-
-                    <tr>
-                    <td></td>
-                    <td></td>
-                    <td style="float: right;"><b>Weightage :</b></td>'; 
-                      foreach ($assessment as $assess) {
-                        $cloSet[] = $assess->cloNumber;
+					
+                    <tr align="center">
+                    <td colspan="3" align="right"><b>Weightage</b></td>';
+					$weightage = array();
+					   foreach ($assessment as $assess) {
                         echo'<td>'.$assess->assessmentPercentage.'%
                         </td>';
-
+						$weightage[] = $assess->assessmentPercentage;
                       }
-                    
-                  
-                  echo'</tr> 
+					  echo $empty_clo;
+                    echo'</tr> ';
 
-                  <tr>
-                    <td><b>No.</b></td>
-                    <td><b>Matric No.</b></td>
-                    <td><b>Name <font style="float: right">Total :</font></font></td>';
-                    foreach ($assessment as $assess) {
-                        $cloSet[] = $assess->cloNumber;
+                  /*  echo ' <tr align="center">
+                    <td colspan="3" align="right"><b>Total Mark</b></td>'; 
+                      foreach ($assessment as $assess) {
                         echo'<td>'.$assess->assessmentPercentage.'
                         </td>';
 
                       }
+					  echo $empty_clo;
+                  echo'</tr>',  */
+
+                  echo '<tr >
+                    <td><b>No.</b></td>
+                    <td><b>Matric No.</b></td>
+                    <td><b>Name</b></td>';
+					 if($assessment)
+                    {
+                      
+                      foreach ($assessment as $assess) {
+                        echo'<td align="center">'.$assess->assess_name_bi.'
+                        </td>';
+
+                      }
+                   
                     }
+					echo $header_clo;
                   ?>
+				  
+				  
+				  
+				  
+				  
+				  
                   </tr>
                 </thead>
                 <tr>
@@ -147,21 +155,15 @@ $this->params['breadcrumbs'][] = 'Student Assessment';
                     if($lecture->students){
 
                       foreach ($lecture->students as $student) {
-                        $result = json_decode($student->assess_result);
                         
-                        $array_matric = $student->matric_no;
-                        $$array_matric = array();
-
-                        if($listClo){
-                          foreach ($listClo as $clo) {
-                            $$array_matric[$clo] = cloValue($clo,$result,$cloSet);
-                          }
-                        }
+                        
 
                         echo'<tr><td>'.$i.'</td>
                           <td>'.$student->matric_no.'</td>
                           <td>'.$student->student->st_name.'</td>';
-                          
+						  
+
+                          $result = json_decode($student->assess_result);
 
                            if($assessment)
                             {
@@ -171,7 +173,7 @@ $this->params['breadcrumbs'][] = 'Student Assessment';
                                 if($result){
                                   if(array_key_exists($x, $result)){
                                     $mark = $result[$x];
-                                    echo'<td>'.$mark.'</td>';
+                                    echo'<td align="center">'.$mark.'</td>';
                                   }
                                   else{
                                     echo'<td></td>';
@@ -185,83 +187,12 @@ $this->params['breadcrumbs'][] = 'Student Assessment';
                                 $x++;
                               }
                             }
+							
 
-                        
-                        echo'</tr>';
-                        $i++;
-                      }
-
-                    }
-
-
-                ?>
-            </table>
-
-            </div>
-            <?php ActiveForm::end(); ?>
-          </div>
-        </div>
-
-         <!-- Group by Clo -->
-        <div class="box">
-        <div class="box-header">
-          <div class="a">
-            <div class="box-title"><b>Student Assessment<br/>(Group by CLO)</b></div>
-          </div>
-        </div>
-          <div class="box-body">
-            <?php $form = ActiveForm::begin() ?>
-            <div class="table-responsive">
-            <table class="table table-striped table-hover">
-                <thead>
-                  <tr>
-                    <th>No.</th>
-                    <th>Matric No.</th>
-                    <th>Name</th>
-                    <?php
-                        if($listClo){
-                          foreach ($listClo as $clo) {
-                            echo'<th>
-                            (CLO'.$clo.')
-                            </th>';
-                          }
-                        }
-                    ?>
-                  </tr>
-                </thead>
-
-                
-                  <?php
-                    $i=1;
-                    if($listClo){
-                      foreach ($listClo as $clo) {
-                        $strtotal = 'clo'.$clo.'_total';
-                        $strcount = 'clo'.$clo.'_count';
-                        $$strtotal = 0;
-                        $$strcount = 0;
-
-                      }
-                    }
-
-                    if($lecture->students){
-
-                      foreach ($lecture->students as $student) {
-                        $result = json_decode($student->assess_result);
-                        
-                        $array_matric = $student->matric_no;
-                        $$array_matric = array();
-
-                       
-                        echo'<tr><td>'.$i.'</td>
-                          <td>'.$student->matric_no.'</td>
-                          <td>'.$student->student->st_name.'</td>';
-                          
                           if($listClo){
                             foreach ($listClo as $clo) {
                               $value = cloValue($clo,$result,$cloSet);
-
-                              $$array_matric[$clo] = $value ;
-                              echo'<td>'.$$array_matric[$clo].'</td>';
+                             echo'<td align="center">'.$value.'</td>';
 
                               $strtotal = 'clo'.$clo.'_total';
                               $strcount = 'clo'.$clo.'_count';
@@ -274,10 +205,7 @@ $this->params['breadcrumbs'][] = 'Student Assessment';
 
 
                             }
-                            // $average = $$strtotal/$$strcount;
-
                           }
-                       
 
                         
                         echo'</tr>';
@@ -286,36 +214,86 @@ $this->params['breadcrumbs'][] = 'Student Assessment';
 
                     }
 
-
+				$colspan = 3 + $count_assess;
                 ?>
-
-                <tr><td><td></td><td><b>AVERAGE</b></td>
+				
+				
+                <tr><td colspan="<?=$colspan?>" align="right"><b>AVERAGE</b></td>
                   <?php
+				  $weightage_html = '';
+				  $percent = '';
+				  $achievement = '';
+				  $html_analysis = '';
                     if($listClo){
                       foreach ($listClo as $clo) {
                         $strtotal = 'clo'.$clo.'_total';
                         $strcount = 'clo'.$clo.'_count';
-                       
+						$average = 0;
                         if($$strcount > 0){
                            $average = $$strtotal/$$strcount;
-                            echo'<td>'.$average.'</td>';
+                            echo'<td align="center">'.number_format($average,2).'</td>';
                         }else{
                             echo'<td></td>';
                         }
+						
+						$value = cloValue($clo,$weightage,$cloSet);
+                        $weightage_html .= '<td align="center" style="border-bottom:1px #000000 solid">'.$value.'</td>';
+						if($value == 0){
+							$percentage = 0;
+						}else{
+							$percentage = $average / $value;
+						}
+						
+						$percent .= '<td align="center">'.number_format($percentage,2).'</td>';
+						$achieve = $percentage * 4;
+						$achievement .= '<td align="center"><span class="label label-primary" >'.number_format($achieve,2).'</span></td>';
+						$analysis = analysis($achieve);
+						$html_analysis .= '<td align="center">'.$analysis.'</td>';
                        
                       }
                     }
                   ?>
                 </tr>
+				<tr><td colspan="<?=$colspan?>"  align="right"><b>CLO WEIGHTAGE</b></td>
+                  <?php
+				  echo $weightage_html;
+                  ?>
+                </tr>
+				<tr><td colspan="<?=$colspan?>"  align="right"><b></b></td>
+                  <?php
+				  echo $percent;
+                  ?>
+                </tr>
+				
+				<tr><td colspan="<?=$colspan?>"  align="right"><b>STUDENT ACHIEVEMENT(0-4) *</b></td>
+                  <?php
+				  echo $achievement;
+                  ?>
+                </tr>
+				
+				<tr><td colspan="<?=$colspan?>"  align="right"><b>ACHIEVEMENT ANALYSIS **</b></td>
+                  <?php
+				  echo $html_analysis;
+                  ?>
+                </tr>
+				
             </table>
 
             </div>
-            <?php ActiveForm::end(); ?>
-          </div>
-        </div>
+
+          </div> </div>
+		  
+
+
+         <!-- Group by Clo -->
+        
+ *Purata markah (jumlah markah/ bil. pelajar) dibahagikan dengan pemberat setiap HPK didarab dengan 4.0/ Average mark (total marks/no. of students) divided by weightage of each CLO multiplied by 4.0.<br />
+ **0.00-0.99 (Sangat Lemah/ Very Poor), 1.00-1.99 (Lemah/ Poor), 2.00-2.99 (Baik/ Good), 3.00-3.69 (Sangat Baik/ Very Good), 3.70-4.00 (Cemerlang/ Excellent). 
 
       
-
+<?php $form = ActiveForm::begin(['id' => 'form-assessment']); ?>
+  <input type="hidden" id="json_assessment" name="json_assessment">
+  <?php ActiveForm::end(); ?> 
 
 
 <?php 
@@ -343,10 +321,21 @@ function cloValue($clo,$result,$cloSet)
   return $mark;
 }
 
-function cloAverage(){
-  
+function analysis($point){
+	if($point >= 3.7 and $point <= 4){
+		return 'Cemerlang/ Excellent';
+	}else if($point >= 3 and $point < 3.7){
+		return 'Sangat Baik/ Very Good';
+	}else if($point >= 2 and $point < 3){
+		return 'Baik/ Good';
+	}else if($point >= 1 and $point < 2){
+		return 'Lemah/ Poor';
+	}else if($point >= 0 and $point < 1){
+		return 'Sangat Lemah/ Very Poor';
+	}else{
+		return '';
+	}
 }
-
 
 
 $this->registerJs('
@@ -420,11 +409,6 @@ var X = XLSX;
 
 ?>
 
-
-
-<?php
-    ExcelAsset::register($this); 
-?>
 
 
 

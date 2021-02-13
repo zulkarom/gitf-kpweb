@@ -4,6 +4,8 @@ namespace backend\modules\courseFiles\controllers;
 
 use Yii;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+use yii\helpers\ArrayHelper;
 use backend\models\SemesterForm;
 use backend\models\Semester;
 use backend\modules\teachingLoad\models\Staff;
@@ -20,9 +22,8 @@ use backend\modules\students\models\StudentSearch;
 use backend\modules\courseFiles\models\StudentLecture;
 use backend\modules\courseFiles\models\StudentLectureSearch;
 use backend\modules\courseFiles\models\AddStudentLectureDateForm;
-use yii\helpers\ArrayHelper;
 use backend\modules\courseFiles\models\pdf\AttendanceSummary;
-use backend\modules\courseFiles\models\pdf\AttendanceSummaryStart;
+use backend\modules\courseFiles\models\pdf\Clo;
 use backend\modules\courseFiles\models\excel\AssessmentExcel;
 
 /**
@@ -171,6 +172,20 @@ class DefaultController extends Controller
         ]);
 		
     }
+	
+	public function actionCloAnalysisPdf($id){
+		$model = $this->findLecture($id);
+		$pdf = new Clo;
+		$pdf->model = $model;
+		$offer = $model->courseOffered;
+		$pdf->course = $offer->course;
+		$pdf->semester = $offer->semester;
+		$pdf->group =  $model->lec_name;
+		$pdf->assessment = $offer->assessment;
+		$pdf->listClo = $offer->listClo();
+		
+		$pdf->generatePdf();
+	}
 
     public function actionLectureStudentAssessment($id){
 		$lecture = $this->findLecture($id);
@@ -191,24 +206,51 @@ class DefaultController extends Controller
             
             if($data){
                 $i=0;
-                foreach (array_slice($data,1) as $stud) {
-					
+				$weight = $data[1];
+				$full_mark = $data[2];
+				
+				$weight = array_slice($weight,3);
+				$full_mark = array_slice($full_mark,3);
+				
+				
+				
+				//print_r($weight );die();
+                foreach (array_slice($data,4) as $stud) {
                    if(is_array($stud)){
+					   
 						
 	 			   		$matric = trim($stud[1]);
 						$assess = array_slice($stud, 3);
 						
+/* 						 print_r($assess);
+						print_r($weight);
+						print_r($full_mark);
+						die();  */
+						$weighted_assess = array();
+						$x = 0;
+						foreach($assess as $raw){
+							//print_r($weight);
+							//echo $weight[$x];
+							
+							$s = $weight[$x];
+							$sw = trim(str_replace('%', '', $weight[$x]));
+							$w = $raw / $full_mark[$x] * $sw;
+							$weighted_assess[] = $w;
+						$x++;
+						}
+						//print_r($weighted_assess);
+						//die();
                         $st_lec = StudentLecture::findOne(['matric_no' => $matric, 'lecture_id' => $id]);
                         if($st_lec){
-                           $st_lec->assess_result = json_encode($assess);
+                           $st_lec->assess_result = json_encode($weighted_assess);
                            $st_lec->save();
                         }
-                        
                     }
                     $i++;  
                     }  
                 }
-                Yii::$app->session->addFlash('success', "Import Excel Success");  
+                Yii::$app->session->addFlash('success', "Import Excel Success"); 
+				return $this->refresh();
             }
             
 			
@@ -224,10 +266,9 @@ class DefaultController extends Controller
 
     public function actionExportExcel($id){
     	$lecture = $this->findLecture($id);
-    	$studentLec = StudentLecture::find()->where(['lecture_id' => $id])->all();
+
         $pdf = new AssessmentExcel;
         $pdf->model = $lecture;
-        
         $pdf->generateExcel();
     }  
 	
@@ -386,8 +427,21 @@ class DefaultController extends Controller
     public function actionAttendanceSync($id){
     	
 		$lecture = $this->findLecture($id);
-
-    	$api = new Api;
+		
+		$api = new Api;
+		$api->semester = $lecture->courseOffered->semester_id;
+		$api->subject = $lecture->courseOffered->course->course_code;
+		$api->group = $lecture->lec_name;
+		$data = $api->attendList();
+		if($data->result){
+			$arr = array();
+			foreach($data->result as $class){
+				$arr[] = $class->date;
+			}
+			
+			$lecture->attendance_header = json_encode($arr);
+			$lecture->save();
+		}
     	
 		$api->semester = $lecture->courseOffered->semester_id;
 		$api->subject = $lecture->courseOffered->course->course_code;

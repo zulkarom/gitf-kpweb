@@ -134,7 +134,10 @@ if(Yii::$app->params['faculty_id'] == 21 ){
 	$cat = [
 				'label' => 'Program',
 				'value' => function($model){
-					return $model->program->pro_name_short;
+					if($model->program){
+						return $model->program->pro_name_short;
+					}
+					
 				}
 				
 			];
