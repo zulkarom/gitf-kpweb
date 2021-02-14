@@ -10,7 +10,7 @@ use backend\models\SemesterForm;
 use backend\models\Semester;
 use backend\modules\teachingLoad\models\Staff;
 use backend\modules\courseFiles\models\Api;
-use backend\modules\courseFiles\models\CourseFilesSearch;
+
 use backend\modules\courseFiles\models\Checklist;
 use backend\modules\courseFiles\models\LectureCancel;
 use backend\modules\teachingLoad\models\CourseOffered;
@@ -38,27 +38,7 @@ class DefaultController extends Controller
      */
     public function actionIndex()
     {
-        $semester = new SemesterForm;
-        $semester->action = ['/course-files/default/index'];
-
-        if(Yii::$app->getRequest()->getQueryParam('SemesterForm')){
-            $sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');
-            $semester->semester_id = $sem['semester_id'];
-            $semester->str_search = $sem['str_search'];
-        }else{
-            $semester->semester_id = Semester::getCurrentSemester()->id;
-        }
-
-        $searchModel = new CourseFilesSearch();
-        $searchModel->semester = $semester->semester_id;
-        $searchModel->search_course = $semester->str_search;
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            'semester' => $semester
-        ]);
+       
     }
 
     public function actionTeachingAssignment(){
@@ -83,6 +63,20 @@ class DefaultController extends Controller
             'modelItem' => $modelItem,
             'semester' => $semester,
 			'myInv' => $myInv
+        ]);
+
+
+    }
+	
+	
+	public function actionTimetable(){
+        
+		$semester = Semester::getCurrentSemester()->id;
+		
+		$model = StaffInvolved::findOne(['staff_id' => Yii::$app->user->identity->staff->id, 'semester_id' => $semester]);
+
+        return $this->render('timetable', [
+			'model' => $model,
         ]);
 
 
@@ -186,8 +180,18 @@ class DefaultController extends Controller
 		
 		$pdf->generatePdf();
 	}
+	
+	public function actionSaveClos($id){
+		if(Yii::$app->request->post()){
+			$model = $this->findLecture($id);
+			$data = Yii::$app->request->post('achived');
+			$model->clo_achieve = json_encode($data);
+			$model->save();
+		}
+		
+	}
 
-    public function actionLectureStudentAssessment($id){
+    public function actionLectureStudentAssessment($id, $save = 0){
 		$lecture = $this->findLecture($id);
 		
 		$kira = StudentLecture::find()->where(['lecture_id' => $id])->count();
@@ -250,7 +254,7 @@ class DefaultController extends Controller
                     }  
                 }
                 Yii::$app->session->addFlash('success', "Import Excel Success"); 
-				return $this->refresh();
+				return $this->redirect(['lecture-student-assessment', 'id' => $id, 'save' => 1]);
             }
             
 			
@@ -259,6 +263,7 @@ class DefaultController extends Controller
         return $this->render('lecture-student-assessment', [
 			'lecture' => $lecture,
             'dataProvider' => $dataProvider,
+			'save' => $save
 			
         ]);
 		
@@ -406,6 +411,20 @@ class DefaultController extends Controller
 				$lecture->save();
 			}
 		}
+		
+		if(Yii::$app->request->post()){
+			if($lecture->students){
+			  foreach ($lecture->students as $student) {
+				$val = Yii::$app->request->post('con_' . $student->matric_no);
+				$student->attendance_check = $val;
+				if(!$student->save()){
+					Yii::$app->session->addFlash('error', "Saving failed for ".$student->matric_no);
+				}
+			  }
+			}
+			//die();
+		}
+		
         return $this->render('lecture-student-attendance', [
             'lecture' => $lecture,
         ]);

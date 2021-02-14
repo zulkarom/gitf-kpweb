@@ -202,6 +202,10 @@ class CourseOffered extends \yii\db\ActiveRecord
     public function getCourseVersion(){
         return $this->hasOne(CourseVersion::className(), ['id' => 'course_version']);
     }
+	
+	public function getMaterial(){
+        return $this->hasOne(Material::className(), ['id' => 'material_version']);
+    }
 
     public function listClo()
     {

@@ -178,9 +178,9 @@ class Menu
 
 				['label' => 'Appointment Letter', 'icon' => 'file', 'url' => ['/teaching-load/staff-inv/index']],
 								
-				['label' => 'Letter Approval', 'icon' => 'file', 'url' => ['/teaching-load/staff-inv/approve-letter']],
+				['label' => 'Approve Appointment', 'icon' => 'check-square', 'url' => ['/teaching-load/staff-inv/approve-letter']],
 				
-				['label' => 'Maximum Hour', 'icon' => 'cog', 'url' => ['/teaching-load/manager/maximum-hour']],
+				['label' => 'Maximum Hour', 'icon' => 'clock-o', 'url' => ['/teaching-load/manager/maximum-hour']],
 				['label' => 'Letter Template', 'icon' => 'cog', 'url' => ['/teaching-load/tmpl-appointment']],
 
 				

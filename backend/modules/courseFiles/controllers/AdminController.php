@@ -15,6 +15,9 @@ use common\models\UploadFile;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use yii\bootstrap\Modal;
+use backend\models\SemesterForm;
+use backend\models\Semester;
+use backend\modules\courseFiles\models\CourseFilesSearch;
 
 /**
  * Default controller for the `course-files` module
@@ -39,6 +42,31 @@ class AdminController extends Controller
                 ],
             ],
         ];
+    }
+	
+	public function actionIndex()
+    {
+        $semester = new SemesterForm;
+        $semester->action = ['/course-files/default/index'];
+
+        if(Yii::$app->getRequest()->getQueryParam('SemesterForm')){
+            $sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');
+            $semester->semester_id = $sem['semester_id'];
+            $semester->str_search = $sem['str_search'];
+        }else{
+            $semester->semester_id = Semester::getCurrentSemester()->id;
+        }
+
+        $searchModel = new CourseFilesSearch();
+        $searchModel->semester = $semester->semester_id;
+        $searchModel->search_course = $semester->str_search;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'semester' => $semester
+        ]);
     }
 
     public function actionCourseFilesView($id)

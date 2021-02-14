@@ -154,24 +154,15 @@ class UploadFile
 		
 		$model->{$instance} = $upFile;
 		$uid = uniqid(time(), true);
-		
-		
-		
-					
+
 		$ext = $upFile->extension;
 		$fileName = $attr . '_' . $uid . '.' . $ext;
 		
-		
-		
 		if(!$path){
-			
 			$year = date('Y') + 0 ;
 			$path = $year . '/' . Yii::$app->user->identity->username ;
 		}
-		
-		
-		
-		
+
 		$directory = Yii::getAlias('@upload/' . $path . '/');
 
 		$filePath = $directory . $fileName;

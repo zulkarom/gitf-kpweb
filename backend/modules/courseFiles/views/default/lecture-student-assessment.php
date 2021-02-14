@@ -6,6 +6,7 @@ use yii\helpers\Url;
 use kartik\grid\GridView;
 use backend\assets\ExcelAsset;
 use kartik\export\ExportMenu;
+use richardfan\widget\JSRegister;
 
 ExcelAsset::register($this); 
 
@@ -224,6 +225,7 @@ $this->params['breadcrumbs'][] = 'Student Assessment';
 				  $percent = '';
 				  $achievement = '';
 				  $html_analysis = '';
+				  $arr_achieve = [];
                     if($listClo){
                       foreach ($listClo as $clo) {
                         $strtotal = 'clo'.$clo.'_total';
@@ -246,6 +248,7 @@ $this->params['breadcrumbs'][] = 'Student Assessment';
 						
 						$percent .= '<td align="center">'.number_format($percentage,2).'</td>';
 						$achieve = $percentage * 4;
+						$arr_achieve[] = number_format($achieve,2);
 						$achievement .= '<td align="center"><span class="label label-primary" >'.number_format($achieve,2).'</span></td>';
 						$analysis = analysis($achieve);
 						$html_analysis .= '<td align="center">'.$analysis.'</td>';
@@ -338,7 +341,33 @@ function analysis($point){
 }
 
 
-$this->registerJs('
+JSRegister::begin(); ?>
+<script>
+var save = <?=$save?>;
+
+if(save == 1){
+	//alert(achived);
+	saveClos();
+}
+
+function saveClos(){
+	var achived = '<?=json_encode($arr_achieve)?>';
+	$.ajax({url: "<?=Url::to(['/course-files/default/save-clos', 'id' => $lecture->id])?>", 
+	timeout: 2000,     // timeout milliseconds
+	type: 'POST',  // http method
+	data: { 
+		achived: achived,
+	},
+	success: function(result){
+		//alert(result);
+		//$("#result-submit").html(result);
+	},
+	error: function (jqXhr, textStatus, errorMessage) { // error callback 
+		alert('There is problem saving the clo achievement! Error Message : ' + errorMessage);
+		//$('#result-submit').append('Error: ' + errorMessage);
+	}
+  });
+}
 
 
 $("#btn-importexcel").click(function(){
@@ -365,7 +394,7 @@ var X = XLSX;
 
   }
 
-  var xlf = document.getElementById(\'xlf\');
+  var xlf = document.getElementById('xlf');
   
   function handleFile(e) {
 	var str;
@@ -378,7 +407,7 @@ var X = XLSX;
         var data = e.target.result;
         var wb;
         var arr = fixdata(data);
-          wb = X.read(btoa(arr), {type: \'base64\'});
+          wb = X.read(btoa(arr), {type: 'base64'});
           // console.log(to_jsObject(wb)); 
           var obj = to_jsObject(wb) ;
           for (var key in obj) {
@@ -400,14 +429,14 @@ var X = XLSX;
 
   if(xlf.addEventListener){
   
-  xlf.addEventListener(\'change\', handleFile, false);
+  xlf.addEventListener('change', handleFile, false);
 
   }
 
   
-');
+</script>
+<?php JSRegister::end(); ?>
 
-?>
 
 
 

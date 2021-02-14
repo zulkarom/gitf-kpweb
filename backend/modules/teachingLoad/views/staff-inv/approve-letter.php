@@ -109,8 +109,9 @@ $form = ActiveForm::begin([
 
             [
                 'label' => 'Status',
+				'format' => 'html',
                 'value' => function($model){
-                    return $model->statusText;
+                    return $model->statusLabel;
                 }
                 
             ],

@@ -15,12 +15,12 @@ use backend\modules\teachingLoad\models\StaffInvolvedSearch;
 use backend\modules\teachingLoad\models\AppointmentLetter;
 use backend\modules\teachingLoad\models\AppointmentLetterSearch;
 use backend\modules\teachingLoad\models\GenerateReferenceForm  ;
-
+use common\models\UploadFile;
+use yii\helpers\Json;
 
 
 class StaffInvController extends Controller
 {
-	    
 	public function behaviors()
     {
         return [
@@ -118,7 +118,12 @@ class StaffInvController extends Controller
            }
          	
          	}
+			
+			$to_del = StaffInvolved::find()->where(['staff_check' => 0, 'semester_id' => $semester])->all();
+			$arr = ArrayHelper::map($to_del, 'id' , 'id');
+			$app = AppointmentLetter::deleteAll(['inv_id' => $arr]);
          	StaffInvolved::deleteAll(['staff_check' => 0, 'semester_id' => $semester]);
+			//kena delete juga dlm appointment letter
          }
     	
     	Yii::$app->session->addFlash('success', "Run Staff Invoved Success");
@@ -263,10 +268,6 @@ class StaffInvController extends Controller
             }
         }
 
-            
-
-        
-
         return $this->render('approve-letter',[
             'semester' => $semester,
             'searchModel' => $searchModel,
@@ -274,6 +275,77 @@ class StaffInvController extends Controller
             
         ]);
     }
+	
+	public function actionUploadFile($attr, $id){
+		die();
+        $attr = $this->clean($attr);
+        $model = $this->findModel($id);
+        $model->file_controller = 'staff';
+		
+		$path = 'course-files/'.$model->semester_id.'/'.$model->staff->staff_no ;
+
+        return UploadFile::upload($model, $attr, 'updated_at', $path);
+
+    }
+	
+	protected function findModel($id)
+    {
+        if (($model = StaffInvolved::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+	protected function clean($string){
+		$allowed = ['timetable'];
+        if(in_array($string,$allowed)){
+            return $string;
+        }
+        throw new NotFoundHttpException('Invalid Attribute');
+    }
+
+	public function actionDeleteFile($attr, $id)
+    {
+        $attr = $this->clean($attr);
+        $model = $this->findModel($id);
+        $attr_db = $attr . '_file';
+        
+        $file = Yii::getAlias('@upload/' . $model->{$attr_db});
+        
+        $model->scenario = $attr . '_delete';
+        $model->{$attr_db} = '';
+        $model->updated_at = new Expression('NOW()');
+        if($model->save()){
+            if (is_file($file)) {
+                unlink($file);
+                
+            }
+            
+            return Json::encode([
+                        'good' => 1,
+                    ]);
+        }else{
+            return Json::encode([
+                        'errors' => $model->getErrors(),
+                    ]);
+        }
+        
+
+
+    }
+
+	public function actionDownloadFile($attr, $id, $identity = true){
+        $attr = $this->clean($attr);
+        $model = $this->findModel($id);
+        $filename = strtoupper($attr) . ' ' . Yii::$app->user->identity->fullname;
+        
+        
+        
+        UploadFile::download($model, $attr, $filename);
+    }
+
+
 
     
 }

@@ -71,7 +71,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				<td><?php 
 				
 				if($item->item_file){
-					echo Html::a('<span class="glyphicon glyphicon-download-alt"></span> Download', ['download', 'attr'=> 'item', 'id' => $item->id] , ['class' => 'btn btn-sm btn-warning', 'target' => '_blank']);
+					echo Html::a('<span class="glyphicon glyphicon-download-alt"></span> Download', ['download-file', 'attr'=> 'item', 'id' => $item->id] , ['class' => 'btn btn-sm btn-warning', 'target' => '_blank']);
 				}else{
 					echo 'No File';
 				}

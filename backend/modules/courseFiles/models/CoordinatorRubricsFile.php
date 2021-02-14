@@ -22,7 +22,7 @@ class CoordinatorRubricsFile extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'cf_coor_rubrics_class';
+        return 'cf_coor_rubrics';
     }
 
     /**

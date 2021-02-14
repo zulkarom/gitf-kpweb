@@ -19,7 +19,8 @@ use yii\helpers\Url;
  */
 class StaffInvolved extends \yii\db\ActiveRecord
 {
-   
+   public $file_controller;
+   public $timetable_instance;
     /**
      * {@inheritdoc}
      */
@@ -35,8 +36,14 @@ class StaffInvolved extends \yii\db\ActiveRecord
     {
         return [
             [['staff_id', 'semester_id'], 'required'],
+			
             [['staff_id', 'semester_id', 'staff_check'], 'integer'],
+			
             [['timetable_file'], 'string'],
+			
+			[['timetable_file'], 'required', 'on' => 'timetable_upload'],
+            [['timetable_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' =>2000000],
+            [['updated_at'], 'required', 'on' => 'timetable_delete'],
         ];
     }
 

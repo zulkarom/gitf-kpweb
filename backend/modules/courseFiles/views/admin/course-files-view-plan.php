@@ -17,9 +17,9 @@ use yii\helpers\Url;
     <thead>
       <tr>
         <th style="width:5%">No.</th>
-        <th style="width:85%">Item</th>
-        <th style="width:10%">Files</th>
-        <th>Action</th>
+        <th style="width:40%">Item</th>
+        <th style="width:40%">Files</th>
+        <th>Progress</th>
       </tr>
     
         
@@ -28,62 +28,88 @@ use yii\helpers\Url;
     
        $item = $model->itemPlan;
        $offer =  $modelOffer;
+	   $version = $offer->course_version;
+	   $material = $offer->material_version;
           
           echo '<tr><td>'.$item[0]->id.'</td>
                 <td>'.$item[0]->item.'<i><br/>'.$item[0]->item_bi.'</i></td>
-                <td></td>
+                <td>';
+			if($version == 0){
+				echo 'Coordinator need to select course version.';
+			}else{
+				echo '<a href="'.Url::to(['/esiap/course/fk1', 'course'=> $offer->course_id, 'version' => $version]).'" target="_blank">FK01 - PRO FORMA KURSUS</a>';
+			}
+				 
+				
+			echo '</td>
                 <td></td>';
        
           echo '<tr><td>'.$item[1]->id.'</td>
                 <td>'.$item[1]->item.'<i><br/>'.$item[1]->item_bi.'</i></td>
-                <td></td>
+                <td>';
+				if($version == 0){
+				echo 'Coordinator need to select course version.';
+			}else{
+				echo '<a href="'.Url::to(['/esiap/course/fk2', 'course'=> $offer->course_id, 'version' => $version]).'" target="_blank">FK02 - MAKLUMAT KURSUS</a>';
+			}
+				
+				
+			echo '</td>
                 <td></td>';
 
           echo '<tr><td>'.$item[2]->id.'</td>
                 <td>'.$item[2]->item.'<i><br/>'.$item[2]->item_bi.'</i></td>
-                <td></td>
-                <td></td>';
+                <td>';
+				if($version == 0){
+				echo 'Coordinator need to select course version.';
+			}else{
+				echo '<a href="'.Url::to(['/esiap/course/fk3', 'course'=> $offer->course_id, 'version' => $version]).'" target="_blank">FK03 - PENJAJARAN KONSTRUKTIF</a>';
+			}
+				
+			echo '</td>
+                <td>';
+				
+				 
+				
+				
+		echo '</td>';
 
           echo '<tr><td>'.$item[3]->id.'</td>
                 <td>'.$item[3]->item.'<i><br/>'.$item[3]->item_bi.'</i></td>
-                <td>'.$offer->countRubricFiles.'</td>
                 <td>';
-                  Modal::begin([
-                      'header' => '<h5>'.$item[3]->item.'</h5>',
-                      'toggleButton' => ['label' => '<span class="glyphicon glyphicon-th-list"></span> View Files', 'class'=>'btn btn-sm btn-warning'],
-                  ]);
+				
+			if($offer->coordinatorRubricsFiles)
+			  {
+				$i=1;
+				echo '<ul>';
+				foreach ($offer->coordinatorRubricsFiles as $files) {
+				  echo '<li>' . Html::a($files->file_name, ['coordinator-rubrics-file/download-file', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
+				  echo '</li>';
+				  $i++;
+				}
+				echo '</ul>';
+			  }
+				
+				echo '</td>
+                <td>';
+
                       
-                      if($offer->coordinatorRubricsFiles)
-                      {
-                        $i=1;
-                        foreach ($offer->coordinatorRubricsFiles as $files) {
-                          echo Html::a("File ".$i, ['coordinator-rubrics-file/download-file', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
-                          echo '<br/>';
-                          $i++;
-                        }
-                      }
-                  Modal::end();
+                     
+
           echo'</td>';
 
           echo '<tr><td>'.$item[4]->id.'</td>
                 <td>'.$item[4]->item.'<i><br/>'.$item[4]->item_bi.'</i></td>
-                <td>'.$offer->countMaterialFiles.'</td>
                 <td>';
-                  Modal::begin([
-                      'header' => '<h5>'.$item[4]->item.'</h5>',
-                      'toggleButton' => ['label' => '<span class="glyphicon glyphicon-th-list"></span> View Files', 'class'=>'btn btn-sm btn-warning'],
-                  ]);
-                      
-                      if($offer->coordinatorMaterialFiles)
-                      {
-                        $i=1;
-                        foreach ($offer->coordinatorMaterialFiles as $files) {
-                          echo Html::a("File ".$i, ['coordinator-material-file/download', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
-                          echo '<br/>';
-                          $i++;
-                        }
-                      }
-                  Modal::end();
+				
+				if($material == 0){
+				echo 'Coordinator need to select material version.';
+			}else{
+				//echo '<a href="'.Url::to(['/esiap/course/fk2', 'course'=> $offer->course_id, 'version' => $version]).'" target="_blank">FK02 - MAKLUMAT KURSUS</a>';
+			}
+				
+			echo '</td>
+                <td>';
           echo '</td>';
 
           echo '<tr><td>'.$item[5]->id.'</td>
@@ -108,7 +134,18 @@ use yii\helpers\Url;
                             $i++;
                         echo '<tr>
                         <td>';
-                                echo $letter->staffInvolved->staff->staff_title . ' ' .$letter->staffInvolved->staff->user->fullname;           
+						if($letter->staffInvolved){
+							echo $letter
+								->staffInvolved
+								->staff
+								->staff_title . ' ' .
+								$letter
+								->staffInvolved
+								->staff
+								->user
+								->fullname; 
+						}
+                                          
                         echo'</td>
                         <td>';
 

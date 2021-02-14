@@ -164,7 +164,7 @@ EOD;
 		$this->pdf->SetFooterMargin(18);
 
 		// set auto page breaks
-		$this->pdf->SetAutoPageBreak(TRUE, 23); //margin bottom
+		$this->pdf->SetAutoPageBreak(TRUE, 13); //margin bottom
 
 		// set image scale factor
 		$this->pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);

@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'updated_at',
 
             ['class' => 'yii\grid\ActionColumn',
-                 'contentOptions' => ['style' => 'width: 10%'],
+                 'contentOptions' => ['style' => 'width: 15%'],
                 'template' => '{update} {copy}',
                 'buttons'=>[
                     'update'=>function ($url, $model) {

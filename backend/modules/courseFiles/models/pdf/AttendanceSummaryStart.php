@@ -28,19 +28,20 @@ class AttendanceSummaryStart extends \TCPDF {
 		$height = 31;
 		$line_height = 220;
 		$time = strtoupper(date('d-M-Y h:m A', time()));
+		$wtable = 1160;
 		$html ='
-		<table border="1" cellpadding="6">
+		<table border="1" cellpadding="6" width="'.$wtable.'">
 		<tr>
 		
-		<td align="center" width="10%">
+		<td align="center" width="5%">
 		<img src="images/logo-attendance.png" />
 		</td>
 		
-		<td width="90%">
+		<td width="95%">
 		
 		<table border="0" cellpadding="2" >
 		<tr>
-		<td width="80%" height="'.$height.'" style="line-height:'.$line_height.'%">&nbsp;&nbsp;<b>STUDENT ATTENDANCE (OVERALL)</b>
+		<td width="80%" height="'.$height.'" style="line-height:'.$line_height.'%">&nbsp;&nbsp;<b>STUDENT ATTENDANCE</b>
 		</td>
 		<td width="20%"  style="line-height:'.$line_height.'%">&nbsp;&nbsp;
 		</td>
@@ -49,13 +50,13 @@ class AttendanceSummaryStart extends \TCPDF {
 		<tr height="'.$height.'" style="line-height:'.$line_height.'%">
 		<td>&nbsp;&nbsp;<b>SEMESTER: </b>'. strtoupper($this->semester->fullFormat()).'
 		</td>
-		<td></td>
+		<td>&nbsp;&nbsp;'.$time.'</td>
 		</tr>
 		
 		<tr height="'.$height.'" style="line-height:'.$line_height.'%">
 		<td>&nbsp;&nbsp;<b>SUBJECT: </b>'.$this->course->course_code.' ('.$this->group.') - '.strtoupper($this->course->course_name).'
 		</td>
-		<td>&nbsp;&nbsp;'.$time.'</td>
+		<td></td>
 		</tr>
 		
 		
@@ -73,7 +74,7 @@ class AttendanceSummaryStart extends \TCPDF {
 		
 		
 		$this->setY(10);
-		$this->setX(236);
+		$this->setX(234);
 		
 		  $this->Cell(40, 10, 'Page '.$this->getAliasNumPage().' of '.$this->getAliasNbPages(), 0, false, 'L', 0, '', 0, false, 'T', 'M');
 	 
@@ -95,9 +96,9 @@ class AttendanceSummaryStart extends \TCPDF {
 		 
 		 // $this->Cell(0, 10, 'eFasi @  '. $time, 0, false, 'L', 0, '', 0, false, 'T', 'M');
 		  
-		  $this->setY($y);
-		  $this->Cell(0, 10, '* H = HADIR, XH = TIDAK HADIR ', 0, false, 'L', 0, '', 0, false, 'T', 'M');
-		 $this->setY($y);
+		  //$this->setY($y);
+		  //$this->Cell(0, 10, '* H = HADIR, XH = TIDAK HADIR ', 0, false, 'L', 0, '', 0, false, 'T', 'M');
+		 //$this->setY($y);
 
 		  //$this->Cell(0, 10, 'Page '.$this->getAliasNumPage().' of '.$this->getAliasNbPages(), 0, false, 'R', 0, '', 0, false, 'T', 'M');
 		  

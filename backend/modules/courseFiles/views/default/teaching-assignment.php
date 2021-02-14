@@ -24,17 +24,11 @@ $this->params['breadcrumbs'][] = $this->title;
       <div class="box">
         <div class="box-header">
           <div class="a">
-            <div class="box-title"><b>My Teaching</b></div>
+            <div class="box-title"><b>Appointment Letters</b></div>
           </div>
         </div>
           <div class="box-body">
             <table class="table">
-                <thead>
-                  <tr>
-                    <th style="width:5%">#</th>
-                    <th style="width:69.3%">Appointment Letters</th>
-                    <th style="width:12.7%"></th>
-                  </tr>
                      <?php 
 					 $boo = false;
 					 if($myInv){
@@ -46,7 +40,15 @@ $this->params['breadcrumbs'][] = $this->title;
 							 echo '<tr>
 						 <td>'.$i.'. </td>
                            <td>'.$crs->course_code .' '.$crs->course_name .'</td>
-                           <td><a href="' . Url::to(['/teaching-load/appointment-letter/pdf', 'id' => $app->id]) . '" class="btn btn-default btn-sm" target="_blank"><span class="glyphicon glyphicon-download-alt"></span> Download</a></td>
+                           <td>';
+						   if($app->status == 10){
+							    echo '<a href="' . Url::to(['/teaching-load/appointment-letter/pdf', 'id' => $app->id]) . '" class="btn btn-default btn-sm" target="_blank"><span class="glyphicon glyphicon-download-alt"></span> Download</a>';
+						   }else{
+							   echo '<span style="font-weight:normal;font-style:italic">In progress...</span>';
+						   }
+						  
+						   
+						   echo '</td>
 						</tr>';
 						$i++;
 						 }
@@ -65,27 +67,40 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
                               ?>
-                </thead>
+                
               </table>
 			  
+		
+			  
+          </div>
+        </div>
+		
+		<div class="box">
+        <div class="box-header">
+          <div class="a">
+            <div class="box-title"><b>Timetable</b></div>
+          </div>
+        </div>
+          <div class="box-body">
+            
+			  
 			   <table class="table">
-                <thead>
-                  <tr>
-                    <th style="width:5%">#</th>
-                    <th style="width:69.3%">Timetable</th>
-                    <th style="width:12.7%"></th>
-                  </tr>
-                     <?php 
-						$items = $modelItem->itemPlan;
-						 echo '
-						 <tr>
-						 <td>1. </td>
-                           <td>Timetable for Individual Teaching Classes</td>
-                           <td><a href="' . Url::to(['default/teaching-assignment-lecture-upload']) . '" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-download-alt"></span> Download</a></td>
-						</tr>';
-                              ?>
-                </thead>
-              </table>
+			   
+			   <thead>
+			   <th>No.</th>
+			   <th>Item</th>
+			   <th>Progress</th>
+			   <th></th>
+			   
+			   </thead>
+			   
+			    <tr><td>1. </td>
+              <td>Timetable for Individual Teaching Classes</td>
+			  <td></td>
+              <td><a href="<?= Url::to(['default/timetable']) ?>" class="btn btn-primary btn-sm" ><span class="fa fa-upload"></span> Upload</a></td>
+						</tr>
+     
+               
               </table>
 			  
           </div>
@@ -103,8 +118,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <thead>
                   <tr>
                     <th>No.</th>
-                    <th>Course Code</th>
-                    <th>Course Name</th>
+                    <th>Course</th>
                     <th>Progress</th>
                     <th></th>
                   </tr>
@@ -116,8 +130,8 @@ $this->params['breadcrumbs'][] = $this->title;
                       foreach($model->coordinatorIdentity as $coor){
                         
                       echo '<tr><td>'.$i.'</td>
-                            <td>'.$coor->course->course_code.'</td>
-                            <td>'.$coor->course->course_name.'</td>
+                            <td>'.$coor->course->course_code.' '.$coor->course->course_name.'</td>
+       
                             <td></td>
                             <td>
 							
@@ -157,9 +171,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 <thead>
                   <tr>
                     <th >No.</th>
-                    <th >Course Code</th>
-                    <th >Course Name</th>
-                    <th >Lecture Name</th>
+                    <th >Course</th>
+                    <th >Lecture</th>
                     <th >Progress</th>
                     <th ></th>
                   </tr>
@@ -169,10 +182,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     if($model->teachLectureIdentity){
                     $i = 1;
                     foreach($model->teachLectureIdentity as $lecture){
-                        
+                        $course = $lecture->courseLecture->courseOffered->course;
                       echo '<tr><td>'.$i.'</td>
-                            <td>'.$lecture->courseLecture->courseOffered->course->course_code.'</td>
-                            <td>'.$lecture->courseLecture->courseOffered->course->course_name.'</td>
+                            <td>'.$course->course_code.' '.$course->course_name.'</td>
+                    
                             <td>'.$lecture->courseLecture->lec_name.'</td>
                             <td></td>
                             <td><a href="' . Url::to(['default/teaching-assignment-lecture', 'id' => $lecture->lecture_id]) . '" class="btn btn-primary btn-sm" ><span class="glyphicon glyphicon-eye-open"></span> View</a></td>';
@@ -199,9 +212,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 <thead>
                   <tr>
                      <th >No.</th>
-                    <th >Course Code</th>
-                    <th >Course Name</th>
-                    <th >Lecture Name</th>
+                    <th >Course</th>
+                    <th>Tutorial</th>
                     <th >Progress</th>
                     <th ></th>
                   </tr>
@@ -211,11 +223,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     if($model->teachTutorialIdentity){
                     $i = 1;
                       foreach($model->teachTutorialIdentity as $tutorial){
-                        
+                        $course = $tutorial->tutorialLec->lecture->courseOffered->course;
+						$lec = $tutorial->tutorialLec->lecture->lec_name;
                       echo '<tr><td>'.$i.'</td>
-                            <td>'.$tutorial->tutorialLec->lecture->courseOffered->course->course_code.'</td>
-                            <td>'.$tutorial->tutorialLec->lecture->courseOffered->course->course_name.'</td>
-                            <td>'.$tutorial->tutorialLec->tutorial_name.'</td>
+                            <td>'.$course->course_code.' '.$course->course_name.'</td>
+             
+                            <td>'.$lec . $tutorial->tutorialLec->tutorial_name.'</td>
                             <td></td>
                             <td><a href="' . Url::to(['default/teaching-assignment-tutorial', 'id' => $tutorial->tutorial_id]) . '" class="btn btn-primary btn-sm" ><span class="glyphicon glyphicon-eye-open"></span> View</a></td>';
                    

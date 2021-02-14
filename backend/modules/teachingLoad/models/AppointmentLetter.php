@@ -69,6 +69,15 @@ class AppointmentLetter extends \yii\db\ActiveRecord
         }
        
     }
+	
+	public function getStatusLabel(){
+		if($this->status == 10){
+			$color = 'success';
+		}else{
+			$color = 'warning';
+		}
+		return '<span class="label label-'.$color.'" style="font-size:12px">' . strtoupper($this->statusText) . '</span>';
+	}
 
     public function getStaffInvolved(){
         return $this->hasOne(StaffInvolved::className(), ['id' => 'inv_id']);

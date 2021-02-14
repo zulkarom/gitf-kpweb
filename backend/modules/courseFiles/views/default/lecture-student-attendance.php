@@ -48,7 +48,7 @@ $this->params['breadcrumbs'][] = 'Student Attendance';
 <div class="box">
 
           <div class="box-body">
-            <?php $form = ActiveForm::begin() ?>
+           
             <div class="table-responsive">
             <table class="table table-striped table-hover">
                 <thead>
@@ -58,10 +58,13 @@ $this->params['breadcrumbs'][] = 'Student Attendance';
                     <th>Student Name</th>
                   
                       <?php 
+					  $kira = 0;
                       $attendance = json_decode($lecture->attendance_header);
                       if($attendance){
+						
                         foreach($attendance as $attend){
                           echo'<th><center>'. date('d-m', strtotime($attend)) .'</center></th>';
+						  $kira++;
                         }
                       }
                   echo'<th>%</th></tr>
@@ -70,50 +73,77 @@ $this->params['breadcrumbs'][] = 'Student Attendance';
                   ?>
 
                      <?php
-                    $i=1;
-                    
+                    $x=1;
+                    $st_arr = '';
+					$input_html = '';
                     if($lecture->students){
                       foreach ($lecture->students as $student) {
                         if($student->lecture_id == $lecture->id){
-                          
-                          echo'<tr><td>'.$i.'</td>
-                          <td>'.$student->matric_no.'</td>
+							$comma = $x == 1 ? '': ',';
+                          $st_arr .= $comma.  "'" . $student->matric_no . "'";
+                          echo'<tr><td>'.$x.'. </td>
+                          <td>'.$student->matric_no.'
+						  
+						  </td>
                           <td>'.$student->student->st_name.'</td>';
 
                             $attendance = json_decode($student->attendance_check);
+							
                             if($attendance){
                               $count = 0;
 							  $i = 1;
+							  $all=count($attendance);
+							  $str = '[';
                               foreach($attendance as $attend){
+								$comma = $i == 1 ? '':',';
+								
 
                                if($attend == 1)
                                {
+								$str .= $comma. '1';
                                 $check = 'checked';
                                 $count++;
                                }else{
                                 $check ='';
+								$str .= $comma. '0';
                                }
 
                                 echo'<td><center>
-                                  <input type="checkbox" class ="checkbxAtt" name="cb_'.$student->matric_no.'_'.$i.'" value="1" '.$check.'/></center>
+								<input type="hidden" name="cb_'.$student->matric_no .'[]" value ="0" />
+                                  <input type="checkbox" class ="checkbxAtt" name="cb_'.$student->matric_no .'[]" id="cb_'.$student->matric_no.'_'.$i.'" value="1" '.$check.'/></center>
                                 </td>';
 								$i++;
                               }
-                              echo '<td>'.round(($count / 14)*100).'%</td>';
+							  $str .= ']';
+                              echo '<td id="per_'. $student->matric_no .'">
+							  
+							  '.round(($count / $all)*100).'%
+							  
+							  
+							  </td>';
+							  
+							  $input_html .= '<input type="hidden" name="con_'. $student->matric_no .'" id="con_'. $student->matric_no .'" value="'.$str.'" />';
                              
                             }else
                             {
                                 $column = json_decode($lecture->attendance_header);
+								$str = '[';
                                 if($column){
+									$iv = 1;
                                     foreach($column as $col){
+										$comma = $iv == 1 ? '':',';
+										$str .= $comma. '0';
                                         echo'<td></td>';
+									$iv++;
                                     }
                                     echo'<td></td>';
                                 }
-                               
+								$str .= ']';
+								
+                               $input_html .= '<input type="hidden" name="con_'. $student->matric_no .'" id="con_'. $student->matric_no .'" value="'.$str.'" />';
                             }
 
-                          $i++;
+                          $x++;
                         }
                         
             echo '</tr>';
@@ -128,25 +158,77 @@ $this->params['breadcrumbs'][] = 'Student Attendance';
               ?>
             </div>
             <?php /*  =$form->field($model, 'attendance_json',['options' => ['tag' => false]])->hiddenInput(['value' => ''])->label(false) */?>
-              <div class="form-group">
-                  <br/>
-                  <?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span>  Save', ['class' => 'btn btn-success']) ?>
-              </div>
+             
 
-            <?php ActiveForm::end(); ?>
+           
           </div>
         </div>
-
+<?php $form = ActiveForm::begin() ?>
+		 <div class="form-group">
+		 <?=$input_html?>
+                  <?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span>  Save Attendance', ['class' => 'btn btn-success', 'id' => 'btn-save']) ?>
+              </div>
+		
+ <?php ActiveForm::end(); ?>
 
 <?php
 $js = "
 
-$('.checkbxAtt').click(function(){
-	var val = $(this).prop('checked');
-	alert(val);
+$('#btn-save').click(function(){
+	//calcAll();
 });
 
-function arrayChk(){ 
+$('.checkbxAtt').click(function(){
+	var id = $(this).attr('id');
+	var arr = id.split('_');
+	var matric = arr[1];
+	//alert(calcAttend(matric));
+	$('#per_' + matric).text(calcPercent(matric));
+	$('#con_' + matric).val(JSON.stringify(calcAttend(matric)));
+});
+
+function calcAll(){
+	var arr = [".$st_arr."];
+	var matric;
+	for(i=0;i<arr.length;i++){
+		matric = arr[i];
+		$('#con_' + matric ).val(JSON.stringify(calcAttend(matric)));
+
+	}
+}
+
+function calcPercent(matric){
+	var arr = calcAttend(matric);
+	//alert(arr);
+	var attend = 0;
+	for(i=0;i<arr.length;i++){
+		if(arr[i] == 1){
+			attend++;
+		}
+	}
+	var per = attend / arr.length * 100;
+	return Math.round(per) + '%';
+}
+
+function calcAttend(matric){
+	var cnt = ".$kira."  ;
+	var cb;var val;
+	var arrAtt = [];
+	
+	for(i=1;i<=cnt;i++){
+		cb = 'cb_' + matric + '_' + i;
+		val = $('#'+ cb).prop('checked');
+		if(val){
+			arrAtt.push( 1 );
+			
+		}else{
+			arrAtt.push( 0 );
+		}
+	}
+	return arrAtt;
+}
+
+/* function arrayChk(){ 
  
     var arrAn = [];  
   
@@ -178,7 +260,7 @@ $('.checkbxAtt ').click(function(e, data){
  
    
 });
-
+ */
 
 ";
 
