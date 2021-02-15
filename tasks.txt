@@ -1,11 +1,6 @@
-UPDATE `sp_version_type` SET `type_name` = 'MQF 1.0 (PLO 8)' WHERE `sp_version_type`.`id` = 1;
-
 
 view courses by department
 view courses by program
-
-
-
 
 
 menu, update at backend
@@ -20,8 +15,6 @@ brief instruction on what to do at every stage
 default password redirect to change password page - untuk auto create
 
 
-finalise_at kosong : corrected not test
-
 advance search
 
 ===================== KIV =================
@@ -35,97 +28,3 @@ reviewer certificate
 create account for new reviewer
 
 front page utk reviewer ada task list link
-
-=======================  DONE =====================
-prevent publish before article number
-ME - reject to withdraw and go back to original status
-edit guideline page
-baiki kenapa tak email associate editor - Associate editor tak berkaitan dapat jgk email - so far detect email template target at assistant editor
-add reviewer xde email -
-template link = downloads/v1-i2-2018.01.pdf
-reset password email
-pre & post create different file lah
-email notification & reminder
-WORKFLOW CHANGE - PROOFREAD FIRST THEN FINALISE
-rejected paper
-badge number at menu
-submission menu show to all user - buat redirect to create submission in frontend
-reviewer must accept first - abstract sahaja - setuju baru full paper
-upload reviewer file - include pdf
-sorting articles in compiling journal - assign journal number
-button withdraw kpd authors sblm finalise - withdraw-request --> withdraw
-pre evaluation kena ada manuscript no - manuscript number (cari formula buat automatik) at pre - evaluate - including rejected - 2018.234 - {year}.{id}
-upload pdf - template
-masa correction attach template
-masa submit paper declare belum publish mana2 - accept terms and condition
-link dari portaL ke portal v2
-
-
-======================review meeting ===============DONE=============
-manually create new associate
-show url at article number page
-article number must be unique
-link journal lama kena guna link doi
-search article - 
-reviewer masa agree - masa dah review -> appreciation & notify to associate editor
-post evaluate - button to accept manuscript & notify author
-manuscript number - manual
-ETHICAL GUIDELINE - alignment
-Timeline: Two Weeks - NO NEED
-
-7. A. <b>Initiall Assessment</b>: The Managing EditoR
-
-EDITORIAL POLICY
-alignment
-
-SUBMISSION GUIDELINE ALIGNMENT
-
-All manuscripts should be submitted to:
-REPLACE WITH ANY FURTHER INQUIRIES PLZ ...
-
-------------no bullet
-Stephen Teo, Edith Cowan University, Malaysia.
-Hafiz T.A. Khan, University of West London, United Kingdom.
-Kamarul Zaman Bin Ahmad, University of Dubai, United Arab Emirates
-Siri Roland Xavier, Universiti Tun Abdul Razak, Malaysia.
-Fon Sim Ong, University of Nottingham, Malaysia.
------------------------
-
-STRAIGHT FOWARD LESS COLOR DESIGN
-
-
-
-ALTER TABLE `staff_position_status` ADD `status_cat` VARCHAR(50) NOT NULL AFTER `status_name`;
-UPDATE `staff_position_status` SET `status_cat` = 'Tetap' WHERE `staff_position_status`.`id` = 1; UPDATE `staff_position_status` SET `status_cat` = 'Tetap' WHERE `staff_position_status`.`id` = 2; UPDATE `staff_position_status` SET `status_cat` = 'Sementara' WHERE `staff_position_status`.`id` = 3; UPDATE `staff_position_status` SET `status_cat` = 'Kontrak' WHERE `staff_position_status`.`id` = 4; UPDATE `staff_position_status` SET `status_cat` = 'Kontrak' WHERE `staff_position_status`.`id` = 5; UPDATE `staff_position_status` SET `status_cat` = 'Pinjaman' WHERE `staff_position_status`.`id` = 6;
-ALTER TABLE `country` ADD UNIQUE(`country_code`);
-ALTER TABLE `staff` ADD `nationality` VARCHAR(10) NOT NULL DEFAULT 'MY' AFTER `is_academic`;
-ALTER TABLE `staff` ADD `high_qualification` VARCHAR(10) NOT NULL AFTER `staff_active`, ADD `hq_specialization` VARCHAR(100) NOT NULL AFTER `high_qualification`, ADD `hq_year` YEAR NOT NULL AFTER `hq_specialization`, ADD `hq_country` VARCHAR(10) NOT NULL AFTER `hq_year`, ADD `hq_institution` VARCHAR(200) NOT NULL AFTER `hq_country`;
-
-
-ALTER TABLE `rp_publication` ADD `pubother_file` TEXT NOT NULL AFTER `pubupload_file`;
-
-CREATE TABLE `rp_consultation_tag` (
-  `id` int(11) NOT NULL,
-  `staff_id` int(11) NOT NULL,
-  `consult_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-ALTER TABLE `rp_consultation_tag`
-  ADD PRIMARY KEY (`id`);
-
-ALTER TABLE `rp_consultation_tag`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-  
-  ALTER TABLE `sp_course_version` ADD `version_type_id` INT NOT NULL AFTER `version_name`;
-UPDATE `sp_course_version` SET `version_type_id` = '1';
-ALTER TABLE `sp_course_version` DROP `plo_num`;
-ALTER TABLE `sp_program_version` CHANGE `plo_num` `version_type_id` INT NOT NULL;
-ALTER TABLE `sp_course_profile` ADD `offer_sem` TINYINT(1) NOT NULL AFTER `prerequisite`, ADD `offer_year` TINYINT(2) NOT NULL AFTER `offer_sem`;
-
-ALTER TABLE `sp_course_slt` ADD `is_practical` TINYINT(1) NOT NULL AFTER `nf2f`;
-ALTER TABLE `sp_course_profile` ADD `requirement_bi` TEXT NOT NULL AFTER `additional`, ADD `additional_bi` TEXT NOT NULL AFTER `requirement_bi`;
-
-ALTER TABLE `sp_course` ADD `component_id` INT NOT NULL AFTER `updated_at`;
-
-ALTER TABLE `staff` ADD `faculty_id` INT NOT NULL AFTER `staff_title`;
-UPDATE `staff` SET `faculty_id` = '1';

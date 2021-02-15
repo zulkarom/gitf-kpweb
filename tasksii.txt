@@ -2,3 +2,6 @@ buat back button to coordinator page in material page
 bilangan tutorial colum tidak tepat http://localhost/projects/gitf-kpweb/backend/web/index.php?r=teaching-load%2Fstaff-inv%2Fapprove-letter
 material status kena ada
 CLO assessment kena ada validation http://localhost/projects/gitf-kpweb/backend/web/index.php?r=esiap%2Fcourse%2Fclo-assessment&course=512
+approve letter btn kat bawah
+button back to
+sebelum generate list pdf, klu xde, tarik data dulu

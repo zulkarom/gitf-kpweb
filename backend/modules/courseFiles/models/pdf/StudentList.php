@@ -65,11 +65,11 @@ class StudentList
 		<thead>
 		<tr>
 		
-		<td style="line-height: 250%;border-top:1px solid #000000;border-left:1px solid #000000" width="'.$group.'" align="left" >
+		<td style="line-height: 150%;border-top:1px solid #000000;border-left:1px solid #000000" width="'.$group.'" align="left" >
 		<b> &nbsp; Semester</b>
 		</td>
 		
-		<td style="line-height: 250%;border-top:1px solid #000000;border-right:1px solid #000000" colspan="2" width="'.$info.'">
+		<td style="line-height: 150%;border-top:1px solid #000000;border-right:1px solid #000000" colspan="2" width="'.$info.'">
 		'. strtoupper($this->semester->longFormat()).'
 		</td>
 
