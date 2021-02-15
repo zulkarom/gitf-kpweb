@@ -29,7 +29,7 @@ use yii\helpers\Url;
        $item = $model->itemPlan;
        $offer =  $modelOffer;
 	   $version = $offer->course_version;
-	   $material = $offer->material_version;
+	   $material = $offer->material;
           
           echo '<tr><td>'.$item[0]->id.'</td>
                 <td>'.$item[0]->item.'<i><br/>'.$item[0]->item_bi.'</i></td>
@@ -37,7 +37,10 @@ use yii\helpers\Url;
 			if($version == 0){
 				echo 'Coordinator need to select course version.';
 			}else{
-				echo '<a href="'.Url::to(['/esiap/course/fk1', 'course'=> $offer->course_id, 'version' => $version]).'" target="_blank">FK01 - PRO FORMA KURSUS</a>';
+				echo '<ul>
+				<li><a href="'.Url::to(['/esiap/course/fk1', 'course'=> $offer->course_id, 'version' => $version]).'" target="_blank">FK01 - PRO FORMA KURSUS</a></li>
+				</ul>
+				';
 			}
 				 
 				
@@ -50,7 +53,10 @@ use yii\helpers\Url;
 				if($version == 0){
 				echo 'Coordinator need to select course version.';
 			}else{
-				echo '<a href="'.Url::to(['/esiap/course/fk2', 'course'=> $offer->course_id, 'version' => $version]).'" target="_blank">FK02 - MAKLUMAT KURSUS</a>';
+				echo '<ul>
+					<li><a href="'.Url::to(['/esiap/course/fk2', 'course'=> $offer->course_id, 'version' => $version]).'" target="_blank">FK02 - MAKLUMAT KURSUS</a></li>
+					</ul>
+					';
 			}
 				
 				
@@ -63,7 +69,10 @@ use yii\helpers\Url;
 				if($version == 0){
 				echo 'Coordinator need to select course version.';
 			}else{
-				echo '<a href="'.Url::to(['/esiap/course/fk3', 'course'=> $offer->course_id, 'version' => $version]).'" target="_blank">FK03 - PENJAJARAN KONSTRUKTIF</a>';
+				echo '<ul>
+					<li><a href="'.Url::to(['/esiap/course/fk3', 'course'=> $offer->course_id, 'version' => $version]).'" target="_blank">FK03 - PENJAJARAN KONSTRUKTIF</a></li>
+					</ul>
+					';
 			}
 				
 			echo '</td>
@@ -83,7 +92,7 @@ use yii\helpers\Url;
 				$i=1;
 				echo '<ul>';
 				foreach ($offer->coordinatorRubricsFiles as $files) {
-				  echo '<li>' . Html::a($files->file_name, ['coordinator-rubrics-file/download-file', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
+				  echo '<li>' . Html::a(strtoupper($files->file_name), ['coordinator-rubrics-file/download-file', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
 				  echo '</li>';
 				  $i++;
 				}
@@ -102,10 +111,18 @@ use yii\helpers\Url;
                 <td>'.$item[4]->item.'<i><br/>'.$item[4]->item_bi.'</i></td>
                 <td>';
 				
-				if($material == 0){
+				if($offer->material_version == 0){
 				echo 'Coordinator need to select material version.';
 			}else{
-				//echo '<a href="'.Url::to(['/esiap/course/fk2', 'course'=> $offer->course_id, 'version' => $version]).'" target="_blank">FK02 - MAKLUMAT KURSUS</a>';
+				if($material->items){
+					echo '<ul>';
+				foreach ($material->items as $file) {
+				  echo '<li>' . Html::a(strtoupper($file->item_name), ['/course-files/material/download-file', 'attr' => 'item','id'=> $file->id],['target' => '_blank']);
+				  echo '</li>';
+				  $i++;
+				}
+				echo '</ul>';
+				}
 			}
 				
 			echo '</td>
@@ -114,54 +131,54 @@ use yii\helpers\Url;
 
           echo '<tr><td>'.$item[5]->id.'</td>
                 <td>'.$item[5]->item.'<i><br/>'.$item[5]->item_bi.'</i></td>
-                <td></td>
                 <td>';
-                  Modal::begin([
-                      'header' => '<h5>'.$item[5]->item.'</h5>',
-                      'toggleButton' => ['label' => '<span class="glyphicon glyphicon-th-list"></span> View Files', 'class'=>'btn btn-sm btn-warning'],
-                  ]);
-
-                  echo '<table class="table">
-                        <tr>
-                        <th>Lecturers</th>
-                        <th>Files</th>
-                        </tr>
-                        ';
-                          if($offer->appointmentLetter)
-                          {
-                            $i=1;
-                            foreach ($offer->appointmentLetter as $letter) {  
-                            $i++;
-                        echo '<tr>
-                        <td>';
+				
+			if($offer->appointmentLetter){
+				echo '<ul>';
+				foreach ($offer->appointmentLetter as $letter) {
+					if($letter->status == 10){
 						if($letter->staffInvolved){
-							echo $letter
-								->staffInvolved
-								->staff
-								->staff_title . ' ' .
-								$letter
-								->staffInvolved
-								->staff
-								->user
-								->fullname; 
+						$name =  $letter->staffInvolved->staff->staff_title . ' ' .$letter->staffInvolved->staff->user->fullname; 
+						echo'<li><a href="'.Url::to(['/teaching-load/appointment-letter/pdf/', 'id' => $letter->id]).'" target="_blank" >'.strtoupper($name).'</a></li>';
 						}
-                                          
-                        echo'</td>
-                        <td>';
+						
+					}
+					
+				}
+				echo '</ul>';
+			}
+				
+		echo '</td>
+                <td>';
 
-                               echo'<a href="'.Url::to(['/teaching-load/appointment-letter/pdf/', 'id' => $letter->id]).'" target="_blank" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-download-alt"></span></a>';
-                               }
-                            } 
 
-                        echo'</td></tr></table><br/>';
+
                       
                       
-                  Modal::end();
           echo'</td>';
 
           echo '<tr><td>'.$item[6]->id.'</td>
                 <td>'.$item[6]->item.'<i><br/>'.$item[6]->item_bi.'</i></td>
-                <td></td>
+                <td>';
+				
+				if($offer->appointmentLetter){
+				echo '<ul>';
+				foreach ($offer->appointmentLetter as $letter) {
+						if($letter->staffInvolved){
+						
+						if($letter->staffInvolved->timetable_file){
+							$name =  $letter->staffInvolved->staff->staff_title . ' ' .$letter->staffInvolved->staff->user->fullname; 
+						echo'<li><a href="'.Url::to(['/course-files/staff/download-file/', 'attr' => 'timetable', 'id' => $letter->staffInvolved->id]).'" target="_blank" >'.strtoupper($name).'</a></li>';
+						}
+						
+						
+						}
+						
+				}
+				echo '</ul>';
+			}
+				
+		echo '</td>
                 <td></td>';
               ?>
       </tr>

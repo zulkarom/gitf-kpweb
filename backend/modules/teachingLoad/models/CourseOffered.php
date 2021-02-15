@@ -22,6 +22,7 @@ use backend\modules\courseFiles\models\LectureReceiptFile;
 use backend\modules\courseFiles\models\TutorialCancelFile;
 use backend\modules\courseFiles\models\TutorialReceiptFile;
 use backend\modules\courseFiles\models\TutorialExemptFile;
+use backend\modules\courseFiles\models\Material;
 use backend\modules\teachingLoad\models\AppointmentLetter;
 use backend\modules\esiap\models\CourseVersion;
 use backend\modules\esiap\models\CourseAssessment;

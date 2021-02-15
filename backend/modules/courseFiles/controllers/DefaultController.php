@@ -24,6 +24,7 @@ use backend\modules\courseFiles\models\StudentLectureSearch;
 use backend\modules\courseFiles\models\AddStudentLectureDateForm;
 use backend\modules\courseFiles\models\pdf\AttendanceSummary;
 use backend\modules\courseFiles\models\pdf\Clo;
+use backend\modules\courseFiles\models\pdf\StudentList;
 use backend\modules\courseFiles\models\excel\AssessmentExcel;
 
 /**
@@ -113,6 +114,7 @@ class DefaultController extends Controller
 		
 		if ($offer->load(Yii::$app->request->post())) {
 			if($offer->save()){
+				return $this->refresh();
 				Yii::$app->session->addFlash('success', "Data Updated");
 			}else{
 				$offer->flashError();
@@ -164,6 +166,19 @@ class DefaultController extends Controller
             'dataProvider' => $dataProvider,
 			
         ]);
+		
+    }
+	
+	public function actionLectureStudentListPdf($id){
+		$model = $this->findLecture($id);
+		$pdf = new StudentList;
+		$pdf->model = $model;
+		$offer = $model->courseOffered;
+		$pdf->course = $offer->course;
+		$pdf->semester = $offer->semester;
+		$pdf->group =  $model->lec_name;
+		
+		$pdf->generatePdf();
 		
     }
 	

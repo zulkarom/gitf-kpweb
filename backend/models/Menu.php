@@ -152,7 +152,7 @@ class Menu
 				
 				['label' => 'Summary', 'icon' => 'user', 'url' => ['/course-files/default/summary']],
 				
-				['label' => 'All Courses', 'icon' => 'book', 'url' => ['/course-files/default/index']],
+				['label' => 'All Courses', 'icon' => 'book', 'url' => ['/course-files/admin/index']],
 				
 
                  ]

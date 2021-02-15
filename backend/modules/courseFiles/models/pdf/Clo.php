@@ -39,54 +39,6 @@ class Clo
 		
 	}
 	
-	public function setHeaderx(){
-		$height = 31;
-		$line_height = 220;
-		$html ='
-		<table border="1" cellpadding="6">
-		<tr>
-		
-		<td align="center" width="8%">
-		<img src="images/logo-attendance.png" />
-		</td>
-		
-		<td width="90%">
-		
-		<table border="0" cellpadding="2" >
-		<tr>
-		<td width="80%" height="'.$height.'" style="line-height:'.$line_height.'%">&nbsp;&nbsp;<b>CLO ANALYSIS</b>
-		</td>
-		<td width="20%"  style="line-height:'.$line_height.'%">&nbsp;&nbsp;
-		</td>
-		</tr>
-		
-		<tr height="'.$height.'" style="line-height:'.$line_height.'%">
-		<td>&nbsp;&nbsp;<b>SEMESTER: </b>'. strtoupper($this->semester->fullFormat()).'
-		</td>
-		<td></td>
-		</tr>
-		
-		<tr height="'.$height.'" style="line-height:'.$line_height.'%">
-		<td>&nbsp;&nbsp;<b>SUBJECT: </b>'.$this->course->course_code.' ('.$this->group.') - '.strtoupper($this->course->course_name).'
-		</td>
-		<td></td>
-		</tr>
-		
-		
-		</table>
-		
-		</td>
-		</tr>
-		</table><br />
-		
-		';
-		
-		$this->pdf->SetFont('arial', '', 8.5);
-$tbl = <<<EOD
-		$html
-EOD;
-		$this->pdf->writeHTML($tbl, true, false, false, false, '');
-	}
 	
 	public function setHeader(){
 

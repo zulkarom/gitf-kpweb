@@ -77,20 +77,10 @@ $this->params['breadcrumbs'][] = 'Student List';
 <div class="col-md-4" align="right">
 
 <a href="<?=Url::to(['resync-student', 'id' => $lecture->id])?>" class="btn btn-success"><i class="fa fa-refresh"></i> Re-Sync</a>
+
+<a href="<?=Url::to(['lecture-student-list-pdf', 'id' => $lecture->id])?>" class="btn btn-danger" target="_blank"><i class="fa fa-download"></i> Download Pdf</a>
     
-    <?=ExportMenu::widget([
-    'dataProvider' => $dataProvider,
-    'columns' => $columns,
-  'filename' => 'Student_List_' . date('Y-m-d'),
-  'onRenderSheet'=>function($sheet, $grid){
-    $sheet->getStyle('A2:'.$sheet->getHighestColumn().$sheet->getHighestRow())
-    ->getAlignment()->setWrapText(true);
-  },
-  'exportConfig' => [
-        ExportMenu::FORMAT_PDF => false,
-    ExportMenu::FORMAT_EXCEL_X => false,
-    ],
-]);?>
+
     
     
     

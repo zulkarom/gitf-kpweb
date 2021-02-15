@@ -44,8 +44,8 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="box-body">
 <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($offer, 'course_version')->dropDownList(ArrayHelper::map($offer->course->versions, 'id', 'version_name')) ?>
-	<?= $form->field($offer, 'material_version')->dropDownList(ArrayHelper::map($offer->course->materials, 'id', 'material_name')) ?>
+    <?= $form->field($offer, 'course_version')->dropDownList(ArrayHelper::map($offer->course->versions, 'id', 'version_name'), ['prompt' => 'Please Select']) ?>
+	<?= $form->field($offer, 'material_version')->dropDownList(ArrayHelper::map($offer->course->materials, 'id', 'material_name'),['prompt' => 'Please Select']) ?>
 <div class="form-group">
         
 <?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span>  Save Configuration', ['class' => 'btn btn-success']) ?>
