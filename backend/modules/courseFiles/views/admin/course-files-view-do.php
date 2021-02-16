@@ -68,52 +68,7 @@ use yii\helpers\Url;
 				
 
                             
-                            if($offer->lectures){
-                              $i=1;
-							  echo '<ul>';
-                              foreach ($offer->lectures as $lectures) {
-                                echo '<li>' . $lectures->lec_name;
-                                $j=1;
-                                if($lectures->lectureCancelFiles){
-									echo '<ul>';
-                                  foreach ($lectures->lectureCancelFiles as $file) {
-                                  
-                                    echo '<li>' . Html::a("File ".$j, ['lecture-cancel-file/download-file', 'attr' => 'path','id'=> $file->id],['target' => '_blank']) . '</li>';
-
-                                    $j++;
-                                  }
-								  echo '</ul>';
-                                } 
-								echo '</li>';
-                                $i++;
-                              }
-							  echo '</ul>';
-                            }
-
-                            $offer =  $modelOffer;
-                            if($offer->lectures){
-								echo '<ul>';
-                              $i=1;
-                              foreach ($offer->lectures as $lecture) {
-                                if($lecture->tutorials){
-                                  foreach ($lecture->tutorials as $tutorial) {
-                              echo '<li>' . $lecture->lec_name . $tutorial->tutorial_name;
-                                $j=1;
-                                    if($tutorial->tutorialCancelFiles){
-									echo '<ul>';
-                                      foreach ($tutorial->tutorialCancelFiles as $files) {
-                                        echo '<li>' . Html::a("File ".$j, ['tutorial-cancel-file/download-file', 'attr' => 'path','id'=> $files->id],['target' => '_blank']) . '</li>';
-                                        $j++;
-                                      }
-									  echo '</ul>';
-                                    }
-                                    $i++;
-									echo '</li>';
-                                  }
-                                } 
-                              }
-							echo '</ul>';
-                            }
+            echo  showLecTut($offer, 'lectureCancelFiles', 'tutorialCancelFiles');
 
 
 				
@@ -129,53 +84,8 @@ use yii\helpers\Url;
                 <td>'.$item[3]->item.'<i><br/>'.$item[3]->item_bi.'</i></td>
                 <td>';
 				
-
-                            $offer =  $modelOffer;
-                            if($offer->lectures)
-                            {
-                              $i=1;
-                              foreach ($offer->lectures as $lectures) {
-               
-                                echo $lectures->lec_name;                         
-                                $j=1;
-                                if($lectures->lectureReceiptFiles){
-                                  foreach ($lectures->lectureReceiptFiles as $files) {
-                                  
-                                    echo Html::a("File ".$j, ['lecture-receipt-file/download-file', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
-                                    echo '<br/>';
-                                    $j++;
-                                  }
-                                } 
-                                $i++;
-                              }
-                            }
-          
-
-      
-                            $offer =  $modelOffer;
-                            if($offer->lectures)
-                            {
-                              $i=1;
-                              foreach ($offer->lectures as $lectures) {
-                                if($lectures->tutorials){
-                                  foreach ($lectures->tutorials as $tutorial) {
-             
-                                echo $lectures->lec_name.''.$tutorial->tutorial_name;                         
-               
-                                $j=1;
-                                    if($tutorial->tutorialReceiptFiles){
-                                      foreach ($tutorial->tutorialReceiptFiles as $files) {
-                                        echo Html::a("File ".$j, ['tutorial-receipt-file/download-file', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
-                                        echo '<br/>';
-                                        $j++;
-                                      }
-                                    }
-                                    $i++;
-                                  }
-                                } 
-                              }
-                            }
-         
+			 echo  showLecTut($offer, 'lectureReceiptFiles', 'tutorialReceiptFiles');
+                           
 				
 			
 		echo '</td>
@@ -273,70 +183,10 @@ use yii\helpers\Url;
                 <td>'.$item[8]->item.'<i><br/>'.$item[8]->item_bi.'</i></td>
                 <td>';
 				
-				
-                 
-                  echo '<table>';
-                            $offer =  $modelOffer;
-                            if($offer->lectures)
-                            {
-                              $i=1;
-                              foreach ($offer->lectures as $lectures) {
-                        echo '<tr>
-                        <td>';
-                                echo $lectures->lec_name;                          
-                        echo'</td>
-                        ';
-
-
-                        echo'
-                        <td>';
-                                $j=1;
-                                if($lectures->lectureExemptFiles){
-                                  foreach ($lectures->lectureExemptFiles as $files) {
-                                  
-                                    echo Html::a("File ".$j, ['lecture-exempt-file/download-file', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
-                                    echo '<br/>';
-                                    $j++;
-                                  }
-                                } 
-                                $i++;
-                              }
-                            }
-                        echo'</td></tr></table><br/>';
-
-                        echo '<table>
-                        ';
-                            $offer =  $modelOffer;
-                            if($offer->lectures)
-                            {
-                              $i=1;
-                              foreach ($offer->lectures as $lectures) {
-                                if($lectures->tutorials){
-                                  foreach ($lectures->tutorials as $tutorial) {
-                        echo '<tr>
-                        <td>';
-                                echo $lectures->lec_name.''.$tutorial->tutorial_name;                       
-                        echo'</td>
-                        ';
-
-            
-
-                        echo'
-                        <td>';
-                                $j=1;
-                                    if($tutorial->tutorialExemptFiles){
-                                      foreach ($tutorial->tutorialExemptFiles as $files) {
-                                        echo Html::a("File ".$j, ['tutorial-exempt-file/download-file', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
-                                        echo '<br/>';
-                                        $j++;
-                                      }
-                                    }
-                                    $i++;
-                                  }
-                                } 
-                              }
-                            }
-                            echo'</td></tr></table>';
+			
+						
+						echo  showLecTut($offer, 'lectureExemptFiles', 'tutorialExemptFiles');
+                              
               
 				
 		echo '</td>
@@ -353,3 +203,61 @@ use yii\helpers\Url;
    
   </table>
 </div>
+
+
+<?php 
+
+function showLecTut($offer, $lec_method, $tut_method){
+	$html = '';
+	if($offer->lectures){
+	  $i=1;
+	  $html .=  '<ul>';
+	  foreach ($offer->lectures as $lectures) {
+		$html .=  '<li>' . $lectures->lec_name;
+		$j=1;
+		if($lectures->$lec_method){
+			$html .=  '<ul>';
+		  foreach ($lectures->$lec_method as $file) {
+		  
+			$html .=  '<li>' . Html::a("File ".$j, ['lecture-cancel-file/download-file', 'attr' => 'path','id'=> $file->id],['target' => '_blank']) . '</li>';
+
+			$j++;
+		  }
+		  $html .=  '</ul>';
+		} 
+		$html .=  '</li>';
+		$i++;
+	  }
+	  $html .=  '</ul>';
+	}
+
+
+	if($offer->lectures){
+		$html .=  '<ul>';
+	  $i=1;
+	  foreach ($offer->lectures as $lecture) {
+		if($lecture->tutorials){
+		  foreach ($lecture->tutorials as $tutorial) {
+	  $html .=  '<li>' . $lecture->lec_name . $tutorial->tutorial_name;
+		$j=1;
+			if($tutorial->$tut_method){
+			$html .=  '<ul>';
+			  foreach ($tutorial->$tut_method as $files) {
+				$html .=  '<li>' . Html::a("File ".$j, ['tutorial-cancel-file/download-file', 'attr' => 'path','id'=> $files->id],['target' => '_blank']) . '</li>';
+				$j++;
+			  }
+			  $html .=  '</ul>';
+			}
+			$i++;
+			$html .=  '</li>';
+		  }
+		} 
+	  }
+	$html .=  '</ul>';
+	}
+	
+	return $html;
+}
+
+
+?>
