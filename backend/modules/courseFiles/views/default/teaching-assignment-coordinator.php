@@ -218,6 +218,84 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 </div>
 
+
+<h4>Assessment Final Result</h4>
+<div class="box">
+
+<div class="box-body">
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th style="width:5%">No.</th>
+        <th style="width:75%">Item</th>
+        <th style="width:10%">Files</th>
+        <th>Action</th>
+      </tr>
+	  </thead>
+	  
+	  <?php 
+
+         $i = 1;
+          
+            $item = $model->assessResults;
+              if($item[0]->coor_upload == 1){
+                
+            echo '<tr><td>'.$i.'. </td>
+                  <td>'.$item[0]->item_bi.'</td>
+
+                  <td>';
+                  Modal::begin([
+                      'header' => '<h5>'.$item[0]->item_bi.'</h5>',
+                      'toggleButton' => ['label' => 'View Files ('.$offer->countResultFinalFiles.')', 'class'=>'btn btn-sm btn-info'],
+                  ]);
+                      echo '<table class="table">
+                                <tr>
+                                <th>#</th>
+                                <th>File Name</th>
+                                <th>Action</th>
+                                </tr>';
+                      if($offer->coordinatorResultFinalFiles)
+                      {
+                        $i=1;
+                        foreach ($offer->coordinatorResultFinalFiles as $files) {
+
+                          
+                          echo'<tr>
+                          <td>'.$i.'.</td>
+                          <td>';
+                          echo $files->file_name;
+                          echo'</td>
+                                <td>';
+                            
+                                echo'<a href="'.Url::to(['coordinator-result-final-file/download-file', 'attr' => 'path','id'=> $files->id]).'" target="_blank" class="btn btn-success btn-sm"><span class="fa fa-download"></span> Download</a>';
+                                $i++;
+                        }
+                      }
+                                echo'</td>
+                                </tr>
+                                </table>';
+                       
+                  Modal::end();
+            echo'</td>';
+
+                  echo'<td><a href="' . Url::to([$item[0]->upload_url.'/page','id' => $offered_id]) . '" class="btn btn-warning btn-sm" ><span class="fa fa-upload"></span> Upload</a></td>';
+
+                 
+         
+                  $i++;
+              }        
+    ?>
+
+
+    
+      
+   
+   
+  </table>
+</div>
+</div>
+
 <h4>Assessment Scripts</h4>
 <div class="box">
 

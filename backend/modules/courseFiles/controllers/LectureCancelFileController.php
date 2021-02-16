@@ -48,6 +48,7 @@ class LectureCancelFileController extends Controller
         $files = $model->lectureCancelFiles;
 
         if ($model->load(Yii::$app->request->post())) {
+			
             
             $model->updated_at = new Expression('NOW()');    
             
@@ -97,7 +98,7 @@ class LectureCancelFileController extends Controller
         }
 
         
-        return $this->render('/lecture-test/class-cancel-upload', [
+        return $this->render('/lecture/class-cancel-upload', [
             'model' => $model,
             'files' => $files,
             'addFile' => $addFile

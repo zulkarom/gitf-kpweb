@@ -96,7 +96,7 @@ class TutorialCancelFileController extends Controller
             return $this->redirect(['page', 'id' => $id]);
         }
         
-        return $this->render('/tutorial-test/class-cancel-upload', [
+        return $this->render('/tutorial/class-cancel-upload', [
             'model' => $model,
             'files' => $files,
             'addFile' => $addFile

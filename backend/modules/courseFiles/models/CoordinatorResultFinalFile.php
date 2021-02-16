@@ -3,7 +3,7 @@
 namespace backend\modules\courseFiles\models;
 
 use Yii;
-use backend\modules\teachingLoad\models\CourseLecture;
+use backend\modules\teachingLoad\models\CourseOffered;
 
 /**
  * This is the model class for table "cf_lec_cancel_class".
@@ -12,7 +12,7 @@ use backend\modules\teachingLoad\models\CourseLecture;
  * @property int $lecture_id
  * @property string $path_file
  */
-class LectureExemptFile extends \yii\db\ActiveRecord
+class CoordinatorResultFinalFile extends \yii\db\ActiveRecord
 {
 
     public $file_controller;
@@ -22,7 +22,7 @@ class LectureExemptFile extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'cf_lec_exempt_class';
+        return 'cf_coor_result_final';
     }
 
     /**
@@ -31,17 +31,25 @@ class LectureExemptFile extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['matric_no'], 'required', 'on' => 'saveall'],
+
             //path upload///
             [['path_file'], 'required', 'on' => 'path_upload'],
-            [['path_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
             
-            [['lecture_id', 'updated_at'], 'required', 'on' => 'add_exempt'],
-            [['ex_date'], 'safe'],
+            [['offered_id', 'updated_at'], 'required', 'on' => 'add_result_final'],
+			
+			[['file_name'], 'required', 'on' => 'saveall'],
+			
+			[['offered_id', 'updated_at'], 'required', 'on' => 'add_rubrics'],
 
-            [['lecture_id'], 'required'],
-            [['lecture_id'], 'integer'],
-            [['path_file', 'matric_no'], 'string'],
+            [['offered_id'], 'required'],
+			
+            [['offered_id'], 'integer'],
+			
+            [['path_file', 'file_name'], 'string'],
+			
+			[['path_file'], 'required', 'on' => 'path_upload'],
+			
+			[['path_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 2000000],
         ];
     }
 
@@ -52,7 +60,7 @@ class LectureExemptFile extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'lecture_id' => 'Lecture ID',
+            'offered_id' => 'Offered ID',
             'path_file' => 'Path File',
         ];
     }
@@ -70,8 +78,8 @@ class LectureExemptFile extends \yii\db\ActiveRecord
 
     }
 
-    public function getLecture(){
-        return $this->hasOne(CourseLecture::className(), ['id' => 'lecture_id']);
+    public function getOffered(){
+        return $this->hasOne(CourseOffered::className(), ['id' => 'offered_id']);
     }
 
 }

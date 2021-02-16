@@ -13,6 +13,7 @@ use backend\modules\courseFiles\models\CoordinatorAnswerScriptFile;
 use backend\modules\courseFiles\models\CoordinatorAssessResultFile;
 use backend\modules\courseFiles\models\CoordinatorEvaluationFile;
 use backend\modules\courseFiles\models\CoordinatorResultCloFile;
+use backend\modules\courseFiles\models\CoordinatorResultFinalFile;
 use backend\modules\courseFiles\models\CoordinatorAnalysisCloFile;
 use backend\modules\courseFiles\models\CoordinatorImproveFile;
 use backend\modules\teachingLoad\models\CourseLecture;
@@ -340,6 +341,12 @@ class CourseOffered extends \yii\db\ActiveRecord
         ->where(['offered_id' => $this->id])
         ->count();
     }
+	
+	 public function getCountResultFinalFiles(){
+        return CoordinatorResultFinalFile::find()
+        ->where(['offered_id' => $this->id])
+        ->count();
+    }
 
     public function getCountAnalysisCloFiles(){
         return CoordinatorAnalysisCloFile::find()
@@ -396,6 +403,10 @@ class CourseOffered extends \yii\db\ActiveRecord
 
     public function getCoordinatorResultCloFiles(){
         return $this->hasMany(CoordinatorResultCloFile::className(), ['offered_id' => 'id']);
+    }
+	
+	 public function getCoordinatorResultFinalFiles(){
+        return $this->hasMany(CoordinatorResultFinalFile::className(), ['offered_id' => 'id']);
     }
     
     public function getCoordinatorAnalysisCloFiles(){

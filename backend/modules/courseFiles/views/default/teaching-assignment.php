@@ -7,7 +7,7 @@ use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
 
-$this->title = 'Teaching Assignment';
+$this->title = 'AMANAH TUGAS';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 

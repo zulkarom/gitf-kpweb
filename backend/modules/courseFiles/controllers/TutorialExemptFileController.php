@@ -60,7 +60,9 @@ class TutorialExemptFileController extends Controller
                 if($model->save()){
                     $flag = true;
                     foreach ($files as $item) {
-                        //Yii::$app->session->addFlash('success', $item->file_name);
+						if(empty($item->path_file)){
+							Yii::$app->session->addFlash('error', "All files must be uploaded");
+						}
                         if(!$item->save()){
                             $item->flashError();
                             $flag = false;
@@ -85,6 +87,8 @@ class TutorialExemptFileController extends Controller
                     $file = new TutorialExemptFile;
                     $file->scenario = 'add_exempt';
                     $file->tutorial_id = $id;
+					//echo date('d-m-Y', time());die();
+					$file->ex_date = date('d-m-Y', time());
                     $file->updated_at = new Expression('NOW()');
                     if(!$file->save()){
                         $file->flashError();
@@ -95,7 +99,7 @@ class TutorialExemptFileController extends Controller
             return $this->redirect(['page', 'id' => $id]);
         }
 
-        return $this->render('/tutorial-test/class-exempt-upload', [
+        return $this->render('/tutorial/class-exempt-upload', [
             'model' => $model,
             'files' => $files,
             'addFile' => $addFile

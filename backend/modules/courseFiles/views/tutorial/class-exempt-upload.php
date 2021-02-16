@@ -5,6 +5,8 @@ use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use common\models\UploadFile;
 use kartik\date\DatePicker;
+use yii\helpers\ArrayHelper;
+use kartik\select2\Select2;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
@@ -36,17 +38,17 @@ $course = $model->lecture->courseOffered->course;
 
 
 
-
-  <div class="box box-primary">
+<?php $form = ActiveForm::begin(); ?>
+  <div class="box">
 
 <div class="box-body">
-<?php $form = ActiveForm::begin(); ?>
+
   <table class="table table-striped table-hover">
 
 <thead>
   <tr>
   <th width="5%">#</th>
-  <th width="30%">Matrix Number</th>
+  <th width="30%">Student</th>
   <th width="20%">Date</th>
   <th>Upload File</th>
   </tr>
@@ -65,10 +67,32 @@ $course = $model->lecture->courseOffered->course;
 			<td>
 			<?=Html::activeHiddenInput($file, "[{$x}]id");?>
 			<?=Html::activeHiddenInput($model, "id");?>
-			<?= $form->field($file, "[{$x}]matrix_no")->label(false) ?>
+			
+			
+			<?php 
+
+			echo $form->field($file, "[{$x}]matric_no")->widget(Select2::classname(), [
+				'data' => ArrayHelper::map($model->lecture->students, 'matric_no', 'matricAndName'),
+				'language' => 'en',
+				'options' => ['multiple' => false,'placeholder' => 'Select a student ...'],
+				'pluginOptions' => [
+					'allowClear' => true
+				],
+			])->label(false);
+
+			?>
+			
+			
 			</td>
 			<td>
-			<?=$form->field($file, "[{$x}]date")
+			<?php 
+			//echo $file->ex_date;
+			
+			if($file->ex_date = '00-00-0000'){
+				$file->ex_date = date('d-m-Y', time());
+			}
+			
+			echo $form->field($file, "[{$x}]ex_date")
 			->label(false)
 			->widget(DatePicker::classname(), [
 			    'removeButton' => false,
@@ -93,10 +117,10 @@ $course = $model->lecture->courseOffered->course;
 	?>
 </tbody>
 </table>
-<div class="form-group">
+
+
+
+</div></div><div class="form-group">
         <?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> Save', ['class' => 'btn btn-success']) ?>
     </div>
-
     <?php ActiveForm::end(); ?>
-</div></div>
-

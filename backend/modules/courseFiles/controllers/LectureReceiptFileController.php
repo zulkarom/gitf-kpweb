@@ -95,7 +95,7 @@ class LectureReceiptFileController extends Controller
             return $this->redirect(['page', 'id' => $id]);
         }
 
-        return $this->render('/lecture-test/class-receipt-upload', [
+        return $this->render('/lecture/class-receipt-upload', [
             'model' => $model,
             'files' => $files,
             'addFile' => $addFile

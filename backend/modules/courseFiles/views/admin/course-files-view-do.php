@@ -98,17 +98,8 @@ use yii\helpers\Url;
           echo '<tr><td>'.$item[4]->id.'</td>
                 <td>'.$item[4]->item.'<i><br/>'.$item[4]->item_bi.'</i></td>
                 <td>';
-				$offer =  $modelOffer;
-                      if($offer->coordinatorAssessmentMaterialFiles)
-                      {
-                        $i=1;
-                        foreach ($offer->coordinatorAssessmentMaterialFiles as $files) {
-                          echo Html::a("File ".$i, ['coordinator-assessment-material-file/download-file', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
-                          echo '<br/>';
-                          $i++;
-                        }
-                      }
-				//$offer->countAssessmentMaterialFiles
+				
+			echo showCoor($offer, 'coordinatorAssessmentMaterialFiles', 'coordinator-assessment-material-file');
 				
 				echo '</td>
                 <td>';
@@ -121,16 +112,9 @@ use yii\helpers\Url;
                 <td>'.$item[5]->item.'<i><br/>'.$item[5]->item_bi.'</i></td>
                 <td>';
 				
-				 $offer =  $modelOffer;
-                      if($offer->coordinatorAssessmentScriptFiles)
-                      {
-                        $i=1;
-                        foreach ($offer->coordinatorAssessmentScriptFiles as $files) {
-                          echo Html::a("File ".$i, ['coordinator-assessment-script-file/download-file', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
-                          echo '<br/>';
-                          $i++;
-                        }
-                      }
+				echo showCoor($offer, 'coordinatorAssessmentScriptFiles', 'coordinator-assessment-script-file');
+				
+
 				
 			echo '</td>
                 <td>';
@@ -142,17 +126,9 @@ use yii\helpers\Url;
           echo '<tr><td>'.$item[6]->id.'</td>
                 <td>'.$item[6]->item.'<i><br/>'.$item[6]->item_bi.'</i></td>
                 <td>';
-				$offer =  $modelOffer;
-                      if($offer->coordinatorSummativeAssessmentFiles)
-                      {
-                        $i=1;
-                        foreach ($offer->coordinatorSummativeAssessmentFiles as $files) {
-                          echo Html::a("File ".$i, ['coordinator-summative-assessment-file/download-file', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
-                          echo '<br/>';
-                          $i++;
-                        }
-                      }
-				//$offer->countSummativeAssessmentFiles
+				
+		echo showCoor($offer, 'coordinatorSummativeAssessmentFiles', 'coordinator-summative-assessment-file');
+				
 				
 			echo '</td>
                 <td>';
@@ -163,19 +139,44 @@ use yii\helpers\Url;
 
           echo '<tr><td>'.$item[7]->id.'</td>
                 <td>'.$item[7]->item.'<i><br/>'.$item[7]->item_bi.'</i></td>
-                <td>'.$offer->countAnswerScriptFiles.'</td>
+                <td>
+				
+				<ul>
+			<li>THE THREE (3) BEST ANSWER SCRIPTS
+				<ul>';
+	
+			echo scriptLink($offer, 'best');
+			
+					/*
+					<li>SCRIPT 2</li>
+					<li>SCRIPT 3</li> */
+			echo '</ul>
+			</li>
+			
+			<li>THE THREE (3) MODERATE ANSWER SCRIPTS
+				<ul>';
+				
+				echo scriptLink($offer, 'mod');
+				
+			echo '</ul>
+			
+			</li>
+			
+			<li>THE THREE (3) LOWEST ANSWER SCRIPTS
+				<ul>';
+				
+				echo scriptLink($offer, 'low');
+				
+			echo '</ul>
+			</li>
+			
+
+				</ul>
+
+</td>
                 <td>';
            
-                     /*  $offer =  $modelOffer;
-                      if($offer->coordinatorAnswerScriptFiles)
-                      {
-                        $i=1;
-                        foreach ($offer->coordinatorAnswerScriptFiles as $files) {
-                          echo Html::a("File ".$i, ['coordinator-answer-script-file/download-file', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
-                          echo '<br/>';
-                          $i++;
-                        }
-                      } */
+                     
                  
           echo '</td>';
 
@@ -183,12 +184,8 @@ use yii\helpers\Url;
                 <td>'.$item[8]->item.'<i><br/>'.$item[8]->item_bi.'</i></td>
                 <td>';
 				
-			
-						
-						echo  showLecTut($offer, 'lectureExemptFiles', 'tutorialExemptFiles');
-                              
-              
-				
+		echo  showExempt($offer, 'lectureExemptFiles', 'tutorialExemptFiles');
+
 		echo '</td>
                 <td>';
 
@@ -206,6 +203,34 @@ use yii\helpers\Url;
 
 
 <?php 
+
+function scriptLink($offer, $type){
+	$html = '';
+	for($s=1;$s<=3;$s++){
+		$sc = 'script'.$type. $s;
+		$col = $sc . '_file';
+		if($offer->$col){
+			$html .= '<li><a href="' . Url::to(['/course-files/coordinator-upload/download-file', 'attr' => $sc, 'id' => $offer->id]) . '" target="_blank">SCRIPT '.$s.'</a></li>';
+		}
+		
+	}
+	return $html;
+}
+
+function showCoor($offer, $method, $link){
+	$html = '';
+	if($offer->$method){
+		$i=1;
+		$html .=  '<ul>';
+		foreach ($offer->$method as $files) {
+		  $html .=  '<li>' . Html::a(strtoupper($files->file_name), [$link . '/download-file', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
+		  $html .=  '</li>';
+		  $i++;
+		}
+		$html .=  '</ul>';
+	  }
+	return $html;
+}
 
 function showLecTut($offer, $lec_method, $tut_method){
 	$html = '';
@@ -244,6 +269,60 @@ function showLecTut($offer, $lec_method, $tut_method){
 			$html .=  '<ul>';
 			  foreach ($tutorial->$tut_method as $files) {
 				$html .=  '<li>' . Html::a("File ".$j, ['tutorial-cancel-file/download-file', 'attr' => 'path','id'=> $files->id],['target' => '_blank']) . '</li>';
+				$j++;
+			  }
+			  $html .=  '</ul>';
+			}
+			$i++;
+			$html .=  '</li>';
+		  }
+		} 
+	  }
+	$html .=  '</ul>';
+	}
+	
+	return $html;
+}
+
+function showExempt($offer, $lec_method, $tut_method){
+	$html = '';
+	if($offer->lectures){
+	  $i=1;
+	  $html .=  '<ul>';
+	  foreach ($offer->lectures as $lectures) {
+		$html .=  '<li>' . $lectures->lec_name;
+		$j=1;
+		if($lectures->$lec_method){
+			$html .=  '<ul>';
+		  foreach ($lectures->$lec_method as $file) {
+			if($file->path_file){
+				$html .=  '<li>' . Html::a($file->matric_no . '-' . date('d/m/Y', strtotime($file->ex_date)) , ['lecture-exempt-file/download-file', 'attr' => 'path','id'=> $file->id],['target' => '_blank']) . '</li>';
+			}
+			
+
+			$j++;
+		  }
+		  $html .=  '</ul>';
+		} 
+		$html .=  '</li>';
+		$i++;
+	  }
+	  $html .=  '</ul>';
+	}
+
+
+	if($offer->lectures){
+		$html .=  '<ul>';
+	  $i=1;
+	  foreach ($offer->lectures as $lecture) {
+		if($lecture->tutorials){
+		  foreach ($lecture->tutorials as $tutorial) {
+	  $html .=  '<li>' . $lecture->lec_name . $tutorial->tutorial_name;
+		$j=1;
+			if($tutorial->$tut_method){
+			$html .=  '<ul>';
+			  foreach ($tutorial->$tut_method as $file) {
+				$html .=  '<li>' . Html::a($file->matric_no . '-' . date('d/m/Y', strtotime($file->ex_date)) , ['tutorial-cancel-file/download-file', 'attr' => 'path','id'=> $file->id],['target' => '_blank']) . '</li>';
 				$j++;
 			  }
 			  $html .=  '</ul>';

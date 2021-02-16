@@ -52,7 +52,11 @@ class StudentLecture extends \yii\db\ActiveRecord
 
     public function getStudent(){
         return $this->hasOne(Student::className(), ['matric_no' => 'matric_no']);
-    } 
+    }
+	
+	public function getMatricAndName(){
+		return $this->matric_no . ' ' . $this->student->st_name;
+	}
 
     public function getStudentLecture(){
         return StudentLecture::find()

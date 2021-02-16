@@ -61,7 +61,9 @@ class LectureExemptFileController extends Controller
                 if($model->save()){
                     $flag = true;
                     foreach ($files as $item) {
-                        //Yii::$app->session->addFlash('success', $item->file_name);
+						if(empty($item->path_file)){
+							Yii::$app->session->addFlash('error', "All files must be uploaded");
+						}
                         if(!$item->save()){
                             $item->flashError();
                             $flag = false;
@@ -96,10 +98,11 @@ class LectureExemptFileController extends Controller
             return $this->redirect(['page', 'id' => $id]);
         }
 		
-        return $this->render('/lecture-test/class-exempt-upload', [
+        return $this->render('/lecture/class-exempt-upload', [
             'model' => $model,
             'files' => $files,
             'addFile' => $addFile
+
         ]);
     }
 	

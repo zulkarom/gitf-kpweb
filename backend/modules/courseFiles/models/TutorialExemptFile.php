@@ -31,17 +31,17 @@ class TutorialExemptFile extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['matrix_no'], 'required', 'on' => 'saveall'],
+            [['matric_no'], 'required', 'on' => 'saveall'],
             //path upload///
             [['path_file'], 'required', 'on' => 'path_upload'],
             [['path_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
             
             [['tutorial_id', 'updated_at'], 'required', 'on' => 'add_exempt'],
-            [['date'], 'safe'],
+            [['ex_date'], 'safe'],
 
             [['tutorial_id'], 'required'],
             [['tutorial_id'], 'integer'],
-            [['path_file', 'matrix_no'], 'string'],
+            [['path_file', 'matric_no'], 'string'],
         ];
     }
 

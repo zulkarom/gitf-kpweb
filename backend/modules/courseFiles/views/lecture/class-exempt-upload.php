@@ -3,13 +3,17 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
+
 use common\models\UploadFile;
 use kartik\date\DatePicker;
+use yii\helpers\ArrayHelper;
+
+use kartik\select2\Select2;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
 
-$this->title = 'Lecturer ['.$model->lec_name.']';
+$this->title = 'Lecture ['.$model->lec_name.']';
 $this->params['breadcrumbs'][] = ['label' => 'Teaching Assignment', 'url' => ['/course-files/default/teaching-assignment']];
 $this->params['breadcrumbs'][] = ['label' => 'Course Files', 'url' => ['/course-files/default/teaching-assignment-lecture', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = $this->title;
@@ -45,7 +49,7 @@ $course = $model->courseOffered->course;
 <thead>
   <tr>
   <th width="5%">#</th>
-  <th width="30%">Matrix Number</th>
+  <th width="30%">Student</th>
   <th width="20%">Date</th>
   <th>Upload File</th>
   </tr>
@@ -64,7 +68,26 @@ $course = $model->courseOffered->course;
 			<td>
 			<?=Html::activeHiddenInput($file, "[{$x}]id");?>
 			<?=Html::activeHiddenInput($model, "id");?>
-			<?= $form->field($file, "[{$x}]matrix_no")->label(false) ?>
+			
+			
+	
+			
+			<?php 
+
+			echo $form->field($file, "[{$x}]matric_no")->widget(Select2::classname(), [
+				'data' => ArrayHelper::map($model->students, 'matric_no', 'matricAndName'),
+				'language' => 'en',
+				'options' => ['multiple' => false,'placeholder' => 'Select a student ...'],
+				'pluginOptions' => [
+					'allowClear' => true
+				],
+			])->label(false);
+
+			?>
+
+			
+			
+			
 			</td>
 			<td>
 			<?=$form->field($file, "[{$x}]date")

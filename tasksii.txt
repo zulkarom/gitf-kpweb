@@ -4,4 +4,6 @@ material status kena ada
 CLO assessment kena ada validation http://localhost/projects/gitf-kpweb/backend/web/index.php?r=esiap%2Fcourse%2Fclo-assessment&course=512
 approve letter btn kat bawah
 button back to
-sebelum generate list pdf, klu xde, tarik data dulu
+sebelum generate list student pdf, klu xde, tarik data dulu
+kena verify files uploaded ada dulu baru save file name
+matric no dalam exemption buat select2

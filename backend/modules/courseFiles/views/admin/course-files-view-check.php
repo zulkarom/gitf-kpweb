@@ -30,17 +30,17 @@ use yii\helpers\Html;
                 <td>'.$item[0]->item.'<i><br/>'.$item[0]->item_bi.'</i></td>
                 <td>';
 				
-				 if($offer->coordinatorAssessResultFiles)
-                      {
-                        $i=1;
-                        foreach ($offer->coordinatorAssessResultFiles as $files) {
-                          echo Html::a("File ".$i, ['coordinator-assess-result-file/download', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
-                          echo '<br/>';
-                          $i++;
-                        }
-                      }
-				
-				//$offer->countAssessResultFiles
+				if($offer->coordinatorResultFinalFiles)
+			  {
+				$i=1;
+				echo '<ul>';
+				foreach ($offer->coordinatorResultFinalFiles as $file) {
+				  echo '<li>' . Html::a(strtoupper($file->file_name), ['coordinator-result-final-file/download-file', 'attr' => 'path','id'=> $file->id],['target' => '_blank']);
+				  echo '</li>';
+				  $i++;
+				}
+				echo '</ul>';
+			  }
 				
 				echo '</td>
                 <td>';
