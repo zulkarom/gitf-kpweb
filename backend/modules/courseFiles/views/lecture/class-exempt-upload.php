@@ -90,7 +90,7 @@ $course = $model->courseOffered->course;
 			
 			</td>
 			<td>
-			<?=$form->field($file, "[{$x}]date")
+			<?=$form->field($file, "[{$x}]ex_date")
 			->label(false)
 			->widget(DatePicker::classname(), [
 			    'removeButton' => false,

@@ -63,6 +63,7 @@ class LectureExemptFileController extends Controller
                     foreach ($files as $item) {
 						if(empty($item->path_file)){
 							Yii::$app->session->addFlash('error', "All files must be uploaded");
+							$flag = false;
 						}
                         if(!$item->save()){
                             $item->flashError();
@@ -88,6 +89,7 @@ class LectureExemptFileController extends Controller
                     $file = new LectureExemptFile;
                     $file->scenario = 'add_exempt';
                     $file->lecture_id = $id;
+					$file->ex_date = date('Y-m-d', time());
                     $file->updated_at = new Expression('NOW()');
                     if(!$file->save()){
                         $file->flashError();

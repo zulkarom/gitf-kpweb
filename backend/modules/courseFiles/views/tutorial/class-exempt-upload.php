@@ -11,7 +11,7 @@ use kartik\select2\Select2;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
 
-$this->title = 'Tutor ['.$model->tutorial_name.']';
+$this->title = 'Tutor ['.$model->lecture->lec_name.$model->tutorial_name.']';
 $this->params['breadcrumbs'][] = ['label' => 'Teaching Assignment', 'url' => ['/course-files/default/teaching-assignment']];
 $this->params['breadcrumbs'][] = ['label' => 'Course Files', 'url' => ['/course-files/default/teaching-assignment-tutorial', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = $this->title;
@@ -88,9 +88,6 @@ $course = $model->lecture->courseOffered->course;
 			<?php 
 			//echo $file->ex_date;
 			
-			if($file->ex_date = '00-00-0000'){
-				$file->ex_date = date('d-m-Y', time());
-			}
 			
 			echo $form->field($file, "[{$x}]ex_date")
 			->label(false)

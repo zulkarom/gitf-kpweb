@@ -61,6 +61,7 @@ class TutorialExemptFileController extends Controller
                     $flag = true;
                     foreach ($files as $item) {
 						if(empty($item->path_file)){
+							$flag = false;
 							Yii::$app->session->addFlash('error', "All files must be uploaded");
 						}
                         if(!$item->save()){
@@ -88,7 +89,7 @@ class TutorialExemptFileController extends Controller
                     $file->scenario = 'add_exempt';
                     $file->tutorial_id = $id;
 					//echo date('d-m-Y', time());die();
-					$file->ex_date = date('d-m-Y', time());
+					$file->ex_date = date('Y-m-d', time());
                     $file->updated_at = new Expression('NOW()');
                     if(!$file->save()){
                         $file->flashError();

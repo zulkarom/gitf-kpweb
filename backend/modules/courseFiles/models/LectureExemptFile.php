@@ -31,7 +31,7 @@ class LectureExemptFile extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['matric_no'], 'required', 'on' => 'saveall'],
+            [['matric_no', 'ex_date'], 'required', 'on' => 'saveall'],
             //path upload///
             [['path_file'], 'required', 'on' => 'path_upload'],
             [['path_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
