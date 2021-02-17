@@ -8,22 +8,26 @@ use yii\web\NotFoundHttpException;
 use yii\helpers\ArrayHelper;
 use backend\models\SemesterForm;
 use backend\models\Semester;
-use backend\modules\teachingLoad\models\Staff;
-use backend\modules\courseFiles\models\Api;
 
-use backend\modules\courseFiles\models\Checklist;
-use backend\modules\courseFiles\models\LectureCancel;
+use backend\modules\students\models\Student;
+use backend\modules\students\models\StudentSearch;
+
+use backend\modules\teachingLoad\models\Staff;
 use backend\modules\teachingLoad\models\CourseOffered;
 use backend\modules\teachingLoad\models\StaffInvolved;
 use backend\modules\teachingLoad\models\CourseLecture;
+use backend\modules\teachingLoad\models\AppointmentLetter;
+
+use backend\modules\courseFiles\models\Api;
+use backend\modules\courseFiles\models\Checklist;
+use backend\modules\courseFiles\models\LectureCancel;
 use backend\modules\courseFiles\models\CoordinatorRubricsFile;
-use backend\modules\students\models\Student;
-use backend\modules\students\models\StudentSearch;
 use backend\modules\courseFiles\models\StudentLecture;
 use backend\modules\courseFiles\models\StudentLectureSearch;
 use backend\modules\courseFiles\models\AddStudentLectureDateForm;
 use backend\modules\courseFiles\models\pdf\AttendanceSummary;
 use backend\modules\courseFiles\models\pdf\Clo;
+use backend\modules\courseFiles\models\pdf\CloSummary;
 use backend\modules\courseFiles\models\pdf\StudentList;
 use backend\modules\courseFiles\models\excel\AssessmentExcel;
 
@@ -81,6 +85,24 @@ class DefaultController extends Controller
         ]);
 
 
+    }
+	
+	public function actionStudentEvaluation($id){
+		$model = $this->findAppointment($id);
+        return $this->render('student-evaluation', [
+			'model' => $model,
+        ]);
+
+
+    }
+	
+	protected function findAppointment($id)
+    {
+        if (($model = AppointmentLetter::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 
 
@@ -193,6 +215,16 @@ class DefaultController extends Controller
 		$pdf->assessment = $offer->assessment;
 		$pdf->listClo = $offer->listClo();
 		
+		$pdf->generatePdf();
+	}
+	
+	public function actionCloSummaryPdf($id){
+		$model = $this->findOffered($id);
+		$pdf = new CloSummary;
+		$pdf->model = $model;
+		$pdf->course = $model->course;
+		$pdf->semester = $model->semester;
+		$pdf->listClo = $model->listClo();
 		$pdf->generatePdf();
 	}
 	

@@ -1,6 +1,7 @@
 <?php
 use yii\bootstrap\Modal;
 use yii\helpers\Html;
+use yii\helpers\Url;
 ?>
 
 
@@ -53,15 +54,26 @@ use yii\helpers\Html;
                 <td>'.$item[1]->item.'<i><br/>'.$item[1]->item_bi.'</i></td>
                 <td>';
 				
-			if($offer->coordinatorEvaluationFiles)
-                      {
-                        $i=1;
-                        foreach ($offer->coordinatorEvaluationFiles as $files) {
-                          echo Html::a("File ".$i, ['coordinator-evaluation-file/download', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
-                          echo '<br/>';
-                          $i++;
-                        }
-                      }
+			if($offer->appointmentLetter){
+				echo '<ul>';
+				foreach ($offer->appointmentLetter as $letter) {
+					if($letter->status == 10){
+						if($letter->staffInvolved){
+							$name =  $letter->staffInvolved->staff->staff_title . ' ' .$letter->staffInvolved->staff->user->fullname; 
+								if($letter->steva_file){
+									echo'<li><a href="'.Url::to(['appointment/download-file', 'attr' => 'steva', 'id' => $letter->id]).'" target="_blank" >'.strtoupper($name).'</a></li>';
+								}else{
+									echo'<li>'.strtoupper($name).'</li>';
+								}
+						
+						
+						}
+						
+					}
+					
+				}
+				echo '</ul>';
+			}
 				
 				echo '</td>
                 <td>';
@@ -74,20 +86,14 @@ use yii\helpers\Html;
         
         echo '<tr><td>'.$item[2]->id.'</td>
                 <td>'.$item[2]->item.'<i><br/>'.$item[2]->item_bi.'</i></td>
-                <td>';
+                <td><ul>';
 				
-                      if($offer->coordinatorResultCloFiles)
-                      {
-                        $i=1;
-                        foreach ($offer->coordinatorResultCloFiles as $files) {
-                          echo Html::a("File ".$i, ['coordinator-result-clo-file/download', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
-                          echo '<br/>';
-                          $i++;
-                        }
-                      }
-				//$offer->countResultCloFiles
+				echo '<li><a href="'.Url::to(['/course-files/default/clo-summary-pdf', 'id'=> $offer->id]).'" target="_blank">CLO SUMMARY</a></li>';
+                foreach ($offer->lectures as $lecture) {  
+					echo '<li><a href="'.Url::to(['/course-files/default/clo-analysis-pdf', 'id'=> $lecture->id]).'" target="_blank">'.$lecture->lec_name .' - CLO ANALYSIS</a></li>';
+				}
 				
-		echo '</td>
+		echo '</ul></td>
                 <td>';
       
                   

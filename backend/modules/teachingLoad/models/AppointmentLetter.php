@@ -20,6 +20,9 @@ use backend\modules\teachingLoad\models\TutorialTutor;
  */
 class AppointmentLetter extends \yii\db\ActiveRecord
 {
+	public $steva_instance;
+	public $file_controller;
+
     /**
      * {@inheritdoc}
      */
@@ -38,6 +41,10 @@ class AppointmentLetter extends \yii\db\ActiveRecord
             [['inv_id', 'offered_id', 'status'], 'integer'],
             [['date_appoint'], 'safe'],
             [['ref_no'], 'string', 'max' => 225],
+			
+			[['steva_file'], 'required', 'on' => 'steva_upload'],
+            [['steva_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 2000000],
+            [['updated_at'], 'required', 'on' => 'steva_delete'],
         ];
     }
 
@@ -52,6 +59,7 @@ class AppointmentLetter extends \yii\db\ActiveRecord
             'offered_id' => 'Offered ID',
             'ref_no' => 'Ref No',
             'date_appoint' => 'Date Appoint',
+			'steva_file' => 'Student Evaluation'
         ];
     }
 
@@ -114,5 +122,7 @@ class AppointmentLetter extends \yii\db\ActiveRecord
         ->where(['staff_id' => $staff_id, 'offered_id' => $this->offered_id])
         ->count();
     }
+	
+	
 
 }
