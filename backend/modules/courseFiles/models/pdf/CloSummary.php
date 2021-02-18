@@ -44,7 +44,7 @@ class CloSummary
 		$wtable = 730;
 		$bil = 45;
 		$kira = count($this->listClo);
-		$boxclo = 70;
+		$boxclo = 80;
 		$lecture = 80;
 		$lecturer = $wtable  - ($bil + $lecture + ($boxclo * $kira));
 		
@@ -56,7 +56,7 @@ class CloSummary
 				$$str_total = 0;
 				$str_count = 'count_clo'. $clo;
 				$$str_count = 0;
-				$header_clo .= '<td width="'.$boxclo.'">CLO'.$clo.'</td>';
+				$header_clo .= '<td width="'.$boxclo.'" align="center"><b>CLO'.$clo.'</b></td>';
 			  }
 		}
 		
@@ -66,7 +66,7 @@ class CloSummary
 		<table cellpadding="10" border="1" width="'.$wtable.'">
 		<tr style="background-color:#ebebeb">
 			<td width="'.$bil.'"><b>No.</b></td>
-			<td width="'.$lecture.'"><b>Lecture</b></td>
+			<td width="'.$lecture.'" align="center"><b>Lecture</b></td>
 			<td width="'.$lecturer.'"><b>Lecturer</b></td>';
 		$html .= $header_clo;
 		$html .= '</tr>
@@ -85,10 +85,10 @@ class CloSummary
 					$arr = [];
 					$counted = false;
 				}
-				$html .= '<tr><td>'.$i.'. </td><td>'.$lecture->lec_name.'</td><td>';
+				$html .= '<tr><td>'.$i.'. </td><td align="center">'.$lecture->lec_name.'</td><td>';
 				if($lecture->lecturers){
 					foreach($lecture->lecturers as $lecturer){
-						$html .= $lecturer->staff->user->fullname;
+						$html .= $lecturer->staff->staff_title .' '. $lecturer->staff->user->fullname;
 					}
 				}
 				
@@ -110,8 +110,8 @@ class CloSummary
 						}
 						$$str_total += $val;
 
-						$html .= '<td width="'.$boxclo.'">'.$val.'</td>';
-						$html_average .= '<td width="'.$boxclo.'"></td>';
+						$html .= '<td width="'.$boxclo.'" align="center">'.$val.'</td>';
+
 						$x++;
 						
 					}
@@ -127,11 +127,10 @@ class CloSummary
 		}
 		$html .= '
 		<tr>
-		<td></td>
-		<td></td>
-		<td align="right"><b>AVERRAGE</b></td>';
+		<td colspan="3" align="right"><b>AVERAGE</b></td>';
 		if($this->listClo){
 		$p =0;
+		$analysis = '';
 		foreach ($this->listClo as $clo) {
 			$str_total = 'total_clo'. $clo;
 			$str_count = 'count_clo'. $clo;
@@ -140,11 +139,18 @@ class CloSummary
 			}else{
 				$avg = $$str_total / $$str_count;
 			}
-					
-			$html .= '<td>'.number_format($avg,2).'</td>';
+			$point = number_format($avg,2);
+			$html .= '<td align="center"><b>'.$point.'</b></td>';
+			$analysis .= '<td align="center">'. $this->analysis($point).'</td>';
 		$p++;
 		}
 		}
+		$html .= '</tr>';
+		
+		$html .= '
+		<tr>
+		<td colspan="3" align="right">ACHIEVEMENT ANALYSIS</td>';
+		$html .= $analysis;
 		$html .= '</tr>';
 		
 		$html .= '</table>';

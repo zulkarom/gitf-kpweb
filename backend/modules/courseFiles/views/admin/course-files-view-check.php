@@ -26,6 +26,7 @@ use yii\helpers\Url;
     
         $item = $model->itemCheck;
         $offer =  $modelOffer;
+	   $version = $offer->course_version;
 
         echo '<tr><td>'.$item[0]->id.'</td>
                 <td>'.$item[0]->item.'<i><br/>'.$item[0]->item_bi.'</i></td>
@@ -103,16 +104,16 @@ use yii\helpers\Url;
         echo '<tr><td>'.$item[3]->id.'</td>
                 <td>'.$item[3]->item.'<i><br/>'.$item[3]->item_bi.'</i></td>
                 <td>';
-				  if($offer->coordinatorAnalysisCloFiles)
-                      {
-                        $i=1;
-                        foreach ($offer->coordinatorAnalysisCloFiles as $files) {
-                          echo Html::a("File ".$i, ['coordinator-analysis-clo-file/download', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
-                          echo '<br/>';
-                          $i++;
-                        }
-                      }
-				//$offer->countAnalysisCloFiles
+				  if($version == 0){
+				echo 'Coordinator need to select course version.';
+			}else{
+				echo '<ul>
+				<li><a href="'.Url::to(['/esiap/course/fk3', 'course'=> $offer->course_id, 'version' => $version, 'offer' => $offer->id]).'" target="_blank">FK03 - PENJAJARAN KONSTRUKTIF</a><br />
+				<i>(CLO achievement result)</i>
+				</li>
+				</ul>
+				';
+			}
 				
 			echo '</td>
                 <td>';

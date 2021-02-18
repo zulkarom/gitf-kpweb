@@ -205,6 +205,61 @@ class CourseOffered extends \yii\db\ActiveRecord
         return $this->hasOne(CourseVersion::className(), ['id' => 'course_version']);
     }
 	
+	//return array
+	public function getCloSummary(){
+		$array = array();
+		if($this->listClo()){
+			  foreach ($this->listClo() as $clo) {
+				$str_total = 'total_clo'. $clo;
+				$$str_total = 0;
+				$str_count = 'count_clo'. $clo;
+				$$str_count = 0;
+			  }
+		foreach($this->lectures as $lecture){
+			$arr = json_decode($lecture->clo_achieve);
+			/* if(!is_array($arr)){
+				$arr = [];
+			} */
+			$counted = true;
+			if($arr == null){
+				$arr = [];
+				$counted = false;
+			}
+			$x = 0;
+				$total = 0;
+				$count = 0;
+				foreach ($this->listClo() as $clo) {
+					$str_total = 'total_clo'. $clo;
+					$str_count = 'count_clo'. $clo;
+					$val = 0;
+					if($counted){$$str_count++;}
+					if(array_key_exists($x, $arr)){
+						$val = $arr[$x];
+					}
+					$$str_total += $val;
+					$x++;
+				}
+		}
+		
+		$p =0;
+		
+		foreach ($this->listClo() as $clo) {
+			$str_total = 'total_clo'. $clo;
+			$str_count = 'count_clo'. $clo;
+			if($$str_count == 0){
+				$avg = 0;
+			}else{
+				$avg = $$str_total / $$str_count;
+			}
+					
+			$array[] = number_format($avg,2);
+		$p++;
+		}
+		
+		}
+		return $array;
+	}
+	
 	public function getMaterial(){
         return $this->hasOne(Material::className(), ['id' => 'material_version']);
     }

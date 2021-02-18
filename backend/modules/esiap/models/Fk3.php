@@ -16,6 +16,8 @@ class Fk3
 	public $total_tut = 0;
 	public $total_prac = 0;
 	public $total_hour = 0;
+	public $offer = false;
+	public $cqi = false;
 	
 	public $wtab;
 	
@@ -288,7 +290,11 @@ $x=1;
 $gtotal = 0;
 $plo_num = $this->model->ploNumber;
 $clo_assess = $this->model->assessments;
+if($this->offer){
+	$clo_achieve = $this->offer->cloSummary;
+}
 foreach($this->model->clos as $clo){
+	$idx = $x - 1;
 	$html .='
 <tr nobr="true" style="font-size:10pt">
 <td width="'.$col1d1.'">'.$x.'. </td>
@@ -298,6 +304,7 @@ $html .='<td align="center">';
 
 $i=1;
 for($c=1;$c<=6;$c++){
+
 	$prop = 'C'.$c;
 	if($clo->$prop == 1){
 		
@@ -388,14 +395,28 @@ $html .='</td>';
 
 
 
-$html .='<td>';
+$html .='<td align="center">';
 $s=1;
+
+if($this->offer){
+	if(array_key_exists($idx, $clo_achieve)){
+		$html .= $clo_achieve[$idx];
+	}
+	
+}
 
 $html .='</td>';
 
+
 $html .='
-<td align="left">';
+<td align="center">';
 $s=1;
+if($this->offer){
+	if(array_key_exists($idx, $clo_achieve)){
+		$html .= $this->analysis($clo_achieve[$idx]);
+	}
+	
+}
 
 $html .='</td>
 </tr>';
@@ -463,11 +484,22 @@ $this->pdf->writeHTML($tbl, true, false, false, false, '');
 	}
 
 	public function improvement(){
-		$tbl = <<<EOD
-<strong style="font-size:10pt"><u>Rancangan Penambahbaikan Kursus (jika ada)</u><sup>#</sup>:<br/>
+		
+	$html = '<strong style="font-size:10pt"><u>Rancangan Penambahbaikan Kursus (jika ada)</u><sup>#</sup>:<br/>
 <i><u>Plan for Course Improvement (if any)</u><sup>#</sup>:</i>
 </strong><br /><br />
-<table border="1" cellpadding="30" ><tr><td height="250"></td></tr></table>
+<table border="1" cellpadding="30" ><tr><td height="250">';
+
+if($this->offer and $this->cqi){
+	$html .= $this->offer->course_cqi;
+	
+}
+
+$html .= '</td></tr></table>';
+	
+	
+		$tbl = <<<EOD
+$html 
 <br />
 EOD;
 $this->pdf->writeHTML($tbl, true, false, false, false, '');
@@ -526,6 +558,22 @@ ______________________________________
 EOD;
 
 $this->pdf->writeHTML($tbl, true, false, false, false, '');
+	}
+	
+	public function analysis($point){
+		if($point >= 3.7 and $point <= 4){
+			return 'Cemerlang/ Excellent';
+		}else if($point >= 3 and $point < 3.7){
+			return 'Sangat Baik/ Very Good';
+		}else if($point >= 2 and $point < 3){
+			return 'Baik/ Good';
+		}else if($point >= 1 and $point < 2){
+			return 'Lemah/ Poor';
+		}else if($point >= 0 and $point < 1){
+			return 'Sangat Lemah/ Very Poor';
+		}else{
+			return '';
+		}
 	}
 	
 	

@@ -254,6 +254,8 @@ class DefaultController extends Controller
 
             $data = Yii::$app->request->post('json_assessment');
             $data = json_decode($data);
+			/* echo '<pre>';
+			print_r($data);die(); */
             
             if($data){
                 $i=0;
@@ -267,7 +269,7 @@ class DefaultController extends Controller
 				
 				//print_r($weight );die();
                 foreach (array_slice($data,4) as $stud) {
-                   if(is_array($stud)){
+                   if(is_array($stud) and $stud){
 					   
 						
 	 			   		$matric = trim($stud[1]);

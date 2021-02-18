@@ -1235,11 +1235,27 @@ class CourseController extends Controller
 			$pdf->generateExcel();
 	}
 	
-	public function actionFk3($course, $dev = false, $version = false){
+	public function actionFk3($course, $dev = false, $version = false, $offer = false, $cqi = false){
+			
 			$pdf = new Fk3;
 			$pdf->model = $this->decideVersion($course, $dev, $version);
+			if($offer){
+				$pdf->offer = $this->findCourseOffered($offer);
+				$pdf->cqi = $cqi;
+			}
 			$pdf->generatePdf();
 	}
+	
+	protected function findCourseOffered($id){
+		$default = \backend\modules\teachingLoad\models\CourseOffered::findOne($id);
+		if($default){
+			return $default;
+		}else{
+			throw new NotFoundHttpException('Page not found!');
+		}
+	}
+	
+	
 	
 	public function actionDuplicate(){
 		/* $clone = new CourseVersionClone;
