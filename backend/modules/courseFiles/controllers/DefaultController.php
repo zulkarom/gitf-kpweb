@@ -232,7 +232,7 @@ class DefaultController extends Controller
 		if(Yii::$app->request->post()){
 			$model = $this->findLecture($id);
 			$data = Yii::$app->request->post('achived');
-			$model->clo_achieve = json_encode($data);
+			$model->clo_achieve = $data;
 			$model->save();
 		}
 		
@@ -361,7 +361,7 @@ class DefaultController extends Controller
 							$new->flashError();
 						}	   
 					}	 
-					$st = StudentLecture::findOne(['matric_no' => $matric]);
+					$st = StudentLecture::findOne(['matric_no' => $matric, 'lecture_id' => $lecture->id]);
 
 					if($st === null){
 						$new = new StudentLecture;

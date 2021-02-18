@@ -52,7 +52,10 @@ class CloSummary
 		$header_clo = '';
 		if($this->listClo){
 			  foreach ($this->listClo as $clo) {
-				
+				$str_total = 'total_clo'. $clo;
+				$$str_total = 0;
+				$str_count = 'count_clo'. $clo;
+				$$str_count = 0;
 				$header_clo .= '<td width="'.$boxclo.'">CLO'.$clo.'</td>';
 			  }
 		}
@@ -71,30 +74,82 @@ class CloSummary
 		
 		$i=1;
 		if($this->model->lectures){
+			
 			foreach($this->model->lectures as $lecture){
+				$arr = json_decode($lecture->clo_achieve);
+				/* if(!is_array($arr)){
+					$arr = [];
+				} */
+				$counted = true;
+				if($arr == null){
+					$arr = [];
+					$counted = false;
+				}
 				$html .= '<tr><td>'.$i.'. </td><td>'.$lecture->lec_name.'</td><td>';
-				
 				if($lecture->lecturers){
-					
 					foreach($lecture->lecturers as $lecturer){
 						$html .= $lecturer->staff->user->fullname;
 					}
-		
 				}
 				
 				
 				$html .= '</td>';
+				$arr_avg = [];
+				if($this->listClo){
+				$x = 0;
+				$html_average = '';
+					$total = 0;
+					$count = 0;
+					foreach ($this->listClo as $clo) {
+						$str_total = 'total_clo'. $clo;
+						$str_count = 'count_clo'. $clo;
+						$val = 0;
+						if($counted){$$str_count++;}
+						if(array_key_exists($x, $arr)){
+							$val = $arr[$x];
+						}
+						$$str_total += $val;
+
+						$html .= '<td width="'.$boxclo.'">'.$val.'</td>';
+						$html_average .= '<td width="'.$boxclo.'"></td>';
+						$x++;
+						
+					}
+					
+
+				}
 				
-			$html .= '<td>'.$lecture->clo_achieve .'</td>';
 				
 				$html .= '</tr>';
 				$i++;
 			}
 		
 		}
-		$html .= '</table>
+		$html .= '
+		<tr>
+		<td></td>
+		<td></td>
+		<td align="right"><b>AVERRAGE</b></td>';
+		if($this->listClo){
+		$p =0;
+		foreach ($this->listClo as $clo) {
+			$str_total = 'total_clo'. $clo;
+			$str_count = 'count_clo'. $clo;
+			if($$str_count == 0){
+				$avg = 0;
+			}else{
+				$avg = $$str_total / $$str_count;
+			}
+					
+			$html .= '<td>'.number_format($avg,2).'</td>';
+		$p++;
+		}
+		}
+		$html .= '</tr>';
 		
-		<div style="height:2px;">&nbsp;</div>
+		$html .= '</table>';
+		
+		$html .= '<div style="height:2px;">&nbsp;</div>
 		<span style="font-size:13px;"> 
  * 0.00-0.99 (Sangat Lemah/ Very Poor), 1.00-1.99 (Lemah/ Poor), 2.00-2.99 (Baik/ Good), 3.00-3.69 (Sangat Baik/ Very Good), 3.70-4.00 (Cemerlang/ Excellent). </span>
 		';

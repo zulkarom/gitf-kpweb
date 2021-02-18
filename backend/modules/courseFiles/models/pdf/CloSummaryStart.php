@@ -28,7 +28,7 @@ class CloSummaryStart extends \TCPDF {
 		$line_height = 220;
 		$time = strtoupper(date('d-M-Y h:m A', time()));
 		$html ='
-		<b>CLO ANALYSIS</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<b>CLO SUMMARY ANALYSIS</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<b>SEMESTER: </b>'. strtoupper($this->semester->shortFormat()).'
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>COURSE: </b>'.$this->course->course_code.' - '.strtoupper($this->course->course_name).'
 		<br />
