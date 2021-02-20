@@ -10,8 +10,8 @@ use common\models\UploadFile;
 
 $this->title = 'Lecturer ['.$model->lec_name.']';
 $this->params['breadcrumbs'][] = ['label' => 'Teaching Load', 'url' => ['/course-files/default/teaching-assignment']];
-$this->params['breadcrumbs'][] = ['label' => 'Course Files', 'url' => ['/course-files/default/teaching-assignment-lecture', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = ['label' => 'Lecturer ['.$model->lec_name.']', 'url' => ['/course-files/default/teaching-assignment-lecture', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = 'Class Cancellation';
 $course = $model->courseOffered->course;
 ?>
 

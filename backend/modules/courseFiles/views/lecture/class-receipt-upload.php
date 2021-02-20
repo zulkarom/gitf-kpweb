@@ -8,10 +8,10 @@ use common\models\UploadFile;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
 
-$this->title = 'Lecturer ['.$model->lec_name.']';
+$this->title = 'Lecture ['.$model->lec_name.']';
 $this->params['breadcrumbs'][] = ['label' => 'Teaching Load', 'url' => ['/course-files/default/teaching-assignment']];
-$this->params['breadcrumbs'][] = ['label' => 'Course Files', 'url' => ['/course-files/default/teaching-assignment-lecture', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = ['label' => 'Lecture ['.$model->lec_name.']', 'url' => ['/course-files/default/teaching-assignment-lecture', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = 'Students’ Assignment';
 $course = $model->courseOffered->course;
 ?>
 
