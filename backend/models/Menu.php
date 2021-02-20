@@ -194,7 +194,7 @@ class Menu
 						
 						['label' => 'Generate Reference', 'icon' => 'user', 'url' => ['/teaching-load/staff-inv/generate-reference']],
 						
-						['label' => 'Dean Approval', 'icon' => 'check-square', 'url' => ['/teaching-load/staff-inv/approve-letter']],
+						['label' => 'Dean\'s Approval', 'icon' => 'check-square', 'url' => ['/teaching-load/staff-inv/approve-letter']],
 						
 
 					]

@@ -235,6 +235,10 @@ class StaffInvController extends Controller
 
     public function actionApproveLetter()
     {
+		$dean = \backend\modules\staff\models\StaffMainPosition::findOne(1)->staff_id;
+		if(Yii::$app->user->identity->staff->id == $dean){
+			
+		
         $semester = new SemesterForm;
         if(Yii::$app->getRequest()->getQueryParam('SemesterForm')){
             $sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');
@@ -280,6 +284,9 @@ class StaffInvController extends Controller
             'dataProvider' => $dataProvider,
             
         ]);
+		}else{
+			return $this->render('forbidden');
+		}
     }
 	
 	public function actionUploadFile($attr, $id){

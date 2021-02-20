@@ -127,6 +127,15 @@ $form = ActiveForm::begin([
                 }
                 
             ],
+			
+			[
+                'label' => 'Status',
+				'format' => 'html',
+                'value' => function($model){
+                    return $model->statusLabel;
+                }
+                
+            ],
 
             ['class' => 'yii\grid\ActionColumn',
                  'contentOptions' => ['style' => 'width: 8.7%'],

@@ -53,7 +53,7 @@ $this->title = 'Modules';
         </div>
         <!-- /.col -->
         <div class="col-md-3 col-sm-6 col-xs-12">
-		<a href="<?=Url::to(['/teaching-load/course-offered/index'])?>">
+		<a href="<?=Url::to(['/course-files/default/teaching-assignment'])?>">
           <div class="info-box bg-yellow">
             <span class="info-box-icon"><i class="fa fa-book"></i></span>
 
@@ -140,7 +140,7 @@ $this->title = 'Modules';
         <!-- /.col -->
         <div class="col-md-3 col-sm-6 col-xs-12">
 		
-		<a href="<?=Url::to(['/students/student'])?>">
+		<a href="<?=Url::to(['/students/default'])?>">
 		
           <div class="info-box">
             <span class="info-box-icon bg-yellow"><i class="fa fa-users"></i></span>
@@ -162,7 +162,7 @@ $this->title = 'Modules';
         </div>
         <!-- /.col -->
         <div class="col-md-3 col-sm-6 col-xs-12">
-          <a href="<?=Url::to([''])?>">
+          <a href="<?=Url::to(['/erpd'])?>">
           <div class="info-box bg-red">
             <span class="info-box-icon"><i class="fa fa-flask"></i></span>
 
