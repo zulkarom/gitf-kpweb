@@ -8,7 +8,7 @@ use kartik\export\ExportMenu;
 /* @var $searchModel backend\modules\esiap\models\CourseSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Teaching Assignment by Staff';
+$this->title = 'Teaching Load by Staff';
 $this->params['breadcrumbs'][] = $this->title;
 
 
@@ -16,42 +16,37 @@ $this->params['breadcrumbs'][] = $this->title;
 $columns = [
             ['class' => 'yii\grid\SerialColumn'],
             
-            [
-                //'contentOptions' => ['style' => 'width: 45%'],
-                //'format' => 'html',
-                'label' => 'Staff No.',
-                'value' => function($model){
-                    return $model->staff_no ;
-                }
-                
-            ],
             
             [
                 //'contentOptions' => ['style' => 'width: 45%'],
                 //'format' => 'html',
-                'label' => 'Lecturers',
+                'label' => 'Lecturer',
                 'value' => function($model){
                     return $model->staff_title . ' ' . $model->user->fullname ;
                 }
                 
             ],
 
+           
             
-            
+
             [
                 'label' => 'Lectures',
                 'format' => 'html',
-                'value' => function($model){
-                    return $model->teachLectureStr;
+				'contentOptions' => [ 'style' => 'width: 30%;' ],
+                'value' => function($model) use ($semester){
+            
+                    return $model->getTeachLectureStr($semester);
+                    
                 }
             ],
-           
+            
             
             [
-                'label' => 'Tutorials',
+                'label' => 'Tutorial',
                 'format' => 'html',
-                'value' => function($model){
-                    return $model->teachTutorialStr;
+                'value' => function($model) use ($semester){
+                    return $model->getTeachTutorialStr($semester);
                 }
             ],
             
@@ -60,7 +55,14 @@ $columns = [
                 'label' => 'Total',
                 'format' => 'html',
                 'value' => function($model){
-                    return $model->totalLectureTutorial;
+                    return $model->totalLectureTutorialHour;
+                }
+            ],
+			[
+                'label' => 'Remark',
+                'format' => 'html',
+                'value' => function($model){
+                    return $model->labelTotalHours;
                 }
             ],
 
@@ -105,13 +107,13 @@ $columns = [
 </div>
 
 </div>
-<br />
 
     <div class="box">
 <div class="box-header"></div>
 <div class="box-body"><?= GridView::widget([
         'dataProvider' => $dataProvider,
         'export' => false,
+		'options' => [ 'style' => 'table-layout:fixed;' ],
        // 'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
@@ -133,6 +135,7 @@ $columns = [
             [
                 'label' => 'Lectures',
                 'format' => 'html',
+				'contentOptions' => [ 'style' => 'width: 30%;' ],
                 'value' => function($model) use ($semester){
             
                     return $model->getTeachLectureStr($semester,"<br />");
@@ -153,7 +156,14 @@ $columns = [
                 'label' => 'Total',
                 'format' => 'html',
                 'value' => function($model){
-                    return $model->getTotalLectureTutorial("<br />");
+                    return $model->totalLectureTutorialHour;
+                }
+            ],
+			[
+                'label' => 'Remark',
+                'format' => 'html',
+                'value' => function($model){
+                    return $model->labelTotalHours;
                 }
             ],
             //PastExperiencesStr

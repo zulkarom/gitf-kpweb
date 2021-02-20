@@ -207,9 +207,9 @@ class AutoLoad extends Model
 	}
 	
 	public function staffCurrentLoading($staff_id){
-		$lec = $this->countCurrentLecture($staff_id);
-		$tut = $this->countCurrentTutorial($staff_id);
-		$total = $lec * 2 + $tut;
+		$lec = $this->sumCurrentLectureHours($staff_id);
+		$tut = $this->sumCurrentTutorialHours($staff_id);
+		$total = $lec + $tut;
 		return $total;
 	}
 	
@@ -408,12 +408,28 @@ class AutoLoad extends Model
 		->count();
 	}
 	
+	public function sumCurrentLectureHours($staff_id){
+		return LecLecturer::find()
+		->joinWith('courseLecture.courseOffered.course')
+		->where(['staff_id' => $staff_id, 
+			'semester_id' => $this->semester])
+		->sum('lec_hour');
+	}
+	
 	public function countCurrentTutorial($staff_id){
 		return TutorialTutor::find()
 		->joinWith('tutorialLec.lecture.courseOffered')
 		->where(['staff_id' => $staff_id, 
 			'semester_id' => $this->semester])
 		->count();
+	}
+	
+	public function sumCurrentTutorialHours($staff_id){
+		return TutorialTutor::find()
+		->joinWith('tutorialLec.lecture.courseOffered.course')
+		->where(['staff_id' => $staff_id, 
+			'semester_id' => $this->semester])
+		->sum('tut_hour');
 	}
 	
 	public function randomise(){

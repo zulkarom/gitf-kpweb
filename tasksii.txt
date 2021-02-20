@@ -6,4 +6,8 @@ approve letter btn kat bawah
 button back to
 sebelum generate list student pdf, klu xde, tarik data dulu
 kena verify files uploaded ada dulu baru save file name
-matric no dalam exemption buat select2
+upload files name auto masukkan file name https://fkp-portal.umk.edu.my/course-files/lecture-cancel-file/page?id=582
+Record of Student’s Medical Checkup/ Class Exemption kena load student dulu klu takde https://fkp-portal.umk.edu.my/course-files/tutorial-exempt-file/page?id=910
+Student Evaluation Upload letak nama title course name https://fkp-portal.umk.edu.my/course-files/default/student-evaluation?id=22
+rename course version - course information version - teaching material version
+Copy of Final Exam or Assessment Results (including graphs) upload page belum standardise

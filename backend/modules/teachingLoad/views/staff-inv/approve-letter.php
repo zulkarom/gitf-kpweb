@@ -66,6 +66,18 @@ $form = ActiveForm::begin([
             ['class' => 'yii\grid\CheckboxColumn'],
             ['class' => 'yii\grid\SerialColumn'],
             
+			[
+                'label' => 'Reference & Date',
+				'format' => 'html',
+                'value' => function($model){
+					$date = '';
+					if($model->date_appoint <> '0000-00-00'){
+						$date =  date('d M Y', strtotime($model->date_appoint));
+					}
+                    return $model->ref_no. '<br />' . $date;
+                }
+                
+            ],
             
             [
                 'label' => 'Staff',
@@ -84,7 +96,7 @@ $form = ActiveForm::begin([
             ],
 
             [
-                'label' => 'Total Lecture',
+                'label' => 'Lectures',
                 'value' => function($model){
                     return $model->countLecturesByStaff ;
                 }
@@ -92,9 +104,9 @@ $form = ActiveForm::begin([
             ],
 
             [
-                'label' => 'Total Tutorial',
+                'label' => 'Tutorials',
                 'value' => function($model){
-                    return $model->countLecturesByStaff  ;
+                    return $model->countTutorialsByStaff  ;
                 }
                 
             ],

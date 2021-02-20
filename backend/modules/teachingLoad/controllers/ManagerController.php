@@ -7,9 +7,11 @@ use yii\web\Controller;
 use yii\helpers\ArrayHelper;
 use yii\filters\AccessControl;
 use backend\modules\teachingLoad\models\TeachingStaffSearch;
+use backend\modules\teachingLoad\models\ContactHourSearch;
 use backend\modules\teachingLoad\models\TeachingCourseSearch;
 use backend\modules\teachingLoad\models\CourseLectureStaffSearch;
 use backend\modules\teachingLoad\models\CourseLectureSearch;
+use backend\modules\teachingLoad\models\Course;
 use backend\modules\teachingLoad\models\Setting;
 use backend\modules\teachingLoad\models\MaximumHour;
 use yii\db\Expression;
@@ -124,26 +126,78 @@ class ManagerController extends Controller
         ]);
 
     }
+	
+	public function actionContactHour(){
+		$searchModel = new ContactHourSearch();
+		$request = Yii::$app->request->queryParams;
+        $dataProvider = $searchModel->search($request);
+		
+		if(array_key_exists('per-page',$request) and array_key_exists('page',$request)){
+			$perpage = Yii::$app->request->queryParams['per-page'];
+			$page = Yii::$app->request->queryParams['page'];
+		}else{
+			$perpage = '';
+			$page = '';
+		}
+		
+		return $this->render('contact-hour', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+			'perpage' => $perpage,
+			'page' => $page,
+
+        ]);
+	}
+	
+	public function actionContactHourForm($course, $page=false, $perpage=false){
+		
+		$course = $this->findCourse($course);
+		$course->scenario = 'contact_hour';
+		
+		if ($course->load(Yii::$app->request->post())) {
+			//echo $course->page .' - '. $course->perpage;
+			//die();
+			if($course->save()){
+				Yii::$app->session->addFlash('success', "Data Updated");
+				return $this->redirect(['contact-hour', 'page' => $course->page, 'per-page' => $course->perpage]);
+			}
+			
+		}
+
+		
+		return $this->renderAjax('contact-hour-form', [
+			'course' => $course,
+			'perpage' => $perpage,
+			'page' => $page,
+
+        ]);
+	}
 
     public function actionMaximumHour(){
 
         $model = MaximumHour::find()->all();
-		
-		//setting kena duk sini, klu dlm post tu klu view page biasa dia tak masuk
-		//nnti buat delete staff dari max hour table pulak
+
        $setting = Setting::findOne(1);
+	   $setting->scenario = 'setmax';
+	   
+	   if ($setting->load(Yii::$app->request->post())) {
+		   if($setting->save()){
+				Yii::$app->session->addFlash('success', "General Setting Saved.");
+			}else{
+				$setting->flashError();
+			}
+	   }
+	   
 	   
        if(Yii::$app->request->post('Max')){
             $post_max = Yii::$app->request->post('Max');
             
-            $setting->max_hour = $post_max['max_general_hour'];
-            $setting->save();
             foreach ($model as $staff) {
                 $staff->max_hour = $post_max[$staff->id]['max_hour'];
                 $staff->save();
             }
 			//buat flash sikit
-			Yii::$app->session->addFlash('success', "Data Updated");
+			Yii::$app->session->addFlash('success', "Staff Custom Maximum Hour Updated");
         }
 
 
@@ -240,9 +294,18 @@ class ManagerController extends Controller
 		
 	}
 
-     protected function findMaximumHour($id)
+    protected function findMaximumHour($id)
     {
         if (($model = MaximumHour::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+	
+	protected function findCourse($id)
+    {
+        if (($model = Course::findOne($id)) !== null) {
             return $model;
         }
 

@@ -465,7 +465,7 @@ class CourseOfferedController extends Controller
                 $prefix = $offered['prefix_lecture'];
 
                 if($max_lecture > $total_student){
-                    Yii::$app->session->addFlash('error', 'Problem creating bulk session for '.$offer->course->course_name);
+                    Yii::$app->session->addFlash('error', 'Maximum lecture is more than total student for '.$offer->course->course_name);
                     $transaction->rollBack();
                     continue;
                 }
@@ -479,7 +479,7 @@ class CourseOfferedController extends Controller
 
                     for ($i=1; $i <=$numLec ; $i++) {       
                         if(!$this->insertLecture($offered_id,$max_lecture,$prefix,$i,$max_tutorial,$prefix_tutorial)){
-                            Yii::$app->session->addFlash('error', 'Problem creating bulk session for '.$offer->course->course_name);
+                            Yii::$app->session->addFlash('error', 'Problem creating lecture for '.$offer->course->course_name);
                             $transaction->rollBack();
                             continue 2;
                         }            
@@ -487,7 +487,7 @@ class CourseOfferedController extends Controller
                     if($bal > 0){
                         $j = $i;
                         if(!$this->insertLecture($offered_id,$bal,$prefix,$j,$max_tutorial,$prefix_tutorial)){
-                            Yii::$app->session->addFlash('error', 'Problem creating bulk session for '.$offer->course->course_name);
+                            Yii::$app->session->addFlash('error', 'Problem creating lecture (balance) for '.$offer->course->course_name);
                             $transaction->rollBack();
                             continue;
                         }
@@ -505,7 +505,7 @@ class CourseOfferedController extends Controller
             $offer->prefix_tut = 'T';
             if(!$offer->save())
             {
-                Yii::$app->session->addFlash('error', 'Problem creating bulk session for '.$offer->course->course_name);
+                Yii::$app->session->addFlash('error', 'Problem saving setting for '.$offer->course->course_name);
                             $transaction->rollBack();
                             continue;
             }

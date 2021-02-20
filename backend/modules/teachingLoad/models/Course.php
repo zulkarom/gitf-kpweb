@@ -16,10 +16,21 @@ use backend\models\Semester;
 class Course extends \backend\modules\esiap\models\Course
 {
 	public $semester;
+	public $page;
+	public $perpage;
 	
     /**
      * {@inheritdoc}
      */
+	public function rules(){
+		$rules = parent::rules();
+		$rules[] = [['lec_hour', 'tut_hour'], 'required', 'on' => 'contact_hour'];
+		
+		$rules[] = [['page', 'perpage'], 'integer'];
+		
+		
+		return $rules;
+	}
 	 
     public function getStaffTeachers(){
 		return $this->hasMany(TeachCourse::className(), ['course_id' => 'id'])->orderBy('rank ASC');

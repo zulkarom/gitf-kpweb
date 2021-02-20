@@ -16,8 +16,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('New Course Offered', ['create'], ['class' => 'btn btn-success']) ?>
-        <?= Html::a('Create Bulk Session', ['session'], ['class' => 'btn btn-primary']) ?>
-		<?= Html::a('Run Auto Assignment', ['/teaching-load/bulk'], ['class' => 'btn btn-warning']) ?>
+        <?= Html::a('Bulk Session', ['session'], ['class' => 'btn btn-primary']) ?>
+		<?= Html::a('Auto Assignment', ['/teaching-load/bulk'], ['class' => 'btn btn-warning']) ?>
     </p>
 
     <div class="row">

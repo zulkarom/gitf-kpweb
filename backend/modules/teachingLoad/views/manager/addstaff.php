@@ -11,7 +11,7 @@ use backend\modules\staff\models\Staff;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
 /* @var $form yii\widgets\ActiveForm */
-$this->title = 'Add Staff';
+$this->title = 'Add Staff to Custom Loading Hour';
 $this->params['breadcrumbs'][] = ['label' => 'Maximum Hour', 'url' => ['/teaching-load/manager/maximum-hour']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -35,7 +35,7 @@ echo $form->field($model, 'staffM')->widget(Select2::classname(), [
     'pluginOptions' => [
         'allowClear' => true
     ],
-]);
+])->label('Select One or More Staff to be added:');
 
 ?>
 </div>

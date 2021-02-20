@@ -170,31 +170,68 @@ class Menu
 				
 				//['label' => 'My Course Selection', 'icon' => 'user', 'url' => ['/teaching-load/default/teaching-view']],
 				
-				['label' => 'Teaching Assignment', 'icon' => 'book', 'url' => ['/teaching-load/course-offered/index']],
+				['label' => 'Assign Teaching Load', 'icon' => 'book', 'url' => ['/teaching-load/course-offered/index']],
 				
-				['label' => 'Assignment By Course', 'icon' => 'book', 'url' => ['/teaching-load/manager/summary-by-course']],
+				[
+					'label' => 'Teaching Load Report',
+					'icon' => 'cube',
+					'url' => '#',
+					'items' => [
+						['label' => 'Loading By Course', 'icon' => 'book', 'url' => ['/teaching-load/manager/summary-by-course']],
+						
+						['label' => 'Loading By Staff', 'icon' => 'user', 'url' => ['/teaching-load/manager/summary-by-staff']],
+						
 
-				['label' => 'Assignment By Staff', 'icon' => 'user', 'url' => ['/teaching-load/manager/summary-by-staff']],
+					]
+                ],
+				
+				[
+					'label' => 'Appointment Letter',
+					'icon' => 'envelope',
+					'url' => '#',
+					'items' => [
+						['label' => 'Run Staff Involved', 'icon' => 'user', 'url' => ['/teaching-load/staff-inv/index']],
+						
+						['label' => 'Generate Reference', 'icon' => 'user', 'url' => ['/teaching-load/staff-inv/generate-reference']],
+						
+						['label' => 'Dean Approval', 'icon' => 'check-square', 'url' => ['/teaching-load/staff-inv/approve-letter']],
+						
 
-				['label' => 'Appointment Letter', 'icon' => 'file', 'url' => ['/teaching-load/staff-inv/index']],
+					]
+                ],
+				
+				[
+					'label' => 'Teaching Load Setting',
+					'icon' => 'cog',
+					'url' => '#',
+					'items' => [
+						['label' => 'Staff Loading Hour', 'icon' => 'clock-o', 'url' => ['/teaching-load/manager/maximum-hour']],
+	
+						
+						['label' => 'Course Contact Hour', 'icon' => 'clock-o', 'url' => ['/teaching-load/manager/contact-hour']],
+						
+						['label' => 'Letter Template', 'icon' => 'cog', 'url' => ['/teaching-load/tmpl-appointment']],
+						
+
+					]
+                ],
+
 								
-				['label' => 'Approve Appointment', 'icon' => 'check-square', 'url' => ['/teaching-load/staff-inv/approve-letter']],
 				
-				['label' => 'Maximum Hour', 'icon' => 'clock-o', 'url' => ['/teaching-load/manager/maximum-hour']],
-				['label' => 'Letter Template', 'icon' => 'cog', 'url' => ['/teaching-load/tmpl-appointment']],
+				
+				
 
 				
 				
 				
 				[
-					'label' => 'Course Selection',
-					'visible' => Yii::$app->user->can('staff-management'),
-					'icon' => 'book',
+					'label' => 'Staff Course Selection',
+					'icon' => 'hand-pointer-o',
 					'url' => '#',
 					'items' => [
 						['label' => 'Selection By Staff', 'icon' => 'user', 'url' => ['/teaching-load/manager/by-staff']],
 						['label' => 'Selection By Course', 'icon' => 'book', 'url' => ['/teaching-load/manager/by-course']],
-						['label' => 'Date Setting', 'icon' => 'cog', 'url' => ['/teaching-load/manager/setting']],
+						['label' => 'Selection Due Date', 'icon' => 'cog', 'url' => ['/teaching-load/manager/setting']],
 						
 
 					]

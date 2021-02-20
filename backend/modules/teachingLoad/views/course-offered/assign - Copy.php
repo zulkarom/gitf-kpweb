@@ -94,19 +94,17 @@ if($model->course->tut_hour == 0){
 
 
 <div class="table-responsive">
-  <table class="table">
+  <table class="table table-striped table-hover">
     <thead>
       <tr>
       	<th><input type="checkbox" class ="checkAll" name="cbkLecture" value='' /></th>
         <th>#</th>
         <th width="10%">Lecture Name
-		<br/><span class="font-weight:normal:font-style:italic">(e.g. L1, K2, H3)</span></th>
-		<th width="10%">No.Students</th>
+		<br/><span class="font-weight:normal:font-style:italic">(e.g. L1,K2,H3)</span></th>
+		<th width="10%">No.Student</th>
         <th>Lecturers</th>
-		 <th width="10%">Tutorial Name<br/><span class="font-weight:normal:font-style:italic">(e.g. T1,T2,T3)</span></th>
-		 <th width="10%">No.Students</th>
-		 <th>Tutors</th>
-		
+		 <th>Tutorials</th>
+		 <th></th>
       </tr>
     </thead>
     <tbody>
@@ -142,22 +140,63 @@ if($model->course->tut_hour == 0){
 
 		     echo'</td>';
 			 
-		colum_2_first($lec->tutorials,$model->id, $lec);
-		 
+		colum_2_first($form,$clo->cloAssessments, $assess, $model);
+		
+		echo '<td width="50%">';
+		   if($lec->tutorials){
+		   	$j=1;
+		   	echo '<div class="table-responsive">
+				  <table class="table table-striped table-hover">
+				    <thead>
+				      <tr>
+				        <th width="20%">Tutorial Name</th>
+				        <th width="20%">No.Student</th>
+				        <th>Tutor</th>
+				      </tr>
+				    </thead>
+				    <tbody>';
+
+
+		   	foreach ($lec->tutorials as $tutorial) {
+		   		echo'<tr>
+				    <td><input name="Lecture['.$lec->id.'][tutorial]['.$tutorial->id.'][tutorial_name]" type="text" class="form-control" value="'.$tutorial->tutorial_name.'" /></td>
+				    <td><input name ="Lecture['.$lec->id.'][tutorial]['.$tutorial->id.'][student_num]" class="form-control" type="number"  value="'.$tutorial->student_num.'" /></td>
+				    <td>';
+
+				    echo Select2::widget([
+					    'name' => 'Lecture['.$lec->id.'][tutorial]['.$tutorial->id.'][tutoriallecturers]',
+					    'value' => ArrayHelper::map($tutorial->tutors,'id','staff_id'),
+					    'data' => ArrayHelper::map(Staff::getAcademicStaff(), 'id', 'user.fullname'),
+					    'options' => ['multiple' => true, 'placeholder' => 'Select']
+					]);
+
+				    echo'</td>
+				    <td>
+				    <a href="' . Url::to(['course-offered/delete-tutorial', 'id' => $tutorial->id, 'offered' => $model->id,'']) . '" >
+					<span class="fa fa-trash"></span></a>
+					</td>
+					</tr>';
+				   
+		   	}
+		   	 	echo'</tbody>
+				   </table>
+				   </div>';
+		   }
+
+		
+				    
+				    
+    	echo '</td>';
+		
 		
 		//delete lecture - kena confirm ni
-	 	echo '<td '.$rowspan_1.'>
+		echo '<td '.$rowspan_1.'>
 		<a href="' . Url::to(['course-offered/delete-lecture', 'id' => $lec->id]) . '"><span class="fa fa-trash"></span></a>
 		</td>
-      '; 
-	  
-	  echo '</tr>';
-	  
-	  
-	  colum_2($lec->tutorials,$model->id, $lec);
-	 
+      </tr>';
+
       $i++;
-		 }
+		 } 
 	  }
 	  
 	  
@@ -229,29 +268,30 @@ $this->registerJs($js);
 
 function rowspan_1($clo_as){
 	if($clo_as){
-		$kira = count($clo_as) ;
+		$kira = count($clo_as) + 1;
 		return "rowspan='".$kira."'";
 		
 	}else{
 		return "";
 	}
 }
-function colum_2_first($tutorial,$offer, $lec){
-	if($tutorial){
-		$tutorial = $tutorial[0];
-		colum_2_td($tutorial,$offer, $lec);
+function colum_2_first($form,$clo_as, $assess, $model){
+	if($clo_as){
+		
+		$cloAs = $clo_as[0];
+		colum_2_td($form,$cloAs, $assess,$model);
 	}else{
-		empty_cell(4);
+		empty_cell(2);
 	}
 	
 }
-function colum_2($tutorials,$offer, $lec){
-	if($tutorials){
+function colum_2($form,$clo_as, $assess, $model){
+	if($clo_as){
 		$i=1;
-			foreach($tutorials as $tutorial){
+			foreach($clo_as as $cloAs){
 				if($i > 1){
 					echo '<tr>';
-					colum_2_td($tutorial,$offer, $lec);
+					colum_2_td($form,$cloAs, $assess,$model);
 					echo '</tr>';
 				}
 			$i++;
@@ -259,31 +299,36 @@ function colum_2($tutorials,$offer, $lec){
 		}
 }
 
-function colum_2_td($tutorial,$offer, $lec){
-	echo'
-	<td><input name="Lecture['.$lec->id.'][tutorial]['.$tutorial->id.'][tutorial_name]" type="text" class="form-control" value="'.$tutorial->tutorial_name.'" /></td>
-	<td><input name ="Lecture['.$lec->id.'][tutorial]['.$tutorial->id.'][student_num]" class="form-control" type="number"  value="'.$tutorial->student_num.'" /></td>
-	<td>';
-
-	echo Select2::widget([
-		'name' => 'Lecture['.$lec->id.'][tutorial]['.$tutorial->id.'][tutoriallecturers]',
-		'value' => ArrayHelper::map($tutorial->tutors,'id','staff_id'),
-		'data' => ArrayHelper::map(Staff::getAcademicStaff(), 'id', 'user.fullname'),
-		'options' => ['multiple' => true, 'placeholder' => 'Select']
-	]);
-
-	echo'</td>
-	<td>
-	<a href="' . Url::to(['course-offered/delete-tutorial', 'id' => $tutorial->id, 'offered' => $offer,'']) . '" >
-	<span class="fa fa-remove"></span></a>
-	</td>
-	';
+function colum_2_td($form,$cloAs, $assess,$model){
+	$index = $cloAs->id;
+	$clo_id = $cloAs->clo_id;
+	echo '<td>' . Html::activeHiddenInput($cloAs, "[{$index}]id") . $form->field($cloAs, "[{$index}]assess_id", [
+					'options' => [
+						'tag' => false, // Don't wrap with "form-group" div
+					]])->dropDownList(
+        ArrayHelper::map($assess,'id', "assess_name"), ['prompt' => 'Please Select' ]
+    )
+->label(false) . '</td>';
+				
+					echo '<td>' . $form->field($cloAs, "[{$index}]percentage", [
+					'addon' => ['append' => ['content'=>'%']],
+					'options' => [
+						'tag' => false, // Don't wrap with "form-group" div
+					]])->textInput()->label(false) . '</td>
+					<td class="text-center vcenter" style="width: 90px;">
+                    <a href="'.Url::to(['delete-assessment-clo', 'course' => $model->course->id, 'id' => $cloAs->id]).'" class="remove-item btn btn-default btn-sm"><span class="fa fa-remove"></span></a></td>';
 				
 }
 
 function empty_cell($colum){
+	switch($colum){
+		case 2:
+		$x = 2;
+		break;
+		break;
+	}
 	$str = "";
-	for($i=1;$i<=$colum;$i++){
+	for($i=1;$i<=$x;$i++){
 		echo "<td></td>";
 	}
 }

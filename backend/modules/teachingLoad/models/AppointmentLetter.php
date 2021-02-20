@@ -66,7 +66,7 @@ class AppointmentLetter extends \yii\db\ActiveRecord
     public function status(){
         return [
             1 => 'Draft',
-            10 =>'Approve'
+            10 =>'Approved'
         ];
     }
 
@@ -84,7 +84,7 @@ class AppointmentLetter extends \yii\db\ActiveRecord
 		}else{
 			$color = 'warning';
 		}
-		return '<span class="label label-'.$color.'" style="font-size:12px">' . strtoupper($this->statusText) . '</span>';
+		return '<span class="label label-'.$color.'" >' . strtoupper($this->statusText) . '</span>';
 	}
 
     public function getStaffInvolved(){
@@ -100,9 +100,9 @@ class AppointmentLetter extends \yii\db\ActiveRecord
     public function getAppointed(){
         $coordinator = $this->courseOffered->coordinator;
         if($coordinator ==  $this->staffInvolved->staff_id){
-            $type = "Coordinator & Lecturer";
+            $type = "Penyelaras & Pengajar";
         }else{
-            $type = "Lecturer";
+            $type = "Pengajar";
         }
         return $type;
     }

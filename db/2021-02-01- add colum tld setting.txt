@@ -1,0 +1,2 @@
+ALTER TABLE `tld_setting` ADD `accept_hour` INT NOT NULL AFTER `max_hour`;
+ALTER TABLE `sp_course` ADD `lec_hour` DOUBLE NOT NULL DEFAULT '2' AFTER `method_type`, ADD `tut_hour` DOUBLE NOT NULL DEFAULT '1' AFTER `lec_hour`;

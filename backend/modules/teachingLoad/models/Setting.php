@@ -30,8 +30,9 @@ class Setting extends \yii\db\ActiveRecord
     {
         return [
             [['date_start', 'date_end', 'updated_at', 'updated_by'], 'required'],
-            [['date_start', 'date_end', 'updated_at'], 'safe'],
-            [['updated_by','max_hour'], 'integer'],
+			[['date_start', 'date_end', 'updated_at', 'updated_by'], 'required'],
+            [['max_hour', 'accept_hour'], 'required', 'on' => 'setmax'],
+            [['updated_by','max_hour', 'accept_hour'], 'integer'],
         ];
     }
 
@@ -47,6 +48,7 @@ class Setting extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
             'updated_by' => 'Updated By',
             'max_hour' => 'Maximum Hour',
+			'accept_hour' => 'Acceptable Hour',
         ];
     }
 	
@@ -62,4 +64,18 @@ class Setting extends \yii\db\ActiveRecord
 		
 		return $open;
 	}
+	
+	public function flashError(){
+        if($this->getErrors()){
+            foreach($this->getErrors() as $error){
+                if($error){
+                    foreach($error as $e){
+                        Yii::$app->session->addFlash('error', $e);
+                    }
+                }
+            }
+        }
+
+    }
+
 }

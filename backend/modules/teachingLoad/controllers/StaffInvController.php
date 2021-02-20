@@ -58,7 +58,10 @@ class StaffInvController extends Controller
             $action = Yii::$app->request->post('btn-action');
             if($action == 2){
 
-                $this->staffInvolved($semester->semester_id);
+               if($this->staffInvolved($semester->semester_id)){
+				   Yii::$app->session->addFlash('success', "Run Staff Invoved Success");
+				   return $this->refresh();
+			   }
             }
         }
 
@@ -126,8 +129,8 @@ class StaffInvController extends Controller
 			//kena delete juga dlm appointment letter
          }
     	
-    	Yii::$app->session->addFlash('success', "Run Staff Invoved Success");
     	
+    	return true;
     }
 
     public function appointLetter($s,$inv_id,$semester){
@@ -264,7 +267,10 @@ class StaffInvController extends Controller
                     }
                     $app->save();
                 }
+				
+				
                 Yii::$app->session->addFlash('success', "Status Updated");
+				return $this->refresh();
             }
         }
 

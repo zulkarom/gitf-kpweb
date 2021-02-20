@@ -68,7 +68,7 @@ use yii\helpers\Url;
 				
 
                             
-            echo  showLecTut($offer, 'lectureCancelFiles', 'tutorialCancelFiles');
+            echo  showLecTut($offer, 'lectureCancelFiles', 'tutorialCancelFiles', 'cancel');
 
 
 				
@@ -84,7 +84,7 @@ use yii\helpers\Url;
                 <td>'.$item[3]->item.'<i><br/>'.$item[3]->item_bi.'</i></td>
                 <td>';
 				
-			 echo  showLecTut($offer, 'lectureReceiptFiles', 'tutorialReceiptFiles');
+			 echo  showLecTut($offer, 'lectureReceiptFiles', 'tutorialReceiptFiles', 'receipt');
                            
 				
 			
@@ -232,7 +232,7 @@ function showCoor($offer, $method, $link){
 	return $html;
 }
 
-function showLecTut($offer, $lec_method, $tut_method){
+function showLecTut($offer, $lec_method, $tut_method, $link){
 	$html = '';
 	if($offer->lectures){
 	  $i=1;
@@ -244,7 +244,7 @@ function showLecTut($offer, $lec_method, $tut_method){
 			$html .=  '<ul>';
 		  foreach ($lectures->$lec_method as $file) {
 		  
-			$html .=  '<li>' . Html::a("File ".$j, ['lecture-cancel-file/download-file', 'attr' => 'path','id'=> $file->id],['target' => '_blank']) . '</li>';
+			$html .=  '<li>' . Html::a("File ".$j, ['lecture-'.$link.'-file/download-file', 'attr' => 'path','id'=> $file->id],['target' => '_blank']) . '</li>';
 
 			$j++;
 		  }
@@ -268,7 +268,7 @@ function showLecTut($offer, $lec_method, $tut_method){
 			if($tutorial->$tut_method){
 			$html .=  '<ul>';
 			  foreach ($tutorial->$tut_method as $files) {
-				$html .=  '<li>' . Html::a("File ".$j, ['tutorial-cancel-file/download-file', 'attr' => 'path','id'=> $files->id],['target' => '_blank']) . '</li>';
+				$html .=  '<li>' . Html::a("File ".$j, ['tutorial-'.$link.'-file/download-file', 'attr' => 'path','id'=> $files->id],['target' => '_blank']) . '</li>';
 				$j++;
 			  }
 			  $html .=  '</ul>';

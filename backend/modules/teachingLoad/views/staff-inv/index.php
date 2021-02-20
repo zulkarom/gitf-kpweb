@@ -31,13 +31,12 @@ $form = ActiveForm::begin([
 ]); ?>  
 <div class="form-group">   
 <button type="button" id="btn-run" class="btn btn-primary"><span class="fa fa-navicon"></span>  RUN STAFF INVOLVED</button>
-<?= Html::a('GENERATE REFERENCE', ['/teaching-load/staff-inv/generate-reference'], ['class' => 'btn btn-warning']) ?>
+
 
 </div>
 
 <input type="hidden" name="btn-action" id="btn-action" value="2" />
 
-<br />
 
     <div class="box">
 <div class="box-header"></div>

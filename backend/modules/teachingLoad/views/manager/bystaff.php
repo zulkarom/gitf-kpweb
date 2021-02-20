@@ -111,7 +111,6 @@ $columns = [
 </div>
 
 </div>
-<br />
 
     <div class="box">
 <div class="box-header"></div>

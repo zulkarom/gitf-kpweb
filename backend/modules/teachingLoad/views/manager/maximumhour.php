@@ -7,41 +7,60 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
 
-$this->title = 'Maximum Hour';
+$this->title = 'Staff Loading Hour';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
     
 <div class="maximum_hour">
 
-<a class="btn btn-success" href="<?=Url::to(['add-staff'])?>">Add Staff</a>
+
 
 <?php $form = ActiveForm::begin(); ?>
 
 
 <br/>
-<div class="row">
+<div class="box">
+<div class="box-header">
+<div class="box-title">General Setting</div>
+</div>
+<div class="box-body"><div class="row">
   <div class="col-md-2">
-    <?php
-    echo'General Max Hour<input name="Max[max_general_hour]" type="text" style="width:100%" value="'.$setting->max_hour.'" />';
-    ?>
+	<?= $form->field($setting, 'max_hour')->textInput() ?>
+  </div>
+   <div class="col-md-2">
+   <?= $form->field($setting, 'accept_hour')->textInput() ?>
   </div>
 </div>
-<br/>
 
+ <?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> Save General Setting', ['class' => 'btn btn-primary']) ?>
+
+</div>
+
+</div>
+
+<?php ActiveForm::end(); ?>
+
+
+
+<?php $form = ActiveForm::begin(); ?>
 <div class="box">
+<div class="box-header">
+<div class="box-title">Staff Custom Maximum Hour</div>
+</div>
 <div class="box-body">
 
-
-
+<div class="form-group"><a class="btn btn-success" href="<?=Url::to(['add-staff'])?>"><span class="glyphicon glyphicon-plus"></span> Add Staff</a></div>
 <div class="table-responsive">
-  <table class="table table-striped table-hover">
+  <table class="table table-striped">
     <thead>
       <tr>
         <th>#</th>
         <th>Staff Name</th>
-        <th>Maximum Hour</th>
+        <th width="15%">Maximum Hour</th>
         <th></th>
       </tr>
+	  </thead>
+	  <tbody>
         <?php
          if($model){
          $i = 1;
@@ -49,26 +68,27 @@ $this->params['breadcrumbs'][] = $this->title;
             echo'<tr>
             <td>'.$i.'</td>
             <td>'.$staff->staff->staff_title .' '.$staff->staff->user->fullname.'</td>
-            <td><input name="Max['.$staff->id.'][max_hour]" type="text" style="width:50%" value="'.$staff->max_hour.'" /></td>
-            <td><a class="btn btn-danger btn-sm" href="' . Url::to(['manager/delete-maximum-hour', 'id' => $staff->id]) . '" data-confirm="Are you sure you want to delete this staff?" ><span class="fa fa-trash"></span></a></td>';
+            <td>
+			
+			<input name="Max['.$staff->id.'][max_hour]" type="text" style="width:50%" value="'.$staff->max_hour.'" class="form-control "/>
+			
+			</td>
+            <td><a class="btn btn-danger btn-sm" href="' . Url::to(['manager/delete-maximum-hour', 'id' => $staff->id]) . '" data-confirm="Are you sure you want to delete this?" ><span class="fa fa-trash"></span></a></td>';
             $i++;
           }
         }
         ?>
       </tr>
-    </thead>
-    <tbody>
-      <tr>
-      </tr>
     </tbody>
   </table>
+  <?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> Save Custom Hour', ['class' => 'btn btn-primary']) ?>
 </div>
 </div>
 
 </div>
 
 
-<?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> Save Maximum Hour', ['class' => 'btn btn-primary']) ?>
+
 
 
 <?php ActiveForm::end(); ?>
