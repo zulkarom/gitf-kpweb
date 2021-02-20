@@ -9,7 +9,7 @@ $offer = $lecture->courseOffered;
 $course = $offer->course;
 
 $this->title = 'Lecture ['.$lecture->lec_name.']';
-$this->params['breadcrumbs'][] = ['label' => 'Teaching Assignment', 'url' => ['/course-files/default/teaching-assignment']];
+$this->params['breadcrumbs'][] = ['label' => 'Teaching Load', 'url' => ['/course-files/default/teaching-assignment']];
 $this->params['breadcrumbs'][] = $this->title;
 
 

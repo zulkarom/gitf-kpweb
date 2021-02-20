@@ -7,7 +7,7 @@ use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
 
-$this->title = 'AMANAH TUGAS';
+$this->title = 'Teaching Load';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -101,14 +101,15 @@ $this->params['breadcrumbs'][] = $this->title;
 			   <thead>
 			   <th>No.</th>
 			   <th>Item</th>
+			   <th>Update</th>
 			   <th>Progress</th>
-			   <th></th>
+			   
 			   
 			   </thead>
 			   
 			    <tr><td>1. </td>
               <td>Timetable for Individual Teaching Classes</td>
-			  <td></td>
+			  
               <td>
 			  <?php 
 			  
@@ -123,6 +124,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			  ?>
 			  
 			 </td>
+			 <td></td>
 						</tr>
      
                
@@ -146,8 +148,9 @@ $this->params['breadcrumbs'][] = $this->title;
                   <tr>
                     <th>No.</th>
                     <th>Course</th>
-                    <th>Progress</th>
-                    <th></th>
+                    
+                    <th>Update</th>
+					<th>Progress</th>
                   </tr>
                 
                      <?php 
@@ -159,14 +162,17 @@ $this->params['breadcrumbs'][] = $this->title;
                       echo '<tr><td>'.$i.'</td>
                             <td>'.$coor->course->course_code.' '.$coor->course->course_name.'</td>
        
-                            <td></td>
+                           
                             <td>
 							
 							
 							
-							<a href="' . Url::to(['default/teaching-assignment-coordinator', 'id' => $coor->id]) . '" class="btn btn-primary btn-sm" ><span class="glyphicon glyphicon-eye-open"></span> View</a>
+							<a href="' . Url::to(['default/teaching-assignment-coordinator', 'id' => $coor->id]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-pencil"></span> Update</a>
 							
-							</td>';
+							</td>
+							
+							 <td></td>
+							';
                                     
                             $i++;
                        }
@@ -206,9 +212,11 @@ $this->params['breadcrumbs'][] = $this->title;
                   <tr>
                     <th >No.</th>
                     <th >Course</th>
+					
                     <th >Lecture</th>
-                    <th >Progress</th>
-                    <th ></th>
+                    
+                    <th >Update</th>
+					<th >Progress</th>
                   </tr>
                 
                      <?php 
@@ -221,8 +229,10 @@ $this->params['breadcrumbs'][] = $this->title;
                             <td>'.$course->course_code.' '.$course->course_name.'</td>
                     
                             <td>'.$lecture->courseLecture->lec_name.'</td>
-                            <td></td>
-                            <td><a href="' . Url::to(['default/teaching-assignment-lecture', 'id' => $lecture->lecture_id]) . '" class="btn btn-primary btn-sm" ><span class="glyphicon glyphicon-eye-open"></span> View</a></td>';
+                            
+                            <td><a href="' . Url::to(['default/teaching-assignment-lecture', 'id' => $lecture->lecture_id]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-pencil"></span> Update</a></td>
+							<td></td>
+							';
                    
                             $i++;
                       }
@@ -255,8 +265,11 @@ $this->params['breadcrumbs'][] = $this->title;
                      <th >No.</th>
                     <th >Course</th>
                     <th>Tutorial</th>
-                    <th >Progress</th>
-                    <th ></th>
+					<th >Update</th>
+					<th >Progress</th>
+					
+                    
+                    
                   </tr>
                 
                      <?php 
@@ -270,8 +283,10 @@ $this->params['breadcrumbs'][] = $this->title;
                             <td>'.$course->course_code.' '.$course->course_name.'</td>
              
                             <td>'.$lec . $tutorial->tutorialLec->tutorial_name.'</td>
-                            <td></td>
-                            <td><a href="' . Url::to(['default/teaching-assignment-tutorial', 'id' => $tutorial->tutorial_id]) . '" class="btn btn-primary btn-sm" ><span class="glyphicon glyphicon-eye-open"></span> View</a></td>';
+                            
+                            <td><a href="' . Url::to(['default/teaching-assignment-tutorial', 'id' => $tutorial->tutorial_id]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-pencil"></span> Update</a></td>
+							<td></td>
+							';
                    
                             $i++;
                       }

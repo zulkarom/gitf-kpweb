@@ -14,7 +14,7 @@ use kartik\select2\Select2;
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
 
 $this->title = 'Lecture ['.$model->lec_name.']';
-$this->params['breadcrumbs'][] = ['label' => 'Teaching Assignment', 'url' => ['/course-files/default/teaching-assignment']];
+$this->params['breadcrumbs'][] = ['label' => 'Teaching Load', 'url' => ['/course-files/default/teaching-assignment']];
 $this->params['breadcrumbs'][] = ['label' => 'Course Files', 'url' => ['/course-files/default/teaching-assignment-lecture', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = $this->title;
 $course = $model->courseOffered->course;

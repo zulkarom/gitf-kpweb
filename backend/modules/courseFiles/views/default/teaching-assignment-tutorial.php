@@ -7,8 +7,8 @@ use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
 
-$this->title = 'Course Files';
-$this->params['breadcrumbs'][] = ['label' => 'Teaching Assignment', 'url' => ['/course-files/default/teaching-assignment']];
+$this->title = 'Tutorial';
+$this->params['breadcrumbs'][] = ['label' => 'Teaching Load', 'url' => ['/course-files/default/teaching-assignment']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -17,11 +17,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 <div class="box">
-<div class="box-header">
-	<div class="box-title"><b>Peringkat Pelaksanaan/ Implementation Level
-    <br/><div class="box-title">(DO)</b></div>
-</div>
-</div>
 <div class="box-body">
 
   <table class="table">

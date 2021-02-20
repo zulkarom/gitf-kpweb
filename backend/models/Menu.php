@@ -150,7 +150,7 @@ class Menu
                         'url' => '#',
                         'items' => [
 				
-				['label' => 'Summary', 'icon' => 'user', 'url' => ['/course-files/default/summary']],
+				['label' => 'Summary', 'icon' => 'user', 'url' => ['/course-files/admin/summary']],
 				
 				['label' => 'All Courses', 'icon' => 'book', 'url' => ['/course-files/admin/index']],
 				
@@ -244,14 +244,14 @@ class Menu
 	
 	public static function teachingLoad(){
 		return [
-                        'label' => 'My Teaching',
+                        'label' => 'Teaching Load',
                         'icon' => 'book',
                         'url' => '#',
                         'items' => [
 				
-				['label' => 'Teaching Assignment', 'icon' => 'book', 'url' => ['/course-files/default/teaching-assignment']],
+				['label' => 'My Teaching Load', 'icon' => 'book', 'url' => ['/course-files/default/teaching-assignment']],
 				
-				['label' => 'Teaching Selection', 'icon' => 'book', 'url' => ['/teaching-load/default/teaching-view']],
+				['label' => 'My Teaching Selection', 'icon' => 'book', 'url' => ['/teaching-load/default/teaching-view']],
 
                  ]
                     ];	

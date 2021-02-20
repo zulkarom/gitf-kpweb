@@ -13,7 +13,7 @@ use yii\bootstrap\Modal;
 $course = $offer->course;
 $offered_id = $offer->id;
 $this->title = 'Coordinator';
-$this->params['breadcrumbs'][] = ['label' => 'Teaching Assignment', 'url' => ['/course-files/default/teaching-assignment']];
+$this->params['breadcrumbs'][] = ['label' => 'Teaching Load', 'url' => ['/course-files/default/teaching-assignment']];
 $this->params['breadcrumbs'][] = $this->title;
 
 

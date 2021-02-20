@@ -15,7 +15,7 @@ $model->file_controller = 'staff';
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
 
 $this->title = 'Timetable Upload';
-$this->params['breadcrumbs'][] = ['label' => 'Teaching Assignment', 'url' => ['/course-files/default/teaching-assignment']];
+$this->params['breadcrumbs'][] = ['label' => 'Teaching Load', 'url' => ['/course-files/default/teaching-assignment']];
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>

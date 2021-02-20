@@ -44,6 +44,11 @@ class AdminController extends Controller
         ];
     }
 	
+	public function actionSummary(){
+		 return $this->render('summary', [
+        ]);
+	}
+	
 	public function actionIndex()
     {
         $semester = new SemesterForm;

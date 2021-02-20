@@ -53,7 +53,7 @@ $this->title = 'Modules';
         </div>
         <!-- /.col -->
         <div class="col-md-3 col-sm-6 col-xs-12">
-		<a href="<?=Url::to(['/course-files/default/teaching-assignment'])?>">
+		<a href="<?=Url::to(['/teaching-load/default/index'])?>">
           <div class="info-box bg-yellow">
             <span class="info-box-icon"><i class="fa fa-book"></i></span>
 
