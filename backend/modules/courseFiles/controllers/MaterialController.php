@@ -19,6 +19,7 @@ use backend\modules\courseFiles\models\MaterialItem;
 use backend\modules\esiap\models\Course;
 use backend\modules\courseFiles\models\MaterialSearch;
 use backend\modules\courseFiles\models\AddMaterialForm;
+use backend\modules\teachingLoad\models\CourseOffered;
 
 /**
  * MaterialController implements the CRUD actions for Material model.
@@ -61,6 +62,19 @@ class MaterialController extends Controller
 			'course' => $course
         ]);
     }
+	
+	public function actionCourseFile($course){
+		$offer = CourseOffered::find()
+		->joinWith('semester s')
+		->where(['s.is_current' => 1, 'course_id' => $course])->one();
+		if($offer){
+			return $this->redirect(['/course-files/default/teaching-assignment-coordinator', 'id' => $offer->id]);
+		}
+		
+		
+		//jadi kena cari offer id 
+		
+	}
 
     /**
      * Displays a single Material model.

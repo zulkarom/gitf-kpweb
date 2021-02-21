@@ -21,15 +21,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 <div class="row">
-<div class="col-md-6"><h4><?=$course->course_code . ' ' . $course->course_name?></h4>
-<h4><?=$offer->semester->longFormat()?></h4></div>
+<div class="col-md-6"><h4><?=$course->course_code . ' ' . $course->course_name?> - <?=$offer->semester->longFormat()?></h4></div>
 
-<div class="col-md-6" align="right">
-<br />
-<div class="form-group"><a href="<?=Url::to(['/esiap/course/view-course', 'course' => $course->id])?>" class="btn btn-warning" ><span class="fa fa-book"></span> Course Management</a>
-							
-<a href="<?=Url::to(['material/index', 'course' => $course->id])?>" class="btn btn-info" ><span class="glyphicon glyphicon-book"></span> Teaching Materials</a></div>
-</div>
 
 </div>
 
@@ -37,19 +30,51 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 
-<h4>Course Configuration</h4>
+<h4>Course Information & Teaching Material</h4>
 <div class="box">
 
 
 <div class="box-body">
 <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($offer, 'course_version')->dropDownList(ArrayHelper::map($offer->course->versions, 'id', 'version_name'), ['prompt' => 'Please Select']) ?>
-	<?= $form->field($offer, 'material_version')->dropDownList(ArrayHelper::map($offer->course->materials, 'id', 'material_name'),['prompt' => 'Please Select']) ?>
+<table class="table">
+<thead>
+
+<tr>
+<th width="5%">No.</th>
+<th width="20%">Items</th>
+<th>Select Version/Group</th>
+<th>View</th>
+<th>Update</th></tr>
+
+</thead>
+
+<tr>
+<td>1. </td>
+<td><b>Course Information Version</b></td>
+<td><?= $form->field($offer, 'course_version')->dropDownList(ArrayHelper::map($offer->course->versions, 'id', 'version_name'), ['prompt' => 'Please Select'])->label(false) ?></td>
+<td></td>
+<td><a href="<?=Url::to(['/esiap/course/view-course', 'course' => $course->id])?>" class="btn btn-warning btn-sm" ><span class="fa fa-pencil"></span> Update</a></td>
+</tr>
+
+<tr>
+<td>2. </td>
+<td><b>Teaching Material Group</b></td>
+<td><?= $form->field($offer, 'material_version')->dropDownList(ArrayHelper::map($offer->course->materials, 'id', 'material_name'),['prompt' => 'Please Select'])->label(false) ?></td>
+<td></td>
+<td><a href="<?=Url::to(['material/index', 'course' => $course->id])?>" class="btn btn-warning btn-sm" ><span class="fa fa-pencil"></span> Update</a></td></tr>
+
+</table>
+
+    
+	
 <div class="form-group">
         
-<?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span>  Save Configuration', ['class' => 'btn btn-success']) ?>
+<?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span>  Save Course Information & Teaching Material', ['class' => 'btn btn-success btn-sm']) ?>
     </div>
+	
+	
+	
 
     <?php ActiveForm::end(); ?>
 

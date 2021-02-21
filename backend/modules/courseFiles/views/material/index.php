@@ -14,6 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     <p>
+	 <?= Html::a('Back to Course File', ['course-file', 'course' => $course->id], ['class' => 'btn btn-info']) ?> 
         <?= Html::a('Create Material Group', ['create', 'course' => $course->id], ['class' => 'btn btn-success']) ?>
     </p>
 <h4><?=$course->course_code . ' ' . $course->course_name?></h4>
