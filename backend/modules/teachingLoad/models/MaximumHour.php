@@ -3,7 +3,6 @@
 namespace backend\modules\teachingLoad\models;
 
 use Yii;
-use backend\modules\staff\models\Staff;
 
 /**
  * This is the model class for table "tld_max_hour".
