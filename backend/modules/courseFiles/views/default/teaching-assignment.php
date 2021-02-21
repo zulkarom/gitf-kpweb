@@ -148,7 +148,7 @@ $this->params['breadcrumbs'][] = $this->title;
                   <tr>
                     <th>No.</th>
                     <th>Course</th>
-                    
+                    <th>View</th>
                     <th>Update</th>
 					<th>Progress</th>
                   </tr>
@@ -161,16 +161,15 @@ $this->params['breadcrumbs'][] = $this->title;
                         
                       echo '<tr><td>'.$i.'</td>
                             <td>'.$coor->course->course_code.' '.$coor->course->course_name.'</td>
+							
+							<td>
+							<a href="' . Url::to(['default/coordinator-view', 'id' => $coor->id]) . '" class="btn btn-primary btn-sm" ><span class="glyphicon glyphicon-search"></span> View</a>
+							</td>
        
                            
                             <td>
-							
-							
-							
 							<a href="' . Url::to(['default/teaching-assignment-coordinator', 'id' => $coor->id]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-pencil"></span> Update</a>
-							
 							</td>
-							
 							 <td></td>
 							';
                                     

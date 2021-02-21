@@ -127,6 +127,15 @@ class DefaultController extends Controller
             'tutorial_id' => $tutorial_id,
         ]);
     }
+	
+	public function actionCoordinatorView($id){
+		$model = new Checklist();
+		$offer = $this->findOffered($id);
+		return $this->render('coordinator-view', [
+            'model' => $model,
+            'modelOffer' => $offer,
+        ]);
+	}
 
      public function actionTeachingAssignmentCoordinator($id)
     {
