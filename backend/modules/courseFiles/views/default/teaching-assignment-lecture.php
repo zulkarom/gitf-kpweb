@@ -7,19 +7,13 @@ use yii\helpers\Url;
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
 $offer = $lecture->courseOffered;
 $course = $offer->course;
-
 $this->title = 'Lecture ['.$lecture->lec_name.']';
 $this->params['breadcrumbs'][] = ['label' => 'Teaching Load', 'url' => ['/course-files/default/teaching-assignment']];
 $this->params['breadcrumbs'][] = $this->title;
-
-
 ?>
 
 
-<h4><?=$course->course_code . ' ' . $course->course_name?></h4>
-<h4><?=$offer->semester->longFormat()?></h4>
-<br />
-
+<h4><?=$course->course_code . ' ' . $course->course_name?> - <?=$offer->semester->longFormat()?></h4>
 
 <h4>Student / Attendance / Result Data</h4>
 <div class="box">
@@ -30,8 +24,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <thead>
       <tr>
         <th style="width:5%">No.</th>
-        <th style="width:85%">Item</th>
-        <th>Action</th>
+        <th style="width:75%">Item</th>
+        <th style="width:10%">Action</th>
+		<th>Progress</th>
       
         
       </tr>
@@ -42,6 +37,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <td>1. </td>
 	<td>Student List</td>
 <td><a href="<?=Url::to(['lecture-student-list','id' => $lecture->id])?>" class="btn btn-warning btn-sm" ><span class="fa fa-pencil"></span> Update</a></td>
+
+<td><?=$lecture->progressStudentList?></td>
         
         </tr>
 		
@@ -49,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <td>2. </td>
 	<td>Student Attendance</td>
 	<td><a href="<?=Url::to(['lecture-student-attendance','id' => $lecture->id])?>" class="btn btn-warning btn-sm" ><span class="fa fa-pencil"></span> Update</a></td>
-        
+        <td><?=$lecture->progressStudentAttendance?></td>
         </tr>
 	
 	<tr>
@@ -59,7 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	<td>
 	<a href="<?=Url::to(['lecture-student-assessment','id' => $lecture->id])?>" class="btn btn-warning btn-sm" ><span class="fa fa-pencil"></span> Update</a>
 	</td>
-        
+        <td><?=$lecture->progressStudentAssessment?></td>
         </tr>
 	
    
@@ -78,26 +75,32 @@ $this->params['breadcrumbs'][] = $this->title;
     <thead>
       <tr>
         <th style="width:5%">No.</th>
-        <th style="width:85%">Item</th>
-        <th>Action</th>
+        <th style="width:75%">Item</th>
+        <th style="width:10%">Action</th>
+		 <th>Progress</th>
       </tr>
     
         
         <?php 
-    
+    $item = $model->itemDo;
         if($model->itemDo){
         $i = 1;
           foreach($model->itemDo as $item){
             if($item->lec_upload == 1){
+				$progress_function = $item->progress_function;
               echo '<tr><td>'.$i.'</td>
                 <td>'.$item->item_bi.'</td>
-                <td><a href="' . Url::to(['lecture-'.$item->upload_url.'/page','id' => $lecture->id]) . '" class="btn btn-warning btn-sm" ><span class="fa fa-upload"></span> Upload</a></td>';
+                <td><a href="' . Url::to(['lecture-'.$item->upload_url.'/page','id' => $lecture->id]) . '" class="btn btn-warning btn-sm" ><span class="fa fa-upload"></span> Upload</a></td>
+				<td>'.$lecture->$progress_function .'</td>
+				
+				';
        
                 $i++;
             }
           }
         }
               ?>
+
     </thead>
    
   </table>

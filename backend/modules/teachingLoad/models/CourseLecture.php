@@ -38,8 +38,10 @@ class CourseLecture extends \yii\db\ActiveRecord
         return [
             [['offered_id', 'created_at', 'updated_at'], 'required'],
 			
-            [['offered_id', 'student_num'], 'integer'],
-            [['total_mark'], 'double'],
+            [['offered_id', 'student_num', 'prg_stu_list'], 'integer'],
+			
+            [['prg_stu_attend', 'prg_attend_complete', 'prg_stu_assess', 'prg_class_cancel'], 'number'],
+			
             [['created_at', 'updated_at'], 'safe'],
             [['lec_name'], 'string', 'max' => 50],
         ];
@@ -71,6 +73,37 @@ class CourseLecture extends \yii\db\ActiveRecord
         }
 
     }
+	
+	public function getProgressStudentList(){
+		return Common::progress($this->prg_stu_list);
+	}
+	
+	public function getProgressExemptClass(){
+		return Common::progress($this->prg_class_exempt);
+	}
+	
+	public function getProgressCancelClass(){
+		return Common::progress($this->prg_class_cancel);
+	}
+	
+	public function getProgressReceiptAssignment(){
+		return Common::progress($this->prg_receipt_assess);
+	}
+	
+	public function getProgressStudentAssessment(){
+		return Common::progress($this->prg_stu_assess);
+	}
+	
+	
+	
+	public function getProgressStudentAttendance(){
+		
+		if($this->prg_attend_complete == 1){
+			return Common::progress(1);
+		}else{
+			return Common::progress($this->prg_stu_attend);
+		}
+	}
 
     public function getTutorials()
     {

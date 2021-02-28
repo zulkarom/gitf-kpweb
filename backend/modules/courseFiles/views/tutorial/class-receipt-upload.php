@@ -16,10 +16,8 @@ $course = $model->lecture->courseOffered->course;
 ?>
 
 
-<h4><?=$course->course_code . ' ' . $course->course_name?></h4>
-<h4><?=$model->lecture->courseOffered->semester->longFormat()?></h4>
+<h4><?=$course->course_code . ' ' . $course->course_name?> - <?=$model->lecture->courseOffered->semester->longFormat()?></h4>
 
-<br />
 <h4>Record of Receipt of Students’ Assignment</h4>
 <div class="form-group"><?php $form = ActiveForm::begin(); 
 	
@@ -34,13 +32,11 @@ $course = $model->lecture->courseOffered->course;
 	echo Html::submitButton('Go', ['class' => 'btn btn-sm btn-default']);
 	ActiveForm::end(); ?></div>
 
-
-
-  <div class="box box-primary">
-
-<div class="box-body">
 <?php $form = ActiveForm::begin(); ?>
-  <table class="table table-striped table-hover">
+  <div class="box box-primary">
+<div class="box-body">
+
+<table class="table table-striped table-hover">
 
 <thead>
   <tr>
@@ -52,6 +48,7 @@ $course = $model->lecture->courseOffered->course;
 
 <tbody>
 	<?php 
+	$applicable = false;
 	if($files){
 		$i=1;
 		foreach($files as $x=>$file){
@@ -70,18 +67,41 @@ $course = $model->lecture->courseOffered->course;
 			</tr>
 			<?php
 		$i++;
-		
-			
 		}
-	}
-	
+	}else{
+			echo '<tr><td colspan="3">No Files</td></tr>';
+			$applicable = true;
+		}
 	?>
+	
 </tbody>
 </table>
-<div class="form-group">
-        <?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> Save', ['class' => 'btn btn-success']) ?>
-    </div>
 
-    <?php ActiveForm::end(); ?>
+
+   
 </div></div>
 
+<?php 
+$check_na = $model->na_receipt_assess == 1 ? 'checked' : ''; 
+$check_complete = $model->prg_receipt_assess == 1 ? 'checked' : ''; 
+?>
+
+<?php if(!$applicable){ ?>
+<div class="form-group"><label>
+<input type="checkbox" id="complete" name="complete" value="1" <?=$check_complete?> /> Mark as complete
+</label></div>
+<?php } ?>
+
+<?php if($applicable){ ?>
+<div class="form-group"><label>
+<input type="checkbox" id="na" name="na" value="1" <?=$check_na?> /> Mark as not applicable
+</label></div>
+<?php } ?>
+
+
+<div class="form-group">
+<?=$form->field($model, 'updated_at')->hiddenInput(['value' => time()])->label(false)?>
+        <?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> Save', ['class' => 'btn btn-success']) ?>
+    </div>
+	
+	 <?php ActiveForm::end(); ?>

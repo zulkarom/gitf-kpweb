@@ -19,19 +19,11 @@ $this->params['breadcrumbs'][] = ['label' => $this->title, 'url' => ['teaching-a
 $this->params['breadcrumbs'][] = 'Student List';
 ?>
 
-<h4><?=$course->course_code . ' ' . $course->course_name?></h4>
-<h4><?=$offer->semester->longFormat()?></h4>
-
-
-
-
-
-
-
-
-
+<h4><?=$course->course_code . ' ' . $course->course_name?> - <?=$offer->semester->longFormat()?></h4>
 
   <?php
+if($lecture->students){
+
   $columns = [
             ['class' => 'yii\grid\SerialColumn'],
 
@@ -200,6 +192,12 @@ var X = XLSX;
 <?php
     
     ExcelAsset::register($this); */
+}else{
+	echo '<p>Click the button below to load student list.</p>';
+	echo '<div class="form-group"><a href="'. Url::to(['resync-student', 'id' => $lecture->id]) .'" class="btn btn-success">Load Student List</a></div>';
+}
+
+
 ?>
 
 

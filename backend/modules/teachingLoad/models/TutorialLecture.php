@@ -68,6 +68,18 @@ class TutorialLecture extends \yii\db\ActiveRecord
         }
 
     }
+	
+	public function getProgressExemptClass(){
+		return Common::progress($this->prg_class_exempt);
+	}
+	
+	public function getProgressCancelClass(){
+		return Common::progress($this->prg_class_cancel);
+	}
+	
+	public function getProgressReceiptAssignment(){
+		return Common::progress($this->prg_receipt_assess);
+	}
 
     public function getTutors()
     {

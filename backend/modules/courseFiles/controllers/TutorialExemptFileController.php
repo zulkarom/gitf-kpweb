@@ -53,30 +53,66 @@ class TutorialExemptFileController extends Controller
             Model::loadMultiple($files, Yii::$app->request->post());
             //print_r($files);die();
             
+			if(Yii::$app->request->post('complete') == 1){
+				$model->prg_class_exempt = 1;
+			}else{
+				$model->prg_class_exempt = 0;
+			}
+			if(Yii::$app->request->post('na') == 1){
+				$model->na_class_exempt = 1;
+				$model->prg_class_exempt = 1;
+			}else{
+				$model->na_class_exempt = 0;
+			}
+			//echo $model->prg_class_exempt ;die();
+            
             $valid = $model->validate();
             $valid = Model::validateMultiple($files) && $valid;
+			
             
             if($valid){
-                if($model->save()){
-                    $flag = true;
-                    foreach ($files as $item) {
-						if(empty($item->path_file)){
-							$flag = false;
-							Yii::$app->session->addFlash('error', "All files must be uploaded");
+				$transaction = Yii::$app->db->beginTransaction();
+				try {
+					if($flag = $model->save()){
+						$progress = false;
+						foreach ($files as $item) {
+							if ($flag === false) {
+									break;
+								}
+							if($item->path_file){
+								if($item->save()){
+									$progress = true;
+								}else{
+									$item->flashError();
+									$flag = false;
+									break;
+									
+								}
+							}else{
+								$flag = false;
+							}
+							
 						}
-                        if(!$item->save()){
-                            $item->flashError();
-                            $flag = false;
-                            break;
-                            
-                        }
-                    }
-                    if($flag){
-                        Yii::$app->session->addFlash('success', "Data Updated");
-                        return $this->redirect(['page', 'id' => $model->id]);
-                    }
+					if($progress and $model->prg_class_exempt == 0){
+						$model->prg_class_exempt = 0.5;
+						$model->save();
+					}
+						
+						
+					}
+					if($flag){
+						$transaction->commit();
+						Yii::$app->session->addFlash('success', "Data Updated");
+						return $this->redirect(['default/teaching-assignment-tutorial', 'id' => $model->id]);
+					}else{
+						Yii::$app->session->addFlash('error', "Make sure all files are uploaded");
+						$transaction->rollBack();
+					}
+				} catch (Exception $e) {
+                    $transaction->rollBack();
                     
                 }
+
             }
 
         }
@@ -88,14 +124,14 @@ class TutorialExemptFileController extends Controller
                     $file = new TutorialExemptFile;
                     $file->scenario = 'add_exempt';
                     $file->tutorial_id = $id;
-					//echo date('d-m-Y', time());die();
-					$file->ex_date = date('Y-m-d', time());
                     $file->updated_at = new Expression('NOW()');
                     if(!$file->save()){
                         $file->flashError();
                     }
                 }               
             }
+			$model->prg_class_exempt = 0;
+			$model->save();
             Yii::$app->session->addFlash('success', 'File Slots Added');
             return $this->redirect(['page', 'id' => $id]);
         }

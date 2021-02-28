@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 
-
+<?php echo '<a href="' . Url::to(['default/coordinator-view', 'id' => $offer->id]) . '" class="btn btn-primary" ><span class="glyphicon glyphicon-search"></span> Preview Overall</a>';?>
 
 
 <h4>Course Information & Teaching Material</h4>
@@ -63,15 +63,24 @@ $this->params['breadcrumbs'][] = $this->title;
 <td><?= $form->field($offer, 'material_version')->dropDownList(ArrayHelper::map($offer->course->materials, 'id', 'material_name'),['prompt' => 'Please Select'])->label(false) ?></td>
 <td></td>
 <td><a href="<?=Url::to(['material/index', 'course' => $course->id])?>" class="btn btn-warning btn-sm" ><span class="fa fa-pencil"></span> Update</a></td></tr>
+<tr>
+<td></td>
+<td></td>
+<td>
+
+<div class="form-group">
+      
+<?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span>  Save', ['class' => 'btn btn-success btn-sm']) ?>
+    </div></td><td></td>
+<td></td>
+<td></td>
+</tr>
 
 </table>
 
     
 	
-<div class="form-group">
-        
-<?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span>  Save Course Information & Teaching Material', ['class' => 'btn btn-success btn-sm']) ?>
-    </div>
+
 	
 	
 	

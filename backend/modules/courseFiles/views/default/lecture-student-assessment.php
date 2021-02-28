@@ -23,6 +23,8 @@ $this->title = 'Lecture ['.$lecture->lec_name.']';
 $this->params['breadcrumbs'][] = ['label' => 'Teaching Load', 'url' => ['/course-files/default/teaching-assignment']];
 $this->params['breadcrumbs'][] = ['label' => $this->title, 'url' => ['teaching-assignment-lecture', 'id' => $lecture->id]];
 $this->params['breadcrumbs'][] = 'Student Assessment';
+
+if($lecture->students){
 ?>
 
 
@@ -41,6 +43,12 @@ $this->params['breadcrumbs'][] = 'Student Assessment';
 </div>
 
 <div class="col-md-8" align="right">
+
+<?php 
+if($assessment){
+
+?>
+
 <br />
  <div class="form-group"> 
 <a href=<?=Url::to(['default/export-excel', 'id' => $lecture->id])?> class="btn btn-success btn-sm" target="_blank"><span class="glyphicon glyphicon-download-alt"></span> DOWNLOAD TEMPLATE</a> 
@@ -53,6 +61,13 @@ $this->params['breadcrumbs'][] = 'Student Assessment';
 
 
 </div>
+
+<?php 
+}else{
+	echo '<p style="color:red">In order to make this page function properly, <br />the coordinator needs to set the course version for this semester.</p>';
+}
+
+?>
 
 
 
@@ -130,16 +145,11 @@ $this->params['breadcrumbs'][] = 'Student Assessment';
                     <td><b>No.</b></td>
                     <td><b>Matric No.</b></td>
                     <td><b>Name</b></td>';
-					 if($assessment)
-                    {
-                      
                       foreach ($assessment as $assess) {
                         echo'<td align="center">'.$assess->assess_name_bi.'
                         </td>';
 
                       }
-                   
-                    }
 					echo $header_clo;
                   ?>
 				  
@@ -153,7 +163,7 @@ $this->params['breadcrumbs'][] = 'Student Assessment';
                 <tr>
                   <?php
                     $i=1;
-                    if($lecture->students){
+                    
 
                       foreach ($lecture->students as $student) {
                         
@@ -193,7 +203,8 @@ $this->params['breadcrumbs'][] = 'Student Assessment';
                           if($listClo){
                             foreach ($listClo as $clo) {
                               $value = cloValue($clo,$result,$cloSet);
-                             echo'<td align="center">'.$value.'</td>';
+							  $show_value = $value == 0 ? '':$value;
+                             echo'<td align="center">'.$show_value.'</td>';
 
                               $strtotal = 'clo'.$clo.'_total';
                               $strcount = 'clo'.$clo.'_count';
@@ -213,7 +224,7 @@ $this->params['breadcrumbs'][] = 'Student Assessment';
                         $i++;
                       }
 
-                    }
+                    
 
 				$colspan = 3 + $count_assess;
                 ?>
@@ -300,47 +311,6 @@ $this->params['breadcrumbs'][] = 'Student Assessment';
 
 
 <?php 
- 
-function cloValue($clo,$result,$cloSet)
-{
-  $i =0;
-  $mark=0;
-  if($cloSet && $result)
-  {
-    foreach($cloSet as $cs)
-    {
-      if($cs == $clo){
-        if(array_key_exists($i, $result))
-        {
-          $mark += $result[$i];
-        }
-        
-      }
-      
-      $i++;
-    }
-    
-  }
-  return $mark;
-}
-
-function analysis($point){
-	if($point >= 3.7 and $point <= 4){
-		return 'Cemerlang/ Excellent';
-	}else if($point >= 3 and $point < 3.7){
-		return 'Sangat Baik/ Very Good';
-	}else if($point >= 2 and $point < 3){
-		return 'Baik/ Good';
-	}else if($point >= 1 and $point < 2){
-		return 'Lemah/ Poor';
-	}else if($point >= 0 and $point < 1){
-		return 'Sangat Lemah/ Very Poor';
-	}else{
-		return '';
-	}
-}
-
-
 JSRegister::begin(); ?>
 <script>
 var save = <?=$save?>;
@@ -435,7 +405,54 @@ var X = XLSX;
 
   
 </script>
-<?php JSRegister::end(); ?>
+<?php JSRegister::end(); 
+
+
+}else{
+	echo '<h4>To properly view this page, kindly load <a href="'. Url::to(['default/lecture-student-list', 'id' => $lecture->id]) .'">student list</a> first.</h4>';
+}
+
+
+function cloValue($clo,$result,$cloSet)
+{
+  $i =0;
+  $mark=0;
+  if($cloSet && $result)
+  {
+    foreach($cloSet as $cs)
+    {
+      if($cs == $clo){
+        if(array_key_exists($i, $result))
+        {
+          $mark += $result[$i];
+        }
+        
+      }
+      
+      $i++;
+    }
+    
+  }
+
+  return $mark;
+}
+
+function analysis($point){
+	if($point >= 3.7 and $point <= 4){
+		return 'Cemerlang/ Excellent';
+	}else if($point >= 3 and $point < 3.7){
+		return 'Sangat Baik/ Very Good';
+	}else if($point >= 2 and $point < 3){
+		return 'Baik/ Good';
+	}else if($point >= 1 and $point < 2){
+		return 'Lemah/ Poor';
+	}else if($point >= 0 and $point < 1){
+		return 'Sangat Lemah/ Very Poor';
+	}else{
+		return '';
+	}
+}
+?>
 
 
 

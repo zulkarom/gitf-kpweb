@@ -10,13 +10,13 @@ use kartik\export\ExportMenu;
 
 $offer = $lecture->courseOffered;
 $course = $offer->course;
-/* @var $this yii\web\View */
-/* @var $model backend\modules\teachingLoad\models\CourseOffered */
 
 $this->title = 'Student Attendance ['.$lecture->lec_name.']';
 $this->params['breadcrumbs'][] = ['label' => 'Teaching Load', 'url' => ['/course-files/default/teaching-assignment']];
 $this->params['breadcrumbs'][] = ['label' => 'Lecture['.$lecture->lec_name.']', 'url' => ['teaching-assignment-lecture', 'id' => $lecture->id]];
 $this->params['breadcrumbs'][] = 'Student Attendance';
+
+if($lecture->students){
 ?>
 
 
@@ -34,10 +34,24 @@ $this->params['breadcrumbs'][] = 'Student Attendance';
    
 
    <div class="form-group" align="right">
+	<?php 
+	
+	$attendance = json_decode($lecture->attendance_header);
+	if($attendance){
+		?>
+		<a href="<?=Url::to(['attendance-summary-pdf', 'id' => $lecture->id])?>" class="btn btn-danger btn-sm" target="_blank"><i class="fa fa-download"></i> Download</a>
 
-    <a href="<?=Url::to(['attendance-summary-pdf', 'id' => $lecture->id])?>" class="btn btn-danger btn-sm" target="_blank"><i class="fa fa-download"></i> Download</a>
-
-    <a href="<?=Url::to(['attendance-sync', 'id' => $lecture->id])?>" class="btn btn-success btn-sm"><i class="fa fa-refresh"></i> Re-Sync</a>
+		<a href="<?=Url::to(['attendance-sync', 'id' => $lecture->id])?>" class="btn btn-success btn-sm"><i class="fa fa-refresh"></i> Re-Sync</a>
+		<?php
+	}else{
+		echo '<p>To get started, kindly click the button below to load attendance data from UMK Portal</p>
+		<div class="form-group"><a href="'.Url::to(['attendance-sync', 'id' => $lecture->id]).'" class="btn btn-success">Load Attendance Data</a></div>
+		';
+	}
+	
+	
+	?>
+    
 
 </div>
 
@@ -76,7 +90,6 @@ $this->params['breadcrumbs'][] = 'Student Attendance';
                     $x=1;
                     $st_arr = '';
 					$input_html = '';
-                    if($lecture->students){
                       foreach ($lecture->students as $student) {
                         if($student->lecture_id == $lecture->id){
 							$comma = $x == 1 ? '': ',';
@@ -141,6 +154,7 @@ $this->params['breadcrumbs'][] = 'Student Attendance';
 								$str .= ']';
 								
                                $input_html .= '<input type="hidden" name="con_'. $student->matric_no .'" id="con_'. $student->matric_no .'" value="'.$str.'" />';
+							   echo '<td></td>';
                             }
 
                           $x++;
@@ -148,7 +162,7 @@ $this->params['breadcrumbs'][] = 'Student Attendance';
                         
             echo '</tr>';
                       }
-                    }
+                    
 
                   echo'
           
@@ -163,7 +177,17 @@ $this->params['breadcrumbs'][] = 'Student Attendance';
            
           </div>
         </div>
+		
+		
+		
+		
 <?php $form = ActiveForm::begin() ?>
+<div class="form-group">
+<?php 
+$check = $lecture->prg_attend_complete == 1 ? 'checked' : ''; ?>
+<label>
+<input type="checkbox" id="complete" name="complete" value="1" <?=$check?> /> Mark as complete
+</label></div>
 		 <div class="form-group">
 		 <?=$input_html?>
                   <?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span>  Save Attendance', ['class' => 'btn btn-success', 'id' => 'btn-save']) ?>
@@ -267,6 +291,10 @@ $('.checkbxAtt ').click(function(e, data){
 $this->registerJs($js);
 
 
+
+}else{
+	echo '<h4>To properly view this page, kindly load <a href="'. Url::to(['default/lecture-student-list', 'id' => $lecture->id]) .'">student list</a> first.</h4>';
+}
 ?>
 
 
