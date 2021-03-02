@@ -9,7 +9,7 @@ use backend\modules\teachingLoad\models\CourseOffered;
 use yii\filters\AccessControl;
 use yii\db\Expression;
 use yii\web\NotFoundHttpException;
-use common\models\UploadFile;
+use backend\modules\courseFiles\models\ScriptUploadFile;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 
@@ -84,7 +84,7 @@ class CoordinatorUploadController extends Controller
         $model = $this->findOffered($id);
         $model->file_controller = 'coordinator-upload';
         $path = 'course-files/'.$model->semester_id.'/'.$model->course->course_code.'/'.$model->id.'/15-class-student-final-exam-answer-script';
-        return UploadFile::upload($model, $attr, 'updated_at', $path);
+        return ScriptUploadFile::upload($model, $attr, 'updated_at', $path);
 
     }
     
@@ -95,7 +95,7 @@ class CoordinatorUploadController extends Controller
         
         
         
-        UploadFile::download($model, $attr, $filename);
+        ScriptUploadFile::download($model, $attr, $filename);
     }
 
     protected function findCoordinatorAnswerScript($id)
@@ -120,7 +120,7 @@ class CoordinatorUploadController extends Controller
         $model->{$attr_db} = '';
         $model->updated_at = new Expression('NOW()');
 
-
+		$model->setProgressSumScript();
         if($model->save()){
             if (is_file($file)) {
                 unlink($file);

@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <th width="20%">Items</th>
 <th style="width:45%">Select Version/Group</th>
 <th style="width:10%">View</th>
-<th>Update</th>
+<th style="width:10%">Update</th>
 <th width="10%">Progress</th>
 </tr>
 
@@ -229,9 +229,10 @@ if($material){
     <thead>
       <tr>
         <th style="width:5%">No.</th>
-        <th style="width:75%">Item</th>
-        <th style="width:10%">Files</th>
-        <th>Action</th>
+        <th >Item</th>
+        <th style="width:10%">View</th>
+        <th style="width:10%">Action</th>
+		<th style="width:10%">Progress</th>
       </tr>
 	  
 	  </thead>
@@ -243,53 +244,13 @@ if($material){
           
             // foreach($model->assessMaterials as $item){
             $item = $model->assessMaterials;
-              if($item[0]->coor_upload == 1){
-                
-                echo '<tr><td>'.$i.'. </td>
-                  <td>'.$item[0]->item_bi.'</td>
-
-                  <td>';
-                  Modal::begin([
-                      'header' => '<h5>'.$item[0]->item_bi.'</h5>',
-					  'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>',
-                      'toggleButton' => ['label' => 'View Files ('.$offer->countRubricFiles.')', 'class'=>'btn btn-sm btn-info'],
-                  ]);
-                      echo '<table class="table">
-                                <tr>
-                                <th>#</th>
-                                <th>File Name</th>
-                                <th>Action</th>
-                                </tr>';
-                      if($offer->coordinatorRubricsFiles)
-                      {
-                        $i=1;
-                        foreach ($offer->coordinatorRubricsFiles as $files) {
-
-                          
-                          echo'<tr>
-                          <td>'.$i.'.</td>
-                          <td>';
-                          echo $files->file_name;
-                          echo'</td>
-                                <td>';
-                            
-                                echo'<a href="'.Url::to(['coordinator-rubrics-file/download-file', 'attr' => 'path','id'=> $files->id]).'" target="_blank" class="btn btn-danger btn-sm"><span class="fa fa-download"></span>  Download</a>';
-                                $i++;
-                        }
-                      }
-                                echo'</td>
-                                </tr>
-                                </table>';
-                       
-                  Modal::end();
-            echo'</td>';
-
-                  echo'<td><a href="' . Url::to([$item[0]->upload_url.'/page','id' => $offered_id]) . '" class="btn btn-warning btn-sm" ><span class="fa fa-upload"></span> Upload</a></td>';
-
-                  echo '<tr><td>'.$i.'. </td>
+ echo '<tr><td>1. </td>
                   <td>'.$item[1]->item_bi.'</td>
 
                   <td>';
+				  if($offer->na_cont_material == 1){
+					 echo 'N/A';
+				  }else{
                   Modal::begin([
                       'header' => '<h5>'.$item[1]->item_bi.'</h5>',
 					  'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>',
@@ -324,14 +285,70 @@ if($material){
                                 </tr>
                                 </table>';
                   Modal::end();
+			}
             echo'</td>';
 
-                  echo'<td><a href="' . Url::to([$item[1]->upload_url.'/page','id' => $offered_id]) . '" class="btn btn-warning btn-sm" ><span class="fa fa-upload"></span> Upload</a></td>';
+                  echo'<td><a href="' . Url::to([$item[1]->upload_url.'/page','id' => $offered_id]) . '" class="btn btn-warning btn-sm" ><span class="fa fa-upload"></span> Upload</a></td>
+				  <td>'.$offer->progressContMaterialBar .'</td>
+				  </tr>
+				  ';
+                echo '<tr><td>2. </td>
+                  <td>'.$item[0]->item_bi.'</td>
 
-                  echo '<tr><td>'.$i.'. </td>
+                  <td>';
+				  if($offer->na_cont_rubrics == 1){
+					 echo 'N/A';
+				  }else{
+                  Modal::begin([
+                      'header' => '<h5>'.$item[0]->item_bi.'</h5>',
+					  'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>',
+                      'toggleButton' => ['label' => 'View Files ('.$offer->countRubricFiles.')', 'class'=>'btn btn-sm btn-info'],
+                  ]);
+                      echo '<table class="table">
+                                <tr>
+                                <th>#</th>
+                                <th>File Name</th>
+                                <th>Action</th>
+                                </tr>';
+                      if($offer->coordinatorRubricsFiles)
+                      {
+                        $i=1;
+                        foreach ($offer->coordinatorRubricsFiles as $files) {
+
+                          
+                          echo'<tr>
+                          <td>'.$i.'.</td>
+                          <td>';
+                          echo $files->file_name;
+                          echo'</td>
+                                <td>';
+                            
+                                echo'<a href="'.Url::to(['coordinator-rubrics-file/download-file', 'attr' => 'path','id'=> $files->id]).'" target="_blank" class="btn btn-danger btn-sm"><span class="fa fa-download"></span>  Download</a>';
+                                $i++;
+                        }
+                      }
+                                echo'</td>
+                                </tr>
+                                </table>';
+                       
+                  Modal::end();
+			}
+            echo'</td>';
+
+                  echo'<td><a href="' . Url::to([$item[0]->upload_url.'/page','id' => $offered_id]) . '" class="btn btn-warning btn-sm" ><span class="fa fa-upload"></span> Upload</a></td>
+				  <td>'.$offer->progressContRubricsBar .'</td>
+				  </tr>
+				  ';
+
+                 
+
+                  echo '<tr><td>3. </td>
                   <td>'.$item[2]->item_bi.'</td>
 
                   <td>';
+				  if($offer->na_sum_assess == 1){
+					 echo 'N/A';
+				  }else{
                   Modal::begin([
                       'header' => '<h5>'.$item[2]->item_bi.'</h5>',
 					  'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>',
@@ -367,14 +384,16 @@ if($material){
                                 </table>';
                        
                   Modal::end();
+				  }
             echo'</td>';
 
-                  echo'<td><a href="' . Url::to([$item[2]->upload_url.'/page','id' => $offered_id]) . '" class="btn btn-warning btn-sm" ><span class="fa fa-upload"></span> Upload</a></td>';
+                  echo'<td><a href="' . Url::to([$item[2]->upload_url.'/page','id' => $offered_id]) . '" class="btn btn-warning btn-sm" ><span class="fa fa-upload"></span> Upload</a></td>
+				  <td>'.$offer->progressSumAssessBar .'</td>
+				  
+				  ';
          
                   $i++;
-              }
-            
-            // }
+
           
         }
               ?>
@@ -385,7 +404,9 @@ if($material){
 </div>
 
 
-<h4>Assessment Final Result</h4>
+
+
+<h4>Students' Assessment Scripts</h4>
 <div class="box">
 
 <div class="box-body">
@@ -394,87 +415,10 @@ if($material){
     <thead>
       <tr>
         <th style="width:5%">No.</th>
-        <th style="width:75%">Item</th>
-        <th style="width:10%">Files</th>
-        <th>Action</th>
-      </tr>
-	  </thead>
-	  
-	  <?php 
-
-         $i = 1;
-          
-            $item = $model->assessResults;
-              if($item[0]->coor_upload == 1){
-                
-            echo '<tr><td>'.$i.'. </td>
-                  <td>'.$item[0]->item_bi.'</td>
-
-                  <td>';
-                  Modal::begin([
-                      'header' => '<h5>'.$item[0]->item_bi.'</h5>',
-					  'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>',
-                      'toggleButton' => ['label' => 'View Files ('.$offer->countResultFinalFiles.')', 'class'=>'btn btn-sm btn-info'],
-                  ]);
-                      echo '<table class="table">
-                                <tr>
-                                <th>#</th>
-                                <th>File Name</th>
-                                <th>Action</th>
-                                </tr>';
-                      if($offer->coordinatorResultFinalFiles)
-                      {
-                        $i=1;
-                        foreach ($offer->coordinatorResultFinalFiles as $files) {
-
-                          
-                          echo'<tr>
-                          <td>'.$i.'.</td>
-                          <td>';
-                          echo $files->file_name;
-                          echo'</td>
-                                <td>';
-                            
-                                echo'<a href="'.Url::to(['coordinator-result-final-file/download-file', 'attr' => 'path','id'=> $files->id]).'" target="_blank" class="btn btn-danger btn-sm"><span class="fa fa-download"></span> Download</a>';
-                                $i++;
-                        }
-                      }
-                                echo'</td>
-                                </tr>
-                                </table>';
-                       
-                  Modal::end();
-            echo'</td>';
-
-                  echo'<td><a href="' . Url::to([$item[0]->upload_url.'/page','id' => $offered_id]) . '" class="btn btn-warning btn-sm" ><span class="fa fa-upload"></span> Upload</a></td>';
-
-                 
-         
-                  $i++;
-              }        
-    ?>
-
-
-    
-      
-   
-   
-  </table>
-</div>
-</div>
-
-<h4>Assessment Scripts</h4>
-<div class="box">
-
-<div class="box-body">
-
-  <table class="table">
-    <thead>
-      <tr>
-        <th style="width:5%">No.</th>
-        <th style="width:75%">Item</th>
-        <th style="width:10%">Files</th>
-        <th>Action</th>
+        <th>Item</th>
+        <th style="width:10%">View</th>
+        <th style="width:10%">Action</th>
+		<th style="width:10%">Progress</th>
       </tr>
 	  </thead>
 	  
@@ -485,10 +429,13 @@ if($material){
             $item = $model->assessScripts;
               if($item[0]->coor_upload == 1){
                 
-            echo '<tr><td>'.$i.'. </td>
+            echo '<tr><td>1. </td>
                   <td>'.$item[0]->item_bi.'</td>
 
                   <td>';
+				  if($offer->na_cont_script == 1){
+					 echo 'N/A';
+				  }else{
                   Modal::begin([
                       'header' => '<h5>'.$item[0]->item_bi.'</h5>',
 					  'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>',
@@ -522,18 +469,24 @@ if($material){
                                 </table>';
                        
                   Modal::end();
+			  }
             echo'</td>';
 
-                  echo'<td><a href="' . Url::to([$item[0]->upload_url.'/page','id' => $offered_id]) . '" class="btn btn-warning btn-sm" ><span class="fa fa-upload"></span> Upload</a></td>';
+                  echo'<td><a href="' . Url::to([$item[0]->upload_url.'/page','id' => $offered_id]) . '" class="btn btn-warning btn-sm" ><span class="fa fa-upload"></span> Upload</a></td>
+				   <td>'.$offer->progressContScriptBar .'</td>
+				   
+				   </tr>
+				  
+				  ';
 
-                  echo '<tr><td>'.$i.'. </td>
+                  echo '<tr><td>2. </td>
                   <td>'.$item[1]->item_bi.'</td>
 
                   <td>';
                   Modal::begin([
                       'header' => '<h5>'.$item[1]->item_bi.'</h5>',
 					  'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>',
-                      'toggleButton' => ['label' => 'View Files ('.$offer->countAnswerScriptFiles.')', 'class'=>'btn btn-sm btn-info'],
+                      'toggleButton' => ['label' => 'View Files ('.$offer->countScripts.')', 'class'=>'btn btn-sm btn-info'],
                   ]);
                       echo '<table class="table">
                                 <tr>
@@ -541,31 +494,21 @@ if($material){
                                 <th>File Name</th>
                                 <th>Action</th>
                                 </tr>';
-                      if($offer->coordinatorAnswerScriptFiles)
-                      {
-                        $i=1;
-                        foreach ($offer->coordinatorAnswerScriptFiles as $files) {
-
-                          
-                          echo'<tr>
-                          <td>'.$i.'.</td>
-                          <td>';
-                          echo $files->file_name;
-                          echo'</td>
-                                <td>';
-                            
-                                echo'<a href="'.Url::to(['coordinator-answer-script-file/download-file', 'attr' => 'path','id'=> $files->id]).'" target="_blank" class="btn btn-danger btn-sm"><span class="fa fa-download"></span>  Download</a>';
-                                $i++;
-                        }
-                      }
-                                echo'</td>
-                                </tr>
+					echo rowFile($offer, 'best');
+					echo rowFile($offer, 'mod');
+					echo rowFile($offer, 'low');
+                     
+                                echo'
                                 </table>';
                        
                   Modal::end();
             echo'</td>';
 
-                  echo'<td><a href="' . Url::to([$item[1]->upload_url.'/page','id' => $offered_id]) . '" class="btn btn-warning btn-sm" ><span class="fa fa-upload"></span> Upload</a></td>';
+                  echo'<td><a href="' . Url::to([$item[1]->upload_url.'/page','id' => $offered_id]) . '" class="btn btn-warning btn-sm" ><span class="fa fa-upload"></span> Upload</a></td>
+				  <td>'.$offer->progressSumScriptBar .'</td>
+				  </tr>
+				  
+				  ';
          
                   $i++;
               }        
@@ -581,7 +524,91 @@ if($material){
 </div>
 
 
+<h4>Students' Final Result Assessment </h4>
+<div class="box">
 
+<div class="box-body">
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th style="width:5%">No.</th>
+        <th>Item</th>
+        <th style="width:10%">View</th>
+        <th style="width:10%">Action</th>
+		<th style="width:10%">Progress</th>
+      </tr>
+	  </thead>
+	  
+	  <?php 
+
+         $i = 1;
+          
+            $item = $model->assessResults;
+              if($item[0]->coor_upload == 1){
+                
+            echo '<tr><td>'.$i.'. </td>
+                  <td>'.$item[0]->item_bi.'</td>
+
+                  <td>';
+				  if($offer->na_result_final == 1){
+					 echo 'N/A';
+				  }else{
+                  Modal::begin([
+                      'header' => '<h5>'.$item[0]->item_bi.'</h5>',
+					  'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>',
+                      'toggleButton' => ['label' => 'View Files ('.$offer->countResultFinalFiles.')', 'class'=>'btn btn-sm btn-info'],
+                  ]);
+                      echo '<table class="table">
+                                <tr>
+                                <th>#</th>
+                                <th>File Name</th>
+                                <th>Action</th>
+                                </tr>';
+                      if($offer->coordinatorResultFinalFiles)
+                      {
+                        $i=1;
+                        foreach ($offer->coordinatorResultFinalFiles as $files) {
+
+                          
+                          echo'<tr>
+                          <td>'.$i.'.</td>
+                          <td>';
+                          echo $files->file_name;
+                          echo'</td>
+                                <td>';
+                            
+                                echo'<a href="'.Url::to(['coordinator-result-final-file/download-file', 'attr' => 'path','id'=> $files->id]).'" target="_blank" class="btn btn-danger btn-sm"><span class="fa fa-download"></span> Download</a>';
+                                $i++;
+                        }
+                      }
+                                echo'</td>
+                                </tr>
+                                </table>';
+                       
+                  Modal::end();
+			  }
+            echo'</td>';
+
+                  echo'<td><a href="' . Url::to([$item[0]->upload_url.'/page','id' => $offered_id]) . '" class="btn btn-warning btn-sm" ><span class="fa fa-upload"></span> Upload</a></td>
+				  <td>'.$offer->progressResultFinalBar .'</td>
+				  
+				  ';
+
+                 
+         
+                  $i++;
+              }        
+    ?>
+
+
+    
+      
+   
+   
+  </table>
+</div>
+</div>
 
 <h4>Continuous Quality Improvement (CQI)</h4>
 <div class="box">
@@ -593,16 +620,39 @@ if($material){
     <thead>
       <tr>
         <th style="width:5%">No.</th>
-        <th style="width:85%">Item</th>
-        <th>Action</th>
+        <th>Item</th>
+        <th style="width:10%">View</th>
+		<th style="width:10%">Action</th>
+		<th style="width:10%">Progress</th>
       </tr>
     
         
         <tr>
         <?php 
-                echo '<tr><td>'.$i.'</td>
+                echo '<td>1. </td>
                   <td>Plan for Course Improvement (if any)</td>
-                  <td><a href="' . Url::to(['coordinator/course-cqi','id' => $offered_id]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-pencil"></span> Update</a></td>';
+				  <td>';
+				  if($offer->na_cqi == 1){
+					 echo 'N/A';
+				  }else{
+					 Modal::begin([
+                      'header' => '<h5>Continuous Quality Improvement</h5>',
+					  'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>',
+                      'toggleButton' => ['label' => 'View', 'class'=>'btn btn-sm btn-info'],
+                  ]); 
+				  echo $offer->course_cqi;
+				  
+				  Modal::end();
+				  }
+				   
+                     
+                       
+                  
+				  
+				  echo '</td>
+                  <td><a href="' . Url::to(['coordinator/course-cqi','id' => $offered_id]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-pencil"></span> Update</a></td>
+				  <td>'.$offer->progressCqiBar .'</td>
+				  ';
          
               ?>
       </tr>
@@ -615,3 +665,47 @@ if($material){
 
 
 
+<?php 
+function rowFile($offer, $type){
+	$name ='';
+	$i = 1;
+	switch($type){
+		case 'best':
+		$name = 'BEST';
+		$i = 0;
+		break;
+		case 'mod':
+		$name = 'MEDIUM';
+		$i = 3;
+		break;
+		case 'low':
+		$name = 'LOWEST';
+		$i = 6;
+		break;
+	}
+	$html = '';
+	for($s=1;$s<=3;$s++){
+		$sc = 'script'.$type. $s;
+		$col = $sc . '_file';
+		
+			$x = $i + $s;
+			$html .= '<tr><td>'.$x.'. </td><td>'.$name.' ANSWER SCRIPT '.$s.'</td><td>';
+			
+			if($offer->$col){
+				$html .= '<a href="' . Url::to(['/course-files/coordinator-upload/download-file', 'attr' => $sc, 'id' => $offer->id]) . '" target="_blank" class="btn btn-danger btn-sm">
+			
+			<span class="glyphicon glyphicon-download-alt" ></span>  Download</a>';
+			}
+			
+			
+			
+			$html .= '</td></tr>';
+			$x++;
+	
+		
+	}
+	return $html;
+}
+
+
+?>

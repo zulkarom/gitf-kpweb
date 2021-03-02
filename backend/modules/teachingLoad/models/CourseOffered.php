@@ -78,11 +78,11 @@ class CourseOffered extends \yii\db\ActiveRecord
 			
 			[['course_version', 'material_version'], 'required', 'on' => 'coor'],
 			
-            [['semester_id', 'course_id', 'total_students', 'max_lec', 'max_tut', 'created_by', 'coordinator', 'course_version', 'material_version', 'prg_crs_ver', 'prg_material'], 'integer'],
+            [['semester_id', 'course_id', 'total_students', 'max_lec', 'max_tut', 'created_by', 'coordinator', 'course_version', 'material_version', 'prg_crs_ver', 'prg_material', 'na_cont_rubrics'], 'integer'],
 			
             [['created_at', 'courses'], 'safe'],
 			
-			[['prg_overall'], 'number'],
+			[['prg_overall', 'prg_cont_rubrics'], 'number'],
 			
             [['prefix_lec', 'prefix_tut'], 'string', 'max' => 225],
 			
@@ -187,6 +187,7 @@ class CourseOffered extends \yii\db\ActiveRecord
 	
 	public function setProgressCourseVersion($val){
 		$this->prg_crs_ver = $val;
+		$this->setProgressOverall();
 	}
 	
 	public function getProgressCourseVersionBar(){
@@ -195,10 +196,131 @@ class CourseOffered extends \yii\db\ActiveRecord
 	
 	public function setProgressMaterial($val){
 		$this->prg_material = $val;
+		$this->setProgressOverall();
 	}
 	
 	public function getProgressMaterialBar(){
 		return Common::progress($this->prg_material);
+	}
+	
+	public function setProgressContRubrics($val){
+		$this->prg_cont_rubrics = $val;
+		$this->setProgressOverall();
+	}
+	
+	public function getProgressContRubricsBar(){
+		return Common::progress($this->prg_cont_rubrics);
+		
+	}
+	
+	public function setProgressSumAssess($val){
+		$this->prg_sum_assess = $val;
+		$this->setProgressOverall();
+	}
+	
+	public function getProgressSumAssessBar(){
+		return Common::progress($this->prg_sum_assess);
+		
+	}
+	
+	public function setProgressContMaterial($val){
+		$this->prg_cont_material = $val;
+		$this->setProgressOverall();
+	}
+	
+	public function getProgressContMaterialBar(){
+		return Common::progress($this->prg_cont_material);
+	}
+	
+	public function setProgressResultFinal($val){
+		$this->prg_result_final = $val;
+		$this->setProgressOverall();
+	}
+	
+	public function getProgressResultFinalBar(){
+		return Common::progress($this->prg_result_final);
+	}
+	
+	public function setProgressContScript($val){
+		$this->prg_cont_script = $val;
+		$this->setProgressOverall();
+	}
+	
+	public function getProgressContScriptBar(){
+		return Common::progress($this->prg_cont_script);
+	}
+	
+	public function setProgressSumScript(){
+		
+		$per = $this->countScripts / 9;
+		$per = number_format($per, 2);
+		$this->prg_sum_script = $per;
+		$this->setProgressOverall();
+	}
+	
+	public function getCountScripts(){
+		$val = 0;
+		if($this->scriptbest1_file){
+			$val++;
+		}
+		if($this->scriptbest2_file){
+			$val++;
+		}
+		if($this->scriptbest3_file){
+			$val++;
+		}
+		if($this->scriptmod1_file){
+			$val++;
+		}
+		if($this->scriptmod2_file){
+			$val++;
+		}
+		if($this->scriptmod3_file){
+			$val++;
+		}
+		if($this->scriptlow1_file){
+			$val++;
+		}
+		if($this->scriptlow2_file){
+			$val++;
+		}
+		if($this->scriptlow3_file){
+			$val++;
+		}
+		
+		return $val;
+	}
+	
+	public function getProgressSumScriptBar(){
+		return Common::progress($this->prg_sum_script);
+	}
+	
+	public function setProgressCqi($val){
+		$this->prg_cqi = $val;
+		$this->setProgressOverall();
+	}
+	
+	public function getProgressCqiBar(){
+		return Common::progress($this->prg_cqi);
+	}
+	
+	public function setProgressOverall(){
+		$p1 = $this->prg_crs_ver; //1
+		$p2 = $this->prg_material; //2
+		$p3 = $this->prg_cont_rubrics ; //3
+		$p4 = $this->prg_sum_assess;
+		$p5 = $this->prg_cont_material;
+		$p6 = $this->prg_result_final;
+		$p7 = $this->prg_cont_script;
+		$p8 = $this->prg_sum_script;
+		$p9 = $this->prg_cqi;
+		$avg = ($p1 + $p2 + $p3 + $p4 + $p5 + $p6 + $p7 + $p8 + $p9)/9;
+		$this->prg_coordinator = number_format($avg,2);
+		
+	}
+	
+	public function getProgressCoordinatorBar(){
+		return Common::progress($this->prg_coordinator);
 	}
 	
     public function getLectures()

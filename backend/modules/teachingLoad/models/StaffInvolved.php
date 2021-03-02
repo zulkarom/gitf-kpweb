@@ -59,6 +59,10 @@ class StaffInvolved extends \yii\db\ActiveRecord
             'timetable_file' => 'Timetable File',
         ];
     }
+	
+	public function getProgressTimetable(){
+		return Common::progress($this->prg_timetable);
+	}
 
     public function getStaff(){
         return $this->hasOne(Staff::className(), ['id' => 'staff_id']);

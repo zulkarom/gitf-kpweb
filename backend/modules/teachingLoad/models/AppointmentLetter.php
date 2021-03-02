@@ -78,6 +78,23 @@ class AppointmentLetter extends \yii\db\ActiveRecord
        
     }
 	
+	public function setProgressAppointment(){
+		$letter = 0;
+		if($this->status == 10){
+			$letter = 1;
+		}
+		$steva = 0;
+		if($this->steva_file){
+			$steva = 1;
+		}
+		$avg = ($letter + $steva) / 2;
+		$this->prg_appoint_letter = number_format($avg,2);
+	}
+	
+	public function getProgressAppointmentBar(){
+		return Common::progress($this->prg_appoint_letter);
+	}
+	
 	public function getStatusLabel(){
 		if($this->status == 10){
 			$color = 'success';

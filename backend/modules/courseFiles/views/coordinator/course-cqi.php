@@ -25,14 +25,42 @@ $this->params['breadcrumbs'][] = $title;
 <?php $form = ActiveForm::begin(); ?>
 
 <div class="row">
-<div class="col-md-6"><?= $form->field($model, 'course_cqi')->textarea(['rows' => '6'])->label('Course Improvement') ?></div>
+<div class="col-md-8"><?php 
+$display = $model->na_cqi == 1 ? 'display:none' : '';
+echo $form->field($model, 'course_cqi')->textarea(['rows' => '6', 'style' => $display])->label('Course Improvement') ?></div>
 
 </div>
+
+<?php 
+$check_na = $model->na_cqi == 1 ? 'checked' : ''; 
+?>
+
+<div class="form-group"><label>
+<input type="checkbox" id="na" name="na" value="1" <?=$check_na?> /> Mark as not applicable
+</label></div>
 
  <div class="form-group">
         <?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> Save', ['class' => 'btn btn-success']) ?>
     </div>
+	
 
     <?php ActiveForm::end(); ?>
 </div></div>
 
+<?php 
+
+$this->registerJs('
+
+$("#na").click(function(){
+	if( $(this).prop("checked") == true){
+		$("#courseoffered-course_cqi").slideUp();
+		
+	}else{
+		$("#courseoffered-course_cqi").slideDown();
+	}
+});
+
+');
+
+
+?>

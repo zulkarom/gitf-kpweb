@@ -9,14 +9,12 @@ use common\models\UploadFile;
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
 $course = $model->course;
 $title = 'Summative Assessment';
-$this->title = 'Coordinator';
+$this->title = $course->course_code . ' ' . $course->course_name;
 $this->params['breadcrumbs'][] = ['label' => 'Course Files', 'url' => ['/course-files/default/teaching-assignment-coordinator', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = $title;
 
 ?>
-
-<h4><?=$course->course_code . ' ' . $course->course_name?></h4>
-<h4><?=$model->semester->longFormat()?></h4><br/>
+<h4><?=$model->semester->longFormat()?></h4>
 <h4><?=$title?></h4>
 
 <div class="form-group"><?php $form = ActiveForm::begin(); 
@@ -31,10 +29,12 @@ $this->params['breadcrumbs'][] = $title;
 
 	echo Html::submitButton('Go', ['class' => 'btn btn-sm btn-default']);
 	ActiveForm::end(); ?></div>
+	
+<?php $form = ActiveForm::begin(); ?>	
   <div class="box">
 
 <div class="box-body">
-<?php $form = ActiveForm::begin(); ?>
+
 <table class="table table-striped table-hover">
 
   <thead>
@@ -47,6 +47,7 @@ $this->params['breadcrumbs'][] = $title;
 
 <tbody>
 	<?php 
+	$applicable = false;
 	if($files){
 		$i=1;
 		foreach($files as $x=>$file){
@@ -68,17 +69,45 @@ $this->params['breadcrumbs'][] = $title;
 		
 			
 		}
+	}else{
+		echo '<tr><td colspan="3">No Files</td></tr>';
+		$applicable = true;
 	}
 	
 	?>
 </tbody>
 </table>
+
+
+    
+</div></div>
+
+
+<?php 
+$check_na = $model->na_sum_assess == 1 ? 'checked' : ''; 
+$check_complete = $model->prg_sum_assess == 1 ? 'checked' : ''; 
+?>
+
+<?php if(!$applicable){ ?>
+<div class="form-group"><label>
+<input type="checkbox" id="complete" name="complete" value="1" <?=$check_complete?> /> Mark as complete
+</label></div>
+<?php } ?>
+
+<?php if($applicable){ ?>
+<div class="form-group"><label>
+<input type="checkbox" id="na" name="na" value="1" <?=$check_na?> /> Mark as not applicable
+</label></div>
+<?php } ?>
+
+
  <div class="form-group">
+  <?=$form->field($model, 'updated_at')->hiddenInput(['value' => time()])->label(false)?>
         <?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> Save', ['class' => 'btn btn-success']) ?>
     </div>
 
-    <?php ActiveForm::end(); ?>
-</div></div>
 
+
+<?php ActiveForm::end(); ?>
 <?=\backend\modules\courseFiles\models\Checklist::findOne(14)->item_bi?>
 

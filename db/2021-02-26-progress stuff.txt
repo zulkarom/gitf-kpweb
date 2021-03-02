@@ -17,7 +17,16 @@ ALTER TABLE `tld_course_lec` ADD `prg_overall` DOUBLE NOT NULL AFTER `prg_class_
 ALTER TABLE `cf_material` ADD `mt_type` TINYINT(1) NOT NULL COMMENT '1=pdf, 2=others' AFTER `updated_at`, ADD `status` INT NOT NULL COMMENT '0=draft,10=submit' AFTER `mt_type`;
 ALTER TABLE `tld_course_offered` ADD `prg_overall` DOUBLE NOT NULL AFTER `course_cqi`, ADD `prg_crs_ver` TINYINT(1) NOT NULL AFTER `prg_overall`;
 ALTER TABLE `tld_course_offered` ADD `prg_material` TINYINT(1) NOT NULL AFTER `prg_crs_ver`;
-
+ALTER TABLE `tld_course_offered` ADD `na_cont_rubrics` TINYINT(1) NOT NULL AFTER `prg_material`, ADD `prg_cont_rubrics` DOUBLE NOT NULL AFTER `na_cont_rubrics`;
+ALTER TABLE `tld_course_offered` ADD `na_cont_material` TINYINT(1) NOT NULL AFTER `prg_cont_rubrics`, ADD `prg_cont_material` DOUBLE NOT NULL AFTER `na_cont_material`;
+ALTER TABLE `tld_course_offered` ADD `na_sum_assess` TINYINT(1) NOT NULL AFTER `prg_cont_material`, ADD `prg_sum_assess` DOUBLE NOT NULL AFTER `na_sum_assess`;
+ALTER TABLE `tld_course_offered` ADD `na_result_final` TINYINT(1) NOT NULL AFTER `updated_at`, ADD `prg_result_final` DOUBLE NOT NULL AFTER `na_result_final`;
+ALTER TABLE `tld_course_offered` ADD `na_cont_script` TINYINT(1) NOT NULL AFTER `prg_result_final`, ADD `prg_cont_script` DOUBLE NOT NULL AFTER `na_cont_script`;
+ALTER TABLE `tld_course_offered` ADD `prg_sum_script` DOUBLE NOT NULL AFTER `prg_cont_script`;
+ALTER TABLE `tld_course_offered` ADD `na_cqi` TINYINT(1) NOT NULL AFTER `prg_sum_script`, ADD `prg_cqi` DOUBLE NOT NULL AFTER `na_cqi`;
+ALTER TABLE `tld_course_offered` ADD `prg_coordinator` DOUBLE NOT NULL AFTER `prg_cqi`;
+ALTER TABLE `tld_staff_inv` ADD `prg_timetable` TINYINT(1) NOT NULL AFTER `staff_check`;
+ALTER TABLE `tld_appoint_letter` ADD `prg_appoint_letter` DOUBLE NOT NULL AFTER `updated_at`;
 
 
 

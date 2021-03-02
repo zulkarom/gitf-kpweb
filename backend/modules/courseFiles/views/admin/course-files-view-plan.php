@@ -116,6 +116,7 @@ use yii\helpers\Url;
 			}else{
 				if($material->items){
 					echo '<ul>';
+					$i = 1;
 				foreach ($material->items as $file) {
 				  echo '<li>' . Html::a(strtoupper($file->item_name), ['/course-files/material/download-file', 'attr' => 'item','id'=> $file->id],['target' => '_blank']);
 				  echo '</li>';

@@ -67,7 +67,7 @@ $this->params['breadcrumbs'][] = $this->title;
 						   
 						   
 						   echo '</td>
-						   <td></td>
+						   <td>'.$app->progressAppointmentBar.'</td>
 						</tr>';
 						$i++;
 						 }
@@ -124,7 +124,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			  ?>
 			  
 			 </td>
-			 <td></td>
+			 <td><?=$myInv->progressTimetable?></td>
 						</tr>
      
                
@@ -170,7 +170,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <td>
 							<a href="' . Url::to(['default/teaching-assignment-coordinator', 'id' => $coor->id]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-pencil"></span> Update</a>
 							</td>
-							 <td></td>
+							 <td>'.$coor->progressCoordinatorBar .'</td>
 							';
                                     
                             $i++;

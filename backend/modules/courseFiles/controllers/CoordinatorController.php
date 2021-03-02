@@ -39,6 +39,16 @@ class CoordinatorController extends Controller
         $model = $this->findOffered($id);
 		
 		if ($model->load(Yii::$app->request->post())) {
+			if(Yii::$app->request->post('na') == 1){
+				$model->progressCqi = 1;
+				$model->na_cqi = 1;
+			}else if($model->course_cqi){
+				$model->progressCqi = 1;
+				$model->na_cqi = 0;
+			}else{
+				$model->progressCqi = 0;
+				$model->na_cqi = 0;
+			}
 			
 			if($model->save()){
 				Yii::$app->session->addFlash('success', "Data Updated");
