@@ -219,7 +219,7 @@ class Course extends \yii\db\ActiveRecord
 	}
 	
 	public function getVersionSubmit(){
-		return $this->hasMany(CourseVersion::className(), ['course_id' => 'id'])->where(['>=', 'status', 20])->orderBy('created_at DESC');
+		return $this->hasMany(CourseVersion::className(), ['course_id' => 'id'])->where(['>=', 'status', 10])->orderBy('created_at DESC');
 	}
 	
 	public function getDefaultVersion(){
