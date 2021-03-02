@@ -230,7 +230,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <td>'.$lecture->courseLecture->lec_name.'</td>
                             
                             <td><a href="' . Url::to(['default/teaching-assignment-lecture', 'id' => $lecture->lecture_id]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-pencil"></span> Update</a></td>
-							<td></td>
+							<td>'.$lecture->courseLecture->progressOverallBar .'</td>
 							';
                    
                             $i++;
@@ -284,7 +284,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <td>'.$lec . $tutorial->tutorialLec->tutorial_name.'</td>
                             
                             <td><a href="' . Url::to(['default/teaching-assignment-tutorial', 'id' => $tutorial->tutorial_id]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-pencil"></span> Update</a></td>
-							<td></td>
+							<td>'.$tutorial->tutorialLec->progressOverallBar .'</td>
 							';
                    
                             $i++;

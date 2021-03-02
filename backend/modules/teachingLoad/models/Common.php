@@ -18,10 +18,10 @@ class Common {
 		}else if($percentage <= 0.6){
 			$width = $percentage * 100;
 			$color = 'progress-bar-warning';
-		}else if($percentage <= 0.8){
+		}else if($percentage <= 0.99){
 			$width = $percentage * 100;
 			$color = 'progress-bar-info';
-		}else if($percentage > 0.8){
+		}else if($percentage >= 1){
 			$width = $percentage * 100;
 			$color = 'progress-bar-success';
 		}

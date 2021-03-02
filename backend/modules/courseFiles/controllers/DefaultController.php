@@ -145,8 +145,10 @@ class DefaultController extends Controller
 		$offer->scenario = 'coor';
 		
 		if ($offer->load(Yii::$app->request->post())) {
+			$offer->progressCourseVersion = 1;
+			$offer->progressMaterial = 1;
 			if($offer->save()){
-				Yii::$app->session->addFlash('success', "Data Updated");
+				Yii::$app->session->addFlash('success', "Course version and teaching materials have been updated.");
 				return $this->refresh();
 				
 			}else{
@@ -159,6 +161,8 @@ class DefaultController extends Controller
             'offer' => $offer,
         ]);
     }
+	
+	
 	
 	protected function findOffered($id)
     {
@@ -285,10 +289,7 @@ class DefaultController extends Controller
 				
 				$weight = array_slice($weight,3);
 				$full_mark = array_slice($full_mark,3);
-				
-				
-				
-				//print_r($weight );die();
+
                 foreach (array_slice($data,4) as $stud) {
                    if(is_array($stud) and $stud){
 					   
@@ -296,10 +297,6 @@ class DefaultController extends Controller
 	 			   		$matric = trim($stud[1]);
 						$assess = array_slice($stud, 3);
 						
-/* 						 print_r($assess);
-						print_r($weight);
-						print_r($full_mark);
-						die();  */
 						$weighted_assess = array();
 						$x = 0;
 						foreach($assess as $raw){
@@ -327,14 +324,10 @@ class DefaultController extends Controller
                 }
 				$total = count($lecture->students);
 				$dprogress = floor($progress / $total * 100);
-				/* echo $progress;
-				echo '-';
-				echo $total;
-				echo '-';
-				echo $dprogress;die(); */
+
 				$re = $dprogress / 100;
 				//echo $re ; die();
-				$lecture->prg_stu_assess = $re;
+				$lecture->progressStudentAssessment = $re;
 				//echo $lecture->prg_stu_assess;die();
 				$lecture->save();
                 Yii::$app->session->addFlash('success', "Import Marks done"); 
@@ -366,7 +359,7 @@ class DefaultController extends Controller
 		$lecture = $this->findLecture($id);
 		if($this->importStudentListApi($lecture)){
 			Yii::$app->session->addFlash('success', "Data Updated");
-			$lecture->prg_stu_list = 1;
+			$lecture->progressStudentList = 1;
 			$lecture->save();
 		}
 		return $this->redirect(['lecture-student-list', 'id' => $id]);
@@ -486,8 +479,6 @@ class DefaultController extends Controller
     public function actionLectureStudentAttendance($id){
 		$lecture = $this->findLecture($id);
 
-		
-		
 		if(Yii::$app->request->post()){
 			if($lecture->students){
 			  foreach ($lecture->students as $student) {
@@ -502,9 +493,9 @@ class DefaultController extends Controller
 				
 			}
 			 if(Yii::$app->request->post('complete') == 1){
-				$lecture->prg_attend_complete = 1;
+				$lecture->progressStudentAttendance = 1;
 			}else{
-				$lecture->prg_attend_complete = 0;
+				$lecture->progressStudentAttendance = 0.5;
 			}
 			if ($lecture->save()) {
 				Yii::$app->session->addFlash('success', "Data Updated");
@@ -584,7 +575,8 @@ class DefaultController extends Controller
                 	
               }
             }
-			$lecture->prg_stu_attend = 0.5;
+			$lecture->prg_attend_complete = 0;
+			$lecture->progressStudentAttendance = 0.5;
 			$lecture->save();
             return $this->redirect(['lecture-student-attendance', 'id' => $id]);
     }

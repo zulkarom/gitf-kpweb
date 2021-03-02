@@ -12,6 +12,7 @@ use yii\bootstrap\Modal;
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
 $course = $offer->course;
 $offered_id = $offer->id;
+$course_version = $offer->course_version;
 $this->title = 'Coordinator';
 $this->params['breadcrumbs'][] = ['label' => 'Teaching Load', 'url' => ['/course-files/default/teaching-assignment']];
 $this->params['breadcrumbs'][] = $this->title;
@@ -22,8 +23,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="row">
 <div class="col-md-6"><h4><?=$course->course_code . ' ' . $course->course_name?> - <?=$offer->semester->longFormat()?></h4></div>
-
-
 </div>
 
 
@@ -43,26 +42,155 @@ $this->params['breadcrumbs'][] = $this->title;
 <tr>
 <th width="5%">No.</th>
 <th width="20%">Items</th>
-<th>Select Version/Group</th>
-<th>View</th>
-<th>Update</th></tr>
+<th style="width:45%">Select Version/Group</th>
+<th style="width:10%">View</th>
+<th>Update</th>
+<th width="10%">Progress</th>
+</tr>
+
 
 </thead>
 
 <tr>
 <td>1. </td>
 <td><b>Course Information Version</b></td>
-<td><?= $form->field($offer, 'course_version')->dropDownList(ArrayHelper::map($offer->course->versions, 'id', 'version_name'), ['prompt' => 'Please Select'])->label(false) ?></td>
-<td></td>
+<td><?= $form->field($offer, 'course_version')->dropDownList(ArrayHelper::map($offer->course->versionSubmit, 'id', 'version_name'), ['prompt' => 'Please Select'])->label(false) ?>
+
+<?php 
+if(!$offer->course->versionSubmit){
+	echo '<i>* please make sure the version is submitted first. Please click update.</i>';
+}
+?>
+
+</td>
+<td><?php 
+$count_doc = 0;
+if($course_version > 0){
+	$count_doc = 5;
+}
+ Modal::begin([
+                      'header' => '<h5>Course Information</h5>',
+                      'toggleButton' => ['label' => 'View Files ('.$count_doc.')', 'class'=>'btn btn-sm btn-info'],
+                  ]);
+                      echo '<table class="table">
+                                <tr>
+                                <th>#</th>
+                                <th>File Name</th>
+                                <th>Action</th>
+                                </tr>';
+		if($course_version > 0){
+				?>
+				
+				<tbody><tr>
+		<td width="5%">1.</td>
+		<td>FK01 - PRO FORMA KURSUS / <i>COURSE PRO FORMA</i>                             </td>
+		<td><a href="<?=Url::to(['/esiap/course/fk1', 'course' => $course->id, 'version' => $course_version])?>" target="_blank" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-download-alt"></span> Download</a></td>
+	</tr>
+	<tr>
+		<td width="5%">2.</td>
+		<td>FK02 - MAKLUMAT KURSUS / <i>COURSE INFORMATION </i>                               </td>
+		<td><a href="<?=Url::to(['/esiap/course/fk2', 'course' => $course->id, 'version' => $course_version])?>" target="_blank"  class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-download-alt"></span> Download</a></td>
+	</tr>
+	<tr>
+		<td width="5%">3.</td>
+		<td>FK03 - PENJAJARAN KONSTRUKTIF / <i>CONSTRUCTIVE ALIGNMENT       </i>                         </td>
+		<td><a href="<?=Url::to(['/esiap/course/fk3', 'course' => $course->id, 'version' => $course_version])?>" target="_blank" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-download-alt"></span> Download</a></td>
+	</tr>
+	
+	<tr>
+		<td width="5%">2.</td>
+		<td>TABLE 4 - SUMMARY OF COURSE INFORMATION                               </td>
+		<td>
+		<div class="form-group"><a href="<?=Url::to(['/esiap/course/tbl4-excel', 'course' => $course->id, 'dev' => 1])?>" target="_blank"  class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-download-alt"></span> TABLE4 1.0</a></div>
+
+		<a href="<?=Url::to(['/esiap/course/tbl4-excel2', 'course' => $course->id, 'version' => $course_version])?>" target="_blank"  class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-download-alt"></span> TABLE4 2.0</a></td>
+	</tr>
+	
+</tbody>
+				
+				<?php
+                   }
+                                echo'</td>
+                                </tr>
+                                </table>';
+                       
+                  Modal::end();
+
+
+?></td>
 <td><a href="<?=Url::to(['/esiap/course/view-course', 'course' => $course->id])?>" class="btn btn-warning btn-sm" ><span class="fa fa-pencil"></span> Update</a></td>
+<td><?=$offer->progressCourseVersionBar?></td>
 </tr>
 
 <tr>
 <td>2. </td>
 <td><b>Teaching Material Group</b></td>
-<td><?= $form->field($offer, 'material_version')->dropDownList(ArrayHelper::map($offer->course->materials, 'id', 'material_name'),['prompt' => 'Please Select'])->label(false) ?></td>
-<td></td>
-<td><a href="<?=Url::to(['material/index', 'course' => $course->id])?>" class="btn btn-warning btn-sm" ><span class="fa fa-pencil"></span> Update</a></td></tr>
+<td><?php echo $form->field($offer, 'material_version')->dropDownList(ArrayHelper::map($offer->course->materialSubmit, 'id', 'material_name'),['prompt' => 'Please Select'])->label(false);
+
+if(!$offer->course->materialSubmit){
+	echo '<i>* please make sure the material group is submitted first. Please click update.</i>';
+}
+
+ ?></td>
+<td><?php 
+$material = $offer->material;
+$count_material = 0;
+if($material){
+	if($material->items){
+	$count_material = count($material->items);
+}
+}
+
+
+ Modal::begin([
+                      'header' => '<h5>Teaching Materials</h5>',
+					  'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>',
+                      'toggleButton' => ['label' => 'View Files ('.$count_material.')', 'class'=>'btn btn-sm btn-info'],
+                  ]);
+                      echo '<table class="table table-striped">
+					  <thead>
+                                <tr>
+                                <th>#</th>
+                                <th>File Name</th>
+                                <th>Action</th>
+                                </tr>
+							</thead>
+								';
+					if($material){
+						if($material->items)
+                      {
+                        $i=1;
+                        foreach ($material->items as $file) {
+
+                          
+                          echo'<tr>
+                          <td>'.$i.'.</td>
+                          <td>';
+                          echo $file->item_name;
+                          echo'</td>
+                                <td>';
+                            
+                                echo'<a href="'.Url::to( ['/course-files/material/download-file', 'attr' => 'item','id'=> $file->id]).'" target="_blank" class="btn btn-danger btn-sm"><span class="fa fa-download"></span> Download</a>';
+                                $i++;
+                        }
+                      }
+					}		
+					
+	
+                   
+                                echo'</td>
+                                </tr>
+                                </table>';
+                       
+                  Modal::end();
+
+
+?></td>
+<td><a href="<?=Url::to(['material/index', 'course' => $course->id])?>" class="btn btn-warning btn-sm" ><span class="fa fa-pencil"></span> Update</a></td>
+<td><?=$offer->progressMaterialBar?></td>
+</tr>
+
+
 <tr>
 <td></td>
 <td></td>
@@ -74,6 +202,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </div></td><td></td>
 <td></td>
 <td></td>
+
 </tr>
 
 </table>
@@ -122,6 +251,7 @@ $this->params['breadcrumbs'][] = $this->title;
                   <td>';
                   Modal::begin([
                       'header' => '<h5>'.$item[0]->item_bi.'</h5>',
+					  'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>',
                       'toggleButton' => ['label' => 'View Files ('.$offer->countRubricFiles.')', 'class'=>'btn btn-sm btn-info'],
                   ]);
                       echo '<table class="table">
@@ -143,7 +273,7 @@ $this->params['breadcrumbs'][] = $this->title;
                           echo'</td>
                                 <td>';
                             
-                                echo'<a href="'.Url::to(['coordinator-rubrics-file/download-file', 'attr' => 'path','id'=> $files->id]).'" target="_blank" class="btn btn-success btn-sm"><span class="fa fa-download"> Download</span></a>';
+                                echo'<a href="'.Url::to(['coordinator-rubrics-file/download-file', 'attr' => 'path','id'=> $files->id]).'" target="_blank" class="btn btn-danger btn-sm"><span class="fa fa-download"></span>  Download</a>';
                                 $i++;
                         }
                       }
@@ -162,6 +292,7 @@ $this->params['breadcrumbs'][] = $this->title;
                   <td>';
                   Modal::begin([
                       'header' => '<h5>'.$item[1]->item_bi.'</h5>',
+					  'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>',
                       'toggleButton' => ['label' => 'View Files ('.$offer->countAssessmentMaterialFiles.')', 'class'=>'btn btn-sm btn-info'],
                   ]);
                       
@@ -184,7 +315,7 @@ $this->params['breadcrumbs'][] = $this->title;
                           echo'</td>
                                 <td>';
 
-                                echo'<a href="'.Url::to(['coordinator-assessment-material-file/download-file', 'attr' => 'path','id'=> $files->id]).'" target="_blank" class="btn btn-success btn-sm"><span class="fa fa-download"> Download</span></a>';
+                                echo'<a href="'.Url::to(['coordinator-assessment-material-file/download-file', 'attr' => 'path','id'=> $files->id]).'" target="_blank" class="btn btn-danger btn-sm"><span class="fa fa-download"></span><  Download/a>';
 
                                 $i++;
                         }
@@ -203,6 +334,7 @@ $this->params['breadcrumbs'][] = $this->title;
                   <td>';
                   Modal::begin([
                       'header' => '<h5>'.$item[2]->item_bi.'</h5>',
+					  'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>',
                       'toggleButton' => ['label' => 'View Files ('.$offer->countSummativeAssessmentFiles.')', 'class'=>'btn btn-sm btn-info'],
                   ]);
                       
@@ -225,7 +357,7 @@ $this->params['breadcrumbs'][] = $this->title;
                           echo'</td>
                                 <td>';
                                 
-                                echo'<a href="'.Url::to(['coordinator-summative-assessment-file/download-file', 'attr' => 'path','id'=> $files->id]).'" target="_blank" class="btn btn-success btn-sm"><span class="fa fa-download"> Download</span></a>';
+                                echo'<a href="'.Url::to(['coordinator-summative-assessment-file/download-file', 'attr' => 'path','id'=> $files->id]).'" target="_blank" class="btn btn-danger btn-sm"><span class="fa fa-download"></span>  Download</a>';
 
                                 $i++;
                         }
@@ -281,6 +413,7 @@ $this->params['breadcrumbs'][] = $this->title;
                   <td>';
                   Modal::begin([
                       'header' => '<h5>'.$item[0]->item_bi.'</h5>',
+					  'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>',
                       'toggleButton' => ['label' => 'View Files ('.$offer->countResultFinalFiles.')', 'class'=>'btn btn-sm btn-info'],
                   ]);
                       echo '<table class="table">
@@ -302,7 +435,7 @@ $this->params['breadcrumbs'][] = $this->title;
                           echo'</td>
                                 <td>';
                             
-                                echo'<a href="'.Url::to(['coordinator-result-final-file/download-file', 'attr' => 'path','id'=> $files->id]).'" target="_blank" class="btn btn-success btn-sm"><span class="fa fa-download"></span> Download</a>';
+                                echo'<a href="'.Url::to(['coordinator-result-final-file/download-file', 'attr' => 'path','id'=> $files->id]).'" target="_blank" class="btn btn-danger btn-sm"><span class="fa fa-download"></span> Download</a>';
                                 $i++;
                         }
                       }
@@ -358,6 +491,7 @@ $this->params['breadcrumbs'][] = $this->title;
                   <td>';
                   Modal::begin([
                       'header' => '<h5>'.$item[0]->item_bi.'</h5>',
+					  'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>',
                       'toggleButton' => ['label' => 'View Files ('.$offer->countAssessmentScriptFiles.')', 'class'=>'btn btn-sm btn-info'],
                   ]);
                       echo '<table class="table">
@@ -379,7 +513,7 @@ $this->params['breadcrumbs'][] = $this->title;
                           echo'</td>
                                 <td>';
                             
-                                echo'<a href="'.Url::to(['coordinator-assessment-script-file/download-file', 'attr' => 'path','id'=> $files->id]).'" target="_blank" class="btn btn-success btn-sm"><span class="fa fa-download"> Download</span></a>';
+                                echo'<a href="'.Url::to(['coordinator-assessment-script-file/download-file', 'attr' => 'path','id'=> $files->id]).'" target="_blank" class="btn btn-danger btn-sm"><span class="fa fa-download"></span>  Download</a>';
                                 $i++;
                         }
                       }
@@ -398,6 +532,7 @@ $this->params['breadcrumbs'][] = $this->title;
                   <td>';
                   Modal::begin([
                       'header' => '<h5>'.$item[1]->item_bi.'</h5>',
+					  'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>',
                       'toggleButton' => ['label' => 'View Files ('.$offer->countAnswerScriptFiles.')', 'class'=>'btn btn-sm btn-info'],
                   ]);
                       echo '<table class="table">
@@ -419,7 +554,7 @@ $this->params['breadcrumbs'][] = $this->title;
                           echo'</td>
                                 <td>';
                             
-                                echo'<a href="'.Url::to(['coordinator-answer-script-file/download-file', 'attr' => 'path','id'=> $files->id]).'" target="_blank" class="btn btn-success btn-sm"><span class="fa fa-download"> Download</span></a>';
+                                echo'<a href="'.Url::to(['coordinator-answer-script-file/download-file', 'attr' => 'path','id'=> $files->id]).'" target="_blank" class="btn btn-danger btn-sm"><span class="fa fa-download"></span>  Download</a>';
                                 $i++;
                         }
                       }

@@ -60,4 +60,17 @@ class CoordinatorController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+	
+	public function actionCurrentCoordinatorPage($course){
+		$offer = CourseOffered::find()
+		->joinWith('semester s')
+		->where(['s.is_current' => 1, 'course_id' => $course])->one();
+		if($offer){
+			return $this->redirect(['/course-files/default/teaching-assignment-coordinator', 'id' => $offer->id]);
+		}
+		
+		
+		//jadi kena cari offer id 
+		
+	}
 }

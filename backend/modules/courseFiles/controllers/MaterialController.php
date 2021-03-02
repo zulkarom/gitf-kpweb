@@ -63,18 +63,36 @@ class MaterialController extends Controller
         ]);
     }
 	
-	public function actionCourseFile($course){
-		$offer = CourseOffered::find()
-		->joinWith('semester s')
-		->where(['s.is_current' => 1, 'course_id' => $course])->one();
-		if($offer){
-			return $this->redirect(['/course-files/default/teaching-assignment-coordinator', 'id' => $offer->id]);
+	public function actionSubmit($id,$course){
+		$model = $this->findMaterialCourse($id, $course);
+		$all = true;
+		if($model->items){
+			foreach($model->items as $item){
+				if(empty($item->item_file)){
+					$all = false;
+					break;
+				}
+			}
+		}else{
+			$all = false;
+		}
+		if($all){
+			$model->status = 10;
+			if($model->save()){
+			Yii::$app->session->addFlash('success', "Materials Submitted");
+			}else{
+				$model->flashError();
+			}
+		}else{
+			Yii::$app->session->addFlash('error', "Please make sure all meterials are submitted");
 		}
 		
 		
-		//jadi kena cari offer id 
 		
+		return $this->redirect(['view', 'id' => $id]);
 	}
+	
+	
 
     /**
      * Displays a single Material model.
@@ -226,6 +244,15 @@ class MaterialController extends Controller
     protected function findModel($id)
     {
         if (($model = Material::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+	
+	protected function findMaterialCourse($id, $course)
+    {
+        if (($model = Material::findOne(['id' => $id, 'course_id' => $course])) !== null) {
             return $model;
         }
 

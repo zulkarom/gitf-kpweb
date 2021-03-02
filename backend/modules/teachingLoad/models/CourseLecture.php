@@ -78,31 +78,81 @@ class CourseLecture extends \yii\db\ActiveRecord
 		return Common::progress($this->prg_stu_list);
 	}
 	
+	public function setProgressStudentList($per){
+		$this->prg_stu_list = $per;
+		$this->setOverallProgress();
+	}
+	
 	public function getProgressExemptClass(){
 		return Common::progress($this->prg_class_exempt);
+	}
+	
+	public function setProgressExemptClass($per){
+		$this->prg_class_exempt = $per;
+		$this->setOverallProgress();
 	}
 	
 	public function getProgressCancelClass(){
 		return Common::progress($this->prg_class_cancel);
 	}
 	
+	public function setProgressCancelClass($per){
+		$this->prg_class_cancel = $per;
+		$this->setOverallProgress();
+	}
+	
 	public function getProgressReceiptAssignment(){
 		return Common::progress($this->prg_receipt_assess);
+	}
+	
+	public function setProgressReceiptAssignment($per){
+		$this->prg_receipt_assess = $per;
+		$this->setOverallProgress();
 	}
 	
 	public function getProgressStudentAssessment(){
 		return Common::progress($this->prg_stu_assess);
 	}
 	
-	
+	public function setProgressStudentAssessment($per){
+		$this->prg_stu_assess = $per;
+		$this->setOverallProgress();
+	}
 	
 	public function getProgressStudentAttendance(){
 		
-		if($this->prg_attend_complete == 1){
-			return Common::progress(1);
-		}else{
-			return Common::progress($this->prg_stu_attend);
-		}
+		return Common::progress($this->prg_stu_attend);
+	}
+	
+	public function setProgressStudentAttendance($per){
+		$this->prg_stu_attend = $per;
+		$this->setOverallProgress();
+	}
+	
+	
+	public function getProgressOverall(){
+		$exempt = $this->prg_class_exempt;
+		$receipt = $this->prg_receipt_assess;
+		$cancel = $this->prg_class_cancel;
+		$list = $this->prg_stu_list;
+		$assess = $this->prg_stu_assess;
+		$attend = $this->prg_stu_attend;
+		$total = $exempt + $receipt + $cancel + $list + $assess + $attend;
+		$avg = $total / 6 * 100;
+		$int = (int)$avg;
+		$per = $int / 100;
+		return $per;
+	}
+	
+	public function getProgressOverallBar(){
+		return Common::progress($this->prg_overall);
+	}
+	
+	public function setOverallProgress(){
+		$this->prg_overall = $this->progressOverall;
+		/* if(!$this->save()){
+			$this->flashError();
+		} */
 	}
 
     public function getTutorials()

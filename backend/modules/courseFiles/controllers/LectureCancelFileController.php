@@ -58,17 +58,17 @@ class LectureCancelFileController extends Controller
 			
 			
 			if(Yii::$app->request->post('complete') == 1){
-				$model->prg_class_cancel = 1;
+				$model->progressCancelClass = 1;
 			}else{
-				$model->prg_class_cancel = 0;
+				$model->progressCancelClass = 0;
 			}
 			if(Yii::$app->request->post('na') == 1){
 				$model->na_class_cancel = 1;
-				$model->prg_class_cancel = 1;
+				$model->progressCancelClass = 1;
 			}else{
 				$model->na_class_cancel = 0;
 			}
-			//echo $model->prg_class_cancel ;die();
+			//echo $model->progressCancelClass ;die();
             
             $valid = $model->validate();
             $valid = Model::validateMultiple($files) && $valid;
@@ -98,7 +98,7 @@ class LectureCancelFileController extends Controller
 							
 						}
 					if($progress and $model->prg_class_cancel == 0){
-						$model->prg_class_cancel = 0.5;
+						$model->progressCancelClass = 0.5;
 						$model->save();
 					}
 						
@@ -134,7 +134,7 @@ class LectureCancelFileController extends Controller
                     }
                 }               
             }
-			$model->prg_class_cancel = 0;
+			$model->progressCancelClass = 0;
 			$model->save();
             Yii::$app->session->addFlash('success', 'File Slots Added');
             return $this->redirect(['page', 'id' => $id]);
@@ -166,8 +166,7 @@ class LectureCancelFileController extends Controller
         
         $model->lecture_id = $id;
         $model->updated_at = new Expression('NOW()');
-		
-        
+
         if(!$model->save()){
             $model->flashError();
         }
@@ -178,6 +177,9 @@ class LectureCancelFileController extends Controller
     public function actionDeleteRow($id){
         $model = $this->findLectureCancel($id);
         $file = Yii::getAlias('@upload/' . $model->path_file);
+		$model->lecture->na_class_cancel = 0;
+		$model->lecture->progressCancelClass = 0.5;
+		$model->lecture->save();
 
         if($model->delete()){
             if (is_file($file)) {

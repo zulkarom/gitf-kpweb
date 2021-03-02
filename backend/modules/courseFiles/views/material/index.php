@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     <p>
-	 <?= Html::a('Back to Course File', ['course-file', 'course' => $course->id], ['class' => 'btn btn-info']) ?> 
+	 <?= Html::a('Back to Course File', ['coordinator/current-coordinator-page', 'course' => $course->id], ['class' => 'btn btn-info']) ?> 
         <?= Html::a('Create Material Group', ['create', 'course' => $course->id], ['class' => 'btn btn-success']) ?>
     </p>
 <h4><?=$course->course_code . ' ' . $course->course_name?></h4>
@@ -27,8 +27,9 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'material_name',
-            'createdBy.fullname',
-            'created_at',
+            'typeDesc',
+			'statusName:html',
+            
 			
 			['class' => 'yii\grid\ActionColumn',
                  'contentOptions' => ['style' => 'width: 10%'],
@@ -36,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 //'visible' => false,
                 'buttons'=>[
                     'update'=>function ($url, $model) {
-                        return Html::a('<span class="glyphicon glyphicon-search"></span> View Materials',['view', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
+                        return Html::a('<span class="glyphicon glyphicon-search"></span> View ',['view', 'id' => $model->id],['class'=>'btn btn-primary btn-sm']);
                     },
 					
                 ],

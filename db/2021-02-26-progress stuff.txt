@@ -12,3 +12,20 @@ ALTER TABLE `tld_course_lec` ADD `na_receipt_assess` TINYINT(1) NOT NULL AFTER `
 ALTER TABLE `tld_course_lec` ADD `na_class_exempt` TINYINT(1) NOT NULL AFTER `prg_receipt_assess`, ADD `prg_class_exempt` DOUBLE NOT NULL AFTER `na_class_exempt`;
 ALTER TABLE `tld_tutorial_lec` ADD `prg_class_exempt` DOUBLE NOT NULL AFTER `updated_at`, ADD `na_class_exempt` TINYINT(1) NOT NULL AFTER `prg_class_exempt`, ADD `prg_class_cancel` DOUBLE NOT NULL AFTER `na_class_exempt`, ADD `na_class_cancel` TINYINT(1) NOT NULL AFTER `prg_class_cancel`, ADD `prg_receipt_assess` DOUBLE NOT NULL AFTER `na_class_cancel`, ADD `na_receipt_assess` TINYINT(1) NOT NULL AFTER `prg_receipt_assess`;
 ALTER TABLE `cf_tut_cancel_class` ADD `date_old` DATE NOT NULL AFTER `updated_at`, ADD `date_new` DATE NOT NULL AFTER `date_old`;
+ALTER TABLE `tld_tutorial_lec` ADD `prg_overall` DOUBLE NOT NULL AFTER `na_receipt_assess`;
+ALTER TABLE `tld_course_lec` ADD `prg_overall` DOUBLE NOT NULL AFTER `prg_class_exempt`;
+ALTER TABLE `cf_material` ADD `mt_type` TINYINT(1) NOT NULL COMMENT '1=pdf, 2=others' AFTER `updated_at`, ADD `status` INT NOT NULL COMMENT '0=draft,10=submit' AFTER `mt_type`;
+ALTER TABLE `tld_course_offered` ADD `prg_overall` DOUBLE NOT NULL AFTER `course_cqi`, ADD `prg_crs_ver` TINYINT(1) NOT NULL AFTER `prg_overall`;
+ALTER TABLE `tld_course_offered` ADD `prg_material` TINYINT(1) NOT NULL AFTER `prg_crs_ver`;
+
+
+
+
+
+
+
+
+
+
+
+

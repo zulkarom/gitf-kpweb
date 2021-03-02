@@ -54,13 +54,13 @@ class LectureReceiptFileController extends Controller
             //print_r($files);die();
 			
 			if(Yii::$app->request->post('complete') == 1){
-				$model->prg_receipt_assess = 1;
+				$model->progressReceiptAssignment = 1;
 			}else{
-				$model->prg_receipt_assess = 0;
+				$model->progressReceiptAssignment = 0;
 			}
 			if(Yii::$app->request->post('na') == 1){
 				$model->na_receipt_assess = 1;
-				$model->prg_receipt_assess = 1;
+				$model->progressReceiptAssignment = 1;
 			}else{
 				$model->na_receipt_assess = 0;
 			}
@@ -92,7 +92,7 @@ class LectureReceiptFileController extends Controller
 							
 						}
 					if($progress and $model->prg_receipt_assess == 0){
-						$model->prg_receipt_assess = 0.5;
+						$model->progressReceiptAssignment = 0.5;
 						$model->save();
 					}
 						
@@ -127,7 +127,7 @@ class LectureReceiptFileController extends Controller
                     }
                 }               
             }
-			$model->prg_receipt_assess = 0;
+			$model->progressReceiptAssignment = 0;
 			$model->save();
             Yii::$app->session->addFlash('success', 'File Slots Added');
             return $this->redirect(['page', 'id' => $id]);
@@ -168,6 +168,9 @@ class LectureReceiptFileController extends Controller
 	public function actionDeleteRow($id){
 		$model = $this->findLectureReceipt($id);
 		$file = Yii::getAlias('@upload/' . $model->path_file);
+		$model->lecture->na_receipt_assess = 0;
+		$model->lecture->progressReceiptAssignment= 0.5;
+		$model->lecture->save();
 
 		if($model->delete()){
 			if (is_file($file)) {

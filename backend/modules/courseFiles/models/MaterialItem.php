@@ -58,7 +58,7 @@ class MaterialItem extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'material_id' => 'Material ID',
-            'item_name' => 'Item Name',
+            'item_name' => 'Document Name',
             'item_file' => 'Item File',
             'item_category' => 'Item Category',
         ];

@@ -55,17 +55,17 @@ class LectureExemptFileController extends Controller
             //print_r($files);die();
             
 			if(Yii::$app->request->post('complete') == 1){
-				$model->prg_class_exempt = 1;
+				$model->progressExemptClass = 1;
 			}else{
-				$model->prg_class_exempt = 0;
+				$model->progressExemptClass = 0;
 			}
 			if(Yii::$app->request->post('na') == 1){
 				$model->na_class_exempt = 1;
-				$model->prg_class_exempt = 1;
+				$model->progressExemptClass = 1;
 			}else{
 				$model->na_class_exempt = 0;
 			}
-			//echo $model->prg_class_exempt ;die();
+			//echo $model->progressExemptClass ;die();
             
             $valid = $model->validate();
             $valid = Model::validateMultiple($files) && $valid;
@@ -95,7 +95,7 @@ class LectureExemptFileController extends Controller
 							
 						}
 					if($progress and $model->prg_class_exempt == 0){
-						$model->prg_class_exempt = 0.5;
+						$model->progressExemptClass = 0.5;
 						$model->save();
 					}
 						
@@ -131,7 +131,7 @@ class LectureExemptFileController extends Controller
                     }
                 }               
             }
-			$model->prg_class_exempt = 0;
+			$model->progressExemptClass = 0;
 			$model->save();
             Yii::$app->session->addFlash('success', 'File Slots Added');
             return $this->redirect(['page', 'id' => $id]);
@@ -173,6 +173,9 @@ class LectureExemptFileController extends Controller
 	public function actionDeleteRow($id){
 		$model = $this->findLectureExempt($id);
 		$file = Yii::getAlias('@upload/' . $model->path_file);
+		$model->lecture->na_class_exempt = 0;
+		$model->lecture->progressExemptClass= 0.5;
+		$model->lecture->save();
 
 		if($model->delete()){
 			if (is_file($file)) {

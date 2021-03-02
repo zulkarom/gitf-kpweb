@@ -56,26 +56,31 @@ class TutorialCancelFileController extends Controller
             
 			
 			if(Yii::$app->request->post('complete') == 1){
-				$model->prg_class_cancel = 1;
+				$model->progressCancelClass = 1;
 			}else{
-				$model->prg_class_cancel = 0;
+				$model->progressCancelClass = 0;
 			}
 			if(Yii::$app->request->post('na') == 1){
 				$model->na_class_cancel = 1;
-				$model->prg_class_cancel = 1;
+				$model->progressCancelClass = 1;
 			}else{
 				$model->na_class_cancel = 0;
 			}
-			//echo $model->prg_class_cancel ;die();
+			
+			//$model->setOverallProgress();
+			//echo $model->prg_overall ;die();
             
             $valid = $model->validate();
             $valid = Model::validateMultiple($files) && $valid;
 			
             
             if($valid){
+				
 				$transaction = Yii::$app->db->beginTransaction();
 				try {
 					if($flag = $model->save()){
+						//echo $model->prg_overall;
+						//die();
 						$progress = false;
 						foreach ($files as $item) {
 							if ($flag === false) {
@@ -96,7 +101,7 @@ class TutorialCancelFileController extends Controller
 							
 						}
 					if($progress and $model->prg_class_cancel == 0){
-						$model->prg_class_cancel = 0.5;
+						$model->progressCancelClass = 0.5;
 						$model->save();
 					}
 						
@@ -132,7 +137,7 @@ class TutorialCancelFileController extends Controller
                     }
                 }               
             }
-			$model->prg_class_cancel = 0;
+			$model->progressCancelClass = 0;
 			$model->save();
             Yii::$app->session->addFlash('success', 'File Slots Added');
             return $this->redirect(['page', 'id' => $id]);
@@ -173,7 +178,9 @@ class TutorialCancelFileController extends Controller
     public function actionDeleteRow($id){
         $model = $this->findTutorialCancel($id);
         $file = Yii::getAlias('@upload/' . $model->path_file);
-
+		$model->tutorial->na_class_cancel = 0;
+		$model->tutorial->progressCancelClass = 0.5;
+		$model->tutorial->save();
         if($model->delete()){
             if (is_file($file)) {
                 unlink($file);
