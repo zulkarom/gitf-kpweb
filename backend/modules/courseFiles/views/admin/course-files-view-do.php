@@ -18,7 +18,7 @@ use yii\helpers\Url;
         <th style="width:5%">No.</th>
         <th style="width:40%">Item</th>
         <th style="width:40%">Files</th>
-        <th>Progress</th>
+        <th></th>
       </tr>
     
         

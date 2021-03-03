@@ -41,8 +41,8 @@ $course = $tutorial->lecture->courseOffered->course;
 			  $progress_function = $item->progress_function;
             if($item->lec_upload == 1){
               echo '<tr><td>'.$i.'</td>
-                <td>'.$item->item.'<i><br/>'.$item->item_bi.'</i></td>
-                <td><a href="' . Url::to(['tutorial-'.$item->upload_url.'/page','id' => $tutorial->id]) . '" class="btn btn-warning btn-sm" ><span class="fa fa-upload"></span> Upload</a></td>
+                <td>'.$item->item_bi.'</td>
+                <td><a href="' . Url::to(['tutorial-'.$item->upload_url.'/page','id' => $tutorial->id]) . '" class="btn btn-default btn-sm" ><span class="fa fa-upload"></span> Upload</a></td>
 				<td>'.$tutorial->$progress_function .'</td>
 				';
        

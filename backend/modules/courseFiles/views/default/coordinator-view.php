@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-
+use yii\helpers\Url;
 
 
 
@@ -10,10 +10,15 @@ use yii\helpers\Html;
 $course = $modelOffer->course;
 $this->title = $course->course_code . ' ' . $course->course_name;
 $this->params['breadcrumbs'][] = ['label' => 'Teaching Load', 'url' => ['/course-files/default/teaching-assignment']];
-$this->params['breadcrumbs'][] = 'Coordinator View ' . $course->course_code;
+$this->params['breadcrumbs'][] = ['label' => 'Coordinator', 'url' => ['/course-files/default/teaching-assignment-coordinator', 'id' => $modelOffer->id]];
+$this->params['breadcrumbs'][] = 'View ';
 
 
 ?>
+
+<div class="form-group">
+<a href="<?=Url::to(['submit-course-file', 'id' =>$modelOffer->id ])?>" class="btn btn-primary" data-confirm="Are you sure to submit this course file?">Submit Course File</a>
+</div>
 
 <div class="course-files-view">
 

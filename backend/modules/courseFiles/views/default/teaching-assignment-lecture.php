@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	<tr>
     <td>1. </td>
 	<td>Student List</td>
-<td><a href="<?=Url::to(['lecture-student-list','id' => $lecture->id])?>" class="btn btn-warning btn-sm" ><span class="fa fa-pencil"></span> Update</a></td>
+<td><a href="<?=Url::to(['lecture-student-list','id' => $lecture->id])?>" class="btn btn-default btn-sm" ><span class="fa fa-pencil"></span> Update</a></td>
 
 <td><?=$lecture->progressStudentList?></td>
         
@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	<tr>
     <td>2. </td>
 	<td>Student Attendance</td>
-	<td><a href="<?=Url::to(['lecture-student-attendance','id' => $lecture->id])?>" class="btn btn-warning btn-sm" ><span class="fa fa-pencil"></span> Update</a></td>
+	<td><a href="<?=Url::to(['lecture-student-attendance','id' => $lecture->id])?>" class="btn btn-default btn-sm" ><span class="fa fa-pencil"></span> Update</a></td>
         <td><?=$lecture->progressStudentAttendance?></td>
         </tr>
 	
@@ -54,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	<td>Student Assessment Result</td>
 
 	<td>
-	<a href="<?=Url::to(['lecture-student-assessment','id' => $lecture->id])?>" class="btn btn-warning btn-sm" ><span class="fa fa-pencil"></span> Update</a>
+	<a href="<?=Url::to(['lecture-student-assessment','id' => $lecture->id])?>" class="btn btn-default btn-sm" ><span class="fa fa-pencil"></span> Update</a>
 	</td>
         <td><?=$lecture->progressStudentAssessment?></td>
         </tr>
@@ -90,7 +90,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				$progress_function = $item->progress_function;
               echo '<tr><td>'.$i.'</td>
                 <td>'.$item->item_bi.'</td>
-                <td><a href="' . Url::to(['lecture-'.$item->upload_url.'/page','id' => $lecture->id]) . '" class="btn btn-warning btn-sm" ><span class="fa fa-upload"></span> Upload</a></td>
+                <td><a href="' . Url::to(['lecture-'.$item->upload_url.'/page','id' => $lecture->id]) . '" class="btn btn-default btn-sm" ><span class="fa fa-upload"></span> Upload</a></td>
 				<td>'.$lecture->$progress_function .'</td>
 				
 				';

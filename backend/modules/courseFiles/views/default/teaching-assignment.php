@@ -48,7 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
                            <td>'.$crs->course_code .' '.$crs->course_name .'</td>
                            <td>';
 						   if($app->status == 10){
-							    echo '<a href="' . Url::to(['/teaching-load/appointment-letter/pdf', 'id' => $app->id]) . '" class="btn btn-danger btn-sm" target="_blank"><span class="glyphicon glyphicon-download-alt"></span> Download</a>';
+							    echo '<a href="' . Url::to(['/teaching-load/appointment-letter/pdf', 'id' => $app->id]) . '" class="btn btn-default btn-sm" target="_blank"><span class="glyphicon glyphicon-download-alt"></span> Download</a>';
 						   }else{
 							   echo '<span style="font-weight:normal;font-style:italic">In progress...</span>';
 						   }
@@ -58,9 +58,9 @@ $this->params['breadcrumbs'][] = $this->title;
 						   <td>';
 						   
 						   if($app->steva_file){
-							   echo '<a href="'.  Url::to(['appointment/download-file', 'attr' => 'steva','id' => $app->id]) .' " class="btn btn-danger btn-sm" target="_blank"><span class="fa fa-download" ></span></a> <a href="'.  Url::to(['default/student-evaluation', 'id' => $app->id]) .' " class="btn btn-warning btn-sm" ><span class="fa fa-pencil"></span></a>';
+							   echo '<a href="'.  Url::to(['appointment/download-file', 'attr' => 'steva','id' => $app->id]) .' " class="btn btn-default btn-sm" target="_blank"><span class="fa fa-download" ></span></a> <a href="'.  Url::to(['default/student-evaluation', 'id' => $app->id]) .' " class="btn btn-default btn-sm" ><span class="fa fa-pencil"></span></a>';
 						   }else{
-							   echo '<a href="'.  Url::to(['default/student-evaluation', 'id' => $app->id]) .' " class="btn btn-warning btn-sm" ><span class="fa fa-upload"></span> Upload</a>';
+							   echo '<a href="'.  Url::to(['default/student-evaluation', 'id' => $app->id]) .' " class="btn btn-default btn-sm" ><span class="fa fa-upload"></span> Upload</a>';
 						   }
 						   
 						   
@@ -114,9 +114,9 @@ $this->params['breadcrumbs'][] = $this->title;
 			  <?php 
 			  
 			  if($myInv->timetable_file){
-			   echo '<a href="'.  Url::to(['staff/download-file', 'attr' => 'timetable','id' => $myInv->id]) .' " class="btn btn-danger btn-sm" target="_blank"><span class="fa fa-download" ></span></a> <a href="'.  Url::to(['default/timetable']) .' " class="btn btn-warning btn-sm" ><span class="fa fa-pencil"></span></a>';
+			   echo '<a href="'.  Url::to(['staff/download-file', 'attr' => 'timetable','id' => $myInv->id]) .' " class="btn btn-default btn-sm" target="_blank"><span class="fa fa-download" ></span></a> <a href="'.  Url::to(['default/timetable']) .' " class="btn btn-default btn-sm" ><span class="fa fa-pencil"></span></a>';
 		   }else{
-			   echo '<a href="'.  Url::to(['default/timetable']) .' " class="btn btn-warning btn-sm" ><span class="fa fa-upload"></span> Upload</a>';
+			   echo '<a href="'.  Url::to(['default/timetable']) .' " class="btn btn-default btn-sm" ><span class="fa fa-upload"></span> Upload</a>';
 		   }
 						   
 			  
@@ -164,11 +164,13 @@ $this->params['breadcrumbs'][] = $this->title;
 							
 							<td>
 							
+							'. $coor->statusName .'
+							
 							</td>
        
                            
                             <td>
-							<a href="' . Url::to(['default/teaching-assignment-coordinator', 'id' => $coor->id]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-pencil"></span> Update</a>
+							<a href="' . Url::to(['default/teaching-assignment-coordinator', 'id' => $coor->id]) . '" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-pencil"></span> Update</a>
 							</td>
 							 <td>'.$coor->progressCoordinatorBar .'</td>
 							';
@@ -229,7 +231,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     
                             <td>'.$lecture->courseLecture->lec_name.'</td>
                             
-                            <td><a href="' . Url::to(['default/teaching-assignment-lecture', 'id' => $lecture->lecture_id]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-pencil"></span> Update</a></td>
+                            <td><a href="' . Url::to(['default/teaching-assignment-lecture', 'id' => $lecture->lecture_id]) . '" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-pencil"></span> Update</a></td>
 							<td>'.$lecture->courseLecture->progressOverallBar .'</td>
 							';
                    
@@ -283,7 +285,7 @@ $this->params['breadcrumbs'][] = $this->title;
              
                             <td>'.$lec . $tutorial->tutorialLec->tutorial_name.'</td>
                             
-                            <td><a href="' . Url::to(['default/teaching-assignment-tutorial', 'id' => $tutorial->tutorial_id]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-pencil"></span> Update</a></td>
+                            <td><a href="' . Url::to(['default/teaching-assignment-tutorial', 'id' => $tutorial->tutorial_id]) . '" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-pencil"></span> Update</a></td>
 							<td>'.$tutorial->tutorialLec->progressOverallBar .'</td>
 							';
                    

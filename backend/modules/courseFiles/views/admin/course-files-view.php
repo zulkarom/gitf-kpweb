@@ -15,6 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 
+
 <div class="course-files-view">
 
     <!-- Plan -->

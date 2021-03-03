@@ -159,8 +159,17 @@ class CourseOffered extends \yii\db\ActiveRecord
             'scriptlow1_file' => 'Scriptlow1 File',
             'scriptlow2_file' => 'Scriptlow2 File',
             'scriptlow3_file' => 'Scriptlow3 File',
+			'statusName' => 'Status',
         ];
     }
+	
+	public function getStatusName(){
+		if($this->status == 0){
+			return '<span class="label label-warning">DRAFT</span>';
+		}else if($this->status == 10){
+			return '<span class="label label-info">SUBMIT</span>';
+		}
+	}
 
     public function getOffer($semester){
         return CourseOffered::find()

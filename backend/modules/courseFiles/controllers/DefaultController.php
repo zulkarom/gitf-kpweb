@@ -46,6 +46,19 @@ class DefaultController extends Controller
     {
        
     }
+	
+	public function actionSubmitCourseFile($id){
+		//sepatutnya kena check progress dulu
+		$offer = $this->findOffered($id);
+		$course = $offer->course;
+		
+		$offer->status = 10;
+		if($offer->save()){
+			Yii::$app->session->addFlash('success', "The course file for ".$course->course_code ." ". $course->course_name ." has been successfully submitted.");
+			return $this->redirect(['teaching-assignment']);
+			
+		}
+	}
 
     public function actionTeachingAssignment(){
         

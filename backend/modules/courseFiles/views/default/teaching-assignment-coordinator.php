@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 
-<?php echo '<a href="' . Url::to(['default/coordinator-view', 'id' => $offer->id]) . '" class="btn btn-primary" ><span class="glyphicon glyphicon-search"></span> Preview Overall</a>';?>
+<?php echo '<a href="' . Url::to(['default/coordinator-view', 'id' => $offer->id]) . '" class="btn btn-default" ><span class="glyphicon glyphicon-search"></span> Preview Overall & Submit</a>';?>
 
 
 <h4>Course Information & Teaching Material</h4>
@@ -70,7 +70,7 @@ if($course_version > 0){
 }
  Modal::begin([
                       'header' => '<h5>Course Information</h5>',
-                      'toggleButton' => ['label' => 'View Files ('.$count_doc.')', 'class'=>'btn btn-sm btn-info'],
+                      'toggleButton' => ['label' => 'View Files ('.$count_doc.')', 'class'=>'btn btn-sm btn-default'],
                   ]);
                       echo '<table class="table">
                                 <tr>
@@ -118,7 +118,7 @@ if($course_version > 0){
 
 
 ?></td>
-<td><a href="<?=Url::to(['/esiap/course/view-course', 'course' => $course->id])?>" class="btn btn-warning btn-sm" ><span class="fa fa-pencil"></span> Update</a></td>
+<td><a href="<?=Url::to(['/esiap/course/view-course', 'course' => $course->id])?>" class="btn btn-default btn-sm" ><span class="fa fa-pencil"></span> Update</a></td>
 <td><?=$offer->progressCourseVersionBar?></td>
 </tr>
 
@@ -145,7 +145,7 @@ if($material){
  Modal::begin([
                       'header' => '<h5>Teaching Materials</h5>',
 					  'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>',
-                      'toggleButton' => ['label' => 'View Files ('.$count_material.')', 'class'=>'btn btn-sm btn-info'],
+                      'toggleButton' => ['label' => 'View Files ('.$count_material.')', 'class'=>'btn btn-sm btn-default'],
                   ]);
                       echo '<table class="table table-striped">
 					  <thead>
@@ -186,7 +186,7 @@ if($material){
 
 
 ?></td>
-<td><a href="<?=Url::to(['material/index', 'course' => $course->id])?>" class="btn btn-warning btn-sm" ><span class="fa fa-pencil"></span> Update</a></td>
+<td><a href="<?=Url::to(['material/index', 'course' => $course->id])?>" class="btn btn-default btn-sm" ><span class="fa fa-pencil"></span> Update</a></td>
 <td><?=$offer->progressMaterialBar?></td>
 </tr>
 
@@ -254,7 +254,7 @@ if($material){
                   Modal::begin([
                       'header' => '<h5>'.$item[1]->item_bi.'</h5>',
 					  'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>',
-                      'toggleButton' => ['label' => 'View Files ('.$offer->countAssessmentMaterialFiles.')', 'class'=>'btn btn-sm btn-info'],
+                      'toggleButton' => ['label' => 'View Files ('.$offer->countAssessmentMaterialFiles.')', 'class'=>'btn btn-sm btn-default'],
                   ]);
                       
                       echo '<table class="table">
@@ -288,7 +288,7 @@ if($material){
 			}
             echo'</td>';
 
-                  echo'<td><a href="' . Url::to([$item[1]->upload_url.'/page','id' => $offered_id]) . '" class="btn btn-warning btn-sm" ><span class="fa fa-upload"></span> Upload</a></td>
+                  echo'<td><a href="' . Url::to([$item[1]->upload_url.'/page','id' => $offered_id]) . '" class="btn btn-default btn-sm" ><span class="fa fa-upload"></span> Upload</a></td>
 				  <td>'.$offer->progressContMaterialBar .'</td>
 				  </tr>
 				  ';
@@ -302,7 +302,7 @@ if($material){
                   Modal::begin([
                       'header' => '<h5>'.$item[0]->item_bi.'</h5>',
 					  'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>',
-                      'toggleButton' => ['label' => 'View Files ('.$offer->countRubricFiles.')', 'class'=>'btn btn-sm btn-info'],
+                      'toggleButton' => ['label' => 'View Files ('.$offer->countRubricFiles.')', 'class'=>'btn btn-sm btn-default'],
                   ]);
                       echo '<table class="table">
                                 <tr>
@@ -335,7 +335,7 @@ if($material){
 			}
             echo'</td>';
 
-                  echo'<td><a href="' . Url::to([$item[0]->upload_url.'/page','id' => $offered_id]) . '" class="btn btn-warning btn-sm" ><span class="fa fa-upload"></span> Upload</a></td>
+                  echo'<td><a href="' . Url::to([$item[0]->upload_url.'/page','id' => $offered_id]) . '" class="btn btn-default btn-sm" ><span class="fa fa-upload"></span> Upload</a></td>
 				  <td>'.$offer->progressContRubricsBar .'</td>
 				  </tr>
 				  ';
@@ -352,7 +352,7 @@ if($material){
                   Modal::begin([
                       'header' => '<h5>'.$item[2]->item_bi.'</h5>',
 					  'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>',
-                      'toggleButton' => ['label' => 'View Files ('.$offer->countSummativeAssessmentFiles.')', 'class'=>'btn btn-sm btn-info'],
+                      'toggleButton' => ['label' => 'View Files ('.$offer->countSummativeAssessmentFiles.')', 'class'=>'btn btn-sm btn-default'],
                   ]);
                       
                       echo '<table class="table">
@@ -387,7 +387,7 @@ if($material){
 				  }
             echo'</td>';
 
-                  echo'<td><a href="' . Url::to([$item[2]->upload_url.'/page','id' => $offered_id]) . '" class="btn btn-warning btn-sm" ><span class="fa fa-upload"></span> Upload</a></td>
+                  echo'<td><a href="' . Url::to([$item[2]->upload_url.'/page','id' => $offered_id]) . '" class="btn btn-default btn-sm" ><span class="fa fa-upload"></span> Upload</a></td>
 				  <td>'.$offer->progressSumAssessBar .'</td>
 				  
 				  ';
@@ -439,7 +439,7 @@ if($material){
                   Modal::begin([
                       'header' => '<h5>'.$item[0]->item_bi.'</h5>',
 					  'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>',
-                      'toggleButton' => ['label' => 'View Files ('.$offer->countAssessmentScriptFiles.')', 'class'=>'btn btn-sm btn-info'],
+                      'toggleButton' => ['label' => 'View Files ('.$offer->countAssessmentScriptFiles.')', 'class'=>'btn btn-sm btn-default'],
                   ]);
                       echo '<table class="table">
                                 <tr>
@@ -472,7 +472,7 @@ if($material){
 			  }
             echo'</td>';
 
-                  echo'<td><a href="' . Url::to([$item[0]->upload_url.'/page','id' => $offered_id]) . '" class="btn btn-warning btn-sm" ><span class="fa fa-upload"></span> Upload</a></td>
+                  echo'<td><a href="' . Url::to([$item[0]->upload_url.'/page','id' => $offered_id]) . '" class="btn btn-default btn-sm" ><span class="fa fa-upload"></span> Upload</a></td>
 				   <td>'.$offer->progressContScriptBar .'</td>
 				   
 				   </tr>
@@ -486,7 +486,7 @@ if($material){
                   Modal::begin([
                       'header' => '<h5>'.$item[1]->item_bi.'</h5>',
 					  'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>',
-                      'toggleButton' => ['label' => 'View Files ('.$offer->countScripts.')', 'class'=>'btn btn-sm btn-info'],
+                      'toggleButton' => ['label' => 'View Files ('.$offer->countScripts.')', 'class'=>'btn btn-sm btn-default'],
                   ]);
                       echo '<table class="table">
                                 <tr>
@@ -504,7 +504,7 @@ if($material){
                   Modal::end();
             echo'</td>';
 
-                  echo'<td><a href="' . Url::to([$item[1]->upload_url.'/page','id' => $offered_id]) . '" class="btn btn-warning btn-sm" ><span class="fa fa-upload"></span> Upload</a></td>
+                  echo'<td><a href="' . Url::to([$item[1]->upload_url.'/page','id' => $offered_id]) . '" class="btn btn-default btn-sm" ><span class="fa fa-upload"></span> Upload</a></td>
 				  <td>'.$offer->progressSumScriptBar .'</td>
 				  </tr>
 				  
@@ -557,7 +557,7 @@ if($material){
                   Modal::begin([
                       'header' => '<h5>'.$item[0]->item_bi.'</h5>',
 					  'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>',
-                      'toggleButton' => ['label' => 'View Files ('.$offer->countResultFinalFiles.')', 'class'=>'btn btn-sm btn-info'],
+                      'toggleButton' => ['label' => 'View Files ('.$offer->countResultFinalFiles.')', 'class'=>'btn btn-sm btn-default'],
                   ]);
                       echo '<table class="table">
                                 <tr>
@@ -590,7 +590,7 @@ if($material){
 			  }
             echo'</td>';
 
-                  echo'<td><a href="' . Url::to([$item[0]->upload_url.'/page','id' => $offered_id]) . '" class="btn btn-warning btn-sm" ><span class="fa fa-upload"></span> Upload</a></td>
+                  echo'<td><a href="' . Url::to([$item[0]->upload_url.'/page','id' => $offered_id]) . '" class="btn btn-default btn-sm" ><span class="fa fa-upload"></span> Upload</a></td>
 				  <td>'.$offer->progressResultFinalBar .'</td>
 				  
 				  ';
@@ -638,7 +638,7 @@ if($material){
 					 Modal::begin([
                       'header' => '<h5>Continuous Quality Improvement</h5>',
 					  'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>',
-                      'toggleButton' => ['label' => 'View', 'class'=>'btn btn-sm btn-info'],
+                      'toggleButton' => ['label' => 'View', 'class'=>'btn btn-sm btn-default'],
                   ]); 
 				  echo $offer->course_cqi;
 				  
@@ -650,7 +650,7 @@ if($material){
                   
 				  
 				  echo '</td>
-                  <td><a href="' . Url::to(['coordinator/course-cqi','id' => $offered_id]) . '" class="btn btn-warning btn-sm" ><span class="glyphicon glyphicon-pencil"></span> Update</a></td>
+                  <td><a href="' . Url::to(['coordinator/course-cqi','id' => $offered_id]) . '" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-pencil"></span> Update</a></td>
 				  <td>'.$offer->progressCqiBar .'</td>
 				  ';
          
