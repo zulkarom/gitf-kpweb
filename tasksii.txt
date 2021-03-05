@@ -11,3 +11,5 @@ Student Evaluation Upload letak nama title course name https://fkp-portal.umk.ed
 rename course version - course information version - teaching material version
 Copy of Final Exam or Assessment Results (including graphs) upload page belum standardise
 file materials kena pastikan ada baru boleh save http://localhost/projects/fkp/portal/pro01/backend/web/course-files/material/update?id=6
+table 4 pdf
+signiture fk

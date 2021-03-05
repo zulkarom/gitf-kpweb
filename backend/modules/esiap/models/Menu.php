@@ -39,7 +39,7 @@ class Menu
 				
 				['label' => 'Assessment', 'visible' => $show, 'icon' => 'pencil', 'url' => ['/esiap/course/course-assessment', 'course' => $course_id]],
 				
-				['label' => 'CLOs',  'icon' => 'pencil', 'url' => '#', 
+				['label' => 'CLOs',  'icon' => 'pencil', 'visible' => $show, 'url' => '#', 
 					'items' => [
 						['label' => 'CLO Text', 'visible' => $show, 'icon' => 'pencil', 'url' => ['/esiap/course/course-clo', 'course' => $course_id]],
 				
@@ -84,7 +84,7 @@ class Menu
 	
 	public static function adminEsiap(){
 		$esiap_admin = [
-                        'label' => 'eSIAP Admin',
+                        'label' => 'Course Mgt Admin',
                         'icon' => 'mortar-board',
 						'visible' => Yii::$app->user->can('esiap-management'),
                         'url' => '#',
