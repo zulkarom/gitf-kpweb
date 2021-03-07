@@ -178,7 +178,7 @@ $menuItems = [
 					
 					['label' => 'Staff Info', 'icon' => 'user', 'url' => ['/staff']],
 					
-					['label' => 'Manage Courses', 'icon' => 'mortar-board', 'url' => ['/esiap'],],
+					['label' => 'Course Management', 'icon' => 'mortar-board', 'url' => ['/esiap'],],
 					
 					['label' => 'e-RPD', 'icon' => 'flask', 'url' => ['/erpd'],],	
 					

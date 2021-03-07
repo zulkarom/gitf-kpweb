@@ -105,7 +105,7 @@ $this->title = 'Modules';
 
             <div class="info-box-content">
               <span class="info-box-text">&nbsp;</span>
-              <span class="info-box-number"><font color="Black">Manage Courses</font></span>
+              <span class="info-box-number"><font color="Black">Course Management</font></span>
 
               <span class="progress-description">
                     More info <i class="fa fa-arrow-circle-right"></i>
@@ -125,7 +125,7 @@ $this->title = 'Modules';
 
             <div class="info-box-content">
               <span class="info-box-text">&nbsp;</span>
-              <span class="info-box-number">Manage Program</span>
+              <span class="info-box-number">Program Management</span>
 
             
                   <span class="progress-description">

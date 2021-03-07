@@ -1,9 +1,6 @@
-bilangan tutorial colum tidak tepat http://localhost/projects/gitf-kpweb/backend/web/index.php?r=teaching-load%2Fstaff-inv%2Fapprove-letter
-material status kena ada
+http://localhost/projects/gitf-kpweb/backend/web/index.php?r=teaching-load%2Fstaff-inv%2Fapprove-letter
 CLO assessment kena ada validation http://localhost/projects/gitf-kpweb/backend/web/index.php?r=esiap%2Fcourse%2Fclo-assessment&course=512
 approve letter btn kat bawah
-button back to
-sebelum generate list student pdf, klu xde, tarik data dulu
 kena verify files uploaded ada dulu baru save file name
 upload files name auto masukkan file name https://fkp-portal.umk.edu.my/course-files/lecture-cancel-file/page?id=582
 Record of Student’s Medical Checkup/ Class Exemption kena load student dulu klu takde https://fkp-portal.umk.edu.my/course-files/tutorial-exempt-file/page?id=910
