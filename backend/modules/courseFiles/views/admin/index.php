@@ -53,6 +53,14 @@ $this->params['breadcrumbs'][] = $this->title;
             ], */
 			
 			'statusName:html',
+			
+			[
+                'value' => 'progressOverallBar',
+                'label' => 'Progress',
+				'format' => 'html'
+                
+            ],
+			
             ['class' => 'yii\grid\ActionColumn',
                 'contentOptions' => ['style' => 'width: 10.7%'],
                 'template' => '{files}',
@@ -67,6 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             
             ],
+			
 
         ],
     ]); ?>

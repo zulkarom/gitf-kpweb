@@ -54,7 +54,7 @@ use backend\modules\courseFiles\models\Common;
                 <td>'.$item[1]->item.'<i><br/>'.$item[1]->item_bi.'</i></td>
                 <td>';
 				if($version == 0){
-				echo 'Coordinator need to select course version.';
+				echo 'The coordinator needs to select course version.';
 			}else{
 				echo '<ul>
 					<li><a href="'.Url::to(['/esiap/course/fk2', 'course'=> $offer->course_id, 'version' => $version]).'" target="_blank">FK02 - MAKLUMAT KURSUS</a></li>
@@ -70,7 +70,7 @@ use backend\modules\courseFiles\models\Common;
                 <td>'.$item[2]->item.'<i><br/>'.$item[2]->item_bi.'</i></td>
                 <td>';
 				if($version == 0){
-				echo 'Coordinator need to select course version.';
+				echo 'The coordinator needs to select course version.';
 			}else{
 				echo '<ul>
 					<li><a href="'.Url::to(['/esiap/course/fk3', 'course'=> $offer->course_id, 'version' => $version]).'" target="_blank">FK03 - PENJAJARAN KONSTRUKTIF</a></li>
@@ -129,7 +129,7 @@ use backend\modules\courseFiles\models\Common;
 				
 				if($offer->material_version == 0){
 				$check = Common::pTick(false);
-				echo 'Coordinator need to select material version.';
+				echo 'The coordinator needs to select material version.';
 			}else{
 				if($material->items){
 					$check = Common::pTick();
@@ -151,7 +151,7 @@ use backend\modules\courseFiles\models\Common;
           echo '<tr><td>'.$item[5]->id.'</td>
                 <td>'.$item[5]->item.'<i><br/>'.$item[5]->item_bi.'</i></td>
                 <td>';
-				
+			$boo = false;	
 			if($offer->appointmentLetter){
 				echo '<ul>';
 				$boo = true;
@@ -171,6 +171,9 @@ use backend\modules\courseFiles\models\Common;
 					
 				}
 				echo '</ul>';
+			}else{
+				$boo = false;
+				echo'<ul><li>'.Common::pTick(false).'</li></ul>';
 			}
 				
 		echo '</td>
@@ -205,6 +208,9 @@ use backend\modules\courseFiles\models\Common;
 						
 				}
 				echo '</ul>';
+			}else{
+				$boo = false;
+				echo'<ul><li>'.Common::pTick(false).'</li></ul>';
 			}
 				
 		echo '</td>

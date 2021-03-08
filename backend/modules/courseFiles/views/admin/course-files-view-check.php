@@ -62,6 +62,9 @@ use backend\modules\courseFiles\models\Common;
 					
 				}
 				echo '</ul>';
+			}else{
+				$boo = false;
+				echo'<ul><li>'.Common::pTick(false).'</li></ul>';
 			}
 				
 				echo '</td>
@@ -80,6 +83,7 @@ use backend\modules\courseFiles\models\Common;
 				
 				$boo = true;
 				$clo_html = '';
+			if($offer->lectures){
                 foreach ($offer->lectures as $lecture) {
 					if($lecture->prg_stu_assess == 1){
 						$boo = $boo == false ? false : true;
@@ -90,8 +94,15 @@ use backend\modules\courseFiles\models\Common;
 					}
 					
 				}
+				
 				echo '<li><a href="'.Url::to(['/course-files/default/clo-summary-pdf', 'id'=> $offer->id]).'" target="_blank">CLO SUMMARY '.Common::pTick($boo).'</a></li>';
 				echo $clo_html;
+				
+			}else{
+				$boo = false;
+				echo'<li>'.Common::pTick(false).'</li>';
+			}
+				
 				
 		echo '</ul></td>
                 <td>' . Common::pTick($boo);

@@ -118,7 +118,10 @@ public static function showLecTut($offer, $lec_method, $tut_method, $link, $prog
 		$i++;
 	  }
 	  $html .=  '</ul>';
-	}
+	}else{
+				$boo = false;
+				echo'<ul><li>'.Common::pTick(false).'</li></ul>';
+			}
 
 
 	if($offer->lectures){

@@ -170,6 +170,49 @@ class CourseOffered extends \yii\db\ActiveRecord
 			return '<span class="label label-info">SUBMIT</span>';
 		}
 	}
+	
+	public function getProgressOverallBar(){
+		return Common::progress($this->prg_overall);
+		
+	}
+	
+	public function calcOverallProgress(){
+		//start with lectures
+		$count = 0;
+		$total = 0;
+		$avg = 0;
+		if($this->lectures){
+			foreach($this->lectures as $lecture){
+				$total += $lecture->prg_overall;
+				$count++;
+				if($lecture->tutorials){
+				  foreach ($lecture->tutorials as $tutorial) {
+					  $total += $tutorial->prg_overall;
+					  $count++;
+				  }
+				}
+			}
+		}
+		//then appoint letter
+		if($this->appointmentLetter){
+			foreach($this->appointmentLetter as $app){
+				$count++;
+				$total += $app->prg_appoint_letter;
+				if($app->staffInvolved){
+					$count++;
+					$total += $app->staffInvolved->prg_timetable;
+				}
+			}
+			
+		}
+		$progress = 0;
+		if($count > 0){
+			$avg = $total / $count;
+			$avg = number_format($total / $count, 2);
+		}
+		$this->prg_overall = $avg;
+		$this->save();
+	}
 
     public function getOffer($semester){
         return CourseOffered::find()

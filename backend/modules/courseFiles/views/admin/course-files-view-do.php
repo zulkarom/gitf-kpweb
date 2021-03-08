@@ -35,7 +35,7 @@ use backend\modules\courseFiles\views\admin\Show;
           echo '<tr><td>'.$item[0]->id.'</td>
                 <td>'.$item[0]->item.'<i><br/>'.$item[0]->item_bi.'</i></td>
                 <td>';
-				
+		$boo = false;	
 		if($offer->lectures){
 			$i=1;
 			echo '<ul>';
@@ -52,7 +52,10 @@ use backend\modules\courseFiles\views\admin\Show;
 				
 			}
 			echo '</ul>';
-		}
+		}else{
+				$boo = false;
+				echo'<ul><li>'.Common::pTick(false).'</li></ul>';
+			}
 				
 		echo '</td>
                 <td>'.Common::pTick($boo).'</td>';
@@ -76,7 +79,10 @@ use backend\modules\courseFiles\views\admin\Show;
 				
 			}
 			echo '</ul>';
-		}
+		}else{
+				$boo = false;
+				echo'<ul><li>'.Common::pTick(false).'</li></ul>';
+			}
 			
 		echo '</td>
                 <td>'.Common::pTick($boo).'</td>';

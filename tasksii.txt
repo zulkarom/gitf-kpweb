@@ -6,6 +6,7 @@ aliran kerja course management
 user manual
 loading image after import marks
 need to setup attendace before class exemption - lepas tu datepicker ganti dengan list kelas dia sahaja
+tekan teachingLoad module redirect mengikut role
 ================
 KIV
 ================

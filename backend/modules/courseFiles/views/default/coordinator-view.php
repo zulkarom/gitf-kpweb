@@ -16,12 +16,13 @@ $this->params['breadcrumbs'][] = 'View ';
 
 ?>
 
-<div class="form-group">
-<a href="<?=Url::to(['submit-course-file', 'id' =>$modelOffer->id ])?>" class="btn btn-primary" data-confirm="Are you sure to submit this course file?">Submit Course File</a>
-</div>
+
 
 <div class="course-files-view">
-
+	<?=$this->render('../admin/course-loads', [    
+            'offer' =>$modelOffer,
+           ]);
+    ?>
     <!-- Plan -->
     <?=$this->render('../admin/course-files-view-plan', [    
             'model' => $model,
@@ -51,5 +52,8 @@ $this->params['breadcrumbs'][] = 'View ';
     ?>
 
 </div>
-</div>
+
+
+<div class="form-group">
+<a href="<?=Url::to(['submit-course-file', 'id' =>$modelOffer->id ])?>" class="btn btn-primary" data-confirm="Are you sure to submit this course file?">Submit Course File</a>
 </div>
