@@ -42,13 +42,14 @@ class Tbl4Pdf
 		
 		$this->startPage();
 		$this->courseName();
-		$this->synopsis();
+		/* $this->synopsis();
 		$this->academicStaff();
 		$this->semYear();
 		$this->creditValue();
 		$this->prerequisite();
 		$this->clo();
-		$this->mapping();
+		$this->mapping(); */
+		$this->transferable();
 		$this->htmlWriting();
 		
 
@@ -441,7 +442,7 @@ if($staff){
 	$html = '<tr>
 <td width="'.$this->colnum.'" align="center" '.$this->border.' rowspan="'.$rowspan1.'">8</td>
 
-<td width="'.$wall.'" colspan="26" '.$this->border_not_bottom.'>'.$rowspan1.'"Mapping of the Course Learning Outcomes to the Programme Learning Outcomes, Teaching Methods and Assessment Methods.
+<td width="'.$wall.'" colspan="26" '.$this->border_not_bottom.'>Mapping of the Course Learning Outcomes to the Programme Learning Outcomes, Teaching Methods and Assessment Methods.
 <br />
 </td>
 </tr>';
@@ -480,11 +481,12 @@ $html .= $this->clo_plo_html;
 for($q=1;$q<=3;$q++){
 	$rowspan='';
 	
-	$html .= '<tr>';
+	$html .= '<tr nobr="true">';
 	$html .= '	<td align="center" '.$this->border_right_left.' ></td>';
 	$others = '';
 	if($q == 1){
-		$html .= '<td align="center" '.$this->shade_light.' rowspan="3">Mapping with MQF Cluster of Learning Outcomes</td>';
+		$html .= '<td align="center" '.$this->shade_light.' rowspan="3">
+		Mapping with MQF Cluster of Learning Outcomes</td>';
 		$others = '<td align="center" '.$this->shade_light.' rowspan="3"></td>
 		<td align="center" '.$this->shade_light.' rowspan="3"></td>';
 	}
@@ -518,11 +520,32 @@ Indicate the primary causal link between the CLO and PLO by ticking  \'√\' in 
 <b>C3E</b> = Numeracy Skills, <b>C3F</b> = Leadership, Autonomy & Responsibility, <b>C4A</b> = Personal Skills, <b>C4B</b> = Entrepreneurial Skills, <b>C5</b> = Ethics & Professionalism</span>
 </td>
 </tr>';
-
-
-
 	$this->html .= $html;
 
+	}
+	
+	public function transferable(){
+		$wall = $this->col_label + $this->col_content
+		$col_label = $this->col_label + 70;;
+		$col_num = 28;
+		$col_content = $wall - $col_label;
+		$col_last = 50;
+	
+	$html = '<tr>
+<td width="'.$this->colnum.'" align="center" '.$this->border.'>9</td>
+
+<td width="'.$wall.'" colspan="26" '.$this->border_not_bottom.'>Transferable Skills (if applicable)
+</td>
+</tr>';
+
+	$html .= '<tr>
+<td width="'.$this->colnum.'" align="center" '.$this->border.'></td>
+
+<td width="'.$wall.'" colspan="26" '.$this->border_not_bottom.'><i>(Skills learned in the course of study which can be useful and utilized in other settings)</i>
+</td>
+</tr>';
+
+$this->html .= $html;
 	}
 	
 

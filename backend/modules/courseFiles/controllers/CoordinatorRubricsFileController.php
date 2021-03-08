@@ -135,6 +135,7 @@ class CoordinatorRubricsFileController extends Controller
                 }               
             }
 			$model->progressContRubrics = 0;
+			$model->na_cont_rubrics = 0;
 			$model->save();
             Yii::$app->session->addFlash('success', 'File Slots Added');
             return $this->redirect(['page', 'id' => $id]);

@@ -134,6 +134,7 @@ class CoordinatorSummativeAssessmentFileController extends Controller
                 }               
             }
 			$model->progressSumAssess = 0;
+			$model->na_sum_assess = 0;
 			$model->save();
             Yii::$app->session->addFlash('success', 'File Slots Added');
             return $this->redirect(['page', 'id' => $id]);

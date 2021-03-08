@@ -136,6 +136,7 @@ class CoordinatorAssessmentScriptFileController extends Controller
                 }               
             }
 			$model->progressContScript = 0;
+			$model->na_cont_script =0;
 			$model->save();
             Yii::$app->session->addFlash('success', 'File Slots Added');
             return $this->redirect(['page', 'id' => $id]);

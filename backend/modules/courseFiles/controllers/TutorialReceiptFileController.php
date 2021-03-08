@@ -128,6 +128,7 @@ class TutorialReceiptFileController extends Controller
                 }               
             }
 			$model->progressReceiptAssignment = 0.5;
+			$model->na_receipt_assess = 0;
 			$model->save();
             Yii::$app->session->addFlash('success', 'File Slots Added');
             return $this->redirect(['page', 'id' => $id]);

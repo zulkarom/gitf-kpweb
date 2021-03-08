@@ -135,6 +135,7 @@ class LectureCancelFileController extends Controller
                 }               
             }
 			$model->progressCancelClass = 0;
+			$model->na_class_cancel = 0;
 			$model->save();
             Yii::$app->session->addFlash('success', 'File Slots Added');
             return $this->redirect(['page', 'id' => $id]);

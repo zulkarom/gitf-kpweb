@@ -132,6 +132,7 @@ class LectureExemptFileController extends Controller
                 }               
             }
 			$model->progressExemptClass = 0;
+			$model->na_class_exempt = 0;
 			$model->save();
             Yii::$app->session->addFlash('success', 'File Slots Added');
             return $this->redirect(['page', 'id' => $id]);

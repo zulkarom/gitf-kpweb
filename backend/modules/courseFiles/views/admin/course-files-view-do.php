@@ -2,6 +2,8 @@
 use yii\bootstrap\Modal;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use backend\modules\courseFiles\models\Common;
+use backend\modules\courseFiles\views\admin\Show;
 ?>
 
 
@@ -18,7 +20,7 @@ use yii\helpers\Url;
         <th style="width:5%">No.</th>
         <th style="width:40%">Item</th>
         <th style="width:40%">Files</th>
-        <th></th>
+        <th>Check</th>
       </tr>
     
         
@@ -37,14 +39,23 @@ use yii\helpers\Url;
 		if($offer->lectures){
 			$i=1;
 			echo '<ul>';
+			$boo = true;
 			foreach ($offer->lectures as $lecture) {  
-				echo '<li><a href="'.Url::to(['/course-files/default/lecture-student-list-pdf', 'id'=> $lecture->id]).'" target="_blank">'.$lecture->lec_name .' - LIST OF STUDENTS</a></li>';
+			
+				if($lecture->prg_stu_list == 1){
+					$boo = $boo == false ? false : true;
+					echo '<li><a href="'.Url::to(['/course-files/default/lecture-student-list-pdf', 'id'=> $lecture->id]).'" target="_blank">'.$lecture->lec_name .' - LIST OF STUDENTS   '.Common::pTick().'</a></li>';
+				}else{
+					$boo = false;
+					echo '<li>'.$lecture->lec_name .' - LIST OF STUDENTS   '.Common::pTick(false).'</li>';
+				}
+				
 			}
 			echo '</ul>';
 		}
 				
 		echo '</td>
-                <td></td>';
+                <td>'.Common::pTick($boo).'</td>';
 
 
           echo '<tr><td>'.$item[1]->id.'</td>
@@ -53,14 +64,22 @@ use yii\helpers\Url;
 			if($offer->lectures){
 			$i=1;
 			echo '<ul>';
+			$boo = true;
 			foreach ($offer->lectures as $lecture) {  
-				echo '<li><a href="'.Url::to(['/course-files/default/attendance-summary-pdf', 'id'=> $lecture->id]).'" target="_blank">'.$lecture->lec_name .' - CLASS ATTENDANCE</a></li>';
+				if($lecture->prg_stu_attend == 1){
+					$boo = $boo == false ? false : true;
+					echo '<li><a href="'.Url::to(['/course-files/default/attendance-summary-pdf', 'id'=> $lecture->id]).'" target="_blank">'.$lecture->lec_name .' - CLASS ATTENDANCE  '.Common::pTick().'</a></li>';
+				}else{
+					$boo = false;
+					echo '<li>'.$lecture->lec_name .' - CLASS ATTENDANCE '.Common::pTick(false).'</li>';
+				}
+				
 			}
 			echo '</ul>';
 		}
 			
 		echo '</td>
-                <td></td>';
+                <td>'.Common::pTick($boo).'</td>';
 
           echo '<tr><td>'.$item[2]->id.'</td>
                 <td>'.$item[2]->item.'<i><br/>'.$item[2]->item_bi.'</i></td>
@@ -68,74 +87,44 @@ use yii\helpers\Url;
 				
 
                             
-            echo  showLecTut($offer, 'lectureCancelFiles', 'tutorialCancelFiles', 'cancel');
+            echo  Show::showLecTut($offer, 'lectureCancelFiles', 'tutorialCancelFiles', 'cancel', 'class_cancel');
 
 
 				
-			echo '</td>
-                <td>';
-
-              
-
-                        
-          echo '</td>';
+			
 
           echo '<tr><td>'.$item[3]->id.'</td>
                 <td>'.$item[3]->item.'<i><br/>'.$item[3]->item_bi.'</i></td>
                 <td>';
 				
-			 echo  showLecTut($offer, 'lectureReceiptFiles', 'tutorialReceiptFiles', 'receipt');
+			 echo  Show::showLecTut($offer, 'lectureReceiptFiles', 'tutorialReceiptFiles', 'receipt', 'receipt_assess');
                            
 				
-			
-		echo '</td>
-                <td>';
-                
-
-                        
-          echo '</td>';
+	
 
           echo '<tr><td>'.$item[4]->id.'</td>
                 <td>'.$item[4]->item.'<i><br/>'.$item[4]->item_bi.'</i></td>
                 <td>';
 				
-			echo showCoor($offer, 'coordinatorAssessmentMaterialFiles', 'coordinator-assessment-material-file');
+			echo Show::showCoor($offer, 'coordinatorAssessmentMaterialFiles', 'coordinator-assessment-material-file', 'cont_material');
 				
-				echo '</td>
-                <td>';
-    
-                      
-                
-          echo '</td>';
+			
 
           echo '<tr><td>'.$item[5]->id.'</td>
                 <td>'.$item[5]->item.'<i><br/>'.$item[5]->item_bi.'</i></td>
                 <td>';
 				
-				echo showCoor($offer, 'coordinatorAssessmentScriptFiles', 'coordinator-assessment-script-file');
-				
-
-				
-			echo '</td>
-                <td>';
-  
-                     
-                
-          echo '</td>';
+				echo Show::showCoor($offer, 'coordinatorAssessmentScriptFiles', 'coordinator-assessment-script-file', 'cont_script');
+	
 
           echo '<tr><td>'.$item[6]->id.'</td>
                 <td>'.$item[6]->item.'<i><br/>'.$item[6]->item_bi.'</i></td>
                 <td>';
 				
-		echo showCoor($offer, 'coordinatorSummativeAssessmentFiles', 'coordinator-summative-assessment-file');
+		echo Show::showCoor($offer, 'coordinatorSummativeAssessmentFiles', 'coordinator-summative-assessment-file', 'sum_assess');
 				
 				
-			echo '</td>
-                <td>';
-
-                      
-       
-          echo '</td>';
+			
 
           echo '<tr><td>'.$item[7]->id.'</td>
                 <td>'.$item[7]->item.'<i><br/>'.$item[7]->item_bi.'</i></td>
@@ -145,7 +134,7 @@ use yii\helpers\Url;
 			<li>THE THREE (3) BEST ANSWER SCRIPTS
 				<ul>';
 	
-			echo scriptLink($offer, 'best');
+			echo Show::scriptLink($offer, 'best');
 			
 					/*
 					<li>SCRIPT 2</li>
@@ -156,7 +145,7 @@ use yii\helpers\Url;
 			<li>THE THREE (3) MODERATE ANSWER SCRIPTS
 				<ul>';
 				
-				echo scriptLink($offer, 'mod');
+				echo Show::scriptLink($offer, 'mod');
 				
 			echo '</ul>
 			
@@ -165,7 +154,7 @@ use yii\helpers\Url;
 			<li>THE THREE (3) LOWEST ANSWER SCRIPTS
 				<ul>';
 				
-				echo scriptLink($offer, 'low');
+				echo Show::scriptLink($offer, 'low');
 				
 			echo '</ul>
 			</li>
@@ -176,7 +165,11 @@ use yii\helpers\Url;
 </td>
                 <td>';
            
-                     
+             if($offer->prg_sum_script == 1){
+				 echo Common::ptick();
+			 }else{
+				 echo Common::ptick(false);
+			 }
                  
           echo '</td>';
 
@@ -184,15 +177,9 @@ use yii\helpers\Url;
                 <td>'.$item[8]->item.'<i><br/>'.$item[8]->item_bi.'</i></td>
                 <td>';
 				
-		echo  showExempt($offer, 'lectureExemptFiles', 'tutorialExemptFiles');
+		echo  Show::showLecTut($offer, 'lectureExemptFiles', 'tutorialExemptFiles', 'exempt', 'class_exempt');
 
-		echo '</td>
-                <td>';
-
-
-
-                        
-          echo '</td>';
+		
         ?>
     
       </tr>
@@ -201,142 +188,3 @@ use yii\helpers\Url;
   </table>
 </div>
 
-
-<?php 
-
-function scriptLink($offer, $type){
-	$html = '';
-	for($s=1;$s<=3;$s++){
-		$sc = 'script'.$type. $s;
-		$col = $sc . '_file';
-		if($offer->$col){
-			$html .= '<li><a href="' . Url::to(['/course-files/coordinator-upload/download-file', 'attr' => $sc, 'id' => $offer->id]) . '" target="_blank">SCRIPT '.$s.'</a></li>';
-		}
-		
-	}
-	return $html;
-}
-
-function showCoor($offer, $method, $link){
-	$html = '';
-	if($offer->$method){
-		$i=1;
-		$html .=  '<ul>';
-		foreach ($offer->$method as $files) {
-		  $html .=  '<li>' . Html::a(strtoupper($files->file_name), [$link . '/download-file', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
-		  $html .=  '</li>';
-		  $i++;
-		}
-		$html .=  '</ul>';
-	  }
-	return $html;
-}
-
-function showLecTut($offer, $lec_method, $tut_method, $link){
-	$html = '';
-	if($offer->lectures){
-	  $i=1;
-	  $html .=  '<ul>';
-	  foreach ($offer->lectures as $lectures) {
-		$html .=  '<li>' . $lectures->lec_name;
-		$j=1;
-		if($lectures->$lec_method){
-			$html .=  '<ul>';
-		  foreach ($lectures->$lec_method as $file) {
-		  
-			$html .=  '<li>' . Html::a("File ".$j, ['lecture-'.$link.'-file/download-file', 'attr' => 'path','id'=> $file->id],['target' => '_blank']) . '</li>';
-
-			$j++;
-		  }
-		  $html .=  '</ul>';
-		} 
-		$html .=  '</li>';
-		$i++;
-	  }
-	  $html .=  '</ul>';
-	}
-
-
-	if($offer->lectures){
-		$html .=  '<ul>';
-	  $i=1;
-	  foreach ($offer->lectures as $lecture) {
-		if($lecture->tutorials){
-		  foreach ($lecture->tutorials as $tutorial) {
-	  $html .=  '<li>' . $lecture->lec_name . $tutorial->tutorial_name;
-		$j=1;
-			if($tutorial->$tut_method){
-			$html .=  '<ul>';
-			  foreach ($tutorial->$tut_method as $files) {
-				$html .=  '<li>' . Html::a("File ".$j, ['tutorial-'.$link.'-file/download-file', 'attr' => 'path','id'=> $files->id],['target' => '_blank']) . '</li>';
-				$j++;
-			  }
-			  $html .=  '</ul>';
-			}
-			$i++;
-			$html .=  '</li>';
-		  }
-		} 
-	  }
-	$html .=  '</ul>';
-	}
-	
-	return $html;
-}
-
-function showExempt($offer, $lec_method, $tut_method){
-	$html = '';
-	if($offer->lectures){
-	  $i=1;
-	  $html .=  '<ul>';
-	  foreach ($offer->lectures as $lectures) {
-		$html .=  '<li>' . $lectures->lec_name;
-		$j=1;
-		if($lectures->$lec_method){
-			$html .=  '<ul>';
-		  foreach ($lectures->$lec_method as $file) {
-			if($file->path_file){
-				$html .=  '<li>' . Html::a($file->matric_no . '-' . date('d/m/Y', strtotime($file->ex_date)) , ['lecture-exempt-file/download-file', 'attr' => 'path','id'=> $file->id],['target' => '_blank']) . '</li>';
-			}
-			
-
-			$j++;
-		  }
-		  $html .=  '</ul>';
-		} 
-		$html .=  '</li>';
-		$i++;
-	  }
-	  $html .=  '</ul>';
-	}
-
-
-	if($offer->lectures){
-		$html .=  '<ul>';
-	  $i=1;
-	  foreach ($offer->lectures as $lecture) {
-		if($lecture->tutorials){
-		  foreach ($lecture->tutorials as $tutorial) {
-	  $html .=  '<li>' . $lecture->lec_name . $tutorial->tutorial_name;
-		$j=1;
-			if($tutorial->$tut_method){
-			$html .=  '<ul>';
-			  foreach ($tutorial->$tut_method as $file) {
-				$html .=  '<li>' . Html::a($file->matric_no . '-' . date('d/m/Y', strtotime($file->ex_date)) , ['tutorial-cancel-file/download-file', 'attr' => 'path','id'=> $file->id],['target' => '_blank']) . '</li>';
-				$j++;
-			  }
-			  $html .=  '</ul>';
-			}
-			$i++;
-			$html .=  '</li>';
-		  }
-		} 
-	  }
-	$html .=  '</ul>';
-	}
-	
-	return $html;
-}
-
-
-?>

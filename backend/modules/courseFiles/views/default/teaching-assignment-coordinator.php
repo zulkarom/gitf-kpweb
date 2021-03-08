@@ -25,8 +25,8 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="col-md-6"><h4><?=$course->course_code . ' ' . $course->course_name?> - <?=$offer->semester->longFormat()?></h4></div>
 </div>
 
-
-<?php echo '<a href="' . Url::to(['default/coordinator-view', 'id' => $offer->id]) . '" class="btn btn-default" ><span class="glyphicon glyphicon-search"></span> Preview Overall & Submit</a>';?>
+<br />
+<?php echo '<a href="' . Url::to(['default/coordinator-view', 'id' => $offer->id]) . '" class="btn btn-primary" ><span class="glyphicon glyphicon-search"></span> Preview Overall & Submit</a>';?>
 
 
 <h4>Course Information & Teaching Material</h4>

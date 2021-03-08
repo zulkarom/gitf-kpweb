@@ -136,6 +136,7 @@ class CoordinatorAssessmentMaterialFileController extends Controller
                 }               
             }
 			$model->progressContMaterial = 0;
+			$model->na_cont_material = 0;
 			$model->save();
             Yii::$app->session->addFlash('success', 'File Slots Added');
             return $this->redirect(['page', 'id' => $id]);
