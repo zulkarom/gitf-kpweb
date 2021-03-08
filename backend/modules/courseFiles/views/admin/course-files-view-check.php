@@ -44,7 +44,6 @@ use backend\modules\courseFiles\models\Common;
 			if($offer->appointmentLetter){
 				echo '<ul>';
 				foreach ($offer->appointmentLetter as $letter) {
-					if($letter->status == 10){
 						if($letter->staffInvolved){
 							$name =  $letter->staffInvolved->staff->staff_title . ' ' .$letter->staffInvolved->staff->user->fullname; 
 								if($letter->steva_file){
@@ -56,9 +55,10 @@ use backend\modules\courseFiles\models\Common;
 								}
 						
 						
+						}else{
+							$boo = false;
 						}
-						
-					}
+
 					
 				}
 				echo '</ul>';
