@@ -52,7 +52,6 @@ class AdminController extends Controller
 	public function actionIndex()
     {
         $semester = new SemesterForm;
-        $semester->action = ['/course-files/default/index'];
 
         if(Yii::$app->getRequest()->getQueryParam('SemesterForm')){
             $sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');
