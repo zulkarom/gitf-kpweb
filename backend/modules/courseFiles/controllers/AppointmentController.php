@@ -59,6 +59,11 @@ class AppointmentController extends Controller
 		$model = $this->findModel($id);
 		$model->setProgressAppointment();
 		if($model->save()){
+			if(empty($model->steva_file)){
+				Yii::$app->session->addFlash('error', "No student evaluation file has been uploaded!");
+			}else{
+				Yii::$app->session->addFlash('success', "Data Updated");
+			}
 			return $this->redirect(['default/teaching-assignment']);
 		}
 	}

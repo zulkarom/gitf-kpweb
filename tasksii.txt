@@ -1,16 +1,30 @@
-progress & submission lock
+
+coures info nak complete assessment percentage kena 100 dan assessment hanya merujuk kepada 1 clo
+prevent submit klu SLT tak cukup credit
+
 table 4 pdf
 signiture fk - utk coordinator & KJ
 attendance tutorial class
 aliran kerja course management
 user manual
-loading image after import marks
 need to setup attendace before class exemption - lepas tu datepicker ganti dengan list kelas dia sahaja
-tekan teachingLoad module redirect mengikut role
+kat preview - show progress setiap orang
+material list view untuk admin- in case nak revert to draft
+
+buat course post grad
+staff luar fkp
+
+statistic admin sikit la
+
+allow other type teaching material of file type
+
+letak E kat tick attendance klu ada exemption evidence
+
 ================
 KIV
 ================
-CLO assessment kena ada validation http://localhost/projects/gitf-kpweb/backend/web/index.php?r=esiap%2Fcourse%2Fclo-assessment&course=512
+dropdownlist utk select kelas mc
+http://localhost/projects/gitf-kpweb/backend/web/index.php?r=esiap%2Fcourse%2Fclo-assessment&course=512
 approve letter btn kat bawah
 upload files name auto masukkan file name https://fkp-portal.umk.edu.my/course-files/lecture-cancel-file/page?id=582
 Record of Student’s Medical Checkup/ Class Exemption kena load student dulu klu takde https://fkp-portal.umk.edu.my/course-files/tutorial-exempt-file/page?id=910

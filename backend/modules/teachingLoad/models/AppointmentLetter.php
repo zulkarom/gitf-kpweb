@@ -91,6 +91,14 @@ class AppointmentLetter extends \yii\db\ActiveRecord
 		$this->prg_appoint_letter = number_format($avg,2);
 	}
 	
+	public function afterSave($insert, $changedAttributes){
+		parent::afterSave($insert, $changedAttributes);
+		$offer = $this->courseOffered;
+		$offer->setOverallProgress();
+		$offer->save();
+		
+	}
+	
 	public function getProgressAppointmentBar(){
 		return Common::progress($this->prg_appoint_letter);
 	}

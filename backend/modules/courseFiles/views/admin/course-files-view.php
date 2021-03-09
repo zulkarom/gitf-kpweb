@@ -18,13 +18,17 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="course-files-view">
 
-<?=$this->render('course-loads', [    
+<?php echo $this->render('course-loads', [    
             'offer' =>$modelOffer,
            ]);
+
+if($modelOffer->status == 10){  
     ?>
+<div class="form-group"><a href="<?=Url::to(['course-files-view', 'id' => $modelOffer->id, 'revert' => 1])?>" class="btn btn-warning" data-confirm="This action will change the status of course file to draft, click ok to proceed.">Revert Status to Draft</a></div>
+    <?php 
+}	
 	
-    <!-- Plan -->
-    <?=$this->render('course-files-view-plan', [    
+	echo $this->render('course-files-view-plan', [    
             'model' => $model,
             'modelOffer' =>$modelOffer,
            ]);

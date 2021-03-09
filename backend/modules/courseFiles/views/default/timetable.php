@@ -14,7 +14,7 @@ $model->file_controller = 'staff';
 /* @var $this yii\web\View */
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
 
-$this->title = 'Timetable Upload';
+$this->title = 'Staff Timetable';
 $this->params['breadcrumbs'][] = ['label' => 'Teaching Load', 'url' => ['/course-files/default/teaching-assignment']];
 $this->params['breadcrumbs'][] = $this->title;
 
@@ -29,5 +29,4 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 </div>
 
-
-<?=Html::a('Back to My Teaching Load', ['default/teaching-assignment'], ['class' => 'btn btn-primary'])?>
+<?=Html::a('<span class="glyphicon glyphicon-floppy-disk"></span> Save', ['default/timetable', 'back' => 1], ['class' => 'btn btn-primary'])?>

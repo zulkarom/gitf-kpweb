@@ -303,6 +303,20 @@ if($assessment){
         
  *Purata markah (jumlah markah/ bil. pelajar) dibahagikan dengan pemberat setiap HPK didarab dengan 4.0/ Average mark (total marks/no. of students) divided by weightage of each CLO multiplied by 4.0.<br />
  **0.00-0.99 (Sangat Lemah/ Very Poor), 1.00-1.99 (Lemah/ Poor), 2.00-2.99 (Baik/ Good), 3.00-3.69 (Sangat Baik/ Very Good), 3.70-4.00 (Cemerlang/ Excellent). 
+ 
+ 
+ <div class="modal" id="loadingModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <div class="modal-body" align="center">
+        <h3>LOADING DATA...</h3>
+      </div>
+
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 
       
 <?php $form = ActiveForm::begin(['id' => 'form-assessment']); ?>
@@ -387,6 +401,11 @@ var X = XLSX;
       console.log(myJSON);
 
             $("#json_assessment").val(myJSON);
+			$('#loadingModal').modal({
+   backdrop: 'static',
+   keyboard: false,
+   show: true
+});
             $("#form-assessment").submit();
             break;
           }
@@ -402,6 +421,13 @@ var X = XLSX;
   xlf.addEventListener('change', handleFile, false);
 
   }
+
+
+$('#testLoad').click(function(){
+
+});
+
+
 
   
 </script>
@@ -452,6 +478,9 @@ function analysis($point){
 		return '';
 	}
 }
+
+
+
 ?>
 
 

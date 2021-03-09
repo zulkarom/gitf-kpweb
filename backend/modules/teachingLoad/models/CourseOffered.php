@@ -176,7 +176,7 @@ class CourseOffered extends \yii\db\ActiveRecord
 		
 	}
 	
-	public function calcOverallProgress(){
+	public function setOverallProgress(){
 		//start with lectures
 		$count = 0;
 		$total = 0;
@@ -205,13 +205,31 @@ class CourseOffered extends \yii\db\ActiveRecord
 			}
 			
 		}
-		$progress = 0;
+		
+		$total += $this->prg_coordinator;
+		$count++;
+		
 		if($count > 0){
 			$avg = $total / $count;
 			$avg = number_format($total / $count, 2);
 		}
+		
 		$this->prg_overall = $avg;
-		$this->save();
+	}
+	
+	public function setProgressOverall(){
+		$p1 = $this->prg_crs_ver; //1
+		$p2 = $this->prg_material; //2
+		$p3 = $this->prg_cont_rubrics ; //3
+		$p4 = $this->prg_sum_assess;
+		$p5 = $this->prg_cont_material;
+		$p6 = $this->prg_result_final;
+		$p7 = $this->prg_cont_script;
+		$p8 = $this->prg_sum_script;
+		$p9 = $this->prg_cqi;
+		$avg = ($p1 + $p2 + $p3 + $p4 + $p5 + $p6 + $p7 + $p8 + $p9)/9;
+		$this->prg_coordinator = number_format($avg,2);
+		$this->setOverallProgress();
 	}
 
     public function getOffer($semester){
@@ -356,20 +374,7 @@ class CourseOffered extends \yii\db\ActiveRecord
 		return Common::progress($this->prg_cqi);
 	}
 	
-	public function setProgressOverall(){
-		$p1 = $this->prg_crs_ver; //1
-		$p2 = $this->prg_material; //2
-		$p3 = $this->prg_cont_rubrics ; //3
-		$p4 = $this->prg_sum_assess;
-		$p5 = $this->prg_cont_material;
-		$p6 = $this->prg_result_final;
-		$p7 = $this->prg_cont_script;
-		$p8 = $this->prg_sum_script;
-		$p9 = $this->prg_cqi;
-		$avg = ($p1 + $p2 + $p3 + $p4 + $p5 + $p6 + $p7 + $p8 + $p9)/9;
-		$this->prg_coordinator = number_format($avg,2);
-		
-	}
+	
 	
 	public function getProgressCoordinatorBar(){
 		return Common::progress($this->prg_coordinator);

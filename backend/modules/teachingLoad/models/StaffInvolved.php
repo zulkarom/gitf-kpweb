@@ -63,6 +63,36 @@ class StaffInvolved extends \yii\db\ActiveRecord
 	public function getProgressTimetable(){
 		return Common::progress($this->prg_timetable);
 	}
+	
+	public function afterSave($insert, $changedAttributes){
+		parent::afterSave($insert, $changedAttributes);
+		//kena cari ni offer apa yang terlibat
+		$offers = $this->appointLetters;
+		if($offers){
+			foreach($offers as $offer){
+				$modelOffer = $offer->courseOffered;
+				$modelOffer->setOverallProgress();
+				$modelOffer->save();
+			}
+		}
+		
+	}
+	
+	public function getEditable(){
+		$boo = true;
+		$offers = $this->appointLetters;
+		if($offers){
+			foreach($offers as $offer){
+				$status = $offer->status;
+				if($status == 0){
+					$boo = $boo == false ? false : true;
+				}else{
+					$boo = false;
+				}
+			}
+		}
+		return $boo;
+	}
 
     public function getStaff(){
         return $this->hasOne(Staff::className(), ['id' => 'staff_id']);

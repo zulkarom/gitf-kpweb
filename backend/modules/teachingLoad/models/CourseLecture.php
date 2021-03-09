@@ -154,6 +154,14 @@ class CourseLecture extends \yii\db\ActiveRecord
 			$this->flashError();
 		} */
 	}
+	
+	public function afterSave($insert, $changedAttributes){
+		parent::afterSave($insert, $changedAttributes);
+		$offer = $this->courseOffered;
+		$offer->setOverallProgress();
+		$offer->save();
+		
+	}
 
     public function getTutorials()
     {

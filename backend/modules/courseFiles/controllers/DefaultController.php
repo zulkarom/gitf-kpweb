@@ -51,13 +51,18 @@ class DefaultController extends Controller
 		//sepatutnya kena check progress dulu
 		$offer = $this->findOffered($id);
 		$course = $offer->course;
-		
-		$offer->status = 10;
-		if($offer->save()){
-			Yii::$app->session->addFlash('success', "The course file for ".$course->course_code ." ". $course->course_name ." has been successfully submitted.");
-			return $this->redirect(['teaching-assignment']);
-			
+		if($offer->prg_overall == 1){
+			$offer->status = 10;
+			if($offer->save()){
+				Yii::$app->session->addFlash('success', "The course file for ".$course->course_code ." ". $course->course_name ." has been successfully submitted.");
+				return $this->redirect(['teaching-assignment']);
+				
+			}
+		}else{
+			Yii::$app->session->addFlash('error', "The progress of course file must be 100% in order to submit.");
+			return $this->redirect(['coordinator-view', 'id' => $id]);
 		}
+		
 	}
 
 
@@ -103,11 +108,21 @@ class DefaultController extends Controller
     }
 	
 	
-	public function actionTimetable(){
+	public function actionTimetable($back=false){
         
 		$semester = Semester::getCurrentSemester()->id;
 		
 		$model = StaffInvolved::findOne(['staff_id' => Yii::$app->user->identity->staff->id, 'semester_id' => $semester]);
+		
+		if($back){
+			
+			if(empty($model->timetable_file)){
+				Yii::$app->session->addFlash('error', "No timetable file has been uploded!");
+			}else{
+				Yii::$app->session->addFlash('success', "Data Updated");
+			}
+		return $this->redirect(['default/teaching-assignment']);
+		}
 
         return $this->render('timetable', [
 			'model' => $model,
@@ -160,7 +175,8 @@ class DefaultController extends Controller
 	public function actionCoordinatorView($id){
 		$model = new Checklist();
 		$offer = $this->findOffered($id);
-		$offer->calcOverallProgress();
+		$offer->setOverallProgress();
+		$offer->save();
 		return $this->render('coordinator-view', [
             'model' => $model,
             'modelOffer' => $offer,
@@ -171,6 +187,9 @@ class DefaultController extends Controller
     {
         $model = new Checklist();
         $offer = $this->findOffered($id);
+		if($offer->status > 0){
+			return $this->redirect(['coordinator-view', 'id' => $id]);
+		}
 		$offer->scenario = 'coor';
 		
 		if ($offer->load(Yii::$app->request->post())) {

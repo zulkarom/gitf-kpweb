@@ -73,12 +73,15 @@ class AdminController extends Controller
         ]);
     }
 
-    public function actionCourseFilesView($id)
+    public function actionCourseFilesView($id, $revert=false)
     {
         $model = new Checklist();
         $modelOffer = $this->findOffered($id);  
-		$modelOffer->calcOverallProgress();
-
+		$modelOffer->setOverallProgress();
+		if($revert){
+			$modelOffer->status = 0;
+		}
+		$modelOffer->save();
         return $this->render('course-files-view', [
             'model' => $model,
             'modelOffer' => $modelOffer,

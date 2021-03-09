@@ -816,27 +816,57 @@ class CourseController extends Controller
 		}
 		
 		$clos = $model->clos;
+		$arr_valid = [];
+		$valid_one = true;
 		if ($model->load(Yii::$app->request->post())) {
+			$total = 0;
+			$one_clo = true;
 			if(Yii::$app->request->validateCsrfToken()){
 			$flag = true;
                 $cloAs = Yii::$app->request->post('CourseCloAssessment');
 				if($cloAs){
 					foreach($cloAs as $ca){
 						$row = CourseCloAssessment::findOne($ca['id']);
-						$row->assess_id = $ca['assess_id'];
+						$ass_id = $ca['assess_id'];
+						if(in_array($ass_id, $arr_valid)){
+							$valid_one = false;
+						}else{
+							$valid_one = $valid_one == false ? false : true;
+						}
+						$arr_valid[] = $ass_id;
+						$row->assess_id = $ass_id;
+						
+						$clo = $row->clo_id;
+						
 						$row->percentage = $ca['percentage'];
+						$total += $ca['percentage'];
 						if(!$row->save()){
 							$flag = false;
 						}
 					}
+					
 				}
+				
+				//print_r($clo127);die('anda jutawan');
 				
 				if($flag){
 					Yii::$app->session->addFlash('success', "Assessment percentage has been updated");
 					//update progress
 					$model->scenario = 'pgrs_assess_per';
 					if(Yii::$app->request->post('complete') == 1){
-						$model->pgrs_assess_per = 2;
+						if($total==100){
+							if($valid_one){
+								$model->pgrs_assess_per = 2;
+							}else{
+								$model->pgrs_assess_per = 1;
+								Yii::$app->session->addFlash('error', "Make sure an assessment is only mapped to one clo.");
+							}
+							
+						}else{
+							$model->pgrs_assess_per = 1;
+							Yii::$app->session->addFlash('error', "Cannot mark as complete as the percentage is not equal to 100");
+						}
+						
 					}else{
 						$model->pgrs_assess_per = 1;
 					}

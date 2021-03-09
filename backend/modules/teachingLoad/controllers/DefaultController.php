@@ -17,6 +17,7 @@ use backend\modules\teachingLoad\models\Course;
 use yii\helpers\ArrayHelper;
 use yii\db\Expression;
 use yii\filters\AccessControl;
+use common\models\Todo;
 /**
  * Default controller for the `teaching-load` module
  */
@@ -43,6 +44,9 @@ class DefaultController extends Controller
      */
     public function actionIndex()
     {
+		if(Todo::can('teaching-load-manager')){
+			return $this->redirect(['/teaching-load/course-offered']);
+		}
         return $this->render('index');
     }
 	
