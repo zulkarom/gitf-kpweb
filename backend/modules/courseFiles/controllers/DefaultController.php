@@ -31,7 +31,7 @@ use backend\modules\courseFiles\models\pdf\Clo;
 use backend\modules\courseFiles\models\pdf\CloSummary;
 use backend\modules\courseFiles\models\pdf\StudentList;
 use backend\modules\courseFiles\models\excel\AssessmentExcel;
-
+use yii\filters\AccessControl;
 /**
  * Default controller for the `course-files` module
  */
@@ -60,6 +60,21 @@ class DefaultController extends Controller
 		}
 	}
 
+
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }
     public function actionTeachingAssignment(){
         
         $semester = new SemesterForm;

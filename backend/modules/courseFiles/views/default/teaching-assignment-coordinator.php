@@ -22,7 +22,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 <div class="row">
-<div class="col-md-6"><h4><?=$course->course_code . ' ' . $course->course_name?> - <?=$offer->semester->longFormat()?></h4></div>
+<div class="col-md-10"><h4><?=$course->course_code . ' ' . $course->course_name?> - <?=$offer->semester->longFormat()?></h4></div>
+
 </div>
 
 <br />
