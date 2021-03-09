@@ -48,10 +48,20 @@ class AppointmentController extends Controller
 		$course = $model->courseOffered->course;
 		
 		$path = 'course-files/'.$model->courseOffered->semester_id.'/'.$course->course_code.'/'.$model->staffInvolved->staff->staff_no ;
+		$model->steva_file = 1;
+		$model->setProgressAppointment();
 
         return UploadFile::upload($model, $attr, 'updated_at', $path);
 
     }
+	
+	public function actionAppointmentProgress($id){
+		$model = $this->findModel($id);
+		$model->setProgressAppointment();
+		if($model->save()){
+			return $this->redirect(['default/teaching-assignment']);
+		}
+	}
 	
 	protected function findModel($id)
     {
@@ -81,6 +91,7 @@ class AppointmentController extends Controller
         $model->scenario = $attr . '_delete';
         $model->{$attr_db} = '';
         $model->updated_at = new Expression('NOW()');
+		$model->setProgressAppointment();
         if($model->save()){
             if (is_file($file)) {
                 unlink($file);

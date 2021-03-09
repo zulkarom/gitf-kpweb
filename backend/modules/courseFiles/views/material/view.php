@@ -15,16 +15,32 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="material-view">
 
-    <p>
-        <?= Html::a('Update Teaching Materials', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
+    <div class="form-group">
+<?= Html::a('List', ['index', 'course' => $model->course_id], ['class' => 'btn btn-info']) ?>
+        <?php 
+		
+		if($model->status == 0){
+			echo Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']);
+			echo ' ';
+			echo Html::a('Submit', ['submit', 'id' => $model->id, 'course' => $model->course_id], ['class' => 'btn btn-success', 'data' => [
+                'confirm' => 'Are you sure to submit? You will no longer could update the teaching materials. '
+            ]]);
+			echo ' ';
+			echo '<div class="pull-right">' . Html::a('Delete', ['delete', 'id' => $model->id], [
+				'class' => 'btn btn-danger',
+				'data' => [
+					'confirm' => 'Are you sure you want to delete this item?',
+					'method' => 'post',
+				],
+			]) . '</div>';
+		}
+		 ?>
+    </div>
+<style>
+table.detail-view th {
+    width:20%;
+}
+</style>
 
     <div class="box">
 <div class="box-header"></div>
@@ -32,6 +48,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'material_name',
+			'typeDesc',
+			'statusName:html',
 			'course.codeCourseString',
             'createdBy.fullname',
             'created_at:datetime',
@@ -42,15 +60,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="box">
 <div class="box-header">
-<h3 class="box-title">Teaching Materials for Course File (.pdf)</h3>
+<h3 class="box-title">List of Teaching Materials</h3>
 </div>
 <div class="box-body">
 
   <table class="table table-striped table-hover">
   <thead>
   <tr>
-  <th>#</th>
-  <th width="30%">File Name</th>
+  <th width="5%">#</th>
+  <th width="50%">Document Name</th>
   <th>Uploaded Files</th>
   </tr>
 </thead>
@@ -71,7 +89,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				<td><?php 
 				
 				if($item->item_file){
-					echo Html::a('<span class="glyphicon glyphicon-download-alt"></span> Download', ['download-file', 'attr'=> 'item', 'id' => $item->id] , ['class' => 'btn btn-sm btn-warning', 'target' => '_blank']);
+					echo Html::a('<span class="glyphicon glyphicon-download-alt"></span> Download', ['download-file', 'attr'=> 'item', 'id' => $item->id] , ['class' => 'btn btn-sm btn-danger', 'target' => '_blank']);
 				}else{
 					echo 'No File';
 				}

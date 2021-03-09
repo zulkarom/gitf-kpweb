@@ -68,6 +68,55 @@ class TutorialLecture extends \yii\db\ActiveRecord
         }
 
     }
+	
+	public function getProgressExemptClass(){
+		return Common::progress($this->prg_class_exempt);
+	}
+	
+	public function setProgressExemptClass($per){
+		$this->prg_class_exempt = $per;
+		$this->setOverallProgress();
+	}
+	
+	public function getProgressCancelClass(){
+		return Common::progress($this->prg_class_cancel);
+	}
+	
+	public function setProgressCancelClass($per){
+		$this->prg_class_cancel = $per;
+		$this->setOverallProgress();
+	}
+	
+	public function getProgressReceiptAssignment(){
+		return Common::progress($this->prg_receipt_assess);
+	}
+	
+	public function setProgressReceiptAssignment($per){
+		$this->prg_receipt_assess = $per;
+		$this->setOverallProgress();
+	}
+	
+	public function getProgressOverall(){
+		$exempt = $this->prg_class_exempt;
+		$receipt = $this->prg_receipt_assess;
+		$cancel = $this->prg_class_cancel;
+		$total = $exempt + $receipt + $cancel;
+		$avg = $total / 3 * 100;
+		$int = (int)$avg;
+		$per = $int / 100;
+		return $per;
+	}
+	
+	public function getProgressOverallBar(){
+		return Common::progress($this->prg_overall);
+	}
+	
+	public function setOverallProgress(){
+		$this->prg_overall = $this->progressOverall;
+		/* if(!$this->save()){
+			$this->flashError();
+		} */
+	}
 
     public function getTutors()
     {

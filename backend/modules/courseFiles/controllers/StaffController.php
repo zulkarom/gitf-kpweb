@@ -47,6 +47,7 @@ class StaffController extends Controller
         $model->file_controller = 'staff';
 		
 		$path = 'course-files/'.$model->semester_id.'/'.$model->staff->staff_no ;
+		$model->prg_timetable = 1;
 
         return UploadFile::upload($model, $attr, 'updated_at', $path);
 
@@ -79,6 +80,7 @@ class StaffController extends Controller
         
         $model->scenario = $attr . '_delete';
         $model->{$attr_db} = '';
+		$model->prg_timetable = 0;
         $model->updated_at = new Expression('NOW()');
         if($model->save()){
             if (is_file($file)) {

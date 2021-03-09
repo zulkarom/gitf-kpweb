@@ -55,47 +55,90 @@ class CoordinatorResultFinalFileController extends Controller
 			Model::loadMultiple($files, Yii::$app->request->post());
 			//print_r($files);die();
 			
-			$valid = $model->validate();
+			
+			if(Yii::$app->request->post('complete') == 1){
+				$model->progressResultFinal = 1;
+			}else{
+				$model->progressResultFinal = 0;
+			}
+			if(Yii::$app->request->post('na') == 1){
+				$model->na_result_final = 1;
+				$model->progressResultFinal = 1;
+			}else{
+				$model->na_result_final = 0;
+			}
+			//echo $model->progressResultFinal ;die();
+            
+            $valid = $model->validate();
             $valid = Model::validateMultiple($files) && $valid;
 			
-			if($valid){
-				if($model->save()){
-					$flag = true;
-					foreach ($files as $item) {
-						//Yii::$app->session->addFlash('success', $item->file_name);
-						if(!$item->save()){
-							$item->flashError();
-							$flag = false;
-							break;
+            
+            if($valid){
+				$transaction = Yii::$app->db->beginTransaction();
+				try {
+					if($flag = $model->save()){
+						$progress = false;
+						foreach ($files as $item) {
+							if ($flag === false) {
+									break;
+								}
+							if($item->path_file){
+								if($item->save()){
+									$progress = true;
+								}else{
+									$item->flashError();
+									$flag = false;
+									break;
+									
+								}
+							}else{
+								$flag = false;
+							}
 							
 						}
+					if($progress and $model->prg_result_final == 0){
+						$model->progressResultFinal = 0.5;
+						$model->save();
+					}
+						
+						
 					}
 					if($flag){
+						$transaction->commit();
 						Yii::$app->session->addFlash('success', "Data Updated");
-						return $this->redirect(['page', 'id' => $model->id]);
+						return $this->redirect(['default/teaching-assignment-coordinator', 'id' => $model->id]);
+					}else{
+						Yii::$app->session->addFlash('error', "Make sure all files are uploaded");
+						$transaction->rollBack();
 					}
-					
-				}
-			}
+				} catch (Exception $e) {
+                    $transaction->rollBack();
+					//die();
+                    
+                }
+
+            }
 
         }
-		
-		
-		if ($addFile->load(Yii::$app->request->post())) {
-			$count = $addFile->file_number;
-			if($count>0){
-				for($i=1;$i<=$count;$i++){
-					$file = new CoordinatorResultFinalFile;
-					$file->scenario = 'add_rubrics';
-					$file->offered_id = $id;
-					$file->updated_at = new Expression('NOW()');
-					if(!$file->save()){
-						$file->flashError();
-					}
-				}				
-			}
-			Yii::$app->session->addFlash('success', 'File Slots Added');
-			return $this->redirect(['page', 'id' => $id]);
+
+        if ($addFile->load(Yii::$app->request->post())) {
+            $count = $addFile->file_number;
+            if($count>0){
+                for($i=1;$i<=$count;$i++){
+                    $file = new CoordinatorResultFinalFile;
+                    $file->scenario = 'add_result_final';
+                    $file->offered_id = $id;
+                    $file->updated_at = new Expression('NOW()');
+                    if(!$file->save()){
+                        $file->flashError();
+                    }
+                }               
+            }
+			$model->progressResultFinal = 0;
+			$model->na_result_final = 0;
+			$model->save();
+            Yii::$app->session->addFlash('success', 'File Slots Added');
+            return $this->redirect(['page', 'id' => $id]);
         }
         
         return $this->render('/coordinator/class-result-final-upload', [
@@ -118,7 +161,7 @@ class CoordinatorResultFinalFileController extends Controller
     public function actionAdd($id){
         
         $model = new CoordinatorResultFinalFile;
-        $model->scenario = 'add_result_clo';
+        $model->scenario = 'add_result_final';
         
         $model->offered_id = $id;
         $model->updated_at = new Expression('NOW()');
@@ -132,6 +175,9 @@ class CoordinatorResultFinalFileController extends Controller
     
     public function actionDeleteRow($id){
         $model = $this->findCoordinatorResultFinal($id);
+		$model->offered->na_result_final = 0;
+		$model->offered->progressResultFinal = 0.5;
+		$model->offered->save();
         if($model->delete()){
             return $this->redirect(['page', 'id' => $model->offered_id]);
         }

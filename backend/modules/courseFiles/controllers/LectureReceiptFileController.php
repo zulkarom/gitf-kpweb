@@ -52,31 +52,67 @@ class LectureReceiptFileController extends Controller
             
             Model::loadMultiple($files, Yii::$app->request->post());
             //print_r($files);die();
+			
+			if(Yii::$app->request->post('complete') == 1){
+				$model->progressReceiptAssignment = 1;
+			}else{
+				$model->progressReceiptAssignment = 0;
+			}
+			if(Yii::$app->request->post('na') == 1){
+				$model->na_receipt_assess = 1;
+				$model->progressReceiptAssignment = 1;
+			}else{
+				$model->na_receipt_assess = 0;
+			}
             
             $valid = $model->validate();
             $valid = Model::validateMultiple($files) && $valid;
             
             if($valid){
-                if($model->save()){
-                    $flag = true;
-                    foreach ($files as $item) {
-                        //Yii::$app->session->addFlash('success', $item->file_name);
-                        if(!$item->save()){
-                            $item->flashError();
-                            $flag = false;
-                            break;
-                            
-                        }
-                    }
-                    if($flag){
-                        Yii::$app->session->addFlash('success', "Data Updated");
-                        return $this->redirect(['page', 'id' => $model->id]);
-                    }
+				$transaction = Yii::$app->db->beginTransaction();
+				try {
+					if($flag = $model->save()){
+						$progress = false;
+						foreach ($files as $item) {
+							if ($flag === false) {
+									break;
+								}
+							if($item->path_file){
+								if($item->save()){
+									$progress = true;
+								}else{
+									$item->flashError();
+									$flag = false;
+									break;
+									
+								}
+							}else{
+								$flag = false;
+							}
+							
+						}
+					if($progress and $model->prg_receipt_assess == 0){
+						$model->progressReceiptAssignment = 0.5;
+						$model->save();
+					}
+						
+						
+					}
+					if($flag){
+						$transaction->commit();
+						Yii::$app->session->addFlash('success', "Data Updated");
+						return $this->redirect(['default/teaching-assignment-lecture', 'id' => $model->id]);
+					}else{
+						Yii::$app->session->addFlash('error', "Make sure all files are uploaded");
+						$transaction->rollBack();
+					}
+				} catch (Exception $e) {
+                    $transaction->rollBack();
                     
                 }
-            }
 
         }
+		}
 
         if ($addFile->load(Yii::$app->request->post())) {
             $count = $addFile->file_number;
@@ -91,6 +127,9 @@ class LectureReceiptFileController extends Controller
                     }
                 }               
             }
+			$model->progressReceiptAssignment = 0;
+			$model->na_receipt_assess = 0;
+			$model->save();
             Yii::$app->session->addFlash('success', 'File Slots Added');
             return $this->redirect(['page', 'id' => $id]);
         }
@@ -130,6 +169,9 @@ class LectureReceiptFileController extends Controller
 	public function actionDeleteRow($id){
 		$model = $this->findLectureReceipt($id);
 		$file = Yii::getAlias('@upload/' . $model->path_file);
+		$model->lecture->na_receipt_assess = 0;
+		$model->lecture->progressReceiptAssignment= 0.5;
+		$model->lecture->save();
 
 		if($model->delete()){
 			if (is_file($file)) {

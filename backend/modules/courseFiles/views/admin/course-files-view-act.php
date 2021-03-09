@@ -2,6 +2,7 @@
 use yii\bootstrap\Modal;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use backend\modules\courseFiles\models\Common;
 ?>
 
 
@@ -17,7 +18,7 @@ use yii\helpers\Url;
         <th style="width:5%">No.</th>
         <th style="width:40%">Item</th>
         <th style="width:40%">Files</th>
-        <th>Progress</th>
+        <th>Check</th>
       </tr>
     
         
@@ -35,16 +36,29 @@ use yii\helpers\Url;
              if($version == 0){
 				echo 'Coordinator need to select course version.';
 			}else{
-				echo '<ul>
-				<li><a href="'.Url::to(['/esiap/course/fk3', 'course'=> $offer->course_id, 'version' => $version, 'offer' => $offer->id, 'cqi' => 1]).'" target="_blank">FK03 - PENJAJARAN KONSTRUKTIF</a><br />
-				<i>(Course Improvement)</i>
-				</li>
-				</ul>
-				';
+				if($offer->na_cqi == 1){
+					echo '<ul>
+						<li>N/A</li>
+					</ul>
+					';
+				}else{
+					echo '<ul>
+					<li><a href="'.Url::to(['/esiap/course/fk3', 'course'=> $offer->course_id, 'version' => $version, 'offer' => $offer->id, 'cqi' => 1]).'" target="_blank">FK03 - PENJAJARAN KONSTRUKTIF</a><br />
+					<i>(Course Improvement)</i>
+					</li>
+					</ul>
+					';
+				}
+				
 			}
 				
 		echo '</td>
                 <td>';
+				if($offer->prg_cqi == 1){
+					echo Common::pTick();
+				}else{
+					echo Common::pTick(false);
+				}
  
 			
           echo '</td>';

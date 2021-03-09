@@ -1,13 +1,16 @@
-buat back button to coordinator page in material page
-bilangan tutorial colum tidak tepat http://localhost/projects/gitf-kpweb/backend/web/index.php?r=teaching-load%2Fstaff-inv%2Fapprove-letter
-material status kena ada
+progress & submission lock
+table 4 pdf
+signiture fk - utk coordinator & KJ
+attendance tutorial class
+aliran kerja course management
+user manual
+loading image after import marks
+need to setup attendace before class exemption - lepas tu datepicker ganti dengan list kelas dia sahaja
+tekan teachingLoad module redirect mengikut role
+================
+KIV
+================
 CLO assessment kena ada validation http://localhost/projects/gitf-kpweb/backend/web/index.php?r=esiap%2Fcourse%2Fclo-assessment&course=512
 approve letter btn kat bawah
-button back to
-sebelum generate list student pdf, klu xde, tarik data dulu
-kena verify files uploaded ada dulu baru save file name
 upload files name auto masukkan file name https://fkp-portal.umk.edu.my/course-files/lecture-cancel-file/page?id=582
 Record of Student’s Medical Checkup/ Class Exemption kena load student dulu klu takde https://fkp-portal.umk.edu.my/course-files/tutorial-exempt-file/page?id=910
-Student Evaluation Upload letak nama title course name https://fkp-portal.umk.edu.my/course-files/default/student-evaluation?id=22
-rename course version - course information version - teaching material version
-Copy of Final Exam or Assessment Results (including graphs) upload page belum standardise

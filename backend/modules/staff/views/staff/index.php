@@ -27,10 +27,28 @@ $exportColumns = [
 				}
 				
 			],
+			
+			[
+				'attribute' => 'gender',
+				'label' => 'Gender',
+				'value' => function($model){
+						if($model->gender == 1){
+							return 'Male';
+						}else{
+							return 'Female';
+						}
+					
+				}
+				
+			],
+			
 			[
 				'attribute' => 'position_id',
 				'value' => function($model){
-					return $model->staffPosition->position_name;
+					if($model->staffPosition){
+						return $model->staffPosition->position_name;
+					}
+					
 				}
 				
 			],
@@ -60,7 +78,10 @@ $exportColumns = [
 			[
 				'attribute' => 'position_status',
 				'value' => function($model){
-					return $model->staffPosition->position_name;
+					if($model->staffPosition){
+						return $model->staffPosition->position_name;
+					}
+					
 					
 				}
 				
@@ -144,7 +165,9 @@ $exportColumns = [
 			[
 				'attribute' => 'position_id',
 				'value' => function($model){
-					return $model->staffPosition->position_name;
+					if($model->staffPosition){
+						return $model->staffPosition->position_name;
+					}
 				}
 				
 			],

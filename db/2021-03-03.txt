@@ -1,0 +1,1 @@
+ALTER TABLE `tld_course_offered` ADD `status` INT NOT NULL COMMENT '0=draft,10=sbumit' AFTER `coordinator`;

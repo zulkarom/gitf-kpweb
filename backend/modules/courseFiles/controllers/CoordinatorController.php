@@ -39,6 +39,16 @@ class CoordinatorController extends Controller
         $model = $this->findOffered($id);
 		
 		if ($model->load(Yii::$app->request->post())) {
+			if(Yii::$app->request->post('na') == 1){
+				$model->progressCqi = 1;
+				$model->na_cqi = 1;
+			}else if($model->course_cqi){
+				$model->progressCqi = 1;
+				$model->na_cqi = 0;
+			}else{
+				$model->progressCqi = 0;
+				$model->na_cqi = 0;
+			}
 			
 			if($model->save()){
 				Yii::$app->session->addFlash('success', "Data Updated");
@@ -60,4 +70,17 @@ class CoordinatorController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+	
+	public function actionCurrentCoordinatorPage($course){
+		$offer = CourseOffered::find()
+		->joinWith('semester s')
+		->where(['s.is_current' => 1, 'course_id' => $course])->one();
+		if($offer){
+			return $this->redirect(['/course-files/default/teaching-assignment-coordinator', 'id' => $offer->id]);
+		}
+		
+		
+		//jadi kena cari offer id 
+		
+	}
 }

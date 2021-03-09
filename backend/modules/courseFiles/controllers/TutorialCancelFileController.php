@@ -54,27 +54,72 @@ class TutorialCancelFileController extends Controller
             Model::loadMultiple($files, Yii::$app->request->post());
             //print_r($files);die();
             
+			
+			if(Yii::$app->request->post('complete') == 1){
+				$model->progressCancelClass = 1;
+			}else{
+				$model->progressCancelClass = 0;
+			}
+			if(Yii::$app->request->post('na') == 1){
+				$model->na_class_cancel = 1;
+				$model->progressCancelClass = 1;
+			}else{
+				$model->na_class_cancel = 0;
+			}
+			
+			//$model->setOverallProgress();
+			//echo $model->prg_overall ;die();
+            
             $valid = $model->validate();
             $valid = Model::validateMultiple($files) && $valid;
+			
             
             if($valid){
-                if($model->save()){
-                    $flag = true;
-                    foreach ($files as $item) {
-                        //Yii::$app->session->addFlash('success', $item->file_name);
-                        if(!$item->save()){
-                            $item->flashError();
-                            $flag = false;
-                            break;
-                            
-                        }
-                    }
-                    if($flag){
-                        Yii::$app->session->addFlash('success', "Data Updated");
-                        return $this->redirect(['page', 'id' => $model->id]);
-                    }
+				
+				$transaction = Yii::$app->db->beginTransaction();
+				try {
+					if($flag = $model->save()){
+						//echo $model->prg_overall;
+						//die();
+						$progress = false;
+						foreach ($files as $item) {
+							if ($flag === false) {
+									break;
+								}
+							if($item->path_file){
+								if($item->save()){
+									$progress = true;
+								}else{
+									$item->flashError();
+									$flag = false;
+									break;
+									
+								}
+							}else{
+								$flag = false;
+							}
+							
+						}
+					if($progress and $model->prg_class_cancel == 0){
+						$model->progressCancelClass = 0.5;
+						$model->save();
+					}
+						
+						
+					}
+					if($flag){
+						$transaction->commit();
+						Yii::$app->session->addFlash('success', "Data Updated");
+						return $this->redirect(['default/teaching-assignment-tutorial', 'id' => $model->id]);
+					}else{
+						Yii::$app->session->addFlash('error', "Make sure all files are uploaded");
+						$transaction->rollBack();
+					}
+				} catch (Exception $e) {
+                    $transaction->rollBack();
                     
                 }
+
             }
 
         }
@@ -92,6 +137,9 @@ class TutorialCancelFileController extends Controller
                     }
                 }               
             }
+			$model->progressCancelClass = 0;
+			$model->na_class_cancel = 0;
+			$model->save();
             Yii::$app->session->addFlash('success', 'File Slots Added');
             return $this->redirect(['page', 'id' => $id]);
         }
@@ -131,7 +179,9 @@ class TutorialCancelFileController extends Controller
     public function actionDeleteRow($id){
         $model = $this->findTutorialCancel($id);
         $file = Yii::getAlias('@upload/' . $model->path_file);
-
+		$model->tutorial->na_class_cancel = 0;
+		$model->tutorial->progressCancelClass = 0.5;
+		$model->tutorial->save();
         if($model->delete()){
             if (is_file($file)) {
                 unlink($file);

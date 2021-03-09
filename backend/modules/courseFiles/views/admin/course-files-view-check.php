@@ -2,6 +2,8 @@
 use yii\bootstrap\Modal;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use backend\modules\courseFiles\views\admin\Show;
+use backend\modules\courseFiles\models\Common;
 ?>
 
 
@@ -17,7 +19,7 @@ use yii\helpers\Url;
         <th style="width:5%">No.</th>
         <th style="width:40%">Item</th>
         <th style="width:40%">Files</th>
-        <th>Progress</th>
+        <th>Check</th>
       </tr>
     
         
@@ -31,53 +33,42 @@ use yii\helpers\Url;
         echo '<tr><td>'.$item[0]->id.'</td>
                 <td>'.$item[0]->item.'<i><br/>'.$item[0]->item_bi.'</i></td>
                 <td>';
+			echo Show::showCoor($offer, 'coordinatorResultFinalFiles', 'coordinator-result-final-file', 'result_final');
 				
-				if($offer->coordinatorResultFinalFiles)
-			  {
-				$i=1;
-				echo '<ul>';
-				foreach ($offer->coordinatorResultFinalFiles as $file) {
-				  echo '<li>' . Html::a(strtoupper($file->file_name), ['coordinator-result-final-file/download-file', 'attr' => 'path','id'=> $file->id],['target' => '_blank']);
-				  echo '</li>';
-				  $i++;
-				}
-				echo '</ul>';
-			  }
-				
-				echo '</td>
-                <td>';
-     
-                     
-                 
-          echo '</td>';
+			
 
         echo '<tr><td>'.$item[1]->id.'</td>
                 <td>'.$item[1]->item.'<i><br/>'.$item[1]->item_bi.'</i></td>
                 <td>';
-				
+			$boo = true;
 			if($offer->appointmentLetter){
 				echo '<ul>';
 				foreach ($offer->appointmentLetter as $letter) {
-					if($letter->status == 10){
 						if($letter->staffInvolved){
 							$name =  $letter->staffInvolved->staff->staff_title . ' ' .$letter->staffInvolved->staff->user->fullname; 
 								if($letter->steva_file){
-									echo'<li><a href="'.Url::to(['appointment/download-file', 'attr' => 'steva', 'id' => $letter->id]).'" target="_blank" >'.strtoupper($name).'</a></li>';
+									$boo = $boo == false ? false : true;
+									echo'<li><a href="'.Url::to(['appointment/download-file', 'attr' => 'steva', 'id' => $letter->id]).'" target="_blank" >'.strtoupper($name).' '. Common::pTick().'</a></li>';
 								}else{
-									echo'<li>'.strtoupper($name).'</li>';
+									$boo = false;
+									echo'<li>'.strtoupper($name).' '.Common::pTick(false).'</li>';
 								}
 						
 						
+						}else{
+							$boo = false;
 						}
-						
-					}
+
 					
 				}
 				echo '</ul>';
+			}else{
+				$boo = false;
+				echo'<ul><li>'.Common::pTick(false).'</li></ul>';
 			}
 				
 				echo '</td>
-                <td>';
+                <td>' . Common::pTick($boo);
          
                       
                       
@@ -89,13 +80,32 @@ use yii\helpers\Url;
                 <td>'.$item[2]->item.'<i><br/>'.$item[2]->item_bi.'</i></td>
                 <td><ul>';
 				
-				echo '<li><a href="'.Url::to(['/course-files/default/clo-summary-pdf', 'id'=> $offer->id]).'" target="_blank">CLO SUMMARY</a></li>';
-                foreach ($offer->lectures as $lecture) {  
-					echo '<li><a href="'.Url::to(['/course-files/default/clo-analysis-pdf', 'id'=> $lecture->id]).'" target="_blank">'.$lecture->lec_name .' - CLO ANALYSIS</a></li>';
+				
+				$boo = true;
+				$clo_html = '';
+			if($offer->lectures){
+                foreach ($offer->lectures as $lecture) {
+					if($lecture->prg_stu_assess == 1){
+						$boo = $boo == false ? false : true;
+						$clo_html .= '<li><a href="'.Url::to(['/course-files/default/clo-analysis-pdf', 'id'=> $lecture->id]).'" target="_blank">'.$lecture->lec_name .' - CLO ANALYSIS '.Common::pTick().'</a></li>';
+					}else{
+						$boo = false;
+						$clo_html .= '<li>'.$lecture->lec_name .' - CLO ANALYSIS ' .Common::pTick(false). '</li>';
+					}
+					
 				}
 				
+				echo '<li><a href="'.Url::to(['/course-files/default/clo-summary-pdf', 'id'=> $offer->id]).'" target="_blank">CLO SUMMARY '.Common::pTick($boo).'</a></li>';
+				echo $clo_html;
+				
+			}else{
+				$boo = false;
+				echo'<li>'.Common::pTick(false).'</li>';
+			}
+				
+				
 		echo '</ul></td>
-                <td>';
+                <td>' . Common::pTick($boo);
       
                   
           echo '</td>';
@@ -105,7 +115,7 @@ use yii\helpers\Url;
                 <td>'.$item[3]->item.'<i><br/>'.$item[3]->item_bi.'</i></td>
                 <td>';
 				  if($version == 0){
-				echo 'Coordinator need to select course version.';
+				echo 'The coordinator needs to select course version.';
 			}else{
 				echo '<ul>
 				<li><a href="'.Url::to(['/esiap/course/fk3', 'course'=> $offer->course_id, 'version' => $version, 'offer' => $offer->id]).'" target="_blank">FK03 - PENJAJARAN KONSTRUKTIF</a><br />
@@ -116,7 +126,7 @@ use yii\helpers\Url;
 			}
 				
 			echo '</td>
-                <td>';
+                <td>' . Common::pTick($boo);
         
                       
                     

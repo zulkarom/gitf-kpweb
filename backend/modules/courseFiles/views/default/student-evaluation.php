@@ -29,6 +29,6 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 </div>
 
-<?=Html::a('Back to My Teaching Load', ['default/teaching-assignment'], ['class' => 'btn btn-primary'])?>
+<?=Html::a('<span class="glyphicon glyphicon-floppy-disk"></span> Save', ['appointment/appointment-progress', 'id' => $model->id], ['class' => 'btn btn-primary'])?>
 
 

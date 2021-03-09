@@ -31,15 +31,20 @@ class LectureCancelFile extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['file_name'], 'required', 'on' => 'saveall'],
+            [['date_old', 'date_new', 'path_file'], 'required', 'on' => 'saveall'],
+			
             //path upload///
             [['path_file'], 'required', 'on' => 'path_upload'],
-            [['path_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
+            [['path_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 2000000],
             
             [['lecture_id', 'updated_at'], 'required', 'on' => 'add_cancel'],
 
             [['lecture_id'], 'required'],
+			
             [['lecture_id'], 'integer'],
+			
+			[['date_old', 'date_new'], 'safe'],
+			
             [['path_file', 'file_name'], 'string'],
         ];
     }

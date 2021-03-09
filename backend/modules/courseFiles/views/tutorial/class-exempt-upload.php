@@ -37,9 +37,9 @@ $course = $model->lecture->courseOffered->course;
 	ActiveForm::end(); ?></div>
 
 
-
 <?php $form = ActiveForm::begin(); ?>
-  <div class="box">
+
+  <div class="box box-primary">
 
 <div class="box-body">
 
@@ -56,9 +56,13 @@ $course = $model->lecture->courseOffered->course;
 
 <tbody>
 	<?php 
+	$applicable = false;
 	if($files){
 		$i=1;
 		foreach($files as $x=>$file){
+			if($file->ex_date == '0000-00-00'){
+				$file->ex_date = date('Y-m-d');
+			}
 			$file->scenario = 'saveall';
 			$file->file_controller = 'tutorial-exempt-file';
 			?>
@@ -68,6 +72,8 @@ $course = $model->lecture->courseOffered->course;
 			<?=Html::activeHiddenInput($file, "[{$x}]id");?>
 			<?=Html::activeHiddenInput($model, "id");?>
 			
+			
+	
 			
 			<?php 
 
@@ -81,15 +87,13 @@ $course = $model->lecture->courseOffered->course;
 			])->label(false);
 
 			?>
+
+			
 			
 			
 			</td>
 			<td>
-			<?php 
-			//echo $file->ex_date;
-			
-			
-			echo $form->field($file, "[{$x}]ex_date")
+			<?=$form->field($file, "[{$x}]ex_date")
 			->label(false)
 			->widget(DatePicker::classname(), [
 			    'removeButton' => false,
@@ -109,15 +113,39 @@ $course = $model->lecture->courseOffered->course;
 		
 			
 		}
-	}
+	}else{
+			echo '<tr><td colspan="4">No Files</td></tr>';
+			$applicable = true;
+		}
 	
 	?>
 </tbody>
 </table>
 
 
+   
+</div></div> 
 
-</div></div><div class="form-group">
+<?php 
+$check_na = $model->na_class_exempt == 1 ? 'checked' : ''; 
+$check_complete = $model->prg_class_exempt == 1 ? 'checked' : ''; 
+?>
+
+<?php if(!$applicable){ ?>
+<div class="form-group"><label>
+<input type="checkbox" id="complete" name="complete" value="1" <?=$check_complete?> /> Mark as complete
+</label></div>
+<?php } ?>
+
+<?php if($applicable){ ?>
+<div class="form-group"><label>
+<input type="checkbox" id="na" name="na" value="1" <?=$check_na?> /> Mark as not applicable
+</label></div>
+<?php } ?>
+
+<div class="form-group">
+<?=$form->field($model, 'updated_at')->hiddenInput(['value' => time()])->label(false)?>
         <?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> Save', ['class' => 'btn btn-success']) ?>
     </div>
-    <?php ActiveForm::end(); ?>
+
+<?php ActiveForm::end(); ?>

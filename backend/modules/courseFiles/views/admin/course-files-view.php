@@ -15,8 +15,14 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 
+
 <div class="course-files-view">
 
+<?=$this->render('course-loads', [    
+            'offer' =>$modelOffer,
+           ]);
+    ?>
+	
     <!-- Plan -->
     <?=$this->render('course-files-view-plan', [    
             'model' => $model,

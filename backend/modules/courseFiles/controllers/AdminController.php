@@ -78,6 +78,7 @@ class AdminController extends Controller
     {
         $model = new Checklist();
         $modelOffer = $this->findOffered($id);  
+		$modelOffer->calcOverallProgress();
 
         return $this->render('course-files-view', [
             'model' => $model,

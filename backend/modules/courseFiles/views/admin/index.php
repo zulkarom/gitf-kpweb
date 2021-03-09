@@ -40,12 +40,33 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Course Name',
                 
             ],
+			
+			/* [
+                'label' => 'Program',
+				'value' => function($model){
+					if($model->course->program){
+						return $model->course->program->pro_name_short;
+					}
+					
+				}
+                
+            ], */
+			
+			'statusName:html',
+			
+			[
+                'value' => 'progressOverallBar',
+                'label' => 'Progress',
+				'format' => 'html'
+                
+            ],
+			
             ['class' => 'yii\grid\ActionColumn',
-                'contentOptions' => ['style' => 'width: 20.7%'],
+                'contentOptions' => ['style' => 'width: 10.7%'],
                 'template' => '{files}',
                 'buttons'=>[
                     'files'=>function ($url, $model){
-                        return Html::a('<span class="glyphicon glyphicon-th-list"></span> View', ['admin/course-files-view', 'id' => $model->id], ['class' => 'btn btn-warning btn-sm'
+                        return Html::a('<span class="glyphicon glyphicon-search"></span> View', ['admin/course-files-view', 'id' => $model->id], ['class' => 'btn btn-default btn-sm'
                         ]) 
                 ;
                     }
@@ -54,6 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             
             ],
+			
 
         ],
     ]); ?>

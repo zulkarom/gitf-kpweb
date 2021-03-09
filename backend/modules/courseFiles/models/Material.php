@@ -30,8 +30,8 @@ class Material extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['material_name', 'course_id', 'created_by', 'created_at'], 'required'],
-            [['created_by', 'course_id'], 'integer'],
+            [['material_name', 'course_id', 'created_by', 'mt_type', 'created_at'], 'required'],
+            [['created_by', 'course_id', 'status'], 'integer'],
             [['created_at'], 'safe'],
             [['material_name'], 'string', 'max' => 200],
         ];
@@ -44,9 +44,13 @@ class Material extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'material_name' => 'Material Group',
+            'material_name' => 'Material Group Name',
             'created_by' => 'Created By',
-            'created_at' => 'Created At',
+            'created_at' => 'Date',
+			'mt_type' => 'Type',
+			'typeDesc' => 'Type',
+			'statusName' => 'Status',
+			'created_at' => 'Created At',
 			'createdBy.fullname' => 'Created By',
 			'course.codeCourseString' => 'Course'
         ];
@@ -60,9 +64,25 @@ class Material extends \yii\db\ActiveRecord
          return $this->hasOne(Course::className(), ['id' => 'course_id']);
     }
 	
+	public function getStatusName(){
+		if($this->status == 0){
+			return '<span class="label label-warning">DRAFT</span>';
+		}else if($this->status == 10){
+			return '<span class="label label-info">SUBMIT</span>';
+		}
+	}
+	
 	public function getItems(){
          return $this->hasMany(MaterialItem::className(), ['material_id' => 'id']);
     }
+	
+	public function getTypeDesc(){
+		if($this->mt_type == 1){
+			return 'Course File';
+		}else if($this->mt_type == 2){
+			return 'Others';
+		}
+	}
 	
 	public function flashError(){
         if($this->getErrors()){

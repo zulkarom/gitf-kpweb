@@ -39,24 +39,6 @@ $form = ActiveForm::begin([
 
 </div>
 
-
-
-
-
-<div class="form-group">
-<p>
-<?= Html::submitButton('Approve', ['class' => 'btn btn-success', 'name'=> 'actiontype', 'value' => 'approve']) ?>
-&nbsp
-<?= Html::submitButton('Back to Draft', ['class' => 'btn btn-primary', 'name'=> 'actiontype', 'value' => 'draft']) ?>
-</p>
-
-</div>
-
-
-
-
-
-
   <div class="box">
 <div class="box-header"></div>
 <div class="box-body"><?= GridView::widget([
@@ -147,7 +129,14 @@ $form = ActiveForm::begin([
     ]); ?>
     </div>
 </div>
-<br />
+<div class="form-group">
+<p>
+<?= Html::submitButton('<i class="fa fa-check"></i> Approve', ['class' => 'btn btn-success', 'name'=> 'actiontype', 'value' => 'approve', 'data' => ['confirm' => 'Are you sure to approve the selected appointment letters']]) ?>
+&nbsp
+<?= Html::submitButton('Revert to Draft', ['class' => 'btn btn-warning', 'name'=> 'actiontype', 'value' => 'draft', 'data' => ['confirm' => 'Are you sure to revert the approval of the selected appointment letters']]) ?>
+</p>
+
+</div>
 
 
 <?php

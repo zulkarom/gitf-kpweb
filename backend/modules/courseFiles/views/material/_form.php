@@ -15,6 +15,8 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'material_name')->textInput(['maxlength' => true]) ?>
+	
+	<?= $form->field($model, 'mt_type')->dropDownList([1=> 'For Course File (pdf only)', 2 => 'Others (pdf,doc,docx,ppt,pptx,txt)'], ['prompt' => 'Please Select']) ?>
 
 
     <div class="form-group">

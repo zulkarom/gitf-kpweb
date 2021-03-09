@@ -54,30 +54,66 @@ class LectureExemptFileController extends Controller
             Model::loadMultiple($files, Yii::$app->request->post());
             //print_r($files);die();
             
+			if(Yii::$app->request->post('complete') == 1){
+				$model->progressExemptClass = 1;
+			}else{
+				$model->progressExemptClass = 0;
+			}
+			if(Yii::$app->request->post('na') == 1){
+				$model->na_class_exempt = 1;
+				$model->progressExemptClass = 1;
+			}else{
+				$model->na_class_exempt = 0;
+			}
+			//echo $model->progressExemptClass ;die();
+            
             $valid = $model->validate();
             $valid = Model::validateMultiple($files) && $valid;
+			
             
             if($valid){
-                if($model->save()){
-                    $flag = true;
-                    foreach ($files as $item) {
-						if(empty($item->path_file)){
-							Yii::$app->session->addFlash('error', "All files must be uploaded");
-							$flag = false;
+				$transaction = Yii::$app->db->beginTransaction();
+				try {
+					if($flag = $model->save()){
+						$progress = false;
+						foreach ($files as $item) {
+							if ($flag === false) {
+									break;
+								}
+							if($item->path_file){
+								if($item->save()){
+									$progress = true;
+								}else{
+									$item->flashError();
+									$flag = false;
+									break;
+									
+								}
+							}else{
+								$flag = false;
+							}
+							
 						}
-                        if(!$item->save()){
-                            $item->flashError();
-                            $flag = false;
-                            break;
-                            
-                        }
-                    }
-                    if($flag){
-                        Yii::$app->session->addFlash('success', "Data Updated");
-                        return $this->redirect(['page', 'id' => $model->id]);
-                    }
+					if($progress and $model->prg_class_exempt == 0){
+						$model->progressExemptClass = 0.5;
+						$model->save();
+					}
+						
+						
+					}
+					if($flag){
+						$transaction->commit();
+						Yii::$app->session->addFlash('success', "Data Updated");
+						return $this->redirect(['default/teaching-assignment-lecture', 'id' => $model->id]);
+					}else{
+						Yii::$app->session->addFlash('error', "Make sure all files are uploaded");
+						$transaction->rollBack();
+					}
+				} catch (Exception $e) {
+                    $transaction->rollBack();
                     
                 }
+
             }
 
         }
@@ -89,13 +125,15 @@ class LectureExemptFileController extends Controller
                     $file = new LectureExemptFile;
                     $file->scenario = 'add_exempt';
                     $file->lecture_id = $id;
-					$file->ex_date = date('Y-m-d', time());
                     $file->updated_at = new Expression('NOW()');
                     if(!$file->save()){
                         $file->flashError();
                     }
                 }               
             }
+			$model->progressExemptClass = 0;
+			$model->na_class_exempt = 0;
+			$model->save();
             Yii::$app->session->addFlash('success', 'File Slots Added');
             return $this->redirect(['page', 'id' => $id]);
         }
@@ -136,6 +174,9 @@ class LectureExemptFileController extends Controller
 	public function actionDeleteRow($id){
 		$model = $this->findLectureExempt($id);
 		$file = Yii::getAlias('@upload/' . $model->path_file);
+		$model->lecture->na_class_exempt = 0;
+		$model->lecture->progressExemptClass= 0.5;
+		$model->lecture->save();
 
 		if($model->delete()){
 			if (is_file($file)) {

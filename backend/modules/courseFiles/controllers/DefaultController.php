@@ -16,6 +16,7 @@ use backend\modules\teachingLoad\models\Staff;
 use backend\modules\teachingLoad\models\CourseOffered;
 use backend\modules\teachingLoad\models\StaffInvolved;
 use backend\modules\teachingLoad\models\CourseLecture;
+use backend\modules\teachingLoad\models\TutorialLecture;
 use backend\modules\teachingLoad\models\AppointmentLetter;
 
 use backend\modules\courseFiles\models\Api;
@@ -45,6 +46,19 @@ class DefaultController extends Controller
     {
        
     }
+	
+	public function actionSubmitCourseFile($id){
+		//sepatutnya kena check progress dulu
+		$offer = $this->findOffered($id);
+		$course = $offer->course;
+		
+		$offer->status = 10;
+		if($offer->save()){
+			Yii::$app->session->addFlash('success', "The course file for ".$course->course_code ." ". $course->course_name ." has been successfully submitted.");
+			return $this->redirect(['teaching-assignment']);
+			
+		}
+	}
 
 
     public function behaviors()
@@ -136,16 +150,17 @@ class DefaultController extends Controller
     public function actionTeachingAssignmentTutorial($id)
     {
         $model = new Checklist();
-        $tutorial_id = $id;
+        $tutorial = $this->findTutorial($id);
         return $this->render('teaching-assignment-tutorial', [
             'model' => $model,
-            'tutorial_id' => $tutorial_id,
+            'tutorial' => $tutorial,
         ]);
     }
 	
 	public function actionCoordinatorView($id){
 		$model = new Checklist();
 		$offer = $this->findOffered($id);
+		$offer->calcOverallProgress();
 		return $this->render('coordinator-view', [
             'model' => $model,
             'modelOffer' => $offer,
@@ -159,9 +174,12 @@ class DefaultController extends Controller
 		$offer->scenario = 'coor';
 		
 		if ($offer->load(Yii::$app->request->post())) {
+			$offer->progressCourseVersion = 1;
+			$offer->progressMaterial = 1;
 			if($offer->save()){
+				Yii::$app->session->addFlash('success', "Course version and teaching materials have been updated.");
 				return $this->refresh();
-				Yii::$app->session->addFlash('success', "Data Updated");
+				
 			}else{
 				$offer->flashError();
 			}
@@ -173,9 +191,20 @@ class DefaultController extends Controller
         ]);
     }
 	
+	
+	
 	protected function findOffered($id)
     {
         if (($model = CourseOffered::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+	
+	protected function findTutorial($id)
+    {
+        if (($model = TutorialLecture::findOne($id)) !== null) {
             return $model;
         }
 
@@ -194,10 +223,10 @@ class DefaultController extends Controller
 	 public function actionLectureStudentList($id){
 		$lecture = $this->findLecture($id);
 		
-		$kira = StudentLecture::find()->where(['lecture_id' => $id])->count();
+		/* $kira = StudentLecture::find()->where(['lecture_id' => $id])->count();
         if($kira == 0){
 			$this->importStudentListApi($lecture);
-        }
+        } */
 
         $searchModel = new StudentLectureSearch();
         $searchModel->lecture_id = $lecture->id;
@@ -265,10 +294,10 @@ class DefaultController extends Controller
     public function actionLectureStudentAssessment($id, $save = 0){
 		$lecture = $this->findLecture($id);
 		
-		$kira = StudentLecture::find()->where(['lecture_id' => $id])->count();
+		/* $kira = StudentLecture::find()->where(['lecture_id' => $id])->count();
         if($kira == 0){
 			$this->importStudentListApi($lecture);
-        }
+        } */
 
         $searchModel = new StudentLectureSearch();
         $searchModel->lecture_id = $lecture->id;
@@ -278,6 +307,7 @@ class DefaultController extends Controller
 
             $data = Yii::$app->request->post('json_assessment');
             $data = json_decode($data);
+			$progress = 0;
 			/* echo '<pre>';
 			print_r($data);die(); */
             
@@ -288,10 +318,7 @@ class DefaultController extends Controller
 				
 				$weight = array_slice($weight,3);
 				$full_mark = array_slice($full_mark,3);
-				
-				
-				
-				//print_r($weight );die();
+
                 foreach (array_slice($data,4) as $stud) {
                    if(is_array($stud) and $stud){
 					   
@@ -299,10 +326,6 @@ class DefaultController extends Controller
 	 			   		$matric = trim($stud[1]);
 						$assess = array_slice($stud, 3);
 						
-/* 						 print_r($assess);
-						print_r($weight);
-						print_r($full_mark);
-						die();  */
 						$weighted_assess = array();
 						$x = 0;
 						foreach($assess as $raw){
@@ -320,13 +343,23 @@ class DefaultController extends Controller
                         $st_lec = StudentLecture::findOne(['matric_no' => $matric, 'lecture_id' => $id]);
                         if($st_lec){
                            $st_lec->assess_result = json_encode($weighted_assess);
-                           $st_lec->save();
+                           if($st_lec->save() and $weighted_assess){
+							   $progress++;
+						   }
                         }
                     }
                     $i++;  
                     }  
                 }
-                Yii::$app->session->addFlash('success', "Import Excel Success"); 
+				$total = count($lecture->students);
+				$dprogress = floor($progress / $total * 100);
+
+				$re = $dprogress / 100;
+				//echo $re ; die();
+				$lecture->progressStudentAssessment = $re;
+				//echo $lecture->prg_stu_assess;die();
+				$lecture->save();
+                Yii::$app->session->addFlash('success', "Import Marks done"); 
 				return $this->redirect(['lecture-student-assessment', 'id' => $id, 'save' => 1]);
             }
             
@@ -353,7 +386,11 @@ class DefaultController extends Controller
 	
 	public function actionResyncStudent($id){
 		$lecture = $this->findLecture($id);
-		$this->importStudentListApi($lecture);
+		if($this->importStudentListApi($lecture)){
+			Yii::$app->session->addFlash('success', "Data Updated");
+			$lecture->progressStudentList = 1;
+			$lecture->save();
+		}
 		return $this->redirect(['lecture-student-list', 'id' => $id]);
 	}
 	
@@ -407,7 +444,11 @@ class DefaultController extends Controller
 				$i++;  
 			}
 			StudentLecture::deleteAll(['stud_check' => 0]);
+			//update progress
+			return true;
+			
 		}
+		return false;
 	}
 	
 	public function importStudentListExcel($id){
@@ -467,24 +508,6 @@ class DefaultController extends Controller
     public function actionLectureStudentAttendance($id){
 		$lecture = $this->findLecture($id);
 
-		if(empty($lecture->attendance_header)){
-			$api = new Api;
-			$api->semester = $lecture->courseOffered->semester_id;
-			$api->subject = $lecture->courseOffered->course->course_code;
-			$api->group = $lecture->lec_name;
-			$data = $api->attendList();
-			
-			if($data->result){
-				$arr = array();
-				foreach($data->result as $class){
-					$arr[] = $class->date;
-				}
-				
-				$lecture->attendance_header = json_encode($arr);
-				$lecture->save();
-			}
-		}
-		
 		if(Yii::$app->request->post()){
 			if($lecture->students){
 			  foreach ($lecture->students as $student) {
@@ -494,6 +517,20 @@ class DefaultController extends Controller
 					Yii::$app->session->addFlash('error', "Saving failed for ".$student->matric_no);
 				}
 			  }
+			  
+			 
+				
+			}
+			 if(Yii::$app->request->post('complete') == 1){
+				$lecture->progressStudentAttendance = 1;
+			}else{
+				$lecture->progressStudentAttendance = 0.5;
+			}
+			if ($lecture->save()) {
+				Yii::$app->session->addFlash('success', "Data Updated");
+				return $this->redirect(['default/teaching-assignment-lecture', 'id' => $id]);
+			}else{
+				$lecture->flashError();
 			}
 			//die();
 		}
@@ -519,25 +556,24 @@ class DefaultController extends Controller
     public function actionAttendanceSync($id){
     	
 		$lecture = $this->findLecture($id);
-		
+
 		$api = new Api;
 		$api->semester = $lecture->courseOffered->semester_id;
 		$api->subject = $lecture->courseOffered->course->course_code;
 		$api->group = $lecture->lec_name;
 		$data = $api->attendList();
-		if($data->result){
-			$arr = array();
-			foreach($data->result as $class){
-				$arr[] = $class->date;
+		if($data){
+			if($data->result){
+				$arr = array();
+				foreach($data->result as $class){
+					$arr[] = $class->date;
+				}
+				
+				$lecture->attendance_header = json_encode($arr);
+				$lecture->save();
 			}
-			
-			$lecture->attendance_header = json_encode($arr);
-			$lecture->save();
 		}
-    	
-		$api->semester = $lecture->courseOffered->semester_id;
-		$api->subject = $lecture->courseOffered->course->course_code;
-		$api->group = $lecture->lec_name;
+
 		$response = $api->summary();
 
 		 	$i=1;
@@ -568,6 +604,9 @@ class DefaultController extends Controller
                 	
               }
             }
+			$lecture->prg_attend_complete = 0;
+			$lecture->progressStudentAttendance = 0.5;
+			$lecture->save();
             return $this->redirect(['lecture-student-attendance', 'id' => $id]);
     }
 

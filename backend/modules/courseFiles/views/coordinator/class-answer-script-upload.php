@@ -7,19 +7,17 @@ use common\models\UploadFile;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
-
-$this->title = 'Upload Files';
-$this->params['breadcrumbs'][] = ['label' => 'Teaching Load', 'url' => ['/course-files/default/teaching-assignment']];
-$this->params['breadcrumbs'][] = ['label' => 'Course Files', 'url' => ['/course-files/default/teaching-assignment-coordinator', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = $this->title;
 $course = $model->course;
+$this->title = $course->course_code . ' '  . $course->course_name;
+$this->params['breadcrumbs'][] = ['label' => 'Teaching Load', 'url' => ['/course-files/default/teaching-assignment']];
+$this->params['breadcrumbs'][] = ['label' => 'Coordinator', 'url' => ['/course-files/default/teaching-assignment-coordinator', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = 'Student’s Final Exam Answer Scripts';
+
 $model->file_controller = 'coordinator-upload';
 ?>
 
-<div><div style="font-size:14px;font-weight:bold"><?=$course->course_code?> <?=$course->course_name?></div>
-<div style="margin-bottom:10px;font-size:14px">Nine (9) Copies of Student’s Final Exam Answer Scripts<br/>
-
-</div>
+<h4><?=$model->semester->longFormat()?></h4>
+<h4>Nine (9) Copies of Student’s Final Exam Answer Scripts</h4>
 
   <div class="box box-primary">
 

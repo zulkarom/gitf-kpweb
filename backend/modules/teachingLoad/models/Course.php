@@ -226,4 +226,10 @@ class Course extends \backend\modules\esiap\models\Course
 	public function getMaterials(){
 		return $this->hasMany(Material::className(), ['course_id' => 'id']);
 	}
+	
+	public function getMaterialSubmit(){
+		return $this->hasMany(Material::className(), ['course_id' => 'id'])->where(['status' => 10, 'mt_type' => 1]);
+	}
+	
+	
 }

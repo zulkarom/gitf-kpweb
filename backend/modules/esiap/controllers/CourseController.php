@@ -23,6 +23,7 @@ use backend\modules\esiap\models\Fk1;
 use backend\modules\esiap\models\Fk2;
 use backend\modules\esiap\models\Fk3;
 use backend\modules\esiap\models\Tbl4;
+use backend\modules\esiap\models\Tbl4Pdf;
 use backend\modules\esiap\models\Tbl4Excel2;
 use backend\modules\esiap\models\Tbl4Excel;
 use yii\web\Controller;
@@ -1219,6 +1220,12 @@ class CourseController extends Controller
 	
 	public function actionTbl4($course, $dev = false, $version = false){
 			$pdf = new Tbl4;
+			$pdf->model = $this->decideVersion($course, $dev, $version);
+			$pdf->generatePdf();
+	}
+	
+	public function actionTbl4Pdf($course, $dev = false, $version = false){
+			$pdf = new Tbl4Pdf;
 			$pdf->model = $this->decideVersion($course, $dev, $version);
 			$pdf->generatePdf();
 	}
