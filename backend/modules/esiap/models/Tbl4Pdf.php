@@ -48,8 +48,9 @@ class Tbl4Pdf
 		$this->creditValue();
 		$this->prerequisite();
 		$this->clo();
-		$this->mapping(); */
-		$this->transferable();
+		$this->mapping(); 
+		$this->transferable();*/
+		$this->slt();
 		$this->htmlWriting();
 		
 
@@ -70,6 +71,7 @@ class Tbl4Pdf
 	public $border_not_bottom;
 	public $border_bottom;
 	public $border_left;
+	public $border_right;
 	public $border_left_bottom;
 	public $border_right_bottom;
 	
@@ -82,6 +84,7 @@ class Tbl4Pdf
 		$this->sborder = 'border: 1px solid #000000';
 		$this->border_top_left = 'style="border-top: 1px solid #000000;border-left: 1px solid #000000;"';
 		$this->border_left = 'style="border-left: 1px solid #000000;"';
+		$this->border_right = 'style="border-right: 1px solid #000000;"';
 		$this->border_right_left = 'style="border-right: 1px solid #000000;border-left: 1px solid #000000;"';
 		$this->border_top_right = 'style="border-top: 1px solid #000000;border-right: 1px solid #000000;"';
 		
@@ -374,7 +377,7 @@ if($staff){
 			$clo_n = 'CLO'.$clonumber;
 		}
 		
-		$this->clo_plo_html .= '<td align="center" style="'.$this->sborder.';line-height:90%">'.$clo_n.'</td>';
+		$this->clo_plo_html .= '<td align="center" style="'.$border.';line-height:90%">'.$clo_n.'</td>';
 		for($e=1;$e<=12;$e++){
 			$plo_str = 'PLO'.$e;
 			$this->clo_plo_html .='<td align="center" '.$border.'>';
@@ -525,27 +528,144 @@ Indicate the primary causal link between the CLO and PLO by ticking  \'√\' in 
 	}
 	
 	public function transferable(){
-		$wall = $this->col_label + $this->col_content
+		$wall = $this->col_label + $this->col_content;
 		$col_label = $this->col_label + 70;;
 		$col_num = 28;
-		$col_content = $wall - $col_label;
 		$col_last = 50;
-	
-	$html = '<tr>
-<td width="'.$this->colnum.'" align="center" '.$this->border.'>9</td>
+		$col_content = $wall - $col_label - $col_last - $col_num;
+		
+		$transferables = $this->model->profile->transferables;
+		$kira = count($transferables);
+		$total = $kira > 3 ? $kira : 3;
+		$arr_transfer = array();
+		$x = 1;
+		if($transferables){
+			foreach($transferables as $transfer){
+				$arr_transfer[$x] = $transfer->transferable->transferable_text_bi;
+				$x++;
+			}
+		
+		}
+		$rowspan_num = $total + 4;
+		$rowspan_desc = $total + 2;
 
+	$html = '<tr>
+<td width="'.$this->colnum.'" align="center" '.$this->border.' rowspan="'.$rowspan_num.'">9</td>
 <td width="'.$wall.'" colspan="26" '.$this->border_not_bottom.'>Transferable Skills (if applicable)
 </td>
 </tr>';
 
-	$html .= '<tr>
-<td width="'.$this->colnum.'" align="center" '.$this->border.'></td>
+$html .= '<tr>
+<td width="'.$col_label.'" colspan="6" '.$this->border_right_left.' rowspan="'.$total.'"><i>(Skills learned in the course of study which can be useful and utilized in other settings)</i></td>
+<td width="'.$col_num.'" '.$this->shade_light.' align="center">1</td>
+<td width="'.$col_content.'" '.$this->border.' colspan="17">';
 
-<td width="'.$wall.'" colspan="26" '.$this->border_not_bottom.'><i>(Skills learned in the course of study which can be useful and utilized in other settings)</i>
+if(array_key_exists(1, $arr_transfer)){
+	$html .= $arr_transfer[1];
+}
+
+$html .='</td>
+<td width="'.$col_last.'" '.$this->border_right_left.' colspan="17"></td>
+</tr>';
+
+for($i=1;$i<=$total;$i++){
+	if($i > 1){
+		$html .= '<tr>
+		<td width="'.$col_num.'" '.$this->shade_light.' align="center">'.$i.'</td>
+		<td width="'.$col_content.'" '.$this->border.' colspan="17">';
+		if(array_key_exists($i, $arr_transfer)){
+			$html .= $arr_transfer[$i];
+		}
+		$html .= '</td><td width="'.$col_last.'" '.$this->border_right_left.' colspan="17"></td>
+		</tr>';
+	}
+}
+
+$span = $col_num + $col_content;
+$html .= '<tr style="line-height:6px">
+		<td width="'.$col_label.'" colspan="6" '.$this->border_left.'></td>
+		<td width="'.$span.'"  colspan="18">Open-ended response (if any)';
+		$html .= '</td><td width="'.$col_last.'" '.$this->border_right.' colspan="17"></td>
+		</tr>';
+//open 
+$trans_text = $this->model->profile->transfer_skill_bi;
+$html .= '<tr>
+		<td width="'.$col_label.'" colspan="6" '.$this->border_right_left.'></td>
+		<td width="'.$col_num.'" '.$this->shade_light.' align="center">'.$i.'</td>
+		<td width="'.$col_content.'" '.$this->border.' colspan="17">'.$trans_text;
+
+		$html .= '</td><td width="'.$col_last.'" '.$this->border_right_left.' colspan="17"></td>
+		</tr>';
+
+	$html .= '<tr style="line-height:6px">
+<td width="'.$wall.'" colspan="26" '.$this->border_not_top.'> 
 </td>
 </tr>';
 
 $this->html .= $html;
+	}
+	
+	public function slt(){
+	$wall = $this->col_label + $this->col_content;
+	
+	$html = '<tr>
+	<td width="'.$this->colnum.'" align="center" '.$this->border.'>10</td>
+	<td width="'.$wall.'" colspan="26" '.$this->border .'>Distribution of Student Learning Time (SLT)
+	<br />Note: This SLT calculation is designed for home grown programme only.
+	<br />
+	</td>
+	</tr>';
+	
+	
+	$col_topic = 190;
+	$col_clo = 50;
+	$col_learning = 300;
+	$col_total_slt = 50;
+	$col_last = 30;
+	$col_f2f = 220;
+	$col_nf2f = $col_learning - $col_f2f;
+	$col_physical = $col_f2f / 2;
+	$col_online = $col_f2f / 2;
+	$col_first = $wall - $col_topic - $col_clo - $col_learning - $col_total_slt - $col_last;
+	$rowspan_topic = 3;
+	
+	$html .= '<tr align="center">
+	<td width="'.$this->colnum.'" align="center" '.$this->border.'></td>
+	<td width="'.$col_first.'" '.$this->border.'></td>
+	<td width="'.$col_topic.'" '.$this->shade_light.' colspan="7" rowspan="'.$rowspan_topic.'">Course Content Outline and Subtopics</td>
+	<td width="'.$col_clo.'" '.$this->shade_light.' colspan="2" rowspan="'.$rowspan_topic.'">CLO*</td>
+	<td width="'.$col_learning.'" '.$this->shade_light.' colspan="11">Learning and Teaching Activities**</td>
+	<td width="'.$col_total_slt.'" '.$this->shade_light.' colspan="3" rowspan="'.$rowspan_topic.'">Total SLT</td>
+	<td width="'.$col_last.'" '.$this->border.' colspan="2"></td>
+	</tr>';
+	
+	$html .= '<tr align="center">
+	<td width="'.$this->colnum.'" align="center" '.$this->border.'></td>
+	<td width="'.$col_first.'" '.$this->border.'></td>
+
+
+	<td width="'.$col_f2f.'" '.$this->shade_light.' colspan="8">Face-to-Face (F2F)</td>
+	<td width="'.$col_nf2f.'" '.$this->shade_light.' colspan="3" rowspan="2">NF2F
+Independent Learning
+(Asynchronous)</td>
+	<td width="'.$col_last.'" '.$this->border.' colspan="2"></td>
+	</tr>';
+	
+	$html .= '<tr align="center">
+	<td width="'.$this->colnum.'" align="center" '.$this->border.'></td>
+	<td width="'.$col_first.'" '.$this->border.'></td>
+
+
+	<td width="'.$col_physical.'" '.$this->shade_light.' colspan="4">Physical</td>
+	<td width="'.$col_online.'" '.$this->shade_light.' colspan="4">Online/ Technology-mediated (Synchronous)</td>
+	
+	<td width="'.$col_last.'" '.$this->border.' colspan="2"></td>
+	</tr>';
+	
+	
+
+$this->html .= $html;
+		
 	}
 	
 

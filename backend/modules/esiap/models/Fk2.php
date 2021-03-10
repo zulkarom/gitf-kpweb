@@ -363,13 +363,15 @@ foreach($this->model->syllabus as $row){
 	$html .='<td>';
 	$arr_all = json_decode($row->topics);
 	if($arr_all){
+	$t = 1;
 	foreach($arr_all as $rt){
+		$break = $t == 1 ? '' : '<br />';
 		if($rt->top_bm == trim('Cuti Pertengahan Semester') or $rt->top_bi == trim('Mid Semester Break')){
 		$mid = true;
 			$html .= '<span style="font-size:10pt;">' . $rt->top_bm ."<br /><i>". $rt->top_bi . "</i></span>";
 		}else{
 		$mid = false;
-			$html .= '<span style="font-size:10pt;">' . $rt->top_bm ." / <i>". $rt->top_bi . "</i></span>";
+			$html .= $break . '<span style="font-size:10pt;">' . $rt->top_bm ." / <i>". $rt->top_bi . "</i></span>";
 		}
 		
 		
@@ -380,6 +382,7 @@ foreach($this->model->syllabus as $row){
 			}
 		$html .='</table>';
 		}
+		$t++;
 	}
 	}
 	$clo_str = '';;
