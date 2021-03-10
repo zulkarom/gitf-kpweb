@@ -452,20 +452,44 @@ class CourseController extends Controller
 		}
 		
 		if(Yii::$app->request->post()){
+			$verify_clo = true;
+			$verify_content = true;
 			if(Yii::$app->request->validateCsrfToken()){
 				$i = 1;
+				$dur = 0;
 				foreach($syllabus as $syl){
 					if(Yii::$app->request->post('input-week-'.$i)){
 						$syl->scenario = 'saveall';
-						$syl->topics = Yii::$app->request->post('input-week-'.$i);
-						$syl->duration = Yii::$app->request->post('week-duration-'.$i);
+						$topic_json = Yii::$app->request->post('input-week-'.$i);
+						$syl->topics = $topic_json;
+						$topic = json_decode($topic_json);
+							if($topic){
+								if(array_key_exists(0, $topic)){
+									$con = $topic[0];
+									if(!empty($con->top_bm) && !empty($con->top_bi)){
+										$verify_content = $verify_content == false ? false : true;
+									}else{
+										$verify_content = false;
+									}
+								}else{
+									$verify_content = false;
+								}
+							}else{
+								$verify_content = false;
+							}
+						$duration = Yii::$app->request->post('week-duration-'.$i);
+						$syl->duration = $duration;
+						$dur += $duration;
+						$syl->updated_at = new Expression('NOW()');
 						$syl->week_num = '#1';
 						if(Yii::$app->request->post($i . '-clo')){
-							$clo = json_encode(Yii::$app->request->post($i . '-clo'));
+							$verify_clo = $verify_clo == false ? false : true;
+							$post_clo = Yii::$app->request->post($i . '-clo');
+							$clo = json_encode($post_clo);
 							$syl->clo = $clo;
+						}else{
+							$verify_clo = false;
 						}
-						
-						
 						if(!$syl->save()){
 							$syl->flashError();
 						}
@@ -473,10 +497,12 @@ class CourseController extends Controller
 				$i++;
 				}
 				
-				$model->syllabus_break = json_encode(Yii::$app->request->post('sem_break'));
+				if(Yii::$app->request->post('sem_break')){
+					$model->syllabus_break = json_encode(Yii::$app->request->post('sem_break'));
+				}else{
+					$model->syllabus_break = json_encode([7]);
+				}
 				
-				//$model->study_week = Yii::$app->request->post('study-week');
-				//$model->final_week = Yii::$app->request->post('final-week');
 				$model->save();
 				
 				//check additional action
@@ -496,7 +522,15 @@ class CourseController extends Controller
 				//update progress
 				$model->scenario = 'pgrs_syll';
 				if(Yii::$app->request->post('complete') == 1){
-					$model->pgrs_syll = 2;
+					//verify content smua ada
+					//verify clo smua at least 1 setiap week
+					if($this->verifySyllabus($verify_clo, $dur, $verify_content)){
+						$model->pgrs_syll = 2;
+					}else{
+						$model->pgrs_syll = 1;
+						
+					}
+					
 				}else{
 					$model->pgrs_syll = 1;
 				}
@@ -515,6 +549,23 @@ class CourseController extends Controller
 			'syllabus' => $syllabus,
 			'clos' => $clos
         ]);
+	}
+	
+	private function verifySyllabus($clo, $duration, $content){
+		$value = true;
+		if(!$clo){
+			$value = false;
+			Yii::$app->session->addFlash('error', "Cannot mark as complete, make sure at least one clo for each week");
+		}
+		if($duration < 14){
+			$value = false;
+			Yii::$app->session->addFlash('error', "Cannot mark as complete, make sure at least 14 weeks is added");
+		}
+		if(!$content){
+			$value = false;
+			Yii::$app->session->addFlash('error', "Cannot mark as complete, make sure at least one topic for each week in Bahasa and English is available.");
+		}
+		return $value;
 	}
 	
 	public function actionCourseSyllabusReorder($id){
@@ -962,7 +1013,6 @@ class CourseController extends Controller
 					$syl = CourseSyllabus::findOne($key);
 					$syl->scenario = 'slt';
 					if($syl){
-						
 						foreach($val as $i => $v){
 							$syl->{$i} = $v;
 						}

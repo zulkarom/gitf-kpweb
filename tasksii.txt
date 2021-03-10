@@ -1,25 +1,16 @@
-
-coures info nak complete assessment percentage kena 100 dan assessment hanya merujuk kepada 1 clo
-prevent submit klu SLT tak cukup credit
-
 table 4 pdf
-signiture fk - utk coordinator & KJ
 attendance tutorial class
-aliran kerja course management
-user manual
 need to setup attendace before class exemption - lepas tu datepicker ganti dengan list kelas dia sahaja
 kat preview - show progress setiap orang
 material list view untuk admin- in case nak revert to draft
-
 buat course post grad
 staff luar fkp
-
 statistic admin sikit la
-
 allow other type teaching material of file type
-
 letak E kat tick attendance klu ada exemption evidence
-
+signiture fk - utk coordinator & KJ
+aliran kerja course management
+user manual
 ================
 KIV
 ================
