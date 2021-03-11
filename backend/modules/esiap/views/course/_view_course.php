@@ -299,22 +299,7 @@ use yii\helpers\Url;
 		</td>
       </tr>
 	  
-	  <tr>
-        <td><b>ADDITIONAL INFORMATION </b></td>
-        <td>
-		
-		<?php 
-		
-		if($version->profile){
-			echo $version->profile->additional
-			.  '<br /> <i>'  .
-			$version->profile->additional_bi . '</i>';
-			
-		}
-		?>
-
-		</td>
-      </tr>
+	
 	  
     </tbody>
   </table>
@@ -326,7 +311,7 @@ use yii\helpers\Url;
     <thead>
       <tr>
 	  <th>#</th>
-        <th>COURSE LEARNING OUTDOME</th>
+        <th>COURSE LEARNING OUTCOMES</th>
         <th>PLO</th>
         <th>TAXONOMY</th>
 		<th>TEACHING METHODS</th>
@@ -776,6 +761,22 @@ if($version->references){
 		
 		?>
 		
+		</td>
+      </tr>
+	    <tr>
+        <td><b>ADDITIONAL INFORMATION </b></td>
+        <td>
+		
+		<?php 
+		
+		if($version->profile){
+			echo $version->profile->additional
+			.  '<br /> <i>'  .
+			$version->profile->additional_bi . '</i>';
+			
+		}
+		?>
+
 		</td>
       </tr>
 </tbody>

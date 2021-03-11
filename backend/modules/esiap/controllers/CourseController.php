@@ -966,6 +966,7 @@ class CourseController extends Controller
 					$as = CourseAssessment::findOne($key);
 					$as->scenario = 'update_slt';
 					if($as){
+						$val = empty($val) ? 0 : $val;
 						$as->assess_f2f = $val;
 						if(!$as->save()){
 							$flag = false;
@@ -981,6 +982,7 @@ class CourseController extends Controller
 					$as = CourseAssessment::findOne($key);
 					$as->scenario = 'update_slt2';
 					if($as){
+						$val = empty($val) ? 0 : $val;
 						$as->assess_nf2f = $val;
 						if(!$as->save()){
 							$flag = false;
@@ -998,6 +1000,7 @@ class CourseController extends Controller
 					$as = CourseAssessment::findOne($key);
 					$as->scenario = 'update_slt_tech';
 					if($as){
+						$val = empty($val) ? 0 : $val;
 						$as->assess_f2f_tech = $val;
 						if(!$as->save()){
 							$flag = false;
@@ -1014,6 +1017,7 @@ class CourseController extends Controller
 					$syl->scenario = 'slt';
 					if($syl){
 						foreach($val as $i => $v){
+							$v = empty($v) ? 0 : $v;
 							$syl->{$i} = $v;
 						}
 						if(!$syl->save()){

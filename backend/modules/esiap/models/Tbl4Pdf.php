@@ -50,7 +50,12 @@ class Tbl4Pdf
 		$this->clo();
 		$this->mapping(); 
 		$this->transferable();*/
-		$this->slt();
+		$this->sltColums();
+		/* $this->sltHead();
+		$this->sltSyllabus();  */
+		$this->sltContAssessHead();
+		$this->sltSumAssessHead();
+		$this->sltSummary();
 		$this->htmlWriting();
 		
 
@@ -74,6 +79,7 @@ class Tbl4Pdf
 	public $border_right;
 	public $border_left_bottom;
 	public $border_right_bottom;
+	public $wall;
 	
 	public function setDocStyle(){
 		$this->shade_light = 'style="background-color:#e7e6e6; border: 1px solid #000000"';
@@ -113,47 +119,48 @@ class Tbl4Pdf
 		$col_label = $this->col_label;
 		$col_content = $wtab - $colnum - $col_label;
 		$this->col_content = $col_content;
+		$this->wall = $wtab - $colnum;
 		$col1 = $col_content / 3;
 		$col2 = $col1 * 2;
 		$border = $this->border;
 
 
-if($this->model->course->classification){
+		if($this->model->course->classification){
 			$class = $this->model->course->classification->class_name_bi;
 		}else{
 			$class = '';
 		}
 
-$html = '<table border="0" width="'.$wtab.'" cellpadding="5">
+		$html = '<table border="0" width="'.$wtab.'" cellpadding="5">
 
-<tr>
+		<tr>
 
-<td style="border: 1px solid #000000;line-height:1px" colspan="27"></td>
-</tr>
+		<td style="border: 1px solid #000000;line-height:1px" colspan="27"></td>
+		</tr>
 
-<tr>
-<td width="'.$colnum.'" rowspan="3" align="center" '.$border.'>1</td>
+		<tr>
+		<td width="'.$colnum.'" rowspan="3" align="center" '.$border.'>1</td>
 
-<td width="'.$col_label.'" colspan="3">Name of Course:</td>
-<td width="'.$col_content.'" colspan="23" '.$border.'>'. strtoupper($this->model->course->course_name_bi) . '</td>
-</tr>
+		<td width="'.$col_label.'" colspan="3">Name of Course:</td>
+		<td width="'.$col_content.'" colspan="23" '.$border.'>'. strtoupper($this->model->course->course_name_bi) . '</td>
+		</tr>
 
-<tr>
-<td width="'.$col_label.'" '.$border.' colspan="3">Course Code: </td>
-<td width="'.$col_content.'" colspan="23" '.$border.'>'.$this->model->course->course_code .'</td>
-</tr>
-<tr>
-<td width="'.$col_label.'" '.$border.'  colspan="3">Course Classification: </td>
-<td width="'.$col1.'" colspan="7" '.$border.'>'.$class .'</td>
-<td width="'.$col2.'" colspan="16" '.$this->shade_light.'></td>
-</tr>
-
-
-';
+		<tr>
+		<td width="'.$col_label.'" '.$border.' colspan="3">Course Code: </td>
+		<td width="'.$col_content.'" colspan="23" '.$border.'>'.$this->model->course->course_code .'</td>
+		</tr>
+		<tr>
+		<td width="'.$col_label.'" '.$border.'  colspan="3">Course Classification: </td>
+		<td width="'.$col1.'" colspan="7" '.$border.'>'.$class .'</td>
+		<td width="'.$col2.'" colspan="16" '.$this->shade_light.'></td>
+		</tr>
 
 
+		';
 
-$this->html .= $html;
+
+
+		$this->html .= $html;
 
 
 
@@ -161,12 +168,12 @@ $this->html .= $html;
 	
 	public function synopsis(){
 		$html = '<tr>
-<td width="'.$this->colnum.'" align="center" '.$this->border.'>2</td>
+		<td width="'.$this->colnum.'" align="center" '.$this->border.'>2</td>
 
-<td width="'.$this->col_label.'" colspan="3" '.$this->border.'>Synopsis:</td>
-<td width="'.$this->col_content.'" colspan="23" '.$this->border.'>'.$this->model->profile->synopsis_bi .'</td>
-</tr>';
-	$this->html .= $html;
+		<td width="'.$this->col_label.'" colspan="3" '.$this->border.'>Synopsis:</td>
+		<td width="'.$this->col_content.'" colspan="23" '.$this->border.'>'.$this->model->profile->synopsis_bi .'</td>
+		</tr>';
+		$this->html .= $html;
 
 	}
 	
@@ -176,33 +183,33 @@ $this->html .= $html;
 		$col_name = $this->col_content - $col_num_staff;
 		$rowspan =  count($staff );
 		$html = '<tr>
-<td width="'.$this->colnum.'" align="center" '.$this->border.' rowspan="'. $rowspan .'" >3</td>
+		<td width="'.$this->colnum.'" align="center" '.$this->border.' rowspan="'. $rowspan .'" >3</td>
 
-<td width="'.$this->col_label.'" colspan="3" '.$this->border.' rowspan="'. $rowspan .'" >Name(s) of academic staff:</td>';
+		<td width="'.$this->col_label.'" colspan="3" '.$this->border.' rowspan="'. $rowspan .'" >Name(s) of academic staff:</td>';
 
 
-if($staff){
-	$i = 1;
-	foreach($staff as $st){
-		$td = '<td width="'.$col_num_staff.'"  '.$this->shade_light.' align="center">';
-		$td .= $i;
-		$td .= '</td>';
-		$td .= '<td width="'.$col_name.'" colspan="22" '.$this->border.'>';
-		$td .= $st->staff->niceName;
-		$td .= '</td>';
-		
-		if($i == 1){
-			$html .= $td . '</tr>';
-		}else{
-			$html .= '<tr>';
-			$html .= $td;
-			$html .= '</tr>';
+		if($staff){
+			$i = 1;
+			foreach($staff as $st){
+				$td = '<td width="'.$col_num_staff.'"  '.$this->shade_light.' align="center">';
+				$td .= $i;
+				$td .= '</td>';
+				$td .= '<td width="'.$col_name.'" colspan="22" '.$this->border.'>';
+				$td .= $st->staff->niceName;
+				$td .= '</td>';
+				
+				if($i == 1){
+					$html .= $td . '</tr>';
+				}else{
+					$html .= '<tr>';
+					$html .= $td;
+					$html .= '</tr>';
+				}
+				$i++;
+			}
 		}
-		$i++;
-	}
-}
 
-	$this->html .= $html;
+		$this->html .= $html;
 
 	}
 	
@@ -429,7 +436,7 @@ if($staff){
 	}
 	
 	public function mapping(){
-	$wall = $this->col_label + $this->col_content;
+	$wall = $this->wall;
 	$col_first = 10;
 	$col_last = 9;
 	$col_clo = 80;
@@ -528,7 +535,7 @@ Indicate the primary causal link between the CLO and PLO by ticking  \'√\' in 
 	}
 	
 	public function transferable(){
-		$wall = $this->col_label + $this->col_content;
+		$wall = $this->wall;
 		$col_label = $this->col_label + 70;;
 		$col_num = 28;
 		$col_last = 50;
@@ -605,69 +612,454 @@ $html .= '<tr>
 $this->html .= $html;
 	}
 	
-	public function slt(){
-	$wall = $this->col_label + $this->col_content;
+	public	$col_topic ;
+	public	$col_clo;
+	public	$col_learning ;
+	public	$col_total_slt;
+	public	$col_last ;
+	public	$col_f2f ;
+	public	$col_nf2f;
+	public	$col_phy_online;
+	public	$col_unit;
+	public	$col_first;
+	public $col_subtotal;
+	public $col_week;
+	public $col_topic_text;
 	
-	$html = '<tr>
-	<td width="'.$this->colnum.'" align="center" '.$this->border.'>10</td>
-	<td width="'.$wall.'" colspan="26" '.$this->border .'>Distribution of Student Learning Time (SLT)
-	<br />Note: This SLT calculation is designed for home grown programme only.
-	<br />
-	</td>
-	</tr>';
+	public function sltColums(){
+		$wall = $this->wall;
+		$this->col_topic = 225;
+		$this->col_clo = 35;
+		$this->col_learning = 300;
+		$this->col_total_slt = 48;
+		$this->col_last = 15;
+		$this->col_f2f = 225;
+		$this->col_nf2f = $this->col_learning - $this->col_f2f;
+		$this->col_phy_online = $this->col_f2f / 2;
+		$this->col_unit = $this->col_phy_online / 4;
+		$this->col_first = $wall - $this->col_topic - $this->col_clo - $this->col_learning - $this->col_total_slt - $this->col_last;
+		$this->col_subtotal = $this->col_topic + $this->col_clo + $this->col_learning;
+		
+		$this->col_week = 27;
+		$this->col_topic_text = $this->col_topic - $this->col_week ;
+	}
 	
-	
-	$col_topic = 190;
-	$col_clo = 50;
-	$col_learning = 300;
-	$col_total_slt = 50;
-	$col_last = 30;
-	$col_f2f = 220;
-	$col_nf2f = $col_learning - $col_f2f;
-	$col_physical = $col_f2f / 2;
-	$col_online = $col_f2f / 2;
-	$col_first = $wall - $col_topic - $col_clo - $col_learning - $col_total_slt - $col_last;
-	$rowspan_topic = 3;
-	
-	$html .= '<tr align="center">
-	<td width="'.$this->colnum.'" align="center" '.$this->border.'></td>
-	<td width="'.$col_first.'" '.$this->border.'></td>
-	<td width="'.$col_topic.'" '.$this->shade_light.' colspan="7" rowspan="'.$rowspan_topic.'">Course Content Outline and Subtopics</td>
-	<td width="'.$col_clo.'" '.$this->shade_light.' colspan="2" rowspan="'.$rowspan_topic.'">CLO*</td>
-	<td width="'.$col_learning.'" '.$this->shade_light.' colspan="11">Learning and Teaching Activities**</td>
-	<td width="'.$col_total_slt.'" '.$this->shade_light.' colspan="3" rowspan="'.$rowspan_topic.'">Total SLT</td>
-	<td width="'.$col_last.'" '.$this->border.' colspan="2"></td>
-	</tr>';
-	
-	$html .= '<tr align="center">
-	<td width="'.$this->colnum.'" align="center" '.$this->border.'></td>
-	<td width="'.$col_first.'" '.$this->border.'></td>
+	public function sltHead(){
+		
+		
+		$rowspan_topic = 4;
+		$style_head = 'style="background-color:#e7e6e6; border: 1px solid #000000;line-height:9"';
+		
+		$html = '<tr>
+		<td width="'.$this->colnum.'" align="center" '.$this->border.'>10</td>
+		<td width="'.$this->wall.'" colspan="26" '.$this->border .'>Distribution of Student Learning Time (SLT)
+		<br />Note: This SLT calculation is designed for home grown programme only.
+		<br />
+		</td>
+		</tr>';
+		
+		
+		$html .= '<tr align="center">
+		<td width="'.$this->colnum.'" align="center" '.$this->border.'></td>
+		<td width="'.$this->col_first.'" '.$this->border.'></td>
+		<td width="'.$this->col_topic.'" '.$style_head .' colspan="7" rowspan="'.$rowspan_topic.'">Course Content Outline and Subtopics</td>
+		<td width="'.$this->col_clo.'" '.$style_head.' colspan="2" rowspan="'.$rowspan_topic.'">CLO*</td>
+		<td width="'.$this->col_learning.'" '.$this->shade_light.' colspan="11">Learning and Teaching Activities**</td>
+		<td width="'.$this->col_total_slt.'" '.$style_head.' colspan="3" rowspan="'.$rowspan_topic.'">Total SLT</td>
+		<td width="'.$this->col_last.'" '.$this->border.' colspan="2"></td>
+		</tr>';
+		
+		$html .= '<tr align="center">
+		<td width="'.$this->colnum.'" align="center" '.$this->border.'></td>
+		<td width="'.$this->col_first.'" '.$this->border.'></td>
 
 
-	<td width="'.$col_f2f.'" '.$this->shade_light.' colspan="8">Face-to-Face (F2F)</td>
-	<td width="'.$col_nf2f.'" '.$this->shade_light.' colspan="3" rowspan="2">NF2F
-Independent Learning
-(Asynchronous)</td>
-	<td width="'.$col_last.'" '.$this->border.' colspan="2"></td>
-	</tr>';
-	
-	$html .= '<tr align="center">
-	<td width="'.$this->colnum.'" align="center" '.$this->border.'></td>
-	<td width="'.$col_first.'" '.$this->border.'></td>
+		<td width="'.$this->col_f2f.'" '.$this->shade_light.' colspan="8">Face-to-Face (F2F)</td>
+		<td width="'.$this->col_nf2f.'" '.$this->shade_light.' colspan="3" rowspan="3">NF2F
+	Independent Learning
+	(Asynchronous)</td>
+		<td width="'.$this->col_last.'" '.$this->border.' colspan="2"></td>
+		</tr>';
+		
+		$html .= '<tr align="center">
+		<td width="'.$this->colnum.'" align="center" '.$this->border.'></td>
+		<td width="'.$this->col_first.'" '.$this->border.'></td>
 
 
-	<td width="'.$col_physical.'" '.$this->shade_light.' colspan="4">Physical</td>
-	<td width="'.$col_online.'" '.$this->shade_light.' colspan="4">Online/ Technology-mediated (Synchronous)</td>
-	
-	<td width="'.$col_last.'" '.$this->border.' colspan="2"></td>
-	</tr>';
-	
-	
+		<td width="'.$this->col_phy_online.'" '.$this->shade_light.' colspan="4">Physical</td>
+		<td width="'.$this->col_phy_online.'" '.$this->shade_light.' colspan="4">Online/ Technology-mediated (Synchronous)</td>
+		
+		<td width="'.$this->col_last.'" '.$this->border.' colspan="2"></td>
+		</tr>';
+		
+		$html .= '<tr align="center">
+		<td width="'.$this->colnum.'" align="center" '.$this->border.'></td>
+		<td width="'.$this->col_first.'" '.$this->border.'></td>
 
-$this->html .= $html;
+
+		<td width="'.$this->col_unit.'" '.$this->shade_light.'>L</td>
+		<td width="'.$this->col_unit.'" '.$this->shade_light.'>T</td>
+		<td width="'.$this->col_unit.'" '.$this->shade_light.'>P</td>
+		<td width="'.$this->col_unit.'" '.$this->shade_light.'>O</td>
+		<td width="'.$this->col_unit.'" '.$this->shade_light.'>L</td>
+		<td width="'.$this->col_unit.'" '.$this->shade_light.'>T</td>
+		<td width="'.$this->col_unit.'" '.$this->shade_light.'>P</td>
+		<td width="'.$this->col_unit.'" '.$this->shade_light.'>O</td>
+		
+		<td width="'.$this->col_last.'" '.$this->border.' colspan="2"></td>
+		</tr>';
+		
+		
+
+		$this->html .= $html;
 		
 	}
 	
+	public $sub_total_syll = 0;
+	
+	public function sltSyllabus(){
+		if($this->model->syllabus ){
+			$week_num = 1;
+			foreach($this->model->syllabus as $row){
+				if($row->duration > 1){
+					$end = $week_num + $row->duration - 1;
+					$show_week = $week_num . '<br/>-<br />' . $end;
+				}else{
+					$show_week = $week_num;
+				}
+				$week_num = $week_num + $row->duration;
+			$arr_all = json_decode($row->topics);
+			$topic = '';
+			if($arr_all){
+				$i = 1;
+				$topic .= '<table><tr><td width="93%">';
+				foreach($arr_all as $rt){
+					$wk = $i == 1 ? $row->week_num . ".  " : '';
+					$br = $i == 1 ? '' : "<br />";
+					$topic .= $br . $rt->top_bi;
+					
+					if($rt->sub_topic){
+					$topic .= '<br/><table>';
+						foreach($rt->sub_topic as $rst){
+						$topic .='<tr><td width="5%">- </td><td width="95%">' . $rst->sub_bi . '</td></tr>';
+						}
+					$topic .='</table>';
+					}
+				$i++;
+				}
+				$topic .= '</td></tr></table>';
+			}
+			
+			$clo = json_decode($row->clo);
+			$clo_str="";
+			if($clo){
+				$kk=1;
+				foreach($clo as $clonum){
+					$comma = $kk == 1 ? "" : "<br />";
+					$clo_str .= $comma. 'CLO'.$clonum;
+					$kk++;
+				}
+			}
+			
+			$numbers = [$row->pnp_lecture, $row->pnp_tutorial, $row->pnp_practical, $row->pnp_others, 
+			$row->tech_lecture, $row->tech_tutorial, $row->tech_practical, $row->tech_others, 
+			$row->independent];
+			$this->sub_total_syll += array_sum($numbers);
+			
+			$this->sltSyllabusItem($show_week, $topic, $clo_str, $numbers);
+			
+				
+		}
+		}
+		
+		
+		$html = '<tr>
+		<td width="'.$this->colnum.'" '.$this->border.' ></td>
+		<td width="'.$this->col_first.'" '.$this->border.'></td>
+		<td width="'.$this->col_subtotal.'" '.$this->border .' align="right" colspan="20"><b>SUB-TOTAL SLT:</b></td>
+		
+		<td width="'.$this->col_total_slt.'" '.$this->shade_green.' colspan="3" align="center">'.$this->sub_total_syll.'</td>
+		<td width="'.$this->col_last.'" '.$this->border.' colspan="2"></td>
+		</tr>';
+		$this->html .= $html;
+		
+	}
+	
+	
+	
+	public function sltSyllabusItem($show_week, $topic, $clo_str, $numbers){
+		
+		
+		$html = '<tr>
+		<td width="'.$this->colnum.'" '.$this->border.' ></td>
+		<td width="'.$this->col_first.'" '.$this->border.'></td>
+		<td width="'.$this->col_week.'" '.$this->border .' align="center">'.$show_week.'</td>
+		<td width="'.$this->col_topic_text.'" '.$this->border .' colspan="6">'.$topic.'</td>
+		<td width="'.$this->col_clo.'" '.$this->border.' colspan="2" align="center">'.$clo_str.'</td>
+
+		<td width="'.$this->col_unit.'" '.$this->border.' align="center">'.$numbers[0].'</td>
+		<td width="'.$this->col_unit.'" '.$this->border.' align="center">'.$numbers[1].'</td>
+		<td width="'.$this->col_unit.'" '.$this->border.' align="center">'.$numbers[2].'</td>
+		<td width="'.$this->col_unit.'" '.$this->border.' align="center">'.$numbers[3].'</td>
+		<td width="'.$this->col_unit.'" '.$this->border.' align="center">'.$numbers[4].'</td>
+		<td width="'.$this->col_unit.'" '.$this->border.' align="center">'.$numbers[5].'</td>
+		<td width="'.$this->col_unit.'" '.$this->border.' align="center">'.$numbers[6].'</td>
+		<td width="'.$this->col_unit.'" '.$this->border.' align="center">'.$numbers[7].'</td>
+		
+		<td width="'.$this->col_nf2f.'" '.$this->border.' colspan="3" align="center">'.$numbers[8].'</td>
+		<td width="'.$this->col_total_slt.'" '.$this->shade_light.' colspan="3"></td>
+		<td width="'.$this->col_last.'" '.$this->border.' colspan="2"></td>
+		</tr>';
+		$this->html .= $html;
+	}
+	
+	public function sltContAssessHead(){
+		$rowspan_topic = 3;
+		$style_head = 'style="background-color:#e7e6e6; border: 1px solid #000000;line-height:5"';
+		
+
+		
+		$html = '<tr align="center">
+		<td width="'.$this->colnum.'" align="center" '.$this->border.'></td>
+		<td width="'.$this->col_first.'" '.$this->border.'></td>
+		<td width="'.$this->col_topic.'" '.$style_head .' colspan="7" rowspan="2">Continous Assessement</td>
+		<td width="'.$this->col_clo.'" '.$style_head.' colspan="2" rowspan="2">%</td>
+
+		<td width="'.$this->col_f2f.'" '.$this->shade_light.' colspan="8">Face-to-Face (F2F)</td>
+		<td width="'.$this->col_nf2f.'" '.$this->shade_light.' colspan="3" rowspan="2">NF2F
+	Independent Learning
+	(Asynchronous)</td>
+	<td width="'.$this->col_total_slt.'" '.$style_head.' colspan="3" rowspan="2"></td>
+		<td width="'.$this->col_last.'" '.$this->border.' colspan="2"></td>
+		</tr>';
+		
+		
+		
+		$html .= '<tr align="center">
+		<td width="'.$this->colnum.'" align="center" '.$this->border.'></td>
+		<td width="'.$this->col_first.'" '.$this->border.'></td>
+
+
+		<td width="'.$this->col_phy_online.'" '.$this->shade_light.' colspan="4">Physical</td>
+		<td width="'.$this->col_phy_online.'" '.$this->shade_light.' colspan="4">Online/ Technology-mediated (Synchronous)</td>
+		
+		<td width="'.$this->col_last.'" '.$this->border.' colspan="2"></td>
+		</tr>';
+		$this->html .= $html;
+		
+		
+		if($this->model->courseAssessmentFormative){
+			$i = 1;
+			foreach($this->model->courseAssessmentFormative as $rf){
+					$per = $rf->as_percentage + 0;
+					$f2f = $rf->assess_f2f;
+					$tech = $rf->assess_f2f_tech;
+					$nf2f = $rf->assess_nf2f;
+					$numbers = [$f2f, $tech, $nf2f];
+					$name = $rf->assess_name_bi;
+					$this->sltAssessItem($i, $name, $per, $numbers);
+			$i++;
+			}
+		}else{
+			$data = ['','',''];
+			$this->sltAssessItem(1, '', '', $data);
+		}
+		
+		$html = '<tr>
+		<td width="'.$this->colnum.'" '.$this->border.' ></td>
+		<td width="'.$this->col_first.'" '.$this->border.'></td>
+		<td width="'.$this->col_subtotal.'" '.$this->border .' align="right" colspan="20"><b>SUB-TOTAL SLT:</b></td>
+		
+		<td width="'.$this->col_total_slt.'" '.$this->shade_green.' colspan="3" align="center">'.$this->sub_total_syll.'</td>
+		<td width="'.$this->col_last.'" '.$this->border.' colspan="2"></td>
+		</tr>';
+
+		
+		$this->html .= $html;
+	}
+	
+	public function sltSumAssessHead(){
+		$rowspan_topic = 3;
+		$style_head = 'style="background-color:#e7e6e6; border: 1px solid #000000;line-height:5"';
+		
+
+		
+		$html = '<tr align="center">
+		<td width="'.$this->colnum.'" align="center" '.$this->border.'></td>
+		<td width="'.$this->col_first.'" '.$this->border.'></td>
+		<td width="'.$this->col_topic.'" '.$style_head .' colspan="7" rowspan="2">Final Assessement</td>
+		<td width="'.$this->col_clo.'" '.$style_head.' colspan="2" rowspan="2">%</td>
+
+		<td width="'.$this->col_f2f.'" '.$this->shade_light.' colspan="8">Face-to-Face (F2F)</td>
+		<td width="'.$this->col_nf2f.'" '.$this->shade_light.' colspan="3" rowspan="2">NF2F
+	Independent Learning
+	(Asynchronous)</td>
+	<td width="'.$this->col_total_slt.'" '.$style_head.' colspan="3" rowspan="2"></td>
+		<td width="'.$this->col_last.'" '.$this->border.' colspan="2"></td>
+		</tr>';
+		
+		
+		
+		$html .= '<tr align="center">
+		<td width="'.$this->colnum.'" align="center" '.$this->border.'></td>
+		<td width="'.$this->col_first.'" '.$this->border.'></td>
+
+
+		<td width="'.$this->col_phy_online.'" '.$this->shade_light.' colspan="4">Physical</td>
+		<td width="'.$this->col_phy_online.'" '.$this->shade_light.' colspan="4">Online/ Technology-mediated (Synchronous)</td>
+		
+		<td width="'.$this->col_last.'" '.$this->border.' colspan="2"></td>
+		</tr>';
+		$this->html .= $html;
+		
+		
+		if($this->model->courseAssessmentSummative){
+			$i = 1;
+			foreach($this->model->courseAssessmentSummative as $rf){
+					$per = $rf->as_percentage + 0;
+					$f2f = $rf->assess_f2f;
+					$tech = $rf->assess_f2f_tech;
+					$nf2f = $rf->assess_nf2f;
+					$numbers = [$f2f, $tech, $nf2f];
+					$name = $rf->assess_name_bi;
+					$this->sltAssessItem($i, $name, $per, $numbers);
+			$i++;
+			}
+		}else{
+			$data = ['','',''];
+			$this->sltAssessItem(1, '', '', $data);
+		}
+		
+		$html = '<tr>
+		<td width="'.$this->colnum.'" '.$this->border.' ></td>
+		<td width="'.$this->col_first.'" '.$this->border.'></td>
+		<td width="'.$this->col_subtotal.'" '.$this->border .' align="right" colspan="20"><b>SUB-TOTAL SLT:</b></td>
+		
+		<td width="'.$this->col_total_slt.'" '.$this->shade_green.' colspan="3" align="center">'.$this->sub_total_syll.'</td>
+		<td width="'.$this->col_last.'" '.$this->border.' colspan="2"></td>
+		</tr>';
+
+		
+		$this->html .= $html;
+	}
+	
+	public function sltSummary(){
+		$col_summary = $this->col_subtotal - $this->col_week;
+		$html = '<tr>
+		<td width="'.$this->colnum.'" '.$this->border.' ></td>
+		<td width="'.$this->col_first.'" '.$this->border.'></td>
+		<td width="'.$this->col_subtotal.'" '.$this->border .' align="right" colspan="20"><b>SLT for Assessment:</b></td>
+		<td width="'.$this->col_total_slt.'" '.$this->shade_green.' colspan="3" align="center">'.$this->sub_total_syll.'</td>
+		<td width="'.$this->col_last.'" '.$this->border.' colspan="2"></td>
+		</tr>';
+		$html .= '<tr>
+		<td width="'.$this->colnum.'" '.$this->border.' ></td>
+		<td width="'.$this->col_first.'" '.$this->border.'></td>
+		<td width="'.$this->col_subtotal.'" '.$this->border .' align="right" colspan="20"><b>GRAND TOTAL SLT:</b></td>
+		<td width="'.$this->col_total_slt.'" '.$this->shade_green.' colspan="3" align="center"></td>
+		<td width="'.$this->col_last.'" '.$this->border.' colspan="2"></td>
+		</tr>';
+		
+		$html .= '<tr>
+		<td width="'.$this->colnum.'" '.$this->border.' ></td>
+		<td width="'.$this->col_first.'" '.$this->border.'></td>
+		<td width="'.$this->col_week.'" '.$this->border.' align="center">A</td>
+		<td width="'.$col_summary.'" '.$this->border .' align="right" colspan="20">% SLT for F2F Physical Component:<br />
+		<span style="'.$this->font_blue.'">[Total F2F Physical /(Total F2F Physical + Total F2F Online + Total Independent Learning) x 100)]</span>
+		</td>
+		<td width="'.$this->col_total_slt.'" '.$this->shade_green.' colspan="3" align="center"></td>
+		<td width="'.$this->col_last.'" '.$this->border.' colspan="2"></td>
+		</tr>';
+		
+		$html .= '<tr>
+		<td width="'.$this->colnum.'" '.$this->border.' ></td>
+		<td width="'.$this->col_first.'" '.$this->border.'></td>
+		<td width="'.$this->col_week.'" '.$this->border.' align="center">B</td>
+		<td width="'.$col_summary.'" '.$this->border .' align="right" colspan="20">% SLT for Online & Independent Learning Component:<br />
+		<span style="'.$this->font_blue.'">[(Total F2F Online + Total Independent Learning) /( Total F2F Physical + Total F2F Online + Total Independent Learning) x 100]</span>
+		</td>
+		<td width="'.$this->col_total_slt.'" '.$this->shade_green.' colspan="3" align="center"></td>
+		<td width="'.$this->col_last.'" '.$this->border.' colspan="2"></td>
+		</tr>';
+		
+		$html .= '<tr>
+		<td width="'.$this->colnum.'" '.$this->border.' ></td>
+		<td width="'.$this->col_first.'" '.$this->border.'></td>
+		<td width="'.$this->col_week.'" '.$this->border.' align="center">C</td>
+		<td width="'.$col_summary.'" '.$this->border .' align="right" colspan="20">% SLT for All Practical Component:<br />
+		<span style="'.$this->font_blue.'">[% F2F Physical Practical + % F2F Online Practical]</span>
+		</td>
+		<td width="'.$this->col_total_slt.'" '.$this->shade_green.' colspan="3" align="center"></td>
+		<td width="'.$this->col_last.'" '.$this->border.' colspan="2"></td>
+		</tr>';
+		
+		$html .= '<tr>
+		<td width="'.$this->colnum.'" '.$this->border.' ></td>
+		<td width="'.$this->col_first.'" '.$this->border.'></td>
+		<td width="'.$this->col_week.'" '.$this->border.' align="center">C1</td>
+		<td width="'.$col_summary.'" '.$this->border .' align="right" colspan="20">% SLT for F2F Physical Practical Component:<br />
+		<span style="'.$this->font_blue.'">[Total F2F Physical Practical /( Total F2F Physical + Total F2F Online + Total Independent Learning)  x 100)]</span>
+		</td>
+		<td width="'.$this->col_total_slt.'" '.$this->shade_green.' colspan="3" align="center"></td>
+		<td width="'.$this->col_last.'" '.$this->border.' colspan="2"></td>
+		</tr>';
+		
+		$html .= '<tr>
+		<td width="'.$this->colnum.'" '.$this->border.' ></td>
+		<td width="'.$this->col_first.'" '.$this->border.'></td>
+		<td width="'.$this->col_week.'" '.$this->border.' align="center">C2</td>
+		<td width="'.$col_summary.'" '.$this->border .' align="right" colspan="20">% SLT for F2F Online Practical Component:<br />
+		<span style="'.$this->font_blue.'">[Total F2F Online Practical / (Total F2F Physical + Total F2F Online + Total Independent Learning) x 100]</span>
+		</td>
+		<td width="'.$this->col_total_slt.'" '.$this->shade_green.' colspan="3" align="center"></td>
+		<td width="'.$this->col_last.'" '.$this->border.' colspan="2"></td>
+		</tr>';
+		
+		$html .= '<tr>
+		<td width="'.$this->colnum.'" '.$this->border.' ></td>
+		<td width="'.$this->wall.'" '.$this->border.' colspan="25"></td>
+		
+		</tr>';
+		
+		$html .= '<tr>
+		<td width="'.$this->colnum.'" '.$this->border.' ></td>
+		<td width="'.$this->col_first.'" '.$this->border.'></td>
+		<td width="'.$this->col_subtotal.'" '.$this->border .' colspan="20">Please  tick (√) if this course is Industrial Industrial Training/ Clinical Placement/ Practicum using 50% of Effective Learning Time (ELT)</td>
+		<td width="'.$this->col_total_slt.'" '.$this->border.' colspan="3" align="center"></td>
+		<td width="'.$this->col_last.'" '.$this->border.' colspan="2"></td>
+		</tr>';
+		$col_note = $this->col_subtotal + $this->col_total_slt;
+		$html .= '<tr>
+		<td width="'.$this->colnum.'" '.$this->border.' ></td>
+		<td width="'.$this->col_first.'" '.$this->border.'></td>
+		<td width="'.$col_note.'" '.$this->border .' colspan="21">Note:<br />
+		* Indicate the CLO based on the CLO\'s numbering in Item 8<br />
+		** For ODL programme: Courses with mandatory practical requiremnets imposed by the programme standards or any related standards can be exempted from complying to the minimum 80% ODL delivery rule in the SLT.
+		
+		</td>
+	
+		<td width="'.$this->col_last.'" '.$this->border.' colspan="2"></td>
+		</tr>';
+
+		
+		$this->html .= $html;
+	}
+	
+	public function sltAssessItem($i, $name, $per, $numbers){
+		$html = '<tr>
+		<td width="'.$this->colnum.'" '.$this->border.' ></td>
+		<td width="'.$this->col_first.'" '.$this->border.'></td>
+		<td width="'.$this->col_week.'" '.$this->border .' align="center">'.$i.'</td>
+		<td width="'.$this->col_topic_text.'" '.$this->border .' colspan="6">'.$name.'</td>
+		<td width="'.$this->col_clo.'" '.$this->border.' colspan="2" align="center">'.$per.'</td>
+		<td width="'.$this->col_phy_online.'" '.$this->border.' align="center" colspan="4">'.$numbers[0].'</td>
+		<td width="'.$this->col_phy_online.'" '.$this->border.' align="center" colspan="4">'.$numbers[1].'</td>
+		<td width="'.$this->col_nf2f.'" '.$this->border.' colspan="3" align="center">'.$numbers[2].'</td>
+		<td width="'.$this->col_total_slt.'" '.$this->shade_light.' colspan="3"></td>
+		<td width="'.$this->col_last.'" '.$this->border.' colspan="2"></td>
+		</tr>';
+		$this->html .= $html;
+	}
 
 	
 	public function doBody(){
@@ -1258,14 +1650,12 @@ $html
 EOD;
 
 $this->pdf->writeHTML($tbl, true, false, false, false, '');
-		
-		
-
-
 $this->pdf->lineFooterTable = false;
 		
 		
 	}
+	
+	
 
 	
 	public function htmlWriting(){
