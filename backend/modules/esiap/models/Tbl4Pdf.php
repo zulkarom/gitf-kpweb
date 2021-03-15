@@ -813,6 +813,8 @@ $this->html .= $html;
 		$this->html .= $html;
 	}
 	
+	public $total_cont_assess = 0;
+	
 	public function sltContAssessHead(){
 		$rowspan_topic = 3;
 		$style_head = 'style="background-color:#e7e6e6; border: 1px solid #000000;line-height:5"';
@@ -856,6 +858,7 @@ $this->html .= $html;
 					$tech = $rf->assess_f2f_tech;
 					$nf2f = $rf->assess_nf2f;
 					$numbers = [$f2f, $tech, $nf2f];
+					$this->total_cont_assess += array_sum($numbers);
 					$name = $rf->assess_name_bi;
 					$this->sltAssessItem($i, $name, $per, $numbers);
 			$i++;
@@ -870,13 +873,15 @@ $this->html .= $html;
 		<td width="'.$this->col_first.'" '.$this->border.'></td>
 		<td width="'.$this->col_subtotal.'" '.$this->border .' align="right" colspan="20"><b>SUB-TOTAL SLT:</b></td>
 		
-		<td width="'.$this->col_total_slt.'" '.$this->shade_green.' colspan="3" align="center">'.$this->sub_total_syll.'</td>
+		<td width="'.$this->col_total_slt.'" '.$this->shade_green.' colspan="3" align="center">'.$this->total_cont_assess.'</td>
 		<td width="'.$this->col_last.'" '.$this->border.' colspan="2"></td>
 		</tr>';
 
 		
 		$this->html .= $html;
 	}
+	
+	public $total_sum_assess = 0;
 	
 	public function sltSumAssessHead(){
 		$rowspan_topic = 3;
@@ -921,6 +926,7 @@ $this->html .= $html;
 					$tech = $rf->assess_f2f_tech;
 					$nf2f = $rf->assess_nf2f;
 					$numbers = [$f2f, $tech, $nf2f];
+					$this->total_sum_assess += array_sum($numbers);
 					$name = $rf->assess_name_bi;
 					$this->sltAssessItem($i, $name, $per, $numbers);
 			$i++;
@@ -935,7 +941,7 @@ $this->html .= $html;
 		<td width="'.$this->col_first.'" '.$this->border.'></td>
 		<td width="'.$this->col_subtotal.'" '.$this->border .' align="right" colspan="20"><b>SUB-TOTAL SLT:</b></td>
 		
-		<td width="'.$this->col_total_slt.'" '.$this->shade_green.' colspan="3" align="center">'.$this->sub_total_syll.'</td>
+		<td width="'.$this->col_total_slt.'" '.$this->shade_green.' colspan="3" align="center">'.$this->total_sum_assess.'</td>
 		<td width="'.$this->col_last.'" '.$this->border.' colspan="2"></td>
 		</tr>';
 
@@ -945,18 +951,20 @@ $this->html .= $html;
 	
 	public function sltSummary(){
 		$col_summary = $this->col_subtotal - $this->col_week;
+		$total_slt_assess = $this->total_cont_assess + $this->total_sum_assess;
 		$html = '<tr>
 		<td width="'.$this->colnum.'" '.$this->border.' ></td>
 		<td width="'.$this->col_first.'" '.$this->border.'></td>
 		<td width="'.$this->col_subtotal.'" '.$this->border .' align="right" colspan="20"><b>SLT for Assessment:</b></td>
-		<td width="'.$this->col_total_slt.'" '.$this->shade_green.' colspan="3" align="center">'.$this->sub_total_syll.'</td>
+		<td width="'.$this->col_total_slt.'" '.$this->shade_green.' colspan="3" align="center">'.$total_slt_assess.'</td>
 		<td width="'.$this->col_last.'" '.$this->border.' colspan="2"></td>
 		</tr>';
+		$grand_total_slt = $total_slt_assess + $this->sub_total_syll;
 		$html .= '<tr>
 		<td width="'.$this->colnum.'" '.$this->border.' ></td>
 		<td width="'.$this->col_first.'" '.$this->border.'></td>
 		<td width="'.$this->col_subtotal.'" '.$this->border .' align="right" colspan="20"><b>GRAND TOTAL SLT:</b></td>
-		<td width="'.$this->col_total_slt.'" '.$this->shade_green.' colspan="3" align="center"></td>
+		<td width="'.$this->col_total_slt.'" '.$this->shade_green.' colspan="3" align="center">'.$grand_total_slt.'</td>
 		<td width="'.$this->col_last.'" '.$this->border.' colspan="2"></td>
 		</tr>';
 		
