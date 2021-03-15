@@ -363,12 +363,12 @@ INDEPENDENT LEARNING FOR ASSESSMENT<br />
 	</tr>
 	
 	
-	<tr><td colspan="4" align="right"><strong>SLT FOR ASSESSMENT</strong>
+	<tr><td colspan="5" align="right"><strong>SLT FOR ASSESSMENT</strong>
 	</td>
 		<td style="text-align:center"><strong id="jum-assess">0</strong></td>
 	</tr>
 	
-	<tr><td colspan="4" align="right"><strong>GRAND TOTAL FOR SLT</strong>
+	<tr><td colspan="5" align="right"><strong>GRAND TOTAL FOR SLT</strong>
 	</td>
 		<td style="text-align:center"><strong id="total-slt">0</strong></td>
 	</tr>
@@ -399,7 +399,7 @@ Practicum/ WBL using Effective Learning Time(ELT) of 50%
 	</td>
 	</tr>
 	
-	<tr><td colspan="4" align="right"><strong>Generated Credit Hour by SLT</strong>
+	<tr><td colspan="5" align="right"><strong>Generated Credit Hour by SLT</strong>
 	<div id="slt-formula"></div>
 	<div style="color:red;font-size:11px" id="slt-alert">
 <span class="glyphicon glyphicon-alert"></span> Please make sure the generated Credit Hour equal to Credit Hour set for this course!
@@ -408,27 +408,27 @@ Practicum/ WBL using Effective Learning Time(ELT) of 50%
 		<td style="text-align:center"><strong><span id="hour-slt">?</span></strong></td>
 	</tr>
 	
-	<tr><td colspan="4" align="right"><strong>Credit Hour set for this course</strong>
+	<tr><td colspan="5" align="right"><strong>Credit Hour set for this course</strong>
 	</td>
 		<td style="text-align:center"><strong><span id="hour-set"><?=$model->course->credit_hour?></span></strong></td>
 	</tr>
 	
-	<tr><td colspan="4" align="right"><strong>% SLT for F2F Physical Component</strong>
+	<tr><td colspan="5" align="right"><strong>% SLT for F2F Physical Component</strong>
 	</td>
 		<td style="text-align:center"><strong><span id="per-physical">0</span>%</strong></td>
 	</tr>
 	
-	<tr><td colspan="4" align="right"><strong>% SLT for Online & Independent Learning Component</strong>
+	<tr><td colspan="5" align="right"><strong>% SLT for Online & Independent Learning Component</strong>
 	</td>
 		<td style="text-align:center"><strong><span id="per-online">0</span>%</strong></td>
 	</tr>
 	
-	<tr><td colspan="4" align="right"><strong>% SLT for All Practical Component</strong>
+	<tr><td colspan="5" align="right"><strong>% SLT for All Practical Component</strong>
 	</td>
 		<td style="text-align:center"><strong><span id="per-all-practical">0</span>%</strong></td>
 	</tr>
 	
-	<tr><td colspan="4" align="right"><strong>% SLT for F2F Physical Practical Component</strong>
+	<tr><td colspan="5" align="right"><strong>% SLT for F2F Physical Practical Component</strong>
 	</td>
 		<td style="text-align:center"><strong><span id="per-physical-practical">0</span>%</strong></td>
 	</tr>
@@ -436,7 +436,7 @@ Practicum/ WBL using Effective Learning Time(ELT) of 50%
 	
 	
 	
-	<tr><td colspan="4" align="right"><strong>% SLT for F2F Online Practical Component</strong>
+	<tr><td colspan="5" align="right"><strong>% SLT for F2F Online Practical Component</strong>
 	</td>
 		<td style="text-align:center"><strong><span id="per-tech-practical">0</span>%</strong></td>
 	</tr>

@@ -42,17 +42,17 @@ class Tbl4Pdf
 		
 		$this->startPage();
 		$this->courseName();
-		/* $this->synopsis();
+		$this->synopsis();
 		$this->academicStaff();
 		$this->semYear();
 		$this->creditValue();
 		$this->prerequisite();
 		$this->clo();
 		$this->mapping(); 
-		$this->transferable();*/
+		$this->transferable();
 		$this->sltColums();
-		/* $this->sltHead();
-		$this->sltSyllabus();  */
+		$this->sltHead();
+		$this->sltSyllabus(); 
 		$this->sltContAssessHead();
 		$this->sltSumAssessHead();
 		$this->sltSummary();

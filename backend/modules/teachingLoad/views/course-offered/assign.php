@@ -103,7 +103,9 @@ if($model->course->tut_hour == 0){
 		<br/><span class="font-weight:normal:font-style:italic">(e.g. L1, K2, H3)</span></th>
 		<th width="10%">No.Students</th>
         <th>Lecturers</th>
+		
 		 <th width="10%">Tutorial Name<br/><span class="font-weight:normal:font-style:italic">(e.g. T1,T2,T3)</span></th>
+		 <th width="10%">Lecture Prefix*<br/><span class="font-weight:normal:font-style:italic">(if any)</span></th>
 		 <th width="10%">No.Students</th>
 		 <th>Tutors</th>
 		
@@ -166,12 +168,13 @@ if($model->course->tut_hour == 0){
       
     </tbody>
   </table>
+  
 </div>
 
 </div>
 
 </div>
-
+*Put lecture prefix only if it is different with lecture name
 <?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> Save Teaching Assignment', ['class' => 'btn btn-primary']) ?>
 
 
@@ -261,7 +264,9 @@ function colum_2($tutorials,$offer, $lec){
 
 function colum_2_td($tutorial,$offer, $lec){
 	echo'
+	
 	<td><input name="Lecture['.$lec->id.'][tutorial]['.$tutorial->id.'][tutorial_name]" type="text" class="form-control" value="'.$tutorial->tutorial_name.'" /></td>
+	<td><input name="Lecture['.$lec->id.'][tutorial]['.$tutorial->id.'][lec_prefix]" type="text" class="form-control" value="'.$tutorial->lec_prefix.'" /></td>
 	<td><input name ="Lecture['.$lec->id.'][tutorial]['.$tutorial->id.'][student_num]" class="form-control" type="number"  value="'.$tutorial->student_num.'" /></td>
 	<td>';
 

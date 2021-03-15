@@ -37,7 +37,7 @@ class TutorialLecture extends \yii\db\ActiveRecord
             [['lecture_id', 'created_at', 'updated_at'], 'required'],
             [['lecture_id', 'student_num'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
-            [['tutorial_name'], 'string', 'max' => 50],
+            [['tutorial_name', 'lec_prefix'], 'string', 'max' => 50],
         ];
     }
 

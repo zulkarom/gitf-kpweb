@@ -253,6 +253,7 @@ class CourseOfferedController extends Controller
                     foreach ($lec->tutorials as $tutor) {
 
                         $tutor->tutorial_name = $post_lectures[$lec->id]['tutorial'][$tutor->id]['tutorial_name'];
+						$tutor->lec_prefix = $post_lectures[$lec->id]['tutorial'][$tutor->id]['lec_prefix'];
                         $tutor->student_num = $post_lectures[$lec->id]['tutorial'][$tutor->id]['student_num'];
 
                         if(array_key_exists('tutoriallecturers', $post_lectures[$lec->id]['tutorial'][$tutor->id])){
