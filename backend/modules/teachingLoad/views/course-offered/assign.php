@@ -168,13 +168,13 @@ if($model->course->tut_hour == 0){
       
     </tbody>
   </table>
-  
+  <i>*Put lecture prefix only if it is different with lecture name</i>
 </div>
 
 </div>
 
 </div>
-*Put lecture prefix only if it is different with lecture name
+
 <?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> Save Teaching Assignment', ['class' => 'btn btn-primary']) ?>
 
 
