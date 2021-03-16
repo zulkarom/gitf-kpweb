@@ -58,6 +58,7 @@ use backend\modules\courseFiles\models\Common;
 			}else{
 				echo '<ul>
 					<li><a href="'.Url::to(['/esiap/course/fk2', 'course'=> $offer->course_id, 'version' => $version]).'" target="_blank">FK02 - MAKLUMAT KURSUS</a></li>
+					<li><a href="'.Url::to(['/esiap/course/tbl4-pdf', 'course'=> $offer->course_id, 'version' => $version]).'" target="_blank">TABLE 4</a></li>
 					</ul>
 					';
 			}

@@ -24,6 +24,7 @@ class Tbl4Pdf
 	public $col_content;
 	public $font_size = 8;
 	public $font_blue = 'color:#0070c0';
+	public $font_brown = 'color:#c65911';
 	
 	/* $bgcolor = 'E7E6E6';
 	$bgcolor_green = '548235';
@@ -42,19 +43,19 @@ class Tbl4Pdf
 		
 		$this->startPage();
 		$this->courseName();
-		$this->synopsis();
+	/* 	$this->synopsis();
 		$this->academicStaff();
 		$this->semYear();
 		$this->creditValue();
 		$this->prerequisite();
 		$this->clo();
 		$this->mapping(); 
-		$this->transferable();
+		$this->transferable(); */
 		$this->sltColums();
 		$this->sltHead();
 		$this->sltSyllabus(); 
 		$this->sltContAssessHead();
-		$this->sltSumAssessHead();
+		$this->sltSumAssessHead(); 
 		$this->sltSummary();
 		$this->htmlWriting();
 		
@@ -646,6 +647,9 @@ $this->html .= $html;
 	
 	public function sltHead(){
 		
+		$rowspan_dy = count($this->model->syllabus) + count($this->model->courseAssessmentFormative) + count($this->model->courseAssessmentSummative);
+		$rowspan_fix = 14;
+		$rowspan_all = $rowspan_dy + $rowspan_fix;
 		
 		$rowspan_topic = 4;
 		$style_head = 'style="background-color:#e7e6e6; border: 1px solid #000000;line-height:9"';
@@ -716,6 +720,10 @@ $this->html .= $html;
 	}
 	
 	public $sub_total_syll = 0;
+	public $slt_physical = 0;
+	public $slt_online_ind = 0;
+	public $slt_practical_physical = 0;
+	public $slt_practical_online = 0;
 	
 	public function sltSyllabus(){
 		if($this->model->syllabus ){
@@ -752,6 +760,7 @@ $this->html .= $html;
 			
 			$clo = json_decode($row->clo);
 			$clo_str="";
+			
 			if($clo){
 				$kk=1;
 				foreach($clo as $clonum){
@@ -760,6 +769,12 @@ $this->html .= $html;
 					$kk++;
 				}
 			}
+			
+			$this->slt_physical += array_sum([$row->pnp_lecture, $row->pnp_tutorial, $row->pnp_practical, $row->pnp_others]);
+			$this->slt_online_ind += array_sum([$row->tech_lecture, $row->tech_tutorial, $row->tech_practical, $row->tech_others, 
+			$row->independent]);
+			$this->slt_practical_physical += $row->pnp_practical;
+			$this->slt_practical_online += $row->tech_practical;
 			
 			$numbers = [$row->pnp_lecture, $row->pnp_tutorial, $row->pnp_practical, $row->pnp_others, 
 			$row->tech_lecture, $row->tech_tutorial, $row->tech_practical, $row->tech_others, 
@@ -861,6 +876,8 @@ $this->html .= $html;
 					$this->total_cont_assess += array_sum($numbers);
 					$name = $rf->assess_name_bi;
 					$this->sltAssessItem($i, $name, $per, $numbers);
+					$this->slt_physical +=  $rf->assess_f2f;
+					$this->slt_online_ind += $rf->assess_f2f_tech + $rf->assess_nf2f;
 			$i++;
 			}
 		}else{
@@ -929,6 +946,8 @@ $this->html .= $html;
 					$this->total_sum_assess += array_sum($numbers);
 					$name = $rf->assess_name_bi;
 					$this->sltAssessItem($i, $name, $per, $numbers);
+					$this->slt_physical +=  $rf->assess_f2f;
+					$this->slt_online_ind += $rf->assess_f2f_tech + $rf->assess_nf2f;
 			$i++;
 			}
 		}else{
@@ -950,8 +969,28 @@ $this->html .= $html;
 	}
 	
 	public function sltSummary(){
+		
 		$col_summary = $this->col_subtotal - $this->col_week;
 		$total_slt_assess = $this->total_cont_assess + $this->total_sum_assess;
+		$grand_total_slt = $total_slt_assess + $this->sub_total_syll;
+		if($grand_total_slt == 0){
+			$physical = 0;
+			$online = 0;
+			$prac_phy = 0;
+			$prac_on = 0;
+		}else{
+			$physical = $this->slt_physical / $grand_total_slt * 100;
+			$online = $this->slt_online_ind / $grand_total_slt * 100;
+			$prac_phy = $this->slt_practical_physical / $grand_total_slt * 100;
+			$prac_on = $this->slt_practical_online / $grand_total_slt * 100;
+		}
+		$online = round($online, 2) . '%';
+		$physical = round($physical, 2) . '%';
+		$practical_physical = round($prac_phy, 2) . '%';
+		$practical_online = round($prac_on, 2) . '%';
+		$practical_all = $prac_phy + $prac_on;
+		$practical_all = round($practical_all, 2) . '%';
+		
 		$html = '<tr>
 		<td width="'.$this->colnum.'" '.$this->border.' ></td>
 		<td width="'.$this->col_first.'" '.$this->border.'></td>
@@ -959,7 +998,7 @@ $this->html .= $html;
 		<td width="'.$this->col_total_slt.'" '.$this->shade_green.' colspan="3" align="center">'.$total_slt_assess.'</td>
 		<td width="'.$this->col_last.'" '.$this->border.' colspan="2"></td>
 		</tr>';
-		$grand_total_slt = $total_slt_assess + $this->sub_total_syll;
+		
 		$html .= '<tr>
 		<td width="'.$this->colnum.'" '.$this->border.' ></td>
 		<td width="'.$this->col_first.'" '.$this->border.'></td>
@@ -975,7 +1014,7 @@ $this->html .= $html;
 		<td width="'.$col_summary.'" '.$this->border .' align="right" colspan="20">% SLT for F2F Physical Component:<br />
 		<span style="'.$this->font_blue.'">[Total F2F Physical /(Total F2F Physical + Total F2F Online + Total Independent Learning) x 100)]</span>
 		</td>
-		<td width="'.$this->col_total_slt.'" '.$this->shade_green.' colspan="3" align="center"></td>
+		<td width="'.$this->col_total_slt.'" '.$this->shade_green.' colspan="3" align="center">'. $physical .'</td>
 		<td width="'.$this->col_last.'" '.$this->border.' colspan="2"></td>
 		</tr>';
 		
@@ -986,7 +1025,7 @@ $this->html .= $html;
 		<td width="'.$col_summary.'" '.$this->border .' align="right" colspan="20">% SLT for Online & Independent Learning Component:<br />
 		<span style="'.$this->font_blue.'">[(Total F2F Online + Total Independent Learning) /( Total F2F Physical + Total F2F Online + Total Independent Learning) x 100]</span>
 		</td>
-		<td width="'.$this->col_total_slt.'" '.$this->shade_green.' colspan="3" align="center"></td>
+		<td width="'.$this->col_total_slt.'" '.$this->shade_green.' colspan="3" align="center">'.$online.'</td>
 		<td width="'.$this->col_last.'" '.$this->border.' colspan="2"></td>
 		</tr>';
 		
@@ -997,7 +1036,7 @@ $this->html .= $html;
 		<td width="'.$col_summary.'" '.$this->border .' align="right" colspan="20">% SLT for All Practical Component:<br />
 		<span style="'.$this->font_blue.'">[% F2F Physical Practical + % F2F Online Practical]</span>
 		</td>
-		<td width="'.$this->col_total_slt.'" '.$this->shade_green.' colspan="3" align="center"></td>
+		<td width="'.$this->col_total_slt.'" '.$this->shade_green.' colspan="3" align="center">'. $practical_all  .'</td>
 		<td width="'.$this->col_last.'" '.$this->border.' colspan="2"></td>
 		</tr>';
 		
@@ -1008,7 +1047,7 @@ $this->html .= $html;
 		<td width="'.$col_summary.'" '.$this->border .' align="right" colspan="20">% SLT for F2F Physical Practical Component:<br />
 		<span style="'.$this->font_blue.'">[Total F2F Physical Practical /( Total F2F Physical + Total F2F Online + Total Independent Learning)  x 100)]</span>
 		</td>
-		<td width="'.$this->col_total_slt.'" '.$this->shade_green.' colspan="3" align="center"></td>
+		<td width="'.$this->col_total_slt.'" '.$this->shade_green.' colspan="3" align="center">'.$practical_physical.'</td>
 		<td width="'.$this->col_last.'" '.$this->border.' colspan="2"></td>
 		</tr>';
 		
@@ -1019,34 +1058,39 @@ $this->html .= $html;
 		<td width="'.$col_summary.'" '.$this->border .' align="right" colspan="20">% SLT for F2F Online Practical Component:<br />
 		<span style="'.$this->font_blue.'">[Total F2F Online Practical / (Total F2F Physical + Total F2F Online + Total Independent Learning) x 100]</span>
 		</td>
-		<td width="'.$this->col_total_slt.'" '.$this->shade_green.' colspan="3" align="center"></td>
+		<td width="'.$this->col_total_slt.'" '.$this->shade_green.' colspan="3" align="center">'.$practical_online.'</td>
 		<td width="'.$this->col_last.'" '.$this->border.' colspan="2"></td>
 		</tr>';
 		
 		$html .= '<tr>
 		<td width="'.$this->colnum.'" '.$this->border.' ></td>
-		<td width="'.$this->wall.'" '.$this->border.' colspan="25"></td>
-		
+		<td width="'.$this->wall.'" '.$this->border_right_left .' colspan="25"></td>
 		</tr>';
 		
+		if($this->model->slt->is_practical == 1){
+			$tick_prac = '√';
+		}else{
+			$tick_prac = '';
+		}
 		$html .= '<tr>
 		<td width="'.$this->colnum.'" '.$this->border.' ></td>
-		<td width="'.$this->col_first.'" '.$this->border.'></td>
-		<td width="'.$this->col_subtotal.'" '.$this->border .' colspan="20">Please  tick (√) if this course is Industrial Industrial Training/ Clinical Placement/ Practicum using 50% of Effective Learning Time (ELT)</td>
-		<td width="'.$this->col_total_slt.'" '.$this->border.' colspan="3" align="center"></td>
-		<td width="'.$this->col_last.'" '.$this->border.' colspan="2"></td>
+		<td width="'.$this->col_first.'" '.$this->border_left.'></td>
+		<td width="'.$this->col_subtotal.'" style="'.$this->font_brown.'" colspan="20">Please  tick (√) if this course is Industrial Industrial Training/ Clinical Placement/ Practicum using 50% of Effective Learning Time (ELT)</td>
+		<td width="'.$this->col_total_slt.'" style="border:1.5px solid #000000" colspan="3" align="center"><span style="font-size:12px;"><span>'.$tick_prac.'</span></span></td>
+		<td width="'.$this->col_last.'" '.$this->border_right_left.' colspan="2"></td>
 		</tr>';
+		
 		$col_note = $this->col_subtotal + $this->col_total_slt;
 		$html .= '<tr>
 		<td width="'.$this->colnum.'" '.$this->border.' ></td>
-		<td width="'.$this->col_first.'" '.$this->border.'></td>
-		<td width="'.$col_note.'" '.$this->border .' colspan="21">Note:<br />
+		<td width="'.$this->col_first.'" '.$this->border_left_bottom.'></td>
+		<td width="'.$col_note.'" '.$this->border_bottom .' colspan="21">Note:<br />
 		* Indicate the CLO based on the CLO\'s numbering in Item 8<br />
 		** For ODL programme: Courses with mandatory practical requiremnets imposed by the programme standards or any related standards can be exempted from complying to the minimum 80% ODL delivery rule in the SLT.
 		
 		</td>
 	
-		<td width="'.$this->col_last.'" '.$this->border.' colspan="2"></td>
+		<td width="'.$this->col_last.'" '.$this->border_right_bottom.' colspan="2"></td>
 		</tr>';
 
 		
