@@ -24,6 +24,7 @@ use backend\modules\courseFiles\models\Checklist;
 use backend\modules\courseFiles\models\LectureCancel;
 use backend\modules\courseFiles\models\CoordinatorRubricsFile;
 use backend\modules\courseFiles\models\StudentLecture;
+use backend\modules\courseFiles\models\StudentTutorial;
 use backend\modules\courseFiles\models\StudentLectureSearch;
 use backend\modules\courseFiles\models\AddStudentLectureDateForm;
 use backend\modules\courseFiles\models\pdf\AttendanceSummary;
@@ -437,6 +438,7 @@ class DefaultController extends Controller
 					   $new = new Student;
 					   $new->matric_no = $matric;
 					   $new->st_name = $name;
+					   $new->faculty_id = 0;
 					   $new->complete = 0; 
 					   if(!$new->save())
 						{
@@ -463,6 +465,65 @@ class DefaultController extends Controller
 				$i++;  
 			}
 			StudentLecture::deleteAll(['stud_check' => 0]);
+			//update progress
+			return true;
+			
+		}
+		return false;
+	}
+	
+	public function importTutorialStudentListApi($tutorial){
+		$api = new Api;
+		$offer = $tutorial->lecture->courseOffered;
+		$api->semester = $offer->semester_id;
+		$api->subject = $offer->course->course_code;
+		$api->group = $tutorial->tutorialGroup;
+		$data = $api->student();
+		/* echo '<pre>';
+		print_r($data->result);
+		die();  */
+			
+		if($data->result){
+
+			StudentTutorial::updateAll(['stud_check' => 0], ['tutorial_id' => $tutorial->id]);
+
+			$i=0;
+			foreach ($data->result as $stud) {
+				$matric = trim($stud->id);
+				$name = $stud->name;
+					
+					$st = Student::findOne(['matric_no' => $matric]);
+					if($st === null){
+					   $new = new Student;
+					   $new->matric_no = $matric;
+					   $new->st_name = $name;
+					   $new->complete = 0; 
+					   $new->faculty_id = 0;
+					   if(!$new->save())
+						{
+							$new->flashError();
+						}	   
+					}	 
+					$st = StudentTutorial::findOne(['matric_no' => $matric, 'tutorial_id' => $tutorial->id]);
+
+					if($st === null){
+						$new = new StudentTutorial;
+						$new->tutorial_id = $tutorial->id;
+						$new->matric_no = $matric;
+						$new->stud_check = 1;
+						if(!$new->save())
+						{
+							print_r($new->getErrors()); 
+						}
+					}
+					else
+					{
+						$st->stud_check = 1;
+						$st->save();
+					}
+				$i++;  
+			}
+			StudentTutorial::deleteAll(['stud_check' => 0]);
 			//update progress
 			return true;
 			
@@ -558,6 +619,41 @@ class DefaultController extends Controller
             'lecture' => $lecture,
         ]);
     }
+	
+	public function actionTutorialStudentAttendance($id){
+		$tutorial = $this->findTutorial($id);
+
+		if(Yii::$app->request->post()){
+			if($tutorial->students){
+			  foreach ($tutorial->students as $student) {
+				$val = Yii::$app->request->post('con_' . $student->matric_no);
+				$student->attendance_check = $val;
+				if(!$student->save()){
+					Yii::$app->session->addFlash('error', "Saving failed for ".$student->matric_no);
+				}
+			  }
+			  
+			 
+				
+			}
+			 if(Yii::$app->request->post('complete') == 1){
+				$tutorial->progressStudentAttendance = 1;
+			}else{
+				$tutorial->progressStudentAttendance = 0.5;
+			}
+			if ($tutorial->save()) {
+				Yii::$app->session->addFlash('success', "Data Updated");
+				return $this->redirect(['default/teaching-assignment-tutorial', 'id' => $id]);
+			}else{
+				$tutorial->flashError();
+			}
+			//die();
+		}
+		
+        return $this->render('tutorial-student-attendance', [
+            'tutorial' => $tutorial,
+        ]);
+    }
 
     public function actionAttendanceSummaryPdf($id){
 		$model = $this->findLecture($id);
@@ -627,6 +723,67 @@ class DefaultController extends Controller
 			$lecture->progressStudentAttendance = 0.5;
 			$lecture->save();
             return $this->redirect(['lecture-student-attendance', 'id' => $id]);
+    }
+	
+	public function actionTutorialAttendanceSync($id){
+    	
+		$tutorial = $this->findTutorial($id);
+		if(!$tutorial->students){
+			$this->importTutorialStudentListApi($tutorial);
+		}
+		$tutorial = $this->findTutorial($id);
+
+		$api = new Api;
+		$api->semester = $tutorial->lecture->courseOffered->semester_id;
+		$api->subject = $tutorial->lecture->courseOffered->course->course_code;
+		$api->group = $tutorial->tutorialGroup;
+		$data = $api->attendList();
+		if($data){
+			if($data->result){
+				$arr = array();
+				foreach($data->result as $class){
+					$arr[] = $class->date;
+				}
+				
+				$tutorial->attendance_header = json_encode($arr);
+				$tutorial->save();
+			}
+		}
+
+		$response = $api->summary();
+
+		 	$i=1;
+            if($tutorial->students){
+              foreach ($tutorial->students as $student) {
+               		$array = array();
+
+                      foreach($response->colums->result as $col){
+                        $res = $response->attend[$col->id]->students[$student->matric_no]->status;
+                        if(strtotime($col->date) <= time()){
+                          
+                          if($res == 1){
+                            $hadir = 1;
+                          }else{
+                            $hadir = 0;
+                          }
+                        
+                        }else{
+                          $hadir = 0;
+                        }
+                        
+    
+                      $array[] = $hadir;
+                      }
+                    	$student->attendance_check = json_encode($array);
+                    	$student->save();
+                  $i++;
+                	
+              }
+            }
+			$tutorial->prg_attend_complete = 0;
+			$tutorial->progressStudentAttendance = 0.5;
+			$tutorial->save();
+            return $this->redirect(['tutorial-student-attendance', 'id' => $id]);
     }
 
     public function actionLectureStudentAttendanceDate($id){

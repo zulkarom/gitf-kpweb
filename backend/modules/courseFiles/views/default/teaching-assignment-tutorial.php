@@ -18,6 +18,35 @@ $course = $tutorial->lecture->courseOffered->course;
 
 <?php $form = ActiveForm::begin(); ?>
 
+<h4>Student Attendance</h4>
+<div class="box">
+
+<div class="box-body">
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th style="width:5%">No.</th>
+        <th style="width:75%">Item</th>
+        <th style="width:10%">Action</th>
+		<th>Progress</th>
+      
+        
+      </tr>
+    </thead>
+	
+
+	<tr>
+    <td>1. </td>
+	<td>Student Attendance</td>
+	<td><a href="<?=Url::to(['tutorial-student-attendance','id' => $tutorial->id])?>" class="btn btn-default btn-sm disabled" ><span class="fa fa-pencil"></span> Update</a></td>
+        <td><?=$tutorial->progressStudentAttendance?></td>
+        </tr>
+	
+  </table>
+</div>
+</div>
+
 <h4>Upload Documents</h4>
 <div class="box">
 <div class="box-body">

@@ -294,22 +294,26 @@ class Course extends \yii\db\ActiveRecord
 		
 		</div>
 	  
-		<a target="_blank" href="'.Url::to(['/esiap/course/html-view', 'course' => $this->id, 'version' => $version->id]).'" class="btn btn-app"> <i class="fa fa-globe"></i> HTML</a>
+		<a target="_blank" href="'.Url::to(['/esiap/course/html-view', 'course' => $this->id, 'version' => $version->id]).'" class="btn btn-app"> <i class="fa fa-globe" style="color:blue"></i> HTML</a>
 		
 		
-		<a target="_blank" href="'.Url::to(['/esiap/course/fk1', 'course' => $this->id, 'version' => $version->id]).'" class="btn btn-app"><i class="fa fa-file-pdf-o"></i> FK01</a>
+		<a target="_blank" href="'.Url::to(['/esiap/course/fk1', 'course' => $this->id, 'version' => $version->id]).'" class="btn btn-app"><i class="fa fa-file-pdf-o" style="color:red"></i> FK01</a>
 		
-		<a target="_blank" href="'.Url::to(['/esiap/course/fk2', 'course' => $this->id, 'version' => $version->id]).'" class="btn btn-app"><i class="fa fa-file-pdf-o"></i> FK02</a>
+		<a target="_blank" href="'.Url::to(['/esiap/course/fk2', 'course' => $this->id, 'version' => $version->id]).'" class="btn btn-app"><i class="fa fa-file-pdf-o" style="color:red"></i> FK02</a>
 		
-		<a target="_blank" href="'.Url::to(['/esiap/course/fk3', 'course' => $this->id, 'version' => $version->id]).'" class="btn btn-app"><i class="fa fa-file-pdf-o"></i> FK03</a>
+		<a target="_blank" href="'.Url::to(['/esiap/course/fk3', 'course' => $this->id, 'version' => $version->id]).'" class="btn btn-app"><i class="fa fa-file-pdf-o" style="color:red"></i> FK03</a>
 		
 		<br />
 		
 		
 		
-		<a target="_blank" href="'.Url::to(['/esiap/course/tbl4-excel', 'course' => $this->id, 'version' => $version->id]).'" class="btn btn-app"><i class="fa fa-file-excel-o"></i> TABLE 4 v1.0</a>
+		<a target="_blank" href="'.Url::to(['/esiap/course/tbl4-excel', 'course' => $this->id, 'version' => $version->id]).'" class="btn btn-app"><i class="fa fa-file-excel-o" style="color:green"></i> TABLE 4 v1.0</a>
 		
-		<a target="_blank" href="'.Url::to(['/esiap/course/tbl4-excel2', 'course' => $this->id, 'version' => $version->id]).'" class="btn btn-app"><i class="fa fa-file-excel-o"></i> TABLE 4 v2.0</a>
+		<a target="_blank" href="'.Url::to(['/esiap/course/tbl4', 'course' => $this->id, 'version' => $version->id]).'" class="btn btn-app"><i class="fa fa-file-pdf-o" style="color:red"></i> TABLE 4 v1.0</a>
+		
+		<a target="_blank" href="'.Url::to(['/esiap/course/tbl4-excel2', 'course' => $this->id, 'version' => $version->id]).'" class="btn btn-app"><i class="fa fa-file-excel-o" style="color:green"></i> TABLE 4 v2.0</a>
+		
+		<a target="_blank" href="'.Url::to(['/esiap/course/tbl4-pdf', 'course' => $this->id, 'version' => $version->id]).'" class="btn btn-app"><i class="fa fa-file-pdf-o" style="color:red"></i> TABLE 4 v2.0</a>
 		
 		';
 	  

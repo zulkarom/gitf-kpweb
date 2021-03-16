@@ -160,6 +160,7 @@ class StudentController extends Controller
                         $new->matric_no = $matric;
                         $new->nric = $nric;
                         $new->program = $program;
+						$new->faculty_id = 1;
                         $new->sync = 1;
                         if($new->save())
                         {

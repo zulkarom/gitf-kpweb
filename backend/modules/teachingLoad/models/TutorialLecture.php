@@ -8,6 +8,7 @@ use backend\modules\teachingLoad\models\CourseLecture;
 use backend\modules\courseFiles\models\TutorialCancelFile;
 use backend\modules\courseFiles\models\TutorialReceiptFile;
 use backend\modules\courseFiles\models\TutorialExemptFile;
+use backend\modules\courseFiles\models\StudentTutorial;
 /**
  * This is the model class for table "tld_tutorial_lec".
  *
@@ -35,7 +36,7 @@ class TutorialLecture extends \yii\db\ActiveRecord
     {
         return [
             [['lecture_id', 'created_at', 'updated_at'], 'required'],
-            [['lecture_id', 'student_num'], 'integer'],
+            [['lecture_id', 'student_num', 'prg_attend_complete'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
             [['tutorial_name', 'lec_prefix'], 'string', 'max' => 50],
         ];
@@ -96,12 +97,23 @@ class TutorialLecture extends \yii\db\ActiveRecord
 		$this->setOverallProgress();
 	}
 	
+	public function getProgressStudentAttendance(){
+		return Common::progress($this->prg_stu_attend);
+	}
+	
+	public function setProgressStudentAttendance($per){
+		$this->prg_stu_attend = $per;
+		$this->setOverallProgress();
+	}
+	
 	public function getProgressOverall(){
 		$exempt = $this->prg_class_exempt;
 		$receipt = $this->prg_receipt_assess;
 		$cancel = $this->prg_class_cancel;
+		$attend = $this->prg_stu_attend;
+		
 		$total = $exempt + $receipt + $cancel;
-		$avg = $total / 3 * 100;
+		$avg = $total / 4 * 100;
 		$int = (int)$avg;
 		$per = $int / 100;
 		return $per;
@@ -148,4 +160,26 @@ class TutorialLecture extends \yii\db\ActiveRecord
     public function getTutorialExemptFiles(){
         return $this->hasMany(TutorialExemptFile::className(), ['tutorial_id' => 'id']);
     }
+	
+	public function getStudents()
+    {
+        return $this->hasMany(StudentTutorial::className(), ['tutorial_id' => 'id']);
+    }
+	
+	public function getTutorialGroup(){
+		return $this->lecturePrefix;
+	}
+	
+	public function getLecturePrefix(){
+		if($this->lec_prefix){
+			$lec = $this->lec_prefix;
+		}else{
+			$lec = $this->lecture->lec_name;
+		}
+		return $lec;
+	}
+	
+	public function getTutorialName(){
+		return $this->lecturePrefix . $this->tutorial_name;
+	}
 }
