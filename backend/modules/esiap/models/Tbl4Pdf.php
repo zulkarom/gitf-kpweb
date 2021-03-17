@@ -43,20 +43,23 @@ class Tbl4Pdf
 		
 		$this->startPage();
 		$this->courseName();
-	/* 	$this->synopsis();
+	 	$this->synopsis();
 		$this->academicStaff();
 		$this->semYear();
 		$this->creditValue();
 		$this->prerequisite();
 		$this->clo();
 		$this->mapping(); 
-		$this->transferable(); */
+		$this->transferable(); 
 		$this->sltColums();
 		$this->sltHead();
 		$this->sltSyllabus(); 
 		$this->sltContAssessHead();
 		$this->sltSumAssessHead(); 
 		$this->sltSummary();
+		$this->specialRequirement();
+		$this->references();
+		$this->additionalInfomation();
 		$this->htmlWriting();
 		
 
@@ -375,8 +378,8 @@ class Tbl4Pdf
 				$text = $clo->clo_text_bi .' '.$clo->taxoPloBracket;
 			}
 			$html .= '<tr>';
-			$html .= '<td colspan="2" width="'.$col_clo_num.'" '.$border .' align="center">CLO'.$clonumber.'</td>';
-			$html .= '<td width="'.$col_rest.'" colspan="20" '.$this->border .'>'.$text.'</td>
+			$html .= '<td colspan="2" width="'.$col_clo_num.'" '. $border .' align="center">CLO'.$clonumber.'</td>';
+			$html .= '<td width="'.$col_rest.'" colspan="20" '. $border .'>'.$text.'</td>
 			<td width="'.$col_last.'" '.$this->border_right_left .'></td>
 			</tr>';
 		}
@@ -1102,9 +1105,80 @@ $this->html .= $html;
 		<td width="'.$this->col_phy_online.'" '.$this->border.' align="center" colspan="4">'.$numbers[1].'</td>
 		<td width="'.$this->col_nf2f.'" '.$this->border.' colspan="3" align="center">'.$numbers[2].'</td>
 		<td width="'.$this->col_total_slt.'" '.$this->shade_light.' colspan="3"></td>
-	
 		</tr>';
+		
 		$this->html .= $html;
+	}
+	
+	public $col_label_end;
+	public $col_content_end;
+	
+	public function specialRequirement(){
+		$this->col_label_end = 190;
+		$this->col_content_end = $this->wall - $this->col_label_end;
+		$html = '<tr>
+		<td width="'.$this->colnum.'" align="center" '.$this->border.'>11</td>
+		<td width="'.$this->col_label_end.'" colspan="8" '.$this->border.'>Identify special requirement or resources to deliver the course (e.g., software, nursery, computer lab, simulation room etc)</td>
+		<td width="'. $this->col_content_end .'" colspan="18" '.$this->border.'>'. $this->model->profile->requirement_bi .'</td>
+		</tr>';
+		
+	$this->html .= $html;
+	
+	}
+	
+	public function references(){
+		
+		$i = 1;
+		$ref='';
+		if($this->model->mainReferences){
+			
+			$ref .= '<table>';
+			foreach($this->model->mainReferences as $row){
+				$ref .='<tr>';
+				$ref .='<td width="3%">'.$i.'. </td>';
+				$ref .='<td width="97%">'.$row->formatedReference.'</td>';
+				$ref .='</tr>';
+			$i++;
+			}
+			$ref .= '</table>';
+		}
+
+		if($this->model->additionalReferences){
+			$ref .= '<table>';
+			foreach($this->model->additionalReferences as $row){
+				$ref .='<tr>';
+				$ref .='<td width="3%">'.$i.'. </td>';
+				$ref .='<td width="97%">'.$row->formatedReference.'</td>';
+				$ref .='</tr>';
+			$i++;
+			}
+			$ref .= '</table>';
+		}
+		
+		$this->col_label_end = 190;
+		$this->col_content_end = $this->wall - $this->col_label_end;
+		$html = '<tr>
+		<td width="'.$this->colnum.'" align="center" '.$this->border.'>12</td>
+		<td width="'.$this->col_label_end.'" colspan="8" '.$this->border.'>References (include required and further readings, and should be the most current)</td>
+		<td width="'. $this->col_content_end .'" colspan="18" '.$this->border.'>'. $ref .'</td>
+		</tr>';
+		
+	$this->html .= $html;
+	
+	}
+	
+	public function additionalInfomation(){
+		$this->col_label_end = 190;
+		$this->col_content_end = $this->wall - $this->col_label_end;
+		$html = '<tr>
+		<td width="'.$this->colnum.'" align="center" '.$this->border.'>13</td>
+		<td width="'.$this->col_label_end.'" colspan="8" '.$this->border.'>Other additional information (if applicable)</td>
+		<td width="'. $this->col_content_end .'" colspan="18" '.$this->border.'>'. $this->model->profile->additional_bi .'</td>
+		</tr>';
+		
+	$this->html .= $html;
+	
+	
 	}
 
 	
@@ -1714,6 +1788,7 @@ $html
 EOD;
 
 $this->pdf->writeHTML($tbl, true, false, false, false, '');
+$this->pdf->lineFooterTable = false;
 	}
 	
 	public function startPage(){
