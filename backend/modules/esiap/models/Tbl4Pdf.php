@@ -649,8 +649,12 @@ $this->html .= $html;
 	}
 	
 	public function sltHead(){
+		$countSumAssess = count($this->model->courseAssessmentSummative);
+		$countContAssess = count($this->model->courseAssessmentFormative);
+		if($countSumAssess == 0){$countSumAssess = 1;}
+		if($countContAssess == 0){$countContAssess = 1;}
 		
-		$rowspan_dy = count($this->model->syllabus) + count($this->model->courseAssessmentFormative) + count($this->model->courseAssessmentSummative);
+		$rowspan_dy = count($this->model->syllabus) + $countContAssess + $countSumAssess;
 		$rowspan_fix = 18;
 		$rowspan_all = $rowspan_dy + $rowspan_fix;
 		$rowspan_num = $rowspan_all + 4;
