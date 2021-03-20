@@ -58,7 +58,7 @@ class Tbl4Pdf
 		$this->sltSumAssessHead(); 
 		$this->sltSummary();
 		$this->specialRequirement();
-		$this->references();
+		$this->references(); 
 		$this->additionalInfomation();
 		$this->htmlWriting();
 		
@@ -185,31 +185,35 @@ class Tbl4Pdf
 		$staff = $this->model->profile->academicStaff;
 		$col_num_staff = 28;
 		$col_name = $this->col_content - $col_num_staff;
-		$rowspan =  count($staff );
+		$arr_staff = array();
+		if($staff){foreach($staff as $st){
+			$arr_staff[] = $st->staff->niceName;
+		}}
+		$total = count($arr_staff) > 3 ? count($arr_staff) : 3;
+		$rowspan =  $total;
 		$html = '<tr>
 		<td width="'.$this->colnum.'" align="center" '.$this->border.' rowspan="'. $rowspan .'" >3</td>
 
 		<td width="'.$this->col_label.'" colspan="3" '.$this->border.' rowspan="'. $rowspan .'" >Name(s) of academic staff:</td>';
-
-
-		if($staff){
-			$i = 1;
-			foreach($staff as $st){
-				$td = '<td width="'.$col_num_staff.'"  '.$this->shade_light.' align="center">';
-				$td .= $i;
-				$td .= '</td>';
-				$td .= '<td width="'.$col_name.'" colspan="22" '.$this->border.'>';
-				$td .= $st->staff->niceName;
-				$td .= '</td>';
-				
-				if($i == 1){
-					$html .= $td . '</tr>';
-				}else{
-					$html .= '<tr>';
-					$html .= $td;
-					$html .= '</tr>';
-				}
-				$i++;
+		
+		for($i = 0;$i< $total;$i++){
+			$num = $i + 1;
+			$td = '<td width="'.$col_num_staff.'"  '.$this->shade_light.' align="center">';
+			$td .= $num;
+			$td .= '</td>';
+			$td .= '<td width="'.$col_name.'" colspan="22" '.$this->border.'>';
+			if(array_key_exists($i, $arr_staff)){
+				$td .= $arr_staff[$i];
+			}
+			
+			$td .= '</td>';
+			
+			if($i == 0){
+				$html .= $td . '</tr>';
+			}else{
+				$html .= '<tr>';
+				$html .= $td;
+				$html .= '</tr>';
 			}
 		}
 
@@ -500,7 +504,7 @@ for($q=1;$q<=3;$q++){
 	$others = '';
 	if($q == 1){
 		$html .= '<td align="center" '.$this->shade_light.' rowspan="3">
-		Mapping with MQF Cluster of Learning Outcomes</td>';
+		 Mapping with MQF Cluster of Learning Outcomes </td>';
 		$others = '<td align="center" '.$this->shade_light.' rowspan="3"></td>
 		<td align="center" '.$this->shade_light.' rowspan="3"></td>';
 	}
@@ -648,13 +652,20 @@ $this->html .= $html;
 		$this->col_topic_text = $this->col_topic - $this->col_week ;
 	}
 	
+	public $count_week = 0;
+	public $countSumAssess = 0;
+	public $countContAssess = 0;
+	
 	public function sltHead(){
-		$countSumAssess = count($this->model->courseAssessmentSummative);
-		$countContAssess = count($this->model->courseAssessmentFormative);
-		if($countSumAssess == 0){$countSumAssess = 1;}
-		if($countContAssess == 0){$countContAssess = 1;}
+		$this->countSumAssess = count($this->model->courseAssessmentSummative);
+		$this->countContAssess = count($this->model->courseAssessmentFormative);
 		
-		$rowspan_dy = count($this->model->syllabus) + $countContAssess + $countSumAssess;
+		if($this->countSumAssess == 0){$this->countSumAssess = 1;}
+		if($this->countContAssess == 0){$this->countContAssess = 1;}
+		
+		$this->count_week = count($this->model->syllabus);
+		
+		$rowspan_dy =  $this->count_week + $this->countContAssess + $this->countSumAssess;
 		$rowspan_fix = 18;
 		$rowspan_all = $rowspan_dy + $rowspan_fix;
 		$rowspan_num = $rowspan_all + 4;
@@ -737,15 +748,16 @@ $this->html .= $html;
 	
 	public function sltSyllabus(){
 		if($this->model->syllabus ){
-			$week_num = 1;
-			foreach($this->model->syllabus as $row){
-				if($row->duration > 1){
-					$end = $week_num + $row->duration - 1;
-					$show_week = $week_num . '<br/>-<br />' . $end;
-				}else{
-					$show_week = $week_num;
-				}
-				$week_num = $week_num + $row->duration;
+		$week_num = 1;
+		$k = 1;
+		foreach($this->model->syllabus as $row){
+			if($row->duration > 1){
+				$end = $week_num + $row->duration - 1;
+				$show_week = $week_num . '<br/>-<br />' . $end;
+			}else{
+				$show_week = $week_num;
+			}
+			$week_num = $week_num + $row->duration;
 			$arr_all = json_decode($row->topics);
 			$topic = '';
 			if($arr_all){
@@ -791,9 +803,9 @@ $this->html .= $html;
 			$row->independent];
 			$this->sub_total_syll += array_sum($numbers);
 			
-			$this->sltSyllabusItem($show_week, $topic, $clo_str, $numbers);
+			$this->sltSyllabusItem($k, $show_week, $topic, $clo_str, $numbers);
 			
-				
+		$k++;
 		}
 		}
 		
@@ -812,7 +824,7 @@ $this->html .= $html;
 	
 	
 	
-	public function sltSyllabusItem($show_week, $topic, $clo_str, $numbers){
+	public function sltSyllabusItem($k, $show_week, $topic, $clo_str, $numbers){
 		
 		
 		$html = '<tr>
@@ -831,10 +843,15 @@ $this->html .= $html;
 		<td width="'.$this->col_unit.'" '.$this->border.' align="center">'.$numbers[6].'</td>
 		<td width="'.$this->col_unit.'" '.$this->border.' align="center">'.$numbers[7].'</td>
 		
-		<td width="'.$this->col_nf2f.'" '.$this->border.' colspan="3" align="center">'.$numbers[8].'</td>
-		<td width="'.$this->col_total_slt.'" '.$this->shade_light.' colspan="3"></td>
+		<td width="'.$this->col_nf2f.'" '.$this->border.' colspan="3" align="center">'.$numbers[8].'</td>';
+		
+		
+		if($k == 1){
+			$html .='<td width="'.$this->col_total_slt.'" '.$this->shade_light.' colspan="3" rowspan="'.$this->count_week .'"></td>';
+		}
+		
 	
-		</tr>';
+		$html .=' </tr>';
 		$this->html .= $html;
 	}
 	
@@ -855,18 +872,13 @@ $this->html .= $html;
 		<td width="'.$this->col_f2f.'" '.$this->shade_light.' colspan="8">Face-to-Face (F2F)</td>
 		<td width="'.$this->col_nf2f.'" '.$this->shade_light.' colspan="3" rowspan="2">NF2F
 	Independent Learning
-	(Asynchronous)</td>
-	<td width="'.$this->col_total_slt.'" '.$style_head.' colspan="3" rowspan="2"></td>
-		
+	(Asynchronous)</td>';
+	
+	$rowspan_assess = $this->countContAssess + 2;
+	
+	$html .= '<td width="'.$this->col_total_slt.'" '.$style_head.' colspan="3" rowspan="'.$rowspan_assess.'"></td>
 		</tr>';
-		
-		
-		
 		$html .= '<tr align="center">
-	
-	
-
-
 		<td width="'.$this->col_phy_online.'" '.$this->shade_light.' colspan="4">Physical</td>
 		<td width="'.$this->col_phy_online.'" '.$this->shade_light.' colspan="4">Online/ Technology-mediated (Synchronous)</td>
 		
@@ -925,10 +937,11 @@ $this->html .= $html;
 		<td width="'.$this->col_f2f.'" '.$this->shade_light.' colspan="8">Face-to-Face (F2F)</td>
 		<td width="'.$this->col_nf2f.'" '.$this->shade_light.' colspan="3" rowspan="2">NF2F
 	Independent Learning
-	(Asynchronous)</td>
-	<td width="'.$this->col_total_slt.'" '.$style_head.' colspan="3" rowspan="2"></td>
+	(Asynchronous)</td>';
 	
-		</tr>';
+	$rowspan_assess = $this->countSumAssess + 2;
+	
+	$html .= '<td width="'.$this->col_total_slt.'" '.$style_head.' colspan="3" rowspan="'.$rowspan_assess.'"></td></tr>';
 		
 		
 		
@@ -1108,7 +1121,7 @@ $this->html .= $html;
 		<td width="'.$this->col_phy_online.'" '.$this->border.' align="center" colspan="4">'.$numbers[0].'</td>
 		<td width="'.$this->col_phy_online.'" '.$this->border.' align="center" colspan="4">'.$numbers[1].'</td>
 		<td width="'.$this->col_nf2f.'" '.$this->border.' colspan="3" align="center">'.$numbers[2].'</td>
-		<td width="'.$this->col_total_slt.'" '.$this->shade_light.' colspan="3"></td>
+		
 		</tr>';
 		
 		$this->html .= $html;
