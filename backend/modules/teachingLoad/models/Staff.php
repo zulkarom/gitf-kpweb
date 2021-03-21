@@ -176,17 +176,19 @@ class Staff extends \backend\modules\staff\models\Staff
 				
 				if($item->tutorialLec){
 					$d = $i == 1 ? '' : $br;
-					if($item->tutorialLec->lecture->courseOffered){
-						$code = $item
-						->tutorialLec
-						->lecture
-						->courseOffered
-						->course
-						->course_code;
-						$codeLec = $item->tutorialLec->lecture->lec_name;
-						$str .= $d.$code.' - '.$codeLec.$item->tutorialLec->tutorial_name.' ('.$item->tutorialLec->student_num.') ';
-						$i++;
+					if($item->tutorialLec->lecture){
+						if($item->tutorialLec->lecture->courseOffered){
+							$code = $item
+							->tutorialLec
+							->lecture
+							->courseOffered
+							->course
+							->course_code;
+							$str .= $d.$code.' - '.$item->tutorialLec->tutorialName.' ('.$item->tutorialLec->student_num.') ';
+							$i++;
+						}
 					}
+					
 					
 				}
 				

@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				'label' => 'Course',
 				'format' => 'html',
 				'value' => function($model){
-				return $model->course->codeCourseString;
+				return $model->codeCourseString;
 
 				}
 				
@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				'attribute' => 'lec_hour', 
 				'label' => 'Lecture Contact Hour',
 				'value' => function($model){
-					return $model->course->lec_hour;
+					return $model->lec_hour;
 				}
 				
 			],
@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				'attribute' => 'tut_hour', 
 				'label' => 'Tutorial Contact Hour',
 				'value' => function($model){
-					return $model->course->tut_hour;
+					return $model->tut_hour;
 				}
 				
 			],
@@ -53,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => '',
                 'format' => 'raw',
                 'value' => function($model) use ($page, $perpage){
-                    return ' <a href="javascript:void(0)" class ="btn btn-warning btn-sm modal-form" value="'.Url::to(['/teaching-load/manager/contact-hour-form', 'course' => $model->course_id, 'page' => $page, 'perpage' => $perpage]).'">
+                    return ' <a href="javascript:void(0)" class ="btn btn-warning btn-sm modal-form" value="'.Url::to(['/teaching-load/manager/contact-hour-form', 'course' => $model->id, 'page' => $page, 'perpage' => $perpage]).'">
    Update
   </a>';
                 }
@@ -94,6 +94,3 @@ $(function(){
         
         ?>
 
-
-
-?>

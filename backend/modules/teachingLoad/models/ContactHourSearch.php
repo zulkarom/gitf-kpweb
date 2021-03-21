@@ -5,7 +5,6 @@ namespace backend\modules\teachingLoad\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\modules\teachingLoad\models\CourseOffered;
 
 /**
  * CourseOfferedSearch represents the model behind the search form of `backend\modules\teachingLoad\models\CourseOffered`.
@@ -45,15 +44,14 @@ class ContactHourSearch extends CourseOffered
      */
     public function search($params)
     {
-        $query = CourseOffered::find()
-        ->joinWith('course');
+        $query = Course::find()->where(['is_active' => 1, 'is_dummy' => 0, 'faculty_id' => Yii::$app->params['faculty_id']]);
 
         // // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
              'query' => $query,
                 'pagination' => [
-                    'pageSize' => 50,
+                    'pageSize' => 150,
                 ],
         ]);
 
