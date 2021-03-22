@@ -60,8 +60,11 @@ class Tbl4Pdf
 		$this->specialRequirement();
 		$this->references(); 
 		$this->additionalInfomation();
-		$this->preparedBy();
 		$this->htmlWriting();
+		$this->preparedBy();
+		
+		$this->signiture();
+		
 		
 
 		$this->pdf->Output('TABLE 4 - '.$this->model->course->course_code .'.pdf', 'I');
@@ -373,6 +376,7 @@ class Tbl4Pdf
 		<td align="center" '.$this->border_right_left.'></td>';
 		
 		$border = $this->border;
+		
 		$text = '';
 		$clo_n = '';
 		if($clonumber > 1){
@@ -393,7 +397,9 @@ class Tbl4Pdf
 			$clo_n = 'CLO'.$clonumber;
 		}
 		
-		$this->clo_plo_html .= '<td align="center" style="'.$border.';line-height:90%">'.$clo_n.'</td>';
+		
+		
+		$this->clo_plo_html .= '<td align="center" '. $border .'>'.$clo_n.'</td>';
 		for($e=1;$e<=12;$e++){
 			$plo_str = 'PLO'.$e;
 			$this->clo_plo_html .='<td align="center" '.$border.'>';
@@ -1198,27 +1204,34 @@ $this->html .= $html;
 	}
 	
 	public function preparedBy(){
-		$col_sign = $this->wall /2 ;
-		$html = '
+		$coor = '-- not set --';
+		$date = '-- date --';
+		if($this->model->preparedBy){
+			$coor = $this->model->preparedBy->staff->niceName;
+		}
+		if($this->model->prepared_at != '0000-00-00'){
+			$date = date('d/m/Y', strtotime($this->model->prepared_at));
+		}
+		
+		$col_sign = ($this->wall /2 ) - $this->colnum;
+		
+		$html = '<table >
+
+		
 		<tr>
-		<td></td>
-		
-		<td width="'.$col_sign .'" colspan="18"></td>
-		<td width="'.$col_sign .'" colspan="18"></td>
-		
-		</tr>
-		
-		<tr>
-		<td></td>
+		<td width="'.$this->colnum.'"></td>
 		
 		<td width="'.$col_sign .'" colspan="18" style="font-size:12px">Prepared by:
 		<br /><br /><br /> 
 ___________________________<br />
-		-- not set --
+		'.$coor.'
 		<br /> Coordinator
-		<br /> -- date --
+		<br /> '.$this->model->course->course_code.'
+		<br /> '.$this->model->course->course_name_bi.'
+		<br /> '.$date.'
 		
 		</td>
+		<td width="'.$this->colnum.'"></td>
 		<td width="'.$col_sign .'" colspan="18" style="font-size:12px">Approved by:
 <br /><br /><br /> 
 ___________________________<br />
@@ -1229,11 +1242,67 @@ ___________________________<br />
 		
 		</td>
 		
-		</tr>';
+		</tr></table>';
 		
 		
-		$this->html .= $html;
+		$tbl = <<<EOD
+		$html
+EOD;
+
+		$this->pdf->writeHTML($tbl, true, false, false, false, '');
 	}
+	
+	public function signiture(){
+		$sign = $this->model->preparedsign_file;
+		if(!$sign){
+			return false;
+		}
+
+		$file = Yii::getAlias('@upload/'. $sign);
+		
+		$html =  '
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img width="113" src="'.$file.'" />
+		';
+		$tbl = <<<EOD
+		$html
+EOD;
+		$y = $this->pdf->getY();
+		
+		
+		$adjy = $this->model->prepared_adj_y;
+		
+		$posY = $y - 40 - $adjy;
+		$this->pdf->setY($posY);
+		
+		$size = 100 + ($this->model->prepared_size * 3);
+		
+		
+
+		$col_sign = $this->wall /2 ;
+		$html = '<table>
+
+		
+		<tr>
+		<td width="'.$this->colnum.'"></td>
+		
+		<td width="'.$col_sign .'" colspan="18" ><img width="'.$size.'" src="'.$file.'" />
+		</td>
+		<td width="'.$col_sign .'" colspan="18" >
+		
+		
+		</td>
+		
+		</tr></table>';
+		
+		
+		$tbl = <<<EOD
+		$html
+EOD;
+
+		$this->pdf->writeHTML($tbl, true, false, false, false, '');
+	}
+	
+	
 	
 	
 	

@@ -7,7 +7,6 @@ use kartik\widgets\ActiveForm;
 
 $form = ActiveForm::begin([
 'id' => 'teaching-assignment-form',
-'action' => $model->action,
 'method' => 'get',
 
 ]); ?>  

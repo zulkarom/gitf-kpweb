@@ -2,6 +2,12 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use kartik\widgets\ActiveForm;
+use backend\modules\staff\models\Staff;
+use kartik\date\DatePicker;
+use common\models\UploadFile;
+
+
 
 backend\assets\KnobAsset::register($this);
 
@@ -120,6 +126,97 @@ $ref = percent($version->pgrs_ref);
 ?>
 </div>
 </div>
+
+
+
+<?php 
+if($version->status == 0 and $model->IAmCoursePic()){
+$form = ActiveForm::begin(); 
+
+if($version->prepared_by == 0){
+	$version->prepared_by = Yii::$app->user->identity->id;
+}
+
+if($version->prepared_at == '0000-00-00'){
+	$version->prepared_at = date('Y-m-d');
+}
+
+?>
+
+<div class="box box-info">
+<div class="box-body">
+<div class="row">
+<div class="col-md-6"><?=$form->field($version, 'prepared_by')->dropDownList(Staff::activeStaffUserArray(), ['prompt' => 'Choose'])?></div>
+
+<div class="col-md-3">
+
+
+ <?=$form->field($version, 'prepared_at')->widget(DatePicker::classname(), [
+    'removeButton' => false,
+    'pluginOptions' => [
+        'autoclose'=>true,
+        'format' => 'yyyy-mm-dd',
+        'todayHighlight' => true,
+        
+    ],
+    
+    
+]);
+?>
+
+</div>
+
+</div>
+
+<br />
+
+<?php 
+
+
+$version->file_controller = 'course';
+echo UploadFile::fileInput($version, 'preparedsign', true)?>
+
+
+
+<div class="row">
+<div class="col-md-1">
+    <?= $form->field($version, 'prepared_size')->textInput(['maxlength' => true, 'type' => 'number'
+                            ])->label('Image Adj Size') ?>
+    </div>
+<div class="col-md-1">
+    <?= $form->field($version, 'prepared_adj_y')->textInput(['maxlength' => true, 'type' => 'number'
+                            ])->label('Image Adj Y') ?>
+    </div>
+
+</div>
+
+
+</div>
+</div>
+
+
+	<?=$form->field($version, 'updated_at')->hiddenInput(['value' => time()])->label(false)?>
+
+<div class="form-group" align="center">
+        
+		<?=Html::submitButton('<span class="fa fa-save"></span> SAVE SIGNITURE', 
+    ['class' => 'btn btn-default', 'name' => 'wfaction', 'value' => 'btn-save',
+    ])?> <?=Html::submitButton('<span class="glyphicon glyphicon-send"></span> SUBMIT COURSE', 
+    ['class' => 'btn btn-warning', 'name' => 'wfaction', 'value' => 'btn-submit', 'data' => [
+                'confirm' => 'Are you sure to submit this course information?'
+            ],
+    ])?>
+
+    </div>
+
+    <?php ActiveForm::end(); 
+	
+}else{
+	echo 'This course information has been submitted at ' . date('d M Y', strtotime($version->prepared_at));
+}
+	?>
+
+
 
 <?php 
 

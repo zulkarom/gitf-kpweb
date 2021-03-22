@@ -1,0 +1,4 @@
+ALTER TABLE `sp_course_version` ADD `preparedsign_file` TEXT NOT NULL AFTER `pgrs_ref`, ADD `verifiedsign_file` TEXT NOT NULL AFTER `preparedsign_file`;
+ALTER TABLE `sp_course_version` ADD `prepared_adj_y` DOUBLE NOT NULL AFTER `verifiedsign_file`, ADD `verififed_adj_y` DOUBLE NOT NULL AFTER `prepared_adj_y`;
+ALTER TABLE `sp_course_version` ADD `prepared_size` DOUBLE NOT NULL AFTER `verififed_adj_y`, ADD `verified_size` DOUBLE NOT NULL AFTER `prepared_size`;
+ALTER TABLE `sp_course_version` CHANGE `verififed_adj_y` `verified_adj_y` DOUBLE NOT NULL;

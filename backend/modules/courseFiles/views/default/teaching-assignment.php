@@ -21,6 +21,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="row">
     <div class="col-sm-6">
+	
+	<?php  if($myInv){ ?>
       <div class="box">
         <div class="box-header">
           <div class="a">
@@ -38,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			   
 			   </thead>
                      <?php 
-					 if($myInv){
+					
 						 if($myInv->appointLetters){
 						 $i = 1;
 						 foreach($myInv->appointLetters as $app){
@@ -81,7 +83,7 @@ $this->params['breadcrumbs'][] = $this->title;
 						$i++;
 						 }
 					 }
-					 }
+			
 					 
 				
 						 
@@ -121,26 +123,33 @@ $this->params['breadcrumbs'][] = $this->title;
 			  
               <td>
 			  <?php 
-			  
-			  if($myInv->timetable_file){
-			   echo '<a href="'.  Url::to(['staff/download-file', 'attr' => 'timetable','id' => $myInv->id]) .' " class="btn btn-default btn-sm" target="_blank"><span class="fa fa-download" ></span></a> ';
-			   if($myInv->editable){
-				    echo '<a href="'.  Url::to(['default/timetable']) .' " class="btn btn-default btn-sm" ><span class="fa fa-pencil"></span></a>';
-			   }
-			  
-		   }else{
-			   if($myInv->editable){
-				   echo '<a href="'.  Url::to(['default/timetable']) .' " class="btn btn-default btn-sm" ><span class="fa fa-upload"></span> Upload</a>';
+			$prg = '';
+
+				if($myInv->timetable_file){
+				   echo '<a href="'.  Url::to(['staff/download-file', 'attr' => 'timetable','id' => $myInv->id]) .' " class="btn btn-default btn-sm" target="_blank"><span class="fa fa-download" ></span></a> ';
+				   if($myInv->editable){
+						echo '<a href="'.  Url::to(['default/timetable']) .' " class="btn btn-default btn-sm" ><span class="fa fa-pencil"></span></a>';
+				   }
+				  
+			   }else{
+				   if($myInv->editable){
+					   echo '<a href="'.  Url::to(['default/timetable']) .' " class="btn btn-default btn-sm" ><span class="fa fa-upload"></span> Upload</a>';
+				   }
+				   
 			   }
 			   
-		   }
+			   $prg = $myInv->progressTimetable;
+				
+
+			
+			
 						   
 			  
 			  
 			  ?>
 			  
 			 </td>
-			 <td><?=$myInv->progressTimetable?></td>
+			 <td><?=$prg?></td>
 						</tr>
      
                
@@ -148,7 +157,11 @@ $this->params['breadcrumbs'][] = $this->title;
 			  
           </div>
         </div>
-		
+		<?php }else {
+			echo '<h4>No teaching load as yet for this semester</h4>
+			<p>If you think this is a mistake, do ask the admin to re-run the staff involved for the teaching load</p>
+			';
+		}?>
 		<?php 
 		if($model->coordinatorIdentity){
 		?>

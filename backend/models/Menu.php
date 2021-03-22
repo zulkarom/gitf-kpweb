@@ -123,7 +123,7 @@ class Menu
 	public static function adminCourseFiles(){
 		$esiap_admin = [
                         'label' => 'Course Files Admin',
-                        'icon' => 'book',
+                        'icon' => 'cog',
 						'visible' => Todo::can('teaching-load-manager'),
                         'url' => '#',
                         'items' => [
@@ -286,7 +286,9 @@ class Menu
 	}
 	
 	public static function staff(){
-		$staff = [
+		$staff = [];
+		if(Yii::$app->user->can('staff-management')){
+			$staff = [
                         'label' => 'Staff Menu',
 						'visible' => Yii::$app->user->can('staff-management'),
                         'icon' => 'list-ul',
@@ -306,6 +308,8 @@ class Menu
 
                  ]
                     ];
+		}
+		
 		return $staff;
 	}
 	

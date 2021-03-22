@@ -67,7 +67,7 @@ if(!$offer->course->versionSubmit){
 <td><?php 
 $count_doc = 0;
 if($course_version > 0){
-	$count_doc = 5;
+	$count_doc = 4;
 }
  Modal::begin([
                       'header' => '<h5>Course Information</h5>',
@@ -99,12 +99,11 @@ if($course_version > 0){
 	</tr>
 	
 	<tr>
-		<td width="5%">2.</td>
+		<td width="5%">4.</td>
 		<td>TABLE 4 - SUMMARY OF COURSE INFORMATION                               </td>
 		<td>
-		<div class="form-group"><a href="<?=Url::to(['/esiap/course/tbl4', 'course' => $course->id, 'dev' => 1])?>" target="_blank"  class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-download-alt"></span> TABLE4 1.0</a></div>
 
-		<a href="<?=Url::to(['/esiap/course/tbl4-pdf', 'course' => $course->id, 'version' => $course_version])?>" target="_blank"  class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-download-alt"></span> TABLE4 2.0</a></td>
+		<a href="<?=Url::to(['/esiap/course/tbl4-pdf', 'course' => $course->id, 'version' => $course_version])?>" target="_blank"  class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-download-alt"></span> TABLE 4 v2.0</a></td>
 	</tr>
 	
 </tbody>

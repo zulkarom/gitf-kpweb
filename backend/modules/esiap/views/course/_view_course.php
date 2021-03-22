@@ -299,6 +299,23 @@ use yii\helpers\Url;
 		</td>
       </tr>
 	  
+	  <tr>
+        <td><b>ADDITIONAL INFORMATION </b></td>
+        <td>
+		
+		<?php 
+		
+		if($version->profile){
+			echo $version->profile->additional
+			.  '<br /> <i>'  .
+			$version->profile->additional_bi . '</i>';
+			
+		}
+		?>
+
+		</td>
+      </tr>
+	  
 	
 	  
     </tbody>
@@ -763,22 +780,7 @@ if($version->references){
 		
 		</td>
       </tr>
-	    <tr>
-        <td><b>ADDITIONAL INFORMATION </b></td>
-        <td>
-		
-		<?php 
-		
-		if($version->profile){
-			echo $version->profile->additional
-			.  '<br /> <i>'  .
-			$version->profile->additional_bi . '</i>';
-			
-		}
-		?>
-
-		</td>
-      </tr>
+	    
 </tbody>
 </table>
 </div>

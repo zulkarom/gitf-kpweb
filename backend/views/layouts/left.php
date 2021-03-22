@@ -98,75 +98,22 @@ use backend\models\Menu;
 		?>
 
         <?php
-		
-		/* 
-		echo common\models\Menu::widget(
-            [
-                'options' => ['class' => 'sidebar-menu tree', 'data-widget'=> 'tree'],
-                'items' => [
-                    ['label' => 'MAIN MENU', 'options' => ['class' => 'header']],
-					['label' => 'Dashboard', 'icon' => 'dashboard', 'url' => ['/site']],
-					Menu::courseFocus(),
-					$focus,
-					$admin_focus,
-					Menu::profile(),
-					//$modules,
-					
-					['label' => 'MODULES', 'options' => ['class' => 'header']],
-					
-					['label' => 'Teaching', 'icon' => 'gears', 'url' => ['/teaching-load/default/teaching-view']],
-					
-					['label' => 'Staff', 'icon' => 'user', 'url' => ['/staff']],
-					
-					['label' => 'e-SIAP', 'icon' => 'mortar-board', 'url' => ['/esiap'],],
-					
-					['label' => 'e-RPD', 'icon' => 'flask', 'url' => ['/erpd'],],	
-					
-					['label' => 'JEB Journal', 'icon' => 'book', 'url' => ['/site/jeb-web'], 'template'=>'<a href="{url}" target="_blank">{icon} {label}</a>'],
-					
-					['label' => 'Website', 'icon' => 'tv', 'url' => ['/website'], 'visible' => Yii::$app->user->can('website-manager')],
-					
-					['label' => 'Proceedings', 'icon' => 'microphone', 'url' => ['/proceedings'], 'visible' => Yii::$app->user->can('proceedings-manager')],
-					
-					
-					[
-                        'label' => 'User Management',
-                        'icon' => 'lock',
-						'visible' => Todo::can('sysadmin'),
-                        'url' => '#',
-                        'items' => [
-						
-							['label' => 'User Assignment', 'icon' => 'user', 'url' => ['/admin'],],
-						
-                            ['label' => 'Role List', 'icon' => 'user', 'url' => ['/admin/role'],],
-							
-							['label' => 'Route List', 'icon' => 'user', 'url' => ['/admin/route'],],
-							
-							['label' => 'Login As', 'icon' => 'lock', 'url' => ['/user-admin/login-as'],],
-							
+
+$focus_menu = [];
+if(!empty($focus) or !empty($admin_focus)){
+	$focus_menu = [
+		['label' => 'FOCUS MENU', 'options' => ['class' => 'header']],
+		Menu::courseFocus(),
+		$focus,
+		$admin_focus,
 	
-							
-
-                        ],
-                    ],
-					
-					
-					['label' => 'Log Out', 'icon' => 'arrow-left', 'url' => ['/site/logout'], 'template' => '<a href="{url}" data-method="post">{icon} {label}</a>']
-					
-
-
-                ],
-            ]
-        )  */
-		
-		
+	];
+}
 // prepare menu items, get all modules
 $menuItems = [
 
 					['label' => 'Dashboard', 'icon' => 'dashboard', 'url' => ['/site']],
-					Menu::courseFocus(),
-					$focus,
-					$admin_focus,
+					
 					Menu::profile(),
 					//$modules,
 					
@@ -237,7 +184,7 @@ $favouriteMenuItems[] = ['label' => 'MAIN MENU', 'options' => ['class' => 'heade
 
 // TODO: display menu
 echo dmstr\widgets\Menu::widget([
-    'items' => \yii\helpers\ArrayHelper::merge($favouriteMenuItems, $menuItems),
+    'items' => \yii\helpers\ArrayHelper::merge($focus_menu, $favouriteMenuItems, $menuItems),
 ]);
 		
 		

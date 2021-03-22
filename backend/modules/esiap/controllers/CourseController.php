@@ -33,6 +33,8 @@ use yii\db\Expression;
 use common\models\Model;
 use yii\helpers\ArrayHelper;
 use yii\filters\AccessControl;
+use common\models\UploadFile;
+use yii\helpers\Json;
 
 /**
  * CourseController implements the CRUD actions for Course model.
@@ -852,6 +854,36 @@ class CourseController extends Controller
 		$model = $this->findModel($course);
 		$version = $model->developmentVersion;
 		
+		 if ($version->load(Yii::$app->request->post())) {
+			 
+			$action = Yii::$app->request->post('wfaction');
+			
+			if($action == 'btn-submit'){
+				if($version->progress == 100){
+					$version->prepared_at = new Expression('NOW()');
+					$version->status = 10;
+					if($version->save()){
+						return $this->redirect(['course/view-course','course' => $course]);
+					}
+				}else{
+					Yii::$app->session->addFlash('error', "In order to submit, the progress should be 100%");
+				}
+			}else{
+				
+				if($version->save()){
+					//echo $action;die();
+					Yii::$app->session->addFlash('success', "Signiture updated");
+					return $this->redirect(['course/view-course','course' => $course]);
+				}else{
+					$version->flashError();
+				}
+			}
+			 
+			
+			
+            
+        }
+		
 		return $this->render('view-course', [
 				'model' => $model,
 				'version' => $version,
@@ -1356,6 +1388,62 @@ class CourseController extends Controller
 			echo 'good';
 		} */
 		
+	}
+	
+	public function actionUploadFile($attr, $id){
+        $attr = $this->clean($attr);
+        $model = $this->findVersion($id);
+        $model->file_controller = 'course';
+		$path = 'course-mgt/signiture/' . Yii::$app->user->identity->staff->staff_no ;
+        return UploadFile::upload($model, $attr, 'updated_at', $path);
+
+    }
+
+	protected function clean($string){
+		$allowed = ['preparedsign', 'verifiedsign'];
+		if(in_array($string,$allowed)){
+			return $string;
+		}
+		throw new NotFoundHttpException('Invalid Attribute');
+	}
+
+	public function actionDeleteFile($attr, $id){
+		$attr = $this->clean($attr);
+		$model = $this->findVersion($id);
+		$attr_db = $attr . '_file';
+		
+		$file = Yii::getAlias('@upload/' . $model->{$attr_db});
+		
+		$model->scenario = $attr . '_delete';
+		$model->{$attr_db} = '';
+		$model->updated_at = new Expression('NOW()');
+		if($model->save()){
+			if (is_file($file)) {
+				unlink($file);
+				
+			}
+			
+			return Json::encode([
+						'good' => 1,
+					]);
+		}else{
+			return Json::encode([
+						'errors' => $model->getErrors(),
+					]);
+		}
+		
+
+
+	}
+
+	public function actionDownloadFile($attr, $id, $identity = true){
+		$attr = $this->clean($attr);
+		$model = $this->findVersion($id);
+		$filename = strtoupper($attr) . ' ' . Yii::$app->user->identity->fullname;
+		
+		
+		
+		UploadFile::download($model, $attr, $filename);
 	}
 	
 	
