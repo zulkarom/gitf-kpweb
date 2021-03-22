@@ -3,14 +3,21 @@
 namespace backend\modules\esiap\controllers;
 
 use Yii;
-
+use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
+use yii\filters\AccessControl;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;
+use yii\db\Expression;
+use common\models\Model;
 use backend\modules\esiap\models\Tbl4Excel;
 use backend\modules\esiap\models\Tbl4Excel2;
 use backend\modules\esiap\models\CourseAdminSearch;
+use backend\modules\esiap\models\CourseVerificationSearch;
 use backend\modules\esiap\models\CourseInactiveSearch;
 use backend\modules\esiap\models\Course;
 use backend\modules\esiap\models\CourseVersion;
-
 use backend\modules\esiap\models\CourseProfile;
 use backend\modules\esiap\models\CourseSyllabus;
 use backend\modules\esiap\models\CourseSlt;
@@ -19,23 +26,12 @@ use backend\modules\esiap\models\CourseReference;
 use backend\modules\esiap\models\CourseClo;
 use backend\modules\esiap\models\CourseCloAssessment;
 use backend\modules\esiap\models\CourseCloDelivery;
-
-
 use backend\modules\esiap\models\CourseVersionSearch;
 use backend\modules\esiap\models\CourseVersionClone;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use yii\db\Expression;
-use common\models\Model;
-use yii\helpers\ArrayHelper;
-use yii\filters\AccessControl;
 use backend\modules\esiap\models\CoursePic;
 use backend\modules\esiap\models\CourseAccess;
 use backend\modules\esiap\models\CourseStaff;
 use backend\modules\esiap\models\CourseTransferable;
-use yii\helpers\Json;
-
 
 /**
  * CourseController implements the CRUD actions for Course model.
@@ -45,8 +41,7 @@ class CourseAdminController extends Controller
     /**
      * @inheritdoc
      */
-	public function behaviors()
-    {
+	public function behaviors(){
         return [
             'access' => [
                 'class' => AccessControl::className(),
@@ -71,6 +66,16 @@ class CourseAdminController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+	
+	public function actionVerification()
+    {
+        $searchModel = new CourseVerificationSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        return $this->render('verification', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
