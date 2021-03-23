@@ -45,7 +45,7 @@ class CourseAdminSearch extends Course
     public function search($params)
     {
         $query = Course::find()
-		->where(['is_active' => 1, 'faculty_id' => Yii::$app->params['faculty_id']]);
+		->where(['is_active' => 1, 'is_dummy' => 0, 'faculty_id' => Yii::$app->params['faculty_id']]);
 
         // add conditions that should always apply here
 

@@ -93,7 +93,7 @@ class Menu
 				
 				['label' => 'Summary', 'icon' => 'pie-chart', 'url' => ['/esiap/dashboard']],
 				
-				['label' => 'Course List', 'icon' => 'book', 'url' => ['/esiap/course-admin']],
+				['label' => 'Active Courses', 'icon' => 'book', 'url' => ['/esiap/course-admin']],
 				['label' => 'Course Verification', 'icon' => 'book', 'url' => ['/esiap/course-admin/verification']],
 				
 				//['label' => 'Bulk Course Version', 'icon' => 'book', 'url' => ['/esiap/course-admin/bulk-version']],

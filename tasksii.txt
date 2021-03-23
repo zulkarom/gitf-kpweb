@@ -1,5 +1,6 @@
-table 4 pdf
 signiture fk - utk coordinator & KJ
+save and preview
+
 need to setup attendace before class exemption - lepas tu datepicker ganti dengan list kelas dia sahaja
 kat preview - show progress setiap orang
 material list view untuk admin- in case nak revert to draft
@@ -12,6 +13,9 @@ letak E kat tick attendance klu ada exemption evidence
 aliran kerja course management
 user manual
 attendance tutorial class - wait cci
+pdf attendance perlu optimized
+
+update course put field course owner & viewer
 ================
 KIV
 ================

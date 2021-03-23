@@ -13,7 +13,6 @@ use backend\modules\esiap\models\Program;
 
 <?php $form = ActiveForm::begin([
 	'id' => 'form-index-course',
-    'action' => ['index'],
     'method' => 'get',
 ]); ?>
     
@@ -41,10 +40,8 @@ if(Yii::$app->params['faculty_id'] == 21 ){
 
 
 <?php 
-
 $this->registerJs('
-
-$("#courseadminsearch-search_cat").change(function(){
+$("#'.$element.'").change(function(){
 	$("#form-index-course").submit();
 });
 

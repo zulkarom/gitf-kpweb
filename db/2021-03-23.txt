@@ -1,0 +1,1 @@
+ALTER TABLE `staff` ADD `signiture_file` TEXT NOT NULL AFTER `updated_at`, ADD `tbl4_verify_y` DOUBLE NOT NULL AFTER `signiture_file`, ADD `tbl4_verify_size` DOUBLE NOT NULL AFTER `tbl4_verify_y`;

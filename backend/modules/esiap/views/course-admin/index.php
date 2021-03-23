@@ -58,7 +58,7 @@ $exportColumns = [
             ],
 			
 			[
-				'label' => 'Person In Charge',
+				'label' => 'Course Owner',
 				'format' => 'html',
 				'value' => function($model){
 					return $model->picStr;
@@ -67,7 +67,7 @@ $exportColumns = [
 			],
 			
 			[
-				'label' => 'Staff View',
+				'label' => 'Course Viewer',
 				'format' => 'html',
 				'value' => function($model){
 					return $model->staffViewStr;
@@ -105,7 +105,7 @@ $exportColumns = [
 
 <div class="col-md-7" align="right">
 
-<?=$this->render('_search', ['model' => $searchModel])?>
+<?=$this->render('_search', ['model' => $searchModel, 'element' => 'courseadminsearch-search_cat'])?>
 </div>
 
 </div>
@@ -178,7 +178,7 @@ echo GridView::widget([
 			$cat ,
 			
 			[
-				'label' => 'In Charge',
+				'label' => 'Course Owner',
 				'format' => 'html',
 				'value' => function($model){
 					return $model->picStr;
@@ -230,6 +230,19 @@ echo GridView::widget([
                     
                 }
             ],
+			
+			[
+				'label' => 'Update',
+			//	'contentOptions' => ['style' => 'width: 45%'],
+				'format' => 'html',
+				'value' => function($model){
+					
+					return Html::a( '<span class="glyphicon glyphicon-pencil"></span> Update',['/esiap/course-admin/update/', 'course' => $model->id], ['class' => 'btn btn-primary btn-sm']);
+					
+					
+				}
+				
+			],
 			
 
 

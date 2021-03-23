@@ -10,7 +10,10 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\Expression;
+
 use common\models\Model;
+use common\models\UploadFile;
+
 use backend\modules\esiap\models\Tbl4Excel;
 use backend\modules\esiap\models\Tbl4Excel2;
 use backend\modules\esiap\models\CourseAdminSearch;
@@ -32,6 +35,9 @@ use backend\modules\esiap\models\CoursePic;
 use backend\modules\esiap\models\CourseAccess;
 use backend\modules\esiap\models\CourseStaff;
 use backend\modules\esiap\models\CourseTransferable;
+use backend\modules\staff\models\Staff;
+
+
 
 /**
  * CourseController implements the CRUD actions for Course model.
@@ -75,11 +81,35 @@ class CourseAdminController extends Controller
     {
         $searchModel = new CourseVerificationSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+		$verify = $this->findVerifier();
+		$verify->scenario = 'verify_course';
+		
+		if ($verify->load(Yii::$app->request->post())) {
+			if(Yii::$app->request->post('selection')){
+				$courses = Yii::$app->request->post('selection');
+				$date = $verify->verified_at;
+				$result = CourseVersion::updateAll(['verified_by' => Yii::$app->user->identity->id, 'status' => 20, 'verified_at' => $date ], ['id' => $courses]);
+				if($result){
+					Yii::$app->session->addFlash('success', "Verification successful.");
+				}
+				
+			}else{
+				Yii::$app->session->addFlash('error', "Please select some courses first.");
+				return $this->refresh();
+			}
+			
+		}
+		
         return $this->render('verification', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+			'verify' => $verify
         ]);
     }
+	
+	protected function findVerifier(){
+		return Staff::findOne(Yii::$app->user->identity->staff->id);
+	}
 	
 	public function actionInactive()
     {
@@ -814,7 +844,7 @@ class CourseAdminController extends Controller
 				$pdf->courses = Yii::$app->request->post('selection');
 				$pdf->generateExcel();
 			}else{
-				Yii::$app->session->addFlash('error', "Please select files first.");
+				Yii::$app->session->addFlash('error', "Please select some courses first.");
 				return $this->redirect('index');
 			}
 			
@@ -943,5 +973,64 @@ class CourseAdminController extends Controller
 		}
 		exit();
 	}
+	
+	public function actionUploadFile($attr, $id){
+        $attr = $this->clean($attr);
+        $model = $this->findVerifier();
+        $model->file_controller = 'course-admin';
+		$path = 'course-mgt/signiture/' . Yii::$app->user->identity->staff->staff_no ;
+        return UploadFile::upload($model, $attr, 'updated_at', $path);
+
+    }
+
+	protected function clean($string){
+		$allowed = ['signiture'];
+        if(in_array($string,$allowed)){
+            return $string;
+        }
+        throw new NotFoundHttpException('Invalid Attribute');
+    }
+
+	public function actionDeleteFile($attr, $id)
+    {
+        $attr = $this->clean($attr);
+        $model = $this->findVerifier();
+        $attr_db = $attr . '_file';
+        
+        $file = Yii::getAlias('@upload/' . $model->{$attr_db});
+        
+        $model->scenario = $attr . '_delete';
+        $model->{$attr_db} = '';
+        $model->updated_at = new Expression('NOW()');
+        if($model->save()){
+            if (is_file($file)) {
+                unlink($file);
+                
+            }
+            
+            return Json::encode([
+                        'good' => 1,
+                    ]);
+        }else{
+            return Json::encode([
+                        'errors' => $model->getErrors(),
+                    ]);
+        }
+        
+
+
+    }
+
+	public function actionDownloadFile($attr, $id, $identity = true){
+        $attr = $this->clean($attr);
+        $model = $this->findVerifier();
+        $filename = strtoupper($attr) . ' ' . Yii::$app->user->identity->fullname;
+        
+        
+        
+        UploadFile::download($model, $attr, $filename);
+    }
+
+
 	
 }

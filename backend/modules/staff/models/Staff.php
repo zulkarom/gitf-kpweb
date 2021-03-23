@@ -61,11 +61,13 @@ class Staff extends \yii\db\ActiveRecord
 	public $stitle;
 	
 	public $image_instance;
+	public $signiture_instance;
 	public $file_controller;
 	
 	public $count_staff;
 	public $position_name;
 	public $staff_label;
+	public $verified_at;
 
 	
 
@@ -85,6 +87,8 @@ class Staff extends \yii\db\ActiveRecord
     {
         return [
             [['staff_no', 'user_id', 'staff_title', 'is_academic', 'position_id', 'position_status', 'working_status'], 'required'],
+			
+			[['verified_at'], 'required', 'on' => 'verify_course'],
 			
 			[['teaching_submit'], 'required', 'on' => 'teaching'],
 			
@@ -115,9 +119,11 @@ class Staff extends \yii\db\ActiveRecord
 			
             [['staff_ic'], 'string', 'max' => 15],
 			
-			[['image_file'], 'required', 'on' => 'image_upload'],
-            [['image_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg, png, bmp, gif', 'maxSize' => 1000000],
-            [['updated_at'], 'required', 'on' => 'image_delete'],
+			[['tbl4_verify_y', 'tbl4_verify_size'], 'number'],
+			
+			[['signiture_file'], 'required', 'on' => 'signiture_upload'],
+            [['signiture_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png', 'maxSize' => 1000000],
+            [['updated_at'], 'required', 'on' => 'signiture_delete'],
 
 
         ];
@@ -166,6 +172,8 @@ class Staff extends \yii\db\ActiveRecord
 			'hq_specialization' => 'Specialization',
 			'hq_institution' => 'Awarding Institution',
 			'hq_country' => 'Country',
+			'tbl4_verify_y' => 'Table 4 Adj Y', 
+			'tbl4_verify_size' =>  'Table 4 Size Adj'
         ];
     }
 	
