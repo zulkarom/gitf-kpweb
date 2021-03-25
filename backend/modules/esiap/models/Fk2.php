@@ -30,6 +30,7 @@ class Fk2
 		
 		
 		$this->doBody();
+		$this->signiture();
 
 		$this->pdf->Output('FK02 - '.$this->model->course->course_code .'.pdf', 'I');
 	}
@@ -644,11 +645,11 @@ $html .='<br/><br/>
 Tandatangan:<br/>
 <i>Signature:</i>
 <br/><br/>
-Nama:<br />
-<i>Name:</i> '.ucwords(strtolower($prepared_by)).'
+Nama: '.ucwords(strtolower($prepared_by)).'<br /> 
+<i>Name:</i> 
 <br/><br/>
-Tarikh:<br />
-<i>Date:</i> '. $this->model->prepareDate .'
+Tarikh: '. $this->model->prepareDate .'<br /> 
+<i>Date:</i> 
 
 </td>
 
@@ -692,14 +693,7 @@ $wnote = $tab_syl - $ast;
 $html .= '<br /><table border="0" cellpadding="0" style="font-size:10pt">
 <tr><td width="'.$ast.'">*</td><td width="'.$wnote.'">Sebarang perubahan kepada maklumat kursus (kecuali bahan rujukan) perlu mendapat kelulusan Fakulti/ Pusat atau Senat mengikut kesesuaian.</td></tr>
 <tr><td></td><td><i>Any changes to the course information (except for sources of references) must be approved by the Faculty/ Centre or the Senate, wherever applicable.</i></td></tr>
-</table>
-
-
-
-
-';
-
-
+</table>';
 
 $html .='</td>
 </tr>
@@ -720,6 +714,56 @@ $this->pdf->writeHTML($tbl, true, false, false, false, '');
 $this->pdf->lineFooterTable = false;
 		
 		
+	}
+	
+	public function signiture(){
+		$sign = $this->model->preparedsign_file;
+
+		$file = Yii::getAlias('@upload/'. $sign);
+
+		$y = $this->pdf->getY();
+		$this->verify_y = $this->pdf->getY();
+		
+		
+		$adjy = $this->model->prepared_adj_y;
+		
+		$posY = $y  - $adjy - 120;
+		$this->pdf->setY($posY);
+		
+		
+		$size = 100 + ($this->model->prepared_size * 3);
+		if($size < 0){
+			$size = 10;
+		}
+		
+
+		
+		$col1 = 100;
+		$col_sign = 800 /2 ;
+		$html = '<table>
+
+		
+		<tr>
+		<td width="'. $col1 .'"></td>
+		
+		<td width="'.$col_sign .'" colspan="18" >';
+		if($this->model->preparedsign_file){
+			if(is_file($file)){
+				$html .= '<img width="'.$size.'" src="'.$file.'" />';
+			}
+		}
+		
+		$html .= '</td>
+
+		
+		</tr></table>';
+		
+		
+		$tbl = <<<EOD
+		$html
+EOD;
+
+		$this->pdf->writeHTML($tbl, true, false, false, false, '');
 	}
 
 	

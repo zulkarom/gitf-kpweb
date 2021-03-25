@@ -10,6 +10,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\Expression;
+use yii\helpers\FileHelper;
 
 use common\models\Model;
 use common\models\UploadFile;
@@ -36,7 +37,7 @@ use backend\modules\esiap\models\CourseAccess;
 use backend\modules\esiap\models\CourseStaff;
 use backend\modules\esiap\models\CourseTransferable;
 use backend\modules\staff\models\Staff;
-
+use backend\modules\staff\models\StaffMainPosition;
 
 
 /**
@@ -85,17 +86,95 @@ class CourseAdminController extends Controller
 		$verify->scenario = 'verify_course';
 		
 		if ($verify->load(Yii::$app->request->post())) {
+			//echo '<pre>';print_r(Yii::$app->request->post());die();
+			$action = Yii::$app->request->post('actiontype');
 			if(Yii::$app->request->post('selection')){
 				$courses = Yii::$app->request->post('selection');
-				$date = $verify->verified_at;
-				$result = CourseVersion::updateAll(['verified_by' => Yii::$app->user->identity->id, 'status' => 20, 'verified_at' => $date ], ['id' => $courses]);
-				if($result){
-					Yii::$app->session->addFlash('success', "Verification successful.");
+				
+				if($action == 'save'){
+					$verify->save();
+					return $this->refresh();
+				}else{
+					$action = $action == 'verify' ? 20 : 10;
+					if($action == 20){
+						$copy = Yii::getAlias('@upload/' . $verify->signiture_file);
+						$filepath = 'course-mgt/' . $verify->signiture_file;
+						$mirror = Yii::getAlias('@upload/' . $filepath);
+						if(empty($verify->signiture_file) and !is_file($copy )){
+								Yii::$app->session->addFlash('error', "Please put your signiture first!.");
+						}else{
+							
+							//ok kena check file ni dah ada ke belum
+							$verified_file = '';
+							if (is_file($mirror)) {
+								$verified_file = $filepath;
+							}else{
+								$dir = dirname($mirror);
+								if (!is_dir($dir)) {
+									FileHelper::createDirectory($dir);
+								}
+								if (is_file($copy)){
+									copy($copy, $mirror);
+									$verified_file = $filepath;
+								}else{
+									Yii::$app->session->addFlash('error', "Please put your signiture first!.");
+								}
+								
+							}
+							//klu ada record db shj
+							//klu xde copy dalam crs mgt
+							// nak kena cari position dia
+							$position = StaffMainPosition::findOne(['staff_id' => Yii::$app->user->identity->staff->id]);
+							$position_name = '';
+							if($position){
+								$position_name = $position->position_name;
+							}
+							$date = $verify->verified_at;
+							$result = CourseVersion::updateAll([
+											'verified_by' => Yii::$app->user->identity->id, 
+											'status' => $action, 
+											'verified_at' => $date,
+											'verifiedsign_file' => $verified_file,
+											'verified_adj_y' => $verify->tbl4_verify_y,
+											'verified_size' => $verify->tbl4_verify_size,
+											'verifier_position' => $position_name,
+											], 
+									['id' => $courses]);
+											
+							$verify->save();
+							if($result){
+								Yii::$app->session->addFlash('success', "Verification successful.");
+								return $this->refresh();
+							}
+									
+							
+							
+						}
+					}else{
+						$result = CourseVersion::updateAll([
+											'verified_by' => Yii::$app->user->identity->id, 
+											'status' => $action, 
+											'verified_at' => '0000-00-00',
+											'verifiedsign_file' => '',
+											'verified_adj_y' => 0,
+											'verified_size' => 0,
+											], 
+									['id' => $courses]);
+						$verify->save();
+						if($result){
+							Yii::$app->session->addFlash('success', "Unverification successful.");
+						}
+					}
+					
 				}
 				
+				
 			}else{
-				Yii::$app->session->addFlash('error', "Please select some courses first.");
-				return $this->refresh();
+				if($action != 'save'){
+					Yii::$app->session->addFlash('error', "Please select some courses first.");
+					//return $this->refresh();
+				}
+				
 			}
 			
 		}
@@ -106,6 +185,9 @@ class CourseAdminController extends Controller
 			'verify' => $verify
         ]);
     }
+	
+
+
 	
 	protected function findVerifier(){
 		return Staff::findOne(Yii::$app->user->identity->staff->id);
@@ -978,7 +1060,7 @@ class CourseAdminController extends Controller
         $attr = $this->clean($attr);
         $model = $this->findVerifier();
         $model->file_controller = 'course-admin';
-		$path = 'course-mgt/signiture/' . Yii::$app->user->identity->staff->staff_no ;
+		$path = 'signiture/' . Yii::$app->user->identity->staff->staff_no ;
         return UploadFile::upload($model, $attr, 'updated_at', $path);
 
     }

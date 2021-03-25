@@ -4,7 +4,7 @@ namespace backend\modules\esiap\models;
 
 use Yii;
 use common\models\Common;
-
+use backend\models\Faculty;
 
 class Tbl4Pdf
 {
@@ -64,6 +64,7 @@ class Tbl4Pdf
 		$this->preparedBy();
 		
 		$this->signiture();
+		$this->signitureVerify();
 		
 		
 
@@ -1205,19 +1206,25 @@ $this->html .= $html;
 	
 	public function preparedBy(){
 		$coor = '-- not set --';
+		$verifier = '-- not set --';
 		$date = '-- date --';
+		$datev = '-- date --';
 		if($this->model->preparedBy){
 			$coor = $this->model->preparedBy->staff->niceName;
+		}
+		if($this->model->verifiedBy){
+			$verifier = $this->model->verifiedBy->staff->niceName;
 		}
 		if($this->model->prepared_at != '0000-00-00'){
 			$date = date('d/m/Y', strtotime($this->model->prepared_at));
 		}
-		
+		if($this->model->verified_at != '0000-00-00'){
+			$datev = date('d/m/Y', strtotime($this->model->verified_at));
+		}
 		$col_sign = ($this->wall /2 ) - $this->colnum;
+		$faculty = Faculty::findOne(Yii::$app->params['faculty_id']);
 		
 		$html = '<table >
-
-		
 		<tr>
 		<td width="'.$this->colnum.'"></td>
 		
@@ -1225,7 +1232,7 @@ $this->html .= $html;
 		<br /><br /><br /> 
 ___________________________<br />
 		'.$coor.'
-		<br /> Coordinator
+		<br /> Course Owner
 		<br /> '.$this->model->course->course_code.'
 		<br /> '.$this->model->course->course_name_bi.'
 		<br /> '.$date.'
@@ -1235,9 +1242,10 @@ ___________________________<br />
 		<td width="'.$col_sign .'" colspan="18" style="font-size:12px">Approved by:
 <br /><br /><br /> 
 ___________________________<br />
-		-- not set --
-		<br /> Head of Department
-		<br /> -- date --
+		'.$verifier.'
+		<br /> '.$this->model->verifier_position.'
+		<br /> '.$faculty->faculty_name_bi.'
+		<br /> '.$datev.'
 		
 		
 		</td>
@@ -1254,19 +1262,11 @@ EOD;
 	
 	public function signiture(){
 		$sign = $this->model->preparedsign_file;
-		if(!$sign){
-			return false;
-		}
 
 		$file = Yii::getAlias('@upload/'. $sign);
-		
-		$html =  '
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img width="113" src="'.$file.'" />
-		';
-		$tbl = <<<EOD
-		$html
-EOD;
+
 		$y = $this->pdf->getY();
+		$this->verify_y = $this->pdf->getY();
 		
 		
 		$adjy = $this->model->prepared_adj_y;
@@ -1274,23 +1274,89 @@ EOD;
 		$posY = $y - 40 - $adjy;
 		$this->pdf->setY($posY);
 		
-		$size = 100 + ($this->model->prepared_size * 3);
 		
+		$size = 100 + ($this->model->prepared_size * 3);
+		if($size < 0){
+			$size = 10;
+		}
 		
 
+		
+		$col1 = $this->colnum + 10;
 		$col_sign = $this->wall /2 ;
 		$html = '<table>
 
 		
 		<tr>
-		<td width="'.$this->colnum.'"></td>
+		<td width="'. $col1 .'"></td>
 		
-		<td width="'.$col_sign .'" colspan="18" ><img width="'.$size.'" src="'.$file.'" />
-		</td>
-		<td width="'.$col_sign .'" colspan="18" >
+		<td width="'.$col_sign .'" colspan="18" >';
+		if($this->model->preparedsign_file){
+			if(is_file($file)){
+				$html .= '<img width="'.$size.'" src="'.$file.'" />';
+			}
+		}
+		
+		$html .= '</td>
+		<td width="'.$col_sign .'" colspan="18" >';
+		
+
+		
+		$html .= '</td>
+		
+		</tr></table>';
 		
 		
-		</td>
+		$tbl = <<<EOD
+		$html
+EOD;
+
+		$this->pdf->writeHTML($tbl, true, false, false, false, '');
+	}
+	
+	public $verify_y;
+	
+	public function signitureVerify(){
+		$sign = $this->model->verifiedsign_file;
+
+		$file = Yii::getAlias('@upload/'. $sign);
+		
+		$y = $this->verify_y;
+		
+	
+		$adjy = $this->model->verified_adj_y;
+		
+		$posY = $y - 40 - $adjy;
+		$this->pdf->setY($posY);
+		
+
+		
+		$size = 100 + ($this->model->verified_size * 3);
+		if($size < 0){
+			$size = 10;
+		}
+		
+		$col1 = $this->colnum + 10;
+		$col_sign = $this->wall /2 ;
+		$html = '<table>
+
+		
+		<tr>
+		<td width="'. $col1 .'"></td>
+		
+		<td width="'.$col_sign .'" colspan="18" >';
+
+		
+		$html .= '</td>
+		<td width="'.$col_sign .'" colspan="18" >';
+		
+		if($this->model->verifiedsign_file){
+			if(is_file($file)){
+				$html .= '<img width="'.$size.'" src="'.$file.'" />';
+			}
+		}
+		
+		$html .= '</td>
 		
 		</tr></table>';
 		

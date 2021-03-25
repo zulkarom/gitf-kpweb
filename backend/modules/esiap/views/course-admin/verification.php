@@ -199,7 +199,7 @@ echo UploadFile::fileInput($verify, 'signiture', true)?>
 </div>
 
 <?=Html::submitButton('<span class="fa fa-save"></span> SAVE & PREVIEW SIGNITURE', 
-    ['class' => 'btn btn-default btn-sm', 'name' => 'wfaction', 'value' => 'btn-save',
+    ['class' => 'btn btn-default btn-sm', 'name' => 'actiontype', 'value' => 'save',
     ])?> 
 	
 </div>
@@ -211,9 +211,9 @@ echo UploadFile::fileInput($verify, 'signiture', true)?>
         
 		
 	
-	<?= Html::submitButton('<span class="fa fa-check"></span> Verify Selected', ['class' => 'btn btn-success', 'name'=> 'actiontype', 'value' => 'generate']) ?> 
+	<?= Html::submitButton('<span class="fa fa-check"></span> Verify Selected', ['class' => 'btn btn-success', 'name'=> 'actiontype', 'value' => 'verify']) ?> 
 
-<?= Html::submitButton('<span class="fa fa-remove"></span> Unverify Selected', ['class' => 'btn btn-warning', 'name'=> 'actiontype', 'value' => 'generate']) ?>
+<?= Html::submitButton('<span class="fa fa-remove"></span> Unverify Selected', ['class' => 'btn btn-warning', 'name'=> 'actiontype', 'value' => 'unverify']) ?>
 
     </div>
 

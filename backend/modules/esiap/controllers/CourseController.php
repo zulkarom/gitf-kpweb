@@ -853,8 +853,11 @@ class CourseController extends Controller
 	public function actionViewCourse($course){
 		$model = $this->findModel($course);
 		$version = $model->developmentVersion;
+		if(!$version){
+			die('There is no development version for this course.');
+		}
 		
-		 if ($version->load(Yii::$app->request->post())) {
+		if ($version->load(Yii::$app->request->post())) {
 			 
 			$action = Yii::$app->request->post('wfaction');
 			
