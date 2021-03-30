@@ -4,7 +4,7 @@ namespace backend\modules\esiap\models;
 
 use Yii;
 use common\models\Common;
-
+use backend\models\Faculty;
 
 class Fk2
 {
@@ -31,6 +31,7 @@ class Fk2
 		
 		$this->doBody();
 		$this->signiture();
+		$this->signitureVerify();
 
 		$this->pdf->Output('FK02 - '.$this->model->course->course_code .'.pdf', 'I');
 	}
@@ -628,11 +629,7 @@ $html .='</table></td></tr></table>
   <i> Final Assessment is 0% if the course involves Final Exam only and vice versa. </i>
 
 ';
-$prepared_by = '';
-$prepare = $this->model->preparedBy;
-if($prepare){
-	$prepared_by = $prepare->fullname;
-}
+
 $html .='<br/><br/>
 
 
@@ -645,10 +642,10 @@ $html .='<br/><br/>
 Tandatangan:<br/>
 <i>Signature:</i>
 <br/><br/>
-Nama: '.ucwords(strtolower($prepared_by)).'<br /> 
+Nama: <br /> 
 <i>Name:</i> 
 <br/><br/>
-Tarikh: '. $this->model->prepareDate .'<br /> 
+Tarikh: <br /> 
 <i>Date:</i> 
 
 </td>
@@ -727,7 +724,7 @@ $this->pdf->lineFooterTable = false;
 		
 		$adjy = $this->model->prepared_adj_y;
 		
-		$posY = $y  - $adjy - 120;
+		$posY = $y  - $adjy - 115;
 		$this->pdf->setY($posY);
 		
 		
@@ -736,10 +733,17 @@ $this->pdf->lineFooterTable = false;
 			$size = 10;
 		}
 		
-
+		$coor = '';
+		$date = '';
+		if($this->model->preparedBy){
+			$coor = $this->model->preparedBy->staff->niceName;
+		}
+		if($this->model->prepared_at != '0000-00-00'){
+			$date = date('d/m/Y', strtotime($this->model->prepared_at));
+		}
 		
 		$col1 = 100;
-		$col_sign = 800 /2 ;
+		$col_sign = 210 ;
 		$html = '<table>
 
 		
@@ -756,7 +760,26 @@ $this->pdf->lineFooterTable = false;
 		$html .= '</td>
 
 		
-		</tr></table>';
+		</tr>
+		
+		<tr>
+		<td width="'. $col1 .'"></td>
+		
+		<td width="'.$col_sign .'">';
+		
+		$html .= $coor.'
+		<br /> Course Owner
+		<br /> '.$this->model->course->course_code.'
+		<br /> '.$this->model->course->course_name.'
+		<br /> '.$date ; 
+		
+		$html .= '</td>
+		
+		
+		
+		</tr>
+		
+		</table>';
 		
 		
 		$tbl = <<<EOD
@@ -765,6 +788,83 @@ EOD;
 
 		$this->pdf->writeHTML($tbl, true, false, false, false, '');
 	}
+	
+	public function signitureVerify(){
+		$sign = $this->model->verifiedsign_file;
+
+		$file = Yii::getAlias('@upload/'. $sign);
+
+		$y = $this->verify_y;
+		
+		$verifier = '';
+		$datev = '';
+
+		if($this->model->verifiedBy){
+			$verifier = $this->model->verifiedBy->staff->niceName;
+		}
+		if($this->model->verified_at != '0000-00-00'){
+			$datev = date('d/m/Y', strtotime($this->model->verified_at));
+		}
+		$faculty = Faculty::findOne(Yii::$app->params['faculty_id']);
+
+		
+		
+		$adjy = $this->model->verified_adj_y;
+		
+		$posY = $y  - $adjy - 95;
+		$this->pdf->setY($posY);
+		
+		
+		$size = 100 + ($this->model->verified_size * 3);
+		if($size < 0){
+			$size = 10;
+		}
+		
+
+		
+		$col1 = 450;
+		$col_sign = 180 ;
+		$html = '<table>
+
+		
+		<tr>
+		<td width="'. $col1 .'"></td>
+		
+		<td width="'.$col_sign .'" >';
+		if($this->model->verifiedsign_file){
+			if(is_file($file)){
+				$html .= '<img width="'.$size.'" src="'.$file.'" />';
+			}
+		}
+		
+		$html .= '</td>
+
+		
+		</tr>
+		<tr>
+		<td width="'. $col1 .'"></td>
+		
+		<td width="'.$col_sign .'" >';
+		$html .= $verifier.'
+		<br /> '.$this->model->verifier_position.'
+		<br /> '.$faculty->faculty_name.'
+		<br /> '.$datev ;
+		
+		$html .= '</td>
+
+		
+		</tr>
+		
+		</table>';
+		
+		
+		$tbl = <<<EOD
+		$html
+EOD;
+
+		$this->pdf->writeHTML($tbl, true, false, false, false, '');
+	}
+
 
 	
 	

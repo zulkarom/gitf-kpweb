@@ -4,6 +4,7 @@ namespace backend\modules\esiap\models;
 
 use Yii;
 use common\models\Common;
+use backend\models\Faculty;
 
 
 class Fk3
@@ -37,6 +38,10 @@ class Fk3
 		$this->improvement();
 		
 		$this->signiture();
+		$this->signiturePrepare();
+		$this->signiture2();
+		
+		$this->signitureVerify();
 
 		$this->pdf->Output('FK03 - '.$this->model->course->course_code .'.pdf', 'I');
 	}
@@ -517,6 +522,10 @@ $this->pdf->writeHTML($tbl, true, false, false, false, '');
 		
 	}
 	
+	public $prepare_y;
+	
+	public $verify_y;
+	
 	public function signiture(){
 		$tbl = <<<EOD
 <p></p>
@@ -528,37 +537,200 @@ Nama Penyelaras/  Pensyarah Kursus<br />
 <i>Course Coordinator/  Lecturer’s Name:</i>	
 </td><td width="700">
 <br /><br />
-______________________________________
+
 </td></tr>
 
 
 <tr><td>Tandatangan/<i>Signature:</i></td><td>
-______________________________________
+
 </td></tr>
 
 
 <tr><td>Tarikh/<i>Date:</i></td><td>
-______________________________________
+
 </td></tr>
 </table>
 <br />
-<table cellpadding="10" style="font-size:10pt" nobr="true">
-<tr><td width="240">Disahkan oleh/Verified by:</td><td width="700">______________________________________<br/><br/>
 
-(Cop Ketua Jabatan/ Penyelaras Program)/ <i>(Head of Department/  Programme Coordinator’s Stamp)</i>
+EOD;
+
+$this->pdf->writeHTML($tbl, true, false, false, false, '');
+$this->prepare_y = $this->pdf->getY();
+	}
+	public function signiture2(){
+		$tbl = <<<EOD
+<table cellpadding="10" style="font-size:10pt" nobr="true" border="0">
+<tr><td width="240">Disahkan oleh/Verified by:</td><td width="700">
+
 
 </td></tr>  			
 <tr><td>Tarikh/<i>Date</i>:</td><td>
-______________________________________
+
 </td></tr>	
 </table>
+<br /><br /><br /><br /><br /><br /><br />
 * Sebarang perubahan kepada maklumat atau kandungan kursus perlu mendapat kelulusan Fakulti/ Pusat atau Senat mengikut kesesuaian.<br />
    <i> Any change to the course information or content must be approved by the Faculty/ Centre or the Senate wherever applicable.</i>
 	
 EOD;
 
 $this->pdf->writeHTML($tbl, true, false, false, false, '');
+$this->verify_y = $this->pdf->getY();
 	}
+	
+	
+	public function signiturePrepare(){
+		$sign = $this->model->preparedsign_file;
+
+		$file = Yii::getAlias('@upload/'. $sign);
+
+		$y = $this->prepare_y;
+		
+		
+		$adjy = $this->model->prepared_adj_y;
+		
+		$posY = $y  - $adjy - 44;
+		$this->pdf->setY($posY);
+		
+		
+		$size = 100 + ($this->model->prepared_size * 3);
+		if($size < 0){
+			$size = 10;
+		}
+		
+		$coor = '';
+		$date = '';
+		if($this->model->preparedBy){
+			$coor = $this->model->preparedBy->staff->niceName;
+		}
+		if($this->model->prepared_at != '0000-00-00'){
+			$date = date('d/m/Y', strtotime($this->model->prepared_at));
+		}
+		
+		$col1 = 250;
+		$col_sign = 410 ;
+		$html = '<table>
+
+		
+		<tr>
+		<td width="'. $col1 .'"></td>
+		
+		<td width="'.$col_sign .'">';
+		if($this->model->preparedsign_file){
+			if(is_file($file)){
+				$html .= '<img width="'.$size.'" src="'.$file.'" />';
+			}
+		}
+		
+		$html .= '</td>
+
+		
+		</tr>
+		
+		<tr>
+		<td width="'. $col1 .'"></td>
+		
+		<td width="'.$col_sign .'">';
+		
+		$html .= $coor.'
+		<br /> Course Owner
+		<br /> '.$this->model->course->course_code.'
+		<br /> '.$this->model->course->course_name.'
+		<br /> '.$date ; 
+		
+		$html .= '</td>
+		
+		
+		
+		</tr>
+		
+		</table>';
+		
+		
+		$tbl = <<<EOD
+		$html
+EOD;
+
+		$this->pdf->writeHTML($tbl, true, false, false, false, '');
+	}
+	
+	public function signitureVerify(){
+		$sign = $this->model->verifiedsign_file;
+
+		$file = Yii::getAlias('@upload/'. $sign);
+
+		$y = $this->verify_y;
+		
+		$verifier = '';
+		$datev = '';
+
+		if($this->model->verifiedBy){
+			$verifier = $this->model->verifiedBy->staff->niceName;
+		}
+		if($this->model->verified_at != '0000-00-00'){
+			$datev = date('d/m/Y', strtotime($this->model->verified_at));
+		}
+		$faculty = Faculty::findOne(Yii::$app->params['faculty_id']);
+
+		
+		
+		$adjy = $this->model->verified_adj_y;
+		
+		$posY = $y  - $adjy - 50;
+		$this->pdf->setY($posY);
+		
+		
+		$size = 100 + ($this->model->verified_size * 3);
+		if($size < 0){
+			$size = 10;
+		}
+		
+
+		
+		$col1 = 250;
+		$col_sign = 480 ;
+		$html = '<table>
+
+		
+		<tr>
+		<td width="'. $col1 .'"></td>
+		
+		<td width="'.$col_sign .'" >';
+		if($this->model->verifiedsign_file){
+			if(is_file($file)){
+				$html .= '<img width="'.$size.'" src="'.$file.'" />';
+			}
+		}
+		
+		$html .= '</td>
+
+		
+		</tr>
+		<tr>
+		<td width="'. $col1 .'"></td>
+		
+		<td width="'.$col_sign .'" >';
+		$html .= $verifier.'
+		<br /> '.$this->model->verifier_position.'
+		<br /> '.$faculty->faculty_name.'
+		<br /> '.$datev ;
+		
+		$html .= '</td>
+
+		
+		</tr>
+		
+		</table>';
+		
+		
+		$tbl = <<<EOD
+		$html
+EOD;
+
+		$this->pdf->writeHTML($tbl, true, false, false, false, '');
+	}
+
+
 	
 	public function analysis($point){
 		if($point >= 3.7 and $point <= 4){
@@ -595,7 +767,7 @@ $this->pdf->writeHTML($tbl, true, false, false, false, '');
 		$this->pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
 		// set margins
-		$this->pdf->SetMargins(PDF_MARGIN_LEFT, 10, PDF_MARGIN_RIGHT);
+		$this->pdf->SetMargins(PDF_MARGIN_LEFT, 20, PDF_MARGIN_RIGHT);
 		//$this->pdf->SetMargins(0, 0, 0);
 		$this->pdf->SetHeaderMargin(10);
 		//$this->pdf->SetHeaderMargin(0);
