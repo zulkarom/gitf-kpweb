@@ -123,6 +123,7 @@ class Tbl4Pdf
 	
 	public function courseName(){
 		$this->pdf->lineFooterTable = true;
+		$this->pdf->lineHeaderTable = true;
 		$wtab = $this->wtab;
 		$colnum = $this->colnum;
 		$col_label = $this->col_label;
@@ -140,7 +141,10 @@ class Tbl4Pdf
 			$class = '';
 		}
 
-		$html = '<table border="0" width="'.$wtab.'" cellpadding="5">
+		$html = '
+		<div style="font-size:12px"><b>Table 4</b>: Summary of Course Information</div><br />
+		
+		<table border="0" width="'.$wtab.'" cellpadding="5">
 
 		<tr>
 
@@ -176,6 +180,7 @@ class Tbl4Pdf
 	}
 	
 	public function synopsis(){
+
 		$html = '<tr>
 		<td width="'.$this->colnum.'" align="center" '.$this->border.'>2</td>
 
@@ -1335,7 +1340,7 @@ EOD;
 		if($size < 0){
 			$size = 10;
 		}
-		
+		//echo $size;die();
 		$col1 = $this->colnum + 10;
 		$col_sign = $this->wall /2 ;
 		$html = '<table>
@@ -1404,7 +1409,7 @@ $this->pdf->lineFooterTable = false;
 		$this->pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
 		// set margins
-		$this->pdf->SetMargins(12, 18, 12);
+		$this->pdf->SetMargins(12, 15, 12);
 		//$this->pdf->SetMargins(0, 0, 0);
 		$this->pdf->SetHeaderMargin(13);
 		//$this->pdf->SetHeaderMargin(0);
@@ -1430,6 +1435,7 @@ $this->pdf->lineFooterTable = false;
 
 		// add a page
 		$this->pdf->AddPage("P");
+		$this->pdf->lineHeaderTable = false;
 	}
 	
 	

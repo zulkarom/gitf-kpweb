@@ -36,9 +36,10 @@ use backend\modules\esiap\models\CoursePic;
 use backend\modules\esiap\models\CourseAccess;
 use backend\modules\esiap\models\CourseStaff;
 use backend\modules\esiap\models\CourseTransferable;
+use backend\modules\esiap\models\Access;
 use backend\modules\staff\models\Staff;
 use backend\modules\staff\models\StaffMainPosition;
-
+use backend\models\Department;
 
 /**
  * CourseController implements the CRUD actions for Course model.
@@ -80,6 +81,9 @@ class CourseAdminController extends Controller
 	
 	public function actionVerification()
     {
+		if(!Access::ICanVerify()){
+			return $this->render('forbidden');
+		}
         $searchModel = new CourseVerificationSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 		$verify = $this->findVerifier();
@@ -88,13 +92,15 @@ class CourseAdminController extends Controller
 		if ($verify->load(Yii::$app->request->post())) {
 			//echo '<pre>';print_r(Yii::$app->request->post());die();
 			$action = Yii::$app->request->post('actiontype');
+			if($action == 'save'){
+				$verify->save();
+				return $this->refresh();
+			}
+			
 			if(Yii::$app->request->post('selection')){
 				$courses = Yii::$app->request->post('selection');
 				
-				if($action == 'save'){
-					$verify->save();
-					return $this->refresh();
-				}else{
+				if($action != 'save'){
 					$action = $action == 'verify' ? 20 : 10;
 					if($action == 20){
 						$copy = Yii::getAlias('@upload/' . $verify->signiture_file);
@@ -128,6 +134,11 @@ class CourseAdminController extends Controller
 							$position_name = '';
 							if($position){
 								$position_name = $position->position_name;
+							}else{
+								$department = Department::findOne(['head_dep' => Yii::$app->user->identity->staff->id]);
+								if($department){
+									$position_name = $department->position_stamp;
+								}
 							}
 							$date = $verify->verified_at;
 							$result = CourseVersion::updateAll([

@@ -198,9 +198,9 @@ echo UploadFile::fileInput($verify, 'signiture', true)?>
 
 </div>
 
-<?=Html::submitButton('<span class="fa fa-save"></span> SAVE & PREVIEW SIGNITURE', 
+<?php /* =Html::submitButton('<span class="fa fa-save"></span> SAVE SIGNITURE', 
     ['class' => 'btn btn-default btn-sm', 'name' => 'actiontype', 'value' => 'save',
-    ])?> 
+    ]) */?> 
 	
 </div>
 </div>

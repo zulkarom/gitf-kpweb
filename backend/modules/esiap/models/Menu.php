@@ -4,6 +4,7 @@ namespace backend\modules\esiap\models;
 
 use Yii;
 
+
 class Menu
 {
 	
@@ -83,6 +84,7 @@ class Menu
 	
 	
 	public static function adminEsiap(){
+		
 		$esiap_admin = [
                         'label' => 'Course Mgt Admin',
                         'icon' => 'cog',
@@ -94,19 +96,17 @@ class Menu
 				['label' => 'Summary', 'icon' => 'pie-chart', 'url' => ['/esiap/dashboard']],
 				
 				['label' => 'Active Courses', 'icon' => 'book', 'url' => ['/esiap/course-admin']],
+				
 				['label' => 'Course Verification', 'icon' => 'book', 'url' => ['/esiap/course-admin/verification']],
 				
 				//['label' => 'Bulk Course Version', 'icon' => 'book', 'url' => ['/esiap/course-admin/bulk-version']],
 				
 				//['label' => 'Program List', 'icon' => 'book', 'url' => ['/esiap/program-admin']],
 				
-				
-				
 				['label' => 'Inactive Courses', 'icon' => 'remove', 'url' => ['/esiap/course-admin/inactive']],
 				
-
-                 ]
-                    ];	
+                ]
+                ];	
 		return $esiap_admin;
 	}
 
