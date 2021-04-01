@@ -79,6 +79,19 @@ class CourseAdminController extends Controller
         ]);
     }
 	
+	public function actionCourseOwner(){
+		if(!Access::IAmProgramCoordinator()){
+			return $this->render('forbidden');
+		}
+		 $searchModel = new CourseAdminSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('course-owner', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+	}
+	
 	public function actionVerification()
     {
 		if(!Access::ICanVerify()){
@@ -580,6 +593,123 @@ class CourseAdminController extends Controller
 		return $this->render('update', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+			'model' => $model
+        ]);
+
+    }
+	
+	public function actionUpdateOwner($course)
+    {
+        $model = $this->findModel($course);
+        $pics = $model->coursePics;
+		$accesses = $model->courseAccesses;
+		
+        if ($model->load(Yii::$app->request->post())) {
+			$model->updated_at = new Expression('NOW()');    
+			if($model->save()){
+			$flag = true;
+            $staff_pic_arr = Yii::$app->request->post('staff_pic');
+			
+			if($staff_pic_arr){
+				
+				$kira_post = count($staff_pic_arr);
+				$kira_lama = count($model->coursePics);
+				if($kira_post > $kira_lama){
+					
+					$bil = $kira_post - $kira_lama;
+					for($i=1;$i<=$bil;$i++){
+						$insert = new CoursePic;
+						$insert->course_id = $model->id;
+						if(!$insert->save()){
+							$flag = false;
+						}
+					}
+				}else if($kira_post < $kira_lama){
+
+					$bil = $kira_lama - $kira_post;
+					$deleted = CoursePic::find()
+					  ->where(['course_id'=>$model->id])
+					  ->limit($bil)
+					  ->all();
+					if($deleted){
+						foreach($deleted as $del){
+							$del->delete();
+						}
+					}
+				}
+				
+				$update_pic = CoursePic::find()
+				->where(['course_id' => $model->id])
+				->all();
+				//echo count($staff_pic_arr);
+				//echo count($update_pic);die();
+
+				if($update_pic){
+					$i=0;
+					foreach($update_pic as $ut){
+						$ut->staff_id = $staff_pic_arr[$i];
+						$ut->save();
+						$i++;
+					}
+				}
+			}
+			
+			
+
+            $staff_access_arr = Yii::$app->request->post('staff_access');
+			if($staff_access_arr){
+				//echo 'hai';die();
+				$kira_post = count($staff_access_arr);
+				$kira_lama = count($model->courseAccesses);
+				if($kira_post > $kira_lama){
+					
+					$bil = $kira_post - $kira_lama;
+					for($i=1;$i<=$bil;$i++){
+						//print_r($staff_access_arr);die();
+						$insert = new CourseAccess;
+						$insert->course_id = $model->id;
+						if(!$insert->save()){
+							$insert->flashError();
+						}
+					}
+				}else if($kira_post < $kira_lama){
+
+					$bil = $kira_lama - $kira_post;
+					$deleted = CourseAccess::find()
+					  ->where(['course_id'=>$model->id])
+					  ->limit($bil)
+					  ->all();
+					if($deleted){
+						foreach($deleted as $del){
+							$del->delete();
+						}
+					}
+				}
+				
+				$update_access = CourseAccess::find()
+				->where(['course_id' => $model->id])
+				->all();
+				//echo count($staff_access_arr);
+				//echo count($update_access);die();
+
+				if($update_access){
+					$i=0;
+					foreach($update_access as $ut){
+						$ut->staff_id = $staff_access_arr[$i];
+						$ut->save();
+						$i++;
+					}
+				}
+			}
+			Yii::$app->session->addFlash('success', "Course Updated");
+			}else{
+				$model->flashError();
+			}
+			
+			return $this->refresh();
+			}
+		
+		return $this->render('update-owner', [
 			'model' => $model
         ]);
 

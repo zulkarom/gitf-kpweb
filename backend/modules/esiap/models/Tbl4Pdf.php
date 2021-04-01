@@ -1266,63 +1266,67 @@ EOD;
 	}
 	
 	public function signiture(){
-		$sign = $this->model->preparedsign_file;
+		if($sign = $this->model->status >= 10){
+			$sign = $this->model->preparedsign_file;
 
-		$file = Yii::getAlias('@upload/'. $sign);
+			$file = Yii::getAlias('@upload/'. $sign);
 
-		$y = $this->pdf->getY();
-		$this->verify_y = $this->pdf->getY();
-		
-		
-		$adjy = $this->model->prepared_adj_y;
-		
-		$posY = $y - 40 - $adjy;
-		$this->pdf->setY($posY);
-		
-		
-		$size = 100 + ($this->model->prepared_size * 3);
-		if($size < 0){
-			$size = 10;
-		}
-		
-
-		
-		$col1 = $this->colnum + 10;
-		$col_sign = $this->wall /2 ;
-		$html = '<table>
-
-		
-		<tr>
-		<td width="'. $col1 .'"></td>
-		
-		<td width="'.$col_sign .'" colspan="18" >';
-		if($this->model->preparedsign_file){
-			if(is_file($file)){
-				$html .= '<img width="'.$size.'" src="'.$file.'" />';
+			$y = $this->pdf->getY();
+			$this->verify_y = $this->pdf->getY();
+			
+			
+			$adjy = $this->model->prepared_adj_y;
+			
+			$posY = $y - 40 - $adjy;
+			$this->pdf->setY($posY);
+			
+			
+			$size = 100 + ($this->model->prepared_size * 3);
+			if($size < 0){
+				$size = 10;
 			}
-		}
-		
-		$html .= '</td>
-		<td width="'.$col_sign .'" colspan="18" >';
-		
+			
 
-		
-		$html .= '</td>
-		
-		</tr></table>';
-		
-		
-		$tbl = <<<EOD
-		$html
+			
+			$col1 = $this->colnum + 10;
+			$col_sign = $this->wall /2 ;
+			$html = '<table>
+
+			
+			<tr>
+			<td width="'. $col1 .'"></td>
+			
+			<td width="'.$col_sign .'" colspan="18" >';
+			if($this->model->preparedsign_file){
+				if(is_file($file)){
+					$html .= '<img width="'.$size.'" src="'.$file.'" />';
+				}
+			}
+			
+			$html .= '</td>
+			<td width="'.$col_sign .'" colspan="18" >';
+			
+
+			
+			$html .= '</td>
+			
+			</tr></table>';
+			
+			
+$tbl = <<<EOD
+$html
 EOD;
 
-		$this->pdf->writeHTML($tbl, true, false, false, false, '');
+			$this->pdf->writeHTML($tbl, true, false, false, false, '');
+		}
+		
 	}
 	
 	public $verify_y;
 	
 	public function signitureVerify(){
-		$sign = $this->model->verifiedsign_file;
+		if($sign = $this->model->status >= 20){
+			$sign = $this->model->verifiedsign_file;
 
 		$file = Yii::getAlias('@upload/'. $sign);
 		
@@ -1371,6 +1375,8 @@ EOD;
 EOD;
 
 		$this->pdf->writeHTML($tbl, true, false, false, false, '');
+		}
+		
 	}
 	
 	

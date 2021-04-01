@@ -13,14 +13,20 @@ use backend\models\Department;
  */
 class Access extends Model
 {
-	
 	public static function ICanVerify(){
 		$staff = Yii::$app->user->identity->staff->id;
-		
 		if(StaffMainPosition::findOne(['staff_id' => $staff])){
 			return true;
 		}
 		if(Department::findOne(['head_dep' => $staff])){
+			return true;
+		}
+		return false;
+	}
+	
+	public static function IAmProgramCoordinator(){
+		$staff = Yii::$app->user->identity->staff->id;
+		if(Program::findOne(['head_program' => $staff])){
 			return true;
 		}
 		return false;
