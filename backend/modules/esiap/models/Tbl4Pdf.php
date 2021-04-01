@@ -1266,7 +1266,7 @@ EOD;
 	}
 	
 	public function signiture(){
-		if($sign = $this->model->status >= 10){
+		if($this->model->status >= 10){
 			$sign = $this->model->preparedsign_file;
 
 			$file = Yii::getAlias('@upload/'. $sign);
@@ -1325,7 +1325,7 @@ EOD;
 	public $verify_y;
 	
 	public function signitureVerify(){
-		if($sign = $this->model->status >= 20){
+		if($this->model->status >= 20){
 			$sign = $this->model->verifiedsign_file;
 
 		$file = Yii::getAlias('@upload/'. $sign);
