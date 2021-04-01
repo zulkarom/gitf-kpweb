@@ -1210,10 +1210,16 @@ $this->html .= $html;
 	}
 	
 	public function preparedBy(){
-		$coor = '-- not set --';
-		$verifier = '-- not set --';
-		$date = '-- date --';
-		$datev = '-- date --';
+		
+		$coor = '';
+		$verifier = '';
+		$date = '';
+		$datev = '';
+		$faculty = '';
+		if($this->model->status >=20){
+			$faculty = $faculty->faculty_name_bi;
+		}
+		
 		if($this->model->preparedBy){
 			$coor = $this->model->preparedBy->staff->niceName;
 		}
@@ -1228,8 +1234,8 @@ $this->html .= $html;
 		}
 		$col_sign = ($this->wall /2 ) - $this->colnum;
 		$faculty = Faculty::findOne(Yii::$app->params['faculty_id']);
-		
-		$html = '<table >
+		if($this->model->status >= 10){
+			$html = '<table >
 		<tr>
 		<td width="'.$this->colnum.'"></td>
 		
@@ -1244,18 +1250,28 @@ ___________________________<br />
 		
 		</td>
 		<td width="'.$this->colnum.'"></td>
-		<td width="'.$col_sign .'" colspan="18" style="font-size:12px">Approved by:
-<br /><br /><br /> 
-___________________________<br />
-		'.$verifier.'
-		<br /> '.$this->model->verifier_position.'
-		<br /> '.$faculty->faculty_name_bi.'
-		<br /> '.$datev.'
+		<td width="'.$col_sign .'" colspan="18" style="font-size:12px">';
+		if($this->model->status >= 20){
+			$html .= 'Approved by:
+		<br /><br /><br /> 
+		___________________________<br />
+				'.$verifier.'
+				<br /> '.$this->model->verifier_position.'
+				<br /> '.$faculty.'
+				<br /> '.$datev;
+		}
 		
 		
-		</td>
+		
+		
+		
+		$html .= '</td>
 		
 		</tr></table>';
+		}else{
+			$html = '';
+		}
+			
 		
 		
 		$tbl = <<<EOD
@@ -1311,6 +1327,8 @@ EOD;
 			$html .= '</td>
 			
 			</tr></table>';
+		
+		
 			
 			
 $tbl = <<<EOD
