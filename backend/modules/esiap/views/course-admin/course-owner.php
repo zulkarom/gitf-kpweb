@@ -5,6 +5,7 @@ use yii\helpers\Url;
 use kartik\grid\GridView;
 use kartik\export\ExportMenu;
 use yii\widgets\ActiveForm;
+use backend\modules\esiap\models\Program;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\modules\esiap\models\CourseSearch */
@@ -47,13 +48,22 @@ $exportColumns = [
 			]
 
 ];
+$program = '';
+$kp = Program::findOne(['head_program' => Yii::$app->user->identity->staff->id]);
+if($kp){
+	$program = $kp->pro_name_bi . ' ('.$kp->pro_name_short.')';
+}
 ?>
 <div class="course-index">
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 	
 	<div class="row">
-<div class="col-md-5">
+<div class="col-md-9">
+
+<h4><?=$program?></h4>
+</div>
+<div class="col-md-3" align="right">
        <div class="form-group"> 
 		
 		<?=ExportMenu::widget([
@@ -74,10 +84,6 @@ $exportColumns = [
 		
  </div>
 
-<div class="col-md-7" align="right">
-
-<?=$this->render('_search', ['model' => $searchModel, 'element' => 'courseadminsearch-search_cat'])?>
-</div>
 
 </div>
 

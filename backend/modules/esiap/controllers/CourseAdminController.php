@@ -18,6 +18,7 @@ use common\models\UploadFile;
 use backend\modules\esiap\models\Tbl4Excel;
 use backend\modules\esiap\models\Tbl4Excel2;
 use backend\modules\esiap\models\CourseAdminSearch;
+use backend\modules\esiap\models\CourseOwnerSearch;
 use backend\modules\esiap\models\CourseVerificationSearch;
 use backend\modules\esiap\models\CourseInactiveSearch;
 use backend\modules\esiap\models\Course;
@@ -83,7 +84,7 @@ class CourseAdminController extends Controller
 		if(!Access::IAmProgramCoordinator()){
 			return $this->render('forbidden');
 		}
-		 $searchModel = new CourseAdminSearch();
+		 $searchModel = new CourseOwnerSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('course-owner', [
