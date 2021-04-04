@@ -99,7 +99,7 @@ class Menu
 				
 				['label' => 'Course Verification', 'icon' => 'check', 'url' => ['/esiap/course-admin/verification']],
 				
-				['label' => 'Course Owners', 'icon' => 'users', 'url' => ['/esiap/course-admin/course-owner']],
+				['label' => 'Program Coordinator', 'icon' => 'user', 'url' => ['/esiap/course-admin/course-owner']],
 				
 				//['label' => 'Bulk Course Version', 'icon' => 'book', 'url' => ['/esiap/course-admin/bulk-version']],
 				
