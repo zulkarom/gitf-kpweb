@@ -707,7 +707,7 @@ class CourseAdminController extends Controller
 				$model->flashError();
 			}
 			
-			return $this->refresh();
+			return $this->redirect(['course-owner']);
 			}
 		
 		return $this->render('update-owner', [
