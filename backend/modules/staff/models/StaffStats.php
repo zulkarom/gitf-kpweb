@@ -19,7 +19,7 @@ class StaffStats
 	
 	public static function staffByType(){
 		return Staff::find()
-		->select('staff.id, is_academic, COUNT(is_academic) as count_staff')
+		->select('is_academic, COUNT(is_academic) as count_staff')
 		->where(['staff.staff_active' => 1])
 		->groupBy('is_academic')
 		->orderBy('is_academic DESC')
