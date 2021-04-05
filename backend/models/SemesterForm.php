@@ -12,6 +12,7 @@ class SemesterForm extends Model
 {
     public $semester_id;
 	public $str_search;
+	public $program_search;
 	public $action;
 
     /**
@@ -20,7 +21,7 @@ class SemesterForm extends Model
     public function rules()
     {
         return [
-			[['semester_id'], 'integer'],
+			[['semester_id', 'program_search'], 'integer'],
 			[['str_search'], 'string'],
         ];
     }

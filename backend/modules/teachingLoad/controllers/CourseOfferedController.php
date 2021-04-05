@@ -55,7 +55,6 @@ class CourseOfferedController extends Controller
     public function actionIndex()
     {
         $semester = new SemesterForm;
-        $semester->action = ['/teaching-load/course-offered/index'];
 
         if(Yii::$app->getRequest()->getQueryParam('SemesterForm')){
             $sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');

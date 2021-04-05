@@ -23,7 +23,7 @@ $columns = [
                 'label' => 'Coordinator',
                 'format' => 'html',
                 'value' => function($model){
-                    return $model->coordinatorStr();
+                    return $model->course->coordinatorStr();
                 }
             ],
 
@@ -33,7 +33,7 @@ $columns = [
                 'label' => 'Lectures',
                 'format' => 'html',
                 'value' => function($model){
-                    return $model->teachLectureStr;
+                    return $model->course->teachLectureStr;
                 }
             ],
             
@@ -41,7 +41,7 @@ $columns = [
                 'label' => 'Tutorials',
                 'format' => 'html',
                 'value' => function($model){
-                    return $model->teachTutorialStr;
+                    return $model->course->teachTutorialStr;
                 }
             ],
 
@@ -56,7 +56,7 @@ $columns = [
 	
 	<div class="col-md-10" align="right">
 
-<?= $this->render('_semester_course', [
+<?= $this->render('_semester_course_program', [
         'model' => $semester,
     ]) ?>
 </div>
@@ -94,15 +94,15 @@ $columns = [
 	
             ['class' => 'yii\grid\SerialColumn'],
 			
-			'course_code',
-			'course_name',
+			'course.course_code',
+			'course.course_name',
 
 			[
                 'label' => 'Coordinator',
                 'format' => 'html',
                 'value' => function($model) use ($semester){
             
-                    return $model->getCoordinatorStr($semester->semester_id);
+                    return $model->course->getCoordinatorStr($semester->semester_id);
                     
                 }
             ],
@@ -112,7 +112,7 @@ $columns = [
                 'format' => 'html',
                 'value' => function($model) use ($semester){
             
-                    return $model->getTeachLectureStr($semester, "<br />");
+                    return $model->course->getTeachLectureStr($semester, "<br />");
                     
                 }
             ],
@@ -133,7 +133,7 @@ $columns = [
                 'label' => 'Tutorials',
                 'format' => 'html',
                 'value' => function($model){
-                    return $model->getTeachTutorialStr("<br />");
+                    return $model->course->getTeachTutorialStr("<br />");
                 }
             ],
             

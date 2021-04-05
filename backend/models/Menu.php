@@ -10,8 +10,6 @@ use backend\modules\erpd\models\Stats as ErpdStats;
 
 class Menu
 {
-	
-	
 	public static function courseFocus(){
 		return EsiapMenu::courseFocus();
 	}
@@ -23,8 +21,6 @@ class Menu
                         'icon' => 'list-ul',
                         'url' => '#',
                         'items' => [
-						
-				
 				['label' => 'Summary', 'icon' => 'pie-chart', 'url' => ['/erpd/admin']],
 				
 				['label' => 'Lecturers', 'icon' => 'user', 'url' => ['/erpd/admin/lecturer']],
@@ -149,6 +145,7 @@ class Menu
 				//['label' => 'My Course Selection', 'icon' => 'user', 'url' => ['/teaching-load/default/teaching-view']],
 				
 				['label' => 'Assign Teaching Load', 'icon' => 'book', 'url' => ['/teaching-load/course-offered/index']],
+				['label' => 'Program Coordinator', 'icon' => 'user', 'url' => ['/teaching-load/course-offered/program-coor']],
 				
 				[
 					'label' => 'Teaching Load Report',

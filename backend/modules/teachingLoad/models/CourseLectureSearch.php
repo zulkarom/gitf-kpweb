@@ -14,6 +14,8 @@ class CourseLectureSearch extends Course
 {
 	public $search_course;
 	
+	public $search_program;
+	
 	public $semester;
 	
     /**
@@ -44,13 +46,16 @@ class CourseLectureSearch extends Course
      */
     public function search($params)
     {
-        $query = Course::find()
+        /* $query = Course::find()
 		->where([
 			'faculty_id' => Yii::$app->params['faculty_id'], 
 			'is_active' => 1, 'is_dummy' => 0, 
 			'method_type' => 1]
 		)
-		->orderBy('course_code ASC');
+		->orderBy('course_code ASC'); */
+		
+		$query = CourseOffered::find()
+        ->joinWith('course');
 
         // add conditions that should always apply here
 
@@ -71,6 +76,7 @@ class CourseLectureSearch extends Course
         }
 		
 		
+		$query->andFilterWhere(['program_id' => $this->search_program]);
 		
 		// grid filtering conditions
         $query->andFilterWhere(['like', 'course_code', $this->search_course]);
