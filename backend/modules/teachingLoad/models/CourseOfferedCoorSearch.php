@@ -6,11 +6,12 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use backend\modules\teachingLoad\models\CourseOffered;
+use backend\modules\esiap\models\Program;
 
 /**
  * CourseOfferedSearch represents the model behind the search form of `backend\modules\teachingLoad\models\CourseOffered`.
  */
-class CourseOfferedSearch extends CourseOffered
+class CourseOfferedCoorSearch extends CourseOffered
 {
     public $semester;
     public $search_course;
@@ -68,13 +69,17 @@ class CourseOfferedSearch extends CourseOffered
 
         // grid filtering conditions
         $query->andFilterWhere([
-            
             'semester_id' => $this->semester,
-            
         ]);
 
         // grid filtering conditions
-		$query->andFilterWhere(['program_id' => $this->search_program]);
+		$program = -1;
+		$kp = Program::findOne(['head_program' => Yii::$app->user->identity->staff->id]);
+		if($kp){
+			$program = $kp->id;
+		}
+		$query->andFilterWhere(['program_id' => $program]);
+		
 		$query->andFilterWhere(['or', 
             ['like', 'course_name', $this->search_course],
             ['like', 'course_name_bi', $this->search_course],

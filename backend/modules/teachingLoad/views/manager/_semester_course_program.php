@@ -9,7 +9,6 @@ use yii\helpers\ArrayHelper;
 
 $form = ActiveForm::begin([
 'id' => 'sel-sem-form',
-'action' => $model->action,
 'method' => 'get',
 
 ]); ?>  

@@ -109,7 +109,11 @@ if(!empty($focus) or !empty($admin_focus)){
 	
 	];
 }
-// prepare menu items, get all modules
+$teaching_load = false;
+if(Yii::$app->user->can('teaching-load-manager') or Yii::$app->user->can('teaching-load-program-coor')){
+	$teaching_load = true;
+}
+
 $menuItems = [
 
 					['label' => 'Dashboard', 'icon' => 'dashboard', 'url' => ['/site']],
@@ -119,7 +123,7 @@ $menuItems = [
 					
 					['label' => 'MODULES', 'options' => ['class' => 'header']],
 					
-					['label' => 'Teaching Loads', 'icon' => 'book', 'visible' => Yii::$app->user->can('teaching-load-manager'), 'url' => ['/teaching-load/default/index']],
+					['label' => 'Teaching Loads', 'icon' => 'book', 'visible' => $teaching_load, 'url' => ['/teaching-load/default/index']],
 					
 					['label' => 'Course Files', 'icon' => 'files-o', 'url' => ['/course-files/default/teaching-assignment']],
 					

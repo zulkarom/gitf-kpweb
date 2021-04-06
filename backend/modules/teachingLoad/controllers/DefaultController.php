@@ -44,8 +44,15 @@ class DefaultController extends Controller
      */
     public function actionIndex()
     {
-		if(Todo::can('teaching-load-manager')){
+		$teaching_load = false;
+		if(Yii::$app->user->can('teaching-load-manager') or Yii::$app->user->can('teaching-load-program-coor')){
+			$teaching_load = true;
+		}
+		if(Yii::$app->user->can('teaching-load-manager')){
 			return $this->redirect(['/teaching-load/course-offered']);
+		}
+		if(Yii::$app->user->can('teaching-load-program-coor')){
+			return $this->redirect(['/teaching-load/course-offered/program-coor']);
 		}
         return $this->render('index');
     }
