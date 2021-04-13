@@ -259,12 +259,12 @@ EOD;
 
 		}
 		
-
+*/
 		$y = $this->pdf->getY();
 		$adjy = $this->template->adj_y;
 		
 		$posY = $y - 42 + $adjy;
-		$this->pdf->setY($posY); */
+		$this->pdf->setY($posY); 
 $tbl = <<<EOD
 $html
 EOD;
