@@ -243,10 +243,10 @@ EOD;
 
 	
 	public function writeSignitureImg(){
-		$html = '';
-		$sign = $this->template->signiture_file;
-		$html .= 'xxxxxxxxxxxx';
-		if(!$sign){
+		//$html = '';
+		//$sign = $this->template->signiture_file;
+		$html = 'xxxxxxxxxxxx';
+		/* if(!$sign){
 			//return false;
 		}
 		
@@ -259,15 +259,15 @@ EOD;
 
 		}
 		
-		$tbl = <<<EOD
-$html
-EOD;
+
 		$y = $this->pdf->getY();
 		$adjy = $this->template->adj_y;
 		
 		$posY = $y - 42 + $adjy;
-		$this->pdf->setY($posY);
-		
+		$this->pdf->setY($posY); */
+$tbl = <<<EOD
+$html
+EOD;
 		
 		$this->pdf->writeHTML($tbl, true, false, false, false, '');
 		
