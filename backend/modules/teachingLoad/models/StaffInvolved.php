@@ -71,8 +71,11 @@ class StaffInvolved extends \yii\db\ActiveRecord
 		if($offers){
 			foreach($offers as $offer){
 				$modelOffer = $offer->courseOffered;
-				$modelOffer->setOverallProgress();
-				$modelOffer->save();
+				if($modelOffer){
+					$modelOffer->setOverallProgress();
+					$modelOffer->save();
+				}
+				
 			}
 		}
 		
