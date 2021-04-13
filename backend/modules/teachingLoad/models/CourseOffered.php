@@ -381,9 +381,14 @@ class CourseOffered extends \yii\db\ActiveRecord
 	}
 	
     public function getLectures()
-        {
-            return $this->hasMany(CourseLecture::className(), ['offered_id' => 'id'])->orderBy('lec_name ASC');
-        }
+	{
+		return $this->hasMany(CourseLecture::className(), ['offered_id' => 'id'])->orderBy('lec_name ASC');
+	}
+	
+	public function getCourseLectures()
+	{
+		return $this->hasMany(CourseLecture::className(), ['offered_id' => 'id']);
+	}
 
     public function getTotalStudents(){
         $list1 = $this->lectures;

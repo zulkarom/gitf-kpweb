@@ -138,15 +138,15 @@ class StaffInvController extends Controller
     public function appointLetter($s,$inv_id,$semester){
         
          $staff_lec = CourseOffered::find()
-         ->select('distinct(offered_id) as offer_id, count(lec_name) as lec_name')
-         ->joinWith('lectures.lecturers')
+         ->select('distinct(offered_id)')
+         ->joinWith('courseLectures.lecturers')
          ->where(['semester_id' => $semester, 'staff_id' => $s])
 		 ->groupBy('offered_id')
          ->all();
 
          $staff_tut = CourseOffered::find()
-         ->select('distinct(offered_id) as offer_id, count(lec_name) as lec_name, count(tutorial_name) as tutorial_name')
-         ->joinWith('lectures.tutorials.tutors')
+         ->select('distinct(offered_id)')
+         ->joinWith('courseLectures.lecTutorials.tutors')
 		 ->groupBy('offered_id')
          ->where(['semester_id' => $semester, 'staff_id' => $s])
          ->all();
@@ -156,7 +156,7 @@ class StaffInvController extends Controller
          $staff_tut = ArrayHelper::map($staff_tut,'offered_id','offered_id');
 
          $staff = array_merge($staff_lec,$staff_tut);
-			Yii::$app->session->addFlash('info', json_encode($staff));
+		//Yii::$app->session->addFlash('info', json_encode($staff));
 
 
          if($staff)
