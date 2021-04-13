@@ -247,7 +247,7 @@ EOD;
 		$sign = $this->template->signiture_file;
 		$html .= $sign;
 		if(!$sign){
-			return false;
+			//return false;
 		}
 		
 		if($this->model->status == 10){
