@@ -245,9 +245,9 @@ EOD;
 	public function writeSignitureImg(){
 		$html = '';
 		$sign = $this->template->signiture_file;
-		$html = 'xxxxxxxxxxxx';
+		$html = $sign;
 		if(!$sign){
-			//return false;
+			return false;
 		}
 		
 		if($this->model->status == 100){
