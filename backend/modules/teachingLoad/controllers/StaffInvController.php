@@ -99,28 +99,28 @@ class StaffInvController extends Controller
          {
          	foreach ($staff as $s) {
                 if(!empty($s)){
-         		$inv = StaffInvolved::findOne(['staff_id' => $s, 'semester_id' => $semester]);
-         		if($inv === null){
-         			$new =  new StaffInvolved();
-         			$new->staff_id = $s;
-         			$new->semester_id = $semester;
-         			$new->staff_check = 1;
-         			if(!$new->save())
-         			{
-         				print_r($new->getErrors());	
-         			}
-                     $inv_id = $new->id;
-         		}
-         		else
-         		{
-         			$inv->staff_check = 1;
-         			$inv->save();
-                    $inv_id = $inv->id;
-		
-         		}
+					$inv = StaffInvolved::findOne(['staff_id' => $s, 'semester_id' => $semester]);
+					if($inv === null){
+						$new =  new StaffInvolved();
+						$new->staff_id = $s;
+						$new->semester_id = $semester;
+						$new->staff_check = 1;
+						if(!$new->save())
+						{
+							print_r($new->getErrors());	
+						}
+						 $inv_id = $new->id;
+					}
+					else
+					{
+						$inv->staff_check = 1;
+						$inv->save();
+						$inv_id = $inv->id;
+			
+					}
 
-               $this->appointLetter($s,$inv_id,$semester); 
-           }
+				   $this->appointLetter($s,$inv_id,$semester); 
+			   }
          	
          	}
 			
@@ -156,7 +156,7 @@ class StaffInvController extends Controller
          $staff_tut = ArrayHelper::map($staff_tut,'offered_id','offered_id');
 
          $staff = array_merge($staff_lec,$staff_tut);
-
+			Yii::$app->session->addFlash('info', json_encode($staff));
 
 
          if($staff)
@@ -176,7 +176,8 @@ class StaffInvController extends Controller
                            
                     if(!$new->save())
                     {
-                        print_r($new->getErrors()); 
+                       $new->flashError(); 
+					   
                     }
                      
                 }
