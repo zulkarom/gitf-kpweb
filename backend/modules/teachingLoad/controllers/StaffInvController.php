@@ -77,15 +77,17 @@ class StaffInvController extends Controller
     	 StaffInvolved::updateAll(['staff_check' => 0], ['semester_id' => $semester]);
 
     	 $staff = CourseOffered::find()
-    	 ->select('distinct(staff_id), count(lec_name) as lec_name')
+    	 ->select('distinct(staff_id) as staff_id, count(lec_name) as lec_name')
     	 ->joinWith('lectures.lecturers')
          ->where(['semester_id' => $semester])
+		 ->groupBy('staff_id')
          ->all();
 
          $staff_tut = CourseOffered::find()
     	 ->select('distinct(staff_id), count(tutorial_name) as tutorial_name')
     	 ->joinWith('lectures.tutorials.tutors')
          ->where(['semester_id' => $semester])
+		  ->groupBy('staff_id')
          ->all();
 
          $staff = ArrayHelper::map($staff,'staff_id','staff_id');
