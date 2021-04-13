@@ -245,14 +245,14 @@ EOD;
 	public function writeSignitureImg(){
 		$html = '';
 		$sign = $this->template->signiture_file;
-		$html .= $sign;
+		//$html .= $sign;
 		$file = Yii::getAlias('@upload/'. $sign);
-		$html .= '**' . $file;
+		//$html .= '**' . $file;
 		if(!$sign){
 			return false;
 		}
 		
-		if($this->model->status == 100){
+		if($this->model->status == 10){
 			
 		
 			$html .= '
