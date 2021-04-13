@@ -39,7 +39,7 @@ $course = $tutorial->lecture->courseOffered->course;
 	<tr>
     <td>1. </td>
 	<td>Student Attendance</td>
-	<td><a href="<?=Url::to(['tutorial-student-attendance','id' => $tutorial->id])?>" class="btn btn-default btn-sm disabled" ><span class="fa fa-pencil"></span> Update</a></td>
+	<td><a href="<?=Url::to(['tutorial-student-attendance','id' => $tutorial->id])?>" class="btn btn-default btn-sm" ><span class="fa fa-pencil"></span> Update</a></td>
         <td><?=$tutorial->progressStudentAttendance?></td>
         </tr>
 	
