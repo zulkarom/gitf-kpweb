@@ -246,15 +246,16 @@ EOD;
 
 	
 	public function writeSignitureImg(){
-		
+		$html = '';
 		$sign = $this->template->signiture_file;
+		$html .= $sign;
 		if(!$sign){
 			return false;
 		}
 
 		$file = Yii::getAlias('@upload/'. $sign);
 		
-		$html = $sign . '
+		$html .= '
 		<img src="'.$file.'" />
 		';
 		$tbl = <<<EOD
