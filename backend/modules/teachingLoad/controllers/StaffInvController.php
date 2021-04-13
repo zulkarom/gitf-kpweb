@@ -84,7 +84,7 @@ class StaffInvController extends Controller
          ->all();
 
          $staff_tut = CourseOffered::find()
-    	 ->select('distinct(staff_id) as staff_id, count(tutorial_name) as tutorial_name')
+    	 ->select('distinct(staff_id) as staff_id, count(tutorial_name) as tutorial_name, count(lec_name) as lec_name')
     	 ->joinWith('lectures.tutorials.tutors')
          ->where(['semester_id' => $semester])
 		  ->groupBy('staff_id')
