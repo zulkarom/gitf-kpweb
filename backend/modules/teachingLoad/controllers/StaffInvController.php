@@ -78,14 +78,14 @@ class StaffInvController extends Controller
 
     	 $staff = CourseOffered::find()
     	 ->select('distinct(staff_id) as staff_id, count(lec_name) as lec_name')
-    	 ->joinWith('lectures.lecturers')
+    	  ->joinWith('courseLectures.lecturers')
          ->where(['semester_id' => $semester])
 		 ->groupBy('staff_id')
          ->all();
 
          $staff_tut = CourseOffered::find()
     	 ->select('distinct(staff_id) as staff_id, count(tutorial_name) as tutorial_name, count(lec_name) as lec_name')
-    	 ->joinWith('lectures.tutorials.tutors')
+    	->joinWith('courseLectures.lecTutorials.tutors')
          ->where(['semester_id' => $semester])
 		  ->groupBy('staff_id')
          ->all();
@@ -128,7 +128,6 @@ class StaffInvController extends Controller
 			$arr = ArrayHelper::map($to_del, 'id' , 'id');
 			$app = AppointmentLetter::deleteAll(['inv_id' => $arr]);
          	StaffInvolved::deleteAll(['staff_check' => 0, 'semester_id' => $semester]);
-			//kena delete juga dlm appointment letter
          }
     	
     	
@@ -136,7 +135,9 @@ class StaffInvController extends Controller
     }
 
     public function appointLetter($s,$inv_id,$semester){
-        
+		
+         AppointmentLetter::updateAll(['appoint_check' => 0], ['inv_id' => $inv_id]);
+		 
          $staff_lec = CourseOffered::find()
          ->select('distinct(offered_id)')
          ->joinWith('courseLectures.lecturers')
@@ -159,31 +160,25 @@ class StaffInvController extends Controller
 		//Yii::$app->session->addFlash('info', json_encode($staff));
 
 
-         if($staff)
-         {
+         if($staff){
             foreach ($staff as $offer) {
-               // if(empty($inv_id)){
-               //  echo $s;
-               //  die();
-               // }
                 $appoint = AppointmentLetter::findOne(['offered_id' => $offer, 'inv_id' => $inv_id]);
                 if($appoint === null){
-             
-
                     $new =  new AppointmentLetter();
                     $new->offered_id = $offer;
                     $new->inv_id = $inv_id;
-                           
-                    if(!$new->save())
-                    {
+                    $new->appoint_check = 1;     
+                    if(!$new->save()){
                        $new->flashError(); 
-					   
                     }
                      
-                }
+                }else{
+					$appoint->appoint_check = 1;
+					$appoint->save();
+				}
             }
          }
-
+		AppointmentLetter::deleteAll(['inv_id' => $inv_id, 'appoint_check' => 0]);
     }
 
     public function actionGenerateReference()
