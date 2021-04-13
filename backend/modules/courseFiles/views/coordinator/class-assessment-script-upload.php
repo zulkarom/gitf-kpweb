@@ -10,7 +10,7 @@ use common\models\UploadFile;
 $course = $model->course;
 $title = 'Continuous Assessment Script';
 $this->title = $course->course_code . ' ' . $course->course_name;
-$this->params['breadcrumbs'][] = ['label' => 'Teaching Load', 'url' => ['/course-files/default/teaching-assignment']];
+$this->params['breadcrumbs'][] = ['label' => 'My Course File', 'url' => ['/course-files/default/teaching-assignment']];
 $this->params['breadcrumbs'][] = ['label' => 'Coordinator', 'url' => ['/course-files/default/teaching-assignment-coordinator', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = $title;
 

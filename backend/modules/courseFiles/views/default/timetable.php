@@ -15,11 +15,11 @@ $model->file_controller = 'staff';
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
 
 $this->title = 'Staff Timetable';
-$this->params['breadcrumbs'][] = ['label' => 'Teaching Load', 'url' => ['/course-files/default/teaching-assignment']];
+$this->params['breadcrumbs'][] = ['label' => 'My Course File', 'url' => ['/course-files/default/teaching-assignment']];
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
-
+<h4><?=$model->semester->longFormat()?></h4>
 <div class="box">
 <div class="box-header"></div>
 <div class="box-body">
@@ -29,4 +29,4 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 </div>
 
-<?=Html::a('<span class="glyphicon glyphicon-floppy-disk"></span> Save', ['default/timetable', 'back' => 1], ['class' => 'btn btn-primary'])?>
+<?=Html::a('<span class="glyphicon glyphicon-floppy-disk"></span> Save', ['default/timetable', 's' => $model->semester->id, 'back' => 1], ['class' => 'btn btn-primary'])?>

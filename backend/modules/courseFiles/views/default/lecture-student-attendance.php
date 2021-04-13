@@ -12,7 +12,7 @@ $offer = $lecture->courseOffered;
 $course = $offer->course;
 
 $this->title = 'Student Attendance ['.$lecture->lec_name.']';
-$this->params['breadcrumbs'][] = ['label' => 'Teaching Load', 'url' => ['/course-files/default/teaching-assignment']];
+$this->params['breadcrumbs'][] = ['label' => 'My Course File', 'url' => ['/course-files/default/teaching-assignment']];
 $this->params['breadcrumbs'][] = ['label' => 'Lecture['.$lecture->lec_name.']', 'url' => ['teaching-assignment-lecture', 'id' => $lecture->id]];
 $this->params['breadcrumbs'][] = 'Student Attendance';
 

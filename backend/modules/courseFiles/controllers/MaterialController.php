@@ -291,6 +291,9 @@ class MaterialController extends Controller
         $attr = $this->clean($attr);
         $model = $this->findMaterialItem($id);
         $filename = $model->item_name;
+		if(empty($filename)){
+			$filename = 'material';
+		}
         UploadFile::download($model, $attr, $filename);
     }
 

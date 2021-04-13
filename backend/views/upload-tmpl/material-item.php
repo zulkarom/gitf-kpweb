@@ -78,7 +78,7 @@ if($val){
 <!-- The container for the uploaded files -->
 
 <div id="file_<?=$unique ?>"  <?=$style_file?>>
-<div class="file" >
+<div class="file">
 <p id="img_<?=$unique ?>">
 <?php 
 if($model->{$db_file}){
@@ -89,7 +89,8 @@ if($model->{$db_file}){
 	}else if($ext == 'doc' or $ext == 'docx'){
 		$link = Url::to('@web/images/') . 'doc.png';
 	}else{
-		$link = Url::to([$model->file_controller . '/download-file', 'attr' => $attr_name, 'id' => $model->id]);
+		$link = Url::to('@web/images/') . 'file.png';
+		//$link = Url::to([$model->file_controller . '/download-file', 'attr' => $attr_name, 'id' => $model->id]);
 	}
 	?>
 	<a href="<?=Url::to([$model->file_controller . '/download-file', 'attr' => $attr_name, 'id' => $model->id])?>" target="_blank">

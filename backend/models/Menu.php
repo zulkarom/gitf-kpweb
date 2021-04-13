@@ -127,7 +127,7 @@ class Menu
 				['label' => 'Summary', 'icon' => 'user', 'url' => ['/course-files/admin/summary']],
 				
 				['label' => 'All Courses', 'icon' => 'book', 'url' => ['/course-files/admin/index']],
-				
+				['label' => 'Teaching Materials', 'icon' => 'book', 'url' => ['/course-files/materials-admin/index']],
 
                  ]
                     ];	

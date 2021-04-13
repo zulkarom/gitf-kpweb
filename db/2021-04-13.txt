@@ -1,0 +1,1 @@
+ALTER TABLE `tld_appoint_letter` ADD `appoint_check` TINYINT(1) NOT NULL DEFAULT '0' AFTER `prg_appoint_letter`;

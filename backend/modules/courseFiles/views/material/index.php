@@ -12,12 +12,12 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="material-index">
 
-
+<h4><?=$course->course_code . ' ' . $course->course_name?></h4>
     <p>
 	 <?= Html::a('Back to Course File', ['coordinator/current-coordinator-page', 'course' => $course->id], ['class' => 'btn btn-info']) ?> 
         <?= Html::a('Create Material Group', ['create', 'course' => $course->id], ['class' => 'btn btn-success']) ?>
     </p>
-<h4><?=$course->course_code . ' ' . $course->course_name?></h4>
+
 <div class="box">
 <div class="box-header"></div>
 <div class="box-body">    <?= GridView::widget([

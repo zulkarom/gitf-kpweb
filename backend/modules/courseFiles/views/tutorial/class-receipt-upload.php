@@ -9,7 +9,7 @@ use common\models\UploadFile;
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
 
 $this->title = 'Tutor ['.$model->lecture->lec_name.$model->tutorial_name.']';
-$this->params['breadcrumbs'][] = ['label' => 'Teaching Load', 'url' => ['/course-files/default/teaching-assignment']];
+$this->params['breadcrumbs'][] = ['label' => 'My Course File', 'url' => ['/course-files/default/teaching-assignment']];
 $this->params['breadcrumbs'][] = ['label' =>  'Tutor ['.$model->lecture->lec_name.$model->tutorial_name.']', 'url' => ['/course-files/default/teaching-assignment-tutorial', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Students’ Assignment';
 $course = $model->lecture->courseOffered->course;
