@@ -105,7 +105,7 @@ class Staff extends \yii\db\ActiveRecord
 			
             [['leave_start', 'leave_end', 'staff_dob', 'date_begin_umk', 'date_begin_service', 'teaching_submit_at'], 'safe'],
 			
-            [['leave_note', 'staff_interest', 'research_focus' ], 'string'],
+            [['leave_note', 'staff_interest', 'research_focus', 'designation'], 'string'],
 			
             [['staff_no', 'nationality', 'high_qualification', 'hq_country'], 'string', 'max' => 10],
 			

@@ -86,7 +86,7 @@ class AppointmentLetterFile
 		<b>'. $this->model->staffInvolved->staff->staff_title . ' ' . $this->model->staffInvolved->staff->user->fullname .'<br /></b>
 		<table>
 		<tr>
-			<td><b>'. ($this->model->staffInvolved->staff->staffPosition->position_name).' '.'('.strtoupper($this->model->staffInvolved->staff->staffPosition->position_gred).')'.'</b></td>
+			<td><b>'. ($this->model->staffInvolved->staff->staffPosition->position_plain).' '.'('.strtoupper($this->model->staffInvolved->staff->staffPosition->position_gred).') '.$this->model->staffInvolved->staff->staffPositionStatus->status_cat .' '.'</b></td>
 		</tr>
 		<tr>
 			<td>Fakulti Keusahawanan dan Perniagaan <br/> Universiti Malaysia Kelantan </td>
@@ -110,8 +110,14 @@ EOD;
 		
 		$gender = $this->model->staffInvolved->staff->gender;
 		if($gender == 0){
-			$this->tuan = 'puan';
+			$this->tuan = 'Puan';
 		}
+		
+		$panggilan = $this->model->staffInvolved->staff->designation;
+		if($panggilan ){
+			$this->tuan = $panggilan;
+		}
+		
 		
 		$coordinator = $this->model->courseOffered->coordinator;
 		if($coordinator ==  $this->model->staffInvolved->staff_id){

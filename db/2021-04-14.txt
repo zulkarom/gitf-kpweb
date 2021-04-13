@@ -1,0 +1,43 @@
+
+CREATE TABLE `staff_letter_desig` (
+  `id` int(11) NOT NULL,
+  `designation_name` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `staff_letter_desig`
+--
+
+INSERT INTO `staff_letter_desig` (`id`, `designation_name`) VALUES
+(1, 'Tuan'),
+(2, 'Puan'),
+(3, 'YBhg. Prof.'),
+(4, 'YBrs. Dr.'),
+(5, 'YBrs. Prof. Madya Dr.');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `staff_letter_desig`
+--
+ALTER TABLE `staff_letter_desig`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `staff_letter_desig`
+--
+ALTER TABLE `staff_letter_desig`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  
+  
+ALTER TABLE `staff` ADD `designation` VARCHAR(100) NULL DEFAULT NULL AFTER `staff_title`;
+
+
+ALTER TABLE `staff_position` ADD `position_plain` VARCHAR(100) NULL DEFAULT NULL AFTER `position_name`;
+UPDATE `staff_position` SET `position_plain` = `position_name`

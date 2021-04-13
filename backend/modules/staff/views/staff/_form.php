@@ -6,6 +6,7 @@ use yii\helpers\ArrayHelper;
 use backend\modules\staff\models\StaffPosition;
 use backend\modules\staff\models\StaffPositionStatus;
 use backend\modules\staff\models\StaffWorkingStatus;
+use backend\modules\staff\models\LetterDesignation;
 use common\models\UploadFile;
 use kartik\date\DatePicker;
 use richardfan\widget\JSRegister;
@@ -46,6 +47,14 @@ if($model->id){
 
 
 
+</div>
+
+</div>
+
+	<div class="row">
+<div class="col-md-5">
+<?= $form->field($model, 'designation', ['template' => '{label}<div id="con-title">{input}</div>{error}']
+)->dropDownList(ArrayHelper::map(LetterDesignation::find()->all(), 'designation_name', 'designation_name'))->label('Title (letter)') ?>
 </div>
 
 </div>
