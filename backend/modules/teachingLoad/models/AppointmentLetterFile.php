@@ -285,7 +285,7 @@ EOD;
 		<br /><br /><br />
 		<b>'.strtoupper($dekan).'</b><br />
 		Dekan<br /><br />
-		s.k - Timbalan Dekan (Akademik & Pembangunan Pelajar)
+		s.k - Timbalan Dekan (Akademik & Pembangunan Pelajar) ppppp
 		';
 		$this->pdf->SetFont('arial','', $this->fontSize);
 		$tbl = <<<EOD
