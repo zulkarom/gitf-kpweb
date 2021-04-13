@@ -256,18 +256,20 @@ EOD;
 			$html .= '
 			<img src="'.$file.'" />
 			';
-$tbl = <<<EOD
+
+		}
+		
+		$tbl = <<<EOD
 $html
 EOD;
-			$y = $this->pdf->getY();
-			$adjy = $this->template->adj_y;
-			
-			$posY = $y - 42 + $adjy;
-			$this->pdf->setY($posY);
-			
-			
-			$this->pdf->writeHTML($tbl, true, false, false, false, '');
-		}
+		$y = $this->pdf->getY();
+		$adjy = $this->template->adj_y;
+		
+		$posY = $y - 42 + $adjy;
+		$this->pdf->setY($posY);
+		
+		
+		$this->pdf->writeHTML($tbl, true, false, false, false, '');
 		
 	}
 	
