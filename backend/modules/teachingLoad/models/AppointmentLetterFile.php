@@ -245,7 +245,7 @@ EOD;
 	public function writeSignitureImg(){
 		$html = '';
 		$sign = $this->template->signiture_file;
-		$html .= $sign;
+		$html .= 'xxxxxxxxxxxx' . $sign;
 		if(!$sign){
 			//return false;
 		}
