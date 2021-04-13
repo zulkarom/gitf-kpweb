@@ -254,7 +254,7 @@ EOD;
 
 		$file = Yii::getAlias('@upload/'. $sign);
 		
-		$html = $file . '
+		$html = $sign . '
 		<img src="'.$file.'" />
 		';
 		$tbl = <<<EOD
