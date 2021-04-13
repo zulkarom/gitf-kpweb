@@ -161,7 +161,7 @@ EOD;
 	}
 	
 	public function writeTable(){
-		$all = 580;
+		$all = 630;
 		$w1 = 50;
 		$w2 = 30;
 		$w3 = 140;
