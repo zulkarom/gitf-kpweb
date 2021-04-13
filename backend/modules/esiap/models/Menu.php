@@ -84,28 +84,31 @@ class Menu
 	
 	
 	public static function adminEsiap(){
-		
+		$esiap_access = false;
+		if(Yii::$app->user->can('esiap-management') or Yii::$app->user->can('esiap-program-coor')){
+			$esiap_access = true;
+		}
 		$esiap_admin = [
                         'label' => 'Course Mgt Admin',
                         'icon' => 'cog',
-						'visible' => Yii::$app->user->can('esiap-management'),
+						'visible' => $esiap_access,
                         'url' => '#',
                         'items' => [
 				['label' => 'My Course(s)', 'icon' => 'user', 'url' => ['/esiap']],
 				
-				['label' => 'Summary', 'icon' => 'pie-chart', 'url' => ['/esiap/dashboard']],
+				['label' => 'Summary', 'visible' => Yii::$app->user->can('esiap-management'),  'icon' => 'pie-chart', 'url' => ['/esiap/dashboard']],
 				
-				['label' => 'Active Courses', 'icon' => 'book', 'url' => ['/esiap/course-admin']],
+				['label' => 'Active Courses', 'visible' => Yii::$app->user->can('esiap-management'),'icon' => 'book', 'url' => ['/esiap/course-admin']],
 				
-				['label' => 'Course Verification', 'icon' => 'check', 'url' => ['/esiap/course-admin/verification']],
+				['label' => 'Course Verification', 'visible' => Yii::$app->user->can('esiap-management'),'icon' => 'check', 'url' => ['/esiap/course-admin/verification']],
 				
-				['label' => 'Program Coordinator', 'icon' => 'user', 'url' => ['/esiap/course-admin/course-owner']],
+				['label' => 'Program Coordinator', 'visible' => Yii::$app->user->can('esiap-program-coor'),'icon' => 'user', 'url' => ['/esiap/course-admin/course-owner']],
 				
 				//['label' => 'Bulk Course Version', 'icon' => 'book', 'url' => ['/esiap/course-admin/bulk-version']],
 				
 				//['label' => 'Program List', 'icon' => 'book', 'url' => ['/esiap/program-admin']],
 				
-				['label' => 'Inactive Courses', 'icon' => 'remove', 'url' => ['/esiap/course-admin/inactive']],
+				['label' => 'Inactive Courses', 'visible' => Yii::$app->user->can('esiap-management'),'icon' => 'remove', 'url' => ['/esiap/course-admin/inactive']],
 				
                 ]
                 ];	

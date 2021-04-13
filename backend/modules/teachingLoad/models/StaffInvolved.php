@@ -71,8 +71,11 @@ class StaffInvolved extends \yii\db\ActiveRecord
 		if($offers){
 			foreach($offers as $offer){
 				$modelOffer = $offer->courseOffered;
-				$modelOffer->setOverallProgress();
-				$modelOffer->save();
+				if($modelOffer){
+					$modelOffer->setOverallProgress();
+					$modelOffer->save();
+				}
+				
 			}
 		}
 		
@@ -80,10 +83,11 @@ class StaffInvolved extends \yii\db\ActiveRecord
 	
 	public function getEditable(){
 		$boo = true;
-		$offers = $this->appointLetters;
-		if($offers){
-			foreach($offers as $offer){
-				$status = $offer->status;
+		$appoints = $this->appointLetters;
+		if($appoints){
+			foreach($appoints as $appoint){
+				$status = $appoint->courseOffered->status;
+				//echo $status.'*';
 				if($status == 0){
 					$boo = $boo == false ? false : true;
 				}else{
@@ -91,6 +95,7 @@ class StaffInvolved extends \yii\db\ActiveRecord
 				}
 			}
 		}
+		//die();
 		return $boo;
 	}
 

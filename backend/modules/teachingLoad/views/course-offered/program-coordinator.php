@@ -7,24 +7,18 @@ use yii\grid\GridView;
 /* @var $searchModel backend\modules\teachingLoad\models\CourseOfferedSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Courses Offered';
+$this->title = 'Program Coordinator';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="course-offered-index">
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a('New Course Offered', ['create'], ['class' => 'btn btn-success']) ?>
-        <?= Html::a('Bulk Session', ['session'], ['class' => 'btn btn-primary']) ?>
-		<?= Html::a('Auto Assignment', ['/teaching-load/bulk'], ['class' => 'btn btn-warning']) ?>
-    </p>
 
     <div class="row">
 
         <div class="col-md-10" align="right">
 
-            <?= $this->render('../manager/_semester_course_program', [
+            <?= $this->render('../manager/_semester_course', [
                 'model' => $semester,
             ]) ?>
         </div>

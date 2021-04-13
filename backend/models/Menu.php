@@ -124,27 +124,32 @@ class Menu
                         'url' => '#',
                         'items' => [
 				
-				['label' => 'Summary', 'icon' => 'user', 'url' => ['/course-files/admin/summary']],
+				['label' => 'Summary', 'icon' => 'bar-chart', 'url' => ['/course-files/admin/summary']],
 				
 				['label' => 'All Courses', 'icon' => 'book', 'url' => ['/course-files/admin/index']],
-				
+				['label' => 'Teaching Materials', 'icon' => 'book', 'url' => ['/course-files/material-admin/index']],
 
                  ]
-                    ];	
+        ];	
 		return $esiap_admin;
 	}
 	
 	public static function adminTeachingLoad(){
+		$teaching_load = false;
+		if(Yii::$app->user->can('teaching-load-manager') or Yii::$app->user->can('teaching-load-program-coor')){
+			$teaching_load = true;
+		}
+
 		$esiap_admin = [
                         'label' => 'Teaching Loads Admin',
                         'icon' => 'book',
-						'visible' => Todo::can('teaching-load-manager'),
+						'visible' => $teaching_load,
                         'url' => '#',
                         'items' => [
 				
 				//['label' => 'My Course Selection', 'icon' => 'user', 'url' => ['/teaching-load/default/teaching-view']],
 				
-				['label' => 'Assign Teaching Load', 'icon' => 'book', 'url' => ['/teaching-load/course-offered/index']],
+				['label' => 'Assign Teaching Load', 'icon' => 'book', 'visible' => Yii::$app->user->can('teaching-load-manager'), 'url' => ['/teaching-load/course-offered/index']],
 				['label' => 'Program Coordinator', 'icon' => 'user', 'url' => ['/teaching-load/course-offered/program-coor']],
 				
 				[
@@ -163,6 +168,7 @@ class Menu
 				[
 					'label' => 'Appointment Letter',
 					'icon' => 'envelope',
+					'visible' => Yii::$app->user->can('teaching-load-manager'),
 					'url' => '#',
 					'items' => [
 						['label' => 'Run Staff Involved', 'icon' => 'user', 'url' => ['/teaching-load/staff-inv/index']],
@@ -177,6 +183,7 @@ class Menu
 				
 				[
 					'label' => 'Teaching Load Setting',
+					'visible' => Yii::$app->user->can('teaching-load-manager'),
 					'icon' => 'cog',
 					'url' => '#',
 					'items' => [
@@ -201,6 +208,7 @@ class Menu
 				
 				[
 					'label' => 'Staff Course Selection',
+					'visible' => Yii::$app->user->can('teaching-load-manager'),
 					'icon' => 'hand-pointer-o',
 					'url' => '#',
 					'items' => [

@@ -20,7 +20,7 @@ $listClo = $offer->listClo();
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
 
 $this->title = 'Lecture ['.$lecture->lec_name.']';
-$this->params['breadcrumbs'][] = ['label' => 'Teaching Load', 'url' => ['/course-files/default/teaching-assignment']];
+$this->params['breadcrumbs'][] = ['label' => 'My Course File', 'url' => ['/course-files/default/teaching-assignment']];
 $this->params['breadcrumbs'][] = ['label' => $this->title, 'url' => ['teaching-assignment-lecture', 'id' => $lecture->id]];
 $this->params['breadcrumbs'][] = 'Student Assessment';
 

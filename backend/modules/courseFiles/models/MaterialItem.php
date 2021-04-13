@@ -31,6 +31,12 @@ class MaterialItem extends \yii\db\ActiveRecord
      */
     public function rules()
     {
+		
+		if($this->material->mt_type == 1){
+			$str_type = 'pdf';
+		}else{
+			$str_type = 'pdf,doc,docx,ppt,pptx,txt,xls,xlsx,xlsm';
+		}
         return [
             [['material_id', 'item_category'], 'required'],
 			
@@ -44,7 +50,7 @@ class MaterialItem extends \yii\db\ActiveRecord
 			
 			[['item_file'], 'required', 'on' => 'item_upload'],
 			
-            [['item_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 2000000],
+            [['item_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => $str_type, 'maxSize' => 2000000],
 			
 			
         ];

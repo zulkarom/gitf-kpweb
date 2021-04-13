@@ -5,6 +5,7 @@ namespace backend\modules\teachingLoad\controllers;
 use Yii;
 use backend\modules\teachingLoad\models\CourseOffered;
 use backend\modules\teachingLoad\models\CourseOfferedSearch;
+use backend\modules\teachingLoad\models\CourseOfferedCoorSearch;
 use backend\modules\teachingLoad\models\AddLectureForm;
 use backend\modules\teachingLoad\models\AddTutorialForm;
 use backend\modules\teachingLoad\models\TutorialLecture;
@@ -60,6 +61,7 @@ class CourseOfferedController extends Controller
             $sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');
             $semester->semester_id = $sem['semester_id'];
             $semester->str_search = $sem['str_search'];
+			$semester->program_search = $sem['program_search'];
         }else{
             $semester->semester_id = Semester::getCurrentSemester()->id;
         }
@@ -67,9 +69,35 @@ class CourseOfferedController extends Controller
         $searchModel = new CourseOfferedSearch();
         $searchModel->semester = $semester->semester_id;
         $searchModel->search_course = $semester->str_search;
+		$searchModel->search_program = $semester->program_search;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'semester' => $semester
+        ]);
+    }
+	
+	public function actionProgramCoor()
+    {
+        $semester = new SemesterForm;
+
+        if(Yii::$app->getRequest()->getQueryParam('SemesterForm')){
+            $sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');
+            $semester->semester_id = $sem['semester_id'];
+            $semester->str_search = $sem['str_search'];
+        }else{
+            $semester->semester_id = Semester::getCurrentSemester()->id;
+        }
+
+        $searchModel = new CourseOfferedCoorSearch();
+        $searchModel->semester = $semester->semester_id;
+        $searchModel->search_course = $semester->str_search;
+		$searchModel->search_program = $semester->program_search;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('program-coordinator', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'semester' => $semester

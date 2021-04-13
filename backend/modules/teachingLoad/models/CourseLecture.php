@@ -165,7 +165,11 @@ class CourseLecture extends \yii\db\ActiveRecord
 
     public function getTutorials()
     {
-        return $this->hasMany(TutorialLecture::className(), ['lecture_id' => 'id'])->orderBy('tutorial_name ASC');;
+        return $this->hasMany(TutorialLecture::className(), ['lecture_id' => 'id'])->orderBy('tutorial_name ASC');
+    }
+	public function getLecTutorials()
+    {
+        return $this->hasMany(TutorialLecture::className(), ['lecture_id' => 'id']);
     }
 
     public function getLecturers()

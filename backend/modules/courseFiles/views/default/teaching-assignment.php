@@ -7,7 +7,7 @@ use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
 
-$this->title = 'Teaching Load';
+$this->title = 'My Course Files';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -124,28 +124,20 @@ $this->params['breadcrumbs'][] = $this->title;
 					  <td>
 						  <?php 
 							  $prg = '';
-							  
 							  if($myInv->timetable_file){
 								  echo '<a href="'.  Url::to(['staff/download-file', 'attr' => 'timetable','id' => $myInv->id]) .' " class="btn btn-default btn-sm" target="_blank"><span class="fa fa-download" ></span></a> ';
 								  if($myInv->editable){
-									  echo '<a href="'.  Url::to(['default/timetable']) .' " class="btn btn-default btn-sm" ><span class="fa fa-pencil"></span></a>';
+									  echo '<a href="'.  Url::to(['default/timetable', 's' => $semester->semester_id]) .' " class="btn btn-default btn-sm" ><span class="fa fa-pencil"></span></a>';
 								  }
 								  
 								  }else{
 								  if($myInv->editable){
-									  echo '<a href="'.  Url::to(['default/timetable']) .' " class="btn btn-default btn-sm" ><span class="fa fa-upload"></span> Upload</a>';
+									  echo '<a href="'.  Url::to(['default/timetable', 's' => $semester->semester_id]) .' " class="btn btn-default btn-sm" ><span class="fa fa-upload"></span> Upload</a>';
 								  }
 								  
 							  }
 							  
 							  $prg = $myInv->progressTimetable;
-							  
-							  
-							  
-							  
-							  
-							  
-							  
 						  ?>
 						  
 					  </td>

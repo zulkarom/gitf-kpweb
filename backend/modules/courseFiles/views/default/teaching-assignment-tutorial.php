@@ -8,7 +8,7 @@ use yii\helpers\Url;
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
 
 $this->title = 'Tutorial ['.$tutorial->lecture->lec_name.$tutorial->tutorial_name.']';
-$this->params['breadcrumbs'][] = ['label' => 'Teaching Load', 'url' => ['/course-files/default/teaching-assignment']];
+$this->params['breadcrumbs'][] = ['label' => 'My Course File', 'url' => ['/course-files/default/teaching-assignment']];
 $this->params['breadcrumbs'][] = $this->title;
 $course = $tutorial->lecture->courseOffered->course;
 ?>
@@ -39,7 +39,7 @@ $course = $tutorial->lecture->courseOffered->course;
 	<tr>
     <td>1. </td>
 	<td>Student Attendance</td>
-	<td><a href="<?=Url::to(['tutorial-student-attendance','id' => $tutorial->id])?>" class="btn btn-default btn-sm disabled" ><span class="fa fa-pencil"></span> Update</a></td>
+	<td><a href="<?=Url::to(['tutorial-student-attendance','id' => $tutorial->id])?>" class="btn btn-default btn-sm" ><span class="fa fa-pencil"></span> Update</a></td>
         <td><?=$tutorial->progressStudentAttendance?></td>
         </tr>
 	

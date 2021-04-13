@@ -109,27 +109,24 @@ class DefaultController extends Controller
     }
 	
 	
-	public function actionTimetable($back=false){
-        
-		$semester = Semester::getCurrentSemester()->id;
-		
-		$model = StaffInvolved::findOne(['staff_id' => Yii::$app->user->identity->staff->id, 'semester_id' => $semester]);
-		
-		if($back){
-			
-			if(empty($model->timetable_file)){
-				Yii::$app->session->addFlash('error', "No timetable file has been uploded!");
-			}else{
-				Yii::$app->session->addFlash('success', "Data Updated");
+	public function actionTimetable($s, $back=false){
+      
+		$model = StaffInvolved::findOne(['staff_id' => Yii::$app->user->identity->staff->id, 'semester_id' => $s]);
+		if($model){
+				if($back){
+				
+				if(empty($model->timetable_file)){
+					Yii::$app->session->addFlash('error', "No timetable file has been uploded!");
+				}else{
+					Yii::$app->session->addFlash('success', "Data Updated");
+				}
+			return $this->redirect(['default/teaching-assignment', 'SemesterForm[semester_id]' => $s]);
 			}
-		return $this->redirect(['default/teaching-assignment']);
+
+			return $this->render('timetable', [
+				'model' => $model,
+			]);
 		}
-
-        return $this->render('timetable', [
-			'model' => $model,
-        ]);
-
-
     }
 	
 	public function actionStudentEvaluation($id){

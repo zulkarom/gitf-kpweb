@@ -79,11 +79,11 @@ class CourseLectureSearch extends Course
 		$query->andFilterWhere(['program_id' => $this->search_program]);
 		
 		// grid filtering conditions
-        $query->andFilterWhere(['like', 'course_code', $this->search_course]);
-
-
-        $query->orFilterWhere(['like', 'course_name', $this->search_course])
-            ->orFilterWhere(['like', 'course_name_bi', $this->search_course]);
+        $query->andFilterWhere(['or', 
+            ['like', 'course_name', $this->search_course],
+            ['like', 'course_name_bi', $this->search_course],
+			['like', 'course_code', $this->search_course]
+        ]);
 
         return $dataProvider;
     }

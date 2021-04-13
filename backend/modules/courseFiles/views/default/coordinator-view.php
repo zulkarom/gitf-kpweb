@@ -9,7 +9,7 @@ use yii\helpers\Url;
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
 $course = $modelOffer->course;
 $this->title = $course->course_code . ' ' . $course->course_name;
-$this->params['breadcrumbs'][] = ['label' => 'Teaching Load', 'url' => ['/course-files/default/teaching-assignment']];
+$this->params['breadcrumbs'][] = ['label' => 'My Course File', 'url' => ['/course-files/default/teaching-assignment']];
 $this->params['breadcrumbs'][] = ['label' => 'Coordinator', 'url' => ['/course-files/default/teaching-assignment-coordinator', 'id' => $modelOffer->id]];
 $this->params['breadcrumbs'][] = 'View ';
 

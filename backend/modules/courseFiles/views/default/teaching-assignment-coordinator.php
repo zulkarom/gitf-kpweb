@@ -14,7 +14,7 @@ $course = $offer->course;
 $offered_id = $offer->id;
 $course_version = $offer->course_version;
 $this->title = 'Coordinator';
-$this->params['breadcrumbs'][] = ['label' => 'Teaching Load', 'url' => ['/course-files/default/teaching-assignment']];
+$this->params['breadcrumbs'][] = ['label' => 'My Course File', 'url' => ['/course-files/default/teaching-assignment']];
 $this->params['breadcrumbs'][] = $this->title;
 
 
