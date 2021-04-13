@@ -256,7 +256,7 @@ EOD;
 			
 		
 			$html .= '
-			<img src="'.$file.'" />
+			<img src="images/dekan.png" />
 			';
 
 		}
@@ -287,7 +287,7 @@ EOD;
 		<br /><br /><br />
 		<b>'.strtoupper($dekan).'</b><br />
 		Dekan<br /><br />
-		s.k - Timbalan Dekan (Akademik & Pembangunan Pelajar) ppppp
+		s.k - Timbalan Dekan (Akademik & Pembangunan Pelajar)
 		';
 		$this->pdf->SetFont('arial','', $this->fontSize);
 		$tbl = <<<EOD
