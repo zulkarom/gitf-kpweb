@@ -86,7 +86,7 @@ class AppointmentLetterFile
 		</tr>
 		</table>
 		<br /><br /><br /><br />
-		<b>'.strtoupper($this->model->staffInvolved->staff->user->fullname) .'<br /></b>
+		<b>'. $this->model->staffInvolved->staff->staff_title . ' ' . $this->model->staffInvolved->staff->user->fullname .'<br /></b>
 		<table>
 		<tr>
 			<td><b>'. ($this->model->staffInvolved->staff->staffPosition->position_name).' '.'('.strtoupper($this->model->staffInvolved->staff->staffPosition->position_gred).')'.'</b></td>
@@ -128,7 +128,7 @@ EOD;
 		<br /><br />
 		
 		2. &nbsp;&nbsp;&nbsp;Sukacita dimaklumkan bahawa '.$this->tuan .' dilantik sebagai Penyelaras dan Pengajar bagi kursus berikut:
-		<br /><br />
+		<br />
 		';
 		$this->pdf->SetFont( 'arial','', $this->fontSize);
 		$tbl = <<<EOD
@@ -280,7 +280,7 @@ EOD;
 		<br /><br />
 		'.$benar.',<br />
 		<br /><br /><br />
-		<b>'.$dekan.'</b><br />
+		<b>'.strtoupper($dekan).'</b><br />
 		Dekan<br /><br />
 		s.k - Timbalan Dekan (Akademik & Pembangunan Pelajar)
 		';
