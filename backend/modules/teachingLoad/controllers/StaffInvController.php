@@ -138,14 +138,16 @@ class StaffInvController extends Controller
     public function appointLetter($s,$inv_id,$semester){
         
          $staff_lec = CourseOffered::find()
-         ->select('distinct(offered_id)')
+         ->select('distinct(offered_id) as offer_id, count(lec_name) as lec_name')
          ->joinWith('lectures.lecturers')
          ->where(['semester_id' => $semester, 'staff_id' => $s])
+		 ->groupBy('offered_id')
          ->all();
 
          $staff_tut = CourseOffered::find()
-         ->select('distinct(offered_id)')
+         ->select('distinct(offered_id) as offer_id, count(lec_name) as lec_name, count(tutorial_name) as tutorial_name')
          ->joinWith('lectures.tutorials.tutors')
+		 ->groupBy('offered_id')
          ->where(['semester_id' => $semester, 'staff_id' => $s])
          ->all();
 
