@@ -243,14 +243,14 @@ EOD;
 
 	
 	public function writeSignitureImg(){
-		//$html = '';
-		//$sign = $this->template->signiture_file;
+		$html = '';
+		$sign = $this->template->signiture_file;
 		$html = 'xxxxxxxxxxxx';
-		/* if(!$sign){
+		if(!$sign){
 			//return false;
 		}
 		
-		if($this->model->status == 10){
+		if($this->model->status == 100){
 			$file = Yii::getAlias('@upload/'. $sign);
 		
 			$html .= '
@@ -259,7 +259,7 @@ EOD;
 
 		}
 		
-*/
+
 		$y = $this->pdf->getY();
 		$adjy = $this->template->adj_y;
 		
