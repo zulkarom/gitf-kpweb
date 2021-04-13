@@ -1,7 +1,4 @@
-Course owner setting page - for KP
-Teaching Load for KP page
 material list view untuk admin- in case nak revert to draft
-
 
 need to setup attendace before class exemption - lepas tu datepicker ganti dengan list kelas dia sahaja
 kat preview - show progress setiap orang
