@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = 'Student Attendance';
 	$attendance = json_decode($tutorial->attendance_header);
 	if($attendance){
 		?>
-		<a href="<?=Url::to(['attendance-summary-pdf', 'id' => $tutorial->id])?>" class="btn btn-danger btn-sm" target="_blank"><i class="fa fa-download"></i> Download</a>
+		<a href="<?=Url::to(['attendance-summary-tutorial-pdf', 'id' => $tutorial->id])?>" class="btn btn-danger btn-sm" target="_blank"><i class="fa fa-download"></i> Download</a>
 
 		<a href="<?=Url::to(['tutorial-attendance-sync', 'id' => $tutorial->id])?>" class="btn btn-success btn-sm"><i class="fa fa-refresh"></i> Re-Sync</a>
 		<?php

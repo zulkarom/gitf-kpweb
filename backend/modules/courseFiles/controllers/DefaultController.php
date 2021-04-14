@@ -664,6 +664,19 @@ class DefaultController extends Controller
 		$pdf->group =  $model->lec_name;
 		$pdf->generatePdf();
 	}
+	
+	public function actionAttendanceSummaryTutorialPdf($id){
+		$model = $this->findTutorial($id);
+	
+		
+		$pdf = new AttendanceSummary;
+		$pdf->model = $model;
+		// $pdf->response = $response;
+		$pdf->course = $model->lecture->courseOffered->course;
+		$pdf->semester = $model->lecture->courseOffered->semester;
+		$pdf->group =  $model->tutorialGroup;
+		$pdf->generatePdf();
+	}
 
     public function actionAttendanceSync($id){
     	

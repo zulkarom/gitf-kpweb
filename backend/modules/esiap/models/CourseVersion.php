@@ -208,7 +208,7 @@ class CourseVersion extends \yii\db\ActiveRecord
 	public function getSltAssessmentSummative()
     {
 		return self::find()
-		->select('sp_course_assessment.*, SUM(sp_course_assessment.assess_f2f) + SUM(sp_course_assessment.assess_nf2f)+ SUM(sp_course_assessment.assess_f2f_tech) AS as_hour')
+		->select('sp_assessment_cat.form_sum, sp_course_assessment.*, SUM(sp_course_assessment.assess_f2f) + SUM(sp_course_assessment.assess_nf2f)+ SUM(sp_course_assessment.assess_f2f_tech) AS as_hour')
 		->innerJoin('sp_course_assessment', 'sp_course_assessment.crs_version_id = sp_course_version.id')
 		->innerJoin('sp_assessment_cat', 'sp_assessment_cat.id = sp_course_assessment.assess_cat')
 		->groupBy(['sp_assessment_cat.form_sum'])

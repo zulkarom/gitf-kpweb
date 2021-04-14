@@ -161,15 +161,15 @@ EOD;
 	}
 	
 	public function writeTable(){
-		$all = 630;
+		$all = 700;
 		$w1 = 50;
 		$w2 = 30;
-		$w3 = 140;
-		$w4 = 40;
+		$w3 = 120;
+		$w4 = 20;
 		$w5 = $all - $w1 - $w2 - $w3 - $w4;
 		$course = $this->model->courseOffered->course;
 		$html = '
-		<table cellpadding="1">
+		<table cellpadding="1" border="0">
 		<tr>
 			<td width="'.$w1.'"></td>
 			<td width="'.$w3.'">Kod Kursus</td>
