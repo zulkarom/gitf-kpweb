@@ -5,6 +5,7 @@ namespace backend\modules\esiap\models;
 use Yii;
 use common\models\Common;
 use backend\models\Faculty;
+use yii\helpers\FileHelper;
 
 class Tbl4Pdf
 {
@@ -1348,8 +1349,12 @@ EOD;
 
 		$file = Yii::getAlias('@upload/'. $sign);
 		$paste = Yii::getAlias('@web/images/temp/'. $sign);
-		
+		$directory = dirname($paste);
 		copy($file, $paste);
+		
+		if (!is_dir($directory)) {
+			FileHelper::createDirectory($directory);
+		}
 		
 		$y = $this->verify_y;
 		
