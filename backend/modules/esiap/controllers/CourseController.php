@@ -864,6 +864,7 @@ class CourseController extends Controller
 			if($action == 'btn-submit'){
 				if($version->progress == 100){
 					$version->prepared_at = new Expression('NOW()');
+					$version->updated_at = new Expression('NOW()');
 					$version->status = 10;
 					if($version->save()){
 						return $this->redirect(['course/view-course','course' => $course]);
