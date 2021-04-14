@@ -1287,6 +1287,13 @@ EOD;
 			$sign = $this->model->preparedsign_file;
 
 			$file = Yii::getAlias('@upload/'. $sign);
+			$paste = Yii::getAlias('@web/images/temp/'. $sign);
+			$directory = dirname($paste);
+			if (!is_dir($directory)) {
+				FileHelper::createDirectory($directory);
+			}
+			
+			copy($file, $paste);
 
 			$y = $this->pdf->getY();
 			$this->verify_y = $this->pdf->getY();
@@ -1316,7 +1323,7 @@ EOD;
 			<td width="'.$col_sign .'" colspan="18" >';
 			if($this->model->preparedsign_file){
 				if(is_file($file)){
-					$html .= '<img width="'.$size.'" src="'.$file.'" />';
+					$html .= '<img width="'.$size.'" src="images/temp/'.$paste.'" />';
 				}
 			}
 			
