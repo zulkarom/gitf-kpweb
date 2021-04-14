@@ -1350,11 +1350,13 @@ EOD;
 		$file = Yii::getAlias('@upload/'. $sign);
 		$paste = Yii::getAlias('@web/images/temp/'. $sign);
 		$directory = dirname($paste);
-		copy($file, $paste);
-		
 		if (!is_dir($directory)) {
 			FileHelper::createDirectory($directory);
 		}
+		
+		copy($file, $paste);
+		
+		
 		
 		$y = $this->verify_y;
 		
