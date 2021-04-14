@@ -1288,7 +1288,7 @@ EOD;
 
 			$file = Yii::getAlias('@upload/'. $sign);
 			$f = basename($file);
-			$paste = Yii::getAlias('@web/images/temp/'. $f);
+			$paste = 'images/temp/'. $f;
 			copy($file, $paste);
 
 			$y = $this->pdf->getY();
