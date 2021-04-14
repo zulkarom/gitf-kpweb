@@ -1218,6 +1218,7 @@ $this->html .= $html;
 		$datev = '';
 		$faculty = '';
 		if($this->model->status >=20){
+			$faculty = Faculty::findOne(Yii::$app->params['faculty_id']);
 			$faculty = $faculty->faculty_name_bi;
 		}
 		
@@ -1234,7 +1235,7 @@ $this->html .= $html;
 			$datev = date('d/m/Y', strtotime($this->model->verified_at));
 		}
 		$col_sign = ($this->wall /2 ) - $this->colnum;
-		$faculty = Faculty::findOne(Yii::$app->params['faculty_id']);
+		
 		if($this->model->status >= 10){
 			$html = '<table >
 		<tr>
@@ -1349,11 +1350,8 @@ EOD;
 			$sign = $this->model->verifiedsign_file;
 
 		$file = Yii::getAlias('@upload/'. $sign);
-		$paste = Yii::getAlias('@web/images/temp/'. $sign);
-		$directory = dirname($paste);
-		if (!is_dir($directory)) {
-			FileHelper::createDirectory($directory);
-		}
+		$f = basename($file);
+		$paste = 'images/temp/'. $f;
 		
 		copy($file, $paste);
 		
@@ -1390,7 +1388,7 @@ EOD;
 		
 		if($this->model->verifiedsign_file){
 			if(is_file($file)){
-				$html .= '<img width="'.$size.'" src="images/temp/'.$paste.'" />';
+				$html .= '<img width="'.$size.'" src="images/temp/'.$f.'" />';
 			}
 		}
 		
