@@ -600,8 +600,10 @@ class DefaultController extends Controller
 			}
 			 if(Yii::$app->request->post('complete') == 1){
 				$lecture->progressStudentAttendance = 1;
+				$lecture->prg_attend_complete = 1;
 			}else{
 				$lecture->progressStudentAttendance = 0.5;
+				$lecture->prg_attend_complete = 0;
 			}
 			if ($lecture->save()) {
 				Yii::$app->session->addFlash('success', "Data Updated");
@@ -635,8 +637,10 @@ class DefaultController extends Controller
 			}
 			 if(Yii::$app->request->post('complete') == 1){
 				$tutorial->progressStudentAttendance = 1;
+				$tutorial->prg_attend_complete = 1;
 			}else{
 				$tutorial->progressStudentAttendance = 0.5;
+				$tutorial->prg_attend_complete = 0;
 			}
 			if ($tutorial->save()) {
 				Yii::$app->session->addFlash('success', "Data Updated");
@@ -731,6 +735,7 @@ class DefaultController extends Controller
             }
 			$lecture->prg_attend_complete = 0;
 			$lecture->progressStudentAttendance = 0.5;
+			$lecture->prg_attend_complete = 0;
 			$lecture->save();
             return $this->redirect(['lecture-student-attendance', 'id' => $id]);
     }
@@ -792,6 +797,7 @@ class DefaultController extends Controller
             }
 			$tutorial->prg_attend_complete = 0;
 			$tutorial->progressStudentAttendance = 0.5;
+			$tutorial->prg_attend_complete = 0;
 			$tutorial->save();
             return $this->redirect(['tutorial-student-attendance', 'id' => $id]);
     }
