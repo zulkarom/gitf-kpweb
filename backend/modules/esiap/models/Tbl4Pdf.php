@@ -1211,7 +1211,8 @@ $this->html .= $html;
 	}
 	
 	public function preparedBy(){
-		
+		//echo Yii::$app->params['faculty_id'];die();
+		if(Yii::$app->params['faculty_id'] == 1){
 		$coor = '';
 		$verifier = '';
 		$date = '';
@@ -1281,15 +1282,18 @@ ___________________________<br />
 EOD;
 
 		$this->pdf->writeHTML($tbl, true, false, false, false, '');
+		}
 	}
 	
 	public function signiture(){
-		if($this->model->status > 9){
+		if(Yii::$app->params['faculty_id'] == 1){
+					if($this->model->status > 9){
 			$sign = $this->model->preparedsign_file;
 
 			$file = Yii::getAlias('@upload/'. $sign);
 			$f = basename($file);
 			$paste = 'images/temp/'. $f;
+			
 			copy($file, $paste);
 
 			$y = $this->pdf->getY();
@@ -1340,12 +1344,15 @@ EOD;
 
 			$this->pdf->writeHTML($tbl, true, false, false, false, '');
 		}
+		}
+
 		
 	}
 	
 	public $verify_y;
 	
 	public function signitureVerify(){
+		if(Yii::$app->params['faculty_id'] == 1){
 		if($this->model->status > 19){
 			$sign = $this->model->verifiedsign_file;
 
@@ -1403,6 +1410,7 @@ EOD;
 
 		$this->pdf->writeHTML($tbl, true, false, false, false, '');
 		}
+	}
 		
 	}
 	

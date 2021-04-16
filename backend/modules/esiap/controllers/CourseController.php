@@ -957,6 +957,8 @@ class CourseController extends Controller
 					}else{
 						$model->pgrs_assess_per = 1;
 					}
+					
+					$model->updated_at = new Expression('NOW()');
 					if (!$model->save()) {
 						$model->flashError();
 					}
@@ -1036,6 +1038,7 @@ class CourseController extends Controller
 					$as = CourseAssessment::findOne($key);
 					$as->scenario = 'update_slt_tech';
 					if($as){
+						$val = is_null($val) ? 0 : $val;
 						$val = empty($val) ? 0 : $val;
 						$as->assess_f2f_tech = $val;
 						if(!$as->save()){
@@ -1053,6 +1056,7 @@ class CourseController extends Controller
 					$syl->scenario = 'slt';
 					if($syl){
 						foreach($val as $i => $v){
+							$v = is_null($v) ? 0 : $v;
 							$v = empty($v) ? 0 : $v;
 							$syl->{$i} = $v;
 						}
