@@ -86,7 +86,7 @@ $ref = percent($version->pgrs_ref);
 
 <div class="row">
 
-<?=show_knob($per, 'Overall Progress', ['view-course', 'course' => $model->id])?>
+<?=show_knob($per, 'Overall Progress', [])?>
 <?=show_knob($profile, 'Course Profile', ['update', 'course' => $model->id])?>
 <?=show_knob($assess, 'Assessment', ['course-assessment', 'course' => $model->id])?>
 <?=show_knob($clo, 'Course Learning Outcomes', ['course-clo', 'course' => $model->id])?>
@@ -109,7 +109,7 @@ $ref = percent($version->pgrs_ref);
 <?=show_knob($assess_per, 'CLO Assessment', ['clo-assessment', 'course' => $model->id])?>
 <?=show_knob($soft, 'CLO Softskill', ['clo-softskill', 'course' => $model->id])?>
 <?=show_knob($syll, 'Syllabus', ['course-syllabus', 'course' => $model->id])?>
-<?=show_knob($syll, 'Student Learning Time', ['course-slt', 'course' => $model->id])?>
+<?=show_knob($slt, 'Student Learning Time', ['course-slt', 'course' => $model->id])?>
 <?=show_knob($ref, 'Reference', ['course-reference', 'course' => $model->id])?>
 </div>
 
@@ -249,10 +249,19 @@ function show_knob($percentage, $title, $url){
 		}else if($percentage >= 100){
 			$color = '#00a65a';
 		}
-	return '<div class="col-xs-6 col-md-2 text-center">
+	$html = '<div class="col-xs-6 col-md-2 text-center">
 <input type="text" class="knob" value="' . $percentage . '" data-skin="tron" data-thickness="0.2" data-width="100" data-readonly="true" data-height="100" data-fgColor="'.$color.'">
-<div class="knob-label"><a href="'.Url::to($url).'"> '.$title.'</a></div>
+<div class="knob-label">';
+if($url){
+	$html .= '<a href="'.Url::to($url).'"> '.$title.'</a>';
+}else{
+	$html .= $title;
+}
+
+
+$html .= '</div>
 </div>';
+	return $html;
 }
 
 $this->registerJs('
