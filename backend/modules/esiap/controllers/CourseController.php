@@ -1076,6 +1076,7 @@ class CourseController extends Controller
 				}else{
 					$model->pgrs_slt = 1;
 				}
+				$model->updated_at = new Expression('NOW()');
 				if (!$model->save()) {
 					$model->flashError();
 				}
