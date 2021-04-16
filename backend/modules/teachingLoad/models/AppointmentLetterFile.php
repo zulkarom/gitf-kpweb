@@ -83,12 +83,26 @@ class AppointmentLetterFile
 		</tr>
 		</table>
 		<br /><br /><br /><br />
-		<b>'. $this->model->staffInvolved->staff->staff_title . ' ' . $this->model->staffInvolved->staff->user->fullname .'<br /></b>
-		<table>
-		<tr>
+		<b>'. $this->model->staffInvolved->staff->staff_title . ' ' . $this->model->staffInvolved->staff->user->fullname;
+		
+		
+		$status = $this->model->staffInvolved->staff->staffPositionStatus->status_cat;
+		
+		if($status != 'Tetap'){
+			$html .= ' ('.$status.')';
+		}
+		
+		
+		$html .= '<br /></b>
+		<table>';
+		if($status == 'Tetap'){
+			$html .= '<tr>
 			<td><b>'. ($this->model->staffInvolved->staff->staffPosition->position_plain).' '.'('.strtoupper($this->model->staffInvolved->staff->staffPosition->position_gred).') '.$this->model->staffInvolved->staff->staffPositionStatus->status_cat .' '.'</b></td>
-		</tr>
-		<tr>
+		</tr>';
+		}
+		
+		
+		$html .= '<tr>
 			<td>Fakulti Keusahawanan dan Perniagaan <br/> Universiti Malaysia Kelantan </td>
 		</tr>
 		</table>
