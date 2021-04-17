@@ -306,9 +306,11 @@ class Menu
 				
 				['label' => 'Staff List', 'icon' => 'user', 'url' => ['/staff/staff']],
 				
-				['label' => 'Main Position', 'icon' => 'plus', 'url' => ['/staff/default/main-position']],
+				['label' => 'Related External', 'icon' => 'user', 'url' => ['/staff/staff/external']],
+				
+				['label' => 'Main Position', 'icon' => 'cubes', 'url' => ['/staff/default/main-position']],
 
-				['label' => 'Transfered/Quit', 'icon' => 'user', 'url' => ['/staff/staff/inactive']],
+				['label' => 'Transfered/Quit', 'icon' => 'remove', 'url' => ['/staff/staff/inactive']],
 				
 
                  ]

@@ -4,12 +4,13 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
 use backend\modules\staff\models\StaffPosition;
+use backend\models\Faculty;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\modules\staff\models\StaffSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Transfered/Quit Staff';
+$this->title = 'Related External';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="staff-index">
@@ -35,10 +36,14 @@ $this->params['breadcrumbs'][] = $this->title;
 				
 			],
 			[
-				'attribute' => 'position_id',
-				'filter' => Html::activeDropDownList($searchModel, 'position_id', ArrayHelper::map(StaffPosition::find()->where(['>', 'id',0])->all(),'id', 'position_name'),['class'=> 'form-control','prompt' => 'Choose Position']),
+				'attribute' => 'faculty_id',
+				'label' => 'Faculty',
+				'filter' => Html::activeDropDownList($searchModel, 'faculty_id', ArrayHelper::map(Faculty::find()->where(['academic' => 1])->andWhere(['<>', 'id', Yii::$app->params['faculty_id']])->all(),'id', 'faculty_name'),['class'=> 'form-control','prompt' => 'Choose Faculty']),
 				'value' => function($model){
-					return $model->staffPosition->position_name;
+					if($model->faculty){
+						return $model->faculty->faculty_name;
+					}
+					
 				}
 				
 			],
@@ -49,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 //'visible' => false,
                 'buttons'=>[
                     'update'=>function ($url, $model) {
-                        return Html::a('Update',['/staff/staff/update-inactive/', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
+                        return Html::a('Update',['/staff/staff/update-external/', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
                     }
                 ],
             

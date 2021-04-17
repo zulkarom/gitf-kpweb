@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use kartik\grid\GridView;
 use kartik\export\ExportMenu;
+use richardfan\widget\JSRegister;
 
 
 /* @var $this yii\web\View */
@@ -115,19 +116,10 @@ $exportColumns = [
 
 
 <div class="form-group">
-<?= Html::a('<span class="glyphicon glyphicon-plus"></span> Add New Staff', ['create'], ['class' => 'btn btn-success']) ?>
+<?= Html::a('<span class="glyphicon glyphicon-plus"></span> Add New Staff', ['create'], ['class' => 'btn btn-success']) ?> 
+<?= Html::button('<span class="glyphicon glyphicon-search"></span> Search',['id' => 'btn-search-show', 'class' => 'btn btn-primary']) ?>
 
- 
- </div>
-
-
-
-<?=$this->render('_search', ['model' => $searchModel])?>
-
-
-<div class="form-group">
-
-<b>EXPORT DATA</b>  <?=ExportMenu::widget([
+<?=ExportMenu::widget([
     'dataProvider' => $dataProvider,
     'columns' => $exportColumns,
 	'exportConfig' => [
@@ -140,7 +132,17 @@ $exportColumns = [
 		->getAlignment()->setWrapText(true);
 	},
 
-]);?> </div>
+]);?>
+
+ 
+ </div>
+
+
+<div style="display:none" id="con-form-searach">
+<?=$this->render('_search', ['model' => $searchModel])?>
+</div>
+
+
 
     <div class="box">
 <div class="box-header"></div>
@@ -188,3 +190,15 @@ $exportColumns = [
     ]); ?></div>
 </div>
 </div>
+
+
+<?php JSRegister::begin(); ?>
+<script>
+$("#btn-search-show").click(function(){
+	$('#con-form-searach').slideDown();
+});
+$("#hide-form").click(function(){
+	$('#con-form-searach').slideUp();
+});
+</script>
+<?php JSRegister::end(); ?>

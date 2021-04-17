@@ -10,7 +10,7 @@ use backend\modules\staff\models\Staff;
 /**
  * StaffSearch represents the model behind the search form of `backend\modules\staff\models\Staff`.
  */
-class StaffInactiveSearch extends Staff
+class ExternalSearch extends Staff
 {
 	public $staff_name;
     /**
@@ -19,7 +19,7 @@ class StaffInactiveSearch extends Staff
     public function rules()
     {
         return [
-            [['position_id'], 'integer'],
+            [['faculty_id'], 'integer'],
 			
 			[['staff_no', 'staff_name'], 'string']
 			
@@ -45,7 +45,8 @@ class StaffInactiveSearch extends Staff
      */
     public function search($params)
     {
-        $query = Staff::find()->where(['staff_active' => 0]);
+        $query = Staff::find()->where(['staff_active' => 1]);
+		$query->andWhere(['<>', 'faculty_id', Yii::$app->params['faculty_id']]);
 		$query->joinWith(['user']);
 
         // add conditions that should always apply here
@@ -66,9 +67,14 @@ class StaffInactiveSearch extends Staff
 
         $query->andFilterWhere(['like', 'staff_no', $this->staff_no]);
 		
-		$query->andFilterWhere([
-			'position_id' => $this->position_id,
+		$query->andFilterWhere(['faculty_id' => $this->faculty_id]);
+		
+	
+		/* $query->andFilterWhere(['or', 
+           // ['<>', 'faculty_id', Yii::$app->params['faculty_id']],
+            ['faculty_id' => $this->faculty_id]
         ]);
+ */
 		
 		$dataProvider->sort->attributes['staff_name'] = [
         'asc' => ['user.fullname' => SORT_ASC],

@@ -4,6 +4,7 @@ namespace backend\modules\staff\models;
 
 use Yii;
 use common\models\User;
+use backend\models\Faculty;
 use yii\helpers\ArrayHelper;
 use backend\modules\erpd\models\Stats as ErpdStats;
 use backend\modules\teachingLoad\models\CourseOffered;
@@ -86,7 +87,7 @@ class Staff extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['staff_no', 'user_id', 'staff_title', 'is_academic', 'position_id', 'position_status', 'working_status'], 'required'],
+            [['staff_no', 'user_id', 'staff_title', 'is_academic', 'position_id', 'position_status', 'working_status', 'designation', 'faculty_id', 'gender', 'staff_active'], 'required'],
 			
 			[['verified_at'], 'required', 'on' => 'verify_course'],
 			
@@ -197,6 +198,10 @@ class Staff extends \yii\db\ActiveRecord
 	
 	public function getStaffPosition(){
 		return $this->hasOne(StaffPosition::className(), ['id' => 'position_id']);
+	}
+	
+	public function getFaculty(){
+		return $this->hasOne(Faculty::className(), ['id' => 'faculty_id']);
 	}
 	
 	public function getStaffPositionStatus(){
