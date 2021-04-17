@@ -125,6 +125,10 @@ class Staff extends \yii\db\ActiveRecord
 			[['signiture_file'], 'required', 'on' => 'signiture_upload'],
             [['signiture_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png', 'maxSize' => 1000000],
             [['updated_at'], 'required', 'on' => 'signiture_delete'],
+			
+			[['image_file'], 'required', 'on' => 'image_upload'],
+            [['image_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png,jpg,gif', 'maxSize' => 1000000],
+            [['updated_at'], 'required', 'on' => 'image_delete'],
 
 
         ];
