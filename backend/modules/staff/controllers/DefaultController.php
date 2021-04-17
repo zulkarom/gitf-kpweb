@@ -8,7 +8,7 @@ use backend\modules\staff\models\Staff;
 use backend\modules\staff\models\StaffMainPosition;
 use backend\models\Department;
 use backend\modules\esiap\models\Program;
-
+use yii\filters\AccessControl;
 /**
  * Default controller for the `staff` module
  */
@@ -21,6 +21,22 @@ class DefaultController extends Controller
     public function actionIndex()
     {
         return $this->render('index');
+    }
+	   
+
+	public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
     }
 	
 	public function actionRenameFileGsdf(){
