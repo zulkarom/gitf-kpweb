@@ -19,7 +19,8 @@ $this->params['breadcrumbs'][] = ['label' => 'My Course File', 'url' => ['/cours
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
-
+<h4><?=$model->courseOffered->semester->longFormat()?></h4>
+<h4><?=$model->courseOffered->course->course_code?> <?=$model->courseOffered->course->course_name?></h4>
 <div class="box">
 <div class="box-header"></div>
 <div class="box-body">
