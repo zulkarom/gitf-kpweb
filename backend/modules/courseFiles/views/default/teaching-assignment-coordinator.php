@@ -483,7 +483,10 @@ if($material){
                   <td>'.$item[1]->item_bi.'</td>
 
                   <td>';
-                  Modal::begin([
+				  if($offer->na_script_final == 1){
+					 echo 'N/A';
+				  }else{
+					   Modal::begin([
                       'header' => '<h5>'.$item[1]->item_bi.'</h5>',
 					  'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>',
                       'toggleButton' => ['label' => 'View Files ('.$offer->countScripts.')', 'class'=>'btn btn-sm btn-default'],
@@ -502,6 +505,8 @@ if($material){
                                 </table>';
                        
                   Modal::end();
+				  }
+                 
             echo'</td>';
 
                   echo'<td><a href="' . Url::to([$item[1]->upload_url.'/page','id' => $offered_id]) . '" class="btn btn-default btn-sm" ><span class="fa fa-upload"></span> Upload</a></td>

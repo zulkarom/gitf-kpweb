@@ -134,9 +134,14 @@ use backend\modules\courseFiles\views\admin\Show;
 
           echo '<tr><td>'.$item[7]->id.'</td>
                 <td>'.$item[7]->item.'<i><br/>'.$item[7]->item_bi.'</i></td>
-                <td>
-				
-				<ul>
+                <td>';
+		if($offer->na_script_final == 1){
+		echo '<ul>
+				<li>N/A '.Common::ptick().'</li>
+			</ul>
+			';
+	}else{
+		echo '<ul>
 			<li>THE THREE (3) BEST ANSWER SCRIPTS
 				<ul>';
 	
@@ -166,7 +171,11 @@ use backend\modules\courseFiles\views\admin\Show;
 			</li>
 			
 
-				</ul>
+				</ul>';
+	}
+		
+				
+		echo '
 
 </td>
                 <td>';

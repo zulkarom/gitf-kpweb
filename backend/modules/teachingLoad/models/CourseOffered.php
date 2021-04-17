@@ -78,7 +78,7 @@ class CourseOffered extends \yii\db\ActiveRecord
 			
 			[['course_version', 'material_version'], 'required', 'on' => 'coor'],
 			
-            [['semester_id', 'course_id', 'total_students', 'max_lec', 'max_tut', 'created_by', 'coordinator', 'course_version', 'material_version', 'prg_crs_ver', 'prg_material', 'na_cont_rubrics'], 'integer'],
+            [['semester_id', 'course_id', 'total_students', 'max_lec', 'max_tut', 'created_by', 'coordinator', 'course_version', 'material_version', 'prg_crs_ver', 'prg_material', 'na_cont_rubrics', 'na_script_final'], 'integer'],
 			
             [['created_at', 'courses'], 'safe'],
 			
@@ -321,10 +321,13 @@ class CourseOffered extends \yii\db\ActiveRecord
 	}
 	
 	public function setProgressSumScript(){
-		
-		$per = $this->countScripts / 9;
-		$per = number_format($per, 2);
-		$this->prg_sum_script = $per;
+		if($this->na_script_final == 1){
+			$this->prg_sum_script = 1;
+		}else{
+			$per = $this->countScripts / 9;
+			$per = number_format($per, 2);
+			$this->prg_sum_script = $per;
+		}
 		$this->setProgressOverall();
 	}
 	
