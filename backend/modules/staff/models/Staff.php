@@ -331,7 +331,7 @@ class Staff extends \yii\db\ActiveRecord
 		$array = [];
 		
 		foreach($list as $item){
-			$array[$item->staffid] = $item->stitle . ' ' . $item->fullname;
+			$array[$item->staffid] =  $item->fullname . ' ('.$item->stitle.')';
 		}
 		
 		return $array;
