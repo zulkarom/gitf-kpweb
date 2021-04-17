@@ -18,8 +18,8 @@ use kartik\select2\Select2;
 /* @var $model backend\modules\esiap\models\Course */
 
 $this->title = 'Course Information';
-$this->params['breadcrumbs'][] = ['label' => 'Courses', 'url' => ['index']];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = ['label' => 'Preview', 'url' => ['course/view-course', 'course' => $model->id]];
+$this->params['breadcrumbs'][] = 'Course Profile';
 ?>
 <div class="course-update">
 

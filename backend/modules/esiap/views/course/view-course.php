@@ -15,8 +15,7 @@ backend\assets\KnobAsset::register($this);
 /* @var $model backend\modules\esiap\models\Course */
 
 $this->title = 'View Course Information';
-$this->params['breadcrumbs'][] = ['label' => 'Courses', 'url' => ['index']];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = $model->course_code;
 ?>
 <div class="course-update">
 

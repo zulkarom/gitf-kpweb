@@ -15,8 +15,8 @@ use kartik\select2\Select2;
 
 
 $this->title = 'Course Syllabus';
-$this->params['breadcrumbs'][] = ['label' => 'Courses', 'url' => ['index']];
-$this->params['breadcrumbs'][] = 'Syllabus';
+$this->params['breadcrumbs'][] = ['label' => 'Preview', 'url' => ['course/view-course', 'course' => $model->course_id]];
+$this->params['breadcrumbs'][] = 'Course Syllabus';
 ?>
 
 <?=$this->render('_header',[

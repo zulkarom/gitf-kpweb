@@ -12,7 +12,7 @@ use richardfan\widget\JSRegister;
 
 
 $this->title = 'Student Learning Time';
-$this->params['breadcrumbs'][] = ['label' => 'Courses', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Preview', 'url' => ['course/view-course', 'course' => $model->course_id]];
 $this->params['breadcrumbs'][] = 'SLT';
 
 $form = ActiveForm::begin(['id' => 'form-clo-assessment']); 
