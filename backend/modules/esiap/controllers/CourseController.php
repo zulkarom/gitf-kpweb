@@ -921,11 +921,11 @@ class CourseController extends Controller
 							$valid_one = $valid_one == false ? false : true;
 						}
 						$arr_valid[] = $ass_id;
-						if(is_null($row->assess_id)){
+						/* if(is_null($row->assess_id)){
 							Yii::$app->session->addFlash('error', "Please select the assessment.");
 							$flag = false;
 							break;
-						}
+						} */
 						$row->assess_id = $ass_id;
 						
 						$clo = $row->clo_id;
