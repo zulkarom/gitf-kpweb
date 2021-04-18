@@ -181,7 +181,7 @@ echo $form->field($profile, 'prerequisite')->widget(Select2::classname(), [
     'pluginOptions' => [
         'allowClear' => true
     ],
-])->label('User Fields');
+])->label('Prerequisite/co-requisite:     (if any) ');
 
 ?>
     
