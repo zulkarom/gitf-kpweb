@@ -720,6 +720,9 @@ $this->pdf->lineFooterTable = false;
 		$sign = $this->model->preparedsign_file;
 
 		$file = Yii::getAlias('@upload/'. $sign);
+		$f = basename($file);
+		$paste = 'images/temp/'. $f;
+		copy($file, $paste);
 
 		$y = $this->pdf->getY();
 		$this->verify_y = $this->pdf->getY();
@@ -756,7 +759,7 @@ $this->pdf->lineFooterTable = false;
 		<td width="'.$col_sign .'" colspan="18" >';
 		if($this->model->preparedsign_file){
 			if(is_file($file)){
-				$html .= '<img width="'.$size.'" src="'.$file.'" />';
+				$html .= '<img width="'.$size.'" src="images/temp/'.$f.'" />';
 			}
 		}
 		

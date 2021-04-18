@@ -1237,7 +1237,7 @@ $this->html .= $html;
 		}
 		$col_sign = ($this->wall /2 ) - $this->colnum;
 		
-		if($this->model->status >= 10){
+		if($this->model->status >= 0){
 			$html = '<table >
 		<tr>
 		<td width="'.$this->colnum.'"></td>
@@ -1286,8 +1286,11 @@ EOD;
 	}
 	
 	public function signiture(){
+		
 		if(Yii::$app->params['faculty_id'] == 1){
-					if($this->model->status > 9){
+			//echo $this->model->status; die();
+			if($this->model->status >= 0){
+			
 			$sign = $this->model->preparedsign_file;
 
 			$file = Yii::getAlias('@upload/'. $sign);
@@ -1314,8 +1317,6 @@ EOD;
 			$col1 = $this->colnum + 10;
 			$col_sign = $this->wall /2 ;
 			$html = '<table>
-
-			
 			<tr>
 			<td width="'. $col1 .'"></td>
 			

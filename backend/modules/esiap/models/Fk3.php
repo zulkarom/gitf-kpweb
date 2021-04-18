@@ -586,6 +586,9 @@ $this->verify_y = $this->pdf->getY();
 		$sign = $this->model->preparedsign_file;
 
 		$file = Yii::getAlias('@upload/'. $sign);
+		$f = basename($file);
+		$paste = 'images/temp/'. $f;
+		copy($file, $paste);
 
 		$y = $this->prepare_y;
 		
@@ -621,7 +624,7 @@ $this->verify_y = $this->pdf->getY();
 		<td width="'.$col_sign .'">';
 		if($this->model->preparedsign_file){
 			if(is_file($file)){
-				$html .= '<img width="'.$size.'" src="'.$file.'" />';
+				$html .= '<img width="'.$size.'" src="images/temp/'.$f.'" />';
 			}
 		}
 		
