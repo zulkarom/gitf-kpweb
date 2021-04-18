@@ -178,6 +178,16 @@ $this->params['breadcrumbs'][] = 'Course Profile';
 
 
 <?= $form->field($profile, 'prerequisite')->dropDownList($profile->course->allCoursesArray()) ?>
+<?php 
+echo $form->field($profile, 'prerequisite')->widget(Select2::classname(), [
+    'data' => $profile->course->activeCoursesArray(),
+    'options' => ['multiple' => false,'placeholder' => 'Select ...'],
+    'pluginOptions' => [
+        'allowClear' => true
+    ],
+])->label('User Fields');
+
+?>
     
 <div class="row">
 <div class="col-md-2"><?= $form->field($profile, 'offer_sem')->dropDownList([1=>1,2=>2,3=>3], ['prompt' => 'Please Select' ]) ?></div>

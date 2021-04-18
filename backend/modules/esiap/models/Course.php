@@ -191,6 +191,15 @@ class Course extends \yii\db\ActiveRecord
 		return $array;
 	}
 	
+	public function activeCoursesArray(){
+		$result = $this->activeCourses();
+		$array[0] = 'Tiada / Nil';
+		foreach($result as $row){
+			$array[$row->id] = $row->course_name .' - '.$row->course_code;
+		}
+		return $array;
+	}
+	
 	public function flashError(){
         if($this->getErrors()){
             foreach($this->getErrors() as $error){
