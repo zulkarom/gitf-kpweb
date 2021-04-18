@@ -873,7 +873,7 @@ class CourseController extends Controller
 					Yii::$app->session->addFlash('error', "In order to submit, the progress should be 100%");
 				}
 			}else{
-				
+				$version->updated_at = new Expression('NOW()');
 				if($version->save()){
 					//echo $action;die();
 					Yii::$app->session->addFlash('success', "Signiture updated");
