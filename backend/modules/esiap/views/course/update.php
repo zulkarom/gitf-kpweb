@@ -174,10 +174,6 @@ $this->params['breadcrumbs'][] = 'Course Profile';
 	
 	
 	
-
-
-
-<?= $form->field($profile, 'prerequisite')->dropDownList($profile->course->allCoursesArray()) ?>
 <?php 
 echo $form->field($profile, 'prerequisite')->widget(Select2::classname(), [
     'data' => $profile->course->activeCoursesArray(),
