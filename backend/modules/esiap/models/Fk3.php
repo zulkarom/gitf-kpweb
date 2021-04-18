@@ -529,7 +529,7 @@ $this->pdf->writeHTML($tbl, true, false, false, false, '');
 	public function signiture(){
 		$tbl = <<<EOD
 <p></p>
-<table border="0" cellpadding="10" style="font-size:10pt">
+<table border="0" cellpadding="10" style="font-size:10pt" nobr="true">
 
 <tr><td width="240">
 
