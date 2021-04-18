@@ -1238,7 +1238,7 @@ $this->html .= $html;
 		$col_sign = ($this->wall /2 ) - $this->colnum;
 		
 		if($this->model->status >= 0){
-			$html = '<table >
+			$html = '<table nobr="true">
 		<tr>
 		<td width="'.$this->colnum.'"></td>
 		
