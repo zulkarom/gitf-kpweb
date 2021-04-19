@@ -120,7 +120,7 @@ class Menu
 		$esiap_admin = [
                         'label' => 'Course Files Admin',
                         'icon' => 'cog',
-						'visible' => Todo::can('teaching-load-manager'),
+						'visible' => Todo::can('course-files'),
                         'url' => '#',
                         'items' => [
 				
