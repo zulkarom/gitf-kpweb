@@ -189,11 +189,11 @@ echo UploadFile::fileInput($version, 'preparedsign', true)?>
 
 </div>
 <i>
-* For the signature, use png format image with transparent background. <br />
+* For the signature, use png format image with transparent background. You can click <a href="https://www.remove.bg/" target="_blank">Remove.bg</a> to easily remove background.<br />
 * Approximate size pixel 200 x 100.<br />
 * Increase Image Adj Size to make the image bigger and vice versa.<br />
 * Increase Image Adj Y Size to move the image upwards and vice versa. <br />
-* Is strongly recommended to save signature first and preview your signiture in <a href="<?=Url::to(['fk2', 'course' => $model->id, 'version' => $version->id])?>" target="_blank">FK2</a>, <a href="<?=Url::to(['fk3', 'course' => $model->id, 'version' => $version->id])?>" target="_blank">FK3</a> and <a href="<?=Url::to(['tbl4-pdf', 'course' => $model->id, 'version' => $version->id])?>" target="_blank">Table 4</a> before submit.
+* Is strongly recommended to save signature first and preview your signature in <a href="<?=Url::to(['fk2', 'course' => $model->id, 'version' => $version->id])?>" target="_blank">FK2</a>, <a href="<?=Url::to(['fk3', 'course' => $model->id, 'version' => $version->id])?>" target="_blank">FK3</a> and <a href="<?=Url::to(['tbl4-pdf', 'course' => $model->id, 'version' => $version->id])?>" target="_blank">Table 4</a> before submitting.
 </i>
 </div>
 </div>
