@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <?= $form->field($model, 'material_name')->textInput(['maxlength' => true]) ?>
 	
-	<?= $form->field($model, 'mt_type')->dropDownList([1=> 'For Course File (pdf only)', 2 => 'Others (pdf,doc,docx,ppt,pptx,txt)'], ['prompt' => 'Please Select']) ?>
+	<?= $form->field($model, 'mt_type')->dropDownList([1=> 'For Course File (pdf only)', 2 => 'Others (pdf,doc,docx,ppt,pptx,txt)'], ['prompt' => 'Please Select','disabled' => true]) ?>
 
 
     <div class="form-group">
