@@ -603,6 +603,7 @@ class CourseAdminController extends Controller
 		$model = $this->findVersion($version);
 		
 		if ($model->load(Yii::$app->request->post())){
+			$model->updated_at = new Expression('NOW()');
 			$model->save();
 		}
 		

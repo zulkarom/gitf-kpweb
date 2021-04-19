@@ -53,7 +53,7 @@ echo UploadFile::fileInput($version, 'preparedsign', true)?>
 <div class="form-group" align="center">
         
 		<?=Html::submitButton('<span class="fa fa-save"></span> SAVE SIGNITURE', 
-    ['class' => 'btn btn-default', 'name' => 'wfaction', 'value' => 'btn-save',
+    ['class' => 'btn btn-primary', 'name' => 'wfaction', 'value' => 'btn-save',
     ])?>
 
     </div>
