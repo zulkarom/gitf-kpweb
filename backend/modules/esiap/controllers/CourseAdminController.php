@@ -601,6 +601,11 @@ class CourseAdminController extends Controller
 	
 	public function actionUpdateSignature($version){
 		$model = $this->findVersion($version);
+		
+		if ($model->load(Yii::$app->request->post())){
+			$model->save();
+		}
+		
 		return $this->render('update-signature', [
 			'model' => $model
         ]);
