@@ -78,7 +78,7 @@ class CourseOffered extends \yii\db\ActiveRecord
 			
 			[['course_version', 'material_version'], 'required', 'on' => 'coor'],
 			
-            [['semester_id', 'course_id', 'total_students', 'max_lec', 'max_tut', 'created_by', 'coordinator', 'course_version', 'material_version', 'prg_crs_ver', 'prg_material', 'na_cont_rubrics', 'na_script_final'], 'integer'],
+            [['semester_id', 'course_id', 'total_students', 'max_lec', 'max_tut', 'created_by', 'coordinator', 'course_version', 'material_version', 'prg_crs_ver', 'prg_material', 'na_cont_rubrics', 'na_script_final', 'coor_access'], 'integer'],
 			
             [['created_at', 'courses'], 'safe'],
 			
