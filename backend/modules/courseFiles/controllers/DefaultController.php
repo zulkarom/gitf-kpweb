@@ -329,6 +329,8 @@ class DefaultController extends Controller
 			print_r($data);die(); */
             
             if($data){
+				//delete semua dulu
+				StudentLecture::updateAll(['assess_result' => ''],['lecture_id' => $id]);
                 $i=0;
 				$weight = $data[1];
 				$full_mark = $data[2];
