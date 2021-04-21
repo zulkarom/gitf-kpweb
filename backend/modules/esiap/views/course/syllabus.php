@@ -104,14 +104,14 @@ foreach($syllabus as $row){ ?>
 		</div>
 		<div class='col-md-5'>
 			<div class='form-group'>
-			<textarea rows="1" class='form-control topic-text'><?php echo $rt->top_bm;?></textarea>
+			<textarea rows='1'  maxlength="50" class='form-control topic-text'><?php echo $rt->top_bm;?></textarea>
 			
 			</div>
 		</div>
 		<div class='col-md-1'><label>TOPIC: </label><br><i>(EN)</i></div>
 		<div class='col-md-5'>
 			<div class='form-group'>
-			<textarea rows="1" class='form-control topic-text'><?php echo $rt->top_bi;?></textarea>
+			<textarea rows='1'  maxlength="50" class='form-control topic-text'><?php echo $rt->top_bi;?></textarea>
 			</div>
 		</div>
 		</div>
@@ -131,14 +131,14 @@ foreach($syllabus as $row){ ?>
 				<div class='col-md-1'><label>SUB (BM): </label></div>
 				<div class='col-md-4'>
 				<div class='form-group'>
-				<textarea rows='1' class='form-control subtopic-text'><?php echo $rst->sub_bm;?></textarea>
+				<textarea rows='1'  maxlength="50" class='form-control subtopic-text'><?php echo $rst->sub_bm;?></textarea>
 				</div>
 				</div>
 				<div class='col-md-1'></div>
 				<div class='col-md-1'><label>SUB (EN): </label></div>
 				<div class='col-md-4'>
 				<div class='form-group'>
-				<textarea rows='1' class='form-control subtopic-text'><?php echo $rst->sub_bi;?></textarea>
+				<textarea rows='1'  maxlength="50" class='form-control subtopic-text'><?php echo $rst->sub_bi;?></textarea>
 				</div>
 				</div>
 				</div></div>
@@ -550,14 +550,14 @@ function genSubTopic(bm,bi){
 	html += "<div class='col-md-1'><label>SUB (BM): </label></div>";
 	html += "<div class='col-md-4'>";
 	html += "<div class='form-group'>";
-	html += "<textarea rows='1' class='form-control subtopic-text' >"+bm+"</textarea>";
+	html += "<textarea rows='1'  maxlength='50' class='form-control subtopic-text' >"+bm+"</textarea>";
 	html += "</div>";
 	html += "</div>";
 	html += "<div class='col-md-1'></div>";
 	html += "<div class='col-md-1'><label>SUB (EN): </label></div>";
 	html += "<div class='col-md-4'>";
 	html += "<div class='form-group'>";
-	html += "<textarea rows='1' class='form-control subtopic-text' >"+bi+"</textarea>";
+	html += "<textarea rows='1'  maxlength='50' class='form-control subtopic-text' >"+bi+"</textarea>";
 	html += "</div>";
 	html += "</div>";
 	html += "</div></div>";
@@ -572,13 +572,13 @@ function genTopic(bm,bi, sub){
 		html += "</div>";
 		html += "<div class='col-md-5'>";
 			html += "<div class='form-group'>";
-			html += "<textarea rows='1' class='form-control topic-text' >"+bm+"</textarea>";
+			html += "<textarea rows='1'  maxlength='50' class='form-control topic-text' >"+bm+"</textarea>";
 			html += "</div>";
 		html += "</div>";
 		html += "<div class='col-md-1'><label>TOPIC: </label><br><i>(EN)</i></div>";
 		html += "<div class='col-md-5'>";
 			html += "<div class='form-group'>";
-			html += "<textarea rows='1' class='form-control topic-text' >"+bi+"</textarea>";
+			html += "<textarea rows='1'  maxlength='50' class='form-control topic-text' >"+bi+"</textarea>";
 			html += "</div>";
 		html += "</div>";
 		html += "</div>";
