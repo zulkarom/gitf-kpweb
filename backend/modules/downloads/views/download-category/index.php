@@ -8,7 +8,7 @@ use yii\grid\GridView;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Download Categories';
-$this->params['breadcrumbs'][] = ['label' => 'Downloads', 'url' => ['/students/download/index']];
+$this->params['breadcrumbs'][] = ['label' => 'Downloads', 'url' => ['/downloads/download/index']];
 $this->params['breadcrumbs'][] = 'Categories';
 ?>
 <div class="download-category-index">
