@@ -863,12 +863,17 @@ class CourseController extends Controller
 			
 			if($action == 'btn-submit'){
 				if($version->progress == 100){
-					$version->prepared_at = new Expression('NOW()');
-					$version->updated_at = new Expression('NOW()');
-					$version->status = 10;
-					if($version->save()){
-						return $this->redirect(['course/view-course','course' => $course]);
+					if($version->preparedsign_file){
+						$version->prepared_at = new Expression('NOW()');
+						$version->updated_at = new Expression('NOW()');
+						$version->status = 10;
+						if($version->save()){
+							return $this->redirect(['course/view-course','course' => $course]);
+						}
+					}else{
+						Yii::$app->session->addFlash('error', "Upload your signature first");
 					}
+					
 				}else{
 					Yii::$app->session->addFlash('error', "In order to submit, the progress should be 100%");
 				}

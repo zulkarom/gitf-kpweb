@@ -203,17 +203,20 @@ echo $form->field($profile, 'prerequisite')->widget(Select2::classname(), [
 </div>
 
 <div class="row">
-<div class="col-md-6"><?= $form->field($profile, 'rational')->textarea(['rows' => '6']) ?></div>
+<div class="col-md-6"><?= $form->field($profile, 'rational')->textarea(['rows' => '6'])->label('Rationale (BM)')  ?></div>
 
-<div class="col-md-6"><?= $form->field($profile, 'rational_bi')->textarea(['rows' => '6']) ?></div>
+<div class="col-md-6"><?= $form->field($profile, 'rational_bi')->textarea(['rows' => '6'])->label('Rationale (EN)') ?></div>
 
 
 </div>
 
 <div class="row">
-<div class="col-md-6"><?= $form->field($profile, 'feedback')->textarea(['rows' => '4']) ?></div>
+<div class="col-md-6"><?= $form->field($profile, 'feedback',['template' => '{label}<br /><i style="font-weight:normal">cth Sistem Atas Talian, Sistem Penasihatan Akademik</i>{input}{error}
+            '])->textarea(['rows' => '4'])->label('Method for Feedback on Performance (BM)') ?></div>
 
-<div class="col-md-6"><?= $form->field($profile, 'feedback_bi')->textarea(['rows' => '4']) ?></div>
+<div class="col-md-6"><?= $form->field($profile, 'feedback_bi',['template' => '{label}<br /><i style="font-weight:normal">e.g. Online System, Advisory Academic System</i>{input}{error}
+            ']
+)->textarea(['rows' => '4'])->label('Method for Feedback on Performance (EN)') ?></div>
 </div>
 
 

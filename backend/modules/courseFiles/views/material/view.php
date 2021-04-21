@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'confirm' => 'Are you sure to submit? You will no longer could update the teaching materials. '
             ]]);
 			echo ' ';
-			echo '<div class="pull-right">' . Html::a('Delete', ['delete', 'id' => $model->id], [
+			echo '<div class="pull-right">' . Html::a('Delete', ['delete-group', 'id' => $model->id], [
 				'class' => 'btn btn-danger',
 				'data' => [
 					'confirm' => 'Are you sure you want to delete this item?',

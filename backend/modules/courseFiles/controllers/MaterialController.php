@@ -199,9 +199,15 @@ class MaterialController extends Controller
      */
     public function actionDeleteGroup($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+		$model =  $this->findModel($id);
+		if($model->items){
+			Yii::$app->session->addFlash('error', "You need to delete all teaching material items first");
+		}else{
+			$this->findModel($id)->delete();
+			Yii::$app->session->addFlash('success', "Delete successful");
+			return $this->redirect(['index', 'course' => $model->course_id]);
+		}
+        
     }
 	
 	public function actionDelete($attr, $id)
