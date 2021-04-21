@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="col-md-3"><?= Html::a('Upload Files', ['upload'], ['class' => 'btn btn-info']) ?>
 		 
 		 
-		 <?= Html::a('Categories', ['/download/download-category'], ['class' => 'btn btn-warning']) ?> </div>
+		 <?= Html::a('Categories', ['/downloads/download-category'], ['class' => 'btn btn-warning']) ?> </div>
 
 <div class="col-md-6" > Download Page: <a href="https://fkp-portal.umk.edu.my/web/download/external" target="_blank">https://fkp-portal.umk.edu.my/web/download/external</a>
 </div>
