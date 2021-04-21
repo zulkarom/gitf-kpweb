@@ -202,6 +202,7 @@ class MaterialController extends Controller
 		$model =  $this->findModel($id);
 		if($model->items){
 			Yii::$app->session->addFlash('error', "You need to delete all teaching material items first");
+			return $this->redirect(['view', 'id' => $id]);
 		}else{
 			$this->findModel($id)->delete();
 			Yii::$app->session->addFlash('success', "Delete successful");

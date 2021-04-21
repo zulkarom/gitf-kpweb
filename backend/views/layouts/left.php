@@ -139,6 +139,8 @@ $menuItems = [
 					
 					['label' => 'Kolokium', 'icon' => 'book', 'visible' => Yii::$app->user->can('kolokium-manager'), 'url' => ['/kolokium/default/index']],
 					
+					['label' => 'Downloads', 'icon' => 'download', 'visible' => Yii::$app->user->can('download-manager'), 'url' => ['/downloads/download/index']],
+					
 					
 					
 					[
