@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = 'Categories';
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-	<?= Html::a('Download List', ['/students/download'], ['class' => 'btn btn-info']) ?>
+	<?= Html::a('Download List', ['/downloads/download'], ['class' => 'btn btn-info']) ?>
         <?= Html::a('Create Category', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 

@@ -22,7 +22,7 @@ class DownloadCategory extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'st_download_cat';
+        return 'dwd_download_cat';
     }
 
     /**

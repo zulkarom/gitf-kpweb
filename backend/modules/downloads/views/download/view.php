@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\downloads\models\Download */
 
-$this->title = $model->student->st_name;
+$this->title = $model->nric;
 $this->params['breadcrumbs'][] = ['label' => 'Downloads', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -31,9 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
 		'category.category_name',
-		'student.st_name',
-		'matric_no',
-		'student.nric',
+		'nric',
 		
         ],
     ]) ?></div>

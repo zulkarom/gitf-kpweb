@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel backend\modules\downloads\models\DeanListSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Student File Downloads';
+$this->title = 'Downloads';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="dean-list-index">
@@ -18,9 +18,9 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="col-md-3"><?= Html::a('Upload Files', ['upload'], ['class' => 'btn btn-info']) ?>
 		 
 		 
-		 <?= Html::a('Categories', ['/students/download-category'], ['class' => 'btn btn-warning']) ?> </div>
+		 <?= Html::a('Categories', ['/download/download-category'], ['class' => 'btn btn-warning']) ?> </div>
 
-<div class="col-md-6" > Download Page: <a href="https://fkp-portal.umk.edu.my/web/students/downloads" target="_blank">https://fkp-portal.umk.edu.my/web/students/downloads</a>
+<div class="col-md-6" > Download Page: <a href="https://fkp-portal.umk.edu.my/web/download/external" target="_blank">https://fkp-portal.umk.edu.my/web/download/external</a>
 </div>
 
 </div>
@@ -43,23 +43,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             //'semester_id',
-			'matric_no',
-			[
-				'attribute' => 'name',
-				'label' => 'Name',
-				'value' => function($model){
-					return $model->student->st_name;
-				}
-				
-			],
-			[
-				'attribute' => 'nric',
-				'label' => 'NRIC',
-				'value' => function($model){
-					return $model->student->nric;
-				}
-				
-			],
+			'nric',
+
 			'created_at:date',
 
 			['class' => 'yii\grid\ActionColumn',

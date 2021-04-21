@@ -12,7 +12,6 @@ use backend\modules\downloads\models\Download;
 class DownloadSearch extends Download
 {
 	public $category;
-	public $str_search;
     /**
      * {@inheritdoc}
      */
@@ -20,8 +19,7 @@ class DownloadSearch extends Download
     {
         return [
             [['id', 'category_id'], 'integer'],
-			[['str_search'], 'string'],
-            [['matric_no'], 'safe'],
+			[['nric'], 'string'],
         ];
     }
 
@@ -43,8 +41,7 @@ class DownloadSearch extends Download
      */
     public function search($params)
     {
-        $query = Download::find()
-		->joinWith('student');
+        $query = Download::find();
 
         // add conditions that should always apply here
 
@@ -67,10 +64,9 @@ class DownloadSearch extends Download
         ]);
 
 		
-		$query->andFilterWhere(['or', 
-            ['like', 'st_download.matric_no', $this->str_search],
-            ['like', 'st_name', $this->str_search]
-        ]);
+		$query->andFilterWhere(
+            ['like', 'nric', $this->nric]
+        );
 
 
         return $dataProvider;

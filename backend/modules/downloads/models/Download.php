@@ -19,7 +19,7 @@ class Download extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'st_download';
+        return 'dwd_download';
     }
 
     /**
@@ -28,9 +28,9 @@ class Download extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['category_id', 'matric_no'], 'required'],
+            [['category_id', 'nric'], 'required'],
             [['category_id'], 'integer'],
-            [['matric_no'], 'string', 'max' => 20],
+            [['nric'], 'string', 'max' => 20],
         ];
     }
 
@@ -42,14 +42,11 @@ class Download extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'category_id' => 'Category',
-            'matric_no' => 'Matric No',
+            'matric_no' => 'NRIC',
         ];
     }
 	
-	public function getStudent()
-   {
-       return $this->hasOne(Student::className(), ['matric_no' => 'matric_no']);
-   }
+
    
    public function getCategory()
    {

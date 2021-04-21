@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = 'Uploads';
 	
 	<i>
 	* pdf file only<br />
-	* file names = matric number<br />
+	* file names = nric<br />
 	* multiple files can be uploaded subject to maximum execution time (around 10 - 20 files at a time)<br /><br /></i>
 
     <button class="btn btn-success"><i class="fa fa-upload"></i> Upload</button>

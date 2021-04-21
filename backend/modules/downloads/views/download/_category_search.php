@@ -19,7 +19,7 @@ $form = ActiveForm::begin([
     )->label(false) ?>
 </div>
 <div class="col-md-4">
-<?= $form->field($model, 'str_search', ['addon' => ['prepend' => ['content'=>'<span class="glyphicon glyphicon-search"></span>']]])->label(false)->textInput(['placeholder' => "Search Name or Matrics..."]) ?>
+<?= $form->field($model, 'str_search', ['addon' => ['prepend' => ['content'=>'<span class="glyphicon glyphicon-search"></span>']]])->label(false)->textInput(['placeholder' => "Search NRIC..."]) ?>
 </div>
 </div>
     <?php ActiveForm::end(); ?>

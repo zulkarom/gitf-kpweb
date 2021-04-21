@@ -54,7 +54,6 @@ class DownloadController extends Controller
         if(Yii::$app->getRequest()->getQueryParam('DownloadCategoryForm')){
             $cat = Yii::$app->getRequest()->getQueryParam('DownloadCategoryForm');
             $category->category_id = $cat['category_id'];
-			$category->str_search = $cat['str_search'];
 
         }else{
             $category->category_id = DownloadCategory::getDefaultCategory()->id;
@@ -63,7 +62,6 @@ class DownloadController extends Controller
 		
         $searchModel = new DownloadSearch();
 		$searchModel->category = $category->category_id;
-		$searchModel->str_search = $category->str_search;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -152,7 +150,7 @@ class DownloadController extends Controller
     public function actionDelete($id)
     {
 		$model = $this->findModel($id);
-		$file = Yii::getAlias('@upload/student-download/'. $model->category_id .'/' . $model->matric_no . '.pdf');
+		$file = Yii::getAlias('@upload/external-download/'. $model->category_id .'/' . $model->nric . '.pdf');
 
         if($model->delete()){
             if (is_file($file)) {

@@ -257,12 +257,12 @@ class UploadFile
 	}
 	
 	public static function downloadCategory($model){
-		$file = Yii::getAlias('@upload/student-download/'. $model->category_id .'/' . $model->matric_no . '.pdf');
+		$file = Yii::getAlias('@upload/external-download/'. $model->category_id .'/' . $model->nric . '.pdf');
 		//echo $file;die();
-		if($model->matric_no){
+		if($model->nric){
 			if (file_exists($file)) {
 			$ext = pathinfo($file, PATHINFO_EXTENSION);
-			$filename = $model->matric_no . '.' . $ext ;
+			$filename = $model->nric . '.' . $ext ;
 	
 			self::sendFile($file, $filename , $ext);
 			
