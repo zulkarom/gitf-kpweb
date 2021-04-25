@@ -1289,7 +1289,7 @@ EOD;
 		
 		if(Yii::$app->params['faculty_id'] == 1){
 			//echo $this->model->status; die();
-			if($this->model->status > 0){
+			if($this->model->status >= 0){
 			
 			$sign = $this->model->preparedsign_file;
 
@@ -1297,7 +1297,10 @@ EOD;
 			$f = basename($file);
 			$paste = 'images/temp/'. $f;
 			
-			copy($file, $paste);
+			if($sign){
+				copy($file, $paste);
+			}
+			
 
 			$y = $this->pdf->getY();
 			$this->verify_y = $this->pdf->getY();
