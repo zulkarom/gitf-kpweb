@@ -44,7 +44,7 @@ class CoordinatorRubricsFile extends \yii\db\ActiveRecord
 			
 			[['path_file'], 'required', 'on' => 'path_upload'],
 			
-			[['path_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 2000000],
+			[['path_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
         ];
     }
 

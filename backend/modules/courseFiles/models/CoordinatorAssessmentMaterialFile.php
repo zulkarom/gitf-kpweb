@@ -34,7 +34,7 @@ class CoordinatorAssessmentMaterialFile extends \yii\db\ActiveRecord
 			[['file_name'], 'required', 'on' => 'saveall'],
             //path upload///
             [['path_file'], 'required', 'on' => 'path_upload'],
-            [['path_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 2000000],
+            [['path_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
 			
 			[['offered_id', 'updated_at'], 'required', 'on' => 'add_assessment_material'],
 

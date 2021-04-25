@@ -50,7 +50,7 @@ class MaterialItem extends \yii\db\ActiveRecord
 			
 			[['item_file'], 'required', 'on' => 'item_upload'],
 			
-            [['item_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => $str_type, 'maxSize' => 2000000],
+            [['item_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => $str_type, 'maxSize' => 5000000],
 			
 			
         ];

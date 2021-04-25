@@ -35,7 +35,7 @@ class LectureCancelFile extends \yii\db\ActiveRecord
 			
             //path upload///
             [['path_file'], 'required', 'on' => 'path_upload'],
-            [['path_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 2000000],
+            [['path_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
             
             [['lecture_id', 'updated_at'], 'required', 'on' => 'add_cancel'],
 
