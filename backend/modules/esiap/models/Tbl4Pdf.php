@@ -1289,7 +1289,7 @@ EOD;
 		
 		if(Yii::$app->params['faculty_id'] == 1){
 			//echo $this->model->status; die();
-			if($this->model->status >= 0){
+			if($this->model->status > 0){
 			
 			$sign = $this->model->preparedsign_file;
 
