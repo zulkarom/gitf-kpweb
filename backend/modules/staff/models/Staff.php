@@ -4,6 +4,7 @@ namespace backend\modules\staff\models;
 
 use Yii;
 use common\models\User;
+use backend\models\Faculty;
 use yii\helpers\ArrayHelper;
 use backend\modules\erpd\models\Stats as ErpdStats;
 use backend\modules\teachingLoad\models\CourseOffered;
@@ -86,7 +87,7 @@ class Staff extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['staff_no', 'user_id', 'staff_title', 'is_academic', 'position_id', 'position_status', 'working_status'], 'required'],
+            [['staff_no', 'user_id', 'staff_title', 'is_academic', 'position_id', 'position_status', 'working_status', 'designation', 'faculty_id', 'gender', 'staff_active'], 'required'],
 			
 			[['verified_at'], 'required', 'on' => 'verify_course'],
 			
@@ -105,7 +106,7 @@ class Staff extends \yii\db\ActiveRecord
 			
             [['leave_start', 'leave_end', 'staff_dob', 'date_begin_umk', 'date_begin_service', 'teaching_submit_at'], 'safe'],
 			
-            [['leave_note', 'staff_interest', 'research_focus' ], 'string'],
+            [['leave_note', 'staff_interest', 'research_focus', 'designation'], 'string'],
 			
             [['staff_no', 'nationality', 'high_qualification', 'hq_country'], 'string', 'max' => 10],
 			
@@ -124,6 +125,10 @@ class Staff extends \yii\db\ActiveRecord
 			[['signiture_file'], 'required', 'on' => 'signiture_upload'],
             [['signiture_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png', 'maxSize' => 1000000],
             [['updated_at'], 'required', 'on' => 'signiture_delete'],
+			
+			[['image_file'], 'required', 'on' => 'image_upload'],
+            [['image_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png,jpg,gif', 'maxSize' => 1000000],
+            [['updated_at'], 'required', 'on' => 'image_delete'],
 
 
         ];
@@ -197,6 +202,10 @@ class Staff extends \yii\db\ActiveRecord
 	
 	public function getStaffPosition(){
 		return $this->hasOne(StaffPosition::className(), ['id' => 'position_id']);
+	}
+	
+	public function getFaculty(){
+		return $this->hasOne(Faculty::className(), ['id' => 'faculty_id']);
 	}
 	
 	public function getStaffPositionStatus(){
@@ -321,12 +330,12 @@ class Staff extends \yii\db\ActiveRecord
 		$list = self::find()
 		->select('staff.id as staffid, user.fullname as fullname, staff.staff_title as stitle')
 		->joinWith('user')
-		->where(['staff_active' => 1, 'is_academic' => 1, 'faculty_id' => Yii::$app->params['faculty_id']])->orderBy('user.fullname ASC')->all();
+		->where(['staff_active' => 1, 'is_academic' => 1])->orderBy('user.fullname ASC')->all();
 		
 		$array = [];
 		
 		foreach($list as $item){
-			$array[$item->staffid] = $item->stitle . ' ' . $item->fullname;
+			$array[$item->staffid] =  $item->fullname . ' ('.$item->stitle.')';
 		}
 		
 		return $array;

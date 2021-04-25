@@ -78,7 +78,7 @@ class CourseOffered extends \yii\db\ActiveRecord
 			
 			[['course_version', 'material_version'], 'required', 'on' => 'coor'],
 			
-            [['semester_id', 'course_id', 'total_students', 'max_lec', 'max_tut', 'created_by', 'coordinator', 'course_version', 'material_version', 'prg_crs_ver', 'prg_material', 'na_cont_rubrics'], 'integer'],
+            [['semester_id', 'course_id', 'total_students', 'max_lec', 'max_tut', 'created_by', 'coordinator', 'course_version', 'material_version', 'prg_crs_ver', 'prg_material', 'na_cont_rubrics', 'na_script_final', 'coor_access'], 'integer'],
 			
             [['created_at', 'courses'], 'safe'],
 			
@@ -92,39 +92,39 @@ class CourseOffered extends \yii\db\ActiveRecord
 			[['scriptbest1_file', 'scriptbest2_file', 'scriptbest3_file', 'scriptmod1_file', 'scriptmod2_file', 'scriptmod3_file', 'scriptlow1_file', 'scriptlow2_file', 'scriptlow3_file'], 'string'],
 			
 			[['scriptbest1_file'], 'required', 'on' => 'scriptbest1_upload'],
-            [['scriptbest1_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
+            [['scriptbest1_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 7000000],
             [['updated_at'], 'required', 'on' => 'scriptbest1_delete'],
 			
 			[['scriptbest2_file'], 'required', 'on' => 'scriptbest2_upload'],
-            [['scriptbest2_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
+            [['scriptbest2_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 7000000],
             [['updated_at'], 'required', 'on' => 'scriptbest2_delete'],
 			
 			[['scriptbest3_file'], 'required', 'on' => 'scriptbest3_upload'],
-            [['scriptbest3_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
+            [['scriptbest3_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 7000000],
             [['updated_at'], 'required', 'on' => 'scriptbest3_delete'],
 			
 			[['scriptmod1_file'], 'required', 'on' => 'scriptmod1_upload'],
-            [['scriptmod1_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
+            [['scriptmod1_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 7000000],
             [['updated_at'], 'required', 'on' => 'scriptmod1_delete'],
 			
 			[['scriptmod2_file'], 'required', 'on' => 'scriptmod2_upload'],
-            [['scriptmod2_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
+            [['scriptmod2_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 7000000],
             [['updated_at'], 'required', 'on' => 'scriptmod2_delete'],
 			
 			[['scriptmod3_file'], 'required', 'on' => 'scriptmod3_upload'],
-            [['scriptmod3_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
+            [['scriptmod3_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 7000000],
             [['updated_at'], 'required', 'on' => 'scriptmod3_delete'],
 			
 			[['scriptlow1_file'], 'required', 'on' => 'scriptlow1_upload'],
-            [['scriptlow1_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
+            [['scriptlow1_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 7000000],
             [['updated_at'], 'required', 'on' => 'scriptlow1_delete'],
 			
 			[['scriptlow2_file'], 'required', 'on' => 'scriptlow2_upload'],
-            [['scriptlow2_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
+            [['scriptlow2_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 7000000],
             [['updated_at'], 'required', 'on' => 'scriptlow2_delete'],
 			
 			[['scriptlow3_file'], 'required', 'on' => 'scriptlow3_upload'],
-            [['scriptlow3_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
+            [['scriptlow3_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 7000000],
             [['updated_at'], 'required', 'on' => 'scriptlow3_delete'],
 			
         ];
@@ -321,10 +321,13 @@ class CourseOffered extends \yii\db\ActiveRecord
 	}
 	
 	public function setProgressSumScript(){
-		
-		$per = $this->countScripts / 9;
-		$per = number_format($per, 2);
-		$this->prg_sum_script = $per;
+		if($this->na_script_final == 1){
+			$this->prg_sum_script = 1;
+		}else{
+			$per = $this->countScripts / 9;
+			$per = number_format($per, 2);
+			$this->prg_sum_script = $per;
+		}
 		$this->setProgressOverall();
 	}
 	

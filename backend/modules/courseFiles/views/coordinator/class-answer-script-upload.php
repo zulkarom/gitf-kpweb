@@ -19,7 +19,17 @@ $model->file_controller = 'coordinator-upload';
 <h4><?=$model->semester->longFormat()?></h4>
 <h4>Nine (9) Copies of Student’s Final Exam Answer Scripts</h4>
 
-  <div class="box box-primary">
+<?php 
+if($model->na_script_final == 1){
+	$check_na = 'checked';
+	$show_form = 'style="display:none"';
+}else{
+	$show_form = '';
+	$check_na = '';
+}
+?>
+
+  <div id="con-form" class="box box-primary" <?=$show_form ?>>
 
 <div class="box-body">
 
@@ -95,3 +105,37 @@ $model->file_controller = 'coordinator-upload';
 
 </div></div>
 
+
+<?php 
+$form = ActiveForm::begin(); 
+?>
+
+<div class="form-group"><label>
+<input type="checkbox" id="na" name="na" value="1" <?=$check_na?> /> Mark as not applicable
+</label></div>
+
+ <div class="form-group">
+  <?=$form->field($model, 'updated_at')->hiddenInput(['value' => time()])->label(false)?>
+        <?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> Save', ['class' => 'btn btn-success']) ?>
+    </div>
+
+
+    <?php ActiveForm::end(); ?>
+
+<?php 
+$this->registerJs('
+$("#na").click(function(){
+	var val = $(this).prop(\'checked\')
+
+	if(val){
+		$("#con-form").slideUp();
+	}else{
+		$("#con-form").slideDown();
+	}
+});
+
+');
+
+
+
+?>

@@ -1,25 +1,15 @@
-
-
-material list view untuk admin- in case nak revert to draft
-
-need to setup attendace before class exemption - lepas tu datepicker ganti dengan list kelas dia sahaja
+need to setup attendace before class exemption 
+- lepas tu datepicker ganti dengan list kelas dia sahaja
 kat preview - show progress setiap orang
-
 buat course post grad
-staff luar fkp
 statistic admin sikit la
-allow other type teaching material of file type
 letak E kat tick attendance klu ada exemption evidence
 aliran kerja course management
 user manual
-
+preview course info kena ada button edit
 pdf attendance perlu optimized
-
-
-attendance tutorial class - wait cci
-
+assessment & reference buat dynamic form
 ================
 KIV
 ================
-dropdownlist utk select kelas mc
 upload files name auto masukkan file name https://fkp-portal.umk.edu.my/course-files/lecture-cancel-file/page?id=582

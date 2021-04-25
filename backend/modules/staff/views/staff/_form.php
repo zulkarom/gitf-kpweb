@@ -1,11 +1,13 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use kartik\form\ActiveForm;
 use yii\helpers\ArrayHelper;
+use backend\models\Faculty;
 use backend\modules\staff\models\StaffPosition;
 use backend\modules\staff\models\StaffPositionStatus;
 use backend\modules\staff\models\StaffWorkingStatus;
+use backend\modules\staff\models\LetterDesignation;
 use common\models\UploadFile;
 use kartik\date\DatePicker;
 use richardfan\widget\JSRegister;
@@ -46,6 +48,20 @@ if($model->id){
 
 
 
+</div>
+
+</div>
+
+	<div class="row">
+<div class="col-md-3">
+<?= $form->field($model, 'designation')->dropDownList(ArrayHelper::map(LetterDesignation::find()->all(), 'designation_name', 'designation_name'), ['prompt' => 'Select'])->label('Title (letter)') ?>
+</div>
+<div class="col-md-7">
+<?php 
+if($model->isNewRecord){
+	$model->faculty_id = Yii::$app->params['faculty_id'];
+}
+echo $form->field($model, 'faculty_id')->dropDownList(ArrayHelper::map(Faculty::find()->where(['academic' => 1])->all(), 'id', 'faculty_name'), ['prompt' => 'Select Faculty'])->label('Faculty') ?>
 </div>
 
 </div>
@@ -181,18 +197,14 @@ if($model->id){
 
 <?= $form->field($model, 'staff_note')->textarea(['rows' => '6']) ?>
 
+<?= $form->field($model, 'staff_active')->dropDownList([1 => 'Yes, actively engaged with faculty in teaching or other activities', 0 => 'No, quit or transfered and not actively engaged with the faculty'])->label('Actively Engaged with the Faculty') ?>
+
 <div class="row">
 <div class="col-md-6">  <div class="form-group">
         <?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> Save Staff Data', ['class' => 'btn btn-success']) ?>
     </div></div>
 
-<div class="col-md-6" align="right">
-<?= Html::a('<span class="glyphicon glyphicon-trash"></span> Remove Staff', ['remove', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            
-        ]) ?>
 
-</div>
 
 </div>
 

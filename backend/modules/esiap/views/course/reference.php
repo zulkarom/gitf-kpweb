@@ -8,7 +8,7 @@ use yii\widgets\ActiveForm;
 /* @var $model backend\modules\esiap\models\Course */
 
 $this->title = 'Reference';
-$this->params['breadcrumbs'][] = ['label' => 'Courses', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Preview', 'url' => ['course/view-course', 'course' => $model->course_id]];
 $this->params['breadcrumbs'][] = 'Reference';
 ?>
 

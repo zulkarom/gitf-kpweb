@@ -70,8 +70,9 @@ Search Staff
 
 
     <div class="form-group">
-        <?= Html::submitButton('<span class="glyphicon glyphicon-search"></span> Search Staff', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+        <?= Html::submitButton('<span class="glyphicon glyphicon-search"></span> Search Staff', ['class' => 'btn btn-default']) ?>
+        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?> 
+		<?= Html::button('Hide', ['id' => 'hide-form', 'class' => 'btn btn-default']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

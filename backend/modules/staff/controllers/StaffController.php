@@ -6,6 +6,7 @@ use Yii;
 use backend\modules\staff\models\Staff;
 use backend\modules\staff\models\StaffSearch;
 use backend\modules\staff\models\StaffInactiveSearch;
+use backend\modules\staff\models\ExternalSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -63,6 +64,17 @@ class StaffController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('inactive', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+	
+	public function actionExternal()
+    {
+        $searchModel = new ExternalSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('external', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -154,6 +166,7 @@ class StaffController extends Controller
 				$user->updated_at = time();
 				if($user->save()){
 					$model->user_id = $user->id;
+					$model->faculty_id = Yii::$app->params['faculty_id'];
 					if($model->save()){
 						$transaction->commit();
 						Yii::$app->session->addFlash('success', "Data Updated");
@@ -194,21 +207,60 @@ class StaffController extends Controller
         $model = $this->findModel($id);
 		$user = $model->user;
 		$user->scenario = 'update_external';
-
-        if ($model->load(Yii::$app->request->post()) && $user->load(Yii::$app->request->post())) {
-			$user->username = $model->staff_no;
-			if($user->save() && $model->save()){
-				Yii::$app->session->addFlash('success', "Data Updated");
-				return $this->redirect(['index']);
-			}
-            
-        }
-
+		
+		if($this->storeUpdate($model, $user)){
+			return $this->redirect(['index']);
+		}
+        
         return $this->render('update', [
             'model' => $model,
 			'user' => $user
         ]);
     }
+	
+	public function actionUpdateExternal($id)
+    {
+        $model = $this->findModel($id);
+		$user = $model->user;
+		$user->scenario = 'update_external';
+		
+		if($this->storeUpdate($model, $user)){
+			return $this->redirect(['external']);
+		}
+        
+        return $this->render('update', [
+            'model' => $model,
+			'user' => $user
+        ]);
+    }
+	
+	public function actionUpdateInactive($id)
+    {
+        $model = $this->findModel($id);
+		$user = $model->user;
+		$user->scenario = 'update_external';
+		
+		if($this->storeUpdate($model, $user)){
+			return $this->redirect(['inactive']);
+		}
+        
+        return $this->render('update', [
+            'model' => $model,
+			'user' => $user
+        ]);
+    }
+	
+	private function storeUpdate($model, $user){
+		if ($model->load(Yii::$app->request->post()) && $user->load(Yii::$app->request->post())) {
+			$user->username = $model->staff_no;
+			if($user->save() && $model->save()){
+				Yii::$app->session->addFlash('success', "Data Updated");
+				return true;
+			}
+            
+        }
+		return false;
+	}
 	
 	public function actionRestore($id){
 		$model = $this->findModel($id);

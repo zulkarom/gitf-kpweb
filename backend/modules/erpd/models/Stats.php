@@ -330,7 +330,7 @@ class Stats
 		$curr_year = date('Y') + 0;
 		$last_five = $curr_year - 4;
 		return Research::find()
-		->select('YEAR(date_start) as res_label, COUNT(rp_research.id) as res_data')
+		->select('count(res_order), YEAR(date_start) as res_label, COUNT(rp_research.id) as res_data')
 		->joinWith(['researchers'])
 		->where(['status' => 50, 'rp_researcher.staff_id' => Yii::$app->user->identity->staff->id])
 		->andWhere(['>=', 'YEAR(date_start)', $last_five])

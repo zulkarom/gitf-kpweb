@@ -5,6 +5,7 @@ namespace backend\modules\esiap\models;
 use Yii;
 use common\models\Common;
 use backend\models\Faculty;
+use yii\helpers\FileHelper;
 
 class Tbl4Pdf
 {
@@ -1210,13 +1211,15 @@ $this->html .= $html;
 	}
 	
 	public function preparedBy(){
-		
+		//echo Yii::$app->params['faculty_id'];die();
+		if(Yii::$app->params['faculty_id'] == 1){
 		$coor = '';
 		$verifier = '';
 		$date = '';
 		$datev = '';
 		$faculty = '';
 		if($this->model->status >=20){
+			$faculty = Faculty::findOne(Yii::$app->params['faculty_id']);
 			$faculty = $faculty->faculty_name_bi;
 		}
 		
@@ -1233,9 +1236,9 @@ $this->html .= $html;
 			$datev = date('d/m/Y', strtotime($this->model->verified_at));
 		}
 		$col_sign = ($this->wall /2 ) - $this->colnum;
-		$faculty = Faculty::findOne(Yii::$app->params['faculty_id']);
-		if($this->model->status >= 10){
-			$html = '<table >
+		
+		if($this->model->status >= 0){
+			$html = '<table nobr="true">
 		<tr>
 		<td width="'.$this->colnum.'"></td>
 		
@@ -1279,13 +1282,22 @@ ___________________________<br />
 EOD;
 
 		$this->pdf->writeHTML($tbl, true, false, false, false, '');
+		}
 	}
 	
 	public function signiture(){
-		if($this->model->status > 9){
+		
+		if(Yii::$app->params['faculty_id'] == 1){
+			//echo $this->model->status; die();
+			if($this->model->status >= 0){
+			
 			$sign = $this->model->preparedsign_file;
 
 			$file = Yii::getAlias('@upload/'. $sign);
+			$f = basename($file);
+			$paste = 'images/temp/'. $f;
+			
+			copy($file, $paste);
 
 			$y = $this->pdf->getY();
 			$this->verify_y = $this->pdf->getY();
@@ -1302,20 +1314,16 @@ EOD;
 				$size = 10;
 			}
 			
-
-			
 			$col1 = $this->colnum + 10;
 			$col_sign = $this->wall /2 ;
 			$html = '<table>
-
-			
 			<tr>
 			<td width="'. $col1 .'"></td>
 			
 			<td width="'.$col_sign .'" colspan="18" >';
 			if($this->model->preparedsign_file){
 				if(is_file($file)){
-					$html .= '<img width="'.$size.'" src="'.$file.'" />';
+					$html .= '<img width="'.$size.'" src="images/temp/'.$f.'" />';
 				}
 			}
 			
@@ -1337,16 +1345,25 @@ EOD;
 
 			$this->pdf->writeHTML($tbl, true, false, false, false, '');
 		}
+		}
+
 		
 	}
 	
 	public $verify_y;
 	
 	public function signitureVerify(){
+		if(Yii::$app->params['faculty_id'] == 1){
 		if($this->model->status > 19){
 			$sign = $this->model->verifiedsign_file;
 
 		$file = Yii::getAlias('@upload/'. $sign);
+		$f = basename($file);
+		$paste = 'images/temp/'. $f;
+		
+		copy($file, $paste);
+		
+		
 		
 		$y = $this->verify_y;
 		
@@ -1379,7 +1396,7 @@ EOD;
 		
 		if($this->model->verifiedsign_file){
 			if(is_file($file)){
-				$html .= '<img width="'.$size.'" src="'.$file.'" />';
+				$html .= '<img width="'.$size.'" src="images/temp/'.$f.'" />';
 			}
 		}
 		
@@ -1394,6 +1411,7 @@ EOD;
 
 		$this->pdf->writeHTML($tbl, true, false, false, false, '');
 		}
+	}
 		
 	}
 	

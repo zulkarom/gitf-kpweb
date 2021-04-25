@@ -11,7 +11,7 @@ use yii\helpers\Url;
 
 
 $this->title = 'Course Assessment';
-$this->params['breadcrumbs'][] = ['label' => 'Courses', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Preview', 'url' => ['course/view-course', 'course' => $model->course->id]];
 $this->params['breadcrumbs'][] = 'Assessment';
 ?>
 

@@ -18,6 +18,9 @@ use yii\helpers\ArrayHelper;
 use yii\db\Expression;
 use yii\filters\AccessControl;
 use common\models\Todo;
+use backend\modules\teachingLoad\models\AppointmentLetter;
+use backend\modules\teachingLoad\models\AppointmentLetterFile;
+
 /**
  * Default controller for the `teaching-load` module
  */
@@ -217,4 +220,20 @@ class DefaultController extends Controller
 			'setting' => $setting
 		]);
 	}
+	
+	public function actionAppointmentLetter($id){
+        $model = $this->findModel($id);
+        $pdf = new AppointmentLetterFile;
+        $pdf->model = $model;
+        $pdf->generatePdf();
+    }
+
+    protected function findModel($id)
+    {
+        if (($model = AppointmentLetter::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
 }

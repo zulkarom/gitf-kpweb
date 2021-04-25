@@ -49,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 //'visible' => false,
                 'buttons'=>[
                     'update'=>function ($url, $model) {
-                        return Html::a('RESTORE',['/staff/staff/restore/', 'id' => $model->id],['class'=>'btn btn-danger btn-sm']);
+                        return Html::a('Update',['/staff/staff/update-inactive/', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
                     }
                 ],
             

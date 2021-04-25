@@ -120,17 +120,17 @@ class Menu
 		$esiap_admin = [
                         'label' => 'Course Files Admin',
                         'icon' => 'cog',
-						'visible' => Todo::can('teaching-load-manager'),
+						'visible' => Yii::$app->user->can('course-files'),
                         'url' => '#',
                         'items' => [
 				
-				['label' => 'Summary', 'icon' => 'user', 'url' => ['/course-files/admin/summary']],
+				['label' => 'Summary', 'icon' => 'bar-chart', 'url' => ['/course-files/admin/summary']],
 				
 				['label' => 'All Courses', 'icon' => 'book', 'url' => ['/course-files/admin/index']],
-				['label' => 'Teaching Materials', 'icon' => 'book', 'url' => ['/course-files/materials-admin/index']],
+				['label' => 'Teaching Materials', 'icon' => 'book', 'url' => ['/course-files/material-admin/index']],
 
                  ]
-                    ];	
+        ];	
 		return $esiap_admin;
 	}
 	
@@ -306,9 +306,11 @@ class Menu
 				
 				['label' => 'Staff List', 'icon' => 'user', 'url' => ['/staff/staff']],
 				
-				['label' => 'Main Position', 'icon' => 'plus', 'url' => ['/staff/default/main-position']],
+				['label' => 'Related External', 'icon' => 'user', 'url' => ['/staff/staff/external']],
+				
+				['label' => 'Main Position', 'icon' => 'cubes', 'url' => ['/staff/default/main-position']],
 
-				['label' => 'Transfered/Quit', 'icon' => 'user', 'url' => ['/staff/staff/inactive']],
+				['label' => 'Transfered/Quit', 'icon' => 'remove', 'url' => ['/staff/staff/inactive']],
 				
 
                  ]

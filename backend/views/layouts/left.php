@@ -137,6 +137,10 @@ $menuItems = [
 					
 					['label' => 'JEB Journal', 'icon' => 'book', 'url' => ['/site/jeb-web'], 'template'=>'<a href="{url}" target="_blank">{icon} {label}</a>'],
 					
+					['label' => 'Kolokium', 'icon' => 'book', 'visible' => Yii::$app->user->can('kolokium-manager'), 'url' => ['/kolokium/default/index']],
+					
+					['label' => 'Downloads', 'icon' => 'download', 'visible' => Yii::$app->user->can('download-manager'), 'url' => ['/downloads/download/index']],
+					
 					
 					
 					[

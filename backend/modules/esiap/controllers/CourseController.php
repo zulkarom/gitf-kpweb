@@ -863,16 +863,22 @@ class CourseController extends Controller
 			
 			if($action == 'btn-submit'){
 				if($version->progress == 100){
-					$version->prepared_at = new Expression('NOW()');
-					$version->status = 10;
-					if($version->save()){
-						return $this->redirect(['course/view-course','course' => $course]);
+					if($version->preparedsign_file){
+						$version->prepared_at = new Expression('NOW()');
+						$version->updated_at = new Expression('NOW()');
+						$version->status = 10;
+						if($version->save()){
+							return $this->redirect(['course/view-course','course' => $course]);
+						}
+					}else{
+						Yii::$app->session->addFlash('error', "Upload your signature first");
 					}
+					
 				}else{
 					Yii::$app->session->addFlash('error', "In order to submit, the progress should be 100%");
 				}
 			}else{
-				
+				$version->updated_at = new Expression('NOW()');
 				if($version->save()){
 					//echo $action;die();
 					Yii::$app->session->addFlash('success', "Signiture updated");
@@ -920,6 +926,11 @@ class CourseController extends Controller
 							$valid_one = $valid_one == false ? false : true;
 						}
 						$arr_valid[] = $ass_id;
+						/* if(is_null($row->assess_id)){
+							Yii::$app->session->addFlash('error', "Please select the assessment.");
+							$flag = false;
+							break;
+						} */
 						$row->assess_id = $ass_id;
 						
 						$clo = $row->clo_id;
@@ -956,6 +967,8 @@ class CourseController extends Controller
 					}else{
 						$model->pgrs_assess_per = 1;
 					}
+					
+					$model->updated_at = new Expression('NOW()');
 					if (!$model->save()) {
 						$model->flashError();
 					}
@@ -1035,6 +1048,7 @@ class CourseController extends Controller
 					$as = CourseAssessment::findOne($key);
 					$as->scenario = 'update_slt_tech';
 					if($as){
+						$val = is_null($val) ? 0 : $val;
 						$val = empty($val) ? 0 : $val;
 						$as->assess_f2f_tech = $val;
 						if(!$as->save()){
@@ -1052,6 +1066,7 @@ class CourseController extends Controller
 					$syl->scenario = 'slt';
 					if($syl){
 						foreach($val as $i => $v){
+							$v = is_null($v) ? 0 : $v;
 							$v = empty($v) ? 0 : $v;
 							$syl->{$i} = $v;
 						}
@@ -1071,6 +1086,7 @@ class CourseController extends Controller
 				}else{
 					$model->pgrs_slt = 1;
 				}
+				$model->updated_at = new Expression('NOW()');
 				if (!$model->save()) {
 					$model->flashError();
 				}

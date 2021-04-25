@@ -52,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
 							  <td>'.$crs->course_code .' '.$crs->course_name .'</td>
 							  <td>';
 							  if($app->status == 10){
-								  echo '<a href="' . Url::to(['/teaching-load/appointment-letter/pdf', 'id' => $app->id]) . '" class="btn btn-default btn-sm" target="_blank"><span class="glyphicon glyphicon-download-alt"></span> Download</a>';
+								  echo '<a href="' . Url::to(['/teaching-load/default/appointment-letter', 'id' => $app->id]) . '" class="btn btn-default btn-sm" target="_blank"><span class="glyphicon glyphicon-download-alt"></span> Download</a>';
 								  }else{
 								  echo '<span style="font-weight:normal;font-style:italic">In progress...</span>';
 							  }

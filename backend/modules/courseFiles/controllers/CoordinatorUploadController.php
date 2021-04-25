@@ -41,6 +41,21 @@ class CoordinatorUploadController extends Controller
     public function actionPage($id)
     {
         $model = $this->findOffered($id);
+		
+		if ($model->load(Yii::$app->request->post())) {
+			//print_r(Yii::$app->request->post());die();
+			$model->updated_at = new Expression('NOW()'); 
+			if(Yii::$app->request->post('na') == 1){
+				$model->na_script_final = 1;
+			}else{
+				$model->na_script_final = 0;
+			}
+			$model->setProgressSumScript();
+			if($model->save()){
+				Yii::$app->session->addFlash('success', "Data Updated");
+				return $this->redirect(['default/teaching-assignment-coordinator', 'id' => $model->id]);
+			}
+		}
         
         return $this->render('/coordinator/class-answer-script-upload', [
             'model' => $model,

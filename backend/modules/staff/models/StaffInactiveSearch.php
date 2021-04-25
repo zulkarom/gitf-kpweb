@@ -19,9 +19,9 @@ class StaffInactiveSearch extends Staff
     public function rules()
     {
         return [
-            [['id', 'staff_no','is_academic', 'position_id', 'position_status', 'working_status',  'staff_department', 'publish'], 'integer'],
+            [['position_id'], 'integer'],
 			
-			[['staff_name', 'staff_title'], 'string']
+			[['staff_no', 'staff_name'], 'string']
 			
 
         ];
@@ -62,14 +62,13 @@ class StaffInactiveSearch extends Staff
             return $dataProvider;
         }
 
-        // grid filtering conditions
-        $query->andFilterWhere([
-            'id' => $this->id,
-			'staff_no' => $this->staff_no,
-			'position_id' => $this->position_id
-        ]);
+		$query->andFilterWhere(['like', 'user.fullname', $this->staff_name]);
 
         $query->andFilterWhere(['like', 'staff_no', $this->staff_no]);
+		
+		$query->andFilterWhere([
+			'position_id' => $this->position_id,
+        ]);
 		
 		$dataProvider->sort->attributes['staff_name'] = [
         'asc' => ['user.fullname' => SORT_ASC],

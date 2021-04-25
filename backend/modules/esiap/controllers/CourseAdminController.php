@@ -599,6 +599,19 @@ class CourseAdminController extends Controller
 
     }
 	
+	public function actionUpdateSignature($version){
+		$model = $this->findVersion($version);
+		
+		if ($model->load(Yii::$app->request->post())){
+			$model->updated_at = new Expression('NOW()');
+			$model->save();
+		}
+		
+		return $this->render('update-signature', [
+			'model' => $model
+        ]);
+	}
+	
 	public function actionUpdateOwner($course)
     {
         $model = $this->findModel($course);
@@ -797,6 +810,15 @@ class CourseAdminController extends Controller
 			return $default;
 		}else{
 			throw new NotFoundHttpException('Please create default active version for this course!');
+		}
+	}
+	
+	protected function findVersion($id){
+		$default = CourseVersion::findOne($id);
+		if($default){
+			return $default;
+		}else{
+			throw new NotFoundHttpException('Page not found!');
 		}
 	}
 	

@@ -529,7 +529,7 @@ $this->pdf->writeHTML($tbl, true, false, false, false, '');
 	public function signiture(){
 		$tbl = <<<EOD
 <p></p>
-<table border="0" cellpadding="10" style="font-size:10pt">
+<table border="0" cellpadding="10" style="font-size:10pt" nobr="true">
 
 <tr><td width="240">
 
@@ -580,9 +580,15 @@ $this->verify_y = $this->pdf->getY();
 	
 	
 	public function signiturePrepare(){
+		if(Yii::$app->params['faculty_id'] != 1){
+			return false;
+		}
 		$sign = $this->model->preparedsign_file;
 
 		$file = Yii::getAlias('@upload/'. $sign);
+		$f = basename($file);
+		$paste = 'images/temp/'. $f;
+		copy($file, $paste);
 
 		$y = $this->prepare_y;
 		
@@ -618,7 +624,7 @@ $this->verify_y = $this->pdf->getY();
 		<td width="'.$col_sign .'">';
 		if($this->model->preparedsign_file){
 			if(is_file($file)){
-				$html .= '<img width="'.$size.'" src="'.$file.'" />';
+				$html .= '<img width="'.$size.'" src="images/temp/'.$f.'" />';
 			}
 		}
 		
@@ -655,6 +661,9 @@ EOD;
 	}
 	
 	public function signitureVerify(){
+		if(Yii::$app->params['faculty_id'] != 1){
+			return false;
+		}
 		$sign = $this->model->verifiedsign_file;
 
 		$file = Yii::getAlias('@upload/'. $sign);

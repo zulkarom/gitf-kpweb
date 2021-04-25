@@ -112,7 +112,7 @@ class TutorialLecture extends \yii\db\ActiveRecord
 		$cancel = $this->prg_class_cancel;
 		$attend = $this->prg_stu_attend;
 		
-		$total = $exempt + $receipt + $cancel;
+		$total = $exempt + $receipt + $cancel + $attend;
 		$avg = $total / 4 * 100;
 		$int = (int)$avg;
 		$per = $int / 100;

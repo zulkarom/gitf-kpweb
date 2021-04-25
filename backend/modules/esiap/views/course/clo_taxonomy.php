@@ -10,7 +10,7 @@ use yii\helpers\Url;
 /* @var $model backend\modules\esiap\models\Course */
 
 $this->title = 'Taxonomy';
-$this->params['breadcrumbs'][] = ['label' => 'Courses', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Preview', 'url' => ['course/view-course', 'course' => $model->course_id]];
 $this->params['breadcrumbs'][] = 'Taxonomy';
 $plo_num = $model->ploNumber;
 $form = ActiveForm::begin(['id' => 'form-clo-plo']);

@@ -73,19 +73,18 @@ if($model->course->tut_hour == 0){
         <td width="20%"> Select Course Coordinator: </td>
         <td>
 		<?php
-	echo Select2::widget([
-				    'name' => 'coordinator',
-				    'value' => $model->coordinator,
-				    'data' => ArrayHelper::map(Staff::getAcademicStaff(), 'id', 'user.fullname'),
-				    'options' => ['placeholder' => 'Select Coordinator ...'],
-				    'pluginOptions' => [
-                		'allowClear' => true
-            		],
-				]);
+		echo $form->field($model, 'coordinator')->widget(Select2::classname(), [
+    'data' => ArrayHelper::map(Staff::getAcademicStaff(), 'id', 'user.fullname'),
+    'options' => ['placeholder' => 'Select a state ...'],
+    'pluginOptions' => [
+        'allowClear' => true
+    ],
+])->label(false);
+
 ?>
 		
 		</td><td></td>
-		<td width="10%">
+		<td width="20%"><?= $form->field($model, "coor_access")->checkbox(['value' => '1', 'label'=> 'Coordinator have all access']); ?>
 		</td>
       </tr>
       

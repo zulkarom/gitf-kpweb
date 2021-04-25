@@ -1,7 +1,14 @@
 <?php
 use yii\helpers\Html;
+use yii\helpers\Url;
+
 ?>
 <h4><?=$offer->semester->longFormat()?></h4>
+<?php 
+$access = false;
+if($offer->coor_access == 1){
+	$access = true;
+}?>
 <div class="box">
 
 <div class="box-body">
@@ -12,7 +19,7 @@ use yii\helpers\Html;
   <td width="16%">Coordinator</td><td><?=$offer->coor->niceName ?></td>
   </tr>
    <tr>
-  <td>Progress</td><td><div class="row"><div class="col-md-2"><?=$offer->progressOverallBar ?></div></div></td>
+  <td>Overall Progress</td><td><div class="row"><div class="col-md-2"><?=$offer->progressOverallBar ?></div></div></td>
   </tr>
   <tr>
   <td>Course File Status</td><td><?=$offer->statusName ?></td>
@@ -31,8 +38,10 @@ use yii\helpers\Html;
         <th>#</th>
         <th width="10%">Lectures</th>
         <th>Lecturers</th>
+		<th>Progress</th>
 		 <th width="10%">Tutorials</th>
 		 <th>Tutors</th>
+		 <th>Progress</th>
 		
       </tr>
     </thead>
@@ -48,23 +57,39 @@ use yii\helpers\Html;
 			echo '
 			 <td '.$rowspan_1.'>'.$i.'. </td> 
 
-		   <td '.$rowspan_1.'>
-		  '.$lec->lec_name.'
-		  </td>
+		   <td '.$rowspan_1.'>';
+		   if($access){
+			  echo '<a href="'.Url::to(['teaching-assignment-lecture', 'id' => $lec->id]).'" target="_blank">' . $lec->lec_name . '</a>'; 
+		   }else{
+			  echo $lec->lec_name;  
+		   }
+		  
+		  echo '</td>
 		  <td '.$rowspan_1.'>';
-		
-		if($lec->lecturers){
+		  
+		  if($lec->lecturers){
+			  $str_lec = '';
 			$n=1;
 			foreach($lec->lecturers as $lecturer){
 				$slash = $n==1 ? '':' / ';
-				echo $slash.$lecturer->staff->niceName;
+				$str_lec .= $slash.$lecturer->staff->niceName;
 			$n++;
 			}
+			
+			if($access){
+			  echo '<a href="'.Url::to(['teaching-assignment-lecture', 'id' => $lec->id]).'" target="_blank">' . $str_lec . '</a>'; 
+		   }else{
+			  echo $str_lec;  
+		   }
+			
 		}
+		
+		
+		
 					
-		     echo'</td>';
+		     echo'</td><td '.$rowspan_1.'>'.$lec->progressOverallBar.'</td>';
 			 
-		colum_2_first($lec->tutorials,$offer->id, $lec);
+		colum_2_first($lec->tutorials,$offer->id, $lec, $access);
 		 
 		
 		//delete lecture - kena confirm ni
@@ -76,7 +101,7 @@ use yii\helpers\Html;
 	  echo '</tr>';
 	  
 	  
-	  colum_2($lec->tutorials,$offer->id, $lec);
+	  colum_2($lec->tutorials,$offer->id, $lec, $access);
 	 
       $i++;
 		 }
@@ -110,22 +135,22 @@ function rowspan_1($clo_as){
 		return "";
 	}
 }
-function colum_2_first($tutorial,$offer, $lec){
+function colum_2_first($tutorial,$offer, $lec, $access){
 	if($tutorial){
 		$tutorial = $tutorial[0];
-		colum_2_td($tutorial,$offer, $lec);
+		colum_2_td($tutorial,$offer, $lec, $access);
 	}else{
 		empty_cell(4);
 	}
 	
 }
-function colum_2($tutorials,$offer, $lec){
+function colum_2($tutorials,$offer, $lec, $access){
 	if($tutorials){
 		$i=1;
 			foreach($tutorials as $tutorial){
 				if($i > 1){
 					echo '<tr>';
-					colum_2_td($tutorial,$offer, $lec);
+					colum_2_td($tutorial,$offer, $lec, $access);
 					echo '</tr>';
 				}
 			$i++;
@@ -133,23 +158,45 @@ function colum_2($tutorials,$offer, $lec){
 		}
 }
 
-function colum_2_td($tutorial,$offer, $lec){
+function colum_2_td($tutorial,$offer, $lec, $access){
 	echo'
-	<td>'.$lec->lec_name . $tutorial->tutorial_name.'</td>
-
 	<td>';
+	
+	if($access){
+	  echo '<a href="'.Url::to(['teaching-assignment-tutorial', 'id' => $tutorial->id]).'" target="_blank">' . $tutorial->tutorialName . '</a>'; 
+   }else{
+	 echo $tutorial->tutorialName;
+   }
+	
+	
+	echo '</td>
+	
+	<td>';
+	
 	if($tutorial->tutors){
+		
+		
+		$str_tut = '';
 			$n=1;
 			foreach($tutorial->tutors as $lecturer){
 				$slash = $n==1 ? '':' / ';
-				echo $slash.$lecturer->staff->niceName;
+				$str_tut .= $slash.$lecturer->staff->niceName;
 			$n++;
 			}
-		}
+		if($access){
+		  echo '<a href="'.Url::to(['teaching-assignment-tutorial', 'id' => $tutorial->id]).'" target="_blank">' . $str_tut . '</a>'; 
+	   }else{
+		 echo $str_tut;
+	   }
+	}
+		
+	
+	
 //$tutorial->tutors
 
 
 	echo'</td>
+	<td>'.$tutorial->progressOverallBar.'</td>
 	<td>
 
 	</td>

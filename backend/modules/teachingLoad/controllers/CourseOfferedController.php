@@ -195,15 +195,8 @@ class CourseOfferedController extends Controller
 		
 		if(Yii::$app->request->post()){
 
-            //Save Coordinator
-            
-            if(Yii::$app->request->post('coordinator')){
-                
-
-                $post_coordinator = Yii::$app->request->post('coordinator');
-               
-                
-                $model->coordinator = $post_coordinator;
+            if ($model->load(Yii::$app->request->post())) {
+				$model->updated_at = new Expression('NOW()');
                 $model->save();
 
             }

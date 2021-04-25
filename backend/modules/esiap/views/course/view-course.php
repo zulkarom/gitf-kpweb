@@ -15,8 +15,7 @@ backend\assets\KnobAsset::register($this);
 /* @var $model backend\modules\esiap\models\Course */
 
 $this->title = 'View Course Information';
-$this->params['breadcrumbs'][] = ['label' => 'Courses', 'url' => ['index']];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = $model->course_code;
 ?>
 <div class="course-update">
 
@@ -86,7 +85,7 @@ $ref = percent($version->pgrs_ref);
 
 <div class="row">
 
-<?=show_knob($per, 'Overall Progress', ['view-course', 'course' => $model->id])?>
+<?=show_knob($per, 'Overall Progress', [])?>
 <?=show_knob($profile, 'Course Profile', ['update', 'course' => $model->id])?>
 <?=show_knob($assess, 'Assessment', ['course-assessment', 'course' => $model->id])?>
 <?=show_knob($clo, 'Course Learning Outcomes', ['course-clo', 'course' => $model->id])?>
@@ -109,7 +108,7 @@ $ref = percent($version->pgrs_ref);
 <?=show_knob($assess_per, 'CLO Assessment', ['clo-assessment', 'course' => $model->id])?>
 <?=show_knob($soft, 'CLO Softskill', ['clo-softskill', 'course' => $model->id])?>
 <?=show_knob($syll, 'Syllabus', ['course-syllabus', 'course' => $model->id])?>
-<?=show_knob($syll, 'Student Learning Time', ['course-slt', 'course' => $model->id])?>
+<?=show_knob($slt, 'Student Learning Time', ['course-slt', 'course' => $model->id])?>
 <?=show_knob($ref, 'Reference', ['course-reference', 'course' => $model->id])?>
 </div>
 
@@ -189,8 +188,13 @@ echo UploadFile::fileInput($version, 'preparedsign', true)?>
     </div>
 
 </div>
-
-
+<i>
+* For the signature, use png format image with transparent background. You can click <a href="https://www.remove.bg/" target="_blank">Remove.bg</a> to easily remove background.<br />
+* Approximate size pixel 200 x 100.<br />
+* Increase Image Adj Size to make the image bigger and vice versa.<br />
+* Increase Image Adj Y Size to move the image upwards and vice versa. <br />
+* Is strongly recommended to save signature first and preview your signature in <a href="<?=Url::to(['fk2', 'course' => $model->id, 'version' => $version->id])?>" target="_blank">FK2</a>, <a href="<?=Url::to(['fk3', 'course' => $model->id, 'version' => $version->id])?>" target="_blank">FK3</a> and <a href="<?=Url::to(['tbl4-pdf', 'course' => $model->id, 'version' => $version->id])?>" target="_blank">Table 4</a> before submitting.
+</i>
 </div>
 </div>
 
@@ -244,10 +248,19 @@ function show_knob($percentage, $title, $url){
 		}else if($percentage >= 100){
 			$color = '#00a65a';
 		}
-	return '<div class="col-xs-6 col-md-2 text-center">
+	$html = '<div class="col-xs-6 col-md-2 text-center">
 <input type="text" class="knob" value="' . $percentage . '" data-skin="tron" data-thickness="0.2" data-width="100" data-readonly="true" data-height="100" data-fgColor="'.$color.'">
-<div class="knob-label"><a href="'.Url::to($url).'"> '.$title.'</a></div>
+<div class="knob-label">';
+if($url){
+	$html .= '<a href="'.Url::to($url).'"> '.$title.'</a>';
+}else{
+	$html .= $title;
+}
+
+
+$html .= '</div>
 </div>';
+	return $html;
 }
 
 $this->registerJs('

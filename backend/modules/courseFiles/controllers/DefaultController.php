@@ -329,6 +329,8 @@ class DefaultController extends Controller
 			print_r($data);die(); */
             
             if($data){
+				//delete semua dulu
+				StudentLecture::updateAll(['assess_result' => ''],['lecture_id' => $id]);
                 $i=0;
 				$weight = $data[1];
 				$full_mark = $data[2];
@@ -600,8 +602,10 @@ class DefaultController extends Controller
 			}
 			 if(Yii::$app->request->post('complete') == 1){
 				$lecture->progressStudentAttendance = 1;
+				$lecture->prg_attend_complete = 1;
 			}else{
 				$lecture->progressStudentAttendance = 0.5;
+				$lecture->prg_attend_complete = 0;
 			}
 			if ($lecture->save()) {
 				Yii::$app->session->addFlash('success', "Data Updated");
@@ -635,8 +639,10 @@ class DefaultController extends Controller
 			}
 			 if(Yii::$app->request->post('complete') == 1){
 				$tutorial->progressStudentAttendance = 1;
+				$tutorial->prg_attend_complete = 1;
 			}else{
 				$tutorial->progressStudentAttendance = 0.5;
+				$tutorial->prg_attend_complete = 0;
 			}
 			if ($tutorial->save()) {
 				Yii::$app->session->addFlash('success', "Data Updated");
@@ -662,6 +668,19 @@ class DefaultController extends Controller
 		$pdf->course = $model->courseOffered->course;
 		$pdf->semester = $model->courseOffered->semester;
 		$pdf->group =  $model->lec_name;
+		$pdf->generatePdf();
+	}
+	
+	public function actionAttendanceSummaryTutorialPdf($id){
+		$model = $this->findTutorial($id);
+	
+		
+		$pdf = new AttendanceSummary;
+		$pdf->model = $model;
+		// $pdf->response = $response;
+		$pdf->course = $model->lecture->courseOffered->course;
+		$pdf->semester = $model->lecture->courseOffered->semester;
+		$pdf->group =  $model->tutorialGroup;
 		$pdf->generatePdf();
 	}
 
@@ -718,6 +737,7 @@ class DefaultController extends Controller
             }
 			$lecture->prg_attend_complete = 0;
 			$lecture->progressStudentAttendance = 0.5;
+			$lecture->prg_attend_complete = 0;
 			$lecture->save();
             return $this->redirect(['lecture-student-attendance', 'id' => $id]);
     }
@@ -779,6 +799,7 @@ class DefaultController extends Controller
             }
 			$tutorial->prg_attend_complete = 0;
 			$tutorial->progressStudentAttendance = 0.5;
+			$tutorial->prg_attend_complete = 0;
 			$tutorial->save();
             return $this->redirect(['tutorial-student-attendance', 'id' => $id]);
     }

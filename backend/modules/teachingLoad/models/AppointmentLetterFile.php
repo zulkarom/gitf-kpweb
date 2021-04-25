@@ -41,10 +41,7 @@ class AppointmentLetterFile
 		// $this->writeSlogan();
 
 		$this->writeSigniture();
-		if($this->model->status == 10){
-			
-			$this->writeSignitureImg();
-		}
+		$this->writeSignitureImg();
 		
 		// $this->writeSk();
 		
@@ -86,12 +83,26 @@ class AppointmentLetterFile
 		</tr>
 		</table>
 		<br /><br /><br /><br />
-		<b>'.strtoupper($this->model->staffInvolved->staff->user->fullname) .'<br /></b>
-		<table>
-		<tr>
-			<td><b>'. ($this->model->staffInvolved->staff->staffPosition->position_name).' '.'('.strtoupper($this->model->staffInvolved->staff->staffPosition->position_gred).')'.'</b></td>
-		</tr>
-		<tr>
+		<b>'. $this->model->staffInvolved->staff->staff_title . ' ' . $this->model->staffInvolved->staff->user->fullname;
+		
+		
+		$status = $this->model->staffInvolved->staff->staffPositionStatus->status_cat;
+		
+		if($status != 'Tetap'){
+			$html .= ' ('.$status.')';
+		}
+		
+		
+		$html .= '<br /></b>
+		<table>';
+		if($status == 'Tetap'){
+			$html .= '<tr>
+			<td><b>'. ($this->model->staffInvolved->staff->staffPosition->position_plain).' '.'('.strtoupper($this->model->staffInvolved->staff->staffPosition->position_gred).') '.$this->model->staffInvolved->staff->staffPositionStatus->status_cat .' '.'</b></td>
+		</tr>';
+		}
+		
+		
+		$html .= '<tr>
 			<td>Fakulti Keusahawanan dan Perniagaan <br/> Universiti Malaysia Kelantan </td>
 		</tr>
 		</table>
@@ -113,8 +124,14 @@ EOD;
 		
 		$gender = $this->model->staffInvolved->staff->gender;
 		if($gender == 0){
-			$this->tuan = 'puan';
+			$this->tuan = 'Puan';
 		}
+		
+		$panggilan = $this->model->staffInvolved->staff->designation;
+		if($panggilan ){
+			$this->tuan = $panggilan;
+		}
+		
 		
 		$coordinator = $this->model->courseOffered->coordinator;
 		if($coordinator ==  $this->model->staffInvolved->staff_id){
@@ -128,7 +145,7 @@ EOD;
 		<br /><br />
 		
 		2. &nbsp;&nbsp;&nbsp;Sukacita dimaklumkan bahawa '.$this->tuan .' dilantik sebagai Penyelaras dan Pengajar bagi kursus berikut:
-		<br /><br />
+		<br />
 		';
 		$this->pdf->SetFont( 'arial','', $this->fontSize);
 		$tbl = <<<EOD
@@ -158,15 +175,15 @@ EOD;
 	}
 	
 	public function writeTable(){
-		$all = 580;
+		$all = 700;
 		$w1 = 50;
 		$w2 = 30;
-		$w3 = 140;
-		$w4 = 40;
+		$w3 = 120;
+		$w4 = 20;
 		$w5 = $all - $w1 - $w2 - $w3 - $w4;
 		$course = $this->model->courseOffered->course;
 		$html = '
-		<table cellpadding="1">
+		<table cellpadding="1" border="0">
 		<tr>
 			<td width="'.$w1.'"></td>
 			<td width="'.$w3.'">Kod Kursus</td>
@@ -246,28 +263,36 @@ EOD;
 
 	
 	public function writeSignitureImg(){
-		
+		$html = '';
 		$sign = $this->template->signiture_file;
+		//$html .= $sign;
+		$file = Yii::getAlias('@upload/'. $sign);
+		//$html .= '**' . $file;
 		if(!$sign){
 			return false;
 		}
-
-		$file = Yii::getAlias('@upload/'. $sign);
 		
-		$html = '
-		<img src="'.$file.'" />
-		';
-		$tbl = <<<EOD
-		$html
-EOD;
+		if($this->model->status == 10){
+			
+		
+			$html .= '
+			<img src="images/dekan.png" />
+			';
+
+		}
+		
+
 		$y = $this->pdf->getY();
 		$adjy = $this->template->adj_y;
 		
 		$posY = $y - 42 + $adjy;
-		$this->pdf->setY($posY);
-		
+		$this->pdf->setY($posY); 
+$tbl = <<<EOD
+$html
+EOD;
 		
 		$this->pdf->writeHTML($tbl, true, false, false, false, '');
+		
 	}
 	
 	public function writeSigniture(){
@@ -280,8 +305,9 @@ EOD;
 		<br /><br />
 		'.$benar.',<br />
 		<br /><br /><br />
-		<b>'.$dekan.'</b><br />
-		Dekan<br />
+		<b>'.strtoupper($dekan).'</b><br />
+		Dekan<br /><br />
+		s.k - Timbalan Dekan (Akademik & Pembangunan Pelajar)
 		';
 		$this->pdf->SetFont('arial','', $this->fontSize);
 		$tbl = <<<EOD
