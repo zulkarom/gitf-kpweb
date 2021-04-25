@@ -1297,7 +1297,10 @@ EOD;
 			$f = basename($file);
 			$paste = 'images/temp/'. $f;
 			
-			copy($file, $paste);
+			if($sign){
+				copy($file, $paste);
+			}
+			
 
 			$y = $this->pdf->getY();
 			$this->verify_y = $this->pdf->getY();
