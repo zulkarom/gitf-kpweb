@@ -196,9 +196,9 @@ class CourseOffered extends \yii\db\ActiveRecord
 		//then appoint letter
 		if($this->appointmentLetter){
 			foreach($this->appointmentLetter as $app){
-				$count++;
-				$total += $app->prg_appoint_letter;
 				if($app->staffInvolved){
+					$count++;
+					$total += $app->prg_appoint_letter;
 					$count++;
 					$total += $app->staffInvolved->prg_timetable;
 				}
