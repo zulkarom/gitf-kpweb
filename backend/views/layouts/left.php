@@ -88,7 +88,9 @@ use backend\models\Menu;
 			$admin_focus = Menu::adminAduan();
 			break;
 
-	
+			case 'conference':
+			$focus = Menu::conference();
+			break;
 
 			
 
@@ -137,7 +139,7 @@ $menuItems = [
 					
 					['label' => 'JEB Journal', 'icon' => 'book', 'url' => ['/site/jeb-web'], 'template'=>'<a href="{url}" target="_blank">{icon} {label}</a>'],
 					
-					['label' => 'Kolokium', 'icon' => 'book', 'visible' => Yii::$app->user->can('kolokium-manager'), 'url' => ['/kolokium/default/index']],
+					['label' => 'Conference', 'icon' => 'microphone', 'visible' => Yii::$app->user->can('conference-manager'), 'url' => ['/conference/conference/index']],
 					
 					['label' => 'Downloads', 'icon' => 'download', 'visible' => Yii::$app->user->can('download-manager'), 'url' => ['/downloads/download/index']],
 					

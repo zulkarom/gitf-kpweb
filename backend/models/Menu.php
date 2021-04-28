@@ -7,6 +7,7 @@ use common\models\Todo;
 use backend\modules\esiap\models\Course;
 use backend\modules\esiap\models\Menu as EsiapMenu;
 use backend\modules\erpd\models\Stats as ErpdStats;
+use backend\modules\conference\models\Conference;
 
 class Menu
 {
@@ -342,6 +343,91 @@ class Menu
 
 			],
 		];
+	}
+	
+	public static function conference(){
+		
+		if(Yii::$app->getRequest()->getQueryParam('conf')){
+		$confurl = Yii::$app->getRequest()->getQueryParam('conf');
+
+		$conf = Conference::findOne(Yii::$app->getRequest()->getQueryParam('conf'));
+
+
+			$menus = [
+			
+					'label' => $conf->conf_abbr,
+					'icon' => 'microphone',
+					//'visible' => $teaching_load,
+					'url' => '#',
+					'items' => [
+					
+
+					[
+						'label' => 'Paper\'s Flow',
+						'icon' => 'files-o',
+						'url' => '#',
+						'items' => [
+							['label' => 'Abstract', 'icon' => 'file-o', 'url' => ['/conference/paper/abstract', 'conf' => $confurl]],
+							
+							['label' => 'Full Paper', 'icon' => 'file', 'url' =>  ['/conference/paper/full-paper', 'conf' => $confurl]],
+							
+							['label' => 'Payment', 'icon' => 'dollar', 'url' =>  ['/conference/paper/payment', 'conf' => $confurl]],
+							
+							['label' => 'Complete', 'icon' => 'check', 'url' =>  ['/conference/paper/complete', 'conf' => $confurl]],
+							
+							['label' => 'Overview', 'icon' => 'table', 'url' =>  ['/conference/paper/overview', 'conf' => $confurl]],
+
+						]
+					],
+					
+					[
+						'label' => 'Website',
+						'icon' => 'tv',
+						//'visible' => Yii::$app->user->can('teaching-load-manager'),
+						'url' => '#',
+						'items' => [
+							['label' => 'Content', 'icon' => 'file', 'url' =>['/conference/conference/update', 'conf' => $confurl]],
+							
+							['label' => 'Important Dates', 'icon' => 'calendar', 'url' => ['/conference/conference/dates', 'conf' => $confurl]],
+							
+							['label' => 'Fees & Payments', 'icon' => 'dollar', 'url' => ['/conference/conference/fees', 'conf' => $confurl]],
+							
+							['label' => 'Tentatives', 'icon' => 'clock-o', 'url' => ['/conference/conference/tentative', 'conf' => $confurl]],
+							
+							['label' => 'Downloads', 'icon' => 'download', 'url' => ['/conference/download/index', 'conf' => $confurl]],
+							
+
+						]
+					],
+					
+					[
+						'label' => 'Setting',
+						//'visible' => Yii::$app->user->can('teaching-load-manager'),
+						'icon' => 'cog',
+						'url' => '#',
+						'items' => [
+							['label' => 'Conference', 'icon' => 'cog', 'url' => ['/conference/setting/index', 'conf' => $confurl]],
+		
+							
+							['label' => 'Payment & Receipt', 'icon' => 'dollar', 'url' => ['/conference/setting/payment', 'conf' => $confurl]],
+							
+							['label' => 'Email Template', 'icon' => 'envelope', 'url' => ['/conference/setting/email-template', 'conf' => $confurl]],
+							//email-template
+
+						]
+					],
+
+					['label' => 'Participants', 'icon' => 'users', 'url' => ['/conference/register/index', 'conf' => $confurl]],
+
+					 ]
+						];	
+			return $menus;
+	
+		
+
+		}
+		
+		
 	}
 
 }
