@@ -55,10 +55,7 @@ use backend\modules\courseFiles\models\Common;
 								}
 						
 						
-						}else{
-							$boo = false;
 						}
-
 					
 				}
 				echo '</ul>';
