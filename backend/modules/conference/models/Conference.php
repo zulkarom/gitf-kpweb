@@ -36,7 +36,7 @@ class Conference extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['conf_name', 'conf_abbr', 'date_start', 'conf_venue', 'conf_url'], 'required'],
+            [['conf_name', 'conf_abbr', 'date_start','date_end', 'conf_venue', 'conf_url'], 'required'],
 			
             [['date_start','date_end', 'updated_at', 'created_at'], 'safe'],
 			

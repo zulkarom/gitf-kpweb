@@ -72,7 +72,7 @@ foreach($model->pages as $key=>$val){
 * please select at least one to show at front
 <br /><br />
 <?php 
-$default = '["conf_background"]';
+$default = ["conf_background"];
 $old_page_featured = $model->page_featured ? json_decode($model->page_featured) : $default;
 foreach($model->pages as $key=>$val){
 	$chk = in_array($key,$old_page_featured) ? 'checked' : '';
