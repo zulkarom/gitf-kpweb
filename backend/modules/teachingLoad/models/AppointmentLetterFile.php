@@ -88,14 +88,14 @@ class AppointmentLetterFile
 		
 		$status = $this->model->staffInvolved->staff->staffPositionStatus->status_cat;
 		
-		if($status != 'Tetap'){
+		if($status != 'Tetap' or $status != 'Pinjaman'){
 			$html .= ' ('.$status.')';
 		}
 		
 		
 		$html .= '<br /></b>
 		<table>';
-		if($status == 'Tetap'){
+		if($status == 'Tetap' or $status == 'Pinjaman'){
 			$html .= '<tr>
 			<td><b>'. ($this->model->staffInvolved->staff->staffPosition->position_plain).' '.'('.strtoupper($this->model->staffInvolved->staff->staffPosition->position_gred).') '.$this->model->staffInvolved->staff->staffPositionStatus->status_cat .' '.'</b></td>
 		</tr>';
