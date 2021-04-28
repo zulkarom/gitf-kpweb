@@ -303,6 +303,14 @@ class User extends ActiveRecord implements IdentityInterface
 		
 		return $array;
 	}
+	
+	public function isEmailExist(){
+		if(self::findOne(['email' => $this->email])){
+			return true;
+		}else{
+			return false;
+		}
+	}
 
 
 }
