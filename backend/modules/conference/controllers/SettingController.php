@@ -196,6 +196,7 @@ class SettingController extends Controller
 
                 $transaction = Yii::$app->db->beginTransaction();
                 try {
+					$model->updated_at = new Expression('NOW()');
                     if ($flag = $model->save(false)) {
 
                         foreach ($emails as $i => $email) {
