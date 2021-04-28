@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="conference-create">
 
 
-    <?= $this->render('_form', [
+    <?= $this->render('../setting/_form', [
         'model' => $model,
     ]) ?>
 
