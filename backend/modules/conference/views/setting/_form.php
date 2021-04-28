@@ -39,6 +39,11 @@ $model->file_controller = 'setting';
     <?= $form->field($model, 'conf_name')->textInput(['maxlength' => true]) ?>
 	
 	<div class="row">
+<div class="col-md-4"><?= $form->field($model, 'conf_url')->textInput(['maxlength' => true])->label('Conference URL') ?></div>
+
+</div>
+	
+	<div class="row">
 <div class="col-md-4"><?= $form->field($model, 'conf_abbr')->textInput(['maxlength' => true])->label('Abbreviation') ?></div>
 
 <div class="col-md-4"> <?=$form->field($model, 'date_start')->widget(DatePicker::classname(), [
