@@ -12,8 +12,8 @@ use common\widgets\Alert;
 use yii\helpers\Url;
 use frontend\models\Stats;
 
-frontend\models\MainAsset::register($this);
-$directoryAsset = Yii::$app->assetManager->getPublishedUrl('@frontend/views/myasset');
+frontend\assets\ConfAsset::register($this);
+$directoryAsset = Yii::$app->assetManager->getPublishedUrl('@frontend/assets/conference');
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>

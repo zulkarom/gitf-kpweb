@@ -10,8 +10,8 @@ use yii\widgets\Breadcrumbs;
 use common\widgets\Alert;
 use yii\helpers\Url;
 
-frontend\modules\conference\assets\MainAsset::register($this);
-$dirAsset = Yii::$app->assetManager->getPublishedUrl('@frontend/modules/conference/views/myasset');
+frontend\assets\ConfAsset::register($this);
+$directoryAsset = Yii::$app->assetManager->getPublishedUrl('@frontend/assets/conference');
 
 $confurl = Yii::$app->getRequest()->getQueryParam('confurl');
 

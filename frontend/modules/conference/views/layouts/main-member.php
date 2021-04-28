@@ -11,8 +11,8 @@ use common\widgets\Alert;
 use yii\helpers\Url;
 use backend\modules\conference\models\Conference;
 
-frontend\modules\conference\assets\MainAsset::register($this);
-$dirAsset = Yii::$app->assetManager->getPublishedUrl('@frontend/modules/conference/views/myasset');
+frontend\assets\ConfAsset::register($this);
+$dirAsset = Yii::$app->assetManager->getPublishedUrl('@frontend/assets/conference');
 
 $confurl = Yii::$app->getRequest()->getQueryParam('confurl');
 $conf = Conference::findOne(['conf_url' => $confurl]);

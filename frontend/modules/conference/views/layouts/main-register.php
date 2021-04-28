@@ -12,8 +12,8 @@ use yii\helpers\Url;
 use backend\modules\conference\models\Conference;
 use yii\web\NotFoundHttpException;
 
-frontend\modules\conference\assets\MainAsset::register($this);
-$dirAsset = Yii::$app->assetManager->getPublishedUrl('@frontend/modules/conference/views/myasset');
+frontend\assets\ConfAsset::register($this);
+$directoryAsset = Yii::$app->assetManager->getPublishedUrl('@frontend/assets/conference');
 
 $confurl = Yii::$app->getRequest()->getQueryParam('url');
 $conf = Conference::findOne(['conf_url' => $confurl]);

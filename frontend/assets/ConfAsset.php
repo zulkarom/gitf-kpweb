@@ -1,9 +1,9 @@
 <?php
-namespace frontend\modules\conference\assets;
+namespace frontend\assets;
 
-class MainAsset extends \yii\web\AssetBundle
+class ConfAsset extends \yii\web\AssetBundle
 {
-    public $sourcePath = '@frontend/modules/conference/views/myasset';
+    public $sourcePath = '@frontend/assets/conference';
     public $css = [
 	'vendor/bootstrap/css/bootstrap.min.css',
 	'fonts/font-awesome-4.7.0/css/font-awesome.min.css',
@@ -34,5 +34,4 @@ class MainAsset extends \yii\web\AssetBundle
         //'yii\bootstrap\BootstrapAsset',
         //'yii\bootstrap\BootstrapPluginAsset',
     ];
-
 }
