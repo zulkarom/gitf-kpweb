@@ -85,17 +85,22 @@ class AppointmentLetterFile
 		<br /><br /><br /><br />
 		<b>'. $this->model->staffInvolved->staff->staff_title . ' ' . $this->model->staffInvolved->staff->user->fullname;
 		
+		$show_full = true;
+		if($status == 'Kontrak' or $status == 'Sementara'){
+			$show_full = false;
+		}
+		
 		
 		$status = $this->model->staffInvolved->staff->staffPositionStatus->status_cat;
 		
-		if($status != 'Tetap' or $status != 'Pinjaman'){
+		if($show_full  == false){
 			$html .= ' ('.$status.')';
 		}
 		
 		
 		$html .= '<br /></b>
 		<table>';
-		if($status == 'Tetap' or $status == 'Pinjaman'){
+		if($show_full){
 			$html .= '<tr>
 			<td><b>'. ($this->model->staffInvolved->staff->staffPosition->position_plain).' '.'('.strtoupper($this->model->staffInvolved->staff->staffPosition->position_gred).') '.$this->model->staffInvolved->staff->staffPositionStatus->status_cat .' '.'</b></td>
 		</tr>';
