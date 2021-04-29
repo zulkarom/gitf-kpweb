@@ -46,6 +46,7 @@ phpunit.phar
 frontend/config
 backend/config
 common/config
+/confsite/config
 
 
 # web
@@ -53,6 +54,7 @@ backend/web/
 
 /backend/web
 /frontend/web
+/confsite/web
 
 #uploaded
 

@@ -14,7 +14,7 @@ class RecoveryController extends BaseRecoveryController
 
     public function actionReset($id, $code)
     {
-		$this->layout = "//main-recover";
+		$this->layout = "main-recover";
         return parent::actionReset($id, $code);
     }
 }
