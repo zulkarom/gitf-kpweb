@@ -530,6 +530,17 @@ class DefaultController extends Controller
 		return false;
 	}
 	
+	public function actionDeleteStudentLecture($id, $lec){
+		$model = StudentLecture::findOne(['id' => $id, 'lecture_id' => $lec]);
+		if($model){
+			if($model->delete()){
+				Yii::$app->session->addFlash('success', "The student has been removed.");
+			}
+			//find tutorial student if exist
+		}
+		return $this->redirect(['lecture-student-list', 'id' => $lec]);
+	}
+	
 	public function importStudentListExcel($id){
 		$lecture = $this->findLecture($id);
 

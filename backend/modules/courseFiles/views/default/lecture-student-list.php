@@ -72,14 +72,7 @@ if($lecture->students){
 
 <a href="<?=Url::to(['lecture-student-list-pdf', 'id' => $lecture->id])?>" class="btn btn-danger" target="_blank"><i class="fa fa-download"></i> Download Pdf</a>
     
-
-    
-    
-    
  </div>
-
-
-
 </div>
 
 
@@ -108,6 +101,21 @@ if($lecture->students){
                     return $model->student->st_name;
                 }
                 
+            ],
+			
+			['class' => 'yii\grid\ActionColumn',
+                 'contentOptions' => ['style' => 'width: 10%'],
+                'template' => '{delete}',
+                //'visible' => false,
+                'buttons'=>[
+					'delete'=>function ($url, $model) {
+                        return Html::a('<span class="glyphicon glyphicon-trash"></span>',['delete-student-lecture', 'id' => $model->id, 'lec' => $model->lecture_id],['data' => [
+                'confirm' => 'Are you sure to remove this student ('.$model->student->st_name.') from this lecture class?'
+            ],
+]);
+                    }
+                ],
+            
             ],
             
         ],

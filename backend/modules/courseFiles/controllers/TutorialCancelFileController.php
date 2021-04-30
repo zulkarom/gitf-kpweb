@@ -67,8 +67,7 @@ class TutorialCancelFileController extends Controller
 				$model->na_class_cancel = 0;
 			}
 			
-			//$model->setOverallProgress();
-			//echo $model->prg_overall ;die();
+
             
             $valid = $model->validate();
             $valid = Model::validateMultiple($files) && $valid;

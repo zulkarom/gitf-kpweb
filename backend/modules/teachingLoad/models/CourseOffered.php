@@ -211,13 +211,15 @@ class CourseOffered extends \yii\db\ActiveRecord
 		
 		if($count > 0){
 			$avg = $total / $count;
-			$avg = number_format($total / $count, 2);
+			$avg = Common::withoutRounding($total / $count, 2);
 		}
-		
+		//$avg round($avg, 2 ,PHP_ROUND_HALF_DOWN);
 		$this->prg_overall = $avg;
 	}
 	
-	public function setProgressOverall(){
+	
+	
+	public function setProgressCoordinator(){
 		$p1 = $this->prg_crs_ver; //1
 		$p2 = $this->prg_material; //2
 		$p3 = $this->prg_cont_rubrics ; //3
@@ -228,7 +230,7 @@ class CourseOffered extends \yii\db\ActiveRecord
 		$p8 = $this->prg_sum_script;
 		$p9 = $this->prg_cqi;
 		$avg = ($p1 + $p2 + $p3 + $p4 + $p5 + $p6 + $p7 + $p8 + $p9)/9;
-		$this->prg_coordinator = number_format($avg,2);
+		$this->prg_coordinator = Common::withoutRounding($avg,2);
 		$this->setOverallProgress();
 	}
 
@@ -257,7 +259,7 @@ class CourseOffered extends \yii\db\ActiveRecord
 	
 	public function setProgressCourseVersion($val){
 		$this->prg_crs_ver = $val;
-		$this->setProgressOverall();
+		$this->setProgressCoordinator();
 	}
 	
 	public function getProgressCourseVersionBar(){
@@ -266,7 +268,7 @@ class CourseOffered extends \yii\db\ActiveRecord
 	
 	public function setProgressMaterial($val){
 		$this->prg_material = $val;
-		$this->setProgressOverall();
+		$this->setProgressCoordinator();
 	}
 	
 	public function getProgressMaterialBar(){
@@ -275,7 +277,7 @@ class CourseOffered extends \yii\db\ActiveRecord
 	
 	public function setProgressContRubrics($val){
 		$this->prg_cont_rubrics = $val;
-		$this->setProgressOverall();
+		$this->setProgressCoordinator();
 	}
 	
 	public function getProgressContRubricsBar(){
@@ -285,7 +287,7 @@ class CourseOffered extends \yii\db\ActiveRecord
 	
 	public function setProgressSumAssess($val){
 		$this->prg_sum_assess = $val;
-		$this->setProgressOverall();
+		$this->setProgressCoordinator();
 	}
 	
 	public function getProgressSumAssessBar(){
@@ -295,7 +297,7 @@ class CourseOffered extends \yii\db\ActiveRecord
 	
 	public function setProgressContMaterial($val){
 		$this->prg_cont_material = $val;
-		$this->setProgressOverall();
+		$this->setProgressCoordinator();
 	}
 	
 	public function getProgressContMaterialBar(){
@@ -304,7 +306,7 @@ class CourseOffered extends \yii\db\ActiveRecord
 	
 	public function setProgressResultFinal($val){
 		$this->prg_result_final = $val;
-		$this->setProgressOverall();
+		$this->setProgressCoordinator();
 	}
 	
 	public function getProgressResultFinalBar(){
@@ -313,7 +315,7 @@ class CourseOffered extends \yii\db\ActiveRecord
 	
 	public function setProgressContScript($val){
 		$this->prg_cont_script = $val;
-		$this->setProgressOverall();
+		$this->setProgressCoordinator();
 	}
 	
 	public function getProgressContScriptBar(){
@@ -328,7 +330,7 @@ class CourseOffered extends \yii\db\ActiveRecord
 			$per = number_format($per, 2);
 			$this->prg_sum_script = $per;
 		}
-		$this->setProgressOverall();
+		$this->setProgressCoordinator();
 	}
 	
 	public function getCountScripts(){
@@ -370,7 +372,7 @@ class CourseOffered extends \yii\db\ActiveRecord
 	
 	public function setProgressCqi($val){
 		$this->prg_cqi = $val;
-		$this->setProgressOverall();
+		$this->setProgressCoordinator();
 	}
 	
 	public function getProgressCqiBar(){

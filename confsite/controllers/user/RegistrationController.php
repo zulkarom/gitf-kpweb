@@ -17,7 +17,7 @@ class RegistrationController extends BaseRegistrationController
      */
     public function actionRegister($url='', $email='')
     {
-		$this->layout = "main-register";
+		$this->layout = "//main-register";
 		//\Yii::$app->session->addFlash('success', "Data Successful");
 		
 		

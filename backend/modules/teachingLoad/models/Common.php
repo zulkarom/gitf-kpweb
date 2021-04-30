@@ -41,6 +41,33 @@ class Common {
 	return $html;
 	
 	}
+	
+	public static function withoutRounding($number, $total_decimals) {
+		$number = (string)$number;
+		if($number === '') {
+			$number = '0';
+		}
+		if(strpos($number, '.') === false) {
+			$number .= '.';
+		}
+		$number_arr = explode('.', $number);
+
+		$decimals = substr($number_arr[1], 0, $total_decimals);
+		if($decimals === false) {
+			$decimals = '0';
+		}
+
+		$return = '';
+		if($total_decimals == 0) {
+			$return = $number_arr[0];
+		} else {
+			if(strlen($decimals) < $total_decimals) {
+				$decimals = str_pad($decimals, $total_decimals, '0', STR_PAD_RIGHT);
+			}
+			$return = $number_arr[0] . '.' . $decimals;
+		}
+		return $return;
+	}
 }
 
 

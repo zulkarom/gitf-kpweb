@@ -132,7 +132,7 @@ use backend\modules\courseFiles\models\Common;
 				$check = Common::pTick(false);
 				echo 'The coordinator needs to select material version.';
 			}else{
-				if($material->items){
+				if($material && $material->items){
 					$check = Common::pTick();
 					echo '<ul>';
 					$i = 1;
