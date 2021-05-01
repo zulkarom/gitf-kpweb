@@ -627,12 +627,18 @@ class CourseController extends Controller
 				
 				$flag = true;
                 $post_clo = Yii::$app->request->post('CourseClo');
+				$boo = true;
 				foreach($post_clo as $key => $pclo){
 					if(!$flag){
 						break;
 					}
 					$clo = CourseClo::findOne($key);
 					if($clo){
+						if(!empty($pclo['clo_text']) and !empty($pclo['clo_text_bi'])){
+							$boo = $boo == false ? false : true;
+						}else{
+							$boo = false;
+						}
 						$clo->clo_text = $pclo['clo_text'];
 						$clo->clo_text_bi = $pclo['clo_text_bi'];
 						if(!$clo->save()){
@@ -645,7 +651,15 @@ class CourseController extends Controller
 				//update progress
 				$model->scenario = 'pgrs_clo';
 				if(Yii::$app->request->post('complete') == 1){
-					$model->pgrs_clo = 2;
+					//validate complete
+					if($boo){
+						$model->pgrs_clo = 2;
+					}else{
+						$model->pgrs_clo = 1;
+						Yii::$app->session->addFlash('error', "Cannot mark as complete, make sure all CLO text are filled");
+					}
+					
+					
 				}else{
 					$model->pgrs_clo = 1;
 				}

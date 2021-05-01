@@ -41,6 +41,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 
             ],
 			
+			[
+				'attribute' => 'coor.user.fullname',
+				'label' => 'Coordinator',
+				
+			],
+			
 			/* [
                 'label' => 'Program',
 				'value' => function($model){
