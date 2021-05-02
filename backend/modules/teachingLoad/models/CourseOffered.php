@@ -49,6 +49,8 @@ class CourseOffered extends \yii\db\ActiveRecord
     public $staff_id;
     public $offered_id;
 	public $file_controller;
+	public $option_review;
+	public $option_course;
 	
 	public $scriptbest1_instance;
 	public $scriptbest2_instance;
@@ -59,6 +61,9 @@ class CourseOffered extends \yii\db\ActiveRecord
 	public $scriptlow1_instance;
 	public $scriptlow2_instance;
 	public $scriptlow3_instance;
+	
+	public $auditor_instance;
+	public $verified_instance;
 
     /**
      * {@inheritdoc}
@@ -78,7 +83,9 @@ class CourseOffered extends \yii\db\ActiveRecord
 			
 			[['course_version', 'material_version'], 'required', 'on' => 'coor'],
 			
-            [['semester_id', 'course_id', 'total_students', 'max_lec', 'max_tut', 'created_by', 'coordinator', 'course_version', 'material_version', 'prg_crs_ver', 'prg_material', 'na_cont_rubrics', 'na_script_final', 'coor_access'], 'integer'],
+			[['option_course', 'option_review'], 'required', 'on' => 'audit'],
+			
+            [['semester_id', 'course_id', 'total_students', 'max_lec', 'max_tut', 'created_by', 'coordinator', 'course_version', 'material_version', 'prg_crs_ver', 'prg_material', 'na_cont_rubrics', 'na_script_final', 'coor_access', 'option_course', 'option_review'], 'integer'],
 			
             [['created_at', 'courses'], 'safe'],
 			
@@ -127,6 +134,14 @@ class CourseOffered extends \yii\db\ActiveRecord
             [['scriptlow3_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 7000000],
             [['updated_at'], 'required', 'on' => 'scriptlow3_delete'],
 			
+			[['auditor_file'], 'required', 'on' => 'auditor_upload'],
+            [['auditor_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 2000000],
+            [['updated_at'], 'required', 'on' => 'auditor_delete'],
+			
+			[['verified_file'], 'required', 'on' => 'verified_upload'],
+            [['verified_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 2000000],
+            [['updated_at'], 'required', 'on' => 'verified_delete'],
+			
         ];
     }
 
@@ -160,6 +175,7 @@ class CourseOffered extends \yii\db\ActiveRecord
             'scriptlow2_file' => 'Scriptlow2 File',
             'scriptlow3_file' => 'Scriptlow3 File',
 			'statusName' => 'Status',
+			'auditor_file' => 'Auditor\'s Report',
         ];
     }
 	
@@ -168,6 +184,16 @@ class CourseOffered extends \yii\db\ActiveRecord
 			return '<span class="label label-warning">DRAFT</span>';
 		}else if($this->status == 10){
 			return '<span class="label label-info">SUBMIT</span>';
+		}else if($this->status == 20){
+			return '<span class="label label-warning">REUPDATE</span>';
+		}else if($this->status == 30){
+			return '<span class="label label-info">COMPLETE</span>';
+		}else if($this->status == 40){
+			return '<span class="label label-info">RESUBMIT</span>';
+		}else if($this->status == 50){
+			return '<span class="label label-success">VERIFIED</span>';
+		}else{
+			return '';
 		}
 	}
 	

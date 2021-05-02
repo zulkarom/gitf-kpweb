@@ -184,7 +184,7 @@ $this->params['breadcrumbs'][] = $this->title;
 							  <td>'.$coor->course->course_code.' '.$coor->course->course_name.'</td>
 							  <td>'. $coor->statusName .'</td>
 							  <td>';
-							  if($coor->status == 0){
+							  if($coor->status == 0 or $coor->status == 20){
 								  echo '<a href="' . Url::to(['default/teaching-assignment-coordinator', 'id' => $coor->id]) . '" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-pencil"></span> Update</a>';
 								  }else{
 								  echo '<a href="' . Url::to(['default/coordinator-view', 'id' => $coor->id]) . '" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-search"></span> View</a>';

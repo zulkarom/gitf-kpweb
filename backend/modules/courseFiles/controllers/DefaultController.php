@@ -53,7 +53,12 @@ class DefaultController extends Controller
 		$offer = $this->findOffered($id);
 		$course = $offer->course;
 		if($offer->prg_overall == 1){
-			$offer->status = 10;
+			if($offer->status == 0){
+				$offer->status = 10;
+			}else if($offer->status == 20){
+				$offer->status = 40;
+			}
+			
 			if($offer->save()){
 				Yii::$app->session->addFlash('success', "The course file for ".$course->course_code ." ". $course->course_name ." has been successfully submitted.");
 				return $this->redirect(['teaching-assignment']);
@@ -185,7 +190,7 @@ class DefaultController extends Controller
     {
         $model = new Checklist();
         $offer = $this->findOffered($id);
-		if($offer->status > 0){
+		if(!in_array($offer->status, [0,20])){
 			return $this->redirect(['coordinator-view', 'id' => $id]);
 		}
 		$offer->scenario = 'coor';

@@ -69,6 +69,21 @@ $this->params['breadcrumbs'][] = $this->title;
                 
             ],
 			
+			[
+				//'attribute' => 'is_audited',
+				'label' => 'Audited',
+				'format' => 'html',
+				'value' => function($model){
+					if($model->is_audited == 1){
+						return '<span class="label label-success">YES</span>';
+					}else{
+						return '<span class="label label-danger">NO</span>';
+					}
+					
+				}
+				
+			],
+			
 			
             ['class' => 'yii\grid\ActionColumn',
                 'contentOptions' => ['style' => 'width: 10.7%'],
