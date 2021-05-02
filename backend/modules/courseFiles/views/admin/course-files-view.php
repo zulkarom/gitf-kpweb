@@ -65,10 +65,18 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="row">
 <div class="col-md-6">
-
-<div class="form-group">
-<label>Auditor's Report: Download</label>
+<?php 
+if($modelOffer->auditor_file){
+	?>
+	<div class="form-group">
+<label>Auditor's Report: <a href="<?=Url::to(['auditor/download-file', 'attr' => 'auditor', 'id' => $modelOffer->id])?>" target="_blank">Download</a></label>
 </div>
+	<?php
+	
+}
+
+?>
+
 
 <?php 
 $modelOffer->status = 50;

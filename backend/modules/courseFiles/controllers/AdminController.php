@@ -102,15 +102,23 @@ class AdminController extends Controller
         $model = new Checklist();
         $modelOffer = $this->findOffered($id);
 		
-		if ($model->load(Yii::$app->request->post())) {
+		if ($modelOffer->load(Yii::$app->request->post())) {
+			//echo $modelOffer->status; die();
 			if($modelOffer->status == 50){
 				$modelOffer->verified_at = new Expression('NOW()');
 				$modelOffer->verified_by = Yii::$app->user->identity->staff->id;
 			}
+				if($modelOffer->save()){
+					Yii::$app->session->addFlash('success', "Status Updated");
+					return $this->refresh();
+				}else{
+					$modelOffer->flashError();
+				}
 		}else{
 			$modelOffer->setOverallProgress();
+			$modelOffer->save();
 		}
-		$modelOffer->save();
+		
 		
 		
 		
