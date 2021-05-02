@@ -4,7 +4,9 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use yii\bootstrap\Modal;
+use common\models\UploadFile;
 
+$modelOffer->file_controller = 'auditor';
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
@@ -21,12 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php echo $this->render('course-loads', [    
             'offer' =>$modelOffer,
            ]);
-
-if($modelOffer->status == 10){  
-    ?>
-<div class="form-group"><a href="<?=Url::to(['course-files-view', 'id' => $modelOffer->id, 'revert' => 1])?>" class="btn btn-warning" data-confirm="This action will change the status of course file to draft, click ok to proceed.">Revert Status to Draft</a></div>
-    <?php 
-}	
+	
 	
 	echo $this->render('course-files-view-plan', [    
             'model' => $model,
@@ -54,6 +51,60 @@ if($modelOffer->status == 10){
             'modelOffer' =>$modelOffer,
            ]);
     ?>
+	
+	</div>
+	
+	
+<?php $form = ActiveForm::begin(); ?>
+
+<div class="box">
+<div class="box-header">
+<h3 class="box-title">Course File Verification</h3>
+</div>
+<div class="box-body">
+
+<div class="row">
+<div class="col-md-6">
+
+<div class="form-group">
+<label>Auditor's Report: Download</label>
+</div>
+
+<?php 
+$modelOffer->status = 50;
+echo $form->field($modelOffer, 'status')->dropDownList( $modelOffer->statusArray, ['prompt' => 'Please Select' ])->label('Status') ?>
+
 
 </div>
+
+</div>
+
+
+
+<div class="form-group"><?=UploadFile::fileInput($modelOffer, 'verified')?></div>
+
+
+
+
+<div class="form-group">
+<?php echo $form->field($model, 'course_id')->hiddenInput(['value' => $modelOffer->course_id])->label(false)?>
+<?php 
+
+
+echo Html::submitButton('SAVE', 
+    ['class' => 'btn btn-warning', 'name' => 'wfaction', 'value' => 'btn-verify', 'data' => [
+                'confirm' => 'Are you sure to store the status?'
+            ],
+    ])?>
+
+</div>
+</div>
+</div>
+
+
+
+
+    <?php ActiveForm::end(); ?>
+	
+
 

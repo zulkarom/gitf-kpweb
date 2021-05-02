@@ -80,17 +80,33 @@ $this->params['breadcrumbs'][] = $this->title;
                 
             ], */
 			
-			'statusName:html',
-			
 			[
                 'value' => 'progressOverallBar',
                 'label' => 'Progress',
 				'format' => 'html'
                 
             ],
+			
+			'statusName:html',
+			
+			
 			[
 				'attribute' => 'auditor.user.fullname',
 				'label' => 'Auditor',
+			],
+			[
+				//'attribute' => 'is_audited',
+				'label' => 'Audited',
+				'format' => 'html',
+				'value' => function($model){
+					if($model->is_audited == 1){
+						return '<span class="label label-success">YES</span>';
+					}else{
+						return '<span class="label label-danger">NO</span>';
+					}
+					
+				}
+				
 			],
 			
             ['class' => 'yii\grid\ActionColumn',

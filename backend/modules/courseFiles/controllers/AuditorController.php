@@ -85,6 +85,9 @@ class AuditorController extends Controller
 				if($modelOffer->auditor_file){
 					
 					$modelOffer->status = $modelOffer->option_review;
+						if($modelOffer->status == 30){
+							$modelOffer->reviewed_at = new Expression('NOW()');
+						}
 					//20 reupdate //30 complete
 					if($modelOffer->option_course == 1){
 						$version = CourseVersion::findOne($modelOffer->course_version);

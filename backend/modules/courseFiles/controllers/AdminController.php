@@ -97,15 +97,25 @@ class AdminController extends Controller
         ]);
     }
 
-    public function actionCourseFilesView($id, $revert=false)
+    public function actionCourseFilesView($id)
     {
         $model = new Checklist();
-        $modelOffer = $this->findOffered($id);  
-		$modelOffer->setOverallProgress();
-		if($revert){
-			$modelOffer->status = 0;
+        $modelOffer = $this->findOffered($id);
+		
+		if ($model->load(Yii::$app->request->post())) {
+			if($modelOffer->status == 50){
+				$modelOffer->verified_at = new Expression('NOW()');
+				$modelOffer->verified_by = Yii::$app->user->identity->staff->id;
+			}
+		}else{
+			$modelOffer->setOverallProgress();
 		}
 		$modelOffer->save();
+		
+		
+		
+		
+		
         return $this->render('course-files-view', [
             'model' => $model,
             'modelOffer' => $modelOffer,

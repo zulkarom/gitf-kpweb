@@ -8,6 +8,7 @@ use yii\web\NotFoundHttpException;
 use yii\helpers\ArrayHelper;
 use backend\models\SemesterForm;
 use backend\models\Semester;
+use yii\db\Expression;
 
 use backend\modules\students\models\Student;
 use backend\modules\students\models\StudentSearch;
@@ -55,6 +56,7 @@ class DefaultController extends Controller
 		if($offer->prg_overall == 1){
 			if($offer->status == 0){
 				$offer->status = 10;
+				$offer->submitted_at = new Expression('NOW()');
 			}else if($offer->status == 20){
 				$offer->status = 40;
 			}

@@ -179,6 +179,17 @@ class CourseOffered extends \yii\db\ActiveRecord
         ];
     }
 	
+	public function getStatusArray(){
+		return [
+			0 => 'DRAFT',
+			10 => 'SUBMIT',
+			20 => 'REUPDATE',
+			30 => 'FULFILLED',
+			40 => 'RESUBMIT',
+			50 => 'VERIFIED',
+		];
+	}
+	
 	public function getStatusName(){
 		if($this->status == 0){
 			return '<span class="label label-warning">DRAFT</span>';
@@ -187,7 +198,7 @@ class CourseOffered extends \yii\db\ActiveRecord
 		}else if($this->status == 20){
 			return '<span class="label label-warning">REUPDATE</span>';
 		}else if($this->status == 30){
-			return '<span class="label label-info">COMPLETE</span>';
+			return '<span class="label label-info">FULFILLED</span>';
 		}else if($this->status == 40){
 			return '<span class="label label-info">RESUBMIT</span>';
 		}else if($this->status == 50){
