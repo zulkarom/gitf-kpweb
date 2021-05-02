@@ -132,7 +132,7 @@ public static function showLecTut($offer, $lec_method, $tut_method, $link, $prog
 		  foreach ($lecture->tutorials as $tutorial) {
 			$html .=  '<li>';
 			if($tutorial->$na == 1){
-				$html .= $lecture->lec_name . $tutorial->tutorial_name . ' - <a href="'.Url::to('@web/doc/na.pdf').'">N/A</a> ' . Common::ptick(); 
+				$html .= $lecture->lec_name . $tutorial->tutorial_name . ' - <a href="'.Url::to('@web/doc/na.pdf').'" target="_blank">N/A</a> ' . Common::ptick(); 
 			}else{
 				if($tutorial->$prg == 1){
 					$boo_tut = true;
