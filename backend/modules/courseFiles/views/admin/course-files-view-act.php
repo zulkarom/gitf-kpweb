@@ -38,7 +38,7 @@ use backend\modules\courseFiles\models\Common;
 			}else{
 				if($offer->na_cqi == 1){
 					echo '<ul>
-						<li>N/A</li>
+						<li><a href="'.Url::to('@web/doc/na.pdf').'" target="_blank">N/A</a></li>
 					</ul>
 					';
 				}else{

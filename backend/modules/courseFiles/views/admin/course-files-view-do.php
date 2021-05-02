@@ -137,7 +137,7 @@ use backend\modules\courseFiles\views\admin\Show;
                 <td>';
 		if($offer->na_script_final == 1){
 		echo '<ul>
-				<li>N/A '.Common::ptick().'</li>
+				<li><a href="'.Url::to('@web/doc/na.pdf').'" target="_blank">N/A</a> '.Common::ptick().'</li>
 			</ul>
 			';
 	}else{

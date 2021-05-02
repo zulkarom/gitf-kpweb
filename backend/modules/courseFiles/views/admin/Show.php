@@ -31,7 +31,7 @@ public static function showCoor($offer, $method, $link, $progress){
 	$prg = 'prg_' . $progress;
 	if($offer->$na == 1){
 		$html .= '<ul>
-				<li>N/A '.Common::ptick().'</li>
+				<li><a href="'.Url::to('@web/doc/na.pdf').'" target="_blank">N/A</a> '.Common::ptick().'</li>
 			</ul>
 			';
 	}else{
@@ -80,7 +80,7 @@ public static function showLecTut($offer, $lec_method, $tut_method, $link, $prog
 		$html .=  '<li>';
 		
 		if($lecture->$na == 1){
-			$html .= $lecture->lec_name . ' - N/A ' . Common::ptick(); 
+			$html .= $lecture->lec_name . ' - <a href="'.Url::to('@web/doc/na.pdf').'" target="_blank">N/A</a> ' . Common::ptick(); 
 		}else{
 			if($lecture->$prg == 1){
 				$boo_lec = true;
@@ -132,7 +132,7 @@ public static function showLecTut($offer, $lec_method, $tut_method, $link, $prog
 		  foreach ($lecture->tutorials as $tutorial) {
 			$html .=  '<li>';
 			if($tutorial->$na == 1){
-				$html .= $lecture->lec_name . $tutorial->tutorial_name . ' - N/A ' . Common::ptick(); 
+				$html .= $lecture->lec_name . $tutorial->tutorial_name . ' - <a href="'.Url::to('@web/doc/na.pdf').'">N/A</a> ' . Common::ptick(); 
 			}else{
 				if($tutorial->$prg == 1){
 					$boo_tut = true;
