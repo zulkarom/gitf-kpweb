@@ -6,7 +6,7 @@ use yii\helpers\Url;
 <h4><?=$offer->semester->longFormat()?></h4>
 <?php 
 $access = false;
-if($offer->coor_access == 1){
+if($offer->coor_access == 1 and $offer->coor == Yii::$app->user->identity->staff->id){
 	$access = true;
 }?>
 <div class="box">
@@ -16,10 +16,13 @@ if($offer->coor_access == 1){
 
   <table class="table table-striped">
   <tr>
-  <td width="16%">Coordinator</td><td><?=$offer->coor->niceName ?></td>
+  <td width="20%">Coordinator</td><td><?=$offer->coor->niceName ?></td>
   </tr>
    <tr>
-  <td>Overall Progress</td><td><div class="row"><div class="col-md-2"><?=$offer->progressOverallBar ?></div></div></td>
+  <td>Coordinator Progress</td><td><div class="row"><div class="col-md-2"><?=$offer->progressCoordinatorBar ?></div></div></td>
+  </tr>
+   <tr>
+  <td>Course File Overall Progress</td><td><div class="row"><div class="col-md-2"><?=$offer->progressOverallBar ?></div></div></td>
   </tr>
   <tr>
   <td>Course File Status</td><td><?=$offer->statusName ?></td>

@@ -17,13 +17,12 @@ use yii\helpers\Json;
 use yii\bootstrap\Modal;
 use backend\models\SemesterForm;
 use backend\models\Semester;
-use backend\modules\courseFiles\models\CourseFilesSearch;
-use backend\modules\courseFiles\models\AssignAuditorForm;
+use backend\modules\courseFiles\models\AuditorSearch;
 
 /**
  * Default controller for the `course-files` module
  */
-class AdminController extends Controller
+class AuditorController extends Controller
 {
     /**
      * Renders the index view for the module
@@ -44,16 +43,12 @@ class AdminController extends Controller
             ],
         ];
     }
-	
-	public function actionSummary(){
-		 return $this->render('summary', [
-        ]);
-	}
+
 	
 	public function actionIndex()
     {
+		
         $semester = new SemesterForm;
-		$audit = new AssignAuditorForm;
 
         if(Yii::$app->getRequest()->getQueryParam('SemesterForm')){
             $sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');
@@ -62,29 +57,8 @@ class AdminController extends Controller
         }else{
             $semester->semester_id = Semester::getCurrentSemester()->id;
         }
-		
-		if ($audit->load(Yii::$app->request->post())) {
-			$selection = Yii::$app->request->post('selection');
-			if($selection){
-				if($audit->staff_id){
-					foreach($selection as $offer_id){
-						$offer = CourseOffered::findOne($offer_id);
-						if($offer){
-							$offer->auditor_staff_id = $audit->staff_id;
-							$offer->save();
-						}
-					}
-					Yii::$app->session->addFlash('success', "Assigning successful");
-					return $this->refresh();
-				}
-			}else{
-				Yii::$app->session->addFlash('error', "Please select courses to assign");
-			}
-			
-		}
 
-
-        $searchModel = new CourseFilesSearch();
+        $searchModel = new AuditorSearch();
         $searchModel->semester = $semester->semester_id;
         $searchModel->search_course = $semester->str_search;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -93,7 +67,6 @@ class AdminController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'semester' => $semester,
-			'audit' => $audit
         ]);
     }
 

@@ -1,16 +1,12 @@
 <?php 
 use yii\helpers\Html;
 use yii\grid\GridView;
-use yii\widgets\ActiveForm;
-use backend\modules\staff\models\Staff;
-use kartik\select2\Select2;
-use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\modules\teachingLoad\models\CourseOfferedSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Course Files';
+$this->title = 'Internal Auditors';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -21,27 +17,12 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="row">
 
     <div class="col-md-10" align="right">
-        <?= $this->render('_form_course_files', [
+        <?= $this->render('../admin/_form_course_files', [
                 'model' => $semester,
             ]) ?>
     </div>
 </div>
 
-<?php $form = ActiveForm::begin(); ?>
-
-<div class="row">
-<div class="col-md-6"><?php
-		echo $form->field($audit, 'staff_id')->widget(Select2::classname(), [
-    'data' => ArrayHelper::map(Staff::getAcademicStaff(), 'id', 'user.fullname'),
-    'options' => ['placeholder' => 'Select an Auditor ...'],
-    'pluginOptions' => [
-        'allowClear' => true
-    ],
-])->label(false);
-
-?></div>
-<div class="col-md-6"><?= Html::submitButton('Assign', ['class' => 'btn btn-success']) ?></div>
-</div>
 
 
 
@@ -51,7 +32,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         //'filterModel' => $searchModel,
         'columns' => [
-			['class' => 'yii\grid\CheckboxColumn'],
             ['class' => 'yii\grid\SerialColumn'],
             [
                 'attribute' => 'course.course_code',
@@ -88,17 +68,14 @@ $this->params['breadcrumbs'][] = $this->title;
 				'format' => 'html'
                 
             ],
-			[
-				'attribute' => 'auditor.user.fullname',
-				'label' => 'Auditor',
-			],
+			
 			
             ['class' => 'yii\grid\ActionColumn',
                 'contentOptions' => ['style' => 'width: 10.7%'],
                 'template' => '{files}',
                 'buttons'=>[
                     'files'=>function ($url, $model){
-                        return Html::a('<span class="glyphicon glyphicon-search"></span> View', ['admin/course-files-view', 'id' => $model->id], ['class' => 'btn btn-default btn-sm'
+                        return Html::a('<span class="glyphicon glyphicon-search"></span> View', ['auditor/course-files-view', 'id' => $model->id], ['class' => 'btn btn-default btn-sm'
                         ]) 
                 ;
                     }
@@ -113,5 +90,3 @@ $this->params['breadcrumbs'][] = $this->title;
     ]); ?></div>
     </div>
 </div>
-
-<?php ActiveForm::end(); ?>

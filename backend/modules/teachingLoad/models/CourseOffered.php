@@ -627,6 +627,10 @@ class CourseOffered extends \yii\db\ActiveRecord
     public function getCoor(){
         return $this->hasOne(Staff::className(), ['id' => 'coordinator']);
     }
+	
+	public function getAuditor(){
+        return $this->hasOne(Staff::className(), ['id' => 'auditor_staff_id']);
+    }
     
     public function getSemester(){
         return $this->hasOne(Semester::className(), ['id' => 'semester_id']);

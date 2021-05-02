@@ -118,6 +118,8 @@ class Menu
 	}
 	
 	public static function adminCourseFiles(){
+		//kena allow auditors jgk
+		//UJAKA?
 		$esiap_admin = [
                         'label' => 'Course Files Admin',
                         'icon' => 'cog',
@@ -128,6 +130,9 @@ class Menu
 				['label' => 'Summary', 'icon' => 'bar-chart', 'url' => ['/course-files/admin/summary']],
 				
 				['label' => 'All Courses', 'icon' => 'book', 'url' => ['/course-files/admin/index']],
+				
+				
+				
 				['label' => 'Teaching Materials', 'icon' => 'book', 'url' => ['/course-files/material-admin/index']],
 
                  ]
@@ -227,15 +232,20 @@ class Menu
 	}
 	
 	public static function teachingLoad(){
+		//$is_auditor
 		return [
-                        'label' => 'Teaching Load',
+                        'label' => 'Course File',
                         'icon' => 'book',
                         'url' => '#',
                         'items' => [
 				
-				['label' => 'My Teaching Load', 'icon' => 'book', 'url' => ['/course-files/default/teaching-assignment']],
+				['label' => 'My Course File', 'icon' => 'book', 'url' => ['/course-files/default/teaching-assignment']],
 				
-				['label' => 'My Teaching Selection', 'icon' => 'book', 'url' => ['/teaching-load/default/teaching-view']],
+				['label' => 'Internal Auditors', 'icon' => 'check-square-o', 'url' => ['/course-files/auditor/index']],
+				
+				['label' => 'My Teaching Selection', 'icon' => 'hand-pointer-o', 'url' => ['/teaching-load/default/teaching-view']],
+				
+				
 
                  ]
                     ];	
