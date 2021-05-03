@@ -84,14 +84,14 @@ class AppointmentLetterFile
 		</table>
 		<br /><br /><br /><br />
 		<b>'. $this->model->staffInvolved->staff->staff_title . ' ' . $this->model->staffInvolved->staff->user->fullname;
-		
+		$status = $this->model->staffInvolved->staff->staffPositionStatus->status_cat;
 		$show_full = true;
 		if($status == 'Kontrak' or $status == 'Sementara'){
 			$show_full = false;
 		}
 		
 		
-		$status = $this->model->staffInvolved->staff->staffPositionStatus->status_cat;
+		
 		
 		if($show_full  == false){
 			$html .= ' ('.$status.')';
