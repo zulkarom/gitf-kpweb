@@ -80,7 +80,12 @@ public static function showLecTut($offer, $lec_method, $tut_method, $link, $prog
 		$html .=  '<li>';
 		
 		if($lecture->$na == 1){
-			$html .= $lecture->lec_name . ' - <a href="'.Url::to('@web/doc/na.pdf').'" target="_blank">N/A</a> ' . Common::ptick(); 
+			if($link == 'cancel'){
+				$html .= $lecture->lec_name . ' - <a href="'.Url::to('@web/doc/FK4.pdf').'" target="_blank">FKP04 (N/A)</a> ' . Common::ptick(); 
+			}else{
+				$html .= $lecture->lec_name . ' - <a href="'.Url::to('@web/doc/na.pdf').'" target="_blank">N/A</a> ' . Common::ptick(); 
+			}
+			
 		}else{
 			if($lecture->$prg == 1){
 				$boo_lec = true;
@@ -132,7 +137,12 @@ public static function showLecTut($offer, $lec_method, $tut_method, $link, $prog
 		  foreach ($lecture->tutorials as $tutorial) {
 			$html .=  '<li>';
 			if($tutorial->$na == 1){
-				$html .= $lecture->lec_name . $tutorial->tutorial_name . ' - <a href="'.Url::to('@web/doc/na.pdf').'" target="_blank">N/A</a> ' . Common::ptick(); 
+				if($link == 'cancel'){
+					$html .= $lecture->lec_name . $tutorial->tutorial_name . ' - <a href="'.Url::to('@web/doc/na.pdf').'" target="_blank">FKP04 (N/A)</a> ' . Common::ptick(); 
+				}else{
+					$html .= $lecture->lec_name . $tutorial->tutorial_name . ' - <a href="'.Url::to('@web/doc/na.pdf').'" target="_blank">N/A</a> ' . Common::ptick(); 
+				}
+				
 			}else{
 				if($tutorial->$prg == 1){
 					$boo_tut = true;
