@@ -187,7 +187,7 @@ echo UploadFile::fileInput($verify, 'signiture', true)?>
 
 
 <div class="row">
-<div class="col-md-2">
+<div class="col-md-1">
     <?= $form->field($verify, 'tbl4_verify_size')->textInput(['maxlength' => true, 'type' => 'number'
                             ])?>
     </div>

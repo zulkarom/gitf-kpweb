@@ -19,6 +19,7 @@ use backend\models\SemesterForm;
 use backend\models\Semester;
 use backend\modules\courseFiles\models\CourseFilesSearch;
 use backend\modules\courseFiles\models\AssignAuditorForm;
+use backend\modules\esiap\models\CoursePic;
 
 /**
  * Default controller for the `course-files` module
@@ -138,4 +139,36 @@ class AdminController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+	
+	public function actionMakeCoorAsOwnerCode213(){
+		$offers = CourseOffered::find()->where(['semester_id' => '202020211'])->all();
+		foreach($offers as $offer){
+			if($offer->course){
+				if($offer->coor){
+					$staff_id = $offer->coordinator;
+					$course_id = $offer->course_id;
+					$pic = CoursePic::findOne(['staff_id' => $staff_id, 'course_id' => $course_id]);
+					if($pic){
+						echo 'jutawan';echo '<br />';
+					}else{
+						$new = new CoursePic;
+						$new->staff_id = $staff_id;
+						$new->course_id = $course_id;
+						$new->updated_at = new Expression('NOW()');
+						if($new->save()){
+							echo 'inserted';echo '<br />';
+						}
+					}
+					echo $staff_id;echo '<br />';
+					echo $course_id;echo '<br />';echo '<br />';
+					//echo 'course: ' . $offer->course->course_name;echo '<br />';
+					//echo $offer->id;echo $offer->coor->user->fullname;echo '<br />';echo '<br />';
+					
+				}
+				
+			}
+			
+			
+		}
+	}
 }

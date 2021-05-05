@@ -116,6 +116,7 @@ class CourseVersion extends \yii\db\ActiveRecord
             'is_developed' => 'Under Development',
 			'is_published' => 'Published',
 			'preparedsign_file' => 'Signature Upload',
+			'signiture_file' => 'Signature Upload',
         ];
     }
 	
