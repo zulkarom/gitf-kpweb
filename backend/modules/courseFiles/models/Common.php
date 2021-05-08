@@ -6,7 +6,7 @@ use Yii;
 
 class Common
 {
-	public static $add_hour = 10;
+	public static $add_hour = 8;
 	
    public static function pTick($boo = true){
 	   if($boo){
@@ -14,6 +14,11 @@ class Common
 	   }else{
 		   return '<span style="color:red;font-size:16px"><i class="fa fa-warning"></i></span>';
 	   }
+   }
+   
+   public static function currentTime(){
+	   $time = time() + ( self::$add_hour * 60 * 60);
+	return date('d M Y h:i A', $time);
    }
    
    public static function timeLeft($start, $end){

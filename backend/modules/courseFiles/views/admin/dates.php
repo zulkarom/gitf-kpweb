@@ -3,6 +3,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use kartik\date\DatePicker;
 use yii\widgets\ActiveForm;
+use backend\modules\courseFiles\models\Common;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\modules\teachingLoad\models\CourseOfferedSearch */
@@ -67,8 +68,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <i>* Leave it blank to always open.<br />
 * Current time: 
 <?php 
-$time = time() + (6*60*60);
-echo date('d M Y h:i A', $time)
+echo Common::currentTime();
 
 ;?>
 	</i>
