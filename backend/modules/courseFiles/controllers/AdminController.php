@@ -19,6 +19,7 @@ use backend\models\SemesterForm;
 use backend\models\Semester;
 use backend\modules\courseFiles\models\CourseFilesSearch;
 use backend\modules\courseFiles\models\AssignAuditorForm;
+use backend\modules\courseFiles\models\DateSetting;
 use backend\modules\esiap\models\CoursePic;
 
 /**
@@ -97,6 +98,40 @@ class AdminController extends Controller
 			'audit' => $audit
         ]);
     }
+	
+	public function actionDates(){
+		$semester = new SemesterForm;
+		$session = Yii::$app->session;
+        if(Yii::$app->getRequest()->getQueryParam('SemesterForm')){
+            $sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');
+            $semester->semester_id = $sem['semester_id'];
+			$session->set('semester', $sem['semester_id']);
+        }else if($session->has('semester')){
+			$semester->semester_id = $session->get('semester');
+		}else{
+            $semester->semester_id = Semester::getCurrentSemester()->id;
+        }
+		
+		$dates = DateSetting::find()->where(['semester_id' => $semester->semester_id])->one();
+		if($dates === null){
+			$dates = new DateSetting;
+			$dates->semester_id = $semester->semester_id;
+			$dates->save();
+		}
+		
+		if ($dates->load(Yii::$app->request->post())) {
+			if($dates->save()){
+				Yii::$app->session->addFlash('success', "Data Updated");
+				return $this->refresh();
+			}
+		}
+
+		
+		return $this->render('dates', [
+			'dates' => $dates,
+			'semester' => $semester,
+        ]);
+	}
 
     public function actionCourseFilesView($id)
     {

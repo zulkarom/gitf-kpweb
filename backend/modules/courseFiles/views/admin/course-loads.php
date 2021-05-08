@@ -1,12 +1,15 @@
 <?php
 use yii\helpers\Html;
 use yii\helpers\Url;
+use backend\modules\courseFiles\models\Common;
+
+$closed = Common::isDue($offer->semesterDates->open_deadline);
 
 ?>
 <h4><?=$offer->semester->longFormat()?></h4>
 <?php 
 $access = false;
-if($offer->coor_access == 1 and $offer->coor == Yii::$app->user->identity->staff->id){
+if($offer->coor_access == 1 and $offer->coordinator == Yii::$app->user->identity->staff->id and !$closed){
 	$access = true;
 }?>
 <div class="box">

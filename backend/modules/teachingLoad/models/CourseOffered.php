@@ -24,6 +24,7 @@ use backend\modules\courseFiles\models\TutorialCancelFile;
 use backend\modules\courseFiles\models\TutorialReceiptFile;
 use backend\modules\courseFiles\models\TutorialExemptFile;
 use backend\modules\courseFiles\models\Material;
+use backend\modules\courseFiles\models\DateSetting;
 use backend\modules\teachingLoad\models\AppointmentLetter;
 use backend\modules\esiap\models\CourseVersion;
 use backend\modules\esiap\models\CourseAssessment;
@@ -723,5 +724,9 @@ class CourseOffered extends \yii\db\ActiveRecord
 
     public function getAppointmentLetter(){
         return $this->hasMany(AppointmentLetter::className(), ['offered_id' => 'id']);
-    }    
+    }
+	
+	public function getSemesterDates(){
+        return $this->hasOne(DateSetting::className(), ['semester_id' => 'semester_id']);
+    } 
 }

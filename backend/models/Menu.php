@@ -132,10 +132,10 @@ class Menu
 				['label' => 'All Courses', 'icon' => 'book', 'url' => ['/course-files/admin/index']],
 				
 				
-				
 				['label' => 'Teaching Materials', 'icon' => 'book', 'url' => ['/course-files/material-admin/index']],
-
-                 ]
+				['label' => 'Dates Setting', 'icon' => 'cog', 'url' => ['/course-files/admin/dates']],
+                 ],
+				
         ];	
 		return $esiap_admin;
 	}

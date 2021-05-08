@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
-
+use backend\modules\courseFiles\models\Common;
 
 
 /* @var $this yii\web\View */
@@ -53,7 +53,9 @@ $this->params['breadcrumbs'][] = 'View ';
 
 </div>
 
-
+<?php if(!Common::isDue($modelOffer->semesterDates->open_deadline)){?>
 <div class="form-group">
 <a href="<?=Url::to(['submit-course-file', 'id' =>$modelOffer->id ])?>" class="btn btn-primary" data-confirm="Are you sure to submit this course file?">Submit Course File</a>
 </div>
+
+<?php } ?>

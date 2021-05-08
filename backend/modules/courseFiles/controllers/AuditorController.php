@@ -19,6 +19,7 @@ use backend\models\SemesterForm;
 use backend\models\Semester;
 use backend\modules\courseFiles\models\AuditorSearch;
 use backend\modules\esiap\models\CourseVersion;
+use backend\modules\courseFiles\models\DateSetting;
 
 /**
  * Default controller for the `course-files` module
@@ -50,12 +51,15 @@ class AuditorController extends Controller
     {
 		
         $semester = new SemesterForm;
-
+		$session = Yii::$app->session;
         if(Yii::$app->getRequest()->getQueryParam('SemesterForm')){
             $sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');
             $semester->semester_id = $sem['semester_id'];
             $semester->str_search = $sem['str_search'];
-        }else{
+			$session->set('semester', $sem['semester_id']);
+        }else if($session->has('semester')){
+			$semester->semester_id = $session->get('semester');
+		}else{
             $semester->semester_id = Semester::getCurrentSemester()->id;
         }
 
@@ -63,11 +67,14 @@ class AuditorController extends Controller
         $searchModel->semester = $semester->semester_id;
         $searchModel->search_course = $semester->str_search;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+		
+		$dates = DateSetting::find()->where(['semester_id' => $semester->semester_id])->one();
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'semester' => $semester,
+			'dates' => $dates
         ]);
     }
 

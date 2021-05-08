@@ -84,6 +84,14 @@ class SemesterController extends Controller
 			$model->setIsCurrentOpen();
 			
 			if($model->save()){
+				//if(array_key_exists('courseFiles',Yii::$app->modules)){
+					$dates = new \backend\modules\courseFiles\models\DateSetting;
+					$dates->semester_id = $model->id;
+					if($dates->save()){
+						$dates->flashError();
+					}
+				//}
+				Yii::$app->session->addFlash('success', "Data Updated");
 				return $this->redirect(['index']);
 			}
             

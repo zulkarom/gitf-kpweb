@@ -30,7 +30,7 @@ table.detail-view th {
         'model' => $model,
         'attributes' => [
 		[
-				'label' => 'Submitted Time',
+				'label' => 'Submission Time',
 				'format' => 'datetime',
 				'value' => function($model){
 					return $model->teaching_submit_at;
@@ -38,7 +38,7 @@ table.detail-view th {
 				
 			],
 		[
-				'label' => 'Staff Name & Designation',
+				'label' => 'Staff Name',
 				'value' => function($model){
 					return $model->staff_title . ' ' . $model->user->fullname ;
 				}
@@ -47,7 +47,7 @@ table.detail-view th {
           
 			
 			[
-                'label' => 'Courses Taught',
+                'label' => 'Taught Courses',
 				'format' => 'html',
                 'value' => function($model){
 					return $model->getTaughtCoursesStr("<br />");
@@ -56,7 +56,7 @@ table.detail-view th {
 			
 			
 			[
-                'label' => 'Four Courses Able to Teach',
+                'label' => 'Courses Able to Teach',
 				'format' => 'html',
                 'value' => function($model){
 					return $model->getTeachCoursesStr("<br />");

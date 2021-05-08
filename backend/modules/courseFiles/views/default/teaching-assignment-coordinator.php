@@ -5,8 +5,9 @@ use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 use yii\bootstrap\Modal;
+use backend\modules\courseFiles\models\Common;
 
-
+$closed = Common::isDue($offer->semesterDates->open_deadline);
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
@@ -17,7 +18,7 @@ $this->title = 'Coordinator';
 $this->params['breadcrumbs'][] = ['label' => 'My Course File', 'url' => ['/course-files/default/teaching-assignment']];
 $this->params['breadcrumbs'][] = $this->title;
 
-
+if(!$closed){
 ?>
 
 
@@ -712,5 +713,5 @@ function rowFile($offer, $type){
 	return $html;
 }
 
-
+		}
 ?>

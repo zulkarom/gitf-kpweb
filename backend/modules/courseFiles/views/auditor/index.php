@@ -1,10 +1,13 @@
 <?php 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use backend\modules\courseFiles\models\Common;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\modules\teachingLoad\models\CourseOfferedSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+
+$closed = Common::isDue($dates->audit_deadline);
 
 $this->title = 'Internal Auditors';
 $this->params['breadcrumbs'][] = $this->title;
@@ -23,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 </div>
 
-
+<div class="form-group"><i style="color:red"><?=Common::deadlineMessage($dates->audit_deadline)?></i></div>
 
 
 <div class="box">
@@ -89,10 +92,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 'contentOptions' => ['style' => 'width: 10.7%'],
                 'template' => '{files}',
                 'buttons'=>[
-                    'files'=>function ($url, $model){
-                        return Html::a('<span class="glyphicon glyphicon-search"></span> View', ['auditor/course-files-view', 'id' => $model->id], ['class' => 'btn btn-default btn-sm'
+                    'files'=>function ($url, $model) use ($closed){
+						if($closed){
+							return '--closed--';
+						}else{
+							return Html::a('<span class="glyphicon glyphicon-search"></span> View', ['auditor/course-files-view', 'id' => $model->id], ['class' => 'btn btn-default btn-sm'
                         ]) 
                 ;
+						}
+                        
                     }
                    
 

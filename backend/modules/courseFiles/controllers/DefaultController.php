@@ -12,7 +12,7 @@ use yii\db\Expression;
 
 use backend\modules\students\models\Student;
 use backend\modules\students\models\StudentSearch;
-
+use backend\modules\courseFiles\models\DateSetting;
 use backend\modules\teachingLoad\models\Staff;
 use backend\modules\teachingLoad\models\CourseOffered;
 use backend\modules\teachingLoad\models\StaffInvolved;
@@ -89,19 +89,23 @@ class DefaultController extends Controller
         ];
     }
     public function actionTeachingAssignment(){
-        
         $semester = new SemesterForm;
-
+		$session = Yii::$app->session;
         if(Yii::$app->getRequest()->getQueryParam('SemesterForm')){
             $sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');
             $semester->semester_id = $sem['semester_id'];
-        }else{
+			$session->set('semester', $sem['semester_id']);
+        }else if($session->has('semester')){
+			$semester->semester_id = $session->get('semester');
+		}else{
             $semester->semester_id = Semester::getCurrentSemester()->id;
         }
 
         $model = new Staff();
         $modelItem = new Checklist();
         $model->semester = $semester->semester_id;
+		
+		$dates = DateSetting::find()->where(['semester_id' => $semester->semester_id])->one();
 
 		$myInv = StaffInvolved::findOne(['staff_id' => Yii::$app->user->identity->staff->id, 'semester_id' => $semester->semester_id]);
 
@@ -109,7 +113,8 @@ class DefaultController extends Controller
             'model' => $model,
             'modelItem' => $modelItem,
             'semester' => $semester,
-			'myInv' => $myInv
+			'myInv' => $myInv,
+			'dates' => $dates
         ]);
 
 

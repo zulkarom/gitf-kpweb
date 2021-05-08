@@ -3,24 +3,29 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
+use backend\modules\courseFiles\models\Common;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
 
 $this->title = 'My Course Files';
 $this->params['breadcrumbs'][] = $this->title;
+$closed = Common::isDue($dates->open_deadline);
 ?>
 
 <?= $this->render('teaching-assignment-form', [
         'model' => $semester,
     ]) ?>
  
+<div class="form-group"><i style="color:red"><?=Common::deadlineMessage($dates->open_deadline)?></i></div>
 
 <div class="teaching-assignment">
 <?php $form = ActiveForm::begin(); ?>
 
 <div class="row">
     <div class="col-sm-6">
+	
+	
 	
 	<?php  if($myInv){ ?>
       <div class="box">
@@ -63,12 +68,12 @@ $this->params['breadcrumbs'][] = $this->title;
 							  
 							  if($app->steva_file){
 								  echo '<a href="'.  Url::to(['appointment/download-file', 'attr' => 'steva','id' => $app->id]) .' " class="btn btn-default btn-sm" target="_blank"><span class="fa fa-download" ></span></a> ';
-								  if($status == 0){
+								  if($status == 0 and !$closed){
 									  echo '<a href="'.  Url::to(['default/student-evaluation', 'id' => $app->id]) .' " class="btn btn-default btn-sm" ><span class="fa fa-pencil"></span></a>';
 								  }
 								  
 								  }else{
-								  if($status == 0){
+								  if($status == 0 and !$closed){
 									  echo '<a href="'.  Url::to(['default/student-evaluation', 'id' => $app->id]) .' " class="btn btn-default btn-sm" ><span class="fa fa-upload"></span> Upload</a>';
 								  }
 								  
@@ -126,12 +131,12 @@ $this->params['breadcrumbs'][] = $this->title;
 							  $prg = '';
 							  if($myInv->timetable_file){
 								  echo '<a href="'.  Url::to(['staff/download-file', 'attr' => 'timetable','id' => $myInv->id]) .' " class="btn btn-default btn-sm" target="_blank"><span class="fa fa-download" ></span></a> ';
-								  if($myInv->editable){
+								  if($myInv->editable and !$closed){
 									  echo '<a href="'.  Url::to(['default/timetable', 's' => $semester->semester_id]) .' " class="btn btn-default btn-sm" ><span class="fa fa-pencil"></span></a>';
 								  }
 								  
 								  }else{
-								  if($myInv->editable){
+								  if($myInv->editable and !$closed){
 									  echo '<a href="'.  Url::to(['default/timetable', 's' => $semester->semester_id]) .' " class="btn btn-default btn-sm" ><span class="fa fa-upload"></span> Upload</a>';
 								  }
 								  
@@ -150,8 +155,8 @@ $this->params['breadcrumbs'][] = $this->title;
           </div>
         </div>
 		<?php }else {
-			echo '<h4>No teaching load as yet for this semester</h4>
-			<p>If you think this is a mistake, do ask the admin to re-run the staff involved for the teaching load</p>
+			echo '<h4>You have no teaching load for this semester</h4>
+			<p>If you think this is a mistake, do ask the admin to re-run the staff involved for the teaching loads</p>
 			';
 		}?>
 		<?php 
@@ -184,7 +189,7 @@ $this->params['breadcrumbs'][] = $this->title;
 							  <td>'.$coor->course->course_code.' '.$coor->course->course_name.'</td>
 							  <td>'. $coor->statusName .'</td>
 							  <td>';
-							  if($coor->status == 0 or $coor->status == 20){
+							  if(($coor->status == 0 or $coor->status == 20) and !$closed){
 								  echo '<a href="' . Url::to(['default/teaching-assignment-coordinator', 'id' => $coor->id]) . '" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-pencil"></span> Update</a>';
 								  }else{
 								  echo '<a href="' . Url::to(['default/coordinator-view', 'id' => $coor->id]) . '" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-search"></span> View</a>';
@@ -253,10 +258,10 @@ $this->params['breadcrumbs'][] = $this->title;
 							  <td>'.$lecture->courseLecture->lec_name.'</td>
 							  
 							  <td>';
-							  if($status == 0){
+							  if(($status == 0 or $status == 20) and !$closed){
 								  echo '<a href="' . Url::to(['default/teaching-assignment-lecture', 'id' => $lecture->lecture_id]) . '" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-pencil"></span> Update</a>';
 								  }else{
-								  echo '<i>--submitted--</i>';
+								  echo '<i>--closed--</i>';
 							  }	
 							  
 							  
@@ -317,10 +322,10 @@ $this->params['breadcrumbs'][] = $this->title;
 							  <td>'.$lec . $tutorial->tutorialLec->tutorial_name.'</td>
 							  
 							  <td>';
-							  if($status==0){
+							   if(($status == 0 or $status == 20) and !$closed){
 								  echo '<a href="' . Url::to(['default/teaching-assignment-tutorial', 'id' => $tutorial->tutorial_id]) . '" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-pencil"></span> Update</a>';
 								  }else{
-								  echo '<i>--submitted--</i>';
+								  echo '<i>--closed--</i>';
 							  }	
 							  
 							  

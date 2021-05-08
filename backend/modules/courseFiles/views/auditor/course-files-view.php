@@ -5,7 +5,10 @@ use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use yii\bootstrap\Modal;
 use common\models\UploadFile;
+use backend\modules\courseFiles\models\Common;
 
+$closed = Common::isDue($modelOffer->semesterDates->audit_deadline);
+if(!$closed){
 $modelOffer->file_controller = 'auditor';
 
 
@@ -107,7 +110,7 @@ echo Html::submitButton('Submit Audit Review',
 	
 	<?php
 }
-
+}
 ?>
 
 
