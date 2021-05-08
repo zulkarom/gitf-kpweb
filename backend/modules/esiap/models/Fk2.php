@@ -652,13 +652,13 @@ Tarikh: <br />
 
 <td>
 Tarikh Kelulusan Fakulti/ Pusat<br/>
-<i>Date of Faculty/ Centre’s Approval:</i> '. $this->model->senateDate .'
+<i>Date of Faculty/ Centre’s Approval:</i> '. $this->model->facultyDate .'
 <br/><br/>
 
             
 
 Tarikh Kelulusan Senat:<br/>
-<i>Date of Senate’s Approval:</i> 
+<i>Date of Senate’s Approval:</i>  '. $this->model->senateDate .'
 <br/><br/>
 
 <b>Disahkan oleh:<br/>
@@ -722,7 +722,10 @@ $this->pdf->lineFooterTable = false;
 		$file = Yii::getAlias('@upload/'. $sign);
 		$f = basename($file);
 		$paste = 'images/temp/'. $f;
-		copy($file, $paste);
+		if($sign){
+			copy($file, $paste);
+		}
+		
 
 		$y = $this->pdf->getY();
 		$this->verify_y = $this->pdf->getY();

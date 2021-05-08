@@ -526,6 +526,8 @@ $this->pdf->writeHTML($tbl, true, false, false, false, '');
 	
 	public $verify_y;
 	
+	public $prepare_y_start;
+	
 	public function signiture(){
 		$tbl = <<<EOD
 <p></p>
@@ -554,28 +556,9 @@ Nama Penyelaras/  Pensyarah Kursus<br />
 
 EOD;
 
+$this->prepare_y_start = $this->pdf->getY() + 2;
 $this->pdf->writeHTML($tbl, true, false, false, false, '');
 $this->prepare_y = $this->pdf->getY();
-	}
-	public function signiture2(){
-		$tbl = <<<EOD
-<table cellpadding="10" style="font-size:10pt" nobr="true" border="0">
-<tr><td width="240">Disahkan oleh/Verified by:</td><td width="700">
-
-
-</td></tr>  			
-<tr><td>Tarikh/<i>Date</i>:</td><td>
-
-</td></tr>	
-</table>
-<br /><br /><br /><br /><br /><br /><br />
-* Sebarang perubahan kepada maklumat atau kandungan kursus perlu mendapat kelulusan Fakulti/ Pusat atau Senat mengikut kesesuaian.<br />
-   <i> Any change to the course information or content must be approved by the Faculty/ Centre or the Senate wherever applicable.</i>
-	
-EOD;
-
-$this->pdf->writeHTML($tbl, true, false, false, false, '');
-$this->verify_y = $this->pdf->getY();
 	}
 	
 	
@@ -588,7 +571,10 @@ $this->verify_y = $this->pdf->getY();
 		$file = Yii::getAlias('@upload/'. $sign);
 		$f = basename($file);
 		$paste = 'images/temp/'. $f;
-		copy($file, $paste);
+		if($sign){
+			copy($file, $paste);
+		}
+		
 
 		$y = $this->prepare_y;
 		
@@ -617,7 +603,7 @@ $this->verify_y = $this->pdf->getY();
 		$col_sign = 410 ;
 		$html = '<table>
 
-		
+		<tr><td><br /><br /></td><td></td></tr>
 		<tr>
 		<td width="'. $col1 .'"></td>
 		
@@ -656,9 +642,33 @@ $this->verify_y = $this->pdf->getY();
 		$tbl = <<<EOD
 		$html
 EOD;
-
+		//$this->pdf->setY($this->prepare_y_start);
 		$this->pdf->writeHTML($tbl, true, false, false, false, '');
 	}
+	
+	public function signiture2(){
+		$tbl = <<<EOD
+<table cellpadding="10" style="font-size:10pt" nobr="true" border="0">
+<tr><td width="240">Disahkan oleh/Verified by:</td><td width="700">
+
+
+</td></tr>  			
+<tr><td>Tarikh/<i>Date</i>:</td><td>
+
+</td></tr>	
+</table>
+<br /><br /><br /><br /><br /><br /><br />
+* Sebarang perubahan kepada maklumat atau kandungan kursus perlu mendapat kelulusan Fakulti/ Pusat atau Senat mengikut kesesuaian.<br />
+   <i> Any change to the course information or content must be approved by the Faculty/ Centre or the Senate wherever applicable.</i>
+	
+EOD;
+$this->pdf->setY($this->prepare_y);
+$this->pdf->writeHTML($tbl, true, false, false, false, '');
+$this->verify_y = $this->pdf->getY();
+	}
+	
+	
+	
 	
 	public function signitureVerify(){
 		if(Yii::$app->params['faculty_id'] != 1){
@@ -735,7 +745,7 @@ EOD;
 		$tbl = <<<EOD
 		$html
 EOD;
-
+		
 		$this->pdf->writeHTML($tbl, true, false, false, false, '');
 	}
 

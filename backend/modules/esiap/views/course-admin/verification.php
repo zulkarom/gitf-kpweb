@@ -29,7 +29,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 </div>
 
-<?php $form = ActiveForm::begin(); ?>
 
     <div class="box box-primary">
 <div class="box-header"></div>
@@ -65,7 +64,6 @@ echo GridView::widget([
 		'options' => [ 'style' => 'table-layout:fixed;' ],
        // 'filterModel' => $searchModel,
         'columns' => [
-			['class' => 'yii\grid\CheckboxColumn'],
             ['class' => 'yii\grid\SerialColumn'],
 		
             
@@ -115,7 +113,7 @@ echo GridView::widget([
             ],
 			
 			[
-                'label' => 'Verification By',
+                'label' => 'Verification',
                 'format' => 'html',
                 'value' => function($model){
 					if($model->status == 20 and $model->verifiedBy){
@@ -140,6 +138,17 @@ echo GridView::widget([
                 }
             ],
 			
+			['class' => 'yii\grid\ActionColumn',
+                 'contentOptions' => ['style' => 'width: 10%'],
+                'template' => '{update}',
+                //'visible' => false,
+                'buttons'=>[
+                    'update'=>function ($url, $model) {
+                        return Html::a('<span class="fa fa-pencil"></span> Update',['verification-page', 'id' => $model->id],['class'=>'btn btn-primary btn-sm']);
+                    },
+                ],
+            ],
+			
 
 
             
@@ -150,93 +159,13 @@ echo GridView::widget([
 
 
 
-<div class="box box-info">
-<div class="box-body">
-<div class="row">
-
-<div class="col-md-3">
-
-<?php 
-$verify->verified_at = date('Y-m-d');
-?>
- <?=$form->field($verify, 'verified_at')->widget(DatePicker::classname(), [
-    'removeButton' => false,
-    'pluginOptions' => [
-        'autoclose'=>true,
-        'format' => 'yyyy-mm-dd',
-        'todayHighlight' => true,
-        
-    ],
-    
-    
-]);
-?>
-
-</div>
-
-</div>
-
-<br />
-
-<?php 
-
-
-$verify->file_controller = 'course-admin';
-echo UploadFile::fileInput($verify, 'signiture', true)?>
 
 
 
-<div class="row">
-<div class="col-md-1">
-    <?= $form->field($verify, 'tbl4_verify_size')->textInput(['maxlength' => true, 'type' => 'number'
-                            ])?>
-    </div>
-<div class="col-md-1">
-    <?= $form->field($verify, 'tbl4_verify_y')->textInput(['maxlength' => true, 'type' => 'number'
-                            ]) ?>
-    </div>
-
-</div>
-
-<?php /* =Html::submitButton('<span class="fa fa-save"></span> SAVE SIGNITURE', 
-    ['class' => 'btn btn-default btn-sm', 'name' => 'actiontype', 'value' => 'save',
-    ]) */?> 
-	
-</div>
-</div>
 
 
 
-<div class="form-group">
-        
-		
-	
-	<?= Html::submitButton('<span class="fa fa-check"></span> Verify Selected', ['class' => 'btn btn-success', 'name'=> 'actiontype', 'value' => 'verify']) ?> 
 
-<?= Html::submitButton('<span class="fa fa-remove"></span> Unverify Selected', ['class' => 'btn btn-warning', 'name'=> 'actiontype', 'value' => 'unverify']) ?>
-
-    </div>
-
-
-
-<div class="form-group">
-        
-
-    </div>
-
-<?php ActiveForm::end(); ?>
-
-
-<?php 
-
-$js = '
-$("#checkAll").click(function(){
-    $(\'input:checkbox\').not(this).prop(\'checked\', this.checked);
-});
-
-';
-$this->registerJs($js);
-?>
 
 
 </div>

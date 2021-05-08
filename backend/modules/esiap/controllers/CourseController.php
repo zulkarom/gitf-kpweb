@@ -880,7 +880,12 @@ class CourseController extends Controller
 					if($version->preparedsign_file){
 						$version->prepared_at = new Expression('NOW()');
 						$version->updated_at = new Expression('NOW()');
-						$version->status = 10;
+						if($version->status == 0){
+							$version->status = 10;
+						}else if($version->status == 13){
+							$version->status = 17;
+						}
+						
 						if($version->save()){
 							return $this->redirect(['course/view-course','course' => $course]);
 						}

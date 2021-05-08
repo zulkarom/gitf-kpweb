@@ -69,6 +69,9 @@ class Staff extends \yii\db\ActiveRecord
 	public $position_name;
 	public $staff_label;
 	public $verified_at;
+	public $faculty_at;
+	public $senate_at;
+	public $note;
 
 	
 
@@ -178,7 +181,8 @@ class Staff extends \yii\db\ActiveRecord
 			'hq_institution' => 'Awarding Institution',
 			'hq_country' => 'Country',
 			'tbl4_verify_y' => 'Table 4 Adj Y', 
-			'tbl4_verify_size' =>  'Table 4 Size Adj'
+			'tbl4_verify_size' =>  'Table 4 Size Adj',
+			'signiture_file' => 'Signature Upload',
         ];
     }
 	

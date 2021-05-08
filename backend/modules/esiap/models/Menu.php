@@ -24,7 +24,7 @@ class Menu
 				$version = $course->developmentVersion;
 				$status = $version->status;
 				$show = false;
-				if($status == 0 and $course->IAmCoursePic()){
+				if(in_array($status, [0,13]) and $course->IAmCoursePic()){
 					$show = true;
 				}
 				$course_focus  = [

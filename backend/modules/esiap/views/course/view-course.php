@@ -58,7 +58,13 @@ if(array_key_exists('course-files',Yii::$app->modules)){
  ?> 
 
 </div>  <br />
+<?php 
+$version = $model->developmentVersion;
 
+if(in_array($version->status, [0,13])){
+	
+
+?>
 <div class="box box-solid">
 <div class="box-header">
 <i class="fa fa-bar-chart-o"></i>
@@ -68,7 +74,7 @@ if(array_key_exists('course-files',Yii::$app->modules)){
 <div class="box-body">
 <?php 
 $per = $model->developmentVersion->progress;
-$version = $model->developmentVersion;
+
 $profile = percent($version->pgrs_info);
 $clo = percent($version->pgrs_clo);
 $plo = percent($version->pgrs_plo);
@@ -115,6 +121,28 @@ $ref = percent($version->pgrs_ref);
 </div>
 </div>
 
+<?php } 
+
+if($version->status == 13){
+	?>
+	
+	<div class="box box-danger">
+<div class="box-header">
+<h3 class="box-title">Verification Remark</h3>
+</div>
+<div class="box-body">
+<?php echo nl2br(Html::encode($version->verified_note));?>
+
+</div>
+</div>
+	
+	
+	<?php
+}
+?>
+
+
+
 
 <?=$this->render('_view_course', [
             'model' => $model,
@@ -129,7 +157,7 @@ $ref = percent($version->pgrs_ref);
 
 
 <?php 
-if($version->status == 0 and $model->IAmCoursePic()){
+if(in_array($version->status, [0, 13]) and $model->IAmCoursePic()){
 $form = ActiveForm::begin(); 
 
 if($version->prepared_by == 0){

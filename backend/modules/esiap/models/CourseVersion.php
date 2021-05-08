@@ -61,6 +61,12 @@ class CourseVersion extends \yii\db\ActiveRecord
 			
 			[['status', 'verified_by', 'verified_at'], 'required', 'on' => 'verify'],
 			
+			[['status', 'verified_note'], 'required', 'on' => 'verify_reject'],
+			
+			[['status', 'verified_at', 'verified_by', 'faculty_approve_at', 'senate_approve_at', 'verifiedsign_file'], 'required', 'on' => 'verify_approve'],
+			
+			//verify_reject
+			
 			[['status'], 'required', 'on' => 'status'],
 			
 			[['senate_approve_at', 'faculty_approve_at', 'senate_approve_show'], 'required', 'on' => 'save_date'],
@@ -83,7 +89,7 @@ class CourseVersion extends \yii\db\ActiveRecord
 			
             [['version_name'], 'string', 'max' => 200],
 			
-			[['syllabus_break'], 'string'],
+			[['syllabus_break', 'verified_note'], 'string'],
 			
 			[['prepared_adj_y', 'verified_adj_y', 'prepared_size', 'verified_size'], 'number'],
 			
@@ -330,12 +336,22 @@ class CourseVersion extends \yii\db\ActiveRecord
 			break;
 			
 			case 10:
-			$status = 'SUBMITTED';
+			$status = $arr[10];
+			$color = 'info';
+			break;
+			
+			case 13:
+			$status = $arr[13];
+			$color = 'warning';
+			break;
+			
+			case 17:
+			$status = $arr[17];
 			$color = 'info';
 			break;
 			
 			case 20:
-			$status = 'VERIFIED';
+			$status = $arr[20];
 			$color = 'success';
 			break;
 		}
@@ -343,7 +359,7 @@ class CourseVersion extends \yii\db\ActiveRecord
 	}
 	
 	public function getStatusArray(){
-		return [0=>'DRAFT', 10=>'SUBMITTED', 20 => 'VERIFIED'];
+		return [0=>'DRAFT', 10=>'SUBMIT', 13 => 'REUPDATE', 17 => 'RESUBMIT', 20 => 'VERIFIED'];
 	}
 	
 	public function getLabelActive(){

@@ -1,0 +1,2 @@
+ALTER TABLE `tld_course_offered` ADD `verified_note` TEXT NULL DEFAULT NULL AFTER `verified_by`;
+ALTER TABLE `sp_course_version` ADD `verified_note` TEXT NULL DEFAULT NULL AFTER `verifier_position`;

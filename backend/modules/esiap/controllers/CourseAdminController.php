@@ -121,7 +121,7 @@ class CourseAdminController extends Controller
 						$filepath = 'course-mgt/' . $verify->signiture_file;
 						$mirror = Yii::getAlias('@upload/' . $filepath);
 						if(empty($verify->signiture_file) and !is_file($copy )){
-								Yii::$app->session->addFlash('error', "Please put your signiture first!.");
+								Yii::$app->session->addFlash('error', "Please put your signature first!.");
 						}else{
 							
 							//ok kena check file ni dah ada ke belum
@@ -137,7 +137,7 @@ class CourseAdminController extends Controller
 									copy($copy, $mirror);
 									$verified_file = $filepath;
 								}else{
-									Yii::$app->session->addFlash('error', "Please put your signiture first!.");
+									Yii::$app->session->addFlash('error', "Please put your signature first!.");
 								}
 								
 							}
@@ -211,7 +211,84 @@ class CourseAdminController extends Controller
         ]);
     }
 	
+	public function actionVerificationPage($id){
+		if(!Access::ICanVerify()){
+			return $this->render('forbidden');
+		}
 
+		$verify = $this->findVerifier();
+		$verify->scenario = 'verify_course';
+		
+		$reject_form = $this->findVersion($id);
+		$reject_form->scenario = 'verify_reject';
+		
+		$version = $this->findVersion($id);
+		$version->scenario = 'verify_approve';
+		
+		if ($version->load(Yii::$app->request->post())) {
+			
+				$courses = $version->id;
+				
+				$copy = Yii::getAlias('@upload/' . $verify->signiture_file);
+				$filepath = 'course-mgt/' . $verify->signiture_file;
+				$mirror = Yii::getAlias('@upload/' . $filepath);
+				if(empty($verify->signiture_file) and !is_file($copy )){
+						Yii::$app->session->addFlash('error', "Please put your signiture first!.");
+				}else{
+					
+					//ok kena check file ni dah ada ke belum
+					$verified_file = '';
+					if (is_file($mirror)) {
+						$verified_file = $filepath;
+					}else{
+						$dir = dirname($mirror);
+						if (!is_dir($dir)) {
+							FileHelper::createDirectory($dir);
+						}
+						if (is_file($copy)){
+							copy($copy, $mirror);
+							$verified_file = $filepath;
+						}else{
+							Yii::$app->session->addFlash('error', "Please put your signiture first!.");
+						}
+						
+					}
+					$position = StaffMainPosition::findOne(['staff_id' => Yii::$app->user->identity->staff->id]);
+					$position_name = '';
+					if($position){
+						$position_name = $position->position_name;
+					}else{
+						$department = Department::findOne(['head_dep' => Yii::$app->user->identity->staff->id]);
+						if($department){
+							$position_name = $department->position_stamp;
+						}
+					}
+					$date = $verify->verified_at;
+					$version->verified_by = Yii::$app->user->identity->id;
+					$version->status = 20; //verified
+					$version->verifiedsign_file =  $verified_file;
+					$version->verifier_position = $position_name;
+					if($version->save()){
+						Yii::$app->session->addFlash('success', "Verification successful.");
+						return $this->redirect(['verification']);
+					}
+				}
+		}
+		
+		if ($reject_form->load(Yii::$app->request->post())) {
+			$reject_form->status = 13;
+			if($reject_form->save()){
+				Yii::$app->session->addFlash('success', "Back to update successful");
+				return $this->redirect(['verification']);
+			}
+		}
+		
+		return $this->render('verification-page', [
+            'version' => $version,
+			'verify' => $verify,
+			'reject_form' => $reject_form
+        ]);
+	}
 
 	
 	protected function findVerifier(){
