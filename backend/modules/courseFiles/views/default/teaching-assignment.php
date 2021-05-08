@@ -261,7 +261,7 @@ $closed = Common::isDue($dates->open_deadline);
 							  if(($status == 0 or $status == 20) and !$closed){
 								  echo '<a href="' . Url::to(['default/teaching-assignment-lecture', 'id' => $lecture->lecture_id]) . '" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-pencil"></span> Update</a>';
 								  }else{
-								  echo '<i>--closed--</i>';
+								  echo '<i>closed</i>';
 							  }	
 							  
 							  
@@ -325,7 +325,7 @@ $closed = Common::isDue($dates->open_deadline);
 							   if(($status == 0 or $status == 20) and !$closed){
 								  echo '<a href="' . Url::to(['default/teaching-assignment-tutorial', 'id' => $tutorial->tutorial_id]) . '" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-pencil"></span> Update</a>';
 								  }else{
-								  echo '<i>--closed--</i>';
+								  echo '<i>closed</i>';
 							  }	
 							  
 							  

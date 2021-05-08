@@ -6,7 +6,7 @@ use Yii;
 
 class Common
 {
-	public static $add_hour = 6;
+	public static $add_hour = 8;
 	
    public static function pTick($boo = true){
 	   if($boo){

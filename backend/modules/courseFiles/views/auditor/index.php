@@ -94,7 +94,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'buttons'=>[
                     'files'=>function ($url, $model) use ($closed){
 						if($closed){
-							return '--closed--';
+							return 'closed';
 						}else{
 							return Html::a('<span class="glyphicon glyphicon-search"></span> View', ['auditor/course-files-view', 'id' => $model->id], ['class' => 'btn btn-default btn-sm'
                         ]) 
