@@ -387,7 +387,7 @@ class CourseVersion extends \yii\db\ActiveRecord
 	}
 	
 	public function niceDate($date){
-		if($date == '0000-00-00'){
+		if($date == null or $date == '0000-00-00'){
 			return '';
 		}else{
 			return date('d/m/Y',strtotime($date));
