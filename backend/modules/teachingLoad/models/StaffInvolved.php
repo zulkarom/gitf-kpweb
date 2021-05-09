@@ -88,7 +88,7 @@ class StaffInvolved extends \yii\db\ActiveRecord
 			foreach($appoints as $appoint){
 				$status = $appoint->courseOffered->status;
 				//echo $status.'*';
-				if($status == 0){
+				if($status == 0 or $status == 20){
 					$boo = $boo == false ? false : true;
 				}else{
 					$boo = false;
