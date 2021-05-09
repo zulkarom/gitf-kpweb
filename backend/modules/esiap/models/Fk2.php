@@ -629,13 +629,13 @@ $html .='</table></td></tr></table>
   <i> Final Assessment is 0% if the course involves Final Exam only and vice versa. </i>
 
 ';
-
+$border = 'style="border: 1px solid #000000"';
 $html .='<br/><br/>
 
 
-<table border="1" cellpadding="10" nobr="true" style="font-size:12pt">
+<table cellpadding="10" nobr="true" style="font-size:12pt">
 <tr>
-<td>
+<td '.$border.'>
 <b>Disediakan oleh:<br/>
 <i>Prepared by:</i></b>
 <br/><br/>
@@ -650,7 +650,7 @@ Tarikh: <br />
 
 </td>
 
-<td>
+<td '.$border.'>
 Tarikh Kelulusan Fakulti/ Pusat<br/>
 <i>Date of Faculty/ Centre’s Approval:</i> '. $this->model->facultyDate .'
 <br/><br/>
@@ -682,15 +682,23 @@ Tarikh:<br/>
 
 </td>
 </tr>
-</table>';
+<tr>
 
+<td colspan="2">
+<br />';
 $ast = 10;
 $wnote = $tab_syl - $ast;
-
-$html .= '<br /><table border="0" cellpadding="0" style="font-size:10pt">
+$html .= '<table border="0" cellpadding="0" style="font-size:10pt">
 <tr><td width="'.$ast.'">*</td><td width="'.$wnote.'">Sebarang perubahan kepada maklumat kursus (kecuali bahan rujukan) perlu mendapat kelulusan Fakulti/ Pusat atau Senat mengikut kesesuaian.</td></tr>
 <tr><td></td><td><i>Any changes to the course information (except for sources of references) must be approved by the Faculty/ Centre or the Senate, wherever applicable.</i></td></tr>
+</table>
+
+</td>
+</tr>
 </table>';
+
+
+
 
 $html .='</td>
 </tr>
