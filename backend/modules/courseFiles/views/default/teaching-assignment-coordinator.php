@@ -28,7 +28,12 @@ if(!$closed){
 </div>
 
 <br />
-<?php echo '<a href="' . Url::to(['default/coordinator-view', 'id' => $offer->id]) . '" class="btn btn-primary" ><span class="glyphicon glyphicon-search"></span> Preview Overall & Submit</a>';?>
+<?php echo '<a href="' . Url::to(['default/coordinator-view', 'id' => $offer->id]) . '" class="btn btn-primary" ><span class="glyphicon glyphicon-search"></span> Preview Overall & Submit</a> ';?>
+
+<?php if($offer->status == 20){
+	echo '<a href="' . Url::to(['auditor/download-file', 'attr' => 'auditor', 'id' => $offer->id]) . '" class="btn btn-warning" target="_blank"><span class="fa fa-check"></span> Auditor\'s Report</a>';
+}?>
+
 
 
 <h4>Course Information & Teaching Material</h4>
