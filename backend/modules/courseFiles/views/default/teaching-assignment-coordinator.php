@@ -672,6 +672,11 @@ if($material){
 
 
 <?php 
+
+
+		}
+		
+		
 function rowFile($offer, $type){
 	$name ='';
 	$i = 1;
@@ -712,6 +717,4 @@ function rowFile($offer, $type){
 	}
 	return $html;
 }
-
-		}
 ?>
