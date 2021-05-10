@@ -498,7 +498,7 @@ $this->pdf->writeHTML($tbl, true, false, false, false, '');
 if($this->offer){
 	if($this->cqi == 1){
 		$html .= $this->offer->course_cqi;
-	}else if($this->cqi == 0){
+	}else if($this->cqi == 2){
 		$html .= 'Tiada rancangan penambahbaikan kursus<br />
 		<i>No plan for course improvement</i>
 		';
