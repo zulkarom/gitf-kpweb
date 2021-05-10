@@ -68,7 +68,8 @@ $this->params['breadcrumbs'][] = $this->title;
         if($model->course){
         $i = 1;
           foreach($model->course as $course){
-        	echo '<tr><td>'.$i.'</td>
+			  if($course->course){
+				  echo '<tr><td>'.$i.'</td>
               	<td>'.$course->course->course_code.'</td>
               	<td>'.$course->course->course_name.'</td>
                 <td>'.$course->countLectures.'</td>
@@ -81,6 +82,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 <td><input id="'.$course->course->course_code.'-prefix_tutorial" name="Course['.$course->id.'][prefix_tutorial]" type="text" style="width:100%" value="'.$course->prefix_tut.'" /></td>';
        
                 $i++;
+			  }
+        	
           }
         }
               ?>

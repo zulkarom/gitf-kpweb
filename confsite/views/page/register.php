@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="item-blog-txt">
 							
 	<br />
-		<p>*If you have registered with Edusage Network, you can proceed to <?=Html::a('login page', ['site/login', 'confurl' => $model->conf_url])?> or you can register by filling in your email below and click next.</p>
+		<p>*If you have registered with FKP PORTAL, you can proceed to <?=Html::a('login page', ['site/login', 'confurl' => $model->conf_url])?> or you can register by filling in your email below and click next.</p>
 
                         <div class="login-form">
                            	<?php $form = ActiveForm::begin(); ?>

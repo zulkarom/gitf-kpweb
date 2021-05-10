@@ -66,12 +66,15 @@ class ManagerController extends Controller
     {
 
         $semester = new SemesterForm;
-        
+        $session = Yii::$app->session;
         if(Yii::$app->getRequest()->getQueryParam('SemesterForm')){
             $sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');
             $semester->semester_id = $sem['semester_id'];
             $semester->str_search = $sem['str_search'];
-        }else{
+			$session->set('semester', $sem['semester_id']);
+        }else if($session->has('semester')){
+			$semester->semester_id = $session->get('semester');
+		}else{
             $semester->semester_id = Semester::getCurrentSemester()->id;
         }
 
@@ -91,12 +94,15 @@ class ManagerController extends Controller
     public function actionSummaryByCourse()
     {
 		$semester = new SemesterForm;
-		
+		$session = Yii::$app->session;
 		if(Yii::$app->getRequest()->getQueryParam('SemesterForm')){
 			$sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');
 			$semester->semester_id = $sem['semester_id'];
 			$semester->str_search = $sem['str_search'];
 			$semester->program_search = $sem['program_search'];
+			$session->set('semester', $sem['semester_id']);
+		}else if($session->has('semester')){
+			$semester->semester_id = $session->get('semester');
 		}else{
 			$semester->semester_id = Semester::getCurrentSemester()->id;
 		}

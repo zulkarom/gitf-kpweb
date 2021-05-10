@@ -41,7 +41,17 @@ class BulkController extends Controller
     public function actionIndex()
     {
 		$semester = new SemesterForm;
-		$semester->semester_id = Semester::getCurrentSemester()->id;
+		$session = Yii::$app->session;
+		if(Yii::$app->getRequest()->getQueryParam('SemesterForm')){
+            $sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');
+            $semester->semester_id = $sem['semester_id'];
+			$session->set('semester', $sem['semester_id']);
+        }else if($session->has('semester')){
+			$semester->semester_id = $session->get('semester');
+		}else{
+            $semester->semester_id = Semester::getCurrentSemester()->id;
+        }
+
 		$result = [];
 		if($semester->load(Yii::$app->request->post())){
 			//print_r(Yii::$app->request->post());die();

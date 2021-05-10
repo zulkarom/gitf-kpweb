@@ -106,8 +106,10 @@ class PageController extends Controller
 		$user->scenario = 'checkemail';
 		
 		if ($user->load(Yii::$app->request->post())) {
+			//print_r(Yii::$app->request->post());
+			//echo $user->email;die();
 			if($user->isEmailExist()){
-				Yii::$app->session->addFlash('error', "You have already registered with Edusage Network, please proceed to login page. You can use forgot password feature in case you have forgotten your password");
+				Yii::$app->session->addFlash('error', "You have already registered with FKP PORTAL, please proceed to login page. You can use forgot password feature in case you have forgotten your password");
 			}else{
 				$this->redirect(['user/register', 'url' => $confurl,'email' => $user->email]);
 			}

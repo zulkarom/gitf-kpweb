@@ -45,8 +45,7 @@ label{
 <div class="col-md-7"><?php 
 $fees = $model->conference->confFees;
 echo $form->field($model, 'myrole') ->dropDownList(
-        ArrayHelper::map($fees,'id', 'fee_name'), ['prompt' => 'Please Select' ]
-    ) ?></div>
+        ArrayHelper::map($fees,'id', 'fee_name')) ?></div>
 </div>
 <br />
 	

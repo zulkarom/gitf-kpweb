@@ -8,7 +8,7 @@ use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 use backend\modules\staff\models\Staff;
 use backend\modules\teachingLoad\models\Staff as StaffTeaching;
-use backend\modules\jeb\models\Associate;
+use confsite\models\Associate;
 use backend\modules\jeb\models\UserScope;
 
 
@@ -74,6 +74,7 @@ class User extends ActiveRecord implements IdentityInterface
 			
 			[['username', 'password', 'rawPassword', 'password_repeat', 'fullname', 'email'], 'required', 'on' => 'create'],
 			
+			[['email'], 'required', 'on' => 'checkemail'],
 			[['email', 'fullname', 'country', 'institution'], 'required', 'on' => 'create_external'],
 			
 			[['email', 'fullname'], 'required', 'on' => 'update_external'],
@@ -310,6 +311,10 @@ class User extends ActiveRecord implements IdentityInterface
 		}else{
 			return false;
 		}
+	}
+	
+	public function defaultTitle(){
+		return Associate::defaultTitle();
 	}
 
 

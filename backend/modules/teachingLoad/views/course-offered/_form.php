@@ -18,8 +18,14 @@ use kartik\select2\Select2;
 	
 	<div class="row">
 <div class="col-md-4"> <?php 
+$session = Yii::$app->session;
 if($model->isNewRecord){
-	$model->semester_id = Semester::getCurrentSemester();
+	if($session->has('semester')){
+		$model->semester_id = $session->get('semester');
+	}else{
+		$model->semester_id = Semester::getCurrentSemester();
+	}
+	
 }
 
 echo $form->field($model, 'semester_id')->dropDownList(Semester::listSemesterArray()) ?></div>

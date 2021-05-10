@@ -23,7 +23,10 @@ $columns = [
                 'label' => 'Coordinator',
                 'format' => 'html',
                 'value' => function($model){
-                    return $model->course->coordinatorStr();
+					if($model->course){
+						return $model->course->coordinatorStr();
+					}
+                    
                 }
             ],
 
@@ -101,8 +104,10 @@ $columns = [
                 'label' => 'Coordinator',
                 'format' => 'html',
                 'value' => function($model) use ($semester){
-            
-                    return $model->course->getCoordinatorStr($semester->semester_id);
+					if($model->course){
+						return $model->course->getCoordinatorStr($semester->semester_id);
+					}
+                    
                     
                 }
             ],
@@ -111,8 +116,9 @@ $columns = [
                 'label' => 'Lectures',
                 'format' => 'html',
                 'value' => function($model) use ($semester){
-            
+					if($model->course){
                     return $model->course->getTeachLectureStr($semester, "<br />");
+					}
                     
                 }
             ],
@@ -133,7 +139,9 @@ $columns = [
                 'label' => 'Tutorials',
                 'format' => 'html',
                 'value' => function($model){
+					if($model->course){
                     return $model->course->getTeachTutorialStr("<br />");
+					}
                 }
             ],
             

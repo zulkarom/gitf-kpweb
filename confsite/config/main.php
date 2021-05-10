@@ -8,7 +8,7 @@ $params = array_merge(
 
 return [
     'id' => 'app-confsite',
-	'name'=>'ConfValley.com',
+	'name'=>'FKP PORTAL',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'confsite\controllers',
