@@ -493,10 +493,17 @@ $this->pdf->writeHTML($tbl, true, false, false, false, '');
 	$html = '<strong style="font-size:10pt"><u>Rancangan Penambahbaikan Kursus (jika ada)</u><sup>#</sup>:<br/>
 <i><u>Plan for Course Improvement (if any)</u><sup>#</sup>:</i>
 </strong><br /><br />
-<table border="1" cellpadding="30" ><tr><td height="250">';
+<table border="1" cellpadding="30" ><tr><td height="250" style="font-size:11pt">';
 
-if($this->offer and $this->cqi){
-	$html .= $this->offer->course_cqi;
+if($this->offer){
+	if($this->cqi == 1){
+		$html .= $this->offer->course_cqi;
+	}else if($this->cqi == 0){
+		$html .= 'Tiada rancangan penambahbaikan kursus<br />
+		<i>No plan for course improvement</i>
+		';
+	}
+	
 	
 }
 

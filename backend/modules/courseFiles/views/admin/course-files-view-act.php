@@ -38,7 +38,9 @@ use backend\modules\courseFiles\models\Common;
 			}else{
 				if($offer->na_cqi == 1){
 					echo '<ul>
-						<li><a href="'.Url::to('@web/doc/na.pdf').'" target="_blank">N/A</a></li>
+						<li><a href="'.Url::to(['/esiap/course/fk3', 'course'=> $offer->course_id, 'version' => $version, 'offer' => $offer->id, 'cqi' => 0]).'" target="_blank">FK03 - PENJAJARAN KONSTRUKTIF</a><br />
+					<i>(Course Improvement)</i>
+					</li>
 					</ul>
 					';
 				}else{
