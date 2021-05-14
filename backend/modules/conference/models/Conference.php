@@ -278,7 +278,7 @@ class Conference extends \yii\db\ActiveRecord
 	public function sendEmail($email_id, $user_id){
 		$email = $this->findEmail($email_id);
 		$user = User::findOne($user_id);
-		
+		//echo $user->email;die();
 		$content = $this->emailContentReplace($email->content, $user);
 		$subject = $email->subject;
 		$subject = str_replace('{CONF_SHORT}', $this->conf_abbr, $subject);

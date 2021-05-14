@@ -193,7 +193,7 @@ $favouriteMenuItems[] = ['label' => 'MAIN MENU', 'options' => ['class' => 'heade
 
 
 // TODO: display menu
-echo dmstr\widgets\Menu::widget([
+echo common\widgets\Menu::widget([
     'items' => \yii\helpers\ArrayHelper::merge($focus_menu, $favouriteMenuItems, $menuItems),
 ]);
 		

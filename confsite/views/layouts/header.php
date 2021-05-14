@@ -19,14 +19,21 @@ if (Yii::$app->user->isGuest) {
 	['Contact Us', ['/page/contact', 'confurl' => $confurl], 'dollar-sign', 0],
 ];
 }else{
-	$menu = [
-	['<i class="fa fa-files-o"></i> Paper Submission', ['/member/paper', 'confurl' => $confurl], 'files-o', $conf->myPaperCount],
+	$menu[] = ['<i class="fa fa-files-o"></i> Paper Submission', ['/member/paper', 'confurl' => $confurl], 'files-o', $conf->myPaperCount];
 	
-	['<i class="fa fa-dollar"></i> Transaction', ['/member/payment', 'confurl' => $confurl], 'table', 0],
+	$menu[] = ['<i class="fa fa-book"></i> My Review', ['/member/review', 'confurl' => $confurl], 'files-o', 0];
+	
+	if($conf->commercial){
+		$menu[] = ['<i class="fa fa-dollar"></i> Transaction', ['/member/payment', 'confurl' => $confurl], 'table', 0];
+	}
+	
+	
+	$menu[] = ['<i class="fa fa-user"></i> Profile', ['/member/profile', 'confurl' => $confurl], 'table', 0];
+	
+	$menu[] = ['<i class="fa fa-arrow-left"></i>  Log Out', ['/site/logout', 'confurl' => $confurl], 'table', 0];
+	
 	//['My Review', ['/member/review', 'confurl' => $confurl], 'files-o'],
-	['<i class="fa fa-user"></i> Profile', ['/member/profile', 'confurl' => $confurl], 'table', 0],
-	['<i class="fa fa-arrow-left"></i>  Log Out', ['/site/logout', 'confurl' => $confurl], 'table', 0],
-];
+
 }
 
 ?>

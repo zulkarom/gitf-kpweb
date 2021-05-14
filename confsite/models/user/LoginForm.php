@@ -25,6 +25,21 @@ class LoginForm extends BaseLoginForm
         return $labels;
     }
 	
+	public function login(){
+		
+		if(parent::login()){
+			if(true){
+				return true;
+			}else{
+				\Yii::$app->user->logout();
+				$this->addError('password', \Yii::t('user', 'Access Denied'));
+				return false;
+			}
+		}else{
+			return false;
+		}
+	}
+	
 
 	
 	

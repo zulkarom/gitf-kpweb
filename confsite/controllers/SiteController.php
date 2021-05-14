@@ -101,12 +101,14 @@ class SiteController extends Controller
 					$reg->reg_at = new Expression('NOW()');
 					if($reg->save()){
 						//email registration
-						$model->sendEmail(1, $user_id);
+						//$model->sendEmail(1, $user_id);
 						Yii::$app->session->addFlash('success', "You have been successfully registered to " . $model->conf_abbr);
 						return $this->redirect(['member/index', 'confurl' => $confurl]);
 					}else{
 						$reg->flashError();
 					}
+				}else{
+					return $this->redirect(['member/index', 'confurl' => $confurl]);
 				}
 				
 				
@@ -147,9 +149,9 @@ class SiteController extends Controller
 
     }
 	
-	public function actionError(){
+	/* public function actionError(){
 		return $this->redirect(['site/index']);
-	}
+	} */
 	
 	public function actionRegister($confurl=null, $email='')
     {

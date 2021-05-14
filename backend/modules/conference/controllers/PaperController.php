@@ -10,8 +10,12 @@ use backend\modules\conference\models\pdf\AcceptLetterPdf;
 use backend\modules\conference\models\AbstractSearch;
 use backend\modules\conference\models\FullPaperSearch;
 use backend\modules\conference\models\PaymentSearch;
+use backend\modules\conference\models\ReviewSearch;
 use backend\modules\conference\models\OverwriteSearch;
 use backend\modules\conference\models\CompleteSearch;
+use backend\modules\conference\models\PaperAcceptForm;
+use backend\modules\conference\models\PaperReviewerForm;
+use backend\modules\conference\models\PaperRejectForm;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -95,6 +99,18 @@ class PaperController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('payment', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+	
+	public function actionReview($conf)
+    {
+        $searchModel = new ReviewSearch();
+		$searchModel->conf_id = $conf;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('review', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -251,47 +267,89 @@ class PaperController extends Controller
         ]);
     }
 	
+	public function actionChangeReviewer($conf, $id)
+    {
+		
+		$model = $this->findModel($id);
+		$reviewer = PaperReviewerForm::findOne($id);
+		$reviewer ->scenario = 'assign_reviewer';
+
+		if ($reviewer->load(Yii::$app->request->post())) {
+			$reviewer->status = 60;
+			if($reviewer->save()){
+				Yii::$app->session->addFlash('success', "Reviewer assigned successfully");
+				return $this->redirect(['paper/review', 'conf' => $conf]);
+			}
+		}
+		
+		
+        return $this->render('change-reviewer', [
+            'model' => $model,
+			'reviewer' => $reviewer,
+        ]);
+    }
+	
 	public function actionFullPaperView($conf, $id)
     {
 		
 		$model = $this->findModel($id);
+		$conference = $model->conference;
+		$commercial = $conference->commercial == 1 ? true : false;
 		
-		if ($model->load(Yii::$app->request->post())) {
-			$option = $model->abstract_decide;
-			
-			if($option == 1){
-				$action = Yii::$app->request->post('wfaction');
-				//save?
-				if($action == 'accept'){
-					$model->status = 80;//paper accepted
-					$model->invoice_confly_no = $model->nextInvoiceConflyNumber();
-					$model->invoice_ts = time();
-					$model->fp_accept_ts = time();
-					if($model->save()){
-						Yii::$app->session->addFlash('success', "Full paper accepted & Invoice issued successfully");
-						return $this->redirect(['paper/full-paper', 'conf' => $conf]);
-					}
-				}else{
-					$model->invoice_ts = time();
-					if($model->save()){
-						Yii::$app->session->addFlash('success', "Data Updated");
-						return $this->redirect(['paper/full-paper-view', 'conf' => $conf, 'id' => $id]);
-					}
-				}
-				
-				
-			}else if($option == 0){
-				$model->status = 10;//rejected
-				if($model->save()){
-					return $this->redirect(['paper/full-paper', 'conf' => $conf]);
-				}
+		$reviewer = PaperReviewerForm::findOne($id);
+		$reject = PaperRejectForm::findOne($id);
+		$accept = PaperAcceptForm::findOne($id);
+		
+		$reviewer ->scenario = 'assign_reviewer';
+		$reject->scenario = 'reject';
+		$accept->scenario = 'accept_full';
+		
+		//print_r(Yii::$app->request->post());
+		
+		if ($reviewer->load(Yii::$app->request->post())) {
+			$reviewer->status = 60;
+			if($reviewer->save()){
+				Yii::$app->session->addFlash('success', "Reviewer assigned successfully");
+				return $this->redirect(['paper/review', 'conf' => $conf]);
 			}
+		}
+		
+		if ($reject->load(Yii::$app->request->post())) {
+			$reject->status = 10;
+			if($reject->save()){
+				Yii::$app->session->addFlash('success', "Paper Rejected successfully");
+				return $this->redirect(['paper/reject', 'conf' => $conf]);
+			}
+		}
+		
+		if ($accept->load(Yii::$app->request->post())) {
 			
-            
-        }
+			if($commercial){
+				$accept->status = 80;
+				$accept->invoice_confly_no = $model->nextInvoiceConflyNumber();
+				$accept->invoice_ts = time();
+				$accept->fp_accept_ts = time();
+			}else{
+				$accept->status = 100;
+			}
+			if($accept->save()){
+				Yii::$app->session->addFlash('success', "Paper Accepted successfully");
+				if($commercial){
+					return $this->redirect(['paper/payment', 'conf' => $conf]);
+				}else{
+					return $this->redirect(['paper/complete', 'conf' => $conf]);
+				}
+				
+			}else{
+				$accept->flashError();
+			}
+		}
 		
         return $this->render('full-paper-view', [
             'model' => $model,
+			'reject' => $reject,
+			'reviewer' => $reviewer,
+			'accept' => $accept,
         ]);
     }
 	

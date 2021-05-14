@@ -75,7 +75,7 @@ if($model->course->tut_hour == 0){
 		<?php
 		echo $form->field($model, 'coordinator')->widget(Select2::classname(), [
     'data' => ArrayHelper::map(Staff::getAcademicStaff(), 'id', 'user.fullname'),
-    'options' => ['placeholder' => 'Select a state ...'],
+    'options' => ['placeholder' => 'Select a Coordinator ...'],
     'pluginOptions' => [
         'allowClear' => true
     ],

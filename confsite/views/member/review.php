@@ -10,6 +10,7 @@ use yii\grid\GridView;
 $this->title = 'My Review';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<h4>My Review</h4>
 <div class="conf-paper-index">
 
 
@@ -49,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 //'visible' => false,
                 'buttons'=>[
                     'update'=>function ($url, $model) {
-                        return Html::a('<span class="fa fa-edit"></span> UPDATE',['member/update/', 'confurl' => $model->conference->conf_url ,'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
+                        return Html::a('<span class="fa fa-edit"></span> REVIEW',['member/review-form/', 'confurl' => $model->conference->conf_url ,'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
                     }
                 ],
             

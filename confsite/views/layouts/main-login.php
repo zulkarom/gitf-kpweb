@@ -48,7 +48,9 @@ if (($conf = Conference::findOne(['conf_url' => $confurl])) == null) {
 <?php $this->beginBody() ?>
 	<!-- Header -->
 	<?=$this->render('header',  ['conf' => $conf])?>
-
+<section class="bg-title-page flex-col-c-m">
+		<img src="<?=Url::to(['site/download-file', 'attr' => 'banner', 'url'=> $confurl])?>" width="100%" />
+	</section>
 
 	<!-- content page -->
 	<section class="bgwhite">

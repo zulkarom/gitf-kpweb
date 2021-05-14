@@ -38,7 +38,7 @@ class UserSettingController extends Controller
 	 
 		try {
 			$model = new ChangePasswordForm($id);
-		} catch (InvalidParamException $e) {
+		} catch (\InvalidArgumentException $e) {
 			throw new \yii\web\BadRequestHttpException($e->getMessage());
 		}
 	 

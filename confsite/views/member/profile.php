@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
-use yii\bootstrap\ActiveForm;
+use yii\bootstrap4\ActiveForm;
 use common\models\Country;
 use kartik\select2\Select2;
 use richardfan\widget\JSRegister;
@@ -19,6 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 <?php
+if($associate){
  $form = ActiveForm::begin(); ?>
 			
 <div class="block-content">
@@ -43,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			<div class="row">
 			
 			<div class="col-md-4"><?= $form
-            ->field($user->associate , 'title', ['template' => '{label}<div id="con-title">{input}</div>{error}']
+            ->field($associate , 'title', ['template' => '{label}<div id="con-title">{input}</div>{error}']
 )
             ->label('Title')
             ->dropDownList($user->defaultTitle()) ?></div>
@@ -66,14 +67,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="col-md-6"><?php 
 echo $form
-            ->field($user->associate, 'phone')
+            ->field($associate, 'phone')
             ->label('Phone')
             ->textInput() ?></div>
 	<div class="col-md-6">
 <?php 
 
 
-echo $form->field($user->associate, 'country_id')->widget(Select2::classname(), [
+echo $form->field($associate, 'country_id')->widget(Select2::classname(), [
     'data' => ArrayHelper::map(Country::find()->all(),'id', 'country_name'),
     'language' => 'en',
     'options' => ['multiple' => false,'placeholder' => 'Select a country ...'],
@@ -96,7 +97,7 @@ echo $form->field($user->associate, 'country_id')->widget(Select2::classname(), 
 <div class="row">
 
 <div class="col-md-9"><?= $form
-				->field($user->associate, 'assoc_address')
+				->field($associate, 'assoc_address')
 				->textarea(['rows' => 5])
                 ->label('Full Address')?>
 </div>	
@@ -109,7 +110,7 @@ echo $form->field($user->associate, 'country_id')->widget(Select2::classname(), 
 <div class="row">
 
 <div class="col-md-9"><?= $form
-				->field($user->associate, 'institution')
+				->field($associate, 'institution')
 				->textarea(['rows' => 2])
                 ->label('Institution')?></div>
 	
@@ -139,7 +140,9 @@ echo $form->field($user->associate, 'country_id')->widget(Select2::classname(), 
 				
 				
 
-            <?php ActiveForm::end(); ?>
+<?php ActiveForm::end(); } else {
+	echo 'This page is not available';
+} ?>
 			
 			
          <div>

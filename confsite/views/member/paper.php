@@ -10,12 +10,19 @@ use yii\grid\GridView;
 $this->title = 'My Submission List';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<div class="row">
+<div class="col-md-6"><h4>My Paper(s)</h4></div>
+
+<div class="col-md-6" align="right"><p>
+       <div class="form-group"> <?= Html::a('Submit New Paper', ['create', 'confurl' => $conf->conf_url], ['class' => 'btn btn-success']) ?></div>
+    </p>
+</div>
+
+</div>
+
 <div class="conf-paper-index">
 
-    <p>
-        <?= Html::a('Submit New Paper', ['create', 'confurl' => $conf->conf_url], ['class' => 'btn btn-success']) ?>
-    </p>
-	<br />
+    
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,

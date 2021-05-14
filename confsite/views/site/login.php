@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
 
-$this->title = 'CONFVALLEY - LOGIN PAGE';
+$this->title = 'CONFERENCE - LOGIN PAGE';
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>

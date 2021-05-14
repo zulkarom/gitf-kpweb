@@ -362,7 +362,7 @@ class Menu
 
 		$conf = Conference::findOne(Yii::$app->getRequest()->getQueryParam('conf'));
 
-
+		if($conf){
 			$menus = [
 			
 					'label' => $conf->conf_abbr,
@@ -380,6 +380,8 @@ class Menu
 							['label' => 'Abstract', 'icon' => 'file-o', 'url' => ['/conference/paper/abstract', 'conf' => $confurl]],
 							
 							['label' => 'Full Paper', 'icon' => 'file', 'url' =>  ['/conference/paper/full-paper', 'conf' => $confurl]],
+							
+							['label' => 'Review', 'icon' => 'search', 'url' =>  ['/conference/paper/review', 'conf' => $confurl]],
 							
 							['label' => 'Payment', 'icon' => 'dollar', 'url' =>  ['/conference/paper/payment', 'conf' => $confurl]],
 							
@@ -432,6 +434,8 @@ class Menu
 					 ]
 						];	
 			return $menus;
+		}
+			
 	
 		
 

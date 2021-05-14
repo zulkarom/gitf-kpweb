@@ -28,8 +28,9 @@ class ConfPaper extends \yii\db\ActiveRecord
 	public $file_controller;
 	public $form_abstract_only = 1;
 	public $abstract_decide = 1;
-	public $full_paper_decide = 1;
+	public $full_paper_decide = 2; //review
 	public $payment_decide = 1;
+	public $email;
 
 
     /**
@@ -52,13 +53,19 @@ class ConfPaper extends \yii\db\ActiveRecord
 			
 			[['payment_info', 'payment_at'], 'required', 'on' => 'payment'],
 			
+			[['reviewer_user_id', 'full_paper_decide'], 'required', 'on' => 'assign_reviewer'],
+			[['reject_note', 'full_paper_decide'], 'required', 'on' => 'reject'],
+			[['full_paper_decide'], 'required', 'on' => 'accept_full'],
+			
 			[['abstract_decide'], 'required', 'on' => 'abstract_decide'],
 			
-            [['conf_id', 'user_id', 'status', 'form_abstract_only', 'abstract_decide', 'invoice_ts', 'myrole', 'confly_number', 'receipt_confly_no', 'invoice_confly_no'], 'integer'],
+			
+			
+            [['conf_id', 'user_id', 'status', 'form_abstract_only', 'abstract_decide', 'invoice_ts', 'myrole', 'confly_number', 'receipt_confly_no', 'invoice_confly_no', 'reviewer_user_id'], 'integer'],
 			
 			[['invoice_amount', 'invoice_final', 'payment_amount', 'invoice_early'], 'number'],
 			
-            [['pap_title', 'pap_abstract', 'paper_file', 'invoice_currency', 'reject_note', 'payment_file', 'payment_info'], 'string'],
+            [['pap_title', 'pap_abstract', 'paper_file', 'invoice_currency', 'reject_note', 'payment_file', 'payment_info', 'keyword'], 'string'],
 			
             [['created_at', 'reject_at', 'payment_at'], 'safe'],
 			
@@ -97,7 +104,8 @@ class ConfPaper extends \yii\db\ActiveRecord
 			'payment_info' => 'Payment Details',
 			'payment_file' => 'Uploaded Payment File',
 			'invoice_final' => 'Invoice Final Amount (after rounding)',
-			'invoice_early' => 'Early Bird Amount'
+			'invoice_early' => 'Early Bird Amount',
+			'reviewer_user_id' => 'Reviewer'
         ];
     }
 	
@@ -121,6 +129,11 @@ class ConfPaper extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+	
+	public function getReviewer()
+    {
+        return $this->hasOne(User::className(), ['id' => 'reviewer_user_id']);
     }
 	
 	public function getUserTitleName(){
@@ -249,8 +262,8 @@ class ConfPaper extends \yii\db\ActiveRecord
 	
 	public function getFullPaperOptions(){
 		return [
+			2 => 'Review Full Paper',
 			1 => 'Accept Full Paper',
-			//2 => 'Review Full Paper',
 			0 => 'Reject',
 			
 		];
@@ -259,7 +272,7 @@ class ConfPaper extends \yii\db\ActiveRecord
 	public function getPaymentConfirmOptions(){
 		return [
 			1 => 'Accept Payment',
-			//2 => 'Review Full Paper',
+			2 => 'Review Full Paper',
 			0 => 'Reject Payment',
 			
 		];

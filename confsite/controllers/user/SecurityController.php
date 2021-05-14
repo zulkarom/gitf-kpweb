@@ -23,6 +23,8 @@ class SecurityController extends BaseSecurityController
         $this->performAjaxValidation($model);
 
         $this->trigger(self::EVENT_BEFORE_LOGIN, $event);
+		
+		print_r(Yii::$app->getRequest()->post());die();
 
         if ($model->load(\Yii::$app->getRequest()->post()) && $model->login()) {
             $this->trigger(self::EVENT_AFTER_LOGIN, $event);
