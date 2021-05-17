@@ -3,10 +3,10 @@
 use yii\helpers\Html;
 use backend\modules\conference\models\ReviewForm;
 use yii\widgets\ActiveForm;
-use confsite\models\UploadFile;
+use confsite\models\UploadReviewerFile as UploadFile;
 
 
-$review->file_controller = 'member';
+$review->file_controller = 'reviewer';
 
 ?>
 <?php $form = ActiveForm::begin(); ?>
@@ -56,7 +56,7 @@ echo $form->field($review, 'review_option')->radioList($options, ['encode' => fa
 
 <h5>Upload Reviewed Manuscript if any.</h5>
 <br />
-<?php echo UploadFile::fileInput($review, 'reviewed')?>
+<?php echo UploadFile::fileInput($review, 'reviewed', $review->paper->conference->conf_url)?>
 	<br /><br />
 
 </div>

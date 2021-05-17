@@ -1,5 +1,5 @@
 <?php
-namespace backend\modules\conference\models;
+namespace confsite\models;
 
 use Yii;
 use yii\helpers\Url;
@@ -9,7 +9,7 @@ use yii\web\UploadedFile;
 use yii\helpers\Json;
 use yii\db\Expression;
 
-class UploadPaperFile
+class UploadReviewerFile
 {
    
 	public static function fileInput($model, $attr, $confurl, $image = false, $multiple = false, $redirect = false){
@@ -20,7 +20,7 @@ class UploadPaperFile
 		if($multiple){
 			//$view = '@frontend/views/upload/main-multiple';
 		}else{
-			$view = '@backend/modules/conference/views/upload/main-file';
+			$view = '@confsite/views/upload/main-file-reviewer';
 		}
 		
 		
@@ -140,8 +140,8 @@ class UploadPaperFile
 
 	}
 	
-	public static function upload($model, $attr, $confurl, $ts = false){
-		
+	public static function upload($model, $attr, $ts = false){
+		$confurl = $model->conf_url;
 		$model->scenario = $attr . '_upload';
 
 		$instance = $attr . '_instance';
@@ -157,7 +157,7 @@ class UploadPaperFile
 		
 		$fileName = $attr . '_' . $uid . '.' . $ext;
 		
-		$path = 'conference/'.$confurl . '/papers/' . Yii::$app->user->identity->id .  '/' ;
+		$path = 'conference/'.$confurl . '/review/' . Yii::$app->user->identity->id .  '/' ;
 		
 	
 		
@@ -232,7 +232,7 @@ class UploadPaperFile
 
 			$filename = $filename . '.' . $ext ;
 			
-			self::sendFile($file, $filename, $ext);
+			UploadReviewerFile::sendFile($file, $filename, $ext);
 			
 			
 			}else{
@@ -251,7 +251,7 @@ class UploadPaperFile
 		header("Cache-Control: public");
 		header("Content-Description: File Transfer");
 		header("Content-Disposition: inline; filename=" . $filename);
-		header("Content-Type: " . self::mimeType($ext));
+		header("Content-Type: " . UploadReviewerFile::mimeType($ext));
 		header("Content-Length: " . filesize($file));
 		header("Content-Transfer-Encoding: binary");
 		readfile($file);

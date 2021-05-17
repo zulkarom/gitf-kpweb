@@ -30,7 +30,8 @@ if (Yii::$app->user->isGuest) {
 	
 	$menu[] = ['<i class="fa fa-user"></i> Profile', ['/member/profile', 'confurl' => $confurl], 'table', 0];
 	
-	$menu[] = ['<i class="fa fa-arrow-left"></i>  Log Out', ['/site/logout', 'confurl' => $confurl], 'table', 0];
+	$menu[] = ['<i class="fa fa-arrow-left"></i>  Log Out', ['/site/logout', 'confurl' => $confurl, 
+	], 'table', 0];
 	
 	//['My Review', ['/member/review', 'confurl' => $confurl], 'files-o'],
 

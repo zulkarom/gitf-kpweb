@@ -11,7 +11,7 @@ use yii\helpers\ArrayHelper;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\conference\models\ConfPaper */
 
-$this->title = $model->pap_title;
+$this->title = 'View Full Paper';
 $this->params['breadcrumbs'][] = ['label' => 'Conf Papers', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -19,10 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="conf-paper-view">
 
 <div class="panel panel-headline">
-						<div class="panel-heading">
-							<h3 class="panel-title">View Full Paper</h3>
-							<p class="panel-subtitle"><?=$this->title?></p>
-						</div>
+		
 						<div class="panel-body">
 			<style>
 table.detail-view th {

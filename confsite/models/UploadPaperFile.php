@@ -1,5 +1,5 @@
 <?php
-namespace backend\modules\conference\models;
+namespace confsite\models;
 
 use Yii;
 use yii\helpers\Url;
@@ -20,7 +20,7 @@ class UploadPaperFile
 		if($multiple){
 			//$view = '@frontend/views/upload/main-multiple';
 		}else{
-			$view = '@backend/modules/conference/views/upload/main-file';
+			$view = '@confsite/views/upload/main-file-paper';
 		}
 		
 		
@@ -140,8 +140,8 @@ class UploadPaperFile
 
 	}
 	
-	public static function upload($model, $attr, $confurl, $ts = false){
-		
+	public static function upload($model, $attr, $ts = false){
+		$confurl = $model->conf_url;
 		$model->scenario = $attr . '_upload';
 
 		$instance = $attr . '_instance';

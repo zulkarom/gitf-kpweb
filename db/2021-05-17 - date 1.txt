@@ -1,0 +1,1 @@
+ALTER TABLE `staff` ADD `date1` DATE NULL DEFAULT NULL AFTER `tbl4_verify_size`, ADD `date2` DATE NULL DEFAULT NULL AFTER `date1`;

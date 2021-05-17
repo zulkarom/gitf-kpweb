@@ -7,16 +7,15 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
 use yii\helpers\Json;
+use yii\db\Exception;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 use common\models\Model;
-use common\models\User;
 use backend\modules\conference\models\ConfPaper;
 use backend\modules\conference\models\ConfAuthor;
 use backend\modules\conference\models\Conference;
 use backend\modules\conference\models\PaperReviewer;
-use backend\modules\conference\models\UploadPaperFile as UploadFile;
-use confsite\models\ConfPaperSearch;
+use confsite\models\UploadReviewerFile as UploadFile;
 use confsite\models\ReviewSearch;
 
 /**
@@ -252,6 +251,15 @@ class ReviewerController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+    
+    protected function findReviewModel($id)
+    {
+        if (($model = PaperReviewer::findOne($id)) !== null) {
+            return $model;
+        }
+        
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
 	
 	protected function findConferenceByUrl($url)
     {
@@ -265,7 +273,7 @@ class ReviewerController extends Controller
 
 	public function actionUploadFile($attr, $id){
         $attr = $this->clean($attr);
-        $model = $this->findModel($id);
+        $model = $this->findReviewModel($id);
         $model->file_controller = 'reviewer';
 
         return UploadFile::upload($model, $attr, 'updated_at');
@@ -288,7 +296,7 @@ class ReviewerController extends Controller
 	public function actionDeleteFile($attr, $id)
     {
         $attr = $this->clean($attr);
-        $model = $this->findModel($id);
+        $model = $this->findReviewModel($id);
         $attr_db = $attr . '_file';
         
         $file = Yii::getAlias('@upload/' . $model->{$attr_db});
@@ -317,7 +325,7 @@ class ReviewerController extends Controller
 
 	public function actionDownloadFile($attr, $id, $identity = true){
         $attr = $this->clean($attr);
-        $model = $this->findModel($id);
+        $model = $this->findReviewModel($id);
         $filename = strtoupper($attr) . ' ' . Yii::$app->user->identity->fullname;
         UploadFile::download($model, $attr, $filename);
     }

@@ -9,6 +9,7 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\db\Exception;
 use yii\db\Expression;
 use yii\helpers\FileHelper;
 
@@ -38,6 +39,7 @@ use backend\modules\esiap\models\CourseAccess;
 use backend\modules\esiap\models\CourseStaff;
 use backend\modules\esiap\models\CourseTransferable;
 use backend\modules\esiap\models\Access;
+use backend\modules\esiap\models\VerifyRejectForm;
 use backend\modules\staff\models\Staff;
 use backend\modules\staff\models\StaffMainPosition;
 use backend\models\Department;
@@ -112,14 +114,18 @@ class CourseAdminController extends Controller
 			}
 			
 			if(Yii::$app->request->post('selection')){
+			   
 				$courses = Yii::$app->request->post('selection');
 				
 				if($action != 'save'){
+				   
 					$action = $action == 'verify' ? 20 : 10;
+					//die($action);
 					if($action == 20){
 						$copy = Yii::getAlias('@upload/' . $verify->signiture_file);
 						$filepath = 'course-mgt/' . $verify->signiture_file;
 						$mirror = Yii::getAlias('@upload/' . $filepath);
+						
 						if(empty($verify->signiture_file) and !is_file($copy )){
 								Yii::$app->session->addFlash('error', "Please put your signature first!.");
 						}else{
@@ -141,6 +147,7 @@ class CourseAdminController extends Controller
 								}
 								
 							}
+							
 							//klu ada record db shj
 							//klu xde copy dalam crs mgt
 							// nak kena cari position dia
@@ -154,11 +161,16 @@ class CourseAdminController extends Controller
 									$position_name = $department->position_stamp;
 								}
 							}
+							
 							$date = $verify->verified_at;
+							$date_faculty = $verify->date1;
+							$date_senate = $verify->date2;
 							$result = CourseVersion::updateAll([
 											'verified_by' => Yii::$app->user->identity->id, 
 											'status' => $action, 
 											'verified_at' => $date,
+							                'faculty_approve_at' => $date_faculty,
+							                 'senate_approve_at' => $date_senate,
 											'verifiedsign_file' => $verified_file,
 											'verified_adj_y' => $verify->tbl4_verify_y,
 											'verified_size' => $verify->tbl4_verify_size,
@@ -166,7 +178,9 @@ class CourseAdminController extends Controller
 											], 
 									['id' => $courses]);
 											
-							$verify->save();
+							if(!$verify->save()){
+							    Yii::$app->session->addFlash('error', "Verification failed!");
+							}
 							if($result){
 								Yii::$app->session->addFlash('success', "Verification successful.");
 								return $this->refresh();
@@ -179,7 +193,6 @@ class CourseAdminController extends Controller
 						$result = CourseVersion::updateAll([
 											'verified_by' => Yii::$app->user->identity->id, 
 											'status' => $action, 
-											'verified_at' => '0000-00-00',
 											'verifiedsign_file' => '',
 											'verified_adj_y' => 0,
 											'verified_size' => 0,
@@ -219,7 +232,7 @@ class CourseAdminController extends Controller
 		$verify = $this->findVerifier();
 		$verify->scenario = 'verify_course';
 		
-		$reject_form = $this->findVersion($id);
+		$reject_form = VerifyRejectForm::findOne($id);
 		$reject_form->scenario = 'verify_reject';
 		
 		$version = $this->findVersion($id);

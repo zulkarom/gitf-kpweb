@@ -69,8 +69,6 @@ class Staff extends \yii\db\ActiveRecord
 	public $position_name;
 	public $staff_label;
 	public $verified_at;
-	public $faculty_at;
-	public $senate_at;
 	public $note;
 
 	
@@ -92,7 +90,7 @@ class Staff extends \yii\db\ActiveRecord
         return [
             [['staff_no', 'user_id', 'staff_title', 'is_academic', 'position_id', 'position_status', 'working_status', 'designation', 'faculty_id', 'gender', 'staff_active'], 'required'],
 			
-			[['verified_at'], 'required', 'on' => 'verify_course'],
+			[['verified_at', 'date1', 'date2'], 'required', 'on' => 'verify_course'],
 			
 			[['teaching_submit'], 'required', 'on' => 'teaching'],
 			
@@ -183,6 +181,8 @@ class Staff extends \yii\db\ActiveRecord
 			'tbl4_verify_y' => 'Table 4 Adj Y', 
 			'tbl4_verify_size' =>  'Table 4 Size Adj',
 			'signiture_file' => 'Signature Upload',
+            'date1' => 'Faculty\'s Approval At',
+            'date2' => 'Senate\'s Approval At'
         ];
     }
 	

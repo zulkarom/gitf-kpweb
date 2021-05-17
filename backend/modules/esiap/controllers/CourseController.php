@@ -29,6 +29,7 @@ use backend\modules\esiap\models\Tbl4Excel;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\db\Exception;
 use yii\db\Expression;
 use common\models\Model;
 use yii\helpers\ArrayHelper;
@@ -155,7 +156,7 @@ class CourseController extends Controller
 		$version = $model->developmentVersion;
 		$status = $version->status;
 		
-		if($status == 0){
+		if($status == 0 or $status == 13){
 			
 			if ($model->load(Yii::$app->request->post()) && $model->save()) {
 				$version->scenario = 'pgrs_info';

@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 </div>
 
-
+<?php $form = ActiveForm::begin(); ?>
     <div class="box box-primary">
 <div class="box-header"></div>
 <div class="box-body">
@@ -65,7 +65,7 @@ echo GridView::widget([
        // 'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-		
+            ['class' => 'yii\grid\CheckboxColumn'],
             
 			[
 				'attribute' => 'course_name',
@@ -144,7 +144,7 @@ echo GridView::widget([
                 //'visible' => false,
                 'buttons'=>[
                     'update'=>function ($url, $model) {
-                        return Html::a('<span class="fa fa-pencil"></span> Update',['verification-page', 'id' => $model->id],['class'=>'btn btn-primary btn-sm']);
+                        return Html::a('<span class="fa fa-pencil"></span> View',['verification-page', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
                     },
                 ],
             ],
@@ -159,10 +159,115 @@ echo GridView::widget([
 
 
 
+<div class="box box-info">
+<div class="box-body">
+<div class="row">
+
+<div class="col-md-3">
+
+<?php 
+$verify->verified_at = date('Y-m-d');
+?>
+ <?=$form->field($verify, 'verified_at')->widget(DatePicker::classname(), [
+    'removeButton' => false,
+    'pluginOptions' => [
+        'autoclose'=>true,
+        'format' => 'yyyy-mm-dd',
+        'todayHighlight' => true,
+
+    ],
+
+
+]);
+?>
+
+</div>
+
+<div class="col-md-3">
+
+
+ <?=$form->field($verify, 'date1')->widget(DatePicker::classname(), [
+    'removeButton' => false,
+    'pluginOptions' => [
+        'autoclose'=>true,
+        'format' => 'yyyy-mm-dd',
+        'todayHighlight' => true,
+        
+    ],
+    
+    
+]);
+?>
+
+</div>
+<div class="col-md-3">
+
+
+ <?=$form->field($verify, 'date2')->widget(DatePicker::classname(), [
+    'removeButton' => false,
+    'pluginOptions' => [
+        'autoclose'=>true,
+        'format' => 'yyyy-mm-dd',
+        'todayHighlight' => true,
+        
+    ],
+    
+    
+])->label("Senate’s Approval At");
+?>
+
+</div>
+
+</div>
+
+<br />
+
+<?php 
+
+
+$verify->file_controller = 'course-admin';
+echo UploadFile::fileInput($verify, 'signiture', true)?>
 
 
 
+<div class="row">
+<div class="col-md-1">
+    <?= $form->field($verify, 'tbl4_verify_size')->textInput(['maxlength' => true, 'type' => 'number'
+    ])->label('Image Size Adj')?>
+    </div>
+<div class="col-md-1">
+    <?= $form->field($verify, 'tbl4_verify_y')->textInput(['maxlength' => true, 'type' => 'number'
+    ])->label('Vert.Position Adj') ?>
+    </div>
 
+</div>
+
+<i>
+* 
+* For the signature, use png format image with transparent background. You can click <a href="https://www.remove.bg/" target="_blank">Remove.bg</a> to easily remove background.<br />
+* Approximate size pixel 200 x 100.<br />
+* Increase Image Size Adj to make the image bigger and vice versa.<br />
+* Increase Vertical Position Adj to move the image upwards and vice versa. <br />
+* Is strongly recommended to approve one course first to preview your signature before proceeding to other courses.
+</i>
+
+</div>
+</div>
+
+
+
+<div class="form-group">
+
+
+
+	<?= Html::submitButton('<span class="fa fa-check"></span> Verify All Selected', ['class' => 'btn btn-success', 'name'=> 'actiontype', 'value' => 'verify']) ?> 
+
+<?= Html::submitButton('<span class="fa fa-arrow-left"></span> Change to Submit Status', ['class' => 'btn btn-info', 'name'=> 'actiontype', 'value' => 'back']) ?>
+
+    </div>
+
+
+    <?php ActiveForm::end(); ?>
 
 
 

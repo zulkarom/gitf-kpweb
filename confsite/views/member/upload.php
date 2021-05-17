@@ -2,9 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use confsite\models\UploadFile;
-use wbraganca\dynamicform\DynamicFormWidget;
-use yii\jui\JuiAsset;
+use confsite\models\UploadPaperFile as UploadFile;
 use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
@@ -51,7 +49,7 @@ echo $form->field($model, 'myrole') ->dropDownList(
 <br />
 
 	
-	<?=UploadFile::fileInput($model, 'paper')?>
+	<?=UploadFile::fileInput($model, 'paper', $model->conference->conf_url)?>
 	
 	
 

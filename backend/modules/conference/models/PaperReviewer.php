@@ -63,6 +63,8 @@ class PaperReviewer extends \yii\db\ActiveRecord
     {
         return [
             [['paper_id', 'user_id'], 'required', 'on' => 'create'],
+            
+            [['q_1_note', 'q_2_note', 'q_3_note', 'q_4_note', 'q_5_note', 'q_6_note', 'q_7_note', 'review_option'], 'required', 'on' => 'review'],
 			
 			
             [['paper_id', 'scope_id', 'user_id', 'status', 'q_1', 'q_2', 'q_3', 'q_4', 'q_5', 'q_6', 'q_7', 'q_8', 'q_9', 'q_10', 'q_11', 'review_option'], 'integer'],

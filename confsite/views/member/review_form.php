@@ -1,15 +1,10 @@
 <?php
 
 use yii\helpers\Html;
-use yii\helpers\Url;
 use yii\widgets\DetailView;
-use backend\modules\journal\models\ReviewForm;
-use yii\widgets\ActiveForm;
-use common\models\Upload;
 
 
-/* @var $this yii\web\View */
-/* @var $model common\models\Article */
+
 
 $this->title = 'Paper Review';
 $this->params['breadcrumbs'][] = ['label' => 'Articles', 'url' => ['index']];
@@ -45,7 +40,7 @@ table.detail-view th {
 				'label' => 'Uploaded Full Paper',
 				'format' => 'raw',
 				'value' => function($model){
-					return Html::a('<span class="glyphicon glyphicon-download-alt"></span> DOWNLOAD FILE', ['paper/download-file', 'id' => $model->id, 'attr' => 'paper'], ['class' => 'btn btn-default','target' => '_blank']);
+					return Html::a('<span class="glyphicon glyphicon-download-alt"></span> DOWNLOAD FILE', ['member/download-file', 'id' => $model->id, 'confurl' => $model->conference->conf_url, 'attr' => 'paper'], ['class' => 'btn btn-warning','target' => '_blank']);
 				}
 			]
   

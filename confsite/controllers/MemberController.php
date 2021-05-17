@@ -7,6 +7,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
 use yii\helpers\Json;
+use yii\base\Exception;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 use common\models\Model;
@@ -18,7 +19,7 @@ use backend\modules\conference\models\pdf\InvoicePdf;
 use backend\modules\conference\models\pdf\ReceiptPdf;
 use backend\modules\conference\models\PaperReviewer;
 use backend\modules\conference\models\pdf\AcceptLetterPdf;
-use backend\modules\conference\models\UploadPaperFile as UploadFile;
+use confsite\models\UploadPaperFile as UploadFile;
 use confsite\models\ConfPaperSearch;
 use confsite\models\ReviewSearch;
 
@@ -49,12 +50,17 @@ class MemberController extends Controller
 	public function beforeAction($action){
 		if (parent::beforeAction($action)){
 			$url = Yii::$app->getRequest()->getQueryParam('confurl');
-			$conf = $this->findConferenceByUrl($url);
-			if(!Conference::userIsRegistered($conf->id)){
-				return $this->redirect(['site/member', 'confurl' => $url])->send();
+			if($url){
+			    $conf = $this->findConferenceByUrl($url);
+			    if(!Conference::userIsRegistered($conf->id)){
+			        return $this->redirect(['site/member', 'confurl' => $url])->send();
+			    }else{
+			        return true;
+			    }
 			}else{
-				return true;
+			    throw new NotFoundHttpException('Invalid url - no conference url provided');
 			}
+			
 			
 		}
 	}
@@ -124,6 +130,7 @@ class MemberController extends Controller
 		if($confurl){
         $model = $this->findModel($id);
 		$review = $this->findReviewer($id);
+		$review->scenario = 'review';
 		/* if($review->status == 20){
 			return $this->redirect(['review/review-completed', 'id' => $id]);
 		} */
@@ -532,8 +539,10 @@ class MemberController extends Controller
         $attr = $this->clean($attr);
         $model = $this->findModel($id);
         $model->file_controller = 'member';
+        $conf = $model->conference;
+        $confurl = $conf->conf_url;
 
-        return UploadFile::upload($model, $attr, 'updated_at');
+        return UploadFile::upload($model, $attr, $confurl, 'updated_at');
 
     }
 
@@ -581,6 +590,7 @@ class MemberController extends Controller
     }
 
 	public function actionDownloadFile($attr, $id, $identity = true){
+
         $attr = $this->clean($attr);
         $model = $this->findModel($id);
         $filename = strtoupper($attr) . ' ' . Yii::$app->user->identity->fullname;

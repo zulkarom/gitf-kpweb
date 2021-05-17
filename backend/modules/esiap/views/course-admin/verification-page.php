@@ -140,14 +140,23 @@ echo UploadFile::fileInput($verify, 'signiture', true)?>
 <div class="row">
 <div class="col-md-1">
     <?= $form->field($version, 'verified_size')->textInput(['maxlength' => true, 'type' => 'number'
-                            ])?>
+                            ])->label('Image Size Adj')?>
     </div>
 <div class="col-md-1">
     <?= $form->field($version, 'verified_adj_y')->textInput(['maxlength' => true, 'type' => 'number'
-                            ]) ?>
+    ])->label('Vert.Position Adj')?>
     </div>
 
 </div>
+
+<i>
+* 
+* For the signature, use png format image with transparent background. You can click <a href="https://www.remove.bg/" target="_blank">Remove.bg</a> to easily remove background.<br />
+* Approximate size pixel 200 x 100.<br />
+* Increase Image Size Adj to make the image bigger and vice versa.<br />
+* Increase Vertical Position Adj to move the image upwards and vice versa. <br />
+</i>
+<br />
 
 <?php /* =Html::submitButton('<span class="fa fa-save"></span> SAVE SIGNITURE', 
     ['class' => 'btn btn-default btn-sm', 'name' => 'actiontype', 'value' => 'save',

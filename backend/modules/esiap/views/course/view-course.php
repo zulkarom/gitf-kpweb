@@ -126,9 +126,9 @@ $ref = percent($version->pgrs_ref);
 if($version->status == 13){
 	?>
 	
-	<div class="box box-danger">
+	<div class="box">
 <div class="box-header">
-<h3 class="box-title">Verification Remark</h3>
+<h3 class="box-title" style="color:red"><i class="fa fa-comments"></i> Correction Remark</h3>
 </div>
 <div class="box-body">
 <?php echo nl2br(Html::encode($version->verified_note));?>
