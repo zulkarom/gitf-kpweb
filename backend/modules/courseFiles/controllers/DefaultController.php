@@ -185,7 +185,7 @@ class DefaultController extends Controller
 	public function actionCoordinatorView($id){
 		$model = new Checklist();
 		$offer = $this->findOffered($id);
-		$offer->setOverallProgress();
+		$offer->setProgressCoordinator();
 		$offer->save();
 		return $this->render('coordinator-view', [
             'model' => $model,
