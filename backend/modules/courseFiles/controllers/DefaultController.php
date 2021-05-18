@@ -341,14 +341,38 @@ class DefaultController extends Controller
 			print_r($data);die(); */
             
             if($data){
-				//delete semua dulu
-				StudentLecture::updateAll(['assess_result' => ''],['lecture_id' => $id]);
+                //date validation first
+             
+				
                 $i=0;
 				$weight = $data[1];
 				$full_mark = $data[2];
 				
 				$weight = array_slice($weight,3);
 				$full_mark = array_slice($full_mark,3);
+				
+				
+				foreach (array_slice($data,4) as $stud) {
+				    if(is_array($stud) and $stud){
+				        $assess = array_slice($stud, 3);
+				        $t =0;
+				        foreach($assess as $raw){
+				            if($full_mark[$t] == 0 or $full_mark[$t] == null){
+				                Yii::$app->session->addFlash('error', "Please check your excel, total mark must have a value or cannot be zero");
+				                return $this->redirect(['lecture-student-assessment', 'id' => $id]);
+				            }
+				            if($raw > $full_mark[$t]){
+				                Yii::$app->session->addFlash('error', "Please check your marks, make sure the mark does not exceed the total mark");
+				                return $this->redirect(['lecture-student-assessment', 'id' => $id]);
+				            }
+				            $t++;
+				        }
+				    }
+				
+				}
+				
+				StudentLecture::updateAll(['assess_result' => ''],['lecture_id' => $id]);
+				
 
                 foreach (array_slice($data,4) as $stud) {
                    if(is_array($stud) and $stud){
@@ -365,6 +389,7 @@ class DefaultController extends Controller
 							
 							$s = $weight[$x];
 							$sw = trim(str_replace('%', '', $weight[$x]));
+							
 							$w = $raw / $full_mark[$x] * $sw;
 							$weighted_assess[] = $w;
 						$x++;
