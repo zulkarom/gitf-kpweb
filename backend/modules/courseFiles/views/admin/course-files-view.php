@@ -69,7 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
 if($modelOffer->auditor_file){
 	?>
 	<div class="form-group">
-<label>Auditor's Report: <a href="<?=Url::to(['auditor/download-file', 'attr' => 'auditor', 'id' => $modelOffer->id])?>" target="_blank">Download</a></label>
+<a href="<?=Url::to(['auditor/download-file', 'attr' => 'auditor', 'id' => $modelOffer->id])?>" target="_blank" class="btn btn-warning btn-sm"><i class="fa fa-download"></i> Download Auditor Report</a>
 </div>
 	<?php
 	
@@ -79,6 +79,9 @@ if($modelOffer->auditor_file){
 
 
 <?php 
+echo $form->field($modelOffer, 'option_course')->dropDownList( [1 => 'YES' , 0 => 'NO'], ['prompt' => 'Please Select' ])->label('Reupdate Course Information');
+
+
 $modelOffer->status = 50;
 echo $form->field($modelOffer, 'status')->dropDownList( $modelOffer->statusArray, ['prompt' => 'Please Select' ])->label('Status') ?>
 
@@ -99,8 +102,8 @@ echo $form->field($modelOffer, 'status')->dropDownList( $modelOffer->statusArray
 <?php 
 
 
-echo Html::submitButton('SAVE', 
-    ['class' => 'btn btn-warning', 'name' => 'wfaction', 'value' => 'btn-verify', 'data' => [
+echo Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> UPDATE COURSE FILE', 
+    ['class' => 'btn btn-primary', 'name' => 'wfaction', 'value' => 'btn-verify', 'data' => [
                 'confirm' => 'Are you sure to store the status?'
             ],
     ])?>

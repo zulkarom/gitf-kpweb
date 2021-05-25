@@ -8,6 +8,7 @@ use backend\modules\courseFiles\models\CoordinatorRubricsFile;
 use backend\modules\teachingLoad\models\CourseOffered;
 use backend\modules\teachingLoad\models\CourseLecture;
 use backend\modules\courseFiles\models\Checklist;
+use backend\modules\esiap\models\CourseVersion;
 use yii\filters\AccessControl;
 use yii\db\Expression;
 use yii\web\NotFoundHttpException;
@@ -140,16 +141,36 @@ class AdminController extends Controller
 		
 		if ($modelOffer->load(Yii::$app->request->post())) {
 			//echo $modelOffer->status; die();
-			if($modelOffer->status == 50){
-				$modelOffer->verified_at = new Expression('NOW()');
-				$modelOffer->verified_by = Yii::$app->user->identity->staff->id;
-			}
+			
+			if($modelOffer->option_review == 50 and $modelOffer->option_course == 1){
+				Yii::$app->session->addFlash('error', "You cannot verify at the same time open for update course");
+			}else{
+				if($modelOffer->status == 50){
+					$modelOffer->verified_at = new Expression('NOW()');
+					$modelOffer->verified_by = Yii::$app->user->identity->staff->id;
+				}else if($modelOffer->option_course == 1){
+							$version = CourseVersion::findOne($modelOffer->course_version);
+							if($version){
+								$version->status = 0;
+								if($version->save()){
+									$modelOffer->prg_crs_ver = 0;
+								}else{
+									$version->flashError();
+								}
+							}else{
+								Yii::$app->session->addFlash('error', "Course version not found");
+							}
+							
+				}
 				if($modelOffer->save()){
 					Yii::$app->session->addFlash('success', "Status Updated");
 					return $this->refresh();
 				}else{
 					$modelOffer->flashError();
 				}
+			}
+			
+			
 		}else{
 			$modelOffer->setOverallProgress();
 			$modelOffer->save();

@@ -22,7 +22,6 @@ use backend\modules\teachingLoad\models\AppointmentLetter;
 
 use backend\modules\courseFiles\models\Api;
 use backend\modules\courseFiles\models\Checklist;
-use backend\modules\courseFiles\models\LectureCancel;
 use backend\modules\courseFiles\models\CoordinatorRubricsFile;
 use backend\modules\courseFiles\models\StudentLecture;
 use backend\modules\courseFiles\models\StudentTutorial;
