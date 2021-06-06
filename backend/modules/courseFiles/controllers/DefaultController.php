@@ -201,6 +201,8 @@ class DefaultController extends Controller
 		}
 		$offer->scenario = 'coor';
 		
+		$dates = DateSetting::find()->where(['semester_id' => $offer->semester_id])->one();
+		
 		if ($offer->load(Yii::$app->request->post())) {
 			$offer->progressCourseVersion = 1;
 			$offer->progressMaterial = 1;
@@ -216,6 +218,7 @@ class DefaultController extends Controller
         return $this->render('teaching-assignment-coordinator', [
             'model' => $model,
             'offer' => $offer,
+			'dates' => $dates
         ]);
     }
 	

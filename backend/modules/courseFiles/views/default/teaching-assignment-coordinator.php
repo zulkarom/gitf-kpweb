@@ -27,12 +27,30 @@ if(!$closed){
 
 </div>
 
-<br />
-<?php echo '<a href="' . Url::to(['default/coordinator-view', 'id' => $offer->id]) . '" class="btn btn-primary" ><span class="glyphicon glyphicon-search"></span> Preview Overall & Submit</a> ';?>
 
-<?php if($offer->status == 20){
-	echo '<a href="' . Url::to(['auditor/download-file', 'attr' => 'auditor', 'id' => $offer->id]) . '" class="btn btn-warning" target="_blank"><span class="fa fa-check"></span> Auditor\'s Report</a>';
-}?>
+<?php 
+$note = '';
+
+echo '<a href="' . Url::to(['default/coordinator-view', 'id' => $offer->id]) . '" class="btn btn-primary" ><span class="glyphicon glyphicon-search"></span> Preview & Submission</a> ';
+
+if($offer->status == 20){
+	$checker = 'Auditor';
+	if($offer->auditor_file){
+		echo '<a href="' . Url::to(['auditor/download-file', 'attr' => 'auditor', 'id' => $offer->id]) . '" class="btn btn-warning" target="_blank"><span class="fa fa-file"></span> Auditor\'s Report</a>';
+	}
+	
+	if($offer->verified_file){
+		$checker = 'UJAKA';
+		echo ' <a href="' . Url::to(['auditor/download-file', 'attr' => 'verified', 'id' => $offer->id]) . '" class="btn btn-info" target="_blank"><span class="fa fa-file"></span> UJAKA\'s Report</a>';
+	}
+
+		$note = '<br /><br /><div class="form-group" style="color:red">Please update the course file with reference to the '.$checker.'\'s Report above. '  . Common::deadlineMessage($dates->open_deadline) . '</div>';
+
+}
+
+echo $note;
+
+?>
 
 
 
