@@ -66,6 +66,7 @@ class AppointmentLetter extends \yii\db\ActiveRecord
     public function status(){
         return [
             1 => 'Draft',
+            0 => 'Draft',
             10 =>'Approved'
         ];
     }

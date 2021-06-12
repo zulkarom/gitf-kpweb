@@ -110,7 +110,7 @@ $form = ActiveForm::begin([
             [
                 'label' => 'Date',
                 'value' => function($model){
-					if($model->date_appoint == '0000-00-00'){
+                if($model->date_appoint == '0000-00-00' or $model->date_appoint == null){
 						return '';
 					}else{
 						return date('d M Y', strtotime($model->date_appoint)) ;
