@@ -278,7 +278,7 @@ EOD;
 		if($this->model->countLecturesByStaff > 0){
 		$html .='<tr>
 			<td></td>
-			<td>'. $total_tutorial .'</td>
+			<td>'. $total_lecture .'</td>
 			<td>:</td>
 			<td>'.$this->model->countLecturesByStaff.'</td>
 			</tr>';
@@ -287,7 +287,7 @@ EOD;
 		if($this->model->countTutorialsByStaff > 0){
 			$html .= '<tr>
 				<td></td>
-				<td>'. $total_lecture .'</td>
+				<td>'. $total_tutorial .'</td>
 				<td>:</td>
 				<td>'.$this->model->countTutorialsByStaff.'</td>
 			</tr>';	
