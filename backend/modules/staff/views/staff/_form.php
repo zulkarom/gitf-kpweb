@@ -11,6 +11,8 @@ use backend\modules\staff\models\LetterDesignation;
 use common\models\UploadFile;
 use kartik\date\DatePicker;
 use richardfan\widget\JSRegister;
+use common\models\Country;
+use kartik\select2\Select2;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\staff\models\Staff */
@@ -104,6 +106,30 @@ echo $form->field($model, 'faculty_id')->dropDownList(ArrayHelper::map(Faculty::
 </div>
 
 </div>
+
+<div class="row">
+<div class="col-md-3">
+<?php 
+
+
+echo $form->field($model, 'nationality')->widget(Select2::classname(), [
+    'data' => ArrayHelper::map(Country::find()->all(),'country_code', 'country_name'),
+    'language' => 'en',
+    'options' => ['multiple' => false,'placeholder' => 'Select a country ...'],
+    'pluginOptions' => [
+        'allowClear' => true
+    ],
+])->label('Country');
+
+?>
+
+
+</div>
+
+
+</div>
+
+
 
 <div class="row">
 <div class="col-md-6">

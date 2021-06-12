@@ -182,7 +182,8 @@ class Staff extends \yii\db\ActiveRecord
 			'tbl4_verify_size' =>  'Table 4 Size Adj',
 			'signiture_file' => 'Signature Upload',
             'date1' => 'Faculty\'s Approval At',
-            'date2' => 'Senate\'s Approval At'
+            'date2' => 'Senate\'s Approval At',
+            'nationality' => 'Country'
         ];
     }
 	

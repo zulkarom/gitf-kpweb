@@ -16,6 +16,7 @@ class AppointmentLetterFile
 	public $tuan = 'Tuan';
 	public $template;
 	public $fontSize = 10;
+	public $en = false;
 	
 	public function generatePdf(){
 		
@@ -24,6 +25,10 @@ class AppointmentLetterFile
 		->staffInvolved
 		->semester
 		->appointLetterTemplate;
+		
+		if($this->model->staffInvolved->staff->nationality != 'MY'){
+		    $this->en = true;
+		}
 		
 
 		
@@ -85,15 +90,34 @@ class AppointmentLetterFile
 		<br /><br /><br /><br />
 		<b>'. $this->model->staffInvolved->staff->staff_title . ' ' . $this->model->staffInvolved->staff->user->fullname;
 		$status = $this->model->staffInvolved->staff->staffPositionStatus->status_cat;
+		
+		
 		$show_full = true;
 		if($status == 'Kontrak' or $status == 'Sementara'){
 			$show_full = false;
 		}
 		
+		$position = $this->model->staffInvolved->staff->staffPosition->position_plain;
 		
-		
+		if($this->en){
+    		if($status == 'Kontrak'){
+    		    $status = 'Contract';
+    		}else if($status == 'Sementara'){
+    		    $status = 'Temporary';
+    		}else if($status == 'Tetap'){
+    		    $status = 'Permanent';
+    		}else if($status == 'Pinjaman'){
+    		    $status = 'Loan';
+    		}
+    		
+    		$position = $this->model->staffInvolved->staff->staffPosition->position_en;
+		}
+
 		
 		if($show_full  == false){
+		    
+		        
+		   
 			$html .= ' ('.$status.')';
 		}
 		
@@ -102,13 +126,22 @@ class AppointmentLetterFile
 		<table>';
 		if($show_full){
 			$html .= '<tr>
-			<td><b>'. ($this->model->staffInvolved->staff->staffPosition->position_plain).' '.'('.strtoupper($this->model->staffInvolved->staff->staffPosition->position_gred).') '.$this->model->staffInvolved->staff->staffPositionStatus->status_cat .' '.'</b></td>
+			<td><b>'. $position .' 
+'.'('.strtoupper($this->model->staffInvolved->staff->staffPosition->position_gred).') 
+'.$status .' '.'</b></td>
 		</tr>';
 		}
 		
+		if($this->en){
+		    $fak = 'Faculty of Entrepreneurship and Business';
+		}else{
+		    $fak = 'Fakulti Keusahawanan dan Perniagaan';
+		}
+		
+		
 		
 		$html .= '<tr>
-			<td>Fakulti Keusahawanan dan Perniagaan <br/> Universiti Malaysia Kelantan </td>
+			<td>'. $fak .' <br/> Universiti Malaysia Kelantan </td>
 		</tr>
 		</table>
 		
@@ -139,43 +172,53 @@ EOD;
 		
 		
 		$coordinator = $this->model->courseOffered->coordinator;
+		
 		if($coordinator ==  $this->model->staffInvolved->staff_id){
-			$html = '
+		    $penyelaras = 'Penyelaras dan ';
+		    $coor1 = 'COORDINATOR AND ';
+		    $coor2 = 'a coordinator and ';
+		}else{
+		    $penyelaras = '';
+		    $coor1 = '';
+		    $coor2 = '';
+		}
+		
+		if($this->en){
+		    $html = '
 		'.ucfirst($this->tuan).',<br /><br />
-		
-		<b>PELANTIKAN SEBAGAI PENYELARAS DAN PENGAJAR DI FAKULTI KEUSAHAWANAN DAN PERNIAGAAN</b>
+		    
+		<b>AN APPOINTMENT AS '. strtoupper($coor1) .'LECTURER AT FACULTY OF ENTREPRENEURSHIP AND BUSINESS</b>
 		<br /><br />
-		
-		Dengan hormatnya saya merujuk kepada perkara di atas.
+		    
+		With due respect to the above matter.
 		<br /><br />
-		
-		2. &nbsp;&nbsp;&nbsp;Sukacita dimaklumkan bahawa '.$this->tuan .' dilantik sebagai Penyelaras dan Pengajar bagi kursus berikut:
+		    
+		2. &nbsp;&nbsp;&nbsp;Kindly be informed that '.$this->tuan .' was appointed as '. $coor2 .'a lecturer for the following course:
 		<br />
 		';
-		$this->pdf->SetFont( 'arial','', $this->fontSize);
-		$tbl = <<<EOD
-		$html
-EOD;
 		}else{
-			$html = '
+		    $html = '
 		'.ucfirst($this->tuan).',<br /><br />
-		
-		<b>PELANTIKAN SEBAGAI PENGAJAR DI FAKULTI KEUSAHAWANAN DAN PERNIAGAAN</b>
+		    
+		<b>PELANTIKAN SEBAGAI '. strtoupper($penyelaras) .'PENGAJAR DI FAKULTI KEUSAHAWANAN DAN PERNIAGAAN</b>
 		<br /><br />
-		
+		    
 		Dengan hormatnya saya merujuk kepada perkara di atas.
 		<br /><br />
-		
-		2. &nbsp;&nbsp;&nbsp;Sukacita dimaklumkan bahawa '.$this->tuan .' dilantik sebagai Pengajar bagi kursus berikut:
-		<br /><br />
+		    
+		2. &nbsp;&nbsp;&nbsp;Sukacita dimaklumkan bahawa '.$this->tuan .' dilantik sebagai '. $penyelaras .'Pengajar bagi kursus berikut:
+		<br />
 		';
-		$this->pdf->SetFont( 'arial','', $this->fontSize);
-		$tbl = <<<EOD
-		$html
-EOD;
 		}
 		
 		
+		
+		$this->pdf->SetFont( 'arial','', $this->fontSize);
+		$tbl = <<<EOD
+		$html
+EOD;
+		
+
 		$this->pdf->writeHTML($tbl, true, false, false, false, '');
 	}
 	
@@ -187,19 +230,37 @@ EOD;
 		$w4 = 20;
 		$w5 = $all - $w1 - $w2 - $w3 - $w4;
 		$course = $this->model->courseOffered->course;
+		
+		if($this->en){
+		    $course_code = 'Course Code';
+		    $course_name = 'Course Name';
+		    $course_name_data = $course->course_name_bi;
+		    $session = 'Session';
+		    $total_lecture = 'Total Lecture';
+		    $total_tutorial = 'Total Tutorial';
+		}else{
+		    $course_code = 'Kod Kursus';
+		    $course_name = 'Nama Kursus';
+		    $session = 'Sesi';
+		    $course_name_data = $course->course_name;
+		    $total_lecture = 'Jumlah Kuliah';
+		    $total_tutorial = 'Jumlah Tutorial';
+		}
+		
+		
 		$html = '
 		<table cellpadding="1" border="0">
 		<tr>
 			<td width="'.$w1.'"></td>
-			<td width="'.$w3.'">Kod Kursus</td>
+			<td width="'.$w3.'">'. $course_code .'</td>
 			<td width="'.$w4.'">:</td>
 			<td width="'.$w5.'">'.$course->course_code .'</td>
 		</tr>';
 		$html .='<tr>
 			<td></td>
-			<td>Nama Kursus</td>
+			<td>'. $course_name .'</td>
 			<td>:</td>
-			<td width="'.$w5.'">'.$course->course_name.'</td>
+			<td width="'.$w5.'">'.$course_name_data.'</td>
 		</tr>
 		<tr>
 			<td></td>
@@ -209,7 +270,7 @@ EOD;
 		</tr>
 		<tr>
 			<td></td>
-			<td>Sesi</td>
+			<td>'. $session .'</td>
 			<td>:</td>
 			<td>'.$this->model->staffInvolved->semester->year.'</td>
 		</tr>';
@@ -217,7 +278,7 @@ EOD;
 		if($this->model->countLecturesByStaff > 0){
 		$html .='<tr>
 			<td></td>
-			<td>Jumlah Kuliah</td>
+			<td>'. $total_tutorial .'</td>
 			<td>:</td>
 			<td>'.$this->model->countLecturesByStaff.'</td>
 			</tr>';
@@ -226,7 +287,7 @@ EOD;
 		if($this->model->countTutorialsByStaff > 0){
 			$html .= '<tr>
 				<td></td>
-				<td>Jumlah Tutorial</td>
+				<td>'. $total_lecture .'</td>
 				<td>:</td>
 				<td>'.$this->model->countTutorialsByStaff.'</td>
 			</tr>';	
@@ -245,9 +306,22 @@ EOD;
 	public function writeEnding(){
 		
 		
-		$per4 = $this->template->per1;
-
-		$html = '<br />
+		
+        
+		if($this->en){
+		    $per4 = $this->template->per1_en;
+		    $html = '<br />
+		<table width="700"><tr><td><span style="text-align:justify;">3. &nbsp;&nbsp;&nbsp;
+		However, this appointment is subject to any changes.
+		<br /><br />
+		4. &nbsp;'.str_replace('{TUANPUAN}', $this->tuan, $per4).'
+		<br /><br /></span>
+		Thank you.
+		<br />
+		</td></tr></table>';
+		}else{
+		    $per4 = $this->template->per1;
+		    $html = '<br />
 		<table width="700"><tr><td><span style="text-align:justify;">3. &nbsp;&nbsp;&nbsp;
 		Untuk makluman, pelantikan ini adalah berkuatkuasa mengikut perubahan dari semasa ke semasa.
 		<br /><br />
@@ -256,6 +330,8 @@ EOD;
 		Sekian.
 		<br />
 		</td></tr></table>';
+		}
+		
 
 		$this->pdf->SetFont('arial','', $this->fontSize);
 		$tbl = <<<EOD
@@ -306,13 +382,22 @@ EOD;
 		$benar = $this->template->yg_benar;
 		$dekan = $this->template->dekan;
 		
+		if($this->en){
+		    $tda = 'Deputy Dean (Academic & Student Development)';
+		    $dekan_text = 'Dean';
+		}else{
+		    $tda = 'Timbalan Dekan (Akademik & Pembangunan Pelajar)';
+		    $dekan_text = 'Dekan';
+		}
+		
+		
 				$html = '<b>'.$tema.'</b>
 		<br /><br />
 		'.$benar.',<br />
 		<br /><br /><br />
 		<b>'.strtoupper($dekan).'</b><br />
-		Dekan<br /><br />
-		s.k - Timbalan Dekan (Akademik & Pembangunan Pelajar)
+		' .  $dekan_text . '<br /><br />
+		s.k - '. $tda .'
 		';
 		$this->pdf->SetFont('arial','', $this->fontSize);
 		$tbl = <<<EOD
