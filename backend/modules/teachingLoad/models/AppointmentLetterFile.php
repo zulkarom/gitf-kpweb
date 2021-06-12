@@ -66,12 +66,16 @@ class AppointmentLetterFile
 	public function writeRef(){
 
 		
-		if($this->model->date_appoint == "0000-00-00"){
+	    if($this->model->date_appoint == "0000-00-00" or $this->model->date_appoint == null){
 			$date = 'TO BE DETERMINED';
-		}else
-		{
+		}else{
 			$release = $this->model->date_appoint;
-			$date = strtoupper(Common::date_malay($release));
+			if($this->en){
+			    $date = strtoupper(date('d F Y', strtotime($release)));
+			}else{
+			    $date = strtoupper(Common::date_malay($release));
+			}
+			
 		}
 		
 		
