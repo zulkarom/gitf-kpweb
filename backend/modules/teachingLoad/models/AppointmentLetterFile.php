@@ -195,6 +195,10 @@ EOD;
 	        $this->tuan = $panggilan;
 	    }
 	    
+	    if($this->en){
+	        $this->tuan = str_replace('Prof. Madya ', '', $this->tuan);
+	    }
+	    
 	}
 	
 	public function writeTitle(){
