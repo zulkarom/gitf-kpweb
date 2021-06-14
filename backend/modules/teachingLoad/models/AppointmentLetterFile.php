@@ -6,6 +6,7 @@ use Yii;
 use common\models\Common;
 use yii\helpers\Url;
 use backend\modules\teachingLoad\models\AppointmentLetter;
+use backend\modules\staff\models\LetterDesignation;
 
 
 
@@ -63,6 +64,16 @@ class AppointmentLetterFile
 		$this->pdf->footer_first_page_only = true;
 		$this->pdf->footer_html ='<img src="images/letterfoot.jpg" />';
 	}
+	
+	public function titleTrans(){
+	    return [
+	        'Prof. Madya' => 'Assoc. Prof.',
+	        'Tuan' => 'Mr.',
+	        'Puan' => 'Mrs.',
+	        'Cik' => 'Miss'
+	    ];
+	}
+	
 	public function writeRef(){
 
 		
@@ -79,6 +90,15 @@ class AppointmentLetterFile
 		}
 		
 		
+		$title = $this->model->staffInvolved->staff->staff_title;
+		if($this->en){
+		    $arr = $this->titleTrans();
+		    foreach($arr as $k => $a){
+		        $title = str_replace($k, $a, $title);
+		    }
+		}
+		
+		
 		
 		$html = '<br /><br /><br />
 		<table cellpadding="1">
@@ -92,7 +112,7 @@ class AppointmentLetterFile
 		</tr>
 		</table>
 		<br /><br /><br /><br />
-		<b>'. $this->model->staffInvolved->staff->staff_title . ' ' . $this->model->staffInvolved->staff->user->fullname;
+		<b>'. $title . ' ' . $this->model->staffInvolved->staff->user->fullname;
 		$status = $this->model->staffInvolved->staff->staffPositionStatus->status_cat;
 		
 		
@@ -162,18 +182,24 @@ EOD;
 		$this->pdf->writeHTML($tbl, true, false, false, false, '');
 	}
 	
+	public function setTitle(){
+	    $gender = $this->model->staffInvolved->staff->gender;
+	    if($gender == 0){
+	        $this->tuan = 'Puan';
+	    }else{
+	        $this->tuan = 'Tuan';
+	    }
+	    
+	    $panggilan = $this->model->staffInvolved->staff->designation;
+	    if($panggilan ){
+	        $this->tuan = $panggilan;
+	    }
+	    
+	}
+	
 	public function writeTitle(){
 		
-		$gender = $this->model->staffInvolved->staff->gender;
-		if($gender == 0){
-			$this->tuan = 'Puan';
-		}
-		
-		$panggilan = $this->model->staffInvolved->staff->designation;
-		if($panggilan ){
-			$this->tuan = $panggilan;
-		}
-		
+		$this->setTitle();
 		
 		$coordinator = $this->model->courseOffered->coordinator;
 		
@@ -197,7 +223,7 @@ EOD;
 		With due respect to the above matter.
 		<br /><br />
 		    
-		2. &nbsp;&nbsp;&nbsp;Kindly be informed that '.$this->tuan .' was appointed as '. $coor2 .'a lecturer for the following course:
+		2. &nbsp;&nbsp;&nbsp;Kindly be informed that you have been appointed as '. $coor2 .'a lecturer for the following course:
 		<br />
 		';
 		}else{
