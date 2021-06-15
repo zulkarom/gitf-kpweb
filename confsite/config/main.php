@@ -48,7 +48,7 @@ return [
 				],
 			],
 		],
-		 'urlManager' => [
+		/* 'urlManager' => [
             'enablePrettyUrl' => true,
              'showScriptName' => false,
             'rules' => [
@@ -60,7 +60,7 @@ return [
 			
             ],
         ],
-        /* 'user' => [
+         'user' => [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-confsite', 'httpOnly' => true],

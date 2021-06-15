@@ -1,20 +1,16 @@
 <?php
 namespace confsite\controllers;
 
+use frontend\models\SignupForm;
 use Yii;
-use yii\base\InvalidParamException;
-use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Controller;
-use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use yii\web\ForbiddenHttpException;
 use yii\db\Expression;
 use backend\modules\conference\models\Conference;
 use backend\modules\conference\models\ConfRegistration;
 use confsite\models\ConferenceSearch;
 use confsite\models\LoginForm;
-use confsite\models\SignupForm;
 use common\models\UploadFile;
 
 
@@ -204,6 +200,7 @@ class SiteController extends Controller
     }
 	
 	public function actionDownloadFile($attr, $url, $identity = true){
+	    
         $attr = $this->clean($attr);
         $model = $this->findConferenceByUrl($url);
         $filename = strtoupper($attr);
