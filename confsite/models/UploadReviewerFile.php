@@ -20,7 +20,7 @@ class UploadReviewerFile
 		if($multiple){
 			//$view = '@frontend/views/upload/main-multiple';
 		}else{
-			$view = '@confsite/views/upload/main-file-reviewer';
+			$view = '@confsite/views/upload-view/main-file-reviewer';
 		}
 		
 		
