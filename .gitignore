@@ -55,6 +55,9 @@ backend/web/
 /backend/web
 /frontend/web
 /confsite/web
+backend/web/
+frontend/web/
+confsite/web/
 
 #uploaded
 

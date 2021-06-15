@@ -147,14 +147,14 @@ class MemberController extends Controller
 				$review->status = 20;
 				if($review->save()){
 					//maybe email appreciation
-					$model->sendReviewerEmail(Yii::$app->user->identity, 'Appreciate-reviewer');
+					//$model->sendReviewerEmail(Yii::$app->user->identity, 'Appreciate-reviewer');
 					
 					//if no other in progress
-					if(!$model->checkInProgressReviewers()){
+					/* if(!$model->checkInProgressReviewers()){
 						$model->sendEmail('After-all-reviewers-finished');
-					}
+					} */
 					Yii::$app->session->addFlash('success', "Thank you, your review has been successfully submitted.");
-					return $this->redirect('index');
+					return $this->redirect(['review', 'confurl' => $confurl]);
 				}else{
 					$review->flashError();
 				}
