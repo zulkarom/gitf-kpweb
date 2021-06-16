@@ -75,10 +75,15 @@ table.detail-view th {
 				'label' => 'Uploaded Full Paper',
 				'format' => 'raw',
 				'value' => function($model){
-					return Html::a('DOWNLOAD', ['paper/download-file', 'id' => $model->id, 'attr' => 'paper'], ['class' => 'btn btn-info btn-sm', 'target' => '_blank']);
+				if($model->repaper_file){
+				    return Html::a('DOWNLOAD', ['paper/download-file', 'id' => $model->id, 'attr' => 'repaper'], ['class' => 'btn btn-info btn-sm', 'target' => '_blank']);
+				}else{
+				    return Html::a('DOWNLOAD', ['paper/download-file', 'id' => $model->id, 'attr' => 'paper'], ['class' => 'btn btn-info btn-sm', 'target' => '_blank']);
+				}
+					
 				}
 			],
-			[
+/* 			[
 				'label' => 'Acceptance Letter',
 				'format' => 'raw',
 				'value' => function($model){
@@ -102,7 +107,7 @@ table.detail-view th {
 					return Html::a('DOWNLOAD RECEIPT', ['member/receipt-pdf', 'id' => $model->id], ['class' => 'btn btn-success btn-sm','target' => '_blank']);
 				}
 				
-			],
+			], */
   
         ],
     ]) ?>

@@ -363,6 +363,26 @@ class Menu
 		$conf = Conference::findOne(Yii::$app->getRequest()->getQueryParam('conf'));
 
 		if($conf){
+		    
+		    
+		    $paper_menu[] = ['label' => 'Abstract', 'icon' => 'file-o', 'url' => ['/conference/paper/abstract', 'conf' => $confurl]];
+		    $paper_menu[] = ['label' => 'Full Paper', 'icon' => 'file', 'url' =>  ['/conference/paper/full-paper', 'conf' => $confurl]];
+		    
+		    $paper_menu[] = ['label' => 'Review', 'icon' => 'search', 'url' =>  ['/conference/paper/review', 'conf' => $confurl]];
+		    
+		    $paper_menu[] =  ['label' => 'Correction', 'icon' => 'edit', 'url' =>  ['/conference/paper/correction', 'conf' => $confurl]];
+		    
+		   // $paper_menu[] = ['label' => 'Payment', 'icon' => 'dollar', 'url' =>  ['/conference/paper/payment', 'conf' => $confurl]];
+		    
+		    $paper_menu[] = ['label' => 'Complete', 'icon' => 'check', 'url' =>  ['/conference/paper/complete', 'conf' => $confurl]];
+		    
+		  //  $paper_menu[] =  ['label' => 'Reject', 'icon' => 'remove', 'url' =>  ['/conference/paper/reject', 'conf' => $confurl]];
+		    
+		    $paper_menu[] = ['label' => 'Overview', 'icon' => 'table', 'url' =>  ['/conference/paper/overview', 'conf' => $confurl]];
+		    
+		    
+		    
+		    
 			$menus = [
 			
 					'label' => $conf->conf_abbr,
@@ -376,20 +396,7 @@ class Menu
 						'label' => 'Paper\'s Flow',
 						'icon' => 'files-o',
 						'url' => '#',
-						'items' => [
-							['label' => 'Abstract', 'icon' => 'file-o', 'url' => ['/conference/paper/abstract', 'conf' => $confurl]],
-							
-							['label' => 'Full Paper', 'icon' => 'file', 'url' =>  ['/conference/paper/full-paper', 'conf' => $confurl]],
-							
-							['label' => 'Review', 'icon' => 'search', 'url' =>  ['/conference/paper/review', 'conf' => $confurl]],
-							
-							['label' => 'Payment', 'icon' => 'dollar', 'url' =>  ['/conference/paper/payment', 'conf' => $confurl]],
-							
-							['label' => 'Complete', 'icon' => 'check', 'url' =>  ['/conference/paper/complete', 'conf' => $confurl]],
-							
-							['label' => 'Overview', 'icon' => 'table', 'url' =>  ['/conference/paper/overview', 'conf' => $confurl]],
-
-						]
+					    'items' =>  $paper_menu,
 					],
 					
 					[

@@ -1,0 +1,1 @@
+ALTER TABLE `conf_paper` ADD `repaper_file` TEXT NULL DEFAULT NULL AFTER `paper_file`;

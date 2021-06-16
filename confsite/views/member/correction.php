@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use backend\modules\conference\models\ReviewForm;
 use confsite\models\UploadFile;
 use wbraganca\dynamicform\DynamicFormWidget;
 use yii\jui\JuiAsset;
@@ -19,7 +20,6 @@ $model->file_controller = 'member';
 ?>
 <style>
 .table td, .table th {
-    padding: 0rem;
     border: none;
 }
 label{
@@ -28,16 +28,46 @@ label{
 	</style>
 <div class="conf-paper-update">
 
-    <h4 class="m-text23 p-b-34">Full Paper Submission</h4>
+    <h4 class="m-text23 p-b-34">Paper Correction</h4>
 
 
+    <h4><?=$model->pap_title ?></h4>
+	<br /><br />
+<table class="table table-striped table-hover">
+<thead>
+<tr>
+	<th width="3%">#</th>
+	<th width="35%">Review Items</th>
+	<th>Remark</th>
+</tr>
+</thead>
+<tbody>
+	
+	<?php 
+	
+	$i =1;
+	foreach(ReviewForm::find()->all() as $f){
+	    $attr = 'q_'. $i . '_note';
+	    echo '<tr>
+		<td>'.$i.'. </td>
+		<td>'.$f->form_quest.'</td>
+	
+		<td> ' . $review->$attr .' </td>
+	</tr>';
+	$i++;
+	}
+	
+	?>
+</tbody>
+</table>
+
+   <br /><br />
+     <h4 class="m-text23 p-b-34">Resubmit Form</h4>
 <div class="conf-paper-form">
 
 <?php $form = ActiveForm::begin(['id' => 'dynamic-form']); ?>
 
 
-    <h4><?=$model->pap_title ?></h4>
-	<br /><br />
 	
 	
 	 <?= $form->field($model, 'pap_title')->textarea(['rows' => 2]) ?>
@@ -58,6 +88,11 @@ label{
         ],
     ]); ?>
 
+ 
+
+
+	<br />
+    
     
     <table class="table">
         <thead>
@@ -110,18 +145,10 @@ label{
 	
 	<?= $form->field($model, 'keyword')->textarea(['rows' => 2]) ?>
 
-
-
-<div class="row">
-<div class="col-md-7"><?php 
-$fees = $model->conference->confFees;
-echo $form->field($model, 'myrole') ->dropDownList(
-        ArrayHelper::map($fees,'id', 'fee_name')) ?></div>
-</div>
 <br />
 	
 	
-	<?=UploadFile::fileInput($model, 'paper')?>
+	<?=UploadFile::fileInput($model, 'repaper')?>
 	
 	
 

@@ -144,8 +144,13 @@ class MemberController extends Controller
 			}else if($wfaction=='submit'){
 				$review->scenario = 'review';
 				$review->completed_at = new Expression('NOW()');
+				
+				
+				
 				$review->status = 20;
 				if($review->save()){
+				    
+				    
 					//maybe email appreciation
 					//$model->sendReviewerEmail(Yii::$app->user->identity, 'Appreciate-reviewer');
 					
@@ -153,6 +158,18 @@ class MemberController extends Controller
 					/* if(!$model->checkInProgressReviewers()){
 						$model->sendEmail('After-all-reviewers-finished');
 					} */
+				    
+				    if($review->review_option == 5){
+				        $model->status = 70; // paper correction
+				    }else if($review->review_option == 10){
+				        $model->status = 100; // paper accepted
+				    }else if($review->review_option == 1){
+				        $model->status = 10; // reject
+				    }
+				    
+				    $model->save();
+				    
+				    
 					Yii::$app->session->addFlash('success', "Thank you, your review has been successfully submitted.");
 					return $this->redirect(['review', 'confurl' => $confurl]);
 				}else{
@@ -382,7 +399,82 @@ class MemberController extends Controller
 		if($confurl){
         $model = $this->findModel($id);
 		$model->scenario = 'fullpaper';
-        if ($model->load(Yii::$app->request->post())) {
+		
+		
+		$authors = $model->authors;
+		
+		if ($model->load(Yii::$app->request->post())) {
+		    
+		    $model->updated_at = new Expression('NOW()');
+		    
+		    $authors = Model::createMultiple(ConfAuthor::classname());
+		    Model::loadMultiple($authors, Yii::$app->request->post());
+		    
+		    foreach ($authors as $i => $author) {
+		        $author->author_order = $i;
+		    }
+		    
+		    
+		    $valid = $model->validate();
+		    if(!$valid){
+		        $model->flashError();
+		    }
+		    $valid = Model::validateMultiple($authors) && $valid;
+		   
+		    if ($valid) {
+		        
+		        $transaction = Yii::$app->db->beginTransaction();
+		        try {
+		            
+		            $model->updated_at = new Expression('NOW()');
+		            $model->full_paper_at = new Expression('NOW()');
+		            $model->status = 80; //full paper submission
+		            if ($flag = $model->save(false)) {
+		                
+		                foreach ($authors as $i => $author) {
+		                    if ($flag === false) {
+		                        break;
+		                    }
+		                    //do not validate this in model
+		                    $author->paper_id = $model->id;
+		                    
+		                    if (!($flag = $author->save(false))) {
+		                        break;
+		                    }
+		                }
+		                
+		            }else{
+		                
+		                $model->flashError();
+		            }
+		            
+		            if ($flag) {
+		                $transaction->commit();
+		                    Yii::$app->session->addFlash('success', "Thank you, your full paper has been successfully submitted");
+		                    return $this->redirect(['member/index', 'confurl'=> $confurl]);
+
+		                
+		                
+		            } else {
+		                $transaction->rollBack();
+		            }
+		        } catch (Exception $e) {
+		            $transaction->rollBack();
+		            
+		        }
+		    }
+		    
+		    
+		    
+		    
+		    
+		}
+		
+		
+		
+		
+		
+        /* if ($model->load(Yii::$app->request->post())) {
             $model->updated_at = new Expression('NOW()'); 
 			$model->full_paper_at = new Expression('NOW()');
 			$model->status = 50; //full paper submission
@@ -395,13 +487,102 @@ class MemberController extends Controller
 				
 			}
            
-        }
+        } */
     }
     
      return $this->render('full-paper', [
-            'model' => $model
+            'model' => $model,
+         'authors' => (empty($authors)) ? [new ConfAuthor] : $authors
         ]);
    
+	}
+	
+	public function actionCorrection($confurl=null,$id){
+	    if($confurl){
+	        $model = $this->findModel($id);
+	        $model->scenario = 'correction';
+	        
+	        $review = PaperReviewer::findOne(['paper_id' => $id]);
+	        
+	        
+	        $authors = $model->authors;
+	        
+	        if ($model->load(Yii::$app->request->post())) {
+	            
+	            $model->updated_at = new Expression('NOW()');
+	            
+	            $authors = Model::createMultiple(ConfAuthor::classname());
+	            Model::loadMultiple($authors, Yii::$app->request->post());
+	            
+	            foreach ($authors as $i => $author) {
+	                $author->author_order = $i;
+	            }
+	            
+	            
+	            $valid = $model->validate();
+	            if(!$valid){
+	                $model->flashError();
+	            }
+	            $valid = Model::validateMultiple($authors) && $valid;
+	            
+	            if ($valid) {
+	                
+	                $transaction = Yii::$app->db->beginTransaction();
+	                try {
+	                    
+	                    $model->updated_at = new Expression('NOW()');
+	                    $model->full_paper_at = new Expression('NOW()');
+	                    $model->status = 100; //full paper submission
+	                    if ($flag = $model->save(false)) {
+	                        
+	                        foreach ($authors as $i => $author) {
+	                            if ($flag === false) {
+	                                break;
+	                            }
+	                            //do not validate this in model
+	                            $author->paper_id = $model->id;
+	                            
+	                            if (!($flag = $author->save(false))) {
+	                                break;
+	                            }
+	                        }
+	                        
+	                    }else{
+	                        
+	                        $model->flashError();
+	                    }
+	                    
+	                    if ($flag) {
+	                        $transaction->commit();
+	                        Yii::$app->session->addFlash('success', "Thank you, your full paper correction successfully submitted");
+	                        return $this->redirect(['member/index', 'confurl'=> $confurl]);
+	                        
+	                        
+	                        
+	                    } else {
+	                        $transaction->rollBack();
+	                    }
+	                } catch (Exception $e) {
+	                    $transaction->rollBack();
+	                    
+	                }
+	            }
+	            
+	            
+	            
+	            
+	            
+	        }
+	        
+
+	    }
+	    
+	    return $this->render('correction', [
+	        'model' => $model,
+	        'review' => $review,
+	        'authors' => (empty($authors)) ? [new ConfAuthor] : $authors
+	    ]);
+	    
 	}
 
     /**
@@ -547,7 +728,7 @@ class MemberController extends Controller
     }
 
 	protected function clean($string){
-        $allowed = ['paper', 'payment'];
+        $allowed = ['paper', 'payment', 'repaper'];
         
         foreach($allowed as $a){
             if($string == $a){

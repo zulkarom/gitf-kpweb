@@ -24,6 +24,8 @@ use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 use common\models\Model;
 use yii\filters\AccessControl;
+use backend\modules\conference\models\CorrectionSearch;
+use backend\modules\conference\models\PaperReviewer;
 
 
 /**
@@ -115,6 +117,31 @@ class PaperController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+    
+    
+    public function actionReviewerView($conf, $id)
+    {
+        $model = $this->findModel($id);
+        $review = $this->findPaperReviewer($id);
+        
+        return $this->render('review-view', [
+            'model' => $model,
+            'review' => $review,
+        ]);
+    }
+    
+    public function actionCorrection($conf)
+    {
+        $searchModel = new CorrectionSearch();
+        $searchModel->conf_id = $conf;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
+        return $this->render('correction', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+    
 	
 	public function actionOverview($conf)
     {
@@ -221,6 +248,8 @@ class PaperController extends Controller
 				$model->status = 10;//rejected
 			}
 			if($model->save()){
+			    Yii::$app->session->addFlash('success', "Data Updated");
+
 				return $this->redirect(['paper/abstract', 'conf' => $conf]);
 			}
             
@@ -276,7 +305,18 @@ class PaperController extends Controller
 
 		if ($reviewer->load(Yii::$app->request->post())) {
 			$reviewer->status = 60;
-			if($reviewer->save()){
+			
+			$slot = PaperReviewer::findOne(['paper_id' => $reviewer->id]);
+			if($slot){
+			    $slot->user_id = $reviewer->reviewer_user_id;
+			}else{
+			    $slot = new PaperReviewer();
+			    $slot->scenario = 'create';
+			    $slot->user_id = $reviewer->reviewer_user_id;
+			    $slot->paper_id = $reviewer->id;
+			}
+			
+			if($slot->save() and $reviewer->save()){
 				Yii::$app->session->addFlash('success', "Reviewer assigned successfully");
 				return $this->redirect(['paper/review', 'conf' => $conf]);
 			}
@@ -296,6 +336,7 @@ class PaperController extends Controller
 		$conference = $model->conference;
 		$commercial = $conference->commercial == 1 ? true : false;
 		
+		//all these extent from paper model
 		$reviewer = PaperReviewerForm::findOne($id);
 		$reject = PaperRejectForm::findOne($id);
 		$accept = PaperAcceptForm::findOne($id);
@@ -304,11 +345,27 @@ class PaperController extends Controller
 		$reject->scenario = 'reject';
 		$accept->scenario = 'accept_full';
 		
-		//print_r(Yii::$app->request->post());
+		
 		
 		if ($reviewer->load(Yii::$app->request->post())) {
-			$reviewer->status = 60;
-			if($reviewer->save()){
+		   // print_r(Yii::$app->request->post());die();
+		   
+		    
+			$reviewer->status = 60; //paper correcttion
+			
+			//process review slot
+			$slot = PaperReviewer::findOne(['paper_id' => $reviewer->id]);
+			
+			if($slot){
+			    $slot->user_id = $reviewer->reviewer_user_id;
+			}else{
+			    $slot = new PaperReviewer();
+			    $slot->scenario = 'create';
+			    $slot->user_id = $reviewer->reviewer_user_id;
+			    $slot->paper_id = $reviewer->id;
+			}
+			
+			if($slot->save() and $reviewer->save()){
 				Yii::$app->session->addFlash('success', "Reviewer assigned successfully");
 				return $this->redirect(['paper/review', 'conf' => $conf]);
 			}
@@ -478,6 +535,13 @@ class PaperController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    
+    protected function findPaperReviewer($id)
+    {
+        if (($model = PaperReviewer::findOne(['paper_id' => $id])) !== null) {
+            return $model;
+        }
     }
 	
 	public function actionDownloadFile($attr, $id, $identity = true){

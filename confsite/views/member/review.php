@@ -50,7 +50,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 //'visible' => false,
                 'buttons'=>[
                     'update'=>function ($url, $model) {
-                        return Html::a('<span class="fa fa-edit"></span> REVIEW',['member/review-form/', 'confurl' => $model->conference->conf_url ,'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
+                    if(in_array($model->status, [60,70])){
+                        if($model->status == 60){
+                            $txt = 'REVIEW';
+                            $color = 'warning';
+                        }else{
+                            $txt = 'EDIT';
+                            $color = 'secondary';
+                        }
+                         return Html::a('<span class="fa fa-edit"></span> ' . $txt ,['member/review-form/', 
+                            'confurl' => $model->conference->conf_url ,'id' => $model->id],['class'=>'btn btn-'.$color.' btn-sm']);
+                    }
+                       
                     }
                 ],
             

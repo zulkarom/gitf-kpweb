@@ -24,6 +24,7 @@ use yii\helpers\Html;
 class ConfPaper extends \yii\db\ActiveRecord
 {
 	public $paper_instance;
+	public $repaper_instance;
 	public $payment_instance;
 	public $file_controller;
 	public $form_abstract_only = 1;
@@ -50,6 +51,8 @@ class ConfPaper extends \yii\db\ActiveRecord
             [['conf_id', 'confly_number', 'user_id', 'pap_title', 'pap_abstract', 'created_at', 'status', 'keyword'], 'required', 'on' => 'create'],
 			
 			[['conf_id', 'user_id', 'pap_title', 'pap_abstract', 'created_at', 'status', 'paper_file', 'keyword', 'myrole'], 'required', 'on' => 'fullpaper'],
+            
+            [['conf_id', 'user_id', 'pap_title', 'pap_abstract', 'created_at', 'status', 'repaper_file', 'keyword'], 'required', 'on' => 'correction'],
 			
 			[['payment_info', 'payment_at'], 'required', 'on' => 'payment'],
 			
@@ -75,6 +78,10 @@ class ConfPaper extends \yii\db\ActiveRecord
 			[['paper_file'], 'required', 'on' => 'paper_upload'],
             [['paper_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'doc, docx', 'maxSize' => 5000000],
             [['updated_at'], 'required', 'on' => 'paper_delete'],
+            
+            [['repaper_file'], 'required', 'on' => 'repaper_upload'],
+            [['repaper_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'doc, docx', 'maxSize' => 5000000],
+            [['updated_at'], 'required', 'on' => 'repaper_delete'],
 			
 			[['payment_file'], 'required', 'on' => 'payment_upload'],
             [['payment_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf,jpg,jpeg,png,gif', 'maxSize' => 5000000],
@@ -96,6 +103,7 @@ class ConfPaper extends \yii\db\ActiveRecord
 			'status' => 'Status',
             'pap_abstract' => 'Abstract',
             'paper_file' => 'Upload Full Paper',
+            'repaper_file' => 'Full Paper Resubmission',
             'created_at' => 'Created At',
 			'form_abstract_only' => 'Choose One:',
 			'myrole' => 'My Role',

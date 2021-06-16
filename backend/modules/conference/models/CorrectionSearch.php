@@ -9,7 +9,7 @@ use backend\modules\conference\models\ConfPaper;
 /**
  * ConfPaperSearch represents the model behind the search form of `backend\modules\conference\models\ConfPaper`.
  */
-class ReviewSearch extends ConfPaper
+class CorrectionSearch extends ConfPaper
 {
 	public $fullname;
     /**
@@ -64,7 +64,7 @@ class ReviewSearch extends ConfPaper
         }
 		
 		$query->andFilterWhere([
-			'status' => 60
+			'status' => 70
         ]);
 		
 
