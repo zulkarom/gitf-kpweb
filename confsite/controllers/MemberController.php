@@ -312,6 +312,9 @@ class MemberController extends Controller
             
             
             $valid = $model->validate();
+            if(!$valid){
+                $model->flashError();
+            }
             
             $valid = Model::validateMultiple($authors) && $valid;
             

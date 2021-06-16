@@ -29,7 +29,7 @@ return [
 			//'enableConfirmation' => true, 
 			//'enableUnconfirmedLogin' => false,
 			
-			'enableConfirmation' => true,
+			'enableConfirmation' => false,
 			'enableUnconfirmedLogin' => true,
 			'enableFlashMessages' => false,
 			

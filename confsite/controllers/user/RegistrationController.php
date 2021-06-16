@@ -4,6 +4,7 @@ namespace confsite\controllers\user;
 
 use dektrium\user\models\RegistrationForm;
 use dektrium\user\controllers\RegistrationController as BaseRegistrationController;
+use yii\web\NotFoundHttpException;
 
 class RegistrationController extends BaseRegistrationController
 {
