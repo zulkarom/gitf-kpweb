@@ -21,6 +21,11 @@ class RegistrationForm extends BaseRegistrationForm
 	
 	public $country_id;
 	
+	public $sv_main;
+	public $sv_co1;
+	public $sv_co2;
+	public $sv_co3;
+	
 	public $password_repeat;
 	
 	public function rules()
@@ -33,7 +38,9 @@ class RegistrationForm extends BaseRegistrationForm
 		
 		$rules['country_idRequired'] = ['country_id', 'required'];
 		
-		$rules['institutionString'] = ['institution', 'string'];
+		$rules[] = ['sv_main', 'required'];
+		
+		$rules[] = [['institution', 'sv_main', 'sv_co1', 'sv_co2', 'sv_co3'], 'string'];
 		
 		$rules['assoc_addressString'] = ['assoc_address', 'string'];
 		
@@ -74,6 +81,10 @@ class RegistrationForm extends BaseRegistrationForm
 			$assoc->assoc_address = $this->assoc_address;
 			$assoc->country_id = $this->country_id;
 			$assoc->institution = $this->institution;
+			$assoc->sv_main= $this->sv_main;
+			$assoc->sv_co1= $this->sv_co1;
+			$assoc->sv_co2= $this->sv_co2;
+			$assoc->sv_co3= $this->sv_co3;
 			if($assoc->save()){
 				Yii::$app->session->setFlash(
 				'info',
@@ -83,8 +94,6 @@ class RegistrationForm extends BaseRegistrationForm
 					)
 				);
 			}
-			
-			
         }else{
 			return false;
 		}
