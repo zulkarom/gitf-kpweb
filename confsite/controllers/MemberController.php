@@ -337,6 +337,7 @@ class MemberController extends Controller
                         }
 
                     }else{
+                        print_r($model->getErrors());die();
                         $model->flashError();
                     }
 
