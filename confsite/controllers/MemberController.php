@@ -542,7 +542,7 @@ class MemberController extends Controller
         $conf = $model->conference;
         $confurl = $conf->conf_url;
 
-        return UploadFile::upload($model, $attr, $confurl, 'updated_at');
+        return UploadFile::upload($model, $attr, 'updated_at');
 
     }
 

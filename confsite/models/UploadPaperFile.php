@@ -20,7 +20,7 @@ class UploadPaperFile
 		if($multiple){
 			//$view = '@frontend/views/upload/main-multiple';
 		}else{
-			$view = '@confsite/views/upload/main-file-paper';
+			$view = '@confsite/views/upload-view/main-file-paper';
 		}
 		
 		
@@ -141,7 +141,7 @@ class UploadPaperFile
 	}
 	
 	public static function upload($model, $attr, $ts = false){
-		$confurl = $model->conf_url;
+		$confurl = $model->conference->conf_url;
 		$model->scenario = $attr . '_upload';
 
 		$instance = $attr . '_instance';

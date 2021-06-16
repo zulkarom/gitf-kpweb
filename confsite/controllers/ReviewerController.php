@@ -276,7 +276,7 @@ class ReviewerController extends Controller
         $model = $this->findReviewModel($id);
         $model->file_controller = 'reviewer';
 
-        return UploadFile::upload($model, $attr, 'updated_at');
+        return UploadFile::upload($model, $attr);
 
     }
 

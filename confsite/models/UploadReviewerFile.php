@@ -141,7 +141,7 @@ class UploadReviewerFile
 	}
 	
 	public static function upload($model, $attr, $ts = false){
-		$confurl = $model->conf_url;
+		$confurl = $model->paper->conference->conf_url;
 		$model->scenario = $attr . '_upload';
 
 		$instance = $attr . '_instance';
