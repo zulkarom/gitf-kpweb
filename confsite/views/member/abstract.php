@@ -5,6 +5,8 @@ use yii\widgets\ActiveForm;
 use wbraganca\dynamicform\DynamicFormWidget;
 use yii\jui\JuiAsset;
 use richardfan\widget\JSRegister;
+use backend\modules\conference\models\ConfScope;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\conference\models\ConfPaper */
@@ -98,6 +100,8 @@ label{
     <?php DynamicFormWidget::end(); ?>
 
     <?= $form->field($model, 'pap_abstract')->textarea(['rows' => 6]) ?>
+    
+    <?= $form->field($model, 'scope_id')->dropDownList(ArrayHelper::map(ConfScope::find()->where(['conf_id' => $conf->id])->all(), 'id', 'scope_name'), ['prompt' => 'Select']) ?>
 	
 	<?= $form->field($model, 'keyword')->textarea(['rows' => 2]) ?>
 	

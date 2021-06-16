@@ -15,6 +15,7 @@ $review->file_controller = 'reviewer';
 
 <h4>Review Form</h4>
 <br />
+If there is no remark for particular section, kindly <b>put dash (-)</b> in the corresponding text input box.
 <table class="table table-striped table-hover">
 <thead>
 <tr>

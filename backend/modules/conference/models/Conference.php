@@ -251,6 +251,14 @@ class Conference extends \yii\db\ActiveRecord
 		return $kira ? $kira : 0;
 	}
 	
+	public function getMyReviewCount(){
+	    
+	    $kira = ConfPaper::find()
+	    ->where(['reviewer_user_id' => Yii::$app->user->identity->id ,'conf_id' => $this->id])
+	    ->count();
+	    return $kira ? $kira : 0;
+	}
+	
 	public function getEarlyBirdDate(){
 		$find = ConfDate::find()->where(['conf_id' => $this->id, 'date_id' => 5])->one();
 		if($find){

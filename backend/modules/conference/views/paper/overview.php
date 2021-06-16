@@ -24,7 +24,13 @@ $this->params['breadcrumbs'][] = $this->title;
         //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
+            [
+                'attribute' => 'created_at',
+                'label' => 'Date',
+                'format' => 'date'
+            ],
 			[
+			    
 			 'attribute' => 'pap_title',
 			 'format' => 'raw',
 			 //'contentOptions' => [ 'style' => 'width: 60%;' ],
@@ -34,19 +40,20 @@ $this->params['breadcrumbs'][] = $this->title;
 				 
 			 }
 			],
+			
 			[
-				'attribute' => 'status',
-				'format' => 'raw',
-				'value' => function($model){
-					return ucfirst(strtolower($model->paperStatus));
-				}
-				
-			],
-			[
-				'attribute' => 'created_at',
-				'label' => 'Date',
-				'format' => 'date'
-			],
+			    'label' => 'Scopre',
+			    'value' => function($model){
+			    if($model->scope){
+			        return $model->scope->scope_name;
+			    }else{
+			        return 'NULL';
+			    }
+			    
+			    }
+			    
+			    ],
+			
 			
             [
 				'label' => 'Participant',
@@ -69,6 +76,45 @@ $this->params['breadcrumbs'][] = $this->title;
 				}
 			],
 			[
+			    'label' => 'Reviewer',
+			    'value' => function($model){
+			    if($model->reviewer){
+			        return $model->reviewer->fullname;
+			    }else{
+			        return 'NULL';
+			    }
+			    
+			    }
+			    
+			    ],
+			[
+			    'attribute' => 'status',
+			    'format' => 'raw',
+			    'value' => function($model){
+			    return $model->statusLabel;
+			    }
+			    
+			    ],
+			['class' => 'yii\grid\ActionColumn',
+                'template' => '{update} {delete}',
+                //'visible' => false,
+                'buttons'=>[
+                    'update'=>function ($url, $model) {
+                        return "<a href='javascript:void(0)' class='btn btn-warning btn-sm' data-toggle='modal' idx='".$model->id."' data-target='#modal-article-info'><span class='fa fa-edit'></span></a>";
+                    },
+                    'delete'=>function ($url, $model) {
+                        return Html::a('<span class="fa fa-trash"></span>', ['delete', 'id' => $model->id], [
+                            'class' => 'btn btn-danger btn-sm',
+                            'data' => [
+                                'confirm' => 'Are you sure you want to delete this paper?',
+                                'method' => 'post',
+                            ],
+                        ]);
+                    }
+                ],
+            
+            ],
+			/* [
 				'label' => 'Role',
 				'value' => function($model){
 					if($model->authorRole){
@@ -121,7 +167,7 @@ $this->params['breadcrumbs'][] = $this->title;
 					}
 				}
 				
-			],
+			], */
 			
 			
 

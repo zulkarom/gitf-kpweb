@@ -115,6 +115,20 @@ $conf = Conference::findOne(['conf_url' => $confurl]);
 							}
 						}
 						
+						$type = $conf->type_name;
+						if($type == 1){
+						    $n = 'Conference';
+						}else if ($type == 2){
+						    $n= 'Colloquium';
+						}
+						
+						echo '<li class="p-t-6 p-b-8 bo7">
+								<a href="#" class="s-text13 p-t-5 p-b-5">
+									'.$n.' Date: <br /><strong style="margin-left:20px"><i class="fa fa-calendar"></i> '.$conf->conferenceDateRange .'</strong>
+								</a>
+							</li>';
+						
+									
 						?>
 						
 						

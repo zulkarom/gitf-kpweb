@@ -312,15 +312,19 @@ class MemberController extends Controller
             
             
             $valid = $model->validate();
+            if(!$valid){
+                $model->flashError();
+            }
             
             $valid = Model::validateMultiple($authors) && $valid;
             
             if ($valid) {
-
+                
                 $transaction = Yii::$app->db->beginTransaction();
+               /// die();
                 try {
                     if ($flag = $model->save(false)) {
-
+                        //die();
                         foreach ($authors as $i => $author) {
                             if ($flag === false) {
                                 break;
@@ -333,6 +337,9 @@ class MemberController extends Controller
                             }
                         }
 
+                    }else{
+                        //print_r($model->getErrors());die();
+                        $model->flashError();
                     }
 
                     if ($flag) {
@@ -362,7 +369,8 @@ class MemberController extends Controller
     
      return $this->render('abstract', [
             'model' => $model,
-            'authors' => (empty($authors)) ? [new ConfAuthor] : $authors
+            'authors' => (empty($authors)) ? [new ConfAuthor] : $authors,
+         'conf' => $conf
         ]);
    
 	} 
