@@ -323,7 +323,7 @@ class MemberController extends Controller
                 $transaction = Yii::$app->db->beginTransaction();
                 try {
                     if ($flag = $model->save(false)) {
-                        //die();
+                        die();
                         foreach ($authors as $i => $author) {
                             if ($flag === false) {
                                 break;
