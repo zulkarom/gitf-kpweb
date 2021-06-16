@@ -197,6 +197,7 @@ EOD;
 	    
 	    if($this->en){
 	        $this->tuan = str_replace('Prof. Madya ', '', $this->tuan);
+	        $this->tuan = str_replace('YBrs. ', '', $this->tuan);
 	    }
 	    
 	}
