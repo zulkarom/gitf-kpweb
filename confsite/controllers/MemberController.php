@@ -319,11 +319,11 @@ class MemberController extends Controller
             $valid = Model::validateMultiple($authors) && $valid;
             
             if ($valid) {
-                die();
+                
                 $transaction = Yii::$app->db->beginTransaction();
                 try {
                     if ($flag = $model->save(false)) {
-
+                        die();
                         foreach ($authors as $i => $author) {
                             if ($flag === false) {
                                 break;
