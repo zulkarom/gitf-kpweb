@@ -74,6 +74,7 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+				'<confurl>' => 'site/home',
             ],
         ],
     ],
