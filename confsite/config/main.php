@@ -48,19 +48,8 @@ return [
 				],
 			],
 		],
-		/* 'urlManager' => [
-            'enablePrettyUrl' => true,
-             'showScriptName' => false,
-            'rules' => [
-			'' => 'site/index',
-			'<confurl>' => 'site/home',
-			'<confurl>/<controller>/<action>' => '<controller>/<action>',
-			
-			
-			
-            ],
-        ],
-         'user' => [
+		 
+        /*'user' => [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-confsite', 'httpOnly' => true],
