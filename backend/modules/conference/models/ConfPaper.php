@@ -48,7 +48,7 @@ class ConfPaper extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['conf_id', 'confly_number', 'user_id', 'pap_title', 'pap_abstract', 'created_at', 'status'], 'required', 'on' => 'create'],
+            [['conf_id', 'confly_number', 'user_id', 'pap_title', 'pap_abstract', 'created_at', 'status', 'scope_id'], 'required', 'on' => 'create'],
 			
 			[['conf_id', 'user_id', 'pap_title', 'pap_abstract', 'created_at', 'status', 'paper_file', 'keyword', 'myrole'], 'required', 'on' => 'fullpaper'],
             
@@ -64,7 +64,7 @@ class ConfPaper extends \yii\db\ActiveRecord
 			
 			
 			
-            [['conf_id', 'user_id', 'status', 'form_abstract_only', 'abstract_decide', 'invoice_ts', 'myrole', 'confly_number', 'receipt_confly_no', 'invoice_confly_no', 'reviewer_user_id'], 'integer'],
+            [['conf_id', 'user_id', 'status', 'form_abstract_only', 'abstract_decide', 'invoice_ts', 'myrole', 'confly_number', 'receipt_confly_no', 'invoice_confly_no', 'reviewer_user_id', 'scope_id'], 'integer'],
 			
 			[['invoice_amount', 'invoice_final', 'payment_amount', 'invoice_early'], 'number'],
 			
@@ -113,7 +113,8 @@ class ConfPaper extends \yii\db\ActiveRecord
 			'payment_file' => 'Uploaded Payment File',
 			'invoice_final' => 'Invoice Final Amount (after rounding)',
 			'invoice_early' => 'Early Bird Amount',
-			'reviewer_user_id' => 'Reviewer'
+			'reviewer_user_id' => 'Reviewer',
+            'scope_id' => 'Field of Study'
         ];
     }
 	
@@ -138,6 +139,13 @@ class ConfPaper extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
+    
+    public function getScope()
+    {
+        return $this->hasOne(ConfScope::className(), ['id' => 'scope_id']);
+    }
+    
+    
 	
 	public function getReviewer()
     {
@@ -231,20 +239,43 @@ class ConfPaper extends \yii\db\ActiveRecord
 	public function statusList(){
 		return [
 			0 => 'DRAFT',
-			10 => 'REJECTED',
+			10 => 'REJECTED',//
 			20 => 'WITHDRAWN',
-			30 => 'ABSTRACT SUBMISSION',
-			35 => 'ABSTRACT & PAPER SUBMISSION',
-			40 => 'ABSTRACT ACCEPTED',
-			50 => 'FULL PAPER SUBMISSION',
-			60 => 'PAPER REVIEW',
-			70 => 'PAPER CORRECTION',
+			30 => 'ABS. SUBMISSION',//
+			35 => 'ABS. & PAPER SUBMIT',//
+			40 => 'ABS. ACCEPTED',//
+			50 => 'PAPER SUBMIT',//
+			60 => 'REVIEW',//
+			70 => 'CORRECTION',//
 			80 => 'PAPER ACCEPTED',
 			90 => 'PAYMENT SUBMITTED',
 			95 => 'PAYMENT DISAPPROVED',
-			100 => 'COMPLETE',
+			100 => 'COMPLETE',//
 			
 		];
+	}
+	public function statusColor(){
+	    return [
+	        0 => 'default',
+	        10 => 'danger',//
+	        20 => 'danger',
+	        30 => 'default',//
+	        35 => 'default',//
+	        40 => 'default',//
+	        50 => 'primary',//
+	        60 => 'info',//
+	        70 => 'warning',//
+	        80 => 'default',
+	        90 => 'default',
+	        95 => 'default',
+	        100 => 'success',//
+	        
+	    ];
+	}
+	
+	public function getStatusLabel(){
+	    $color = $this->statusColor()[$this->status];
+	    return '<span class="label label-'.$color.'">'.$this->paperStatus.'</span>';
 	}
 	
 	public function flashError(){

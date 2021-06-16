@@ -516,9 +516,14 @@ class PaperController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $paper = $this->findModel($id);
+        $conf = $paper->conf_id;
+        ConfAuthor::deleteAll(['paper_id' => $id]);
+        PaperReviewer::deleteAll(['paper_id' => $id]);
+        $paper->delete();
+        Yii::$app->session->addFlash('success', "Paper Deleted");
 
-        return $this->redirect(['index']);
+        return $this->redirect(['overview','conf' => $conf]);
     }
 
     /**

@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\widgets\DetailView;
 use backend\modules\conference\models\ReviewForm;
 use confsite\models\UploadFile;
 use wbraganca\dynamicform\DynamicFormWidget;
@@ -32,7 +33,29 @@ label{
 
 
     <h4><?=$model->pap_title ?></h4>
+    <br />
+  <?= DetailView::widget([
+        'model' => $model,
+        'attributes' => [
+            
+            'pap_title:ntext',
+            'pap_abstract:ntext',
+			'keyword:ntext',
+			
+			[
+				'attribute' => 'paper_file',
+				'label' => 'Uploaded Full Paper',
+				'format' => 'raw',
+				'value' => function($model){
+					return Html::a('<span class="glyphicon glyphicon-download-alt"></span> DOWNLOAD FILE', ['member/download-file', 'id' => $model->id, 'confurl' => $model->conference->conf_url, 'attr' => 'paper'], ['class' => 'btn btn-warning','target' => '_blank']);
+				}
+			]
+  
+        ],
+    ]) ?>
 	<br /><br />
+
+     <h4 class="m-text23 p-b-34">Reviewer's Remark</h4>
 <table class="table table-striped table-hover">
 <thead>
 <tr>
@@ -57,12 +80,24 @@ label{
 	$i++;
 	}
 	
+	
+	if($review->reviewed_file){
+	    echo '<tr>
+	<td>#</td>
+	<td>Reviewer\'s Uploaded File</td>
+	<td>'. Html::a('Download', ['reviewer/download-file', 'attr' => 'reviewed', 'id' => $review->id, 'confurl' => $model->conference->conf_url], ['class' => 'btn btn-primary'] ) .'</td>
+	</tr>';
+	}
 	?>
+	
+	
 </tbody>
 </table>
 
    <br /><br />
-     <h4 class="m-text23 p-b-34">Resubmit Form</h4>
+     <h4 class="m-text23 p-b-14">Resubmit Form</h4>
+     Kindly make correction at this section
+     <br /><br />
 <div class="conf-paper-form">
 
 <?php $form = ActiveForm::begin(['id' => 'dynamic-form']); ?>

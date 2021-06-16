@@ -369,7 +369,8 @@ class MemberController extends Controller
     
      return $this->render('abstract', [
             'model' => $model,
-            'authors' => (empty($authors)) ? [new ConfAuthor] : $authors
+            'authors' => (empty($authors)) ? [new ConfAuthor] : $authors,
+         'conf' => $conf
         ]);
    
 	} 
