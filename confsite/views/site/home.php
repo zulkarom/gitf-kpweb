@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
-$this->title= strtoupper($model->conf_name) . ' ('.$model->conf_abbr .') - by confvalley.com';
+$this->title= strtoupper($model->conf_name) . ' ('.$model->conf_abbr .')';
 
 $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@confsite/views/myasset');
 
