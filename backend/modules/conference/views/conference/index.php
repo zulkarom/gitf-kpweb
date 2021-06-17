@@ -11,7 +11,7 @@ $this->title = 'Conferences';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
     <p>
-        <?php/*  echo  Html::a('Create Conference', ['create'], ['class' => 'btn btn-success'])  */?>
+        <?php /*  echo  Html::a('Create Conference', ['create'], ['class' => 'btn btn-success'])  */  ?>
     </p>
 <div class="box">
 <div class="box-header"></div>
