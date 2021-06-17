@@ -9,7 +9,6 @@ $confurl = Yii::$app->getRequest()->getQueryParam('confurl');
 
 $menu = [
 	['Go Back to Main Page', ['site/home', 'confurl' => $confurl], 'home'],
-	['Register as Manager Now', ['site/login', 'confurl' => $confurl], 'files-o'],
 	
 ];
 
