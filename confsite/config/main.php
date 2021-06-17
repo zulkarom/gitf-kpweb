@@ -29,9 +29,9 @@ return [
 			//'enableConfirmation' => true, 
 			//'enableUnconfirmedLogin' => false,
 			
-			'enableConfirmation' => false,
+			/* 'enableConfirmation' => false,
 			'enableUnconfirmedLogin' => true,
-			'enableFlashMessages' => false,
+			'enableFlashMessages' => false, */
 			
 		],
 		
@@ -74,6 +74,7 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+				'<confurl>' => 'site/home',
             ],
         ],
     ],

@@ -3,3 +3,8 @@ ALTER TABLE `conf_paper` ADD `repaper_file` TEXT NULL DEFAULT NULL AFTER `paper_
 
 ALTER TABLE `conf_paper` ADD `scope_id` INT NULL DEFAULT '0' AFTER `pap_title`;
 ALTER TABLE `conference` ADD `type_name` INT NOT NULL DEFAULT '1' COMMENT '1=Conference, 2=Colloquium' AFTER `commercial`;
+
+
+
+
+ALTER TABLE `jeb_associate` ADD `sv_main` VARCHAR(100) NULL DEFAULT NULL AFTER `phone`, ADD `sv_co1` VARCHAR(100) NULL DEFAULT NULL AFTER `sv_main`, ADD `sv_co2` VARCHAR(100) NULL DEFAULT NULL AFTER `sv_co1`, ADD `sv_co3` VARCHAR(100) NULL DEFAULT NULL AFTER `sv_co2`;
