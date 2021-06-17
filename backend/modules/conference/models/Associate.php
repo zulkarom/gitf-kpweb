@@ -28,7 +28,7 @@ class Associate extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            //[['user_id', 'country_id', 'institution'], 'required'],
+            [['user_id'], 'required', 'on' => 'raw'],
 			
 			[['institution', 'country_id', 'title'], 'required', 'on' => 'update_external'],
 			

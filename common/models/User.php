@@ -8,7 +8,7 @@ use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 use backend\modules\staff\models\Staff;
 use backend\modules\teachingLoad\models\Staff as StaffTeaching;
-use confsite\models\Associate;
+use backend\modules\conference\models\Associate;
 use backend\modules\jeb\models\UserScope;
 
 

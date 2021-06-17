@@ -22,6 +22,7 @@ use backend\modules\conference\models\pdf\AcceptLetterPdf;
 use confsite\models\UploadPaperFile as UploadFile;
 use confsite\models\ConfPaperSearch;
 use confsite\models\ReviewSearch;
+use backend\modules\conference\models\Associate;
 
 /**
  * PaperController implements the CRUD actions for ConfPaper model.
@@ -244,8 +245,15 @@ class MemberController extends Controller
 		if($confurl){
 			$user = User::findOne(Yii::$app->user->identity->id);
 			$associate = $user->associate;
+			if(!$associate){
+			    $new = new Associate();
+			    $new->scenario = 'raw';
+			    $new->user_id = $user->id;
+			    $new->save();
+			}
 		
 			if ($user->load(Yii::$app->request->post()) && $associate->load(Yii::$app->request->post())) {
+			  //  print_r(Yii::$app->request->post());die();
 				if($user->save() && $associate->save()){
 					Yii::$app->session->addFlash('success', "Profile Updated");
 					return $this->redirect(['member/profile', 'confurl' => $confurl]);
