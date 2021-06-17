@@ -1,6 +1,6 @@
 <?php
 return [
-    'adminEmail' => 'admin@example.com',
+    'adminEmail' => 'auto.mail@fkp-portal.umk.edu.my',
     'supportEmail' => 'support@example.com',
     'user.passwordResetTokenExpire' => 3600,
 	'faculty_id' => 1,

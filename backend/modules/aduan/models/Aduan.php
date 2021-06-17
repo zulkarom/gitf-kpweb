@@ -212,7 +212,7 @@ class Aduan extends \yii\db\ActiveRecord
 	public function sendEmail(){
 		$link = 'https://fkp-portal.umk.edu.my/web/aduan/kemaskini?id='.$this->id.'&t='.$this->token;
 		Yii::$app->mailer->compose()
-		->setFrom(['fkp.umk.email@gmail.com' => 'eAduan FKP'])
+		->setFrom(['auto.mail@fkp-portal.umk.edu.my' => 'eAduan FKP'])
 		->setTo($this->email)
 		->setSubject('Maklumat Aduan#' . $this->id)
 		//->setTextBody('Salam Sejahtera, '. $this->name . ' \n Terima kasih kerana menggunakan eAduan FKP. Berikut adalah salinan maklumat aduan anda. \n\n
@@ -241,7 +241,7 @@ class Aduan extends \yii\db\ActiveRecord
 	
 	public function sendCode(){
 		Yii::$app->mailer->compose()
-		->setFrom(['fkp.umk.email@gmail.com' => 'eAduan FKP'])
+		->setFrom(['auto.mail@fkp-portal.umk.edu.my' => 'eAduan FKP'])
 		->setTo($this->email)
 		->setSubject('Kod Verifikasi Aduan#'.$this->id)
 		->setHtmlBody('Salam Sejahtera, 
@@ -285,7 +285,7 @@ class Aduan extends \yii\db\ActiveRecord
 		if($this->emailAdmin){
 		
 			Yii::$app->mailer->compose()
-		->setFrom(['fkp.umk.email@gmail.com' => 'Notifikasi eAduan'])
+		->setFrom(['auto.mail@fkp-portal.umk.edu.my' => 'Notifikasi eAduan'])
 		->setTo($this->emailAdmin)
 		->setSubject('Maklumat Aduan#' . $this->id)
 		

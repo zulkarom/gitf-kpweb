@@ -1,4 +1,4 @@
 <?php
 return [
-    'adminEmail' => 'admin@example.com',
+    'adminEmail' => 'auto.mail@fkp-portal.umk.edu.my',
 ];

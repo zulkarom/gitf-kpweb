@@ -64,7 +64,7 @@ class AduanAction extends \yii\db\ActiveRecord
 	public function sendActionEmail(){
 		$link = 'https://fkp-portal.umk.edu.my/web/aduan/kemaskini?id='.$this->aduan->id.'&t='.$this->aduan->token;
 		Yii::$app->mailer->compose()
-		->setFrom(['fkp.umk.email@gmail.com' => 'eAduan FKP'])
+		->setFrom(['auto.mail@fkp-portal.umk.edu.my' => 'eAduan FKP'])
 		->setTo($this->aduan->email)
 		->setSubject('Maklumat Tindakan Aduan#' . $this->aduan->id)
 		
@@ -92,7 +92,7 @@ class AduanAction extends \yii\db\ActiveRecord
 	public function sendClarificationEmail(){
 		$link = 'https://fkp-portal.umk.edu.my/web/aduan/kemaskini?id='.$this->aduan->id.'&t='.$this->aduan->token;
 		Yii::$app->mailer->compose()
-		->setFrom(['fkp.umk.email@gmail.com' => 'eAduan FKP'])
+		->setFrom(['auto.mail@fkp-portal.umk.edu.my' => 'eAduan FKP'])
 		->setTo($this->aduan->email)
 		->setSubject('Mohon Penjelasan Lanjut Terhadap Aduan#' . $this->aduan->id)
 		
