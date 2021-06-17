@@ -117,6 +117,32 @@ echo $form->field($associate, 'country_id')->widget(Select2::classname(), [
 
 
 </div>	
+
+
+<div class="row">
+<div class="col-md-8"><?= $form
+->field($associate, 'sv_main')
+			->label('Main Supervisor')
+            ->textInput() ?></div>
+</div>	
+<div class="row">
+<div class="col-md-8"><?= $form
+->field($associate, 'sv_co1')
+			->label('Co-Supervisor I')
+            ->textInput() ?></div>
+</div>	
+<div class="row">
+<div class="col-md-8"><?= $form
+->field($associate, 'sv_co2')
+			->label('Co-Supervisor II')
+            ->textInput() ?></div>
+</div>	
+<div class="row">
+<div class="col-md-8"><?= $form
+->field($associate, 'sv_co3')
+			->label('Co-Supervisor III')
+            ->textInput() ?></div>
+</div>	
 					
 				
 				

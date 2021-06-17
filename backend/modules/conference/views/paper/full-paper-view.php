@@ -82,15 +82,15 @@ table.detail-view th {
 			    
 			    if($model->user->associate){
 			        $assoc= $model->user->associate;
-			        $str = strtoupper($assoc->sv_main) . '(MAIN)<br />';
+			        $str = strtoupper($assoc->sv_main) . ' (MAIN)<br />';
 			        if($assoc->sv_co1){
-			            $str .= strtoupper($assoc->sv_co1) . '(CO.SV I)<br />';
+			            $str .= strtoupper($assoc->sv_co1) . ' (CO.SV I)<br />';
 			        }
 			        if($assoc->sv_co2){
-			             $str .= strtoupper($assoc->sv_co1) . '(CO.SV II)<br />';
+			             $str .= strtoupper($assoc->sv_co1) . ' (CO.SV II)<br />';
 			        }
 			        if($assoc->sv_co3){
-			            $str .= strtoupper($assoc->sv_co1) . '(CO.SV III)<br />';
+			            $str .= strtoupper($assoc->sv_co1) . ' (CO.SV III)<br />';
 			        }
 			        return $str;
 			    }
