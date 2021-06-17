@@ -249,6 +249,9 @@ class MemberController extends Controller
 				if($user->save() && $associate->save()){
 					Yii::$app->session->addFlash('success', "Profile Updated");
 					return $this->redirect(['member/profile', 'confurl' => $confurl]);
+				}else{
+				    $user->flashError();
+				    $associate->flashError();
 				}
 			
 			}
