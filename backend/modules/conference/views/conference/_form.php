@@ -23,7 +23,7 @@ $model->file_controller = 'conference';
 <div class="panel panel-headline">
 						<div class="panel-heading">
 							<h3 class="panel-title"><?=$model->conf_name?></h3>
-							<p class="panel-subtitle"><a href="https://site.confvalley.com/<?=$model->conf_url?>"  target="_blank">https://fkp-portal.umk.edu.my/web/conference/<?=$model->conf_url?></a></p>
+							<p class="panel-subtitle"><a href="https://fkp-portal.umk.edu.my/conf/<?=$model->conf_url?>"  target="_blank">https://fkp-portal.umk.edu.my/conf/<?=$model->conf_url?></a></p>
 						</div>
 						<div class="panel-body">
 			

@@ -73,7 +73,31 @@ table.detail-view th {
 				'value' => function($model){
 					return Html::a('<span class="glyphicon glyphicon-download-alt"></span> DOWNLOAD FILE', ['paper/download-file', 'id' => $model->id, 'attr' => 'paper'], ['class' => 'btn btn-default','target' => '_blank']);
 				}
-			]
+			],
+			
+			[
+			    'label' => 'Supervisors',
+			    'format' => 'raw',
+			    'value' => function($model){
+			    
+			    if($model->user->associate){
+			        $assoc= $model->user->associate;
+			        $str = strtoupper($assoc->sv_main) . '(MAIN)<br />';
+			        if($assoc->sv_co1){
+			            $str .= strtoupper($assoc->sv_co1) . '(CO.SV I)<br />';
+			        }
+			        if($assoc->sv_co2){
+			             $str .= strtoupper($assoc->sv_co1) . '(CO.SV II)<br />';
+			        }
+			        if($assoc->sv_co3){
+			            $str .= strtoupper($assoc->sv_co1) . '(CO.SV III)<br />';
+			        }
+			        return $str;
+			    }
+			    
+			   
+			    }
+		]
   
         ],
     ]) ?></div>
@@ -104,6 +128,9 @@ table.detail-view th {
 <div class="panel panel-headline" id="con-review">
 
 						<div class="panel-body">
+ 
+ 
+ 
  
 
 <div class="row">

@@ -11,7 +11,7 @@ $this->title = 'Conferences';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
     <p>
-        <?= Html::a('Create Conference', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php/*  echo  Html::a('Create Conference', ['create'], ['class' => 'btn btn-success'])  */?>
     </p>
 <div class="box">
 <div class="box-header"></div>
@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 //'visible' => false,
                 'buttons'=>[
                     'update'=>function ($url, $model) {
-                        return Html::a('<span class="fa fa-edit"></span>',['conference/update/', 'conf' => $model->id],['class'=>'btn btn-warning btn-sm']);
+                        return Html::a('<span class="fa fa-edit"></span>',['paper/overview', 'conf' => $model->id],['class'=>'btn btn-warning btn-sm']);
                     },
                     'delete'=>function ($url, $model) {
                         return Html::a('<span class="fa fa-trash"></span>', ['delete', 'id' => $model->id], [
