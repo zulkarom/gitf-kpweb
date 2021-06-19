@@ -46,8 +46,8 @@ class ReviewForm extends \yii\db\ActiveRecord
 	
 	public static function reviewOptions(){
 		return [
-		10 => 'Accept Without Correction',
-		5 => 'Accept With Correction',
+		10 => 'Accept Without Corrections',
+		5 => 'Accept With Corrections',
 		1 => 'Reject',
 		];
 	}

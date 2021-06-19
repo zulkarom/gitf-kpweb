@@ -245,12 +245,15 @@ class MemberController extends Controller
 		if($confurl){
 			$user = User::findOne(Yii::$app->user->identity->id);
 			$associate = $user->associate;
+			
 			if(!$associate){
 			    $new = new Associate();
 			    $new->scenario = 'raw';
 			    $new->user_id = $user->id;
 			    $new->save();
 			}
+			$associate->scenario = 'conf_profile';
+			$user->scenario = 'conf_profile';
 		
 			if ($user->load(Yii::$app->request->post()) && $associate->load(Yii::$app->request->post())) {
 			  //  print_r(Yii::$app->request->post());die();
@@ -263,15 +266,12 @@ class MemberController extends Controller
 				}
 			
 			}
-			
-	
-				return $this->render('profile', [
-			'user' => $user,
-			'associate' => $associate
+
+			return $this->render('profile', [
+				'user' => $user,
+				'associate' => $associate
 			]);
-	
-			
-			
+
 		}
         
     }

@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
-use yii\bootstrap4\ActiveForm;
+use kartik\widgets\ActiveForm;
 use common\models\Country;
 use kartik\select2\Select2;
 use richardfan\widget\JSRegister;
@@ -20,6 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php
 if($associate){
+$model = $associate;
  $form = ActiveForm::begin(); ?>
 			
 <div class="block-content">
@@ -41,18 +42,18 @@ if($associate){
 
 							<div class="section">
 							
-			<div class="row">
+				<div class="row">
 			
-			<div class="col-md-4"><?= $form
-            ->field($associate , 'title', ['template' => '{label}<div id="con-title">{input}</div>{error}']
-)
-            ->label('Title')
-            ->dropDownList($user->defaultTitle()) ?></div>
+			
 			
 			
 <div class="col-md-8"><?= $form
             ->field($user, 'fullname')
-            ->label('Name')
+            ->label('Full Name')
+            ->textInput() ?></div>
+			
+			<div class="col-md-4"><?= $form
+            ->field($model, 'matric_no')
             ->textInput() ?></div>
 			
 			
@@ -60,28 +61,18 @@ if($associate){
 </div>	
 
 
-
-
-
 <div class="row">
 
 <div class="col-md-6"><?php 
 echo $form
-            ->field($associate, 'phone')
-            ->label('Phone')
-            ->textInput() ?></div>
+            ->field($user, 'email')
+            ->label('Email')
+            ->textInput(['disabled' => true]) ?></div>
 	<div class="col-md-6">
 <?php 
 
 
-echo $form->field($associate, 'country_id')->widget(Select2::classname(), [
-    'data' => ArrayHelper::map(Country::find()->all(),'id', 'country_name'),
-    'language' => 'en',
-    'options' => ['multiple' => false,'placeholder' => 'Select a country ...'],
-    'pluginOptions' => [
-        'allowClear' => true
-    ],
-])->label('Country');
+echo $form->field($model, 'phone');
 
 
 ?>
@@ -94,54 +85,58 @@ echo $form->field($associate, 'country_id')->widget(Select2::classname(), [
 				</div>
 
 				
-<div class="row">
-
-<div class="col-md-9"><?= $form
-				->field($associate, 'assoc_address')
-				->textarea(['rows' => 5])
-                ->label('Full Address')?>
-</div>	
-
-</div>	
-				
-				
-												
-
-<div class="row">
-
-<div class="col-md-9"><?= $form
-				->field($associate, 'institution')
-				->textarea(['rows' => 2])
-                ->label('Institution')?></div>
-	
-
-
-</div>	
 
 
 <div class="row">
-<div class="col-md-8"><?= $form
-->field($associate, 'sv_main')
+<div class="col-md-6"><?= $form
+            ->field($model, 'pro_study')
+           ->dropDownList($model->listProgramStudy(), ['prompt' => 'Select']) ?></div>
+<div class="col-md-4"><?= $form
+            ->field($model, 'cumm_sem')
+            ->dropDownList($model->listSemNumber(), ['prompt' => 'Select']) ?></div>
+</div>	
+							
+
+
+
+<div class="row">
+<div class="col-md-6"><?= $form
+            ->field($model, 'sv_main')
 			->label('Main Supervisor')
             ->textInput() ?></div>
-</div>	
-<div class="row">
-<div class="col-md-8"><?= $form
-->field($associate, 'sv_co1')
-			->label('Co-Supervisor I')
+<div class="col-md-6"><?= $form
+            ->field($model, 'sv_co1')
             ->textInput() ?></div>
 </div>	
 <div class="row">
-<div class="col-md-8"><?= $form
-->field($associate, 'sv_co2')
-			->label('Co-Supervisor II')
+<div class="col-md-6"><?= $form
+            ->field($model, 'sv_co2')
             ->textInput() ?></div>
-</div>	
+
+<div class="col-md-6"><?= $form
+            ->field($model, 'sv_co3')
+            ->textInput() ?></div>
+</div>
+
+
 <div class="row">
-<div class="col-md-8"><?= $form
-->field($associate, 'sv_co3')
-			->label('Co-Supervisor III')
-            ->textInput() ?></div>
+	<div class="col-md-6">
+<?php 
+
+$model->country_id = 158;
+echo $form->field($model, 'country_id')->widget(Select2::classname(), [
+    'data' => ArrayHelper::map(Country::find()->all(),'id', 'country_name'),
+    'language' => 'en',
+    'options' => ['multiple' => false,'placeholder' => 'Select a country ...'],
+    'pluginOptions' => [
+        'allowClear' => true
+    ],
+])->label('Country');
+
+
+?>
+	</div>
+
 </div>	
 					
 				

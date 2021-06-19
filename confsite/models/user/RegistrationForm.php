@@ -5,6 +5,7 @@ namespace confsite\models\user;
 use Yii;
 use dektrium\user\models\RegistrationForm as BaseRegistrationForm;
 use backend\modules\conference\models\Associate;
+use yii\helpers\ArrayHelper;
 
 /**
  * Signup form
@@ -12,14 +13,14 @@ use backend\modules\conference\models\Associate;
 class RegistrationForm extends BaseRegistrationForm
 {
 	public $title;
-	
 	public $fullname;
-	
 	public $institution;
-	
 	public $assoc_address;
-	
 	public $country_id;
+	public $matric_no;
+	public $cumm_sem;
+	public $pro_study;
+	public $phone;
 	
 	public $sv_main;
 	public $sv_co1;
@@ -38,7 +39,7 @@ class RegistrationForm extends BaseRegistrationForm
 		
 		$rules['country_idRequired'] = ['country_id', 'required'];
 		
-		$rules[] = ['sv_main', 'required'];
+		$rules[] = [['sv_main', 'pro_study', 'cumm_sem', 'matric_no', 'phone', 'country_id'], 'required'];
 		
 		$rules[] = [['institution', 'sv_main', 'sv_co1', 'sv_co2', 'sv_co3'], 'string'];
 		
@@ -54,14 +55,21 @@ class RegistrationForm extends BaseRegistrationForm
         return $rules;
     }
 	
-	/* public function attributeLabels()
+	public function attributeLabels()
     {
 		$label = parent::attributeLabels();
-		$label['username'] = 'No. Kad Pengenalan';
-		$label['password'] = 'Kata Laluan';
-		$label['password_repeat'] = 'Ulang Kata Laluan';
-        return $label;
-    } */
+		$assoc = new Associate;
+		$label2 = $assoc->attributeLabels();
+        return ArrayHelper::merge($label, $label2);
+    }
+	
+	public function listSemNumber(){
+		return Associate::listSemNumber();
+	}
+	
+	public function listProgramStudy(){
+		return Associate::listProgramStudy();
+	}
 	
 	public function register()
     {
@@ -75,12 +83,20 @@ class RegistrationForm extends BaseRegistrationForm
         $this->loadAttributes($user);
 
         if ($user->register()) {
-            $assoc = new Associate;
-			$assoc->user_id = $user->id;
+			$assoc = Associate::findOne(['user_id' => $user->id]);
+			if(!$assoc){
+				$assoc = new Associate;
+				$assoc->user_id = $user->id;
+			}
+            
 			$assoc->title = $this->title;
 			$assoc->assoc_address = $this->assoc_address;
 			$assoc->country_id = $this->country_id;
 			$assoc->institution = $this->institution;
+			$assoc->matric_no = $this->matric_no;
+			$assoc->pro_study = $this->pro_study;
+			$assoc->cumm_sem = $this->cumm_sem;
+			$assoc->phone = $this->phone;
 			$assoc->sv_main= $this->sv_main;
 			$assoc->sv_co1= $this->sv_co1;
 			$assoc->sv_co2= $this->sv_co2;

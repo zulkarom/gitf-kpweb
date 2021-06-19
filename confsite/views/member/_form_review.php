@@ -55,7 +55,7 @@ $options = ReviewForm::reviewOptions();
 unset($options[0]);
 echo $form->field($review, 'review_option')->radioList($options, ['encode' => false, 'separator' => '<br />']) ->label(false) ?></div>
 
-<h5>Upload Reviewed Manuscript if any.</h5>
+<h5>Upload Reviewed/Commented Document (if any).</h5>
 <br />
 <?php echo UploadFile::fileInput($review, 'reviewed', $review->paper->conference->conf_url)?>
 	<br /><br />

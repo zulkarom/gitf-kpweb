@@ -30,6 +30,8 @@ class Associate extends \yii\db\ActiveRecord
         return [
             [['user_id'], 'required', 'on' => 'raw'],
 			
+			[['sv_main', 'pro_study', 'cumm_sem', 'matric_no', 'phone', 'country_id'], 'required', 'on' => 'conf_profile'],
+			
 			[['institution', 'country_id', 'title'], 'required', 'on' => 'update_external'],
 			
             [['user_id', 'country_id'], 'integer'],
@@ -52,8 +54,30 @@ class Associate extends \yii\db\ActiveRecord
             'user_id' => 'User ID',
             'country_id' => 'Country',
 			'institution' => 'Institution',
+			'matric_no' => 'Matric No.',
+			'pro_study' => 'Program of Study',
+			'sv_main' => 'Main Supervisor',
+			'sv_co1' => 'Co-Supervisor I',
+			'sv_co2' => 'Co-Supervisor II',
+			'sv_co3' => 'Co-Supervisor III',
+			'cumm_sem' => 'Cumulative Semester'
         ];
     }
+	
+	public static function listSemNumber(){
+		$array = [];
+		for($i=1;$i<=16;$i++){
+			$array[$i] = $i;
+		}
+		return $array;
+	}
+	
+	public static function listProgramStudy(){
+		$array[1] = 'Master';
+		$array[2] = 'PhD';
+		$array[0] = 'Others';
+		return $array;
+	}
 	
 	public function getUser(){
 		return $this->hasOne(User::className(), ['id' => 'user_id']);
@@ -91,7 +115,10 @@ class Associate extends \yii\db\ActiveRecord
 	}
 	
 	public function getSupervisorsList(){
-	    $str = strtoupper($this->sv_main) . ' (MAIN)<br />';
+		$str = '';
+		if($this->sv_main){
+	        $str .= strtoupper($this->sv_main) . ' (MAIN)<br />';
+	    }
 	    if($this->sv_co1){
 	        $str .= strtoupper($this->sv_co1) . ' (CO.SV I)<br />';
 	    }

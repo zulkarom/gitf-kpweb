@@ -74,6 +74,8 @@ class User extends ActiveRecord implements IdentityInterface
 			
 			[['username', 'password', 'rawPassword', 'password_repeat', 'fullname', 'email'], 'required', 'on' => 'create'],
 			
+			[['fullname', 'email'], 'required', 'on' => 'conf_profile'],
+			
 			[['email'], 'required', 'on' => 'checkemail'],
 			[['email', 'fullname', 'country', 'institution'], 'required', 'on' => 'create_external'],
 			
