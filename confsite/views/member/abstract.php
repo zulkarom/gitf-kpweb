@@ -101,7 +101,7 @@ label{
 
     <?= $form->field($model, 'pap_abstract')->textarea(['rows' => 6]) ?>
     
-    <?= $form->field($model, 'scope_id')->dropDownList(ArrayHelper::map(ConfScope::find()->where(['conf_id' => $model->conf_id])->all(), 'id', 'scope_name'), ['prompt' => 'Select']) ?>
+    <?= $form->field($model, 'scope_id')->dropDownList(ArrayHelper::map(ConfScope::find()->where(['conf_id' => $conf->id])->all(), 'id', 'scope_name'), ['prompt' => 'Select']) ?>
 	
 	<?= $form->field($model, 'keyword')->textarea(['rows' => 2]) ?>
 	

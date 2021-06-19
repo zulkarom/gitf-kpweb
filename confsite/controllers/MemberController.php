@@ -615,6 +615,7 @@ class MemberController extends Controller
     {
 		if($confurl){
         $model = $this->findModel($id);
+        $conf = $this->findConferenceByUrl($confurl);
         $authors = $model->authors;
        
         if ($model->load(Yii::$app->request->post())) {
@@ -687,6 +688,7 @@ class MemberController extends Controller
     
      return $this->render('abstract', [
             'model' => $model,
+         'conf' => $conf,
             'authors' => (empty($authors)) ? [new ConfAuthor] : $authors
         ]);
    

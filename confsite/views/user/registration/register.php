@@ -42,7 +42,7 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@confsite/views/myas
 						
 						<div class="row">
 				<div class="col">
-					<h2 class="section_title">REGISTRATION </h2>
+					<h2 class="section_title">REGISTRATION</h2>
 					<br />
 				</div>
 
