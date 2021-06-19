@@ -89,10 +89,10 @@ class RegistrationForm extends BaseRegistrationForm
 				$assoc->user_id = $user->id;
 			}
             
-			$assoc->title = $this->title;
-			$assoc->assoc_address = $this->assoc_address;
+			//$assoc->title = $this->title;
+			//$assoc->assoc_address = $this->assoc_address;
 			$assoc->country_id = $this->country_id;
-			$assoc->institution = $this->institution;
+			//$assoc->institution = $this->institution;
 			$assoc->matric_no = $this->matric_no;
 			$assoc->pro_study = $this->pro_study;
 			$assoc->cumm_sem = $this->cumm_sem;
@@ -109,8 +109,13 @@ class RegistrationForm extends BaseRegistrationForm
 						'Your account has been created and a message with further instructions has been sent to your email'
 					)
 				);
+			}else{
+			    $assoc->flashError();
+			    return false;
+			    
 			}
         }else{
+            $user->flashError();
 			return false;
 		}
 		

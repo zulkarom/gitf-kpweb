@@ -22,6 +22,22 @@ class User extends \dektrium\user\models\User
 		$this->status = self::STATUS_ACTIVE;
 		return parent::register();
 	}
+	
+	public function flashError(){
+	    if($this->getErrors()){
+	        foreach($this->getErrors() as $error){
+	            if($error){
+	                foreach($error as $e){
+	                    Yii::$app->session->addFlash('error', $e);
+	                }
+	            }
+	        }
+	    }
+	    
+	}
+	
+	
 }
+
 
 ?>
