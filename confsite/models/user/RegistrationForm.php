@@ -37,8 +37,6 @@ class RegistrationForm extends BaseRegistrationForm
 		
 		$rules['fullnameRequired'] = ['fullname', 'required'];
 		
-		$rules['country_idRequired'] = ['country_id', 'required'];
-		
 		$rules[] = [['sv_main', 'pro_study', 'cumm_sem', 'matric_no', 'phone', 'country_id'], 'required'];
 		
 		$rules[] = [['institution', 'sv_main', 'sv_co1', 'sv_co2', 'sv_co3'], 'string'];
