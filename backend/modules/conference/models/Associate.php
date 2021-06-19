@@ -81,7 +81,7 @@ class Associate extends \yii\db\ActiveRecord
 	
 	public function getProgramStudyText(){
 	    $list = self::listProgramStudy();
-	    if(in_array($this->pro_study, $list)){
+	    if(array_key_exists($this->pro_study, $list)){
 	        return $list[$this->pro_study];
 	    }else{
 	        return '';
