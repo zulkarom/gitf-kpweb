@@ -35,6 +35,7 @@ class RegistrationController extends BaseRegistrationController
         $this->performAjaxValidation($model);
 
         if ($model->load(\Yii::$app->request->post())) {
+            echo 'after load';
 			$model->username = $model->email;
 			if($model->register()){
 				$this->trigger(self::EVENT_AFTER_REGISTER, $event);
@@ -44,10 +45,10 @@ class RegistrationController extends BaseRegistrationController
 					'module' => $this->module,
 				]);
 			}else{
-				//print_r($model->getErrors());
+				print_r($model->getErrors());
 			}
 			
-            
+			die();
         }
 
         return $this->render('register', [
