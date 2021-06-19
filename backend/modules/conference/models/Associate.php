@@ -79,6 +79,15 @@ class Associate extends \yii\db\ActiveRecord
 		return $array;
 	}
 	
+	public function getProgramStudyText(){
+	    $list = self::listProgramStudy();
+	    if(in_array($this->pro_study, $list)){
+	        return $list[$this->pro_study];
+	    }else{
+	        return '';
+	    }
+	}
+	
 	public function getUser(){
 		return $this->hasOne(User::className(), ['id' => 'user_id']);
 	}
@@ -114,19 +123,22 @@ class Associate extends \yii\db\ActiveRecord
 	    
 	}
 	
-	public function getSupervisorsList(){
+	public function getSupervisorsList($br = false){
 		$str = '';
+		if($br == false){
+		    $br = '<br />';
+		}
 		if($this->sv_main){
-	        $str .= strtoupper($this->sv_main) . ' (MAIN)<br />';
+	        $str .= strtoupper($this->sv_main) . ' (MAIN)' . $br;
 	    }
 	    if($this->sv_co1){
-	        $str .= strtoupper($this->sv_co1) . ' (CO.SV I)<br />';
+	        $str .= strtoupper($this->sv_co1) . ' (CO.SV I)' . $br;
 	    }
 	    if($this->sv_co2){
-	        $str .= strtoupper($this->sv_co1) . ' (CO.SV II)<br />';
+	        $str .= strtoupper($this->sv_co1) . ' (CO.SV II)' . $br;
 	    }
 	    if($this->sv_co3){
-	        $str .= strtoupper($this->sv_co1) . ' (CO.SV III)<br />';
+	        $str .= strtoupper($this->sv_co1) . ' (CO.SV III)' . $br;
 	    }
 	    return $str;
 	    

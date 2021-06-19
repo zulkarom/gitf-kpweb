@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <div class="card-body"><?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+      //  'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
@@ -37,12 +37,18 @@ $this->params['breadcrumbs'][] = $this->title;
 			
 
             ['class' => 'yii\grid\ActionColumn',
-                 'contentOptions' => ['style' => 'width: 13%'],
-                'template' => '{update} {delete}',
+                 //'contentOptions' => ['style' => 'width: 13%'],
+                'template' => '{paper} {update} {website} {delete}',
                 //'visible' => false,
                 'buttons'=>[
+                    'paper'=>function ($url, $model) {
+                        return Html::a('<span class="fa fa-file"></span> Papers',['paper/overview', 'conf' => $model->id],['class'=>'btn btn-primary btn-sm']);
+                    },
+                    'website'=>function ($url, $model) {
+                    return Html::a('<span class="fa fa-globe"></span> Web',['conference/update', 'conf' => $model->id],['class'=>'btn btn-info btn-sm']);
+                    },
                     'update'=>function ($url, $model) {
-                        return Html::a('<span class="fa fa-edit"></span>',['paper/overview', 'conf' => $model->id],['class'=>'btn btn-warning btn-sm']);
+                    return Html::a('<span class="fa fa-cog"></span> Config',['setting/index', 'conf' => $model->id],['class'=>'btn btn-warning btn-sm']);
                     },
                     'delete'=>function ($url, $model) {
                         return Html::a('<span class="fa fa-trash"></span>', ['delete', 'id' => $model->id], [

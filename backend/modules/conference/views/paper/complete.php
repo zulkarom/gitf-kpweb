@@ -44,12 +44,22 @@ $this->params['breadcrumbs'][] = $this->title;
 			
 
             ['class' => 'yii\grid\ActionColumn',
-                 'contentOptions' => ['style' => 'width: 8.7%'],
-                'template' => '{update}',
+               //  'contentOptions' => ['style' => 'width: 8.7%'],
+                'template' => '{download} {update}',
                 //'visible' => false,
                 'buttons'=>[
                     'update'=>function ($url, $model) {
                         return Html::a('<span class="fa fa-eye"></span> VIEW',['paper/complete-view/', 'conf' => $model->conf_id, 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
+                    },
+                    'download'=>function ($url, $model) {
+                    if($model->paper_file){
+                        if($model->repaper_file){
+                            $attr = 'repaper';
+                        }else{
+                            $attr = 'paper';
+                        }
+                        return Html::a('<span class="fa fa-download"></span> Download', ['paper/download-file', 'id' => $model->id, 'attr' => $attr], ['class' => 'btn btn-danger btn-sm','target' => '_blank']);
+                    }
                     }
                 ],
             

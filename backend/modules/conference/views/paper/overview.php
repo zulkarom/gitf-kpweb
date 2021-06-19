@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\GridView;
+use kartik\export\ExportMenu;
 use richardfan\widget\JSRegister;
 
 /* @var $this yii\web\View */
@@ -10,7 +11,187 @@ use richardfan\widget\JSRegister;
 
 $this->title = 'Papers\' Overview';
 $this->params['breadcrumbs'][] = $this->title;
+
+
+$columns = [
+    ['class' => 'yii\grid\SerialColumn'],
+    [
+        'attribute' => 'created_at',
+        'label' => 'Date',
+        'format' => 'date'
+    ],
+    [
+        'label' => 'Full Name',
+        'value' => function($model){
+        return $model->user->fullname;
+        }
+        
+        ],
+        
+        [
+            'label' => 'Matric Number',
+            'value' => function($model){
+            if($model->user->associate){
+                return $model->user->associate->matric_no;
+            }
+            
+            }
+            
+            ],
+            
+            [
+                'label' => 'Programme of Study',
+                'value' => function($model){
+                if($model->user->associate){
+                    return $model->user->associate->programStudyText;
+                }
+                
+                }
+                
+                ],
+                
+                [
+                    'label' => 'Cumulative Semester',
+                    'value' => function($model){
+                    if($model->user->associate){
+                        return $model->user->associate->cumm_sem;
+                    }
+                    
+                    }
+                    
+                    ],
+                    [
+                        'label' => 'Country',
+                        'value' => function($model){
+                        if($model->user->associate){
+                            return $model->user->associate->country->country_name;
+                        }
+                        
+                        }
+                        
+                        ],
+                        [
+                            'label' => 'Phone',
+                            'value' => function($model){
+                            if($model->user->associate){
+                                return $model->user->associate->phone;
+                            }
+                            
+                            }
+                            
+                            ],
+            
+            [
+                'label' => 'Email',
+                'value' => function($model){
+                    return $model->user->email;
+                
+                }
+                
+                ],
+        
+    [
+        'label' => 'Title of Paper',
+        'attribute' => 'pap_title',
+        //'contentOptions' => [ 'style' => 'width: 60%;' ],
+        'value' => function($model){
+        
+        return Html::encode($model->pap_title);
+        
+        }
+        ],
+        
+        [
+            'label' => 'Field of Study',
+            'value' => function($model){
+            if($model->scope){
+                return $model->scope->scope_name;
+            }else{
+                return 'NULL';
+            }
+            
+            }
+            
+            ],
+            
+            
+           
+                [
+                    'label' => 'Supervisors',
+                    'format' => 'html',
+                    'value' => function($model){
+                    if($model->user->associate){
+                        return $model->user->associate->getSupervisorsList("\n");
+                    }
+                    
+                    }
+                    
+                    ],
+
+                        [
+                            'label' => 'Reviewer',
+                            'value' => function($model){
+                            if($model->reviewer){
+                                return $model->reviewer->fullname;
+                            }else{
+                                return 'NULL';
+                            }
+                            
+                            }
+                            
+                            ],
+                            
+                            [
+                                'label' => 'Reviewer Email',
+                                'value' => function($model){
+                                if($model->reviewer){
+                                    return $model->reviewer->email;
+                                }else{
+                                    return 'NULL';
+                                }
+                                
+                                }
+                                
+                                ],
+                            
+                            [
+                                'attribute' => 'status',
+                                'label' => 'Paper Status',
+                                'format' => 'raw',
+                                'value' => function($model){
+                                return $model->statusLabel;
+                                }
+                                
+                                ],
+                                
+]
+
+ 
+                                        
+                                        ;
 ?>
+<div class="form-group">
+
+		
+		<?=ExportMenu::widget([
+    'dataProvider' => $dataProvider,
+    'columns' => $columns,
+	'filename' => 'PAPER_OVERVIEW_' . date('Y-m-d'),
+	'onRenderSheet'=>function($sheet, $grid){
+		$sheet->getStyle('A2:'.$sheet->getHighestColumn().$sheet->getHighestRow())
+		->getAlignment()->setWrapText(true);
+	},
+	'exportConfig' => [
+        ExportMenu::FORMAT_PDF => false,
+		ExportMenu::FORMAT_EXCEL_X => false,
+    ],
+]);?>
+		
+		
+		
+
+</div>
+
 <div class="panel panel-headline">
 						<div class="panel-heading">
 							<h3 class="panel-title"><?=$this->title?></h3>
@@ -41,7 +222,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
 			
 			[
-			    'label' => 'Scope',
+			    'label' => 'Field of Study',
 			    'value' => function($model){
 			    if($model->scope){
 			        return $model->scope->scope_name;
@@ -73,31 +254,38 @@ $this->params['breadcrumbs'][] = $this->title;
 			    }
 			    
 			    ],
-			[
-				'attribute' => 'paper_file',
-				'label' => 'Full Paper',
-				'format' => 'raw',
-				'value' => function($model){
-					if($model->paper_file){
-						return Html::a('Full Paper', ['paper/download-file', 'id' => $model->id, 'attr' => 'paper'], ['target' => '_blank']);
-					}else{
-						return 'NULL';
-					}
-					
-				}
-			],
+			
 			[
 			    'label' => 'Reviewer',
 			    'value' => function($model){
 			    if($model->reviewer){
 			        return $model->reviewer->fullname;
 			    }else{
-			        return 'NULL';
+			        return '-';
 			    }
 			    
 			    }
 			    
 			    ],
+			    
+			    [
+			        'attribute' => 'paper_file',
+			        'label' => 'Download Paper',
+			        'format' => 'raw',
+			        'value' => function($model){
+			        if($model->paper_file){
+			            if($model->repaper_file){
+			                $attr = 'repaper';
+			            }else{
+			                $attr = 'paper';
+			            }
+			            return Html::a('<span class="fa fa-download"></span> Paper', ['paper/download-file', 'id' => $model->id, 'attr' => $attr], ['target' => '_blank']);
+			        }else{
+			            return '-';
+			        }
+			        
+			        }
+			        ],
 			[
 			    'attribute' => 'status',
 			    'format' => 'raw',
