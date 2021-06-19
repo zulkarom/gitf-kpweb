@@ -79,6 +79,13 @@ class RegistrationForm extends BaseRegistrationForm
         $user = Yii::createObject(User::className());
         $user->setScenario('register');
         $this->loadAttributes($user);
+        Yii::$app->session->setFlash(
+            'info',
+            Yii::t(
+                'user',
+                'beforeuser save'
+                )
+            );
 
         if ($user->register()) {
             
@@ -91,13 +98,9 @@ class RegistrationForm extends BaseRegistrationForm
                     )
                 );
             
-            
-			$assoc = Associate::findOne(['user_id' => $user->id]);
-			if(!$assoc){
-				$assoc = new Associate;
-				$assoc->user_id = $user->id;
-			}
-            
+
+			$assoc = new Associate;
+			$assoc->user_id = $user->id;
 			//$assoc->title = $this->title;
 			//$assoc->assoc_address = $this->assoc_address;
 			$assoc->country_id = $this->country_id;
@@ -119,6 +122,13 @@ class RegistrationForm extends BaseRegistrationForm
 					)
 				);
 			}else{
+			    Yii::$app->session->setFlash(
+			        'info',
+			        Yii::t(
+			            'user',
+			            'assoc error'
+			            )
+			        );
 			    $assoc->flashError();
 			    return false;
 			    
