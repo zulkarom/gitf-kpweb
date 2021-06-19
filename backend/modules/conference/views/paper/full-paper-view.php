@@ -83,7 +83,7 @@ table.detail-view th {
 			    if($model->user->associate){
 			        $assoc= $model->user->associate;
 			        $str = strtoupper($assoc->sv_main) . ' (MAIN)<br />';
-			        if($assoc->sv_co1){
+			        if($assoc->sv_co1 and trim($assoc->sv_co1) != ''){
 			            $str .= strtoupper($assoc->sv_co1) . ' (CO.SV I)<br />';
 			        }
 			        if($assoc->sv_co2){

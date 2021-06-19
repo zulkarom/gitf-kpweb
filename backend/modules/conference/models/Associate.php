@@ -84,5 +84,25 @@ class Associate extends \yii\db\ActiveRecord
 		$return[999] = 'Others (Please specify...)';
 		return $return;
 	}
+	
+	public function getSupervisors(){
+	    $sv = [];
+	    
+	}
+	
+	public function getSupervisorsList(){
+	    $str = strtoupper($this->sv_main) . ' (MAIN)<br />';
+	    if($this->sv_co1){
+	        $str .= strtoupper($this->sv_co1) . ' (CO.SV I)<br />';
+	    }
+	    if($this->sv_co2){
+	        $str .= strtoupper($this->sv_co1) . ' (CO.SV II)<br />';
+	    }
+	    if($this->sv_co3){
+	        $str .= strtoupper($this->sv_co1) . ' (CO.SV III)<br />';
+	    }
+	    return $str;
+	    
+	}
 
 }

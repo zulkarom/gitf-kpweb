@@ -6,7 +6,6 @@ use yii\grid\GridView;
 use richardfan\widget\JSRegister;
 
 /* @var $this yii\web\View */
-/* @var $searchModel backend\modules\conference\models\ConfPaperSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Papers\' Overview';
@@ -42,7 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
 			
 			[
-			    'label' => 'Scopre',
+			    'label' => 'Scope',
 			    'value' => function($model){
 			    if($model->scope){
 			        return $model->scope->scope_name;
@@ -57,11 +56,23 @@ $this->params['breadcrumbs'][] = $this->title;
 			
             [
 				'label' => 'Participant',
+                'format' => 'html',
 				'value' => function($model){
-					return $model->user->fullname;
+				return $model->user->fullname . '<br />(<i>' . $model->user->email . ')</i>';
 				}
 				
 			],
+			[
+			    'label' => 'Supervisors',
+			    'format' => 'html',
+			    'value' => function($model){
+    			    if($model->user->associate){
+    			        return $model->user->associate->supervisorsList;
+    			    }
+			         
+			    }
+			    
+			    ],
 			[
 				'attribute' => 'paper_file',
 				'label' => 'Full Paper',
