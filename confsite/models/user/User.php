@@ -28,7 +28,7 @@ class User extends \dektrium\user\models\User
 	        foreach($this->getErrors() as $error){
 	            if($error){
 	                foreach($error as $e){
-	                    Yii::$app->session->addFlash('error', $e);
+	                    \Yii::$app->session->addFlash('error', $e);
 	                }
 	            }
 	        }
