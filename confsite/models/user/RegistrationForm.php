@@ -81,6 +81,17 @@ class RegistrationForm extends BaseRegistrationForm
         $this->loadAttributes($user);
 
         if ($user->register()) {
+            
+            
+            Yii::$app->session->setFlash(
+                'info',
+                Yii::t(
+                    'user',
+                    'after user save'
+                    )
+                );
+            
+            
 			$assoc = Associate::findOne(['user_id' => $user->id]);
 			if(!$assoc){
 				$assoc = new Associate;
