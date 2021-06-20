@@ -8,7 +8,7 @@ $this->title= 'CONFERENCE REGISTRATION';
 	<br />
 <h3><?=$this->title?></h3>
 <br />
-<p>You are about to register to <b><?=$model->conf_name?> (<?=$model->conf_abbr?>)</b>. Click Register below to continue.</p>
+<p>You are about to register to <b><?=$model->conf_name?> (<?=$model->conf_abbr?>)</b>. Click Proceed below to continue.</p>
 
 <br />
 
@@ -20,7 +20,7 @@ $this->title= 'CONFERENCE REGISTRATION';
 	
 <div class="form-group">
         
-<?= Html::submitButton('Register', ['class' => 'btn btn-primary']) ?>
+<?= Html::submitButton('Proceed', ['class' => 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
