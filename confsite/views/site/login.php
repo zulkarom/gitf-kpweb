@@ -17,9 +17,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="login-content">
                         <div class="login-logo">
                             <a href="#">
-                               <h4 class="m-text23 p-t-56 p-b-34">LOGIN FORM</h4>
+                               <h4 class="m-text23 p-t-56 p-b-10">LOGIN FORM</h4>
                             </a>
                         </div>
+                        <p style="font-size:12px">* Login to submit/review papers<br />
+                        * For staff, use FKP Portal login credentials</p>
+                        <br />
                         <div class="login-form">
                            	<?php $form = ActiveForm::begin([
                     'id' => 'login-form',
