@@ -26,7 +26,7 @@ class LoginForm extends Model
             // username and password are both required
             [['username', 'password'], 'required'],
 			
-			[['username'], 'email'],
+			//[['username'], 'email'],
 			
 			
             // rememberMe must be a boolean value
@@ -39,7 +39,7 @@ class LoginForm extends Model
 	public function attributeLabels()
     {
         return [
-            'username' => 'Email Address',
+            'username' => 'Participant Email / Staff No.',
         ];
     }
 

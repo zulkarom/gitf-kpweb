@@ -9,7 +9,6 @@ use yii\web\IdentityInterface;
 use backend\modules\staff\models\Staff;
 use backend\modules\teachingLoad\models\Staff as StaffTeaching;
 use backend\modules\conference\models\Associate;
-use backend\modules\jeb\models\UserScope;
 
 
 /**
@@ -147,6 +146,18 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return static::findOne(['email' => $email, 'status' => self::STATUS_ACTIVE]);
     }
+    
+    public static function findByUsernameOrEmail($username)
+    {
+        return static::find()
+        ->where(['status' => self::STATUS_ACTIVE])
+        ->andWhere(['or',
+            ['email' => $username],
+            ['user' => $username]
+        ]
+            )
+        ->one();
+    }
 
     /**
      * Finds user by password reset token
@@ -271,10 +282,6 @@ class User extends ActiveRecord implements IdentityInterface
 		return $this->hasOne(Associate::className(), ['user_id' => 'id']);
 	}
 	
-	public function getUserScopes()
-    {
-        return $this->hasMany(UserScope::className(), ['user_id' => 'id']);
-    }
 	
 	public function getAuthAssignments()
     {
