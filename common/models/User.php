@@ -153,7 +153,7 @@ class User extends ActiveRecord implements IdentityInterface
         ->where(['status' => self::STATUS_ACTIVE])
         ->andWhere(['or',
             ['email' => $username],
-            ['user' => $username]
+            ['username' => $username]
         ]
             )
         ->one();
