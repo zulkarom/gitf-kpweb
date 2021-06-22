@@ -814,6 +814,10 @@ EOD;
 		$sign = $this->model->verifiedsign_file;
 
 		$file = Yii::getAlias('@upload/'. $sign);
+		$f = basename($file);
+		$paste = 'images/temp/'. $f;
+		
+		copy($file, $paste);
 
 		$y = $this->verify_y;
 		
@@ -854,7 +858,7 @@ EOD;
 		<td width="'.$col_sign .'" >';
 		if($this->model->verifiedsign_file){
 			if(is_file($file)){
-				$html .= '<img width="'.$size.'" src="'.$file.'" />';
+				$html .= '<img width="'.$size.'" src="images/temp/'.$f.'" />';
 			}
 		}
 		
