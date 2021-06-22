@@ -90,7 +90,7 @@ class Staff extends \yii\db\ActiveRecord
         return [
             [['staff_no', 'user_id', 'staff_title', 'is_academic', 'position_id', 'position_status', 'working_status', 'designation', 'faculty_id', 'gender', 'staff_active'], 'required'],
 			
-			[['verified_at', 'date1', 'date2'], 'required', 'on' => 'verify_course'],
+			[['verified_at'], 'required', 'on' => 'verify_course'],
 			
 			[['teaching_submit'], 'required', 'on' => 'teaching'],
 			

@@ -63,8 +63,8 @@ class CourseVersion extends \yii\db\ActiveRecord
 			
 			[['status', 'verified_note'], 'required', 'on' => 'verify_reject'],
 			
-			[['status', 'verified_at', 'verified_by', 'faculty_approve_at', 'senate_approve_at', 'verifiedsign_file'], 'required', 'on' => 'verify_approve'],
-			
+			[['status', 'verified_at', 'verified_by', 'verifiedsign_file'], 'required', 'on' => 'verify_approve'],
+            // 'faculty_approve_at', 'senate_approve_at',
 			//verify_reject
 			
 			[['status'], 'required', 'on' => 'status'],
