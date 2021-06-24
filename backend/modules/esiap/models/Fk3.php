@@ -682,12 +682,14 @@ $this->verify_y = $this->pdf->getY();
 			return false;
 		}
 		$sign = $this->model->verifiedsign_file;
-
-		$file = Yii::getAlias('@upload/'. $sign);
-		$f = basename($file);
-		$paste = 'images/temp/'. $f;
+		if($sign){
+			$file = Yii::getAlias('@upload/'. $sign);
+			$f = basename($file);
+			$paste = 'images/temp/'. $f;
+			
+			copy($file, $paste);
+		}
 		
-		copy($file, $paste);
 
 		$y = $this->verify_y;
 		

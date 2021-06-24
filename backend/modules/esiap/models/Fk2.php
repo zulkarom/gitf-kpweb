@@ -812,12 +812,15 @@ EOD;
 		}
 		
 		$sign = $this->model->verifiedsign_file;
-
-		$file = Yii::getAlias('@upload/'. $sign);
-		$f = basename($file);
-		$paste = 'images/temp/'. $f;
 		
-		copy($file, $paste);
+		if($sign){
+			$file = Yii::getAlias('@upload/'. $sign);
+			$f = basename($file);
+			$paste = 'images/temp/'. $f;
+			
+			copy($file, $paste);
+		}
+		
 
 		$y = $this->verify_y;
 		
