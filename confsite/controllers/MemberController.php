@@ -166,6 +166,7 @@ class MemberController extends Controller
 				        $model->status = 100; // paper accepted
 				    }else if($review->review_option == 1){
 				        $model->status = 10; // reject
+				        $model->reject_note = $review->reject_note;
 				    }
 				    
 				    $model->save();

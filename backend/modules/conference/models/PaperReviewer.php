@@ -46,7 +46,7 @@ use Yii;
 class PaperReviewer extends \yii\db\ActiveRecord
 {
 	public $reviewed_instance;
-	
+	public $reject_note;
 	public $file_controller;
     /**
      * {@inheritdoc}
@@ -68,16 +68,24 @@ class PaperReviewer extends \yii\db\ActiveRecord
 			
 			
             [['paper_id', 'scope_id', 'user_id', 'status', 'q_1', 'q_2', 'q_3', 'q_4', 'q_5', 'q_6', 'q_7', 'q_8', 'q_9', 'q_10', 'q_11', 'review_option'], 'integer'],
-            [['q_1_note', 'q_2_note', 'q_3_note', 'q_4_note', 'q_5_note', 'q_6_note', 'q_7_note', 'q_8_note', 'q_9_note', 'q_10_note', 'q_11_note', 'review_note'], 'string'],
+            [['q_1_note', 'q_2_note', 'q_3_note', 'q_4_note', 'q_5_note', 'q_6_note', 'q_7_note', 'q_8_note', 'q_9_note', 'q_10_note', 'q_11_note', 'review_note', 'reject_note'], 'string'],
             [['review_at', 'created_at', 'completed_at', 'cancel_at', 'reject_at'], 'safe'],
             
 			[['reviewed_file'], 'string', 'max' => 200],
+            
 			
 			/////
 			[['reviewed_file'], 'required', 'on' => 'reviewed_upload'],
             [['reviewed_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'doc, docx, pdf', 'maxSize' => 5000000],
 			
             [['review_at'], 'required', 'on' => 'reviewed_delete'],
+            
+            ['reject_note', 'required', 'when' => function($model){
+                return $model->review_option == '1';},
+                'whenClient' => "function (attribute, value) {
+        return $('#review_option').val() == '1';
+                         }",
+            ],
         ];
     }
 

@@ -53,7 +53,7 @@ table.detail-view th {
 	<?php 
 	
 	 echo $this->render('_form_review', [
-		'review' => $review
+		'review' => $review,
 		]); 
 	
 	

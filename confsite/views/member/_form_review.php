@@ -55,6 +55,12 @@ $options = ReviewForm::reviewOptions();
 unset($options[0]);
 echo $form->field($review, 'review_option')->radioList($options, ['encode' => false, 'separator' => '<br />']) ->label(false) ?></div>
 
+
+<div class="form-group">
+<?php echo $form->field($review, 'reject_note')->textarea(['rows' => 4])?>
+</div>
+
+
 <h5>Upload Reviewed/Commented Document (if any).</h5>
 <br />
 <?php echo UploadFile::fileInput($review, 'reviewed', $review->paper->conference->conf_url)?>
