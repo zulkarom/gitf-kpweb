@@ -151,6 +151,11 @@ class ConfPaper extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'reviewer_user_id']);
     }
+    
+    public function getSubmittedReview()
+    {
+        return $this->hasOne(PaperReviewer::className(), ['paper_id' => 'id'])->where(['status' => 20]);
+    }
 	
 	public function getUserTitleName(){
 		return $this->user->associate->title . ' ' . $this->user->fullname;

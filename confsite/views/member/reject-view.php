@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\widgets\ActiveForm;
+use backend\modules\conference\models\ReviewForm;
 use backend\modules\conference\models\UploadFile;
 
 /* @var $this yii\web\View */
@@ -70,3 +71,79 @@ table.detail-view th {
 
 
 </div>
+
+
+
+<?php 
+$review = $model->submittedReview;
+
+if($review){
+
+?>
+
+
+     <h4 class="m-text23 p-b-34">Reviewer's Remark</h4>
+<table class="table table-striped table-hover">
+<thead>
+<tr>
+	<th width="3%">#</th>
+	<th width="35%">Review Items</th>
+	<th>Remark</th>
+</tr>
+</thead>
+<tbody>
+	
+	<?php 
+	
+	$i =1;
+	foreach(ReviewForm::find()->all() as $f){
+	    $attr = 'q_'. $i . '_note';
+	    echo '<tr>
+		<td>'.$i.'. </td>
+		<td>'.$f->form_quest.'</td>
+	
+		<td> ' . $review->$attr .' </td>
+	</tr>';
+	$i++;
+	}
+	
+	
+	if($review->reviewed_file){
+	    echo '<tr>
+	<td>#</td>
+	<td>Reviewer\'s Uploaded File</td>
+	<td>'. Html::a('Download', ['reviewer/download-file', 'attr' => 'reviewed', 'id' => $review->id, 'confurl' => $model->conference->conf_url], ['class' => 'btn btn-primary'] ) .'</td>
+	</tr>';
+	}
+	?>
+	
+	
+</tbody>
+</table>
+
+   <br /><br />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<?php } ?>

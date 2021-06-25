@@ -1,5 +1,6 @@
 <?php
 
+use richardfan\widget\JSRegister;
 use yii\helpers\Html;
 use backend\modules\conference\models\ReviewForm;
 use yii\widgets\ActiveForm;
@@ -53,10 +54,17 @@ If there is no remark for particular section, kindly <b>put dash (-)</b> in the 
 <div class="form-group"><?php 
 $options = ReviewForm::reviewOptions();
 unset($options[0]);
-echo $form->field($review, 'review_option')->radioList($options, ['encode' => false, 'separator' => '<br />']) ->label(false) ?></div>
+echo $form->field($review, 'review_option')->radioList($options, ['encode' => false, 'separator' => '<br />']) ->label(false) ;
+
+$reject_hide = 'style="display:none"';
+if($review->review_option == 1){
+    $reject_hide = '';
+}
+
+?></div>
 
 
-<div class="form-group">
+<div class="form-group" id="con-reject" <?=$reject_hide?>>
 <?php echo $form->field($review, 'reject_note')->textarea(['rows' => 4])?>
 </div>
 
@@ -94,3 +102,16 @@ echo $form->field($review, 'review_option')->radioList($options, ['encode' => fa
 
 
 <br /><br /><br />
+
+
+<?php JSRegister::begin(); ?>
+<script>
+$("input[name='PaperReviewer[review_option]']").click(function(){
+	if($(this).val() == 1){
+		$('#con-reject').slideDown();
+	}else{
+		$('#con-reject').slideUp();
+	}
+});
+</script>
+<?php JSRegister::end(); ?>

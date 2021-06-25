@@ -61,6 +61,6 @@ class TentativeTime extends \yii\db\ActiveRecord
      */
     public function getDay()
     {
-        return $this->hasOne(ProTtfDay::className(), ['id' => 'day_id']);
+        //return $this->hasOne(ProTtfDay::className(), ['id' => 'day_id']);
     }
 }

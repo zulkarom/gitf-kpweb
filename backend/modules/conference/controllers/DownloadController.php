@@ -62,7 +62,8 @@ class DownloadController extends Controller
 					}
 					return $this->redirect(['index', 'conf' => $conf]);
 				}
-				
+				$model->document_updated_at = new Expression('NOW()');
+				$model->save();
             }
             
         }
