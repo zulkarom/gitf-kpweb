@@ -1,5 +1,6 @@
 <?php
 
+use richardfan\widget\JSRegister;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\widgets\ActiveForm;
@@ -73,21 +74,92 @@ table.detail-view th {
 						<div class="panel-body">
 
 <?php 
-	
+$model->abstract_decide = null;
 	echo $form->field($model, 'abstract_decide')->radioList($model->abstractOptions, [ 'separator' => '<br />'])->label('Choose One:');
 
 
 	?>
 
-<div class="form-group">
-        
-<?= Html::submitButton('Save', ['class' => 'btn btn-primary']) ?>
-    </div>
-	
-	
+
 </div>
 </div>
 
 <?php ActiveForm::end(); ?>
 
+<?php $form = ActiveForm::begin(); ?>
+<div class="panel panel-headline" id="con-accept" style="display:none">
+
+						<div class="panel-body">
+ 
+
+<div class="row">
+<div class="col-md-6">
+<?=$form->field($accept, 'abstract_decide')->hiddenInput(['value' => 1])->label(false)?>
 </div>
+</div>
+<div class="form-group">
+<?= Html::submitButton('Accept Paper', ['class' => 'btn btn-primary', 'name' => 'wfaction', 'value' => 'reject', 'data' => [
+                'confirm' => 'Are you sure to accept this abstract?'
+            ],
+    ])?>
+
+    </div>
+	
+	
+	
+</div>
+</div>
+
+
+
+<?php ActiveForm::end(); ?>
+
+
+
+<?php $form = ActiveForm::begin(); ?>
+<div class="panel panel-headline" id="con-reject" style="display:none">
+
+						<div class="panel-body">
+ 
+
+<div class="row">
+<div class="col-md-6">
+<?=$form->field($reject, 'abstract_decide')->hiddenInput(['value' => 0])->label(false)?>
+<?= $form->field($reject, 'reject_note')->textarea(['rows' => '3']) ?></div>
+</div>
+<div class="form-group">
+<?= Html::submitButton('Reject Paper', ['class' => 'btn btn-danger', 'name' => 'wfaction', 'value' => 'reject', 'data' => [
+                'confirm' => 'Are you sure to reject this abstract?'
+            ],
+    ])?>
+
+    </div>
+	
+	
+	
+</div>
+</div>
+
+
+
+<?php ActiveForm::end(); ?>
+
+
+
+</div>
+
+
+
+<?php JSRegister::begin(); ?>
+<script>
+$("input[name='ConfPaper[abstract_decide]']").click(function(){
+	if($(this).val() == 1){
+		$('#con-accept').slideDown();
+		$('#con-reject').slideUp();
+	}else if($(this).val() == 0){
+		$('#con-accept').slideUp();
+		$('#con-reject').slideDown();
+	}
+});
+</script>
+<?php JSRegister::end(); ?>

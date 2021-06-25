@@ -376,7 +376,7 @@ class Menu
 		    
 		    $paper_menu[] = ['label' => 'Complete', 'icon' => 'check', 'url' =>  ['/conference/paper/complete', 'conf' => $confurl]];
 		    
-		  //  $paper_menu[] =  ['label' => 'Reject', 'icon' => 'remove', 'url' =>  ['/conference/paper/reject', 'conf' => $confurl]];
+		   $paper_menu[] =  ['label' => 'Reject', 'icon' => 'remove', 'url' =>  ['/conference/paper/reject', 'conf' => $confurl]];
 		    
 		    $paper_menu[] = ['label' => 'Overview', 'icon' => 'table', 'url' =>  ['/conference/paper/overview', 'conf' => $confurl]];
 		    

@@ -85,6 +85,10 @@ $this->params['breadcrumbs'][] = $this->title;
 							return Html::a('VIEW',['member/complete-view/', 'confurl' => $model->conference->conf_url ,'id' => $model->id],['class'=>'btn btn-info btn-sm']);
 							break;
 							
+							case 10:
+							    return Html::a('VIEW',['member/reject-view/', 'confurl' => $model->conference->conf_url ,'id' => $model->id],['class'=>'btn btn-info btn-sm']);
+							    break;
+							
 						}
                        
                     }

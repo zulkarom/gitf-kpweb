@@ -238,6 +238,19 @@ class MemberController extends Controller
         
     }
 	
+    public function actionRejectView($confurl=null, $id)
+    {
+        $this->layout = 'main-member';
+        $model = $this->findModel($id);
+        if($confurl){
+            
+            return $this->render('reject-view', [
+                'model' => $model
+            ]);
+        }
+        
+    }
+    
 	public function actionProfile($confurl=null)
     {
 		$this->layout = 'main-member';

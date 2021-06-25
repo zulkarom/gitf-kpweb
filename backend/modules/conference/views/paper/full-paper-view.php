@@ -237,11 +237,11 @@ echo Html::submitButton($btn_text, ['class' => 'btn btn-primary', 'name' => 'wfa
 	<i>
 	<?php 
 	if($model->conference->commercial == 1){
-	echo Html::a('<span class="glyphicon glyphicon-search"></span> Preview Invoice', ['paper/invoice-pdf', 'id' => $model->id], ['target' => '_blank']);
+	//echo Html::a('<span class="glyphicon glyphicon-search"></span> Preview Invoice', ['paper/invoice-pdf', 'id' => $model->id], ['target' => '_blank']);
 	}
 	?>   
 
-<?= Html::a('<span class="glyphicon glyphicon-search"></span> Preview Acceptance Notice', ['paper/accept-letter-pdf', 'id' => $model->id], ['target' => '_blank'])?></i>
+<?php // echo Html::a('<span class="glyphicon glyphicon-search"></span> Preview Acceptance Notice', ['paper/accept-letter-pdf', 'id' => $model->id], ['target' => '_blank'])?></i>
 	
 	</div>
 	

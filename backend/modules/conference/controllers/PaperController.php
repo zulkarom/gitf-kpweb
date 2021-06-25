@@ -10,6 +10,7 @@ use backend\modules\conference\models\pdf\AcceptLetterPdf;
 use backend\modules\conference\models\AbstractSearch;
 use backend\modules\conference\models\FullPaperSearch;
 use backend\modules\conference\models\PaymentSearch;
+use backend\modules\conference\models\RejectSearch;
 use backend\modules\conference\models\ReviewSearch;
 use backend\modules\conference\models\OverwriteSearch;
 use backend\modules\conference\models\CompleteSearch;
@@ -89,6 +90,18 @@ class PaperController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('complete', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+    
+    public function actionReject($conf)
+    {
+        $searchModel = new RejectSearch();
+        $searchModel->conf_id = $conf;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
+        return $this->render('reject', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -239,24 +252,36 @@ class PaperController extends Controller
     {
 		
 		$model = $this->findModel($id);
+		$reject = PaperRejectForm::findOne($id);
+		$accept = PaperAcceptForm::findOne($id);
 		
-		if ($model->load(Yii::$app->request->post())) {
-			$option = $model->abstract_decide;
-			if($option == 1){
-				$model->status = 40;//abstract accepted
-			}else{
-				$model->status = 10;//rejected
-			}
-			if($model->save()){
-			    Yii::$app->session->addFlash('success', "Data Updated");
+		$reject->scenario = 'reject';
 
-				return $this->redirect(['paper/abstract', 'conf' => $conf]);
-			}
-            
+        
+        if ($reject->load(Yii::$app->request->post())) {
+            $reject->status = 10;
+            if($reject->save()){
+                Yii::$app->session->addFlash('success', "Paper Rejected successfully");
+                return $this->redirect(['paper/reject', 'conf' => $conf]);
+            }
+        }
+        
+        
+        
+        if ($accept->load(Yii::$app->request->post())) {
+            $accept->status = 40;//abstract accepted
+            if($accept->save()){
+                Yii::$app->session->addFlash('success', "Abstract Accepted successfully");
+                return $this->redirect(['paper/abstract', 'conf' => $conf]);
+            }else{
+                $accept->flashError();
+            }
         }
 		
         return $this->render('abstract-view', [
             'model' => $model,
+            'reject' => $reject,
+            'accept' => $accept,
         ]);
     }
 	
@@ -430,6 +455,17 @@ class PaperController extends Controller
         }
 		
         return $this->render('complete-view', [
+            'model' => $model,
+        ]);
+    }
+    
+    public function actionRejectView($conf, $id)
+    {
+        
+        $model = $this->findModel($id);
+       
+        
+        return $this->render('reject-view', [
             'model' => $model,
         ]);
     }
