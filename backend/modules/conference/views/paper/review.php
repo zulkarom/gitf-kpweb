@@ -23,7 +23,17 @@ $this->params['breadcrumbs'][] = $this->title;
         //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
+            [
+                
+                'attribute' => 'confly_number',
+                'label' => 'Paper Id',
+                //'contentOptions' => [ 'style' => 'width: 60%;' ],
+                'value' => function($model){
+                
+                return $model->paperId;
+                
+                }
+                ],
             [
 				'attribute' => 'fullname',
 				'label' => 'Name',

@@ -10,12 +10,14 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\helpers\Json;
 use yii\helpers\ArrayHelper;
+use yii\db\Exception;
 use yii\db\Expression;
 use backend\modules\conference\models\UploadConfFile as UploadFile;
 use backend\modules\conference\models\Conference;
 use backend\modules\conference\models\EmailSet;
 use backend\modules\conference\models\EmailTemplate;
 use common\models\Model;
+use backend\modules\conference\models\ConfPaper;
 
 
 /**
@@ -57,6 +59,32 @@ class SettingController extends Controller
         }
 
         return $this->render('update', [
+            'model' => $model,
+        ]);
+    }
+    
+    public function actionPaper($conf)
+    {
+        $model = $this->findModel($conf);
+        
+        if ($model->load(Yii::$app->request->post())) {
+            $list = $model->confPapers;
+            if($list){
+                $i = 1;
+                foreach($list as $paper){
+                    $paper->confly_number = $i;
+                    if(!$paper->save()){
+                        $paper->flashError();
+                    }
+                   $i++;
+                }
+            }
+            Yii::$app->session->addFlash('success', "Paper Ids Reset Successful");
+            return $this->refresh();
+            
+        }
+        
+        return $this->render('paper', [
             'model' => $model,
         ]);
     }

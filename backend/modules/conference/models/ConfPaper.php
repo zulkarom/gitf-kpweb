@@ -41,6 +41,10 @@ class ConfPaper extends \yii\db\ActiveRecord
     {
         return 'conf_paper';
     }
+    
+    public function getPaperId(){
+        return 'Paper-' . $this->confly_number;
+    }
 
     /**
      * {@inheritdoc}

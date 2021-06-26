@@ -16,6 +16,17 @@ $this->params['breadcrumbs'][] = $this->title;
 $columns = [
     ['class' => 'yii\grid\SerialColumn'],
     [
+        
+        'attribute' => 'confly_number',
+        'label' => 'Paper Id',
+        //'contentOptions' => [ 'style' => 'width: 60%;' ],
+        'value' => function($model){
+        
+        return $model->paperId;
+        
+        }
+        ],
+    [
         'attribute' => 'created_at',
         'label' => 'Date',
         'format' => 'date'
@@ -216,7 +227,7 @@ $columns = [
                 //'contentOptions' => [ 'style' => 'width: 60%;' ],
                 'value' => function($model){
                 
-                return 'Paper-' . $model->confly_number;
+                return $model->paperId;
                 
                 }
                 ],

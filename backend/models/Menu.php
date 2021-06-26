@@ -431,6 +431,8 @@ class Menu
 							['label' => 'Payment & Receipt', 'icon' => 'dollar', 'url' => ['/conference/setting/payment', 'conf' => $confurl]],
 							
 							['label' => 'Email Template', 'icon' => 'envelope', 'url' => ['/conference/setting/email-template', 'conf' => $confurl]],
+						    
+						    ['label' => 'Papers', 'icon' => 'file', 'url' => ['/conference/setting/paper', 'conf' => $confurl]],
 							//email-template
 
 						]
