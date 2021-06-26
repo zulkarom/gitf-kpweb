@@ -120,7 +120,7 @@ if($model->{$db_file}){
 
 <a href="<?=Url::to([$model->file_controller . '/download-file', 'confurl' => $confurl, 'attr' => $attr_name, 'id' => $model->id])?>" id="download_<?=$attr?>" target="_blank" class="btn btn-success"><span class="fa fa-download"></span></a> 
 
-<a href="#" id="remove_<?=$unique?>" class="btn btn-danger" data-type="DELETE" data-url="<?=Url::to([$model->file_controller . '/delete-file', 'attr' => $attr_name, 'id' => $model->id])?>" title="Delete"><span class="fa fa-remove"></span></a>
+<a href="#" id="remove_<?=$unique?>" class="btn btn-danger" data-type="DELETE" data-url="<?=Url::to([$model->file_controller . '/delete-file', 'confurl' => $confurl, 'attr' => $attr_name, 'id' => $model->id])?>" title="Delete"><span class="fa fa-remove"></span></a>
 
 </div>
 

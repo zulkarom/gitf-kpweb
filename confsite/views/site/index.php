@@ -5,7 +5,7 @@ use yii\helpers\Url;
 use yii\grid\GridView;
 use yii\widgets\ActiveForm;
 
-$this->title= 'CONFERENCE VALLEY';
+$this->title= 'FKP CONFERENCE MANAGEMENT SYSTEM';
 
 $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@confsite/views/myasset');
 
@@ -14,7 +14,7 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@confsite/views/myas
 <br /><br />
 <h4 class="p-b-11">
 <a href="#" class="m-text24">
-	UPCOMING CONFERENCES								</a>
+	LIST OF CONFERENCES								</a>
 </h4>
 <br />
 <div class="table-responsive"><?= GridView::widget([

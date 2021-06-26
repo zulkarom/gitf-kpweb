@@ -775,7 +775,7 @@ class MemberController extends Controller
 
     }
 
-	public function actionDeleteFile($attr, $id)
+    public function actionDeleteFile($confurl, $attr, $id)
     {
         $attr = $this->clean($attr);
         $model = $this->findModel($id);

@@ -78,7 +78,7 @@ class PaperReviewer extends \yii\db\ActiveRecord
 			[['reviewed_file'], 'required', 'on' => 'reviewed_upload'],
             [['reviewed_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'doc, docx, pdf', 'maxSize' => 5000000],
 			
-            [['review_at'], 'required', 'on' => 'reviewed_delete'],
+            [['updated_at'], 'required', 'on' => 'reviewed_delete'],
             
             ['reject_note', 'required', 'when' => function($model){
                 return $model->review_option == '1';},

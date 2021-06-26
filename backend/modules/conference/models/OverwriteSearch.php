@@ -44,13 +44,13 @@ class OverwriteSearch extends ConfPaper
      */
     public function search($params)
     {
-        $query = ConfPaper::find()->where(['conf_id' => $this->conf_id]);
+        $query = ConfPaper::find()->where(['conf_id' => $this->conf_id])->andWhere(['<>', 'status', 10]); //exclude reject
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-			'sort'=> ['defaultOrder' => ['status'=>SORT_ASC]],
+			'sort'=> ['defaultOrder' => ['status'=>SORT_ASC, 'created_at' => SORT_DESC]],
 			'pagination' => [
                 'pageSize' => 100,
             ],
