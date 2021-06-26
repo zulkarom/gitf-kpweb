@@ -209,6 +209,17 @@ $columns = [
                 'label' => 'Date',
                 'format' => 'date'
             ],
+            [
+                
+                'attribute' => 'confly_number',
+                'label' => 'Paper Id',
+                //'contentOptions' => [ 'style' => 'width: 60%;' ],
+                'value' => function($model){
+                
+                return 'Paper-' . $model->confly_number;
+                
+                }
+                ],
 			[
 			    
 			 'attribute' => 'pap_title',

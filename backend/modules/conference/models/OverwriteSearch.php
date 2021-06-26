@@ -50,7 +50,7 @@ class OverwriteSearch extends ConfPaper
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-			'sort'=> ['defaultOrder' => ['status'=>SORT_ASC, 'created_at' => SORT_DESC]],
+			'sort'=> ['defaultOrder' => ['status'=>SORT_ASC, 'id' => SORT_DESC]],
 			'pagination' => [
                 'pageSize' => 100,
             ],
