@@ -68,7 +68,7 @@ class SettingController extends Controller
         $model = $this->findModel($conf);
         
         if ($model->load(Yii::$app->request->post())) {
-            $list = $model->confPapers;
+            $list = ConfPaper::find()->where(['conf_id' => $model->id])->orderBy('created_at ASC')->all();
             if($list){
                 $i = 1;
                 foreach($list as $paper){
