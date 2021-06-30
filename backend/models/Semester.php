@@ -121,9 +121,24 @@ class Semester extends \yii\db\ActiveRecord
 		}
 		return $sn;
 	}
+	
+	public function sessionLongEn(){
+	    $session =  substr($this->id, 8, 1);
+	    if($session == 1){
+	        $sn = 'September';
+	    }else if($session == 2){
+	        $sn = 'February';
+	    }else{
+	        $sn = '';
+	    }
+	    return $sn;
+	}
 
 	public function getSessionLong(){
 		return $this->sessionLong();
+	}
+	public function getSessionLongEn(){
+	    return $this->sessionLongEn();
 	}
 
 	public function years(){

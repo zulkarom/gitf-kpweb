@@ -296,12 +296,18 @@ EOD;
 			<td>'. $course_name .'</td>
 			<td>:</td>
 			<td width="'.$w5.'">'.$course_name_data.'</td>
-		</tr>
-		<tr>
+		</tr>';
+		if($this->en){
+		    $sesi = $this->model->staffInvolved->semester->sessionLongEn;
+		}else{
+		    $sesi = $this->model->staffInvolved->semester->sessionLong;
+		}
+		
+		$html .='<tr>
 			<td></td>
 			<td>Semester</td>
 			<td>:</td>
-			<td>'.strtoupper($this->model->staffInvolved->semester->sessionLong).'</td>
+			<td>'.strtoupper($sesi).'</td>
 		</tr>
 		<tr>
 			<td></td>
@@ -416,23 +422,25 @@ EOD;
 		$tema = nl2br($tema);
 		$benar = $this->template->yg_benar;
 		$dekan = $this->template->dekan;
-		
+		$sk = 's.k';
 		if($this->en){
 		    $tda = 'Deputy Dean (Academic & Student Development)';
 		    $dekan_text = 'Dean';
+		    $sk = 'c.c';
 		}else{
 		    $tda = 'Timbalan Dekan (Akademik & Pembangunan Pelajar)';
 		    $dekan_text = 'Dekan';
+		    $sk = 's.k';
 		}
 		
 		
-				$html = '<b>'.$tema.'</b>
+	   $html = '<b>'.$tema.'</b>
 		<br /><br />
 		'.$benar.',<br />
 		<br /><br /><br />
 		<b>'.strtoupper($dekan).'</b><br />
 		' .  $dekan_text . '<br /><br />
-		s.k - '. $tda .'
+		'. $sk .' - '. $tda .'
 		';
 		$this->pdf->SetFont('arial','', $this->fontSize);
 		$tbl = <<<EOD
