@@ -16,8 +16,9 @@ class AppointmentLetterFile
 	public $pdf;
 	public $tuan = 'Tuan';
 	public $template;
-	public $fontSize = 10;
+	public $fontSize = 11;
 	public $en = false;
+	public $margin_left = 37;
 	
 	public function generatePdf(){
 		
@@ -100,10 +101,11 @@ class AppointmentLetterFile
 		
 		
 		
-		$html = '<br /><br /><br />
-		<table cellpadding="1">
+		$html = '<br /><br />
+        <div style="line-height:24px;">&nbsp;</div>
+		<table cellpadding="1" border="0">
 		<tr>
-			<td width="490"></td>
+			<td width="390"></td>
 			<td width="300" align="left">'.$this->model->ref_no . '</td>
 		</tr>
 		<tr>
@@ -111,7 +113,7 @@ class AppointmentLetterFile
 			<td align="left">'. $date .'</td>
 		</tr>
 		</table>
-		<br /><br /><br /><br />
+		<br /><br /><br />
 		<b>'. $title . ' ' . $this->model->staffInvolved->staff->user->fullname;
 		$status = $this->model->staffInvolved->staff->staffPositionStatus->status_cat;
 		
@@ -172,9 +174,9 @@ class AppointmentLetterFile
 		<br /><br /><br />
 		';
 		
-		$this->pdf->SetMargins(20, 10, 20);
+		$this->pdf->SetMargins($this->margin_left, 10, 35);
 		
-		$this->pdf->SetFont('arial','', $this->fontSize);
+		$this->pdf->SetFont('arialnarrow','', $this->fontSize);
 		$tbl = <<<EOD
 		$html
 EOD;
@@ -228,7 +230,7 @@ EOD;
 		With due respect to the above matter.
 		<br /><br />
 		    
-		2. &nbsp;&nbsp;&nbsp;Kindly be informed that you have been appointed as '. $coor2 .'a lecturer for the following course:
+		<span style="text-align:justify;">2. &nbsp;&nbsp;&nbsp;</span><span style="text-align:justify;">Kindly be informed that you have been appointed as '. $coor2 .'a lecturer for the following course:
 		<br />
 		';
 		}else{
@@ -240,15 +242,17 @@ EOD;
 		    
 		Dengan hormatnya saya merujuk kepada perkara di atas.
 		<br /><br />
-		    
-		2. &nbsp;&nbsp;&nbsp;Sukacita dimaklumkan bahawa '.$this->tuan .' dilantik sebagai '. $penyelaras .'Pengajar bagi kursus berikut:
+		 <table width="630"><tr><td>
+		<span style="text-align:justify;">2. &nbsp;&nbsp;&nbsp;</span><span style="text-align:justify;">Sukacita dimaklumkan bahawa '.$this->tuan .' dilantik sebagai '. $penyelaras .'Pengajar bagi kursus berikut:</span>
+</td></tr>
+</table>
 		<br />
 		';
 		}
 		
 		
-		
-		$this->pdf->SetFont( 'arial','', $this->fontSize);
+		$this->pdf->SetMargins($this->margin_left, 10, 25);
+		$this->pdf->SetFont( 'arialnarrow','', $this->fontSize);
 		$tbl = <<<EOD
 		$html
 EOD;
@@ -336,45 +340,46 @@ EOD;
 		
 		$html .= '</table>
 		';
-		$this->pdf->SetFont('arial','B', $this->fontSize);
+		$this->pdf->SetFont('arialnarrow','B', $this->fontSize);
 		$tbl = <<<EOD
 		$html
 EOD;
-		
+		$this->pdf->SetMargins($this->margin_left, 10, 25);
 		$this->pdf->writeHTML($tbl, true, false, false, false, '');
 	}
 	
 	public function writeEnding(){
 		
 		
-		
+		$wd = 630;
         
 		if($this->en){
 		    $per4 = $this->template->per1_en;
 		    $html = '<br />
-		<table width="700"><tr><td><span style="text-align:justify;">3. &nbsp;&nbsp;&nbsp;
-		However, this appointment is subject to any changes.
-		<br /><br />
-		4. &nbsp;'.str_replace('{TUANPUAN}', $this->tuan, $per4).'
-		<br /><br /></span>
+		<table width="'. $wd .'" border="0"><tr><td><span style="text-align:justify;">3. &nbsp;&nbsp;&nbsp;</span><span style="text-align:justify;">However, this appointment is subject to any changes.
+		
+</span>
+<br /><br />
+<span style="text-align:justify;">4. &nbsp;&nbsp;&nbsp;'. str_replace('{TUANPUAN}', $this->tuan, $per4). '</span><br /><br />
 		Thank you.
 		<br />
 		</td></tr></table>';
 		}else{
 		    $per4 = $this->template->per1;
 		    $html = '<br />
-		<table width="700"><tr><td><span style="text-align:justify;">3. &nbsp;&nbsp;&nbsp;
-		Untuk makluman, pelantikan ini adalah berkuatkuasa mengikut perubahan dari semasa ke semasa.
-		<br /><br />
-		4. &nbsp;'.str_replace('{TUANPUAN}', $this->tuan, $per4).'
-		<br /><br /></span>
+		<table  width="'. $wd .'"><tr><td><span style="text-align:justify;">3. &nbsp;&nbsp;&nbsp;</span><span style="text-align:justify;">Untuk makluman, pelantikan ini adalah berkuatkuasa daripada semester berkenaan tertakluk kepada perubahan.
+		
+
+</span>
+<br /><br />
+<span style="text-align:justify;">4. &nbsp;&nbsp;&nbsp;</span><span style="text-align:justify;">'.str_replace('{TUANPUAN}', $this->tuan, $per4).'</span><br /><br />
 		Sekian.
 		<br />
 		</td></tr></table>';
 		}
 		
-
-		$this->pdf->SetFont('arial','', $this->fontSize);
+		
+		$this->pdf->SetFont('arialnarrow','', $this->fontSize);
 		$tbl = <<<EOD
 		$html
 EOD;
@@ -442,7 +447,7 @@ EOD;
 		' .  $dekan_text . '<br /><br />
 		'. $sk .' - '. $tda .'
 		';
-		$this->pdf->SetFont('arial','', $this->fontSize);
+		$this->pdf->SetFont('arialnarrow','', $this->fontSize);
 		$tbl = <<<EOD
 		$html
 EOD;
@@ -455,7 +460,7 @@ EOD;
 	public function startPage(){
 		// set document information
 		$this->pdf->SetCreator(PDF_CREATOR);
-		$this->pdf->SetAuthor('Pusat Kokurikulum');
+		$this->pdf->SetAuthor('FKP');
 		$this->pdf->SetTitle('SURAT PERLANTIKAN');
 		$this->pdf->SetSubject('SURAT PERLANTIKAN');
 		$this->pdf->SetKeywords('');
@@ -494,6 +499,8 @@ EOD;
 		// ---------------------------------------------------------
 
 		$this->pdf->setImageScale(1.53);
+
+		
 
 		// add a page
 		$this->pdf->AddPage("P");
