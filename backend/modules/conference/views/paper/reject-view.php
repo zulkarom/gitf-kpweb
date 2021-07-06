@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\DetailView;
+use backend\modules\conference\models\ReviewForm;
 use kartik\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -61,3 +62,56 @@ table.detail-view th {
     ]) ?></div>
 </div>
 
+
+<?php if($review){ 
+    ?>
+ <div class="box">
+<div class="box-header">
+<h4>Review</h4>
+</div>
+<div class="box-body">
+
+
+<br />
+<table class="table table-striped table-hover">
+<thead>
+<tr>
+	<th width="1%">#</th>
+	<th width="35%">Review Items</th>
+	<th>Remark</th>
+</tr>
+</thead>
+<tbody>
+	
+	<?php 
+	
+	$i =1;
+	foreach(ReviewForm::find()->all() as $f){
+	    $attr = 'q_'. $i . '_note';
+	    echo '<tr>
+		<td>'.$i.'. </td>
+		<td>'.$f->form_quest.'</td>
+	
+		<td> ' . $review->$attr .' </td>
+	</tr>';
+	$i++;
+	}
+	
+	
+	if($review->reviewed_file){
+	    echo '<tr>
+		<td> </td>
+		<td><a href="'. Url::to(['paper/download-reviewed-file', 'id' => $review->id, 'attr' => 'reviewed']) .'" target="_blank" class="btn btn-primary btn-xs"> <span class="glyphicon glyphicon-download-alt"></span> Reviewed File</a></td>
+    
+		<td> </td>
+	</tr>';
+	}
+	
+	?>
+</tbody>
+</table>
+
+</div>
+</div>
+
+<?php } ?>

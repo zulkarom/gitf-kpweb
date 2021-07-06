@@ -463,10 +463,11 @@ class PaperController extends Controller
     {
         
         $model = $this->findModel($id);
-       
+        $review = $this->findPaperReviewer($id);
         
         return $this->render('reject-view', [
             'model' => $model,
+            'review' => $review,
         ]);
     }
 	
@@ -584,19 +585,41 @@ class PaperController extends Controller
             return $model;
         }
     }
+    
+    protected function findReviewModel($id)
+    {
+        if (($model = PaperReviewer::findOne($id)) !== null) {
+            return $model;
+        }
+        
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    
 	
 	public function actionDownloadFile($attr, $id, $identity = true){
         $attr = $this->clean($attr);
         $model = $this->findModel($id);
-        $filename = strtoupper($attr) . ' ' . Yii::$app->user->identity->fullname;
+        $id = $model->confly_number;
+        $title = $model->filenameDownload;
+        
+        $filename = $id . '-' . strtolower($title);
         
         
         
         UploadFile::download($model, $attr, $filename);
     }
+    
+    public function actionDownloadReviewedFile($id, $attr, $identity = true){
+        $attr = $this->clean($attr);
+        $model = $this->findReviewModel($id);
+        $paper = $model->paper;
+        
+        $filename = 'Review Paper ' . $paper->confly_number;
+        UploadFile::download($model, $attr, $filename);
+    }
 	
 	protected function clean($string){
-        $allowed = ['paper', 'payment'];
+        $allowed = ['paper', 'payment', 'reviewed'];
         
         foreach($allowed as $a){
             if($string == $a){

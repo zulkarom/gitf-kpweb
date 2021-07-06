@@ -326,7 +326,9 @@ class ReviewerController extends Controller
 	public function actionDownloadFile($attr, $id, $identity = true){
         $attr = $this->clean($attr);
         $model = $this->findReviewModel($id);
-        $filename = strtoupper($attr) . ' ' . Yii::$app->user->identity->fullname;
+        $paper = $model->paper;
+        
+        $filename = 'Review Paper ' . $paper->confly_number;
         UploadFile::download($model, $attr, $filename);
     }
 	

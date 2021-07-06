@@ -809,7 +809,10 @@ class MemberController extends Controller
 
         $attr = $this->clean($attr);
         $model = $this->findModel($id);
-        $filename = strtoupper($attr) . ' ' . Yii::$app->user->identity->fullname;
+        $id = $model->confly_number;
+        $title = $model->filenameDownload;
+        
+        $filename = $id . '-' . strtolower($title);
         UploadFile::download($model, $attr, $filename);
     }
 	

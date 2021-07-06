@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 use kartik\widgets\ActiveForm;
 use richardfan\widget\JSRegister;
@@ -69,10 +70,10 @@ table.detail-view th {
 			],
 			[
 				'attribute' => 'paper_file',
-				'label' => 'Uploaded Full Paper',
+				'label' => 'Full Paper',
 				'format' => 'raw',
 				'value' => function($model){
-					return Html::a('<span class="glyphicon glyphicon-download-alt"></span> DOWNLOAD FILE', ['paper/download-file', 'id' => $model->id, 'attr' => 'paper'], ['class' => 'btn btn-default','target' => '_blank']);
+					return Html::a('<span class="glyphicon glyphicon-download-alt"></span> Download', ['paper/download-file', 'id' => $model->id, 'attr' => 'paper'], ['class' => 'btn btn-primary btn-xs','target' => '_blank']);
 				}
 			],
 			[
@@ -116,6 +117,16 @@ table.detail-view th {
 		<td> ' . $review->$attr .' </td>
 	</tr>';
 	$i++;
+	}
+	
+	
+	if($review->reviewed_file){
+	    echo '<tr>
+		<td> </td>
+		<td><a href="'. Url::to(['paper/download-reviewed-file', 'id' => $review->id, 'attr' => 'reviewed']) .'" target="_blank" class="btn btn-primary btn-xs"> <span class="glyphicon glyphicon-download-alt"></span> Reviewed File</a></td>
+    
+		<td> </td>
+	</tr>';
 	}
 	
 	?>

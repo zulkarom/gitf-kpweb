@@ -149,7 +149,12 @@ class ConfPaper extends \yii\db\ActiveRecord
         return $this->hasOne(ConfScope::className(), ['id' => 'scope_id']);
     }
     
-    
+    public function getFilenameDownload(){
+        $title = $this->pap_title;
+        $title = str_replace([',', "'", ':','(',')','?', '_'], '', $title);
+        $title = str_replace(' ', '-', $title);
+        return substr($title, 0, 80);
+    }
 	
 	public function getReviewer()
     {
