@@ -1,0 +1,5 @@
+ALTER TABLE `jeb_associate` ADD `title` VARCHAR(100) NULL DEFAULT NULL AFTER `admin_creation`;
+ALTER TABLE `jeb_associate` ADD `assoc_address` VARCHAR(255) NULL DEFAULT NULL AFTER `title`;
+ALTER TABLE `jeb_associate` ADD `phone` VARCHAR(100) NULL DEFAULT NULL AFTER `assoc_address`;
+ALTER TABLE `conference` ADD `commercial` TINYINT(1) NOT NULL DEFAULT '1' AFTER `fax_contact`;
+

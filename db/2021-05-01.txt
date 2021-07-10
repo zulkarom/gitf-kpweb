@@ -1,1 +1,0 @@
-ALTER TABLE `tld_course_offered` ADD `auditor_staff_id` INT NULL DEFAULT '0' AFTER `prg_coordinator`;

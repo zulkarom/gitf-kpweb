@@ -37,10 +37,10 @@ table.detail-view th {
 			
 			[
 				'attribute' => 'paper_file',
-				'label' => 'Uploaded Full Paper',
+				'label' => 'Full Paper',
 				'format' => 'raw',
 				'value' => function($model){
-					return Html::a('<span class="glyphicon glyphicon-download-alt"></span> DOWNLOAD FILE', ['member/download-file', 'id' => $model->id, 'confurl' => $model->conference->conf_url, 'attr' => 'paper'], ['class' => 'btn btn-warning','target' => '_blank']);
+					return Html::a('<span class="fa fa-download"></span> DOWNLOAD ', ['member/download-file', 'id' => $model->id, 'confurl' => $model->conference->conf_url, 'attr' => 'paper'], ['class' => 'btn btn-primary btn-sm','target' => '_blank']);
 				}
 			]
   

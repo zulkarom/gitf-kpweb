@@ -49,7 +49,7 @@ If there is no remark for particular section, kindly <b>put dash (-)</b> in the 
 
 
 
-<h5>6.	Overall evaluation: check one.</h5>
+<h5>Overall evaluation: check one.</h5>
 <br />
 <div class="form-group"><?php 
 $options = ReviewForm::reviewOptions();
@@ -78,11 +78,33 @@ if($review->review_option == 1){
 </div>
 	
 	
+	
+<div class="form-group">
+<label>How likely is it that you would nominate/recommend for best paper award. 
+<br />From 0 (Not all likely) to 10 (Extremely likely)</label>
+<table class="table table-bordered"><tr>
+<?php 
+
+
+for($i=0;$i<=10;$i++){
+    echo '<td align="center">'.$i.'<br /> '. 
+    
+        $form->field($review, 'paper_rate'
+            )->radio(['label' => '', 'value' => $i, 'required' => true, 'uncheck' => null])->label(false)
+    
+    .' </td>';
+}
+
+
+?>
+
+</tr></table>
+</div>
 
 
 
 	
-	
+	<br /><br />
 <?=Html::submitButton('<i class="fa fa-save"></i> Save Review', 
     ['class' => 'btn btn-info', 'name' => 'wfaction', 'value' => 'save'
     ])?> 
@@ -94,7 +116,7 @@ if($review->review_option == 1){
 
 
 
-    </div>
+
 
     <?php ActiveForm::end(); ?>
 

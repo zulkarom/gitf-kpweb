@@ -164,6 +164,19 @@ $columns = [
                                 }
                                 
                                 ],
+                                
+                                [
+                                    'label' => 'Rate',
+                                    'value' => function($model){
+                                    if($model->reviewer){
+                                        return $model->paperReviewer->paper_rate;
+                                    }else{
+                                        return '-';
+                                    }
+                                    
+                                    }
+                                    
+                                    ],
                             
                             [
                                 'attribute' => 'status',
@@ -289,6 +302,19 @@ $columns = [
 			    }
 			    
 			    ],
+			    
+			    [
+			        'label' => 'Rate',
+			        'value' => function($model){
+			        if($model->reviewer){
+			            return $model->paperReviewer->paper_rate;
+			        }else{
+			            return '-';
+			        }
+			        
+			        }
+			        
+			        ],
 			    
 			    [
 			        'attribute' => 'paper_file',

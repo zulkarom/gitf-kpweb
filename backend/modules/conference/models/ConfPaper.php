@@ -127,6 +127,10 @@ class ConfPaper extends \yii\db\ActiveRecord
 		$reg = $this->userRegistration;
 		return $this->conference->conf_abbr . ': ' . str_pad($reg->confly_number, 3 , '0', STR_PAD_LEFT) . '-' .  str_pad($this->confly_number, 3 , '0', STR_PAD_LEFT);
 	}
+	
+	public function getPaperReviewer(){
+	    return PaperReviewer::findOne(['paper_id' => $this->id]);
+	}
 
     /**
      * @return \yii\db\ActiveQuery
