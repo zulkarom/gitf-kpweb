@@ -44,7 +44,7 @@ class OverwriteSearch extends ConfPaper
      */
     public function search($params)
     {
-        $query = ConfPaper::find()->where(['conf_id' => $this->conf_id])->andWhere(['<>', 'status', 10]); //exclude reject
+        $query = ConfPaper::find()->where(['conf_id' => $this->conf_id]); //exclude reject
 
         // add conditions that should always apply here
 
