@@ -85,7 +85,7 @@ if($model->id){
 <?php 
 $check = 'checked';
 $hide = 'style="display:none"';
-if($model->date_end != '0000-00-00'){
+if($model->date_end){
 	$check = '';
 	$hide = '"';
 } 

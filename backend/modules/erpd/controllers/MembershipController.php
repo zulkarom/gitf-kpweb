@@ -83,7 +83,7 @@ class MembershipController extends Controller
         if ($model->load(Yii::$app->request->post())) {
 			$model->msp_staff = Yii::$app->user->identity->staff->id;
 			if(empty($model->date_end) or $model->checknoend == 1){
-				$model->date_end = '0000-00-00';
+				$model->date_end = null;
 			}
 			$model->created_at = new Expression('NOW()');
 			
@@ -135,7 +135,7 @@ class MembershipController extends Controller
 			$model->modified_at = new Expression('NOW()');
 
 			if(empty($model->date_end) or $model->checknoend == 1){
-				$model->date_end = '0000-00-00';
+				$model->date_end = null;
 			}
 
 			if($model->save()){

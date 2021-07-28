@@ -27,7 +27,7 @@ table.detail-view th {
 			[
 				'attribute' => 'date_end',
 				'value' => function($model){
-					if($model->date_end == '0000-00-00'){
+					if($model->date_end == null){
 						return 'No End';
 					}else{
 						return date('d M Y', strtotime($model->date_end));

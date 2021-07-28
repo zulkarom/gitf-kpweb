@@ -38,7 +38,7 @@ $exportColumns = [
 			[
 				'attribute' => 'date_end',
 				'value' => function($model){
-					if($model->date_end == '0000-00-00'){
+					if($model->date_end == null){
 						return '-';
 					}else{
 						return $model->date_end;
