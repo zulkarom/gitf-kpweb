@@ -191,7 +191,8 @@ label{
 
 <br />
     <div class="form-group">
-        <?= Html::submitButton('SUBMIT PAPER', ['class' => 'btn btn-primary']) ?>
+     <?= Html::submitButton('SAVE', ['class' => 'btn btn-warning', 'name' => 'action' , 'value' => 'save']) ?>
+        <?= Html::submitButton('SUBMIT CORRECTION', ['class' => 'btn btn-primary', 'name' => 'action' , 'value' => 'submit', 'data-confirm' => 'Are you sure to submit this correction?']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

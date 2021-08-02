@@ -544,6 +544,9 @@ class MemberController extends Controller
 	        
 	        if ($model->load(Yii::$app->request->post())) {
 	            
+	            $action = Yii::$app->request->post('action');
+	           
+	            
 	            $model->updated_at = new Expression('NOW()');
 	            
 	            $oldIDs = ArrayHelper::map($authors, 'id', 'id');
@@ -576,7 +579,10 @@ class MemberController extends Controller
 	                    
 	                    $model->updated_at = new Expression('NOW()');
 	                    $model->full_paper_at = new Expression('NOW()');
-	                    $model->status = 100; //full paper submission
+	                    if($action == 'submit'){
+	                        $model->status = 100; //full paper submission
+	                    }
+	                    
 	                    if ($flag = $model->save(false)) {
 	                        if (! empty($deletedIDs)) {
 	                            ConfAuthor::deleteAll(['id' => $deletedIDs]);
@@ -601,8 +607,13 @@ class MemberController extends Controller
 	                    
 	                    if ($flag) {
 	                        $transaction->commit();
-	                        Yii::$app->session->addFlash('success', "Thank you, your full paper correction successfully submitted");
-	                        return $this->redirect(['member/index', 'confurl'=> $confurl]);
+	                        if($action == 'submit'){
+    	                        Yii::$app->session->addFlash('success', "Thank you, your full paper correction has been successfully submitted");
+    	                        return $this->redirect(['member/index', 'confurl'=> $confurl]);
+	                        }else{
+	                            Yii::$app->session->addFlash('success', "Information Updated");
+	                            return $this->refresh();
+	                        }
 	                        
 	                        
 	                        
