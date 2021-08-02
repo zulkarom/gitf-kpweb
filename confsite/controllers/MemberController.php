@@ -540,12 +540,23 @@ class MemberController extends Controller
 	        
 	        $authors = $model->authors;
 	        
+	        
+	        
 	        if ($model->load(Yii::$app->request->post())) {
 	            
 	            $model->updated_at = new Expression('NOW()');
 	            
-	            $authors = Model::createMultiple(ConfAuthor::classname());
+	            $oldIDs = ArrayHelper::map($authors, 'id', 'id');
+	            
+	            
+	            $authors = Model::createMultiple(ConfAuthor::classname(), $authors);
+	            
 	            Model::loadMultiple($authors, Yii::$app->request->post());
+	            
+	            $deletedIDs = array_diff($oldIDs, array_filter(ArrayHelper::map($authors, 'id', 'id')));
+	            
+	            
+	           
 	            
 	            foreach ($authors as $i => $author) {
 	                $author->author_order = $i;
@@ -567,6 +578,9 @@ class MemberController extends Controller
 	                    $model->full_paper_at = new Expression('NOW()');
 	                    $model->status = 100; //full paper submission
 	                    if ($flag = $model->save(false)) {
+	                        if (! empty($deletedIDs)) {
+	                            ConfAuthor::deleteAll(['id' => $deletedIDs]);
+	                        }
 	                        
 	                        foreach ($authors as $i => $author) {
 	                            if ($flag === false) {
@@ -823,14 +837,14 @@ class MemberController extends Controller
         UploadFile::download($model, $attr, $filename);
     }
 	
-	public function actionAcceptLetterPdf($id){
+    /*	public function actionAcceptLetterPdf($id){
 		$model = $this->findModel($id);
 		$pdf = new AcceptLetterPdf;
 		$pdf->model = $model;
 		$pdf->generatePdf();
 	}
 	
-	public function actionInvoicePdf($id){
+ 	public function actionInvoicePdf($id){
 		$model = $this->findModel($id);
 		$file = Yii::getAlias('@upload/' . $model->conference->logo_file);
 		$random = '';
@@ -862,7 +876,7 @@ class MemberController extends Controller
 		
 		unlink($to);
 		
-	}
+	} */
 
 
 }
