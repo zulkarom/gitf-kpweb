@@ -184,7 +184,7 @@ class UploadReviewerFile
 			
 			if ($upFile->saveAs($filePath)) {
 				
-				$path = Url::to([ $model->file_controller . '/download-file', 'attr' => $attr, 'id' => $model->id]);
+			    $path = Url::to([ $model->file_controller . '/download-file', 'confurl' => $confurl, 'attr' => $attr, 'id' => $model->id]);
 				$path_delete = Url::to([$model->file_controller . '/delete-file', 'attr' => $attr, 'id' => $model->id]);
 				//saving in database
 				
