@@ -619,7 +619,7 @@ class PaperController extends Controller
     }
 	
 	protected function clean($string){
-        $allowed = ['paper', 'payment', 'reviewed'];
+        $allowed = ['paper', 'payment', 'reviewed', 'repaper'];
         
         foreach($allowed as $a){
             if($string == $a){
