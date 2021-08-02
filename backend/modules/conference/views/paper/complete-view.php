@@ -68,10 +68,21 @@ table.detail-view th {
 			],
 			[
 				'attribute' => 'paper_file',
-				'label' => 'Uploaded Full Paper',
+				'label' => 'Full Paper',
 				'format' => 'raw',
 				'value' => function($model){
-					return Html::a('<i class="fa fa-download"></i> DOWNLOAD FULL PAPER', ['paper/download-file', 'id' => $model->id, 'attr' => 'paper'], ['class'=> 'btn btn-default btn-sm', 'target' => '_blank']);
+				    
+				if($model->paper_file){
+				    if($model->repaper_file){
+				        $attr = 'repaper';
+				    }else{
+				        $attr = 'paper';
+				    }
+				    return Html::a('<span class="fa fa-download"></span> Download', ['paper/download-file', 'id' => $model->id, 'attr' => $attr], ['class' => 'btn btn-danger btn-sm','target' => '_blank']);
+				}
+				
+				
+			
 				}
 			],
 			[

@@ -8,6 +8,7 @@ use confsite\models\UploadFile;
 use wbraganca\dynamicform\DynamicFormWidget;
 use yii\jui\JuiAsset;
 use yii\helpers\ArrayHelper;
+use confsite\models\UploadPaperFile;
 
 
 /* @var $this yii\web\View */
@@ -183,7 +184,7 @@ label{
 <br />
 	
 	
-	<?=UploadFile::fileInput($model, 'repaper')?>
+	<?=UploadPaperFile::fileInput($model, 'repaper', $model->conference->conf_url)?>
 	
 	
 

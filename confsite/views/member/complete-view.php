@@ -72,13 +72,13 @@ table.detail-view th {
 			],
 			[
 				'attribute' => 'paper_file',
-				'label' => 'Uploaded Full Paper',
+				'label' => 'Full Paper',
 				'format' => 'raw',
 				'value' => function($model){
 				if($model->repaper_file){
-				    return Html::a('DOWNLOAD', ['paper/download-file', 'id' => $model->id, 'attr' => 'repaper'], ['class' => 'btn btn-info btn-sm', 'target' => '_blank']);
+				    return Html::a('DOWNLOAD', ['member/download-file', 'confurl' => $model->conference->conf_url, 'id' => $model->id, 'attr' => 'repaper'], ['class' => 'btn btn-info btn-sm', 'target' => '_blank']);
 				}else{
-				    return Html::a('DOWNLOAD', ['paper/download-file', 'id' => $model->id, 'attr' => 'paper'], ['class' => 'btn btn-info btn-sm', 'target' => '_blank']);
+				    return Html::a('DOWNLOAD', ['member/download-file', 'confurl' => $model->conference->conf_url, 'id' => $model->id, 'attr' => 'paper'], ['class' => 'btn btn-info btn-sm', 'target' => '_blank']);
 				}
 					
 				}
