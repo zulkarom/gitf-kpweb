@@ -439,6 +439,7 @@ class PaperController extends Controller
     {
 		
 		$model = $this->findModel($id);
+		$review = $this->findPaperReviewer($id);
 		
 		if ($model->load(Yii::$app->request->post())) {
 			/* $option = $model->abstract_decide;
@@ -456,6 +457,7 @@ class PaperController extends Controller
 		
         return $this->render('complete-view', [
             'model' => $model,
+            'review' => $review,
         ]);
     }
     

@@ -58,7 +58,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				'attribute' => 'status',
 				'format' => 'raw',
 				'value' => function($model){
-					return $model->paperStatus;
+					return $model->statusLabel;
 				}
 				
 			],

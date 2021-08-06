@@ -123,7 +123,7 @@ table.detail-view th {
 	if($review->reviewed_file){
 	    echo '<tr>
 		<td> </td>
-		<td><a href="'. Url::to(['paper/download-reviewed-file', 'id' => $review->id, 'attr' => 'reviewed']) .'" target="_blank" class="btn btn-primary btn-xs"> <span class="glyphicon glyphicon-download-alt"></span> Reviewed File</a></td>
+		<td><a href="'. Url::to(['paper/download-reviewed-file', 'id' => $review->id, 'attr' => 'reviewed']) .'" target="_blank" class="btn btn-primary btn-xs"> <span class="glyphicon glyphicon-download-alt"></span> Reviewer\'s Additional File</a></td>
     
 		<td> </td>
 	</tr>';
