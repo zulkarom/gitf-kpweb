@@ -71,7 +71,7 @@ table.detail-view th {
 			],
 			[
 				'attribute' => 'paper_file',
-				'label' => 'Full Paper (Fist Submission)',
+				'label' => 'Full Paper (First Submission)',
 				'format' => 'raw',
 				'value' => function($model){
 				    
