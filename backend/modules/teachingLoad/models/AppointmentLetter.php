@@ -21,6 +21,7 @@ use backend\modules\teachingLoad\models\TutorialTutor;
 class AppointmentLetter extends \yii\db\ActiveRecord
 {
 	public $steva_instance;
+	public $manual_instance;
 	public $file_controller;
 
     /**
@@ -38,13 +39,17 @@ class AppointmentLetter extends \yii\db\ActiveRecord
     {
         return [
             [['inv_id', 'offered_id'], 'required'],
-            [['inv_id', 'offered_id', 'status'], 'integer'],
+            [['inv_id', 'offered_id', 'status', 'tutorial_only'], 'integer'],
             [['date_appoint'], 'safe'],
             [['ref_no'], 'string', 'max' => 225],
 			
 			[['steva_file'], 'required', 'on' => 'steva_upload'],
             [['steva_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 2000000],
             [['updated_at'], 'required', 'on' => 'steva_delete'],
+            
+            [['manual_file'], 'required', 'on' => 'manual_upload'],
+            [['manual_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 2000000],
+            [['updated_at'], 'required', 'on' => 'manual_delete'],
         ];
     }
 
@@ -59,7 +64,8 @@ class AppointmentLetter extends \yii\db\ActiveRecord
             'offered_id' => 'Offered ID',
             'ref_no' => 'Ref No',
             'date_appoint' => 'Date Appoint',
-			'steva_file' => 'Student Evaluation'
+			'steva_file' => 'Student Evaluation',
+            'manual_file' => 'Upload Appointment Letter'
         ];
     }
 
@@ -81,12 +87,16 @@ class AppointmentLetter extends \yii\db\ActiveRecord
 	
 	public function setProgressAppointment(){
 		$letter = 0;
-		if($this->status == 10){
+		if($this->manual_file){
+		    $letter = 1;
+		}else if($this->status == 10){
 			$letter = 1;
 		}
 		$steva = 0;
 		if($this->steva_file){
 			$steva = 1;
+		}else if($this->tutorial_only){
+		    $steva = 1;
 		}
 		$avg = ($letter + $steva) / 2;
 		$this->prg_appoint_letter = number_format($avg,2);

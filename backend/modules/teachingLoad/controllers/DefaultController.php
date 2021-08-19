@@ -5,21 +5,16 @@ namespace backend\modules\teachingLoad\controllers;
 use Yii;
 use yii\web\Controller;
 use common\models\Model;
+use common\models\UploadFile;
 use backend\modules\teachingLoad\models\TaughtCourse;
 use backend\modules\teachingLoad\models\TeachCourse;
-use backend\modules\teachingLoad\models\LecLecturer;
-use backend\modules\teachingLoad\models\OutCourse;
-use backend\modules\teachingLoad\models\PastExperience;
 use backend\modules\teachingLoad\models\Setting;
-use backend\models\SemesterForm;
-use backend\models\Semester;
-use backend\modules\teachingLoad\models\Course;
 use yii\helpers\ArrayHelper;
 use yii\db\Expression;
 use yii\filters\AccessControl;
-use common\models\Todo;
 use backend\modules\teachingLoad\models\AppointmentLetter;
 use backend\modules\teachingLoad\models\AppointmentLetterFile;
+use yii\web\NotFoundHttpException;
 
 /**
  * Default controller for the `teaching-load` module
@@ -198,7 +193,7 @@ class DefaultController extends Controller
 						Yii::$app->session->addFlash('error', "flag false");
                         $transaction->rollBack();
                     }
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     $transaction->rollBack();
                     
                 }
@@ -223,10 +218,20 @@ class DefaultController extends Controller
 	
 	public function actionAppointmentLetter($id){
         $model = $this->findModel($id);
+        $model->setProgressAppointment();
+        $model->save();
         $pdf = new AppointmentLetterFile;
         $pdf->model = $model;
         $pdf->generatePdf();
     }
+    
+    public function actionAppointmentLetterManual($id){
+        $model = $this->findModel($id);
+        $filename = 'appointment-letter';
+        UploadFile::download($model, 'manual', $filename);
+    }
+    
+    
 
     protected function findModel($id)
     {

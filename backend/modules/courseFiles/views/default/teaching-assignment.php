@@ -56,9 +56,11 @@ $closed = Common::isDue($dates->open_deadline);
 							  <td>'.$i.'. </td>
 							  <td>'.$crs->course_code .' '.$crs->course_name .'</td>
 							  <td>';
-							  if($app->status == 10){
+							  if($app->manual_file){
+							      echo '<a href="' . Url::to(['/teaching-load/default/appointment-letter-manual', 'id' => $app->id]) . '" class="btn btn-default btn-sm" target="_blank"><span class="glyphicon glyphicon-download-alt"></span> Download</a>';
+							  }else if($app->status == 10){
 								  echo '<a href="' . Url::to(['/teaching-load/default/appointment-letter', 'id' => $app->id]) . '" class="btn btn-default btn-sm" target="_blank"><span class="glyphicon glyphicon-download-alt"></span> Download</a>';
-								  }else{
+							  }else{
 								  echo '<span style="font-weight:normal;font-style:italic">In progress...</span>';
 							  }
 							  
@@ -66,22 +68,22 @@ $closed = Common::isDue($dates->open_deadline);
 							  echo '</td>
 							  <td>';
 							  
-							  if($app->steva_file){
+							  if($app->tutorial_only){
+							      echo 'N/A';
+							  }else if($app->steva_file){
 								  echo '<a href="'.  Url::to(['appointment/download-file', 'attr' => 'steva','id' => $app->id]) .' " class="btn btn-default btn-sm" target="_blank"><span class="fa fa-download" ></span></a> ';
 								  if(($status == 0 or $status == 20) and !$closed){
 									  echo '<a href="'.  Url::to(['default/student-evaluation', 'id' => $app->id]) .' " class="btn btn-default btn-sm" ><span class="fa fa-pencil"></span></a>';
 								  }
 								  
-								  }else{
+						      }else{
 								  if(($status == 0 or $status == 20) and !$closed){
 									  echo '<a href="'.  Url::to(['default/student-evaluation', 'id' => $app->id]) .' " class="btn btn-default btn-sm" ><span class="fa fa-upload"></span> Upload</a>';
 								  }
 								  
 							  }
 							  
-							  
-							  
-							  
+
 							  echo '</td>
 							  <td>'.$app->progressAppointmentBar.'</td>
 							  </tr>';

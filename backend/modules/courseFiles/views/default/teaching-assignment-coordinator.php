@@ -34,8 +34,9 @@ $note = '';
 echo '<a href="' . Url::to(['default/coordinator-view', 'id' => $offer->id]) . '" class="btn btn-primary" ><span class="glyphicon glyphicon-search"></span> Preview & Submission</a> ';
 
 if($offer->status == 20){
-	$checker = 'Auditor';
+    $checker = false;
 	if($offer->auditor_file){
+	    $checker = 'Auditor';
 		echo '<a href="' . Url::to(['auditor/download-file', 'attr' => 'auditor', 'id' => $offer->id]) . '" class="btn btn-warning" target="_blank"><span class="fa fa-file"></span> Auditor\'s Report</a>';
 	}
 	
@@ -43,8 +44,10 @@ if($offer->status == 20){
 		$checker = 'UJAKA';
 		echo ' <a href="' . Url::to(['auditor/download-file', 'attr' => 'verified', 'id' => $offer->id]) . '" class="btn btn-info" target="_blank"><span class="fa fa-file"></span> UJAKA\'s Report</a>';
 	}
-
-		$note = '<br /><br /><div class="form-group" style="color:red">Please update the course file with reference to the '.$checker.'\'s Report above. '  . Common::deadlineMessage($dates->open_deadline) . '</div>';
+	if($checker){
+	    $note = '<br /><br /><div class="form-group" style="color:red">Please update the course file with reference to the '.$checker.'\'s Report above. '  . Common::deadlineMessage($dates->open_deadline) . '</div>';
+	}
+		
 
 }
 
@@ -59,7 +62,7 @@ echo $note;
 
 
 <div class="box-body">
-<?php $form = ActiveForm::begin(); ?>
+<?php $form = ActiveForm::begin(['id' => 'course-material-form']); ?>
 
 <table class="table">
 <thead>
@@ -79,11 +82,14 @@ echo $note;
 <tr>
 <td>1. </td>
 <td><b>Course Information Version</b></td>
-<td><?= $form->field($offer, 'course_version')->dropDownList(ArrayHelper::map($offer->course->versionSubmit, 'id', 'version_name'), ['prompt' => 'Please Select'])->label(false) ?>
+<td><?php  
+$array = ArrayHelper::map($offer->course->versionNotArchived, 'id', 'versionNameAndStatus');
+$array[-1] = ' <Create New Version> ';
+echo $form->field($offer, 'course_version')->dropDownList($array, ['prompt' => 'Please Select'])->label(false) ?>
 
 <?php 
 if(!$offer->course->versionSubmit){
-	echo '<i>* please make sure the version is submitted first. Please click update.</i>';
+	echo '<i>* Please make sure the version is submitted first. Please click the Update button.</i>';
 }
 ?>
 
@@ -149,10 +155,10 @@ if($course_version > 0){
 <tr>
 <td>2. </td>
 <td><b>Teaching Material Group</b></td>
-<td><?php echo $form->field($offer, 'material_version')->dropDownList(ArrayHelper::map($offer->course->materialSubmit, 'id', 'material_name'),['prompt' => 'Please Select'])->label(false);
+<td><?php echo $form->field($offer, 'material_version')->dropDownList(ArrayHelper::map($offer->course->materialSubmit, 'id', 'material_name'),['prompt' => 'Please Select', 'class' => 'form-control course-matrial-update'])->label(false);
 
 if(!$offer->course->materialSubmit){
-	echo '<i>* please make sure the material group is submitted first. Please click update.</i>';
+	echo '<i>* Please make sure the material group is submitted first. Please click the Update button.</i>';
 }
 
  ?></td>
@@ -164,6 +170,27 @@ if($material){
 	$count_material = count($material->items);
 }
 }
+
+$this->registerJs(' 
+
+$("#courseoffered-course_version").change(function(){
+    var course = $(this).val();
+    if(course == -1){
+        window.location.href = "'. Url::to(["coordinator/course-new-version", 'id' => $offer->course_id, 'coor' => $offer->id]) .'";
+    }else{
+        $("#course-material-form").submit();
+    }
+    
+});
+
+
+$(".course-matrial-update").change(function(){
+    $("#course-material-form").submit();
+});
+
+
+ ');
+
 
 
  Modal::begin([
@@ -215,19 +242,6 @@ if($material){
 </tr>
 
 
-<tr>
-<td></td>
-<td></td>
-<td>
-
-<div class="form-group">
-      
-<?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span>  Save', ['class' => 'btn btn-success btn-sm']) ?>
-    </div></td><td></td>
-<td></td>
-<td></td>
-
-</tr>
 
 </table>
 

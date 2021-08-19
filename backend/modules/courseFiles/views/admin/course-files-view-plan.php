@@ -160,7 +160,10 @@ use backend\modules\courseFiles\models\Common;
 				
 						if($letter->staffInvolved){
 						$name =  $letter->staffInvolved->staff->staff_title . ' ' .$letter->staffInvolved->staff->user->fullname; 
-							if($letter->status == 10){
+    						if($letter->manual_file){
+    						    $boo = $boo == false ? false : true;
+    						    echo '<a href="' . Url::to(['/teaching-load/default/appointment-letter-manual', 'id' => $letter->id]) . '" target="_blank">'.strtoupper($name).' '. Common::pTick().'</a>';
+    						}else if($letter->status == 10){
 								$boo = $boo == false ? false : true;
 								echo'<li><a href="'.Url::to(['/teaching-load/appointment-letter/pdf/', 'id' => $letter->id]).'" target="_blank" >'.strtoupper($name).' '. Common::pTick().'</a></li>' ;
 							}else{

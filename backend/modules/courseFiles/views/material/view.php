@@ -19,12 +19,9 @@ $this->params['breadcrumbs'][] = $this->title;
 <?= Html::a('List', ['index', 'course' => $model->course_id], ['class' => 'btn btn-info']) ?>
         <?php 
 		
-		if($model->status == 0){
 			echo Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']);
 			echo ' ';
-			echo Html::a('Submit', ['submit', 'id' => $model->id, 'course' => $model->course_id], ['class' => 'btn btn-success', 'data' => [
-                'confirm' => 'Are you sure to submit? You will no longer could update the teaching materials. '
-            ]]);
+	
 			echo ' ';
 			echo '<div class="pull-right">' . Html::a('Delete', ['delete-group', 'id' => $model->id], [
 				'class' => 'btn btn-danger',
@@ -33,7 +30,6 @@ $this->params['breadcrumbs'][] = $this->title;
 					'method' => 'post',
 				],
 			]) . '</div>';
-		}
 		 ?>
     </div>
 <style>
@@ -49,7 +45,6 @@ table.detail-view th {
         'attributes' => [
             'material_name',
 			'typeDesc',
-			'statusName:html',
 			'course.codeCourseString',
             'createdBy.fullname',
             'created_at:datetime',

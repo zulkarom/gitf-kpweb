@@ -5,6 +5,7 @@ namespace backend\modules\courseFiles\models;
 use Yii;
 use common\models\User;
 use backend\modules\esiap\models\Course;
+use backend\modules\teachingLoad\models\CourseOffered;
 
 /**
  * This is the model class for table "cf_material".
@@ -74,6 +75,41 @@ class Material extends \yii\db\ActiveRecord
 	
 	public function getItems(){
          return $this->hasMany(MaterialItem::className(), ['material_id' => 'id']);
+    }
+    
+    public function getCourseFile(){
+        return $this->hasMany(CourseOffered::className(), ['material_id' => 'id']);
+    }
+    
+    
+    public function getSubmittedCourseFiles(){
+        //return 'xxxxxxx';
+        return CourseOffered::find()->alias('f')
+        ->where(['f.material_version' => $this->id])
+        ->andWhere(['not in', 'f.status', [0, 20]]) 
+        ->all();
+    }
+    
+    public function getEditable(){
+       // return $this->submittedCourseFile;
+        if($this->submittedCourseFiles){
+            return false;
+        }
+        
+        return true;
+    }
+    
+    public function getEditableLabel(){
+       // return $this->editable;
+        //return $this->submittedCourseFile->count() ;
+        
+        if($this->submittedCourseFiles){
+            //$count = count($this->submittedCourseFiles);
+            return '<span class="label label-warning">NO</span>';
+        }else{
+            return '<span class="label label-success">YES</span>';
+            
+        }
     }
 	
 	public function getTypeDesc(){

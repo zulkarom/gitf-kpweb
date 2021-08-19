@@ -28,7 +28,33 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'material_name',
             'typeDesc',
-			'statusName:html',
+            [
+			'label' => 'Count Items',
+                'value' => function($model){
+                    return count($model->items);
+                    
+                }
+                
+            ],
+            
+            [
+			'label' => 'Editable',
+                'format' => 'html',
+                'value' => function($model){
+                    return $model->editableLabel;
+                    /* if($model->status == 1){
+                        return 'YES';
+                    }else{
+                        return 'NO';
+                    } */
+                    
+                }
+                
+            ],
+
+           
+
+			'created_at:date',
             
 			
 			['class' => 'yii\grid\ActionColumn',

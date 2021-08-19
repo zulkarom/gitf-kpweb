@@ -199,15 +199,26 @@ class DefaultController extends Controller
 		if(!in_array($offer->status, [0,20])){
 			return $this->redirect(['coordinator-view', 'id' => $id]);
 		}
-		$offer->scenario = 'coor';
+		//$offer->scenario = 'coor';
 		
 		$dates = DateSetting::find()->where(['semester_id' => $offer->semester_id])->one();
 		
 		if ($offer->load(Yii::$app->request->post())) {
-			$offer->progressCourseVersion = 1;
-			$offer->progressMaterial = 1;
+		    if($offer->course_version > 0){
+		        $offer->progressCourseVersion = 1;
+		    }else{
+		        $offer->progressCourseVersion = 0;
+		    }
+		    
+		    if($offer->material_version > 0){
+		        $offer->progressMaterial = 1;
+		    }else{
+		        $offer->progressMaterial = 0;
+		    }
+			
+			
 			if($offer->save()){
-				Yii::$app->session->addFlash('success', "Course version and teaching materials have been updated.");
+				Yii::$app->session->addFlash('success', "Infomation updated.");
 				return $this->refresh();
 				
 			}else{

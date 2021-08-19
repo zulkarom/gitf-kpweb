@@ -7,7 +7,9 @@ use yii\web\Controller;
 use yii\filters\AccessControl;
 use yii\db\Expression;
 use yii\web\NotFoundHttpException;
+use backend\modules\esiap\models\Course;
 use backend\modules\teachingLoad\models\CourseOffered;
+
 
 /**
  * Default controller for the `course-files` module
@@ -70,6 +72,15 @@ class CoordinatorController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+    
+    protected function findCourse($id)
+    {
+        if (($model = Course::findOne($id)) !== null) {
+            return $model;
+        }
+        
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
 	
 	public function actionCurrentCoordinatorPage($course){
 		$offer = CourseOffered::find()
@@ -83,4 +94,6 @@ class CoordinatorController extends Controller
 		//jadi kena cari offer id 
 		
 	}
+	
+	
 }

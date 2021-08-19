@@ -9,13 +9,12 @@ use common\models\UploadFile;
 
 $this->title = 'Update: ' . $model->material_name;
 $this->params['breadcrumbs'][] = ['label' => 'Materials', 'url' => ['index', 'course' => $model->course_id]];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => 'View', 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="material-update">
 <h4><?=$course->course_code . ' ' . $course->course_name?></h4>
 
-<div class="form-group"><?= Html::a('Back to View', ['view', 'id' => $model->id], ['class' => 'btn btn-info']) ?></div>
 
 <div class="box">
 <div class="box-header"></div>
@@ -25,7 +24,6 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <?= $form->field($model, 'material_name')->textInput(['maxlength' => true]) ?>
 	
-	<?= $form->field($model, 'mt_type')->dropDownList([1=> 'For Course File (pdf only)', 2 => 'Others (pdf,doc,docx,ppt,pptx,txt)'], ['prompt' => 'Please Select','disabled' => true]) ?>
 
 
     <div class="form-group">

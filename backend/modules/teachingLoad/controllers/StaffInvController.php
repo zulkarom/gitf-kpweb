@@ -17,6 +17,7 @@ use backend\modules\teachingLoad\models\AppointmentLetterSearch;
 use backend\modules\teachingLoad\models\GenerateReferenceForm  ;
 use common\models\UploadFile;
 use yii\helpers\Json;
+use yii\web\NotFoundHttpException;
 
 
 class StaffInvController extends Controller
@@ -35,6 +36,7 @@ class StaffInvController extends Controller
             ],
         ];
     }
+    
     /**
      * Renders the index view for the module
      * @return string
@@ -43,6 +45,7 @@ class StaffInvController extends Controller
     {
 		$semester = new SemesterForm;
 		$session = Yii::$app->session;
+		
         if(Yii::$app->getRequest()->getQueryParam('SemesterForm')){
             $sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');
             $semester->semester_id = $sem['semester_id'];
@@ -52,6 +55,7 @@ class StaffInvController extends Controller
 		}else{
             $semester->semester_id = Semester::getCurrentSemester()->id;
         }
+        
         $searchModel = new StaffInvolvedSearch();
         $searchModel->semester = $semester->semester_id;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -160,10 +164,11 @@ class StaffInvController extends Controller
          $staff_tut = ArrayHelper::map($staff_tut,'offered_id','offered_id');
 
          $staff = array_merge($staff_lec,$staff_tut);
-		//Yii::$app->session->addFlash('info', json_encode($staff));
+		
 
-
-         if($staff){
+        //run separately for lecture & tutorial
+        
+         if($staff_lec){
             foreach ($staff as $offer) {
                 $appoint = AppointmentLetter::findOne(['offered_id' => $offer, 'inv_id' => $inv_id]);
                 if($appoint === null){
@@ -181,6 +186,33 @@ class StaffInvController extends Controller
 				}
             }
          }
+         
+         if($staff_tut){
+             foreach ($staff as $offer) {
+                 if(!in_array($offer, $staff_lec)){
+                     $appoint = AppointmentLetter::findOne(['offered_id' => $offer, 'inv_id' => $inv_id]);
+                     if($appoint === null){
+                         $new =  new AppointmentLetter();
+                         $new->offered_id = $offer;
+                         $new->inv_id = $inv_id;
+                         $new->tutorial_only = 1;
+                         $new->appoint_check = 1;
+                         if(!$new->save()){
+                             $new->flashError();
+                         }
+                         
+                     }else{
+                         $appoint->appoint_check = 1;
+                         $appoint->tutorial_only = 1;
+                         $appoint->save();
+                     }
+                 }
+                 
+             }
+         }
+         
+         
+         
 		AppointmentLetter::deleteAll(['inv_id' => $inv_id, 'appoint_check' => 0]);
     }
 
@@ -227,10 +259,7 @@ class StaffInvController extends Controller
                 }
             }
             
-
         }
-
-
         return $this->render('generate',[
             'semester' => $semester,
             'searchModel' => $searchModel,
@@ -293,6 +322,7 @@ class StaffInvController extends Controller
             'dataProvider' => $dataProvider,
             
         ]);
+        
 		}else{
 			return $this->render('forbidden');
 		}

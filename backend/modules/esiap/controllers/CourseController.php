@@ -3,20 +3,15 @@
 namespace backend\modules\esiap\controllers;
 
 use Yii;
-use backend\modules\esiap\models\AssessmentCat;
 use backend\modules\esiap\models\Course;
 use backend\modules\esiap\models\CourseProfile;
 use backend\modules\esiap\models\CourseClo;
 use backend\modules\esiap\models\CourseCloAssessment;
-use backend\modules\esiap\models\CourseSearch;
 use backend\modules\esiap\models\CourseVersion;
 use backend\modules\esiap\models\CourseSyllabus;
-use backend\modules\esiap\models\CourseSltAs;
 use backend\modules\esiap\models\CourseAssessment;
-use backend\modules\esiap\models\CourseVersionSearch;
 use backend\modules\esiap\models\CourseReference;
 use backend\modules\esiap\models\CourseCloDelivery;
-use backend\modules\esiap\models\CourseVersionClone;
 use backend\modules\esiap\models\CourseTransferable;
 use backend\modules\esiap\models\CourseStaff;
 use backend\modules\esiap\models\Fk1;
@@ -28,7 +23,6 @@ use backend\modules\esiap\models\Tbl4Excel2;
 use backend\modules\esiap\models\Tbl4Excel;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use yii\db\Exception;
 use yii\db\Expression;
 use common\models\Model;
@@ -36,6 +30,8 @@ use yii\helpers\ArrayHelper;
 use yii\filters\AccessControl;
 use common\models\UploadFile;
 use yii\helpers\Json;
+use yii\data\ActiveDataProvider;
+use backend\modules\esiap\models\CourseVersionClone;
 
 /**
  * CourseController implements the CRUD actions for Course model.
@@ -76,6 +72,122 @@ class CourseController extends Controller
             'dataProvider' => $dataProvider,
         ]); */
     }
+    
+    public function actionManageVersion($course)
+    {
+        $courseModel = $this->findModel($course);
+        
+        $dataProvider = new ActiveDataProvider([
+            'query' => CourseVersion::find()->where(['course_id' => $course])->orderBy('is_developed DESC, is_published DESC, status ASC, created_at DESC'),
+        ]);
+         
+         return $this->render('manage-version', [
+         'dataProvider' => $dataProvider,
+             'course' => $courseModel
+         ]); 
+    }
+    
+    public function actionCreateVersion($course){
+        $course = $this->findModel($course);
+        $model = new CourseVersion();
+        $model->scenario = 'create_coor';
+        
+        if ($model->load(Yii::$app->request->post())) {
+            $model->version_type_id = 2;
+            $model->is_developed = 1;
+            
+            
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                
+                $model->course_id = $course->id;
+                $model->created_by = Yii::$app->user->identity->id;
+                $model->created_at = new Expression('NOW()');
+                if($model->is_developed == 1){
+                    CourseVersion::updateAll(['is_developed' => 0], ['course_id' => $course->id]);
+                }
+                $flag = true;
+                if($model->save()){
+                    $clone = new CourseVersionClone;
+                    $clone->ori_version = $model->duplicated_from;
+                    $clone->copy_version = $model->id;
+                    if($flag = $clone->cloneVersion()){
+                        Yii::$app->session->addFlash('success', "Version creation with duplication is successful");
+                    }else{
+                        Yii::$app->session->addFlash('error', "Duplication failed!");
+                    }
+                    
+                }
+                
+                
+                
+                if ($flag) {
+                    $transaction->commit();
+                    return $this->redirect(['/esiap/course/view-course', 'course' => $course->id, 'version' => $model->id]);
+                } else {
+                    $transaction->rollBack();
+                }
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+                
+            }
+            
+        }
+        
+        
+        return $this->render('course-new-version', [
+            'model' => $model,
+            'course' => $course,
+        ]);
+        
+    }
+    
+    public function actionUpdateVersion($course, $version){
+        $course = $this->findModel($course);
+        $model = $this->findVersion($version);
+        $model->scenario = 'create_coor';
+        
+        if ($model->load(Yii::$app->request->post())) {
+            
+            $model->updated_at = new Expression('NOW()');
+            
+            $valid = true;
+            
+            if($model->is_developed == 1){
+                CourseVersion::updateAll(['is_developed' => 0], ['course_id' => $model->course_id]);
+            }
+            
+            if($model->is_published == 1){
+                if($model->status == 20){ //verified
+                    if($model->is_developed ==1){
+                        $valid = false;
+                        Yii::$app->session->addFlash('error', "You can not publish and develop at the same time");
+                    }
+                    CourseVersion::updateAll(['is_published' => 0], ['course_id' => $model->course_id]);
+                }else{
+                    $valid = false;
+                    Yii::$app->session->addFlash('error', "The status must be verified before publishing");
+                };
+            }
+            
+            if($valid && $model->save()){
+                Yii::$app->session->addFlash('success', "Course Version Updated");
+                return $this->redirect(['manage-version', 'course' => $course->id]);
+            }
+            
+            
+            
+        }
+        
+        
+        return $this->render('course-new-version-update', [
+            'model' => $model,
+            'course' => $course,
+        ]);
+        
+    }
+    
+    
 	
 
 
@@ -149,11 +261,19 @@ class CourseController extends Controller
         ]);
     }
 	
-	public function actionUpdate($course)
+	public function actionUpdate($course, $version = null)
     {
         $model = $this->findModel($course);
+        if($version){
+            $model->version_id = $version;
+            $version = $this->findVersion($version);
+            
+        }else{
+            $version = $model->developmentVersion;
+        }
+        
+        
 		$model->scenario = 'update2';
-		$version = $model->developmentVersion;
 		$status = $version->status;
 		
 		if($status == 0 or $status == 13){
@@ -253,7 +373,7 @@ class CourseController extends Controller
                     if ($flag) {
                         $transaction->commit();
                             Yii::$app->session->addFlash('success', "Course Information updated");
-                            return $this->redirect(['update', 'course' => $course]);
+                            return $this->redirect(['update', 'course' => $course, 'version' => $version->id]);
                     } else {
                         $transaction->rollBack();
                     }
@@ -294,7 +414,7 @@ class CourseController extends Controller
 			]);
 	}
 	
-	private function updateAcademicStaff(){
+/* 	private function updateAcademicStaff(){
 		
 			$flag = true;
             $staff_pic_arr = Yii::$app->request->post('staff_pic');
@@ -343,12 +463,18 @@ class CourseController extends Controller
 				}
 	}
 	
-	}
+	} */
 	
 
 	
-	public function actionCourseReference($course){
-		$model = $this->findDevelopmentVersion($course);
+	public function actionCourseReference($course, $version){
+	    if($version){
+	        $model = $this->findVersion($version);
+	        
+	    }else{
+	        $model = $this->findDevelopmentVersion($course);
+	    }
+	    
 		$ref = $model->references;
 		
 		if($ref){
@@ -389,7 +515,7 @@ class CourseController extends Controller
 				}
 
 			}
-			return $this->redirect(['course-reference', 'course' => $course]);
+			return $this->redirect(['course-reference', 'course' => $course, 'version' => $model->id]);
 		}
 		
 		return $this->render('reference', [
@@ -407,7 +533,7 @@ class CourseController extends Controller
 		}
 		//$version = CourseVersion::findOne($version);
 		//$course = $version->course_id;
-		return $this->redirect(['course-reference','course'=>$course]);
+		return $this->redirect(['course-reference','course'=>$course, 'version' => $version]);
 	}
 	
 	public function actionCourseReferenceDelete($course, $version, $id){
@@ -415,7 +541,7 @@ class CourseController extends Controller
 		$ref->delete();
 		//$version = CourseVersion::findOne($version);
 		//$course = $version->course_id;
-		return $this->redirect(['course-reference','course'=>$course]);
+		return $this->redirect(['course-reference','course'=>$course, 'version' => $version]);
 	}
 	
 	protected function courseSyllabusAdd($version){
@@ -441,9 +567,15 @@ class CourseController extends Controller
 		}
 	}
 	
-	public function actionCourseSyllabus($course){
+	public function actionCourseSyllabus($course, $version){
 		//print_r(Yii::$app->request->post());die();
-		$model = $this->findDevelopmentVersion($course);
+	    if($version){
+	        $model = $this->findVersion($version);
+	        
+	    }else{
+	        $model = $this->findDevelopmentVersion($course);
+	    }
+	    
 		$syllabus = $model->syllabus;
 		
 		$kira = count($syllabus);
@@ -451,7 +583,7 @@ class CourseController extends Controller
 		if(!$syllabus){
 			$new = new CourseSyllabus;
 			CourseSyllabus::createWeeks($model->id);
-			return $this->redirect(['course-syllabus', 'course' => $course]);
+			return $this->redirect(['course-syllabus', 'course' => $course, 'version' => $model->id]);
 		}
 		
 		if(Yii::$app->request->post()){
@@ -543,7 +675,7 @@ class CourseController extends Controller
 				
 				
 			}
-			return $this->redirect(['course-syllabus', 'course' => $course]);
+			return $this->redirect(['course-syllabus', 'course' => $course, 'version' => $model->id]);
 			
 		}
 		
@@ -571,9 +703,14 @@ class CourseController extends Controller
 		return $value;
 	}
 	
-	public function actionCourseSyllabusReorder($id){
+	public function actionCourseSyllabusReorder($id, $version){
 	
-		$model = $this->findDevelopmentVersion($id);
+	    if($version){
+	        $model = $this->findVersion($version);
+	        
+	    }else{
+	        $model = $this->findDevelopmentVersion($course);
+	    }
 		$syllabus = $model->syllabus;
 		if(array_key_exists('or',Yii::$app->request->queryParams)){
 			$reorder = Yii::$app->request->queryParams['or'];
@@ -591,7 +728,7 @@ class CourseController extends Controller
 			Yii::$app->session->addFlash('error', "No sorting data supplied!");
 		}
 		
-		return $this->redirect(['course-syllabus', 'course' => $id]);
+		return $this->redirect(['course-syllabus', 'course' => $id, 'version' => $model->id]);
 	}
 	
 	public function actionCourseCloDelete($version, $clo){
@@ -599,23 +736,32 @@ class CourseController extends Controller
 		$clo->delete();
 		$version = CourseVersion::findOne($version);
 		$course = $version->course_id;
-		return $this->redirect(['course-clo','course'=>$course]);
+		return $this->redirect(['course-clo','course'=>$course, 'version' => $version->id]);
 	}
+	
 	public function actionCourseCloAdd($version){
 		$clo = new CourseClo;
 		$clo->crs_version_id = $version;
 		if($clo->save()){
-			//
+			// //
 		}
 		$version = CourseVersion::findOne($version);
 		$course = $version->course_id;
-		return $this->redirect(['course-clo','course'=>$course]);
+		return $this->redirect(['course-clo','course'=>$course, 'version' => $version->id]);
 	}
 	
-	public function actionCourseClo($course)
+	public function actionCourseClo($course, $version)
     {
-		
-        $model = $this->findDevelopmentVersion($course);
+        $model = $this->findModel($course);
+        if($version){
+            $model->version_id = $version;
+            $version = $this->findVersion($version);
+            
+        }else{
+            $version = $model->developmentVersion;
+        }
+        
+        $model = $version;
 		$clos = $model->clos;
 		/* if($clos){
 			foreach($clos as $clo){
@@ -669,7 +815,7 @@ class CourseController extends Controller
 				}
 				
 				Yii::$app->session->addFlash('success', "Data Updated");
-				return $this->redirect(['course-clo','course'=>$course]);
+				return $this->redirect(['course-clo','course'=>$course, 'version' => $version->id]);
 			}
 			
 		}
@@ -683,8 +829,13 @@ class CourseController extends Controller
 	
 	}
 	
-	public function actionCloPlo($course){
-		$model = $this->findDevelopmentVersion($course);
+	public function actionCloPlo($course, $version){
+	    if($version){
+	        $model = $this->findVersion($version);
+	        
+	    }else{
+	        $model = $this->findDevelopmentVersion($course);
+	    }
 		$clos = $model->clos;
 		if (Yii::$app->request->post() ) {
 			$flag = true;
@@ -722,7 +873,7 @@ class CourseController extends Controller
 				}
 				
 				Yii::$app->session->addFlash('success', "Data Updated");
-				return $this->redirect(['clo-plo', 'course' => $course]);
+				return $this->redirect(['clo-plo', 'course' => $course, 'version' => $model->id]);
 			}
 			
 			
@@ -734,8 +885,14 @@ class CourseController extends Controller
 			]);
 	}
 	
-	public function actionCloTaxonomy($course){
-		$model = $this->findDevelopmentVersion($course);
+	public function actionCloTaxonomy($course, $version){
+	    if($version){
+	        $model = $this->findVersion($version);
+	        
+	    }else{
+	        $model = $this->findDevelopmentVersion($course);
+	    }
+	    
 		$clos = $model->clos;
 		if (Yii::$app->request->post()) {
 			if(Yii::$app->request->validateCsrfToken()){
@@ -763,7 +920,7 @@ class CourseController extends Controller
 					$model->flashError();
 				}
             }
-			return $this->redirect(['clo-taxonomy', 'course' => $course]);
+			return $this->redirect(['clo-taxonomy', 'course' => $course, 'version' => $model->id]);
 			
 		}
 	
@@ -773,8 +930,13 @@ class CourseController extends Controller
 			]);
 	}
 	
-	public function actionCloDelivery($course){
-		$model = $this->findDevelopmentVersion($course);
+	public function actionCloDelivery($course, $version){
+	    if($version){
+	        $model = $this->findVersion($version);
+	        
+	    }else{
+	        $model = $this->findDevelopmentVersion($course);
+	    }
 		$clos = $model->clos;
 		
 		if (Yii::$app->request->post()) {
@@ -819,7 +981,7 @@ class CourseController extends Controller
 				
 				
             }
-			return $this->redirect(['clo-delivery', 'course' => $course]);
+			return $this->redirect(['clo-delivery', 'course' => $course, 'version' => $model->id]);
 			
 		}
 	
@@ -829,8 +991,13 @@ class CourseController extends Controller
 			]);
 	}
 	
-	public function actionCloSoftskill($course){
-		$model = $this->findDevelopmentVersion($course);
+	public function actionCloSoftskill($course, $version){
+	    if($version){
+	        $model = $this->findVersion($version);
+	        
+	    }else{
+	        $model = $this->findDevelopmentVersion($course);
+	    }
 		$clos = $model->clos;
 		if (Yii::$app->request->post()) {
 			if(Yii::$app->request->validateCsrfToken()){
@@ -857,7 +1024,7 @@ class CourseController extends Controller
 					$model->flashError();
 				}
             }
-			return $this->redirect(['clo-softskill', 'course' => $course]);
+            return $this->redirect(['clo-softskill', 'course' => $course, 'version' => $model->id]);
 		}
 		return $this->render('clo_softskill', [
 				'model' => $model,
@@ -865,11 +1032,19 @@ class CourseController extends Controller
 			]);
 	}
 	
-	public function actionViewCourse($course){
+	public function actionViewCourse($course, $version = false){
 		$model = $this->findModel($course);
-		$version = $model->developmentVersion;
+		if($version){
+		    $model->version_id = $version;
+		    $version = $this->findVersion($version);
+		    
+		}else{
+		    $version = $model->developmentVersion;
+		}
+		
 		if(!$version){
-			die('There is no development version for this course.');
+		    Yii::$app->session->addFlash('error', 'There is no development version for this course.');
+		    return $this->redirect(['manage-version', 'course' => $model->id]);
 		}
 		
 		if ($version->load(Yii::$app->request->post())) {
@@ -907,10 +1082,7 @@ class CourseController extends Controller
 					$version->flashError();
 				}
 			}
-			 
-			
-			
-            
+
         }
 		
 		return $this->render('view-course', [
@@ -920,11 +1092,17 @@ class CourseController extends Controller
 			]);
 	}
 	
-	public function actionCloAssessment($course){
-		$model = $this->findDevelopmentVersion($course);
+	public function actionCloAssessment($course, $version){
+	    if($version){
+	        $model = $this->findVersion($version);
+	        
+	    }else{
+	        $model = $this->findDevelopmentVersion($course);
+	    }
+	    
 		$items = $model->assessments;
 		if($model->putOneCloAssessment()){
-			return $this->redirect(['clo-assessment', 'course' => $course]);
+			return $this->redirect(['clo-assessment', 'course' => $course, 'version' => $model->id]);
 		}
 		
 		$clos = $model->clos;
@@ -998,7 +1176,7 @@ class CourseController extends Controller
             }
 			
 						
-			return $this->redirect(['clo-assessment', 'course' => $course]);
+            return $this->redirect(['clo-assessment', 'course' => $course, 'version' => $model->id]);
 			
 		}
 	
@@ -1009,8 +1187,14 @@ class CourseController extends Controller
 			]);
 	}
 	
-	public function actionCourseSlt($course){
-		$model = $this->findDevelopmentVersion($course);
+	public function actionCourseSlt($course, $version){
+	    if($version){
+	        $model = $this->findVersion($version);
+	        
+	    }else{
+	        $model = $this->findDevelopmentVersion($course);
+	    }
+	    
 		$slt = $model->slt;
 		$syll = $model->syllabus;
 		
@@ -1112,7 +1296,7 @@ class CourseController extends Controller
 				}
 				Yii::$app->session->addFlash('success', "Student Learning Time has been successfully updated");
 			}
-			return $this->redirect(['course-slt', 'course' => $course]);
+			return $this->redirect(['course-slt', 'course' => $course, 'version' => $model->id]);
 			
 		}
 
@@ -1123,17 +1307,26 @@ class CourseController extends Controller
 			]);
 	}
 	
-	public function actionCourseAssessment($course)
+	public function actionCourseAssessment($course, $version)
     {
-        $model = $this->findDevelopmentVersion($course);
+        $model = $this->findModel($course);
+        if($version){
+            $model->version_id = $version;
+            $version = $this->findVersion($version);
+            
+        }else{
+            $version = $model->developmentVersion;
+        }
+        
+        
+        $model = $version;
 		$items = $model->assessments;
 		if($items){
 			foreach($items as $item){
 				$item->scenario = 'saveall';
 			}
 		}
-		
-		
+
 		
         if (Yii::$app->request->post()) {
 			if(Yii::$app->request->validateCsrfToken()){
@@ -1175,11 +1368,11 @@ class CourseController extends Controller
 				if($flag){
 					$transaction->commit();
 					Yii::$app->session->addFlash('success', "Data Updated");
-					return $this->redirect(['course-assessment','course'=>$course]);
+					return $this->redirect(['course-assessment','course'=>$course, 'version' => $model->id]);
 					
 				}else{
 					$transaction->rollBack();
-					return $this->redirect(['course-assessment','course'=>$course]);
+					return $this->redirect(['course-assessment','course'=>$course, 'version' => $model->id]);
 				}
 				
 				}
@@ -1210,7 +1403,7 @@ class CourseController extends Controller
 		if($as->save()){
 			$version = CourseVersion::findOne($version);
 			$course = $version->course_id;
-			$this->redirect(['course-assessment', 'course' => $course]);
+			$this->redirect(['course-assessment', 'course' => $course, 'version' => $version->id]);
 		}else{
 			$as->flashError();
 		}
@@ -1221,7 +1414,7 @@ class CourseController extends Controller
 		$as->delete();
 		$version = CourseVersion::findOne($version);
 		$course = $version->course_id;
-		return $this->redirect(['course-assessment','course'=>$course]);
+		return $this->redirect(['course-assessment','course'=>$course, 'version' => $version->id]);
 	}
 	
 	public function actionAddAssessmentClo($course, $clo){

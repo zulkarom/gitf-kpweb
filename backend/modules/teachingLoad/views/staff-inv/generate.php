@@ -110,7 +110,9 @@ $form = ActiveForm::begin([
             [
                 'label' => 'Date',
                 'value' => function($model){
-                if($model->date_appoint == '0000-00-00' or $model->date_appoint == null){
+                if($model->manual_file){
+                    return '----';
+                }else if($model->date_appoint == '0000-00-00' or $model->date_appoint == null){
 						return '';
 					}else{
 						return date('d M Y', strtotime($model->date_appoint)) ;
@@ -122,8 +124,14 @@ $form = ActiveForm::begin([
 
             [
                 'label' => 'Reference Letter',
+                'format' => 'raw',
                 'value' => function($model){
-                    return $model->ref_no ;
+                    if($model->manual_file){
+                        return '<a href="'.Url::to(['/teaching-load/appointment-letter/download-file/', 'attr' => 'manual', 'id' => $model->id]).'" target="_blank">-- manual upload --</a>';
+                    }else{
+                        return '<a href="'.Url::to(['/teaching-load/appointment-letter/pdf/', 'id' => $model->id]).'" target="_blank">'. $model->ref_no .'</a>';
+                    }
+                    
                 }
                 
             ],
@@ -132,20 +140,33 @@ $form = ActiveForm::begin([
                 'label' => 'Status',
 				'format' => 'html',
                 'value' => function($model){
-                    return $model->statusLabel;
+                    if($model->manual_file){
+                        return '--';
+                    }else{
+                        return $model->statusLabel;
+                    }
+                    
                 }
                 
             ],
 
             ['class' => 'yii\grid\ActionColumn',
                  'contentOptions' => ['style' => 'width: 8.7%'],
-                'template' => '{surat}',
+                'template' => '{download} {upload}',
                 //'visible' => false,
                 'buttons'=>[
     
-                    'surat'=>function ($url, $model) {
-
+                    'download'=>function ($url, $model) {
+                    if($model->manual_file){
+                        return '<a href="'.Url::to(['/teaching-load/appointment-letter/download-file/', 'attr' => 'manual', 'id' => $model->id]).'" target="_blank" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-download-alt"></span></a>';
+                    }else{
                         return '<a href="'.Url::to(['/teaching-load/appointment-letter/pdf/', 'id' => $model->id]).'" target="_blank" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-download-alt"></span></a>';
+                    }
+                    
+                    },
+                    
+                    'upload'=>function ($url, $model) {  
+                    return  '<a href="'.Url::to(['/teaching-load/appointment-letter/upload/', 'id' => $model->id]).'" class="btn btn-success btn-sm"><span class="fa fa-upload"></span></a>';
                     },
                 ],
             

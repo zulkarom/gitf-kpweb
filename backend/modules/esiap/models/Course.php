@@ -36,6 +36,7 @@ class Course extends \yii\db\ActiveRecord
 	public $staff_pic;
 	public $staff_access;
 	public $progress;
+	public $version_id = null;
 	
     /**
      * @inheritdoc
@@ -214,7 +215,19 @@ class Course extends \yii\db\ActiveRecord
     }
 	
 	public function getDevelopmentVersion(){
-		return CourseVersion::findOne(['course_id' => $this->id, 'is_developed' => 1]);
+	    if($this->version_id){
+	        return  CourseVersion::findOne(['course_id' => $this->id, 'id' => $this->version_id]);
+	    }else{
+	        return CourseVersion::findOne(['course_id' => $this->id, 'is_developed' => 1]);
+	    }
+	    
+	    
+		/* $dev = CourseVersion::findOne(['course_id' => $this->id, 'is_developed' => 1]);
+		if($dev){
+		    return $dev;
+		}else{
+		    return CourseVersion::find()->where(['course_id' => $this->id, 'status' => 0])->orderBy('created_at DESC')->one();
+		} */
 
 	}
 	
@@ -235,13 +248,27 @@ class Course extends \yii\db\ActiveRecord
 		return $this->hasMany(CourseVersion::className(), ['course_id' => 'id'])->where(['>=', 'status', 10])->orderBy('created_at DESC');
 	}
 	
+	public function getVersionNotArchived(){
+	    return $this->hasMany(CourseVersion::className(), ['course_id' => 'id'])->where(['<>', 'status', 80])->orderBy('created_at DESC');
+	}
+	
+	public function getVersion(){
+	    return $this->hasMany(CourseVersion::className(), ['course_id' => 'id'])->where(['>=', 'status', 10])->orderBy('created_at DESC');
+	}
+	
+	public function getLatestVersion(){
+	    return CourseVersion::find()->where(['course_id' => $this->id])->orderBy('created_at DESC')->one();
+	}
+	
 	public function getDefaultVersion(){
 		if($this->publishedVersion){
 			return $this->publishedVersion;
 		}else if($this->developmentVersion){
 			return $this->developmentVersion;
+		}else if($this->latestVersion){
+		    return $this->developmentVersion;
 		}else{
-			return false;
+		    return false;
 		}
 	}
 	

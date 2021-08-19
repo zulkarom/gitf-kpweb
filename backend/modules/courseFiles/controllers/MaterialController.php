@@ -26,6 +26,7 @@ use backend\modules\teachingLoad\models\CourseOffered;
  */
 class MaterialController extends Controller
 {
+    public $msg_submitted = 'This teaching material has been included in a submitted course file, hence no ammendment is allowed!';
     /**
      * {@inheritdoc}
      */
@@ -147,6 +148,13 @@ class MaterialController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        
+        if($model->submittedCourseFiles){
+            Yii::$app->session->addFlash('error', $this->msg_submitted);
+
+            return $this->redirect(['view', 'id' => $id]);
+        }
+        
 		$course_id = $model->course_id;
 		$course = $this->findCourse($course_id);
 		$addMaterial = new AddMaterialForm;
@@ -200,6 +208,13 @@ class MaterialController extends Controller
     public function actionDeleteGroup($id)
     {
 		$model =  $this->findModel($id);
+		
+		if($model->submittedCourseFiles){
+		    Yii::$app->session->addFlash('error', $this->msg_submitted);
+		    
+		    return $this->redirect(['view', 'id' => $id]);
+		}
+		
 		if($model->items){
 			Yii::$app->session->addFlash('error', "You need to delete all teaching material items first");
 			return $this->redirect(['view', 'id' => $id]);
