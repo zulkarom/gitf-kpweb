@@ -176,7 +176,7 @@ $this->registerJs('
 $("#courseoffered-course_version").change(function(){
     var course = $(this).val();
     if(course == -1){
-        window.location.href = "'. Url::to(["coordinator/manage-version", 'course' => $course->id]) .'";
+        window.location.href = "'. Url::to(["/esiap/course/manage-version", 'course' => $course->id]) .'";
     }else{
         $("#course-material-form").submit();
     }
