@@ -84,7 +84,7 @@ echo $note;
 <td><b>Course Information Version</b></td>
 <td><?php  
 $array = ArrayHelper::map($offer->course->versionNotArchived, 'id', 'versionNameAndStatus');
-$array[-1] = ' <Create New Version> ';
+$array[-1] = ' <Manage Version> ';
 echo $form->field($offer, 'course_version')->dropDownList($array, ['prompt' => 'Please Select'])->label(false) ?>
 
 <?php 
@@ -176,7 +176,7 @@ $this->registerJs('
 $("#courseoffered-course_version").change(function(){
     var course = $(this).val();
     if(course == -1){
-        window.location.href = "'. Url::to(["coordinator/course-new-version", 'id' => $offer->course_id, 'coor' => $offer->id]) .'";
+        window.location.href = "'. Url::to(["coordinator/manage-version", 'course' => $course->id]) .'";
     }else{
         $("#course-material-form").submit();
     }
