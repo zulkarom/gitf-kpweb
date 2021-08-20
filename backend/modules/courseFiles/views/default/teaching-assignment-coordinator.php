@@ -89,7 +89,7 @@ echo $form->field($offer, 'course_version')->dropDownList($array, ['prompt' => '
 
 <?php 
 if(!$offer->course->versionSubmit){
-	echo '<i>* Please make sure the version is submitted first. Please click the Update button.</i>';
+	//echo '<i>* Please make sure the version is submitted first. Please click the Update button.</i>';
 }
 ?>
 
@@ -158,7 +158,7 @@ if($course_version > 0){
 <td><?php echo $form->field($offer, 'material_version')->dropDownList(ArrayHelper::map($offer->course->materialSubmit, 'id', 'material_name'),['prompt' => 'Please Select', 'class' => 'form-control course-matrial-update'])->label(false);
 
 if(!$offer->course->materialSubmit){
-	echo '<i>* Please make sure the material group is submitted first. Please click the Update button.</i>';
+	//echo '<i>* Please make sure the material group is submitted first. Please click the Update button.</i>';
 }
 
  ?></td>

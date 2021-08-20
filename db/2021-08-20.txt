@@ -1,0 +1,1 @@
+ALTER TABLE `tld_course_offered` CHANGE `prg_crs_ver` `prg_crs_ver` DECIMAL(2,1) NOT NULL;

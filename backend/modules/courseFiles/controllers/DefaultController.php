@@ -205,7 +205,13 @@ class DefaultController extends Controller
 		
 		if ($offer->load(Yii::$app->request->post())) {
 		    if($offer->course_version > 0){
-		        $offer->progressCourseVersion = 1;
+		        //check dah submit ke belum
+		        if($offer->courseVersion->status > 0){
+		            $offer->progressCourseVersion = 1;
+		        }else{
+		            $offer->progressCourseVersion = 0.5;
+		        }
+		        
 		    }else{
 		        $offer->progressCourseVersion = 0;
 		    }
@@ -218,7 +224,7 @@ class DefaultController extends Controller
 			
 			
 			if($offer->save()){
-				Yii::$app->session->addFlash('success', "Infomation updated.");
+				Yii::$app->session->addFlash('success', "Information updated.");
 				return $this->refresh();
 				
 			}else{
