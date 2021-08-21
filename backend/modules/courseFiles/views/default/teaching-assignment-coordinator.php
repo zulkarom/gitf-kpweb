@@ -243,15 +243,15 @@ if($material){
 </div>
 </div>
 
-<?php   
+<?php
+
+$
 
 $this->registerJs('
     
 $("#courseoffered-course_version").change(function(){
-    var ori = '. $offer->course_version . ';
     var course = $(this).val();
     if(course == -1){
-    $(this).val(ori);
         window.location.href = "'. Url::to(["/esiap/course/manage-version", 'course' => $course->id]) .'";
     }else{
         $("#course-material-form").submit();
@@ -261,10 +261,8 @@ $("#courseoffered-course_version").change(function(){
     
     
 $(".course-matrial-update").change(function(){
-    var ori = '. $offer->material_version . ';
     var material = $(this).val();
     if(material == -1){
-        $(this).val(ori);
         window.location.href = "'. Url::to(["/course-files/material/index", 'course' => $course->id]) .'";
     }else{
         $("#course-material-form").submit();

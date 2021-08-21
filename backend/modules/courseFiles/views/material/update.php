@@ -28,7 +28,19 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
-    </div>
+    
+
+	<div class="pull-right"><?=Html::a('Delete', ['delete-group', 'id' => $model->id], [
+				'class' => 'btn btn-danger',
+				'data' => [
+					'confirm' => 'Are you sure you want to delete this teaching materials?',
+					'method' => 'post',
+				],
+			])?>
+			
+	</div>
+	
+	</div>
 
     <?php ActiveForm::end(); ?>
 
