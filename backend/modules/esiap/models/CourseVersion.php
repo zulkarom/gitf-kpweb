@@ -5,6 +5,7 @@ namespace backend\modules\esiap\models;
 use Yii;
 use common\models\User;
 use yii\helpers\ArrayHelper;
+use backend\modules\teachingLoad\models\CourseOffered;
 
 
 
@@ -134,6 +135,20 @@ class CourseVersion extends \yii\db\ActiveRecord
     
     public function getStatusArray(){
         return [0=>'DRAFT', 10=>'SUBMIT', 13 => 'REUPDATE', 17 => 'RESUBMIT', 20 => 'VERIFIED', 80 => 'ARCHIVED'];
+    }
+    
+    public function checkProgressCourseFile(){
+        if(array_key_exists('course-files',Yii::$app->modules)){
+            if(!in_array($this->status, [0, 13])){
+                
+            }
+            
+            if($this->courseFiles){
+                foreach($this->courseFiles as $file){
+                    
+                }
+            }
+        }
     }
     
     public function getIsDeveloped(){
@@ -305,6 +320,11 @@ class CourseVersion extends \yii\db\ActiveRecord
 	public function getReferences()
     {
         return $this->hasMany(CourseReference::className(), ['crs_version_id' => 'id'])->orderBy('id ASC');
+    }
+    
+    public function getCourseFiles()
+    {
+        return $this->hasMany(CourseOffered::className(), ['course_version' => 'id']);
     }
 
 	

@@ -202,6 +202,8 @@ class DefaultController extends Controller
 		//$offer->scenario = 'coor';
 		
 		$dates = DateSetting::find()->where(['semester_id' => $offer->semester_id])->one();
+		$ori_course_version = $offer->course_version;
+		$ori_material_version = $offer->material_version;
 		
 		if ($offer->load(Yii::$app->request->post())) {
 		    if($offer->course_version > 0){
@@ -212,12 +214,22 @@ class DefaultController extends Controller
 		            $offer->progressCourseVersion = 0.5;
 		        }
 		        
+		    }else if($offer->course_version < 0){
+		        $offer->course_version = $ori_course_version;
 		    }else{
 		        $offer->progressCourseVersion = 0;
 		    }
 		    
 		    if($offer->material_version > 0){
-		        $offer->progressMaterial = 1;
+		        //check ada file ke tak 
+		        if($offer->material->items){
+		            $offer->progressMaterial = 1;
+		        }else{
+		            $offer->progressMaterial = 0.5;
+		        }
+		        
+		    }else if($offer->material_version < 0){
+		         $offer->material_version = $ori_material_version;
 		    }else{
 		        $offer->progressMaterial = 0;
 		    }

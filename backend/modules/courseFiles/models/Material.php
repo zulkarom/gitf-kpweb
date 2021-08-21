@@ -78,7 +78,7 @@ class Material extends \yii\db\ActiveRecord
     }
     
     public function getCourseFile(){
-        return $this->hasMany(CourseOffered::className(), ['material_id' => 'id']);
+        return $this->hasMany(CourseOffered::className(), ['material_version' => 'id']);
     }
     
     

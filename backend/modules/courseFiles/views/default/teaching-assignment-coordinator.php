@@ -84,7 +84,7 @@ echo $note;
 <td><b>Course Information Version</b></td>
 <td><?php  
 $array = ArrayHelper::map($offer->course->versionNotArchived, 'id', 'versionNameAndStatus');
-$array[-1] = ' <Manage Version> ';
+$array[-1] = ' <Manage Course Info Version> ';
 echo $form->field($offer, 'course_version')->dropDownList($array, ['prompt' => 'Please Select'])->label(false) ?>
 
 <?php 
@@ -148,14 +148,17 @@ if($course_version > 0){
 
 
 ?></td>
-<td><a href="<?=Url::to(['/esiap/course/view-course', 'course' => $course->id])?>" class="btn btn-default btn-sm" ><span class="fa fa-pencil"></span> Update</a></td>
+<td><a href="<?=Url::to(['/esiap/course/view-course', 'course' => $course->id, 'version' => $course_version])?>" class="btn btn-default btn-sm" ><span class="fa fa-pencil"></span> Update</a></td>
 <td><?=$offer->progressCourseVersionBar?></td>
 </tr>
 
 <tr>
 <td>2. </td>
 <td><b>Teaching Material Group</b></td>
-<td><?php echo $form->field($offer, 'material_version')->dropDownList(ArrayHelper::map($offer->course->materialSubmit, 'id', 'material_name'),['prompt' => 'Please Select', 'class' => 'form-control course-matrial-update'])->label(false);
+<td><?php
+$array = ArrayHelper::map($offer->course->materialCourseFile, 'id', 'material_name');
+$array[-1] = ' <Manage Teaching Material> ';
+echo $form->field($offer, 'material_version')->dropDownList($array,['prompt' => 'Please Select', 'class' => 'form-control course-matrial-update'])->label(false);
 
 if(!$offer->course->materialSubmit){
 	//echo '<i>* Please make sure the material group is submitted first. Please click the Update button.</i>';
@@ -168,28 +171,10 @@ $count_material = 0;
 if($material){
 	if($material->items){
 	$count_material = count($material->items);
-}
-}
-
-$this->registerJs(' 
-
-$("#courseoffered-course_version").change(function(){
-    var course = $(this).val();
-    if(course == -1){
-        window.location.href = "'. Url::to(["/esiap/course/manage-version", 'course' => $course->id]) .'";
-    }else{
-        $("#course-material-form").submit();
     }
-    
-});
+}
 
 
-$(".course-matrial-update").change(function(){
-    $("#course-material-form").submit();
-});
-
-
- ');
 
 
 
@@ -235,9 +220,15 @@ $(".course-matrial-update").change(function(){
                        
                   Modal::end();
 
+                  if($offer->material_version > 0){
+                      $link_update_material = Url::to(['material/update', 'id' => $offer->material_version, 'course' => $course->id, 'offer' => $offered_id]);
+                  }else{
+                      $link_update_material = Url::to(['material/index', 'course' => $course->id, 'offer' => $offered_id]);
+                  }
+
 
 ?></td>
-<td><a href="<?=Url::to(['material/index', 'course' => $course->id])?>" class="btn btn-default btn-sm" ><span class="fa fa-pencil"></span> Update</a></td>
+<td><a href="<?=$link_update_material?>" class="btn btn-default btn-sm" ><span class="fa fa-pencil"></span> Update</a></td>
 <td><?=$offer->progressMaterialBar?></td>
 </tr>
 
@@ -245,18 +236,45 @@ $(".course-matrial-update").change(function(){
 
 </table>
 
-    
-	
-
-	
-	
-	
 
     <?php ActiveForm::end(); ?>
 
 
 </div>
 </div>
+
+<?php   
+
+$this->registerJs('
+    
+$("#courseoffered-course_version").change(function(){
+    var ori = '. $offer->course_version . ';
+    var course = $(this).val();
+    if(course == -1){
+    $(this).val(ori);
+        window.location.href = "'. Url::to(["/esiap/course/manage-version", 'course' => $course->id]) .'";
+    }else{
+        $("#course-material-form").submit();
+    }
+    
+});
+    
+    
+$(".course-matrial-update").change(function(){
+    var ori = '. $offer->material_version . ';
+    var material = $(this).val();
+    if(material == -1){
+        $(this).val(ori);
+        window.location.href = "'. Url::to(["/course-files/material/index", 'course' => $course->id]) .'";
+    }else{
+        $("#course-material-form").submit();
+    }
+});
+    
+    
+ ');
+
+?>
 
 <h4>Assessment Materials & Rubrics</h4>
 <div class="box">

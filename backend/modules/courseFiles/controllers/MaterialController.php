@@ -172,7 +172,8 @@ class MaterialController extends Controller
 			
 			if($model->save()){
 				Yii::$app->session->addFlash('success', "Data Updated");
-				return $this->redirect(['view', 'id' => $model->id]);
+				
+				return $this->redirect(['update', 'id' => $model->id]);
 			}
         }
 		
@@ -186,16 +187,51 @@ class MaterialController extends Controller
 					$item->save();
 				}				
 			}
+			
 			Yii::$app->session->addFlash('success', 'Material Added');
 			return $this->redirect(['update', 'id' => $model->id]);
         }
-
+        
+        $this->checkProgressCourseFile($model);
         return $this->render('update', [
             'model' => $model,
 			'course' => $course,
 			'addMaterial' => $addMaterial,
 			'materialItems' => $materialItems
         ]);
+    }
+    
+    private function checkProgressCourseFile($material){
+        $progress = 0;
+        if($material->items){
+            foreach($material->items as $item){
+                if($item->item_name && $item->item_file){
+                    $progress = $progress == 0.5 ? 0.5 : 1;
+                }else{
+                    $progress = 0.5;
+                }
+            }
+        }
+        
+        if($progress == 1){
+            if($material->courseFile){
+                foreach($material->courseFile as $file){
+                    if($file->prg_material < 1){
+                        $file->prg_material = 1;
+                        $file->save();
+                    }
+                }
+            }
+        }else{
+            if($material->courseFile){
+                foreach($material->courseFile as $file){
+                    if($file->prg_material == 1){
+                        $file->prg_material = 0.5;
+                        $file->save();
+                    }
+                }
+            }
+        }
     }
 
     /**
