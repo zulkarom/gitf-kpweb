@@ -1063,7 +1063,7 @@ class CourseController extends Controller
 						}
 						
 						if($version->save()){
-						    $this->checkProgressCourseFile($version);
+						    $version->checkProgressCourseFile();
 						    Yii::$app->session->addFlash('success', "The Course Information has been successfully submitted");
 							return $this->redirect(['course/view-course','course' => $course]);
 						}
@@ -1093,7 +1093,6 @@ class CourseController extends Controller
 				'current' => true
 			]);
 	}
-	
 	
 	
 	public function actionCloAssessment($course, $version){

@@ -139,13 +139,17 @@ class CourseVersion extends \yii\db\ActiveRecord
     
     public function checkProgressCourseFile(){
         if(array_key_exists('course-files',Yii::$app->modules)){
-            if(!in_array($this->status, [0, 13])){
-                
-            }
-            
-            if($this->courseFiles){
-                foreach($this->courseFiles as $file){
-                    
+            if(!in_array($this->status, [0, 13])){ //draft & reupdate
+                //kena update course file kepada 100%
+                if($this->courseFiles){
+                    foreach($this->courseFiles as $file){
+                        //check status course version
+                        if($file->prg_crs_ver < 1){
+                            $file->prg_crs_ver = 1;
+                            $file->save();
+                        }
+                        
+                    }
                 }
             }
         }
