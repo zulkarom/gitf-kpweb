@@ -53,7 +53,7 @@ $this->params['breadcrumbs'][] = 'View ';
 
 </div>
 
-<?php if(!Common::isDue($modelOffer->semesterDates->open_deadline)){?>
+<?php if(!Common::isDue($modelOffer->semesterDates->open_deadline) && in_array($modelOffer->status, [0,20])){ // draft & reupdate?>
 <div class="form-group">
 <a href="<?=Url::to(['submit-course-file', 'id' =>$modelOffer->id ])?>" class="btn btn-primary" data-confirm="Are you sure to submit this course file?">Submit Course File</a>
 </div>
