@@ -245,7 +245,6 @@ if($material){
 
 <?php
 
-$
 
 $this->registerJs('
     
