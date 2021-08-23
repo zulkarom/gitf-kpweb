@@ -7,6 +7,7 @@ use yii\web\Controller;
 use yii\filters\AccessControl;
 use yii\db\Expression;
 use yii\web\NotFoundHttpException;
+use backend\models\Semester;
 use backend\modules\esiap\models\Course;
 use backend\modules\teachingLoad\models\CourseOffered;
 
@@ -83,9 +84,16 @@ class CoordinatorController extends Controller
     }
 	
 	public function actionCurrentCoordinatorPage($course){
+	    $session = Yii::$app->session;
+	    if($session->get('semester')){
+	        $semester = $session->get('semester');
+	    }else{
+	        $semester = Semester::getCurrentSemester()->id;
+	    }
+	    
+	    
 		$offer = CourseOffered::find()
-		->joinWith('semester s')
-		->where(['s.is_current' => 1, 'course_id' => $course])->one();
+		->where(['semester_id' => $semester, 'course_id' => $course])->one();
 		if($offer){
 			return $this->redirect(['/course-files/default/teaching-assignment-coordinator', 'id' => $offer->id]);
 		}

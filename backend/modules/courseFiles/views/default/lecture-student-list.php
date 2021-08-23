@@ -17,12 +17,12 @@ $this->title = 'Lecture ['.$lecture->lec_name.']';
 $this->params['breadcrumbs'][] = ['label' => 'My Course File', 'url' => ['/course-files/default/teaching-assignment']];
 $this->params['breadcrumbs'][] = ['label' => $this->title, 'url' => ['teaching-assignment-lecture', 'id' => $lecture->id]];
 $this->params['breadcrumbs'][] = 'Student List';
+ExcelAsset::register($this); 
 ?>
 
 <h4><?=$course->course_code . ' ' . $course->course_name?> - <?=$offer->semester->longFormat()?></h4>
 
   <?php
-if($lecture->students){
 
   $columns = [
             ['class' => 'yii\grid\SerialColumn'],
@@ -51,29 +51,88 @@ if($lecture->students){
 <div class="col-md-8">
 <h4>Student List</h4>
 
-<?php 
 
-/* <div class="form-group"> <input type="file" id="xlf" style="display:none;" />
-<button type="button" id="btn-importexcel" class="btn btn-info"><span class="glyphicon glyphicon-import"></span> IMPORT EXCEL </button>
 
-</div>
 
-<?php $form = ActiveForm::begin(['id' => 'form-students']); ?>
+
+<?php $form = ActiveForm::begin(['id' => 'form-students', 'action' => Url::to(['/course-files/default/import-student-list-excel', 'id' => $lecture->id])]); ?>
   <input type="hidden" id="json_student" name="json_student">
-  <?php ActiveForm::end(); ?> */
+  <?php ActiveForm::end(); ?> 
 
-?>
+
   
 </div>
 
 <div class="col-md-4" align="right">
 
-<a href="<?=Url::to(['resync-student', 'id' => $lecture->id])?>" class="btn btn-success"><i class="fa fa-refresh"></i> Re-Sync</a>
+<div class="form-group">
 
-<a href="<?=Url::to(['lecture-student-list-pdf', 'id' => $lecture->id])?>" class="btn btn-danger" target="_blank"><i class="fa fa-download"></i> Download Pdf</a>
-    
+<a href="<?=Url::to(['resync-student', 'id' => $lecture->id])?>" class="btn btn-success"><i class="fa fa-refresh"></i> LOAD STUDENT</a>
+
+<button type="button" class="btn btn-info" data-toggle="modal" data-target="#import-excel"><span class="glyphicon glyphicon-import"></span> IMPORT EXCEL </button>
+
+
+<a href="<?=Url::to(['lecture-student-list-pdf', 'id' => $lecture->id])?>" class="btn btn-danger" target="_blank"><i class="fa fa-download"></i> PDF</a>
+   
+
+</div>
+
+ 
  </div>
 </div>
+
+<div id="import-excel" class="modal" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Import Student Using Excel File</h4>
+      </div>
+      <div class="modal-body">
+      
+      
+        <p><b>The Instruction:</b></p>
+        
+        <ul>
+	<li>The first colum is for student matric number and the second colum is for student name.</li>
+	<li>The first row is for the header, so the first student shoud start at second row.</li>
+	<li>The system will match the excel data with the current student in the list. Hence, the additional 
+	student in the excel will add to the list and students that not exist in the excel will be deleted from the list.
+	</li>
+	<li> <a href="<?=Url::to(['default/export-excel-student', 'id' => $lecture->id])?>" target="_blank">Download the template here.</a></li>
+	
+</ul>
+
+ <p><b>WARNING:</b> Importing empty template will delete all the student with all related data.</p>
+ <br />
+        
+<input type="file" id="xlf" style="display:none;" />
+<button type="button" id="btn-importexcel" class="btn btn-success"><span class="fa fa-upload"></span> SELECT EXCEL FILE</button>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+ <div class="modal" id="loadingModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <div class="modal-body" align="center">
+        <h3>LOADING DATA...</h3>
+      </div>
+
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 
 
 
@@ -127,7 +186,7 @@ if($lecture->students){
 
 
 <?php 
-/* 
+
 $this->registerJs('
 
 $("#btn-importexcel").click(function(){
@@ -174,7 +233,13 @@ var X = XLSX;
 			var i = 1;
       var myJSON = JSON.stringify(sheet);
       // console.log(myJSON);
+            $("#import-excel").modal("hide");
 
+            	$("#loadingModal").modal({
+                   backdrop: "static",
+                   keyboard: false,
+                   show: true
+                });
             $("#json_student").val(myJSON);
             $("#form-students").submit();
             break;
@@ -194,19 +259,6 @@ var X = XLSX;
 
   
 ');
-
-?>
-
-<?php
-    
-    ExcelAsset::register($this); */
-}else{
-	echo '<p>Click the button below to load student list.</p>';
-	echo '<div class="form-group"><a href="'. Url::to(['resync-student', 'id' => $lecture->id]) .'" class="btn btn-success">Load Student List</a></div>';
-}
-
-
-?>
 
 
 

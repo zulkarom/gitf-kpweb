@@ -101,7 +101,7 @@ class AuditorController extends Controller
 						if($version){
 							$version->status = 0;
 							if($version->save()){
-								$modelOffer->prg_crs_ver = 0;
+								$modelOffer->prg_crs_ver = 0.5;
 							}else{
 								$version->flashError();
 							}

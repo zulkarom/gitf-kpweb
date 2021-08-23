@@ -33,6 +33,7 @@ use backend\modules\courseFiles\models\pdf\CloSummary;
 use backend\modules\courseFiles\models\pdf\StudentList;
 use backend\modules\courseFiles\models\excel\AssessmentExcel;
 use yii\filters\AccessControl;
+use backend\modules\courseFiles\models\excel\StudentExcel;
 /**
  * Default controller for the `course-files` module
  */
@@ -470,6 +471,13 @@ class DefaultController extends Controller
         $pdf->generateExcel();
     }  
 	
+    public function actionExportExcelStudent($id){
+        $lecture = $this->findLecture($id);
+        
+        $pdf = new StudentExcel();
+        $pdf->model = $lecture;
+        $pdf->generateExcel();
+    }
 	
 	public function actionResyncStudent($id){
 		$lecture = $this->findLecture($id);
@@ -479,6 +487,41 @@ class DefaultController extends Controller
 			$lecture->save();
 		}
 		return $this->redirect(['lecture-student-list', 'id' => $id]);
+	}
+	
+	public function actionImportStudentListExcel($id){
+	    $lecture = $this->findLecture($id);
+	    
+	    if(Yii::$app->request->post()){
+	        $data = Yii::$app->request->post('json_student');
+	        $data = json_decode($data);
+	        
+	        if($data){
+	            
+	            StudentLecture::updateAll(['stud_check' => 0], ['lecture_id' => $lecture->id]);
+
+	            $i=0;
+	            foreach (array_slice($data,1) as $stud) {
+	                
+	                if(is_array($stud) and array_key_exists(0,$stud)){
+	                    
+	                    $matric = trim($stud[0]);
+	                    $name = $stud[1];
+	                    
+	                    $this->processAddingStudentLecture($lecture, $matric, $name);
+	                    
+	                    
+	                }
+	                $i++;
+	            }
+	            
+	            StudentLecture::deleteAll(['stud_check' => 0]);
+	            
+	        }
+	        Yii::$app->session->addFlash('success', "Import success");
+	        return $this->redirect(['lecture-student-list', 'id' => $id]);
+	    }
+	    
 	}
 	
 	public function importStudentListApi($lecture){
@@ -499,44 +542,54 @@ class DefaultController extends Controller
 			foreach ($data->result as $stud) {
 				$matric = trim($stud->id);
 				$name = $stud->name;
+				
+				$this->processAddingStudentLecture($lecture, $matric, $name);
 					
-					$st = Student::findOne(['matric_no' => $matric]);
-					if($st === null){
-					   $new = new Student;
-					   $new->matric_no = $matric;
-					   $new->st_name = $name;
-					   $new->faculty_id = 0;
-					   $new->complete = 0; 
-					   if(!$new->save())
-						{
-							$new->flashError();
-						}	   
-					}	 
-					$st = StudentLecture::findOne(['matric_no' => $matric, 'lecture_id' => $lecture->id]);
-
-					if($st === null){
-						$new = new StudentLecture;
-						$new->lecture_id = $lecture->id;
-						$new->matric_no = $matric;
-						$new->stud_check = 1;
-						if(!$new->save())
-						{
-							print_r($new->getErrors()); 
-						}
-					}
-					else
-					{
-						$st->stud_check = 1;
-						$st->save();
-					}
 				$i++;  
 			}
+			
 			StudentLecture::deleteAll(['stud_check' => 0]);
 			//update progress
 			return true;
 			
 		}
 		return false;
+	}
+	
+	private function processAddingStudentLecture($lecture, $matric, $name){
+	    $lvl = $lecture->courseOffered->course->study_level;
+	    
+	    $st = Student::findOne(['matric_no' => $matric, 'study_level' => $lvl]);
+	    if($st === null){
+	        $new = new Student;
+	        $new->matric_no = $matric;
+	        $new->st_name = $name;
+	        $new->faculty_id = 0;
+	        $new->study_level = $lvl;
+	        $new->complete = 0;
+	        if(!$new->save())
+	        {
+	            $new->flashError();
+	        }
+	    }
+	    
+	    $st = StudentLecture::findOne(['matric_no' => $matric, 'lecture_id' => $lecture->id]);
+	    
+	    if($st === null){
+	        $new = new StudentLecture;
+	        $new->lecture_id = $lecture->id;
+	        $new->matric_no = $matric;
+	        $new->stud_check = 1;
+	        if(!$new->save())
+	        {
+	            print_r($new->getErrors());
+	        }
+	    }
+	    else
+	    {
+	        $st->stud_check = 1;
+	        $st->save();
+	    }
 	}
 	
 	public function importTutorialStudentListApi($tutorial){
@@ -609,59 +662,7 @@ class DefaultController extends Controller
 		return $this->redirect(['lecture-student-list', 'id' => $lec]);
 	}
 	
-	public function importStudentListExcel($id){
-		$lecture = $this->findLecture($id);
-
-        $searchModel = new StudentLectureSearch();
-        $searchModel->lecture_id = $lecture->id;
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-		
-        if(Yii::$app->request->post()){
-            $data = Yii::$app->request->post('json_student');
-            $data = json_decode($data);
-
-            if($data){
-
-                StudentLecture::updateAll(['stud_check' => 0], ['lecture_id' => $id]);
-
-                $i=0;
-                foreach (array_slice($data,1) as $stud) {
-					
-                    if(is_array($stud) and array_key_exists(0,$stud)){
-						
-					$matric = trim($stud[0]);
-                    $name = $stud[1];
-						
-                        $st = Student::findOne(['matric_no' => $matric]);
-                        if($st === null){
-                           $new = new Student;
-                           $new->matric_no = $matric;
-                           $new->st_name = $name;
-                           $new->complete = 0; 
-                           if(!$new->save())
-                            {
-                                $new->flashError();
-                            }
-                           
-                        }
-                         
-                         $this->checkStudentLec($matric,$lecture);
-                        
-                    }
-                    $i++;    
-                }
-                  
-            }
-            Yii::$app->session->addFlash('success', "Import success");
-			return $this->refresh();
-        }
-        return $this->render('lecture-student-list', [
-			'lecture' => $lecture,
-            'dataProvider' => $dataProvider,
-			
-        ]);
-		
-    }
+	
 
     public function actionLectureStudentAttendance($id){
 		$lecture = $this->findLecture($id);
@@ -944,10 +945,6 @@ class DefaultController extends Controller
       return $result;
     }
 
-    public function checkStudentLec($matric,$lecture)
-    {
 
-        
-    }
 
 }

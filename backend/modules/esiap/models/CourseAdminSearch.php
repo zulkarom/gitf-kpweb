@@ -20,7 +20,7 @@ class CourseAdminSearch extends Course
     public function rules()
     {
         return [
-            [['search_course'], 'string'],
+            [['search_course', 'study_level'], 'string'],
 			
 			[['search_cat'], 'integer'],
         ];
@@ -73,6 +73,8 @@ class CourseAdminSearch extends Course
 		}else{
 			$query->andFilterWhere(['=', 'program_id', $this->search_cat]);
 		}
+		
+		$query->andFilterWhere(['study_level' => $this->study_level]);
 		
 		$query->andFilterWhere(['or', 
             ['like', 'course_name', $this->search_course],

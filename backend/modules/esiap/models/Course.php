@@ -53,7 +53,7 @@ class Course extends \yii\db\ActiveRecord
     {
         return [
 			
-			[['course_name', 'course_name_bi', 'course_code', 'credit_hour', 'is_dummy', 'faculty_id', 'course_type'], 'required', 'on' => 'create'],
+			[['course_name', 'course_name_bi', 'course_code', 'credit_hour', 'is_dummy', 'faculty_id', 'course_type', 'study_level'], 'required', 'on' => 'create'],
 			
 			[['course_name', 'course_name_bi', 'course_code', 'credit_hour', 'is_dummy'], 'required', 'on' => 'update'],
 			
@@ -63,7 +63,7 @@ class Course extends \yii\db\ActiveRecord
 			
             [['course_name', 'course_name_bi'], 'string', 'max' => 100],
 			
-            [['course_code'], 'string', 'max' => 50],
+            [['course_code', 'study_level'], 'string', 'max' => 50],
 			
 			[['credit_hour'], 'integer'],
 			
@@ -85,9 +85,14 @@ class Course extends \yii\db\ActiveRecord
 			'is_developed' => 'Is Active',
 			'program_id' => 'Program',
 			'faculty_id' => 'Faculty',
+            'study_level' => 'Level',
 			'department_id' => 'Department',
 			'course_class' => 'Course Classification'
         ];
+    }
+    
+    public function getStudyLevelList(){
+        return ['UG' => 'Undergraduate', 'PG' => 'Postgraduate'];
     }
 	
 	
@@ -266,7 +271,7 @@ class Course extends \yii\db\ActiveRecord
 		}else if($this->developmentVersion){
 			return $this->developmentVersion;
 		}else if($this->latestVersion){
-		    return $this->developmentVersion;
+		    return $this->latestVersion;
 		}else{
 		    return false;
 		}
