@@ -22,6 +22,9 @@ use backend\modules\courseFiles\models\StudentLecture;
  */
 class CourseLecture extends \yii\db\ActiveRecord
 {
+    public $attendance_instance;
+    public $file_controller;
+    
     /**
      * {@inheritdoc}
      */
@@ -44,6 +47,11 @@ class CourseLecture extends \yii\db\ActiveRecord
 			
             [['created_at', 'updated_at'], 'safe'],
             [['lec_name'], 'string', 'max' => 50],
+            
+            [['attendance_file'], 'required', 'on' => 'attendance_upload'],
+            [['attendance_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 5000000],
+            [['updated_at'], 'required', 'on' => 'attendance_delete'],
+            
         ];
     }
 

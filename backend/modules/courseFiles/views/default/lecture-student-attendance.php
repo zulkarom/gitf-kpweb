@@ -3,9 +3,6 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
-use kartik\grid\GridView;
-use backend\assets\ExcelAsset;
-use kartik\export\ExportMenu;
 
 
 $offer = $lecture->courseOffered;
@@ -81,11 +78,10 @@ if($lecture->students){
 						  $kira++;
                         }
                       }
-                  echo'<th>%</th></tr>
-				   </thead>
-				  ';
                   ?>
-
+			<th>%</th>
+			</tr>
+				   </thead>
                      <?php
                     $x=1;
                     $st_arr = '';
@@ -164,12 +160,8 @@ if($lecture->students){
                       }
                     
 
-                  echo'
-          
-          
-               
-              </table>';
               ?>
+              </table>
             </div>
             <?php /*  =$form->field($model, 'attendance_json',['options' => ['tag' => false]])->hiddenInput(['value' => ''])->label(false) */?>
              
@@ -293,7 +285,9 @@ $this->registerJs($js);
 
 
 }else{
+    
 	echo '<h4>To properly view this page, kindly load <a href="'. Url::to(['default/lecture-student-list', 'id' => $lecture->id]) .'">student list</a> first.</h4>';
+	
 }
 ?>
 

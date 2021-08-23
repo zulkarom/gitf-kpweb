@@ -67,10 +67,15 @@ ExcelAsset::register($this);
 
 <div class="form-group">
 
+<?php  
+
+$lvl = $lecture->courseOffered->course->study_level;
+
+if($lvl == 'UG'){ ?>
 <a href="<?=Url::to(['resync-student', 'id' => $lecture->id])?>" class="btn btn-success"><i class="fa fa-refresh"></i> LOAD STUDENT</a>
-
+<?php } else {?>
 <button type="button" class="btn btn-info" data-toggle="modal" data-target="#import-excel"><span class="glyphicon glyphicon-import"></span> IMPORT EXCEL </button>
-
+<?php } ?>
 
 <a href="<?=Url::to(['lecture-student-list-pdf', 'id' => $lecture->id])?>" class="btn btn-danger" target="_blank"><i class="fa fa-download"></i> PDF</a>
    

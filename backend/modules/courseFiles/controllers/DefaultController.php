@@ -676,37 +676,70 @@ class DefaultController extends Controller
 		$lecture = $this->findLecture($id);
 
 		if(Yii::$app->request->post()){
-			if($lecture->students){
-			  foreach ($lecture->students as $student) {
-				$val = Yii::$app->request->post('con_' . $student->matric_no);
-				$student->attendance_check = $val;
-				if(!$student->save()){
-					Yii::$app->session->addFlash('error', "Saving failed for ".$student->matric_no);
-				}
-			  }
-			  
+		    
+		    if(Yii::$app->request->post('pg')){
+		        if($lecture->attendance_file){
+		            
+		            $lecture->progressStudentAttendance = 1;
+		            
+		        }else{
+		            $lecture->progressStudentAttendance = 0;
+		        }
+		        
+		        if ($lecture->save()) {
+		            Yii::$app->session->addFlash('success', "Data Updated");
+		            return $this->redirect(['default/teaching-assignment-lecture', 'id' => $id]);
+		        }else{
+		            $lecture->flashError();
+		        }
+		        
+		    }else{
+		        if($lecture->students){
+		            foreach ($lecture->students as $student) {
+		                $val = Yii::$app->request->post('con_' . $student->matric_no);
+		                
+		                $student->attendance_check = $val;
+		                if(!$student->save()){
+		                    Yii::$app->session->addFlash('error', "Saving failed for ".$student->matric_no);
+		                }
+		            }
+		            
+		        }
+		        
+		        if(Yii::$app->request->post('complete') == 1){
+		            $lecture->progressStudentAttendance = 1;
+		            $lecture->prg_attend_complete = 1;
+		        }else{
+		            $lecture->progressStudentAttendance = 0.5;
+		            $lecture->prg_attend_complete = 0;
+		        }
+		        
+		        if ($lecture->save()) {
+		            Yii::$app->session->addFlash('success', "Data Updated");
+		            return $this->redirect(['default/teaching-assignment-lecture', 'id' => $id]);
+		        }else{
+		            $lecture->flashError();
+		        }
+		    }
+		    
+			
 			 
-				
-			}
-			 if(Yii::$app->request->post('complete') == 1){
-				$lecture->progressStudentAttendance = 1;
-				$lecture->prg_attend_complete = 1;
-			}else{
-				$lecture->progressStudentAttendance = 0.5;
-				$lecture->prg_attend_complete = 0;
-			}
-			if ($lecture->save()) {
-				Yii::$app->session->addFlash('success', "Data Updated");
-				return $this->redirect(['default/teaching-assignment-lecture', 'id' => $id]);
-			}else{
-				$lecture->flashError();
-			}
+			
 			//die();
 		}
 		
-        return $this->render('lecture-student-attendance', [
-            'lecture' => $lecture,
-        ]);
+		$lvl = $lecture->courseOffered->course->study_level;
+		
+		if($lvl == 'UG'){
+		    return $this->render('lecture-student-attendance', [
+		        'lecture' => $lecture,
+		    ]);
+		}else{
+		    return $this->render('lecture-student-attendance-pg', [
+		        'lecture' => $lecture,
+		    ]);
+		}
+        
     }
 	
 	public function actionTutorialStudentAttendance($id){
@@ -952,6 +985,9 @@ class DefaultController extends Controller
       $result = $dto->setISODate($year, $week, $day)->format('Y-m-d');
       return $result;
     }
+    
+    
+    
 
 
 
