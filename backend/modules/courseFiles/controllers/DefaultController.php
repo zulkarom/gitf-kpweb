@@ -518,6 +518,14 @@ class DefaultController extends Controller
 	            StudentLecture::deleteAll(['stud_check' => 0]);
 	            
 	        }
+	        
+	        if($lecture->students){
+	            $lecture->progressStudentList = 1;
+	        }else{
+	            $lecture->progressStudentList = 0;
+	        }
+	        
+	        $lecture->save();
 	        Yii::$app->session->addFlash('success', "Import success");
 	        return $this->redirect(['lecture-student-list', 'id' => $id]);
 	    }
