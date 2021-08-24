@@ -412,7 +412,7 @@ class Tbl4Pdf
 			$this->clo_plo_html .='<td align="center" '.$border.'>';
 			if($clo){
 				if($clo->{$plo_str} == 1){
-					$this->clo_plo_html .= '<span style="font-size:14px;"><span>√</span></span>';
+					$this->clo_plo_html .= '<span style="font-size:14px;"><span>√</span></span>'; //ticking here
 				}
 			}
 			
@@ -508,28 +508,28 @@ $html .= '<td width="'.$col_last.'" '.$this->border_right_left.'></td>
 </tr>';
 
 //MQF
-$html .= $this->clo_plo_html;
+$html .= $this->clo_plo_html; //actual mapping
 
-for($q=1;$q<=3;$q++){
+
+$mqf = $this->mqfMapping();
+
+for($q=0;$q<3;$q++){
 	$rowspan='';
 	
 	$html .= '<tr nobr="true">';
 	$html .= '	<td align="center" '.$this->border_right_left.' ></td>';
 	$others = '';
-	if($q == 1){
+	if($q == 0){
 		$html .= '<td align="center" '.$this->shade_light.' rowspan="3">
 		 Mapping with MQF Cluster of Learning Outcomes </td>';
 		$others = '<td align="center" '.$this->shade_light.' rowspan="3"></td>
 		<td align="center" '.$this->shade_light.' rowspan="3"></td>';
 	}
-	$arr = ['C1','C2', 'C3A', 'C3B', 'C3C', 'C3D', 'C3E', 'C3F', 'C4A', 'C4B', 'C5'];
 
-	for($e=1;$e<=12;$e++){
+
+	for($e=0;$e<12;$e++){
 		$html .='<td align="center" style="'.$this->sborder.';line-height:90%">';
-		$idx = $e - 1;
-		if($idx < 11 and $q == 1){
-			$html .= $arr[$idx];
-		}
+		$html.= $mqf[$q][$e];
 		
 		$html .= '</td>';
 	}
@@ -554,6 +554,45 @@ Indicate the primary causal link between the CLO and PLO by ticking  \'√\' in 
 </tr>';
 	$this->html .= $html;
 
+	}
+	
+	public function mqfMapping(){
+	    
+	    
+	    $arr = ['C1','C2', 'C3A', 'C3B', 'C3C', 'C3D', 'C3E', 'C3F', 'C4A', 'C4B', 'C5'];
+	    $mgf = [];
+	    for($m=1;$m<=3;$m++){
+	        $t = [];
+	        for($f=1;$f<=12;$f++){
+	            $t[] = null;
+	        }
+	        $mqf[] = $t;
+	    }
+	    
+	    $clos = $this->model->clos;
+	    if($clos){
+	        foreach($clos as $i => $clo){
+	            for($e=0;$e<12;$e++){
+	                $x = $e + 1;
+	                $plo_str = 'PLO'.$x;
+	                if($clo){
+	                    if($clo->{$plo_str} == 1){
+	                        if(is_null($mqf[0][$e])){
+	                            $mqf[0][$e] = $arr[$e];
+	                        }else if(is_null($mqf[1][$e])){
+	                            $mqf[1][$e] = $arr[$e];
+	                        }else if(is_null($mqf[2][$e])){
+	                            $mqf[2][$e] = $arr[$e];
+	                        }
+	                        
+	                        
+	                    }
+	                }
+	            }
+	        }
+	    }
+	    
+	    return $mqf;
 	}
 	
 	public function transferable(){
