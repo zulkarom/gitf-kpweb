@@ -108,7 +108,7 @@ class StaffInvolved extends \yii\db\ActiveRecord
     }
 
     public function getLecturer(){
-        return $this->hasOne(LecLecture::className(), ['staff_id' => 'staff_id']);
+        return $this->hasOne(LecLecturer::className(), ['staff_id' => 'staff_id']);
     }
     
     public function getAppointLetters(){

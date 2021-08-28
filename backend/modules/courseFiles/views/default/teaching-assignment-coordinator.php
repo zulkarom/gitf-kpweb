@@ -130,10 +130,11 @@ if($course_version > 0){
 	
 	<tr>
 		<td width="5%">4.</td>
-		<td>TABLE 4 - SUMMARY OF COURSE INFORMATION                               </td>
+		<td>TABLE 4 - SUMMARY OF COURSE INFORMATION</td>
 		<td>
 
-		<a href="<?=Url::to(['/esiap/course/tbl4-pdf', 'course' => $course->id, 'version' => $course_version])?>" target="_blank"  class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-download-alt"></span> TABLE 4 v2.0</a></td>
+		<a href="<?=Url::to(['/esiap/course/tbl4-pdf', 'course' => $course->id, 'version' => $course_version, 'team' => $offer->id])?>" target="_blank"  class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-download-alt"></span> TABLE 4 v2.0</a>
+		</td>
 	</tr>
 	
 </tbody>

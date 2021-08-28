@@ -257,6 +257,7 @@ class CourseOffered extends \yii\db\ActiveRecord
 	
 	
 	
+	
 	public function setProgressCoordinator(){
 		$p1 = $this->prg_crs_ver; //1
 		$p2 = $this->prg_material; //2
@@ -281,6 +282,7 @@ class CourseOffered extends \yii\db\ActiveRecord
     public function getCourse(){
          return $this->hasOne(Course::className(), ['id' => 'course_id']);
     }
+    
     
     public function flashError(){
         if($this->getErrors()){
@@ -533,6 +535,12 @@ class CourseOffered extends \yii\db\ActiveRecord
     public function getAssessment(){
         return $this->hasMany(CourseAssessment::className(), ['crs_version_id' => 'course_version']);
     }
+    
+    public function getTeamTeaching(){
+        //mula2 dapatkan lectures 
+        $list = [];
+        
+    }
 
     public function getCountLectures(){
         return CourseLecture::find()
@@ -725,8 +733,23 @@ class CourseOffered extends \yii\db\ActiveRecord
     public function getAppointmentLetter(){
         return $this->hasMany(AppointmentLetter::className(), ['offered_id' => 'id']);
     }
+    
+    public function getStaffInvolved(){
+        $array = [];
+        $list = $this->appointmentLetter;
+        if($list){
+            foreach($list as $s){
+                $staff = $s->staffInvolved->staff;
+                $array[] = $staff->niceName;
+            }
+        }
+        
+        return $array;
+    }
 	
 	public function getSemesterDates(){
         return $this->hasOne(DateSetting::className(), ['semester_id' => 'semester_id']);
-    } 
+    }
+    
+    
 }

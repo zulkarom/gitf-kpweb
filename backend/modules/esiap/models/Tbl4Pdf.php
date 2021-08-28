@@ -27,6 +27,8 @@ class Tbl4Pdf
 	public $font_blue = 'color:#0070c0';
 	public $font_brown = 'color:#c65911';
 	
+	public $offer;
+	
 	/* $bgcolor = 'E7E6E6';
 	$bgcolor_green = '548235';
 	$bgcolor_dark = 'AEAAAA';
@@ -193,19 +195,34 @@ class Tbl4Pdf
 	}
 	
 	public function academicStaff(){
-		$staff = $this->model->profile->academicStaff;
+		
 		$col_num_staff = 28;
 		$col_name = $this->col_content - $col_num_staff;
+		
 		$arr_staff = array();
-		if($staff){foreach($staff as $st){
-			$arr_staff[] = $st->staff->niceName;
-		}}
+		if($this->offer){
+		    $arr_staff = $this->offer->staffInvolved;
+		}else{
+		    $staff = $this->model->profile->academicStaff;
+		    if($staff){
+		        foreach($staff as $st){
+		            $arr_staff[] = $st->staff->niceName;
+		        }
+		    }
+		}
+		
 		$total = count($arr_staff) > 3 ? count($arr_staff) : 3;
 		$rowspan =  $total;
 		$html = '<tr>
 		<td width="'.$this->colnum.'" align="center" '.$this->border.' rowspan="'. $rowspan .'" >3</td>
 
-		<td width="'.$this->col_label.'" colspan="3" '.$this->border.' rowspan="'. $rowspan .'" >Name(s) of academic staff:</td>';
+		<td width="'.$this->col_label.'" colspan="3" '.$this->border.' rowspan="'. $rowspan .'" >Name(s) of academic staff:';
+		
+		if($this->offer){
+		    $html .= '<br /><i>(' . $this->offer->semester->longFormatEn() . ')</i>';
+		}
+
+        $html .= '</td>';
 		
 		for($i = 0;$i< $total;$i++){
 			$num = $i + 1;

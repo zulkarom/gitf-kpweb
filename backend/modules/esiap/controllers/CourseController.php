@@ -32,6 +32,7 @@ use common\models\UploadFile;
 use yii\helpers\Json;
 use yii\data\ActiveDataProvider;
 use backend\modules\esiap\models\CourseVersionClone;
+use backend\modules\teachingLoad\models\CourseOffered;
 
 /**
  * CourseController implements the CRUD actions for Course model.
@@ -1463,6 +1464,15 @@ class CourseController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+    
+    protected function findOffer($id)
+    {
+        if (($model = CourseOffered::findOne($id)) !== null) {
+            return $model;
+        }
+        
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
 	
 	
 	protected function findProfile($id)
@@ -1569,29 +1579,39 @@ class CourseController extends Controller
 		return $model;
 	}
 	
+	//---------TABLE 4 start--------------------
+	//version 1.0 pdf
 	public function actionTbl4($course, $dev = false, $version = false){
 			$pdf = new Tbl4;
 			$pdf->model = $this->decideVersion($course, $dev, $version);
 			$pdf->generatePdf();
 	}
 	
-	public function actionTbl4Pdf($course, $dev = false, $version = false){
+	//version 1.0 excel
+	public function actionTbl4Excel($course, $dev = false, $version = false){
+	    $pdf = new Tbl4Excel;
+	    $pdf->model = $this->decideVersion($course, $dev, $version);
+	    $pdf->generateExcel();
+	}
+	
+	//version 2.0 pdf
+	public function actionTbl4Pdf($course, $dev = false, $version = false, $team = false){
 			$pdf = new Tbl4Pdf;
 			$pdf->model = $this->decideVersion($course, $dev, $version);
+			if($team){
+			    $pdf->offer = $this->findOffer($team);
+			}
 			$pdf->generatePdf();
 	}
 	
+	//version 2.0 excel
 	public function actionTbl4Excel2($course, $dev = false, $version = false){
 			$pdf = new Tbl4Excel2;
 			$pdf->model = $this->decideVersion($course, $dev, $version);
 			$pdf->generateExcel();
 	}
 	
-	public function actionTbl4Excel($course, $dev = false, $version = false){
-			$pdf = new Tbl4Excel;
-			$pdf->model = $this->decideVersion($course, $dev, $version);
-			$pdf->generateExcel();
-	}
+	//---------TABLE 4 end--------------------
 	
 	public function actionFk3($course, $dev = false, $version = false, $offer = false, $cqi = false){
 			

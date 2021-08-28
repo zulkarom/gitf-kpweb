@@ -61,6 +61,7 @@ class Tbl4Excel2
 	public $startTransferable;
 	public $credit_row;
 	public $slt;
+	public $team = array();
 	
 	public function generateExcel(){
 		$this->start();

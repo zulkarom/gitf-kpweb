@@ -133,7 +133,7 @@ class StaffInvController extends Controller
 			
 			$to_del = StaffInvolved::find()->where(['staff_check' => 0, 'semester_id' => $semester])->all();
 			$arr = ArrayHelper::map($to_del, 'id' , 'id');
-			$app = AppointmentLetter::deleteAll(['inv_id' => $arr]);
+			AppointmentLetter::deleteAll(['inv_id' => $arr]);
          	StaffInvolved::deleteAll(['staff_check' => 0, 'semester_id' => $semester]);
          }
     	

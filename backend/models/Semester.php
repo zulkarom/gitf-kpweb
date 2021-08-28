@@ -166,6 +166,11 @@ class Semester extends \yii\db\ActiveRecord
 		return strtoupper('Semester ' . $this->sessionLong() . ' ' . $this->years());
 	}
 	
+	public function longFormatEn(){
+	    
+	    return 'Semester ' . $this->sessionLongEn() . ' ' . $this->years();
+	}
+	
 	public function fullFormat(){
 		
 		return strtoupper('Semester ' . $this->sessionLong() . ' Sesi ' . $this->years());

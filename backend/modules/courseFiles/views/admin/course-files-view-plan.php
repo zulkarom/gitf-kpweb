@@ -58,7 +58,7 @@ use backend\modules\courseFiles\models\Common;
 			}else{
 				echo '<ul>
 					<li><a href="'.Url::to(['/esiap/course/fk2', 'course'=> $offer->course_id, 'version' => $version]).'" target="_blank">FK02 - MAKLUMAT KURSUS</a></li>
-					<li><a href="'.Url::to(['/esiap/course/tbl4-pdf', 'course'=> $offer->course_id, 'version' => $version]).'" target="_blank">TABLE 4</a></li>
+					<li><a href="'.Url::to(['/esiap/course/tbl4-pdf', 'course'=> $offer->course_id, 'version' => $version, 'team' => $offer->id]).'" target="_blank">TABLE 4</a></li>
 					</ul>
 					';
 			}
@@ -74,7 +74,7 @@ use backend\modules\courseFiles\models\Common;
 				echo 'The coordinator needs to select course version.';
 			}else{
 				echo '<ul>
-					<li><a href="'.Url::to(['/esiap/course/fk3', 'course'=> $offer->course_id, 'version' => $version]).'" target="_blank">FK03 - PENJAJARAN KONSTRUKTIF</a></li>
+					<li><a href="'.Url::to(['/esiap/course/fk3', 'course'=> $offer->course_id, 'version' => $version, 'team' => $offer->id]).'" target="_blank">FK03 - PENJAJARAN KONSTRUKTIF</a></li>
 					</ul>
 					';
 			}
