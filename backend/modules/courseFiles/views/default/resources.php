@@ -235,7 +235,7 @@ if($sum){
 				<td><?php 
 				
 				if($item->item_file){
-					echo Html::a('<span class="glyphicon glyphicon-download-alt"></span>', ['download-file', 'attr'=> 'item', 'id' => $item->id] , ['class' => 'btn btn-sm btn-danger', 'target' => '_blank']);
+					echo Html::a('<span class="glyphicon glyphicon-download-alt"></span>', ['/course-files/material/download-file', 'attr'=> 'item', 'id' => $item->id] , ['class' => 'btn btn-sm btn-danger', 'target' => '_blank']);
 				}else{
 					echo 'No File';
 				}
