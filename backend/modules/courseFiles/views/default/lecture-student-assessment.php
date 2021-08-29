@@ -46,9 +46,7 @@ if($lecture->students){
 
 <?php 
 if($assessment){
-
 ?>
-
 <br />
  <div class="form-group"> 
 <a href=<?=Url::to(['default/export-excel', 'id' => $lecture->id])?> class="btn btn-success btn-sm" target="_blank"><span class="glyphicon glyphicon-download-alt"></span> DOWNLOAD TEMPLATE</a> 
@@ -57,12 +55,13 @@ if($assessment){
 <button type="button" id="btn-importexcel" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-import"></span> IMPORT MARKS </button>
 
 <a href=<?=Url::to(['default/clo-analysis-pdf', 'id' => $lecture->id])?> class="btn btn-danger btn-sm" target="_blank"><span class="glyphicon glyphicon-download-alt"></span> DOWNLOAD ANALYSIS</a> 
-
-
-
 </div>
 
 <?php 
+
+
+
+
 }else{
 	echo '<p style="color:red">In order to make this page function properly, <br />the coordinator needs to set the course version for this semester.</p>';
 }
@@ -75,7 +74,37 @@ if($assessment){
 
 </div>
 
+<?php  
 
+if(!$lecture->clo_achieve){
+    ?>
+    <br />
+   <div class="form-group">   
+   
+   <strong>STEPS TO UPLOAD STUDENT RESULT : </strong>
+   
+   <ol>
+   		<li>Download excel template</li>
+   		<li>Fill in the mark in the excel
+   			<ul> 
+   				<li>The assessment colum should not changed</li>
+   				<li>The different sorting of the students is allowed</li>
+   				<li>Change the total in the template header to suit your data. The system will convert the data to weightage value</li>
+   			</ul>
+   		
+   		</li>
+   		
+   		<li>Import the mark from the excel</li>
+   		<li>Make sure all students have the mark. If there are extra students, kindly make adjustment on student list page</li>
+   </ol>
+   
+   
+   
+    </div>
+    <?php 
+}
+
+?>
 
 <div class="box">
         <div class="box-header">
