@@ -1,11 +1,8 @@
 <?php
 
-use richardfan\widget\JSRegister;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
-use backend\modules\esiap\models\Course;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
@@ -20,13 +17,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php $form = ActiveForm::begin(['id' => 'new-version-form']); ?> 
     
- <div class="box">
-<div class="box-header"></div>
+ <div class="box box-solid">
 <div class="box-body">
-
+NOTE: Names of academic staff in TABLE 4 document will be automatically adjusted to reflect the team teaching staff for the respective semester on the course file module.
+<br /><br />
 <div class="row">
 <div class="col-md-6">
-<?= $form->field($model, 'version_name', ['template' => "{label}{input}<i>* e.g. 'Second Version', 'Version 2.0', 'Version Sem Feb 2020/2021', 'Version New Syllabus' etc.</i>{error}"]
+<?= $form->field($model, 'version_name', ['template' => "{label}{input}<i>* e.g. 'Version Sem Feb 2020/2021', 'Full Online Version', 'Version 2.0', 'Version New Syllabus' etc.</i>{error}"]
     )->textInput(['maxlength' => true])->label('New Version Name') ?>
 
 
@@ -41,9 +38,9 @@ $this->params['breadcrumbs'][] = $this->title;
 <div id="con_version">
 <?= $form->field($model, 'duplicated_from')->dropDownList( ArrayHelper::map($course->courseVersion, 'id' , 'version_name') )->label('Duplicate From Version') ?>
 
-<?= $form->field($model, 'justification')->textarea(['rows' => 3])->label('Justification of Creating New Version') ?>
+<?= $form->field($model, 'justification')->textarea(['rows' => 3])->label('Justification of creating new version') ?>
 
-<?= $form->field($model, 'what_change')->textarea(['rows' => 3])->label('Explain What Changes to be Made') ?>
+<?= $form->field($model, 'what_change')->textarea(['rows' => 3])->label('Explain what changes to be made') ?>
 
 </div>
 

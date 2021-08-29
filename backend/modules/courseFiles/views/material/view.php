@@ -9,7 +9,7 @@ use common\models\UploadFile;
 /* @var $model backend\modules\courseFiles\models\Material */
 
 $this->title = $model->material_name;
-$this->params['breadcrumbs'][] = ['label' => 'Materials', 'url' => ['index', 'course' => $model->course_id]];
+$this->params['breadcrumbs'][] = ['label' => 'Course Materials', 'url' => ['index', 'course' => $model->course_id]];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>

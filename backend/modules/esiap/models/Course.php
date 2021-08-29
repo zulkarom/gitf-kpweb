@@ -10,6 +10,7 @@ use backend\models\Faculty;
 use backend\models\Department;
 use common\models\User;
 use backend\models\Component;
+use backend\modules\courseFiles\models\Material;
 
 
 
@@ -297,6 +298,10 @@ class Course extends \yii\db\ActiveRecord
 		return $this->hasMany(CourseVersion::className(), ['course_id' => 'id'])->orderBy('sp_course_version.created_at DESC');
 	}
 	
+	public function getActiveMaterials(){
+	    return $this->hasMany(Material::className(), ['course_id' => 'id'])->where(['is_active' => 1]);
+	}
+	
 	public function getComponent(){
 		return $this->hasOne(Component::className(), ['id' => 'component_id']);
 	}
@@ -327,7 +332,7 @@ class Course extends \yii\db\ActiveRecord
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 		'.$this->course_code.' '. strtoupper($this->course_name).'
 		</div>
-		<div class="modal-body">
+		<div class="modal-body" align="left">
 		';
 //<a target="_blank" href="'.Url::to(['/esiap/course/tbl4', 'course' => $this->id, 'version' => $version->id]).'" class="btn btn-app"><i class="fa fa-file-pdf-o"></i> TABLE 4 v1.0</a>
 		$html .= '

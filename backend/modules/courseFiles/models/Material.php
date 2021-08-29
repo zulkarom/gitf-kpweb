@@ -32,7 +32,7 @@ class Material extends \yii\db\ActiveRecord
     {
         return [
             [['material_name', 'course_id', 'created_by', 'mt_type', 'created_at'], 'required'],
-            [['created_by', 'course_id', 'status'], 'integer'],
+            [['created_by', 'course_id', 'status', 'is_active'], 'integer'],
             [['created_at'], 'safe'],
             [['material_name'], 'string', 'max' => 200],
         ];

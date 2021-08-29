@@ -54,7 +54,8 @@ $closed = Common::isDue($dates->open_deadline);
 							  $status = $offer->status;
 							  echo '<tr>
 							  <td>'.$i.'. </td>
-							  <td>'.$crs->course_code .' '.$crs->course_name .'</td>
+							  <td><a href="'. Url::to(['/course-files/default/resources', 'id' => $crs->id, 'offer' => $offer->id
+							  ]) .'">'.$crs->course_code .' '.$crs->course_name .'</a></td>
 							  <td>';
 							  if($app->manual_file){
 							      echo '<a href="' . Url::to(['/teaching-load/default/appointment-letter-manual', 'id' => $app->id]) . '" class="btn btn-default btn-sm" target="_blank"><span class="glyphicon glyphicon-download-alt"></span> Download</a>';

@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel backend\modules\courseFiles\models\MaterialSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Teaching Materials';
+$this->title = 'Course Materials';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="material-index">
@@ -38,15 +38,15 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             
             [
-			'label' => 'Editable',
+			'label' => 'Status',
                 'format' => 'html',
                 'value' => function($model){
-                    return $model->editableLabel;
-                    /* if($model->status == 1){
-                        return 'YES';
+                   // return $model->editableLabel;
+                    if($model->is_active == 1){
+                        return '<span class="label label-success">ACTIVE</span>';
                     }else{
-                        return 'NO';
-                    } */
+                        return '<span class="label label-default">INACTIVE</span>';
+                    }
                     
                 }
                 

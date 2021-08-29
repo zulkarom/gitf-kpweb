@@ -8,7 +8,7 @@ use common\models\UploadFile;
 /* @var $model backend\modules\courseFiles\models\Material */
 
 $this->title = 'Update: ' . $model->material_name;
-$this->params['breadcrumbs'][] = ['label' => 'Materials', 'url' => ['index', 'course' => $model->course_id]];
+$this->params['breadcrumbs'][] = ['label' => 'Course Materials', 'url' => ['index', 'course' => $model->course_id]];
 $this->params['breadcrumbs'][] = ['label' => 'View', 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
@@ -23,6 +23,8 @@ $this->params['breadcrumbs'][] = 'Update';
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'material_name')->textInput(['maxlength' => true]) ?>
+    
+                    <?= $form->field($model, "is_active")->checkbox(['value' => '1', 'label'=> 'Active']); ?>
 	
 
 

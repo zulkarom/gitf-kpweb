@@ -34,6 +34,7 @@ use backend\modules\courseFiles\models\pdf\StudentList;
 use backend\modules\courseFiles\models\excel\AssessmentExcel;
 use yii\filters\AccessControl;
 use backend\modules\courseFiles\models\excel\StudentExcel;
+use backend\modules\esiap\models\Course;
 /**
  * Default controller for the `course-files` module
  */
@@ -119,6 +120,15 @@ class DefaultController extends Controller
 
 
     }
+    
+    public function actionResources($id,$offer){
+        $course = $this->findCourse($id);
+        $offer = $this->findOffered($offer);
+        return $this->render('resources', [
+            'course' => $course,
+            'offer' => $offer,
+        ]);
+    }
 	
 	
 	public function actionTimetable($s, $back=false){
@@ -156,6 +166,15 @@ class DefaultController extends Controller
             return $model;
         }
 
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    
+    protected function findCourse($id)
+    {
+        if (($model = Course::findOne($id)) !== null) {
+            return $model;
+        }
+        
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
