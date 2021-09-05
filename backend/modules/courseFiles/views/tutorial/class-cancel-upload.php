@@ -4,15 +4,14 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use common\models\UploadFile;
-use kartik\date\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
 
 $this->title = 'Tutor ['.$model->lecture->lec_name.$model->tutorial_name.']';
 $this->params['breadcrumbs'][] = ['label' => 'My Course File', 'url' => ['/course-files/default/teaching-assignment']];
-$this->params['breadcrumbs'][] = ['label' =>'Tutor ['.$model->lecture->lec_name.$model->tutorial_name.']', 'url' => ['/course-files/default/teaching-assignment-tutorial', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Class Cancellation';
+$this->params['breadcrumbs'][] = ['label' =>  'Tutor ['.$model->lecture->lec_name.$model->tutorial_name.']', 'url' => ['/course-files/default/teaching-assignment-tutorial', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = 'Students’ Assignment';
 $course = $model->lecture->courseOffered->course;
 ?>
 
@@ -33,20 +32,16 @@ $course = $model->lecture->courseOffered->course;
 	echo Html::submitButton('Go', ['class' => 'btn btn-sm btn-default']);
 	ActiveForm::end(); ?></div>
 
-
 <?php $form = ActiveForm::begin(); ?>
- <div class="box box-primary">
-
+  <div class="box box-primary">
 <div class="box-body">
 
 <table class="table table-striped table-hover">
 
-
 <thead>
   <tr>
   <th width="5%">#</th>
-  <th width="20%">Cancellation Date</th>
-  <th width="20%">Replacement Date</th>
+  <th width="40%">Document Title</th>
   <th>Upload File</th>
   </tr>
 </thead>
@@ -59,73 +54,35 @@ $course = $model->lecture->courseOffered->course;
 		foreach($files as $x=>$file){
 			$file->scenario = 'saveall';
 			$file->file_controller = 'tutorial-cancel-file';
-			if($file->date_old == '0000-00-00'){
-				$file->date_old = date('Y-m-d');
-			}
-			if($file->date_new == '0000-00-00'){
-				$file->date_new = date('Y-m-d');
-			}
 			?>
 			<tr>
 			<td><?=$i?>. </td>
 			<td>
 			<?=Html::activeHiddenInput($file, "[{$x}]id");?>
-			
-			 <?=$form->field($file, "[{$x}]date_old")->widget(DatePicker::classname(), [
-    'removeButton' => false,
-	'pickerIcon' => '<i class="fa fa-calendar"></i>',
-    'pluginOptions' => [
-        'autoclose'=>true,
-        'format' => 'yyyy-mm-dd',
-        'todayHighlight' => true,
-        
-    ],
-    
-    
-])->label(false);
-?>
-
-
-			
-			</td>
-			<td>
-
-			 <?=$form->field($file, "[{$x}]date_new")->widget(DatePicker::classname(), [
-    'removeButton' => false,
-	'pickerIcon' => '<i class="fa fa-calendar"></i>',
-    'pluginOptions' => [
-        'autoclose'=>true,
-        'format' => 'yyyy-mm-dd',
-        'todayHighlight' => true,
-        
-    ],
-    
-    
-])->label(false);
-?>
-
-
+			<?=Html::activeHiddenInput($model, "id");?>
+			<?= $form->field($file, "[{$x}]file_name")->label(false) ?>
 			
 			</td>
 				<td><?=UploadFile::fileInput($file, 'path', false, true, 'material-item')?></td>
 			</tr>
 			<?php
 		$i++;
-		
-			
 		}
 	}else{
-			echo '<tr><td colspan="4">No Files</td></tr>';
+			echo '<tr><td colspan="3">No Files</td></tr>';
 			$applicable = true;
 		}
-	
 	?>
+	
 </tbody>
 </table>
-</div>
-</div>
+
+
+   
+</div></div>
+
 <?php 
-$check_na = $model->na_class_cancel == 1 ? 'checked' : ''; 
+$check_na = $model->na_class_cancel == 1 ? 'checked' : '';
 $check_complete = $model->prg_class_cancel == 1 ? 'checked' : ''; 
 ?>
 
@@ -141,9 +98,10 @@ $check_complete = $model->prg_class_cancel == 1 ? 'checked' : '';
 </label></div>
 <?php } ?>
 
+
 <div class="form-group">
 <?=$form->field($model, 'updated_at')->hiddenInput(['value' => time()])->label(false)?>
-	<?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> Save', ['class' => 'btn btn-success']) ?>
-</div>
+        <?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> Save', ['class' => 'btn btn-success']) ?>
+    </div>
 	
-    <?php ActiveForm::end(); ?>
+	 <?php ActiveForm::end(); ?>

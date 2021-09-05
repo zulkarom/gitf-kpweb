@@ -101,9 +101,16 @@ public static function showLecTut($offer, $lec_method, $tut_method, $link, $prog
 			  foreach ($lecture->$lec_method as $file) {
 				if($link == 'exempt'){
 					$file_name = $file->matric_no . '-' . date('d/m/Y', strtotime($file->ex_date));
-				}else if($link == 'cancel'){
+				}
+				/* else if($link == 'cancel'){
 						$file_name = date('d/m/Y', strtotime($file->date_old)). ' by ' . date('d/m/Y', strtotime($file->date_new));
-				}else{
+				} */
+				
+				else if($file->file_name){
+				    $file_name = $file->file_name;
+				 } 
+				
+				else{
 					$file_name = 'File ' . $j;
 				}
 				
@@ -159,9 +166,17 @@ public static function showLecTut($offer, $lec_method, $tut_method, $link, $prog
 				  foreach ($tutorial->$tut_method as $file) {
 					 if($link == 'exempt'){
 						$file_name = $file->matric_no . '-' . date('d/m/Y', strtotime($file->ex_date));
-					}else if($link == 'cancel'){
+					}
+					/* else if($link == 'cancel'){
 						$file_name = date('d/m/Y', strtotime($file->date_old)). ' by ' . date('d/m/Y', strtotime($file->date_new));
-					}else{
+					} */
+					
+					else if($file->file_name){
+					    $file_name = $file->file_name;
+					} 
+					
+					
+					else{
 						$file_name = 'File ' . $j;
 					}
 					if($file->path_file){
