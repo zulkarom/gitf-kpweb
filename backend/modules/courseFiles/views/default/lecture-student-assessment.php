@@ -140,7 +140,7 @@ if(!$lecture->clo_achieve){
 					$count_assess = count($assessment);
 					foreach ($assessment as $assess) {
                         $cloSet[] = $assess->cloNumber;
-                        echo'<td><span class="label label-primary">CLO'.$assess->cloNumber.'</span>
+                        echo'<td align="center"><span class="label label-primary">CLO'.$assess->cloNumber.'</span>
                         </td>';
 						
 
