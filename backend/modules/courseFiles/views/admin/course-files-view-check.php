@@ -44,7 +44,7 @@ use backend\modules\courseFiles\models\Common;
 			if($offer->appointmentLetter){
 				echo '<ul>';
 				foreach ($offer->appointmentLetter as $letter) {
-						if($letter->staffInvolved){
+						if($letter->staffInvolved && $letter->tutorial_only == 0){
 							$name =  $letter->staffInvolved->staff->staff_title . ' ' .$letter->staffInvolved->staff->user->fullname; 
 								if($letter->steva_file){
 									$boo = $boo == false ? false : true;
