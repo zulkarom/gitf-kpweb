@@ -124,7 +124,7 @@ if(!$lecture->clo_achieve){
 					if($listClo){
                           foreach ($listClo as $clo) {
                             $empty_clo .= '<td></td>';
-							$header_clo .= '<td><span class="label label-primary">CLO'.$clo.'</span></td>';
+							$header_clo .= '<td align="center"><span class="label label-primary">CLO'.$clo.'</span></td>';
 							$strtotal = 'clo'.$clo.'_total';
 							$strcount = 'clo'.$clo.'_count';
 							$$strtotal = 0;
@@ -140,7 +140,7 @@ if(!$lecture->clo_achieve){
 					$count_assess = count($assessment);
 					foreach ($assessment as $assess) {
                         $cloSet[] = $assess->cloNumber;
-                        echo'<td align="center"><span class="label label-primary">CLO'.$assess->cloNumber.'</span>
+                        echo'<td align="center" style="text-align:center"><span class="label label-primary">CLO'.$assess->cloNumber.'</span>
                         </td>';
 						
 
