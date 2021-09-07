@@ -393,35 +393,41 @@ class DefaultController extends Controller
             
             if($data){
                 //date validation first
-             
+                //kena buat max value la
 				
                 $i=0;
+                $clo = array_slice($data[0], 3);
+                $max = count($clo);
+                //echo $max;die();
 				$weight = $data[1];
 				$full_mark = $data[2];
 				
 				$weight = array_slice($weight,3);
 				$full_mark = array_slice($full_mark,3);
 				
-				
 				foreach (array_slice($data,4) as $stud) {
 				    if(is_array($stud) and $stud){
 				        $assess = array_slice($stud, 3);
 				        $t =0;
 				        foreach($assess as $raw){
-				            if($full_mark[$t] == 0 or $full_mark[$t] == null){
-				                Yii::$app->session->addFlash('error', "Please check your excel, total mark must have a value or cannot be zero");
-				                return $this->redirect(['lecture-student-assessment', 'id' => $id]);
-				            }
-				            if($raw > $full_mark[$t]){
-				                Yii::$app->session->addFlash('error', "Please check your marks, make sure the mark does not exceed the total mark");
-				                return $this->redirect(['lecture-student-assessment', 'id' => $id]);
-				            }
+		
+				            if($t < $max){ //verify good colum
+				                if($full_mark[$t] == 0 or $full_mark[$t] == null){
+				                    Yii::$app->session->addFlash('error', "Please check your excel, total mark must have a value or cannot be zero");
+				                    return $this->redirect(['lecture-student-assessment', 'id' => $id]);
+				                }
+				                if($raw > $full_mark[$t]){
+				                    Yii::$app->session->addFlash('error', "Please check your data, make sure the mark does not exceed the total mark");
+				                    return $this->redirect(['lecture-student-assessment', 'id' => $id]);
+				                }
+				            } 
+				            
 				            $t++;
 				        }
 				    }
 				
 				}
-				
+			
 				StudentLecture::updateAll(['assess_result' => ''],['lecture_id' => $id]);
 				
 
@@ -435,22 +441,27 @@ class DefaultController extends Controller
 						$weighted_assess = array();
 						$x = 0;
 						foreach($assess as $raw){
-							//print_r($weight);
+							//print_r($raw);die();
 							//echo $weight[$x];
+						    if($x < $max){
+						       // echo $t ;die();
+						        $s = $weight[$x];
+						        $sw = trim(str_replace('%', '', $weight[$x]));
+						        
+						        $w = $raw / $full_mark[$x] * $sw;
+						        $weighted_assess[] = $w;
+						    }
 							
-							$s = $weight[$x];
-							$sw = trim(str_replace('%', '', $weight[$x]));
-							
-							$w = $raw / $full_mark[$x] * $sw;
-							$weighted_assess[] = $w;
 						$x++;
 						}
 						//print_r($weighted_assess);
 						//die();
                         $st_lec = StudentLecture::findOne(['matric_no' => $matric, 'lecture_id' => $id]);
                         if($st_lec){
+                           // echo $matric;echo json_encode($weighted_assess);die();
                            $st_lec->assess_result = json_encode($weighted_assess);
                            if($st_lec->save() and $weighted_assess){
+                               
 							   $progress++;
 						   }
                         }

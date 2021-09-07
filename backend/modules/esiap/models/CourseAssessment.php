@@ -106,11 +106,14 @@ class CourseAssessment extends \yii\db\ActiveRecord
         
 		if($this->cloId){
 			$clo = $this->cloId;
+			//echo '='. $clo->clo_id. '=/';
 			if(array_key_exists($clo->clo_id, $list)){
+			    
 			   return $list[$clo->clo_id]; 
 			}
 		}
-		
+		//echo '<br /><br /><br /><br />';
+		//print_r($list);die();
 		return 0;
         
     }

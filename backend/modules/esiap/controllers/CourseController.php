@@ -733,8 +733,22 @@ class CourseController extends Controller
 	}
 	
 	public function actionCourseCloDelete($version, $clo){
-		$clo = CourseClo::findOne(['id' => $clo, 'crs_version_id' => $version]);
-		$clo->delete();
+	    $transaction = Yii::$app->db->beginTransaction();
+	    try {
+	        $clo = CourseClo::findOne(['id' => $clo, 'crs_version_id' => $version]);
+	        $clo->delete();
+	        $assess = CourseCloAssessment::deleteAll(['clo_id' => $clo]);
+	        $transaction->commit();
+	        
+	    }
+	    catch (Exception $e)
+	    {
+	        $transaction->rollBack();
+	        Yii::$app->session->addFlash('error', $e->getMessage());
+	    }
+	    
+	    
+		
 		$version = CourseVersion::findOne($version);
 		$course = $version->course_id;
 		return $this->redirect(['course-clo','course'=>$course, 'version' => $version->id]);

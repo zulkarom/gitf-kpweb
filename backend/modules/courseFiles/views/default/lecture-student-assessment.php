@@ -87,9 +87,9 @@ if(!$lecture->clo_achieve){
    		<li>Download excel template</li>
    		<li>Fill in the mark in the excel
    			<ul> 
-   				<li>The assessment colum should not changed</li>
+   				<li>The assessment colum should not be changed</li>
    				<li>The different sorting of the students is allowed</li>
-   				<li>Change the total in the template header to suit your data. The system will convert the data to weightage value</li>
+   				<li>You are allowed to change the total in the template header to suit your data. The system will convert the mark to weighted value</li>
    			</ul>
    		
    		</li>
