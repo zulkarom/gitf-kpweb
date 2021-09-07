@@ -10,7 +10,7 @@ use backend\modules\courseFiles\models\Common;
 
 $this->title = 'Program Coordinator';
 $this->params['breadcrumbs'][] = $this->title;
-$semester->action = ['/course-files/admin/program-coordinator'];
+$semester->action = ['/course-files/program/program-coordinator'];
 $program_name = '';
 if($program){
     $program_name = $program->pro_name;
