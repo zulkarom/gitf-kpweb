@@ -35,8 +35,8 @@ $this->params['breadcrumbs'][] = $this->title;
         	<?php 
         	if($model){
         		foreach ($model as $position) {
-        			echo '<tr><td style="width:50%"><b>'.$position->position_name.'</b></td>
-        			<td style="width:50%">';
+        			echo '<tr><td style="width:40%"><b>'.$position->position_name.'</b></td>
+        			<td style="width:60%">';
 
         			echo Select2::widget([
 				    'name' => 'Main['.$position->id.']',
@@ -75,8 +75,8 @@ $this->params['breadcrumbs'][] = $this->title;
         	<?php 
         	if($modelDepartment){
         		foreach ($modelDepartment as $depart) {
-        			echo '<tr><td style="width:50%"><b>'.$depart->dep_name_bi.'</b></td>
-        			<td style="width:50%">';
+        			echo '<tr><td style="width:40%"><b>'.$depart->dep_name_bi.'</b></td>
+        			<td style="width:60%">';
 
         			echo Select2::widget([
 				    'name' => 'Department['.$depart->id.']',
@@ -101,7 +101,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	<div class="box">
 	<div class="box-header">
           <div class="a">
-            <div class="box-title"><b>Head of Program</b></div>
+            <div class="box-title"><b>Program Coordinator</b></div>
           </div>
         </div>
 	<div class="box-body">
@@ -115,8 +115,8 @@ $this->params['breadcrumbs'][] = $this->title;
         	<?php 
         	if($modelProgram){
         		foreach ($modelProgram as $program) {
-        			echo '<tr><td style="width:50%"><b>'.$program->pro_name_bi.'</b></td>
-        			<td style="width:50%">';
+        			echo '<tr><td style="width:40%"><b>'.$program->pro_name_bi.'</b></td>
+        			<td style="width:60%">';
 
         			echo Select2::widget([
 				    'name' => 'Program['.$program->id.']',

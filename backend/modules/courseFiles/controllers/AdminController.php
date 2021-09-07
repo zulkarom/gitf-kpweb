@@ -4,24 +4,20 @@ namespace backend\modules\courseFiles\controllers;
 
 use Yii;
 use yii\web\Controller;
-use backend\modules\courseFiles\models\CoordinatorRubricsFile;
+use backend\modules\courseFiles\models\ProgramCoordinatorSearch;
 use backend\modules\teachingLoad\models\CourseOffered;
-use backend\modules\teachingLoad\models\CourseLecture;
 use backend\modules\courseFiles\models\Checklist;
 use backend\modules\esiap\models\CourseVersion;
 use yii\filters\AccessControl;
 use yii\db\Expression;
 use yii\web\NotFoundHttpException;
-use common\models\UploadFile;
-use yii\helpers\ArrayHelper;
-use yii\helpers\Json;
-use yii\bootstrap\Modal;
 use backend\models\SemesterForm;
 use backend\models\Semester;
 use backend\modules\courseFiles\models\CourseFilesSearch;
 use backend\modules\courseFiles\models\AssignAuditorForm;
 use backend\modules\courseFiles\models\DateSetting;
 use backend\modules\esiap\models\CoursePic;
+use backend\modules\esiap\models\Program;
 
 /**
  * Default controller for the `course-files` module
@@ -97,6 +93,37 @@ class AdminController extends Controller
             'dataProvider' => $dataProvider,
             'semester' => $semester,
 			'audit' => $audit
+        ]);
+    }
+    
+    public function actionProgramCoordinator()
+    {
+        //check dia coordinator ke tak
+        $program = Program::findOne(['head_program' => Yii::$app->user->identity->staff->id]);
+        $semester = new SemesterForm;
+        $session = Yii::$app->session;
+        if(Yii::$app->getRequest()->getQueryParam('SemesterForm')){
+            $sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');
+            $semester->semester_id = $sem['semester_id'];
+            $semester->str_search = $sem['str_search'];
+            $session->set('semester', $sem['semester_id']);
+        }else if($session->has('semester')){
+            $semester->semester_id = $session->get('semester');
+        }else{
+            $semester->semester_id = Semester::getCurrentSemester()->id;
+        }
+        
+        $searchModel = new ProgramCoordinatorSearch();
+        $searchModel->semester = $semester->semester_id;
+        $searchModel->search_course = $semester->str_search;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
+        
+        return $this->render('program-coordinator', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'semester' => $semester,
+            'program' => $program
         ]);
     }
 	
@@ -182,6 +209,17 @@ class AdminController extends Controller
 		
 		
         return $this->render('course-files-view', [
+            'model' => $model,
+            'modelOffer' => $modelOffer,
+        ]);
+    }
+    
+    public function actionCourseFilesCoorView($id)
+    {
+        $model = new Checklist();
+        $modelOffer = $this->findOffered($id);
+
+        return $this->render('course-files-coor-view', [
             'model' => $model,
             'modelOffer' => $modelOffer,
         ]);

@@ -77,7 +77,7 @@ class DefaultController extends Controller
         }
 
         // Ketua Program
-        $modelProgram = Program::find()->where(['faculty_id' => 1])->all();
+        $modelProgram = Program::find()->where(['faculty_id' => 1, 'status' => 1])->all();
 		if(Yii::$app->request->post('Program')){
             $post_program = Yii::$app->request->post('Program');	
             foreach ($modelProgram as $pro) {

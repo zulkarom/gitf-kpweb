@@ -5,12 +5,13 @@ namespace backend\modules\courseFiles\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use backend\modules\esiap\models\Program;
 use backend\modules\teachingLoad\models\CourseOffered;
 
 /**
  * CourseOfferedSearch represents the model behind the search form of `backend\modules\teachingLoad\models\CourseOffered`.
  */
-class AuditorSearch extends CourseOffered
+class ProgramCoordinatorSearch extends CourseOffered
 {
     public $semester;
     public $search_course;
@@ -45,9 +46,10 @@ class AuditorSearch extends CourseOffered
      */
     public function search($params)
     {
+        //check user coordinator 
+        
         $query = CourseOffered::find()
         ->joinWith('course')
-		->where(['auditor_staff_id' => Yii::$app->user->identity->staff->id])
 		;
 
         // // add conditions that should always apply here
@@ -66,6 +68,13 @@ class AuditorSearch extends CourseOffered
             // $query->where('0=1');
             return $dataProvider;
         }
+        
+        $program = -1;
+        $kp = Program::findOne(['head_program' => Yii::$app->user->identity->staff->id]);
+        if($kp){
+            $program = $kp->id;
+        }
+        $query->andFilterWhere(['program_id' => $program]);
 
         // grid filtering conditions
         $query->andFilterWhere([
@@ -74,11 +83,15 @@ class AuditorSearch extends CourseOffered
             
         ]);
 
+
+        
         $query->andFilterWhere(['or',
             ['like', 'course_code', $this->search_course],
             ['like', 'course_name', $this->search_course],
             ['like', 'course_name_bi', $this->search_course]
         ]);
+        
+
 
         return $dataProvider;
     }
