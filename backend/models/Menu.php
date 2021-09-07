@@ -243,7 +243,7 @@ class Menu
 				
 				['label' => 'Internal Auditors', 'icon' => 'check-square-o', 'url' => ['/course-files/auditor/index']],
                             
-                ['label' => 'Program Coordinator', 'icon' => 'user', 'url' => ['/course-files/admin/program-coordinator']],
+                ['label' => 'Program Coordinator', 'icon' => 'user', 'url' => ['/course-files/program/program-coordinator']],
 				
 				['label' => 'My Teaching Selection', 'icon' => 'hand-pointer-o', 'url' => ['/teaching-load/default/teaching-view']],
 				
