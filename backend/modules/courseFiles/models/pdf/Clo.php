@@ -174,7 +174,7 @@ EOD;
                                 if($result){
                                   if(array_key_exists($x, $result)){
                                     $mark = $result[$x];
-                                    $html .= '<td align="center" width="'.$box_assess.'">'.$mark.'</td>';
+                                    $html .= '<td align="center" width="'.$box_assess.'">'.number_format($mark,2).'</td>';
                                   }
                                   else{
                                     $html .= '<td></td>';
@@ -193,7 +193,7 @@ EOD;
                           if($this->listClo){
                             foreach ($this->listClo as $clo) {
                               $value = $this->cloValue($clo,$result,$cloSet);
-                             $html .= '<td align="center" width="'.$box_clo.'">'.$value.'</td>';
+                             $html .= '<td align="center" width="'.$box_clo.'">'.number_format($value,2).'</td>';
 
                               $strtotal = 'clo'.$clo.'_total';
                               $strcount = 'clo'.$clo.'_count';

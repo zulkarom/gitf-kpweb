@@ -87,8 +87,9 @@ class CloSummary
 				}
 				$html .= '<tr><td>'.$i.'. </td><td align="center">'.$lecture->lec_name.'</td><td>';
 				if($lecture->lecturers){
-					foreach($lecture->lecturers as $lecturer){
-						$html .= $lecturer->staff->staff_title .' '. $lecturer->staff->user->fullname;
+					foreach($lecture->lecturers as $b => $lecturer){
+					    $br = $b == 0 ? '' : '<br />';
+						$html .= $br . $lecturer->staff->staff_title .' '. $lecturer->staff->user->fullname;
 					}
 				}
 				
