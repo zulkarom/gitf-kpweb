@@ -5,12 +5,13 @@ namespace backend\modules\courseFiles\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use backend\modules\esiap\models\Program;
 use backend\modules\teachingLoad\models\CourseOffered;
 
 /**
  * CourseOfferedSearch represents the model behind the search form of `backend\modules\teachingLoad\models\CourseOffered`.
  */
-class CourseFilesSearch extends CourseOffered
+class HeadDepartmentSearch extends CourseOffered
 {
     public $semester;
     public $search_course;
@@ -45,8 +46,11 @@ class CourseFilesSearch extends CourseOffered
      */
     public function search($params)
     {
+        //check user coordinator 
+        
         $query = CourseOffered::find()
-        ->joinWith('course');
+        ->joinWith('course.program.department')
+		;
 
         // // add conditions that should always apply here
 
@@ -67,10 +71,10 @@ class CourseFilesSearch extends CourseOffered
 
         // grid filtering conditions
         $query->andFilterWhere([
-            
             'semester_id' => $this->semester,
-            
+            'head_dep' => Yii::$app->user->identity->staff->id
         ]);
+
 
         
         $query->andFilterWhere(['or',
@@ -78,6 +82,8 @@ class CourseFilesSearch extends CourseOffered
             ['like', 'course_name', $this->search_course],
             ['like', 'course_name_bi', $this->search_course]
         ]);
+        
+
 
         return $dataProvider;
     }

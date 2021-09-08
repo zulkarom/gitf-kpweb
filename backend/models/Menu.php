@@ -244,6 +244,8 @@ class Menu
 				['label' => 'Internal Auditors', 'icon' => 'check-square-o', 'url' => ['/course-files/auditor/index']],
                             
                 ['label' => 'Program Coordinator', 'icon' => 'user', 'url' => ['/course-files/program/program-coordinator']],
+                            
+               ['label' => 'Head of Department', 'icon' => 'user', 'url' => ['/course-files/program/head-department']],
 				
 				['label' => 'My Teaching Selection', 'icon' => 'hand-pointer-o', 'url' => ['/teaching-load/default/teaching-view']],
 				

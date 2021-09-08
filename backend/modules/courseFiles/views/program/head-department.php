@@ -1,18 +1,20 @@
 <?php 
 use yii\helpers\Html;
 use yii\grid\GridView;
-use yii\widgets\ActiveForm;
-use backend\modules\staff\models\Staff;
-use kartik\select2\Select2;
-use yii\helpers\ArrayHelper;
+use backend\modules\courseFiles\models\Common;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\modules\teachingLoad\models\CourseOfferedSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Course Files';
+
+$this->title = 'Head of Department';
 $this->params['breadcrumbs'][] = $this->title;
-$semester->action = ['/course-files/admin/index'];
+$semester->action = ['/course-files/program/head-department'];
+$department_name = '';
+if($department){
+    $department_name = $department->dep_name;
+}
 ?>
 
 <div class="course-files-default-index">
@@ -22,37 +24,19 @@ $semester->action = ['/course-files/admin/index'];
 <div class="row">
 
     <div class="col-md-10" align="right">
-        <?= $this->render('_form_course_files', [
+        <?= $this->render('../admin/_form_course_files', [
                 'model' => $semester,
             ]) ?>
     </div>
 </div>
 
-<?php $form = ActiveForm::begin(); ?>
-
-<div class="row">
-<div class="col-md-6"><?php
-		echo $form->field($audit, 'staff_id')->widget(Select2::classname(), [
-    'data' => ArrayHelper::map(Staff::getAcademicStaff(), 'id', 'user.fullname'),
-    'options' => ['placeholder' => 'Select an Auditor ...'],
-    'pluginOptions' => [
-        'allowClear' => true
-    ],
-])->label(false);
-
-?></div>
-<div class="col-md-6"><?= Html::submitButton('Assign', ['class' => 'btn btn-success']) ?></div>
-</div>
-
-
-
+<h4><?php echo $department_name?></h4>
 <div class="box">
     <div class="box-header"></div>
     <div class="box-body"><div class="table-responsive"><?= GridView::widget([
         'dataProvider' => $dataProvider,
         //'filterModel' => $searchModel,
         'columns' => [
-			['class' => 'yii\grid\CheckboxColumn'],
             ['class' => 'yii\grid\SerialColumn'],
             [
                 'attribute' => 'course.course_code',
@@ -79,7 +63,9 @@ $semester->action = ['/course-files/admin/index'];
 					
 				}
                 
-            ],
+            ], 
+			
+			'statusName:html',
 			
 			[
                 'value' => 'progressOverallBar',
@@ -88,13 +74,6 @@ $semester->action = ['/course-files/admin/index'];
                 
             ],
 			
-			'statusName:html',
-			
-			
-			[
-				'attribute' => 'auditor.user.fullname',
-				'label' => 'Auditor',
-			],
 			[
 				//'attribute' => 'is_audited',
 				'label' => 'Audited',
@@ -105,19 +84,20 @@ $semester->action = ['/course-files/admin/index'];
 					}else{
 						return '<span class="label label-danger">NO</span>';
 					}
-					
 				}
 				
 			],
+			
 			
             ['class' => 'yii\grid\ActionColumn',
                 'contentOptions' => ['style' => 'width: 10.7%'],
                 'template' => '{files}',
                 'buttons'=>[
                     'files'=>function ($url, $model){
-                        return Html::a('<span class="glyphicon glyphicon-search"></span> View', ['admin/course-files-view', 'id' => $model->id], ['class' => 'btn btn-default btn-sm'
+							return Html::a('<span class="glyphicon glyphicon-search"></span> View', ['program/course-files-coor-view', 'id' => $model->id], ['class' => 'btn btn-default btn-sm'
                         ]) 
                 ;
+                        
                     }
                    
 
@@ -130,5 +110,3 @@ $semester->action = ['/course-files/admin/index'];
     ]); ?></div>
     </div>
 </div>
-
-<?php ActiveForm::end(); ?>
