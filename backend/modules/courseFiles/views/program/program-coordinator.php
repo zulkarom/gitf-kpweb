@@ -95,7 +95,7 @@ if($program){
                 'template' => '{files}',
                 'buttons'=>[
                     'files'=>function ($url, $model){
-							return Html::a('<span class="glyphicon glyphicon-search"></span> View', ['admin/course-files-coor-view', 'id' => $model->id], ['class' => 'btn btn-default btn-sm'
+							return Html::a('<span class="glyphicon glyphicon-search"></span> View', ['program/course-files-coor-view', 'id' => $model->id], ['class' => 'btn btn-default btn-sm'
                         ]) 
                 ;
                         
