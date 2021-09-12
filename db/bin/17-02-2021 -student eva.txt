@@ -1,2 +1,0 @@
-ALTER TABLE `tld_appoint_letter` ADD `steva_file` TEXT NOT NULL AFTER `status`;
-ALTER TABLE `tld_appoint_letter` ADD `updated_at` DATETIME NULL AFTER `steva_file`;

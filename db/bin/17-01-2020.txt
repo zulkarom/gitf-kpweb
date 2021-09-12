@@ -1,1 +1,0 @@
-ALTER TABLE `tld_course_lec` ADD `attendance_header` TEXT NOT NULL AFTER `updated_at`;

@@ -1,1 +1,0 @@
-ALTER TABLE `tld_tutorial_lec` ADD `lec_prefix` VARCHAR(20) NOT NULL AFTER `lecture_id`;

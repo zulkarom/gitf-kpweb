@@ -1,1 +1,0 @@
-ALTER TABLE `st_download_cat` ADD `is_active` TINYINT(1) NOT NULL DEFAULT '1' AFTER `is_default`;

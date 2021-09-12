@@ -1,1 +1,0 @@
-ALTER TABLE `conf_paper_reviewer` ADD `updated_at` DATETIME NULL DEFAULT NULL AFTER `reject_at`;

@@ -1,6 +1,0 @@
-ALTER TABLE `tld_course_offered` ADD `auditor_file` TEXT NULL DEFAULT NULL AFTER `auditor_staff_id`, ADD `ujaka_file` TEXT NULL DEFAULT NULL AFTER `auditor_file`;
-ALTER TABLE `tld_course_offered` CHANGE `ujaka_file` `verified_file` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL;
-ALTER TABLE `tld_course_offered` ADD `verified_by` INT NOT NULL DEFAULT '0' AFTER `verified_at`;
-ALTER TABLE `tld_course_offered` ADD `submitted_at` DATETIME NULL DEFAULT NULL AFTER `verified_file`, ADD `reviewed_at` DATETIME  NULL DEFAULT NULL AFTER `submitted_at`, ADD `verified_at` DATETIME  NULL DEFAULT NULL AFTER `reviewed_at`;
-ALTER TABLE `tld_course_offered` CHANGE `reviewed_at` `reviewed_at` DATETIME NULL DEFAULT NULL, CHANGE `verified_at` `verified_at` DATETIME NULL DEFAULT NULL, CHANGE `verified_by` `verified_by` INT(11) NOT NULL DEFAULT '0';
-ALTER TABLE `tld_course_offered` ADD `is_audited` TINYINT(1) NOT NULL DEFAULT '0' AFTER `auditor_file`;

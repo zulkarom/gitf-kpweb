@@ -1,3 +1,0 @@
-ALTER TABLE `tld_course_lec` ADD `clo_achieve` VARCHAR(100) NOT NULL AFTER `total_mark`;
-ALTER TABLE `tld_staff_inv` ADD `updated_at` DATETIME NOT NULL AFTER `staff_check`;
-RENAME TABLE `fkp_portal_yfv`.`cf_coor_rubrics_class` TO `fkp_portal_yfv`.`cf_coor_rubrics`;

@@ -1,3 +1,0 @@
-ALTER TABLE `department` ADD `position_stamp` TEXT NOT NULL AFTER `head_dep`;
-UPDATE `department` SET `position_stamp` = 'Ketua Jabatan Keusahawanan' WHERE `department`.`id` = 1;
-UPDATE `department` SET `position_stamp` = 'Ketua Jabatan Perniagaan & Perakaunan' WHERE `department`.`id` = 2;

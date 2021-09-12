@@ -1,2 +1,0 @@
-
-ALTER TABLE `tld_appoint_letter` ADD `status` INT NOT NULL DEFAULT '1' AFTER `date_appoint`;

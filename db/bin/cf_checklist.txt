@@ -1,5 +1,0 @@
-ALTER TABLE `cf_checklist` ADD `category` VARCHAR(20) NOT NULL AFTER `upload_url`;
-
-UPDATE `cf_checklist` SET `category` = 'assess-materials' WHERE `cf_checklist`.`id` = 4; UPDATE `cf_checklist` SET `category` = 'assess-materials' WHERE `cf_checklist`.`id` = 12; UPDATE `cf_checklist` SET `category` = 'assess-scripts' WHERE `cf_checklist`.`id` = 13; UPDATE `cf_checklist` SET `category` = 'assess-materials' WHERE `cf_checklist`.`id` = 14; UPDATE `cf_checklist` SET `category` = 'assess-scripts' WHERE `cf_checklist`.`id` = 15; UPDATE `cf_checklist` SET `category` = 'assess-results' WHERE `cf_checklist`.`id` = 17; UPDATE `cf_checklist` SET `category` = 'assess-analysis' WHERE `cf_checklist`.`id` = 19; UPDATE `cf_checklist` SET `category` = 'assess-analysis' WHERE `cf_checklist`.`id` = 20;
-
-UPDATE `cf_checklist` SET `category` = 'cqi' WHERE `cf_checklist`.`id` = 21;

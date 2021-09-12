@@ -1,1 +1,0 @@
-ALTER TABLE `cf_student_lec` ADD `attendance_check` TEXT NOT NULL AFTER `stud_check`;
