@@ -127,6 +127,12 @@ class Common {
 		return [1 => 'Ya', 0 => 'Tidak'];
 	}
 	
-	
+	public static function eduLevel(){
+		return [1 => 'Sepenuh Masa', 2 => 'Separuh Masa'];
+	}
+
+	public static function sponsor(){
+		return [1 => 'Pembiayaan Sendiri', 2 => 'Tajaan'];
+	}
 	
 }
