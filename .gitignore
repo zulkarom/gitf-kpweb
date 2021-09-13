@@ -58,6 +58,7 @@ backend/web/
 backend/web/
 frontend/web/
 confsite/web/
+student/web/
 
 #uploaded
 
