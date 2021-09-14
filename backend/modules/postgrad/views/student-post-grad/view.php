@@ -6,14 +6,12 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\postgrad\models\StudentPostGrad */
 
-$this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Student Post Grads', 'url' => ['index']];
+$this->title = $model->user->fullname;
+$this->params['breadcrumbs'][] = ['label' => 'Postgraduate Students', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="student-post-grad-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -29,35 +27,100 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+
+            [
+                'label' => 'Name',
+                'value' => function($model){
+                    return $model->user->fullname;
+                }
+            ],
             'matric_no',
-            'name',
             'nric',
-            'date_birth',
-            'gender',
-            'marital_status',
-            'nationality',
-            'citizenship',
+            [
+                'label' => 'Tarikh Lahir',
+                'value' => function($model){
+                    return date('d F Y', strtotime($model->date_birth));
+                }
+            ],
+            [
+                'label' => 'Jantina',
+                'value' => function($model){
+                    return $model->genderText;
+                }
+            ],
+            [
+                'label' => 'Taraf Perkahwinan',
+                'value' => function($model){
+                    return $model->maritalText;
+                }
+            ],
+            [
+                'label' => 'Negara Asal',
+                'value' => function($model){
+                    return $model->country->country_name;
+                }
+            ],
+            [
+                'label' => 'Kewarganegaraan',
+                'value' => function($model){
+                    return $model->citizenText;
+                }
+            ],
             'prog_code',
-            'edu_level',
+            [
+                'label' => 'Taraf Pengajian',
+                'value' => function($model){
+                    return $model->eduLvlText;
+                }
+            ],
             'address',
             'city',
             'phone_no',
             'personal_email:email',
-            'student_email:email',
-            'religion',
-            'race',
+            [
+                'label' => 'Emel Pelajar',
+                'value' => function($model){
+                    return $model->user->email;
+                }
+            ],
+            [
+                'label' => 'Agama',
+                'value' => function($model){
+                    return $model->religionText;
+                }
+            ],
+            [
+                'label' => 'Bangsa',
+                'value' => function($model){
+                    return $model->raceText;
+                }
+            ],
             'bachelor_name',
             'university_name',
             'bachelor_cgpa',
             'bachelor_year',
             'session',
             'admission_year',
-            'admission_date_sem1',
-            'sponsor',
+            [
+                'label' => 'Tahun Kemasukan Semester 1',
+                'value' => function($model){
+                    return date('d F Y', strtotime($model->admission_date_sem1));
+                }
+            ],
+            [
+                'label' => 'Pembiayaan Sendiri / Tajaan',
+                'value' => function($model){
+                    return $model->sponsorText;
+                }
+            ],
             'student_current_sem',
             'city_campus',
-            'student_status',
+            [
+                'label' => 'Status Pelajar',
+                'value' => function($model){
+                    return $model->stdStatusText;
+                }
+            ],
         ],
     ]) ?>
 

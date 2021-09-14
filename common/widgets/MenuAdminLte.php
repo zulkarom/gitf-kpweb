@@ -52,7 +52,8 @@ class MenuAdminLte
 	   return '<li class="nav-item">
 				   <a href="'. Url::to($item['url']) .' " class="nav-link '.$active.'">
 				   <i class="nav-icon '.$item['icon'].'"></i>
-				   <p>'.$item['label'].'</p></a></li>';
+				   <p>'.$item['label'].'</p>
+				   </a></li>';
    }
    
    protected function item2($item){
@@ -72,7 +73,7 @@ class MenuAdminLte
 		   $open = 'menu-open';
 		   $block = 'block'; 
 	   }
-	   $html =  '<li class="nav-item has-treeview '.$open.'">
+	   $html =  '<li class="nav-item '.$open.'">
 			<a href="#" class="nav-link '.$active.'">
 				<i class="nav-icon '.$item['icon'].'"></i>
 				<p>

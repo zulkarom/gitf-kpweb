@@ -122,6 +122,10 @@ class Common {
 	public static function citizen(){
 		return ['Malaysia' => 'Malaysia', 'Bukan Malaysia' => 'Bukan Malaysia'];
 	}
+
+	public static function citizenship(){
+		return ['1' => 'Tempatan', '2' => 'Antarabangsa'];
+	}
 	
 	public static function yesNo(){
 		return [1 => 'Ya', 0 => 'Tidak'];
@@ -135,4 +139,19 @@ class Common {
 		return [1 => 'Pembiayaan Sendiri', 2 => 'Tajaan'];
 	}
 	
+	public static function race(){
+		return [1 => 'Malay', 2 => 'Chinese', 3 => 'Indian' , 4 => 'Others'];
+	}
+
+	public static function religion(){
+		return [1 => 'Islam', 2 => 'Buddhist', 3 => 'Cristian' , 4 => 'Hindu', 5 => 'Others'];
+	}
+
+	public static function studentStatus(){
+		return [1 => 'Active', 0 => 'Not Active'];
+	}
+
+	public static function marital2(){
+		return [1 => 'Bujang', 2 => 'Berkahwin'];
+	}
 }

@@ -8,6 +8,7 @@ use backend\modules\postgrad\models\StudentPostGradSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use common\models\User;
 
 /**
  * StudentPostGradController implements the CRUD actions for StudentPostGrad model.
@@ -65,13 +66,35 @@ class StudentPostGradController extends Controller
     public function actionCreate()
     {
         $model = new StudentPostGrad();
+        $modelUser = new User();
+        $model->scenario = 'create';
+        $modelUser->scenario = 'studPost';
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $random = rand(30,30000);
+
+        if ($model->load(Yii::$app->request->post()) 
+            && $modelUser->load(Yii::$app->request->post())) {
+
+            $modelUser->username = $model->matric_no;
+            $modelUser->password_hash = \Yii::$app->security->generatePasswordHash($random);
+            $modelUser->status = 10;
+            if($modelUser->save()){
+
+                $model->user_id = $modelUser->id;
+
+                if($model->save()){
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }else{
+                    $model->flashError();
+                }
+            }else{
+                $modelUser->flashError();
+            }
         }
 
         return $this->render('create', [
             'model' => $model,
+            'modelUser' => $modelUser,
         ]);
     }
 
@@ -85,13 +108,26 @@ class StudentPostGradController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $modelUser = User::findOne($model->user_id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post()) 
+            && $modelUser->load(Yii::$app->request->post())) {
+
+            if($modelUser->save()){
+
+                if($model->save()){
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }else{
+                    $model->flashError();
+                }
+            }else{
+                $modelUser->flashError();
+            }
         }
 
         return $this->render('update', [
             'model' => $model,
+            'modelUser' => $modelUser,
         ]);
     }
 
