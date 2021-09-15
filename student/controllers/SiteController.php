@@ -10,11 +10,8 @@ use yii\filters\AccessControl;
 use common\models\LoginForm;
 use student\models\PasswordResetRequestForm;
 use student\models\ResetPasswordForm;
-use student\models\SignupForm;
 use yii\helpers\Url;
-use backend\modules\classSession\models\ClassSession;
-use backend\models\Announcement;
-use backend\modules\student\models\student;
+use common\models\User;
 /**
  * Site controller
  */
@@ -30,7 +27,7 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['signup', 'index', 'login', 'download'],
+                        'actions' => ['signup', 'index', 'login', 'download', 'request-password-reset', 'reset-password'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -73,7 +70,9 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-       return $this->redirect('user/login');
+       return $this->render('index', [
+            'user' => User::findOne(Yii::$app->user->identity->id),
+        ]);
         
     }
 
@@ -143,6 +142,7 @@ class SiteController extends Controller
      */
     public function actionRequestPasswordReset()
     {
+        $this->layout = "//main-login";
         $model = new PasswordResetRequestForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {
@@ -168,6 +168,7 @@ class SiteController extends Controller
      */
     public function actionResetPassword($token)
     {
+        $this->layout = "//main-login";
         try {
             $model = new ResetPasswordForm($token);
         } catch (InvalidParamException $e) {

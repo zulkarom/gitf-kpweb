@@ -87,12 +87,6 @@ use backend\models\Semester;
     </div>
     
     <div class="row">
-        <div class="col-md-4">
-            <?= $form->field($model, 'address')->textarea(['rows' => '3']) ?>
-        </div>
-        <div class="col-md-3">
-            <?= $form->field($model, 'city')->textInput(['maxlength' => true]) ?>
-        </div>
         <div class="col-md-3">
             <?= $form->field($model, 'religion')->dropDownList(
                 Common::religion(), ['prompt' => 'Pilih Agama',  'class' => 'form-control select-choice']) ?>
@@ -101,20 +95,28 @@ use backend\models\Semester;
             <?= $form->field($model, 'race')->dropDownList(
                 Common::race(), ['prompt' => 'Pilih Bangsa',  'class' => 'form-control select-choice']) ?>
         </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'city')->textInput(['maxlength' => true]) ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <?= $form->field($model, 'address')->textarea(['rows' => '3']) ?>
+        </div>
     </div>
     
 
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-2">
             <?= $form->field($model, 'prog_code')->textInput(['maxlength' => true]) ?>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             <?= $form->field($model, 'bachelor_name')->textInput(['maxlength' => true]) ?>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             <?= $form->field($model, 'university_name')->textInput(['maxlength' => true]) ?>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <?= $form->field($model, 'bachelor_cgpa')->textInput(['maxlength' => true]) ?>
         </div>
     </div>
@@ -159,10 +161,11 @@ use backend\models\Semester;
                 Common::sponsor(), ['prompt' => 'Pilih Pembiayaan',  'class' => 'form-control select-choice']) ?>
         </div>
         <div class="col-md-3">
-            <?= $form->field($model, 'student_current_sem')->textInput() ?>
+            <?= $form->field($model, 'student_current_sem')->input('number', ['min' => 1, 'step' => 1]) ?>
         </div>
         <div class="col-md-3">
-            <?= $form->field($model, 'city_campus')->textInput() ?>
+            <?= $form->field($model, 'city_campus')->dropDownList(
+                Common::campus(), ['prompt' => 'Pilih Kampus',  'class' => 'form-control select-choice']) ?>
         </div>
         <div class="col-md-3">
             <?= $form->field($model, 'student_status')->dropDownList(

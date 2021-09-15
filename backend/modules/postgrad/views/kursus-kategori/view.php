@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 echo'<tr>
                                 <td>'.$i.'</td>
                                 <td>'.$kursus->kursus_name.'</td>
-                                <td><a href="' . Url::to(['/kursus-kategori/delete-kursus', 'id' => $kursus->id, 'cat' => $model->id]) . '" data-confirm="Are you sure to delete this?"><span class="fa fa-trash fa-xs"></span></a></td>
+                                <td><a href="' . Url::to(['/postgrad/kursus-kategori/delete-kursus', 'id' => $kursus->id, 'cat' => $model->id]) . '" data-confirm="Are you sure to delete this?"><span class="fa fa-trash fa-xs"></span></a></td>
                                 </tr>';
                                 $i++;
                                 
@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <br/>
 
                 <p>
-                    <?php echo Html::button('<span class="fa fa-plus"></span> Tambah Kursus', ['value' => Url::to(['/kursus/create','pid' => $model->id]), 'class' => 'btn btn-success btn-sm', 'id' => 'modalBttnKursus']);
+                    <?php echo Html::button('<span class="fa fa-plus"></span> Tambah Kursus', ['value' => Url::to(['/postgrad/kursus/create','pid' => $model->id]), 'class' => 'btn btn-success btn-sm', 'id' => 'modalBttnKursus']);
                     
                         Modal::begin([
                             'header' => '<h4>Tambah Kursus</h4>',

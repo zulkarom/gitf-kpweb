@@ -18,7 +18,9 @@ $fieldOptions2 = [
     'inputTemplate' => "{input}<span class='glyphicon glyphicon-lock form-control-feedback'></span>"
 ];
 ?>
-
+<div class="login-logo" style="font-family:verdana">
+        <b>FKP PORTAL</b><br /><span style="font-size:25px">STUDENT LOGIN</span>
+    </div>
 
     <!-- /.login-logo -->
         <p class="login-box-msg">Log in to start your session</p>
@@ -50,7 +52,8 @@ $fieldOptions2 = [
         <?php ActiveForm::end(); ?>
         <!-- /.social-auth-links -->
 
-        <a href="#">Recover My Password</a><br>
+        <?= Html::a('Recover My Password',['/site/request-password-reset']) ?><br>
+
 
     <!-- /.login-box-body -->
 <!-- /.login-box -->

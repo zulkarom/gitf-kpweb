@@ -17,8 +17,8 @@ class StudentPostGradSearch extends StudentPostGrad
     public function rules()
     {
         return [
-            [['id', 'gender', 'marital_status', 'nationality', 'citizenship', 'edu_level', 'student_email', 'religion', 'race', 'session', 'sponsor', 'student_current_sem', 'city_campus', 'student_status'], 'integer'],
-            [['matric_no', 'name', 'nric', 'date_birth', 'prog_code', 'address', 'city', 'phone_no', 'personal_email', 'bachelor_name', 'university_name', 'bachelor_cgpa', 'bachelor_year', 'admission_year', 'admission_date_sem1'], 'safe'],
+            [['id', 'gender', 'marital_status', 'nationality', 'citizenship', 'edu_level', 'religion', 'race', 'session', 'sponsor', 'student_current_sem', 'city_campus', 'student_status'], 'integer'],
+            [['matric_no', 'nric', 'date_birth', 'prog_code', 'address', 'city', 'phone_no', 'personal_email', 'bachelor_name', 'university_name', 'bachelor_cgpa', 'bachelor_year', 'admission_year', 'admission_date_sem1'], 'safe'],
         ];
     }
 
@@ -65,7 +65,6 @@ class StudentPostGradSearch extends StudentPostGrad
             'nationality' => $this->nationality,
             'citizenship' => $this->citizenship,
             'edu_level' => $this->edu_level,
-            'student_email' => $this->student_email,
             'religion' => $this->religion,
             'race' => $this->race,
             'session' => $this->session,
@@ -77,7 +76,6 @@ class StudentPostGradSearch extends StudentPostGrad
         ]);
 
         $query->andFilterWhere(['like', 'matric_no', $this->matric_no])
-            ->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'nric', $this->nric])
             ->andFilterWhere(['like', 'prog_code', $this->prog_code])
             ->andFilterWhere(['like', 'address', $this->address])

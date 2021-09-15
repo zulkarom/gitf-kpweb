@@ -120,15 +120,16 @@ class Menu
 	public static function adminPostGradStudents(){
 		return [
 			'label' => 'Postgraduate Students',
+			'visible' => Yii::$app->user->can('postgrad-manager'),
 			'icon' => 'users',
 			'url' => '#',
 			'items' => [
 
-				['label' => 'Active Students', 'icon' => 'user', 'url' => ['/postgrad/student-post-grad'], 'visible' => Yii::$app->user->can('students-manager')],
+				['label' => 'Active Students', 'icon' => 'user', 'url' => ['/postgrad/student-post-grad'], 'visible' => Yii::$app->user->can('postgrad-manager')],
 				
-				['label' => 'Kursus Kategori', 'icon' => 'download', 'url' => ['/postgrad/kursus-kategori/index'], 'visible' => Yii::$app->user->can('students-manager')],
+				['label' => 'Kursus Kategori', 'icon' => 'download', 'url' => ['/postgrad/kursus-kategori/index'], 'visible' => Yii::$app->user->can('postgrad-manager')],
 
-				['label' => 'Anjur Kursus', 'icon' => 'book', 'url' => ['/students/internship'], 'visible' => Yii::$app->user->can('internship-manager')],
+				['label' => 'Anjur Kursus', 'icon' => 'book', 'url' => ['/postgrad/kursus-anjur'], 'visible' => Yii::$app->user->can('postgrad-manager')],
 			],
 		];	
 	}

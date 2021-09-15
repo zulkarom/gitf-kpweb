@@ -41,9 +41,7 @@ $dirAsset = Yii::$app->assetManager->getPublishedUrl('@backend/views/myasset');
 <div class="login-box">
 <div class="login-box-body">
 
-    <div class="login-logo" style="font-family:verdana">
-        <b>FKP PORTAL</b><br /><span style="font-size:25px">STUDENT LOGIN</span>
-    </div>
+    
     <?= Alert::widget() ?>
 
     <?= $content ?>
@@ -52,7 +50,7 @@ $dirAsset = Yii::$app->assetManager->getPublishedUrl('@backend/views/myasset');
       
         <br />
         <div align="center">
-        <?= Html::a('Log In Page', ['/user/login']) ?></div>
+        <?= Html::a('Log In Page', ['/site/login']) ?></div>
 </div>
 
 </div>

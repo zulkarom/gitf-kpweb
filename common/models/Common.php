@@ -154,4 +154,12 @@ class Common {
 	public static function marital2(){
 		return [1 => 'Bujang', 2 => 'Berkahwin'];
 	}
+
+	public static function statusKursus(){
+	    return [10 => 'Submit', 20 => 'Paid', 30 => 'Complete', 40 => 'Reject'];
+	}
+
+	public static function campus(){
+		return [1 => 'Kampus Kota'];
+	}
 }

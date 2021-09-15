@@ -22,7 +22,7 @@ class KursusAnjur extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'kursus_anjur';
+        return 'pg_kursus_anjur';
     }
 
     /**

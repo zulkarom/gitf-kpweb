@@ -18,7 +18,7 @@ class Kursus extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'kursus';
+        return 'pg_kursus';
     }
 
     /**
