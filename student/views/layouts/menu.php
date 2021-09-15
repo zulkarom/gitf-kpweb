@@ -12,13 +12,17 @@ use common\widgets\MenuAdminLte;
     [
             
             ['label' => 'Dashboard', 'level' => 1, 'url' => ['/site/index'], 'icon' => 'fas fa-tachometer-alt', 'children' => []],
+
+            ['label' => 'My Profile', 'level' => 1, 'url' => ['/profile/index'], 'icon' => 'fas fa-tachometer-alt', 'children' => []],
+
+            ['label' => 'Course Registration', 'level' => 1, 'url' => ['/kursus-peserta/index'], 'icon' => 'fas fa-tachometer-alt', 'children' => []],
             
             
             ['label' => 'EXAMPLES', 'level' => 0],
             
-            ['label' => 'Income', 'level' => 2 , 'icon' => 'fas fa-th', 'children' => [
-                ['label' => 'Invoices', 'url' => ['/account/invoice'], 'icon' => 'far fa-circle'],
-                ['label' => 'Receipt', 'url' => ['/account/receipt'], 'icon' => 'far fa-circle'],
+            ['label' => 'Example', 'level' => 2 , 'icon' => 'fas fa-th', 'children' => [
+                ['label' => 'Example 1', 'url' => ['/account/invoice'], 'icon' => 'far fa-circle'],
+                ['label' => 'Example 2', 'url' => ['/account/receipt'], 'icon' => 'far fa-circle'],
                 
             
             ]],

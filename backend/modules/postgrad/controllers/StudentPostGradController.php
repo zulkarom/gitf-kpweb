@@ -7,7 +7,7 @@ use backend\modules\postgrad\models\StudentPostGrad;
 use backend\modules\postgrad\models\StudentPostGradSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 use common\models\User;
 
 /**
@@ -21,10 +21,13 @@ class StudentPostGradController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
                 ],
             ],
         ];

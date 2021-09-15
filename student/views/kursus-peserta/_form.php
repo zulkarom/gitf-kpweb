@@ -2,12 +2,12 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use backend\models\KursusKategori;
+use backend\modules\postgrad\models\KursusKategori;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\jui\JuiAsset;
 /* @var $this yii\web\View */
-/* @var $model backend\models\KursusPeserta */
+/* @var $model backend\modules\postgrad\models\KursusPeserta */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 

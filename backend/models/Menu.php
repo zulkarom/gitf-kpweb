@@ -120,7 +120,6 @@ class Menu
 	public static function adminPostGradStudents(){
 		return [
 			'label' => 'Postgraduate Students',
-			'visible' => Yii::$app->user->can('postgrad-manager'),
 			'icon' => 'users',
 			'url' => '#',
 			'items' => [

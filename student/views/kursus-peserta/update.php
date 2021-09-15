@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\KursusPeserta */
+/* @var $model backend\modules\postgrad\models\KursusPeserta */
 
 $this->title = 'Update Pendaftaran Kursus ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Pendaftaran Kursus', 'url' => ['index']];

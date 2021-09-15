@@ -70,9 +70,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-       return $this->render('index', [
-            'user' => User::findOne(Yii::$app->user->identity->id),
-        ]);
+       return $this->render('index');
         
     }
 

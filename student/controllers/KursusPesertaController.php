@@ -3,9 +3,9 @@
 namespace student\controllers;
 
 use Yii;
-use backend\models\KursusAnjur;
-use backend\models\KursusPeserta;
-use backend\models\KursusKategori;
+use backend\modules\postgrad\models\KursusAnjur;
+use backend\modules\postgrad\models\KursusPeserta;
+use backend\modules\postgrad\models\KursusKategori;
 use student\models\KursusPesertaSearch;
 use student\models\KursusAnjurSearch;
 use yii\web\Controller;

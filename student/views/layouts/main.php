@@ -27,6 +27,7 @@ $dirAsset = Yii::$app->assetManager->getPublishedUrl('@student/assets/adminlte')
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
       <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+      <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 </head>
 <body class="hold-transition sidebar-mini">
 <?php $this->beginBody() ?>
@@ -89,8 +90,8 @@ $dirAsset = Yii::$app->assetManager->getPublishedUrl('@student/assets/adminlte')
             <img src="<?=$dirAsset?>/dist/img/user.png" class="img-circle elevation-2" alt="User Image">
 
             <p>
-               - Admin
-              <small>Member since Nov. 2012</small>
+               <?=Yii::$app->user->identity->fullname?>
+              <!-- <small>Member since Nov. 2012</small> -->
             </p>
           </li>
           <!-- Menu Body -->
@@ -120,14 +121,16 @@ $dirAsset = Yii::$app->assetManager->getPublishedUrl('@student/assets/adminlte')
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
+        <center>
         <a href="index3.html" class="brand-link">
-            <img src="<?=$dirAsset?>/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+            <!-- <img src="<?=$dirAsset?>/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8"> -->
             <!-- <span class="brand-text font-weight-light">AdminLTE 3</span> -->
             <!-- <span class="brand-text font-weight-light">
             <img src="<?=$dirAsset?>/dist/img/logo-txt.png">
             </span> -->
             <span class="brand-text font-weight-light">FKP PORTAL</span>
         </a>
+        </center>
 
         <!-- Sidebar -->
     <div class="sidebar">
@@ -137,7 +140,7 @@ $dirAsset = Yii::$app->assetManager->getPublishedUrl('@student/assets/adminlte')
           <img src="<?=$dirAsset?>/dist/img/user.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Alexander Pierce</a>
+          <a href="#" class="d-block"><?=Yii::$app->user->identity->fullname?></a>
         </div>
       </div>
 

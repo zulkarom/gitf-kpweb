@@ -167,6 +167,8 @@ $menuItems = [
                     ],
 					
 					['label' => 'Students', 'icon' => 'users', 'url' => ['/students/student'], 'visible' => Yii::$app->user->can('students-manager')],
+
+					['label' => 'Postgraduate Students', 'icon' => 'users', 'url' => ['/postgrad/student-post-grad'], 'visible' => Yii::$app->user->can('postgrad-manager')],
 					
 					[
                         'label' => 'System Management',

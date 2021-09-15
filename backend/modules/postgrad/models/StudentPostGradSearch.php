@@ -11,6 +11,7 @@ use backend\modules\postgrad\models\StudentPostGrad;
  */
 class StudentPostGradSearch extends StudentPostGrad
 {
+    public $name;
     /**
      * {@inheritdoc}
      */
@@ -18,7 +19,7 @@ class StudentPostGradSearch extends StudentPostGrad
     {
         return [
             [['id', 'gender', 'marital_status', 'nationality', 'citizenship', 'edu_level', 'religion', 'race', 'session', 'sponsor', 'student_current_sem', 'city_campus', 'student_status'], 'integer'],
-            [['matric_no', 'nric', 'date_birth', 'prog_code', 'address', 'city', 'phone_no', 'personal_email', 'bachelor_name', 'university_name', 'bachelor_cgpa', 'bachelor_year', 'admission_year', 'admission_date_sem1'], 'safe'],
+            [['matric_no', 'nric', 'date_birth', 'prog_code', 'address', 'city', 'phone_no', 'personal_email', 'bachelor_name', 'university_name', 'bachelor_cgpa', 'bachelor_year', 'admission_year', 'admission_date_sem1', 'name'], 'safe'],
         ];
     }
 
@@ -40,7 +41,8 @@ class StudentPostGradSearch extends StudentPostGrad
      */
     public function search($params)
     {
-        $query = StudentPostGrad::find();
+        $query = StudentPostGrad::find()
+        ->joinWith('user');
 
         // add conditions that should always apply here
 
@@ -78,15 +80,7 @@ class StudentPostGradSearch extends StudentPostGrad
         $query->andFilterWhere(['like', 'matric_no', $this->matric_no])
             ->andFilterWhere(['like', 'nric', $this->nric])
             ->andFilterWhere(['like', 'prog_code', $this->prog_code])
-            ->andFilterWhere(['like', 'address', $this->address])
-            ->andFilterWhere(['like', 'city', $this->city])
-            ->andFilterWhere(['like', 'phone_no', $this->phone_no])
-            ->andFilterWhere(['like', 'personal_email', $this->personal_email])
-            ->andFilterWhere(['like', 'bachelor_name', $this->bachelor_name])
-            ->andFilterWhere(['like', 'university_name', $this->university_name])
-            ->andFilterWhere(['like', 'bachelor_cgpa', $this->bachelor_cgpa])
-            ->andFilterWhere(['like', 'bachelor_year', $this->bachelor_year])
-            ->andFilterWhere(['like', 'admission_year', $this->admission_year]);
+            ->andFilterWhere(['like', 'user.fullname', $this->name]);
 
         return $dataProvider;
     }

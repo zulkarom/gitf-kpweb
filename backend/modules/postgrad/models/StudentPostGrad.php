@@ -6,6 +6,7 @@ use Yii;
 use common\models\User;
 use common\models\Common;
 use common\models\Country;
+use backend\models\Semester;
 /**
  * This is the model class for table "student_pg".
  *
@@ -56,13 +57,13 @@ class StudentPostGrad extends \yii\db\ActiveRecord
         return [
             [['user_id', 'matric_no', 'nric', 'date_birth', 'gender', 'marital_status', 'nationality', 'citizenship', 'prog_code', 'edu_level', 'address', 'city', 'phone_no', 'personal_email', 'religion', 'race', 'bachelor_name', 'university_name', 'bachelor_cgpa', 'bachelor_year', 'session', 'admission_year', 'admission_date_sem1', 'sponsor', 'student_current_sem', 'city_campus', 'student_status'], 'required' , 'on' => 'create'],
 
+            [['date_birth', 'gender', 'marital_status', 'nationality', 'citizenship', 'prog_code', 'edu_level', 'address', 'city', 'phone_no', 'personal_email', 'religion', 'race', 'bachelor_name', 'university_name', 'bachelor_cgpa', 'bachelor_year', 'session', 'admission_year', 'admission_date_sem1', 'sponsor', 'student_current_sem', 'city_campus', 'student_status'], 'required' , 'on' => 'student_update'],
+
             [['personal_email'], 'email'],
 
              [['admission_year'], 'match' ,'pattern'=>'/^[0-9]+$/u', 'message'=> 'Tahun Kemasukan can contain only numeric characters.'],
 
              [['bachelor_year'], 'match' ,'pattern'=>'/^[0-9]+$/u', 'message'=> 'Tahun Sarjana Muda can contain only numeric characters.'],
-
-             [['bachelor_cgpa'], 'match' ,'pattern'=>'/^[0-9]+$/u', 'message'=> 'CGPA Sarjana Muda can contain only numeric characters.'],
 
             [['date_birth', 'admission_date_sem1'], 'safe'],
             [['gender', 'marital_status', 'nationality', 'citizenship', 'edu_level', 'religion', 'race', 'session', 'sponsor', 'student_current_sem', 'city_campus', 'student_status'], 'integer'],
@@ -117,6 +118,10 @@ class StudentPostGrad extends \yii\db\ActiveRecord
 
     public function getCountry(){
          return $this->hasOne(Country::className(), ['id' => 'nationality']);
+    }
+
+    public function getSemester(){
+         return $this->hasOne(Semester::className(), ['id' => 'session']);
     }
 
     public function getGenderText(){

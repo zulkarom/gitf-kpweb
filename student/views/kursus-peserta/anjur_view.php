@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\KursusPeserta */
+/* @var $model backend\modules\postgrad\models\KursusPeserta */
 
 $this->title = $model->kursus->kursus_name;
 $this->params['breadcrumbs'][] = ['label' => 'Pendaftaran Kursus', 'url' => ['index']];

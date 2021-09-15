@@ -4,10 +4,10 @@ namespace student\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\KursusAnjur;
+use backend\modules\postgrad\models\KursusAnjur;
 
 /**
- * KursusAnjurSearch represents the model behind the search form of `backend\models\KursusAnjur`.
+ * KursusAnjurSearch represents the model behind the search form of `backend\modules\postgrad\models\KursusAnjur`.
  */
 class KursusAnjurSearch extends KursusAnjur
 {

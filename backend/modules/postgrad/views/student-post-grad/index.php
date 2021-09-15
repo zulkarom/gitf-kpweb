@@ -26,6 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             [
+                'attribute' => 'name',
                 'label' => 'Name',
                 'value' => function($model){
                     return $model->user->fullname;
