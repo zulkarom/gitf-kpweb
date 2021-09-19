@@ -19,6 +19,7 @@ class Fk3
 	public $total_hour = 0;
 	public $offer = false;
 	public $cqi = false;
+	public $xana = false;
 	
 	public $wtab;
 	
@@ -300,7 +301,7 @@ $x=1;
 $gtotal = 0;
 $plo_num = $this->model->ploNumber;
 $clo_assess = $this->model->assessments;
-if($this->offer){
+if($this->xana){
 	$clo_achieve = $this->offer->cloSummary;
 }
 foreach($this->model->clos as $clo){
@@ -408,7 +409,7 @@ $html .='</td>';
 $html .='<td align="center">';
 $s=1;
 
-if($this->offer){
+if($this->xana){
 	if(array_key_exists($idx, $clo_achieve)){
 		$html .= $clo_achieve[$idx];
 	}
@@ -421,7 +422,7 @@ $html .='</td>';
 $html .='
 <td align="center">';
 $s=1;
-if($this->offer){
+if($this->xana){
 	if(array_key_exists($idx, $clo_achieve)){
 		$html .= $this->analysis($clo_achieve[$idx]);
 	}

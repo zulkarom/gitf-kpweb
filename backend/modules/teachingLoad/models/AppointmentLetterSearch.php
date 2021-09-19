@@ -45,13 +45,12 @@ class AppointmentLetterSearch extends AppointmentLetter
         $query = AppointmentLetter::find()
 		->joinWith('staffInvolved.staff.user')
 		->where(['semester_id' => $this->semester])->orderBy('user.fullname ASC');
-
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
 			'pagination' => [
-                'pageSize' => 200,
+                'pageSize' => 250,
             ],
 
         ]);

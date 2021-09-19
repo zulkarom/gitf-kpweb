@@ -4,12 +4,11 @@ namespace backend\modules\postgrad\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\modules\postgrad\models\StudentPostGrad;
 
 /**
  * StudentPostGradSearch represents the model behind the search form of `backend\modules\postgrad\models\StudentPostGrad`.
  */
-class StudentPostGradSearch extends StudentPostGrad
+class StudentPostGradSearch extends Student
 {
     public $name;
     /**
@@ -41,7 +40,7 @@ class StudentPostGradSearch extends StudentPostGrad
      */
     public function search($params)
     {
-        $query = StudentPostGrad::find()
+        $query = Student::find()
         ->joinWith('user');
 
         // add conditions that should always apply here

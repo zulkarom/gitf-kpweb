@@ -6,6 +6,7 @@ use Yii;
 use yii\db\Expression;
 use yii\web\Controller;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 use backend\models\Semester;
 use backend\models\SemesterForm;
 use yii\filters\AccessControl;
@@ -13,6 +14,7 @@ use backend\modules\teachingLoad\models\CourseOffered;
 use backend\modules\teachingLoad\models\StaffInvolved;
 use backend\modules\teachingLoad\models\StaffInvolvedSearch;
 use backend\modules\teachingLoad\models\AppointmentLetter;
+use backend\modules\teachingLoad\models\AppointmentLetterFile;
 use backend\modules\teachingLoad\models\AppointmentLetterSearch;
 use backend\modules\teachingLoad\models\GenerateReferenceForm  ;
 use common\models\UploadFile;
@@ -266,6 +268,41 @@ class StaffInvController extends Controller
             'dataProvider' => $dataProvider,
             'model' => $model,
         ]);
+    }
+    
+    public function actionDownloadAll($sem){
+        $archive_file_name='APPOINTMENT_LETTER.zip';
+        $zip = new \ZipArchive();
+        if ($zip->open($archive_file_name, \ZIPARCHIVE::CREATE )!==TRUE) {
+            exit("cannot open <$archive_file_name>\n");
+        }
+        $file_path = Yii::getAlias('@upload/temp/');
+        
+        $list = AppointmentLetter::find()
+        ->joinWith('staffInvolved.staff.user')
+        ->where(['semester_id' => $sem])->orderBy('user.fullname ASC')->all();
+        
+        if($list){
+            foreach($list as $s){
+                $pdf = new AppointmentLetterFile;
+                $pdf->model = $s;
+                $pdf->store = true;
+                $file_name = $pdf->generatePdf();
+                $zip->addFile($file_path.$file_name,$file_name);
+            }
+        }
+
+
+        
+        $zip->close();
+        //then send the headers to force download the zip file
+        header("Content-type: application/zip");
+        header("Content-Disposition: attachment; filename=$archive_file_name");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+        readfile("$archive_file_name");
+        exit;
+
     }
 
     public function actionApproveLetter()

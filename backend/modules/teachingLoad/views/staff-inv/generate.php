@@ -68,15 +68,23 @@ $form = ActiveForm::begin([
 
 </div>
 
-<div class="form-group">
+
+
+
+</div>
+</div>
+
+
+<div class="row">
+	<div class="col-md-6"><div class="form-group">
         
 <?= Html::submitButton('Generate Reference', ['class' => 'btn btn-warning', 'name'=> 'actiontype', 'value' => 'generate']) ?>
-    </div>
+    </div></div>
+	<div class="col-md-6" align="right"><div class="form-group">
+        
+<?= Html::a('<span class="glyphicon glyphicon-download-alt"></span> Download All', ['download-all', 'sem' => $semester->semester_id], ['class' => 'btn btn-danger', 'target' => '_blank']) ?>
+    </div></div>
 </div>
-</div>
-
-
-
 
 </div>
 </div>

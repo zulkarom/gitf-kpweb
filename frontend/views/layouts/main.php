@@ -72,13 +72,13 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@frontend/views/myas
 	<header class="header-section">
 		<div class="container">
 						<div class="row">
-				<div class="col-md-5 col-sm-12">
+				<div class="col-md-3 col-sm-12">
 					
-					<a href="http://fkp.umk.edu.my/index.cfm" class="site-logo"><img src="<?=$directoryAsset?>/img/logo.png" alt=""></a>
+					<a href="index.cfm" class="site-logo"><img src="http://infosys.umk.edu.my/public/logo.png" alt=""></a>
 					
 				</div>
 				<div class="col-md-7 col-sm-12">
-					<h2 style="font-family: &#39;Signika&#39;, sans-serif;font-size:18px;">
+					<h2 style="font-family: 'Signika', sans-serif;font-size:18px;">
 					<br>FACULTY OF ENTREPRENEURSHIP AND BUSINESS<br>
 					Universiti Malaysia Kelantan
 					</h2>
@@ -88,10 +88,11 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@frontend/views/myas
 				<i class="fa fa-bars"></i>
 			</div>
 			<div class="header-info">
-
 			</div>
 		</div>
 	</header>
+	
+	
 	<nav class="nav-section">
 		<div class="container">
 			<div class="nav-right">

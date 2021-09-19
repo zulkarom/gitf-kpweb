@@ -3,7 +3,7 @@
 namespace backend\modules\postgrad\controllers;
 
 use Yii;
-use backend\modules\postgrad\models\StudentPostGrad;
+use backend\modules\postgrad\models\Student;
 use backend\modules\postgrad\models\StudentPostGradSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -13,7 +13,7 @@ use common\models\User;
 /**
  * StudentPostGradController implements the CRUD actions for StudentPostGrad model.
  */
-class StudentPostGradController extends Controller
+class StudentController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -68,7 +68,7 @@ class StudentPostGradController extends Controller
      */
     public function actionCreate()
     {
-        $model = new StudentPostGrad();
+        $model = new Student();
         $modelUser = new User();
         $model->scenario = 'create';
         $modelUser->scenario = 'studPost';
@@ -152,12 +152,12 @@ class StudentPostGradController extends Controller
      * Finds the StudentPostGrad model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return StudentPostGrad the loaded model
+     * @return Student the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = StudentPostGrad::findOne($id)) !== null) {
+        if (($model = Student::findOne($id)) !== null) {
             return $model;
         }
 

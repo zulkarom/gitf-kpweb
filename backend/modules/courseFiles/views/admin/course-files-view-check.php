@@ -115,7 +115,7 @@ use backend\modules\courseFiles\models\Common;
 				echo 'The coordinator needs to select course version.';
 			}else{
 				echo '<ul>
-				<li><a href="'.Url::to(['/esiap/course/fk3', 'course'=> $offer->course_id, 'version' => $version, 'offer' => $offer->id]).'" target="_blank">FK03 - PENJAJARAN KONSTRUKTIF</a><br />
+				<li><a href="'.Url::to(['/esiap/course/fk3', 'course'=> $offer->course_id, 'version' => $version, 'offer' => $offer->id ,'xana' => 1]).'" target="_blank">FK03 - PENJAJARAN KONSTRUKTIF</a><br />
 				<i>(CLO achievement result)</i>
 				</li>
 				</ul>

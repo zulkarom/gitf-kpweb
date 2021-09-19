@@ -19,6 +19,7 @@ class AppointmentLetterFile
 	public $fontSize = 11;
 	public $en = false;
 	public $margin_left = 37;
+	public $store = false;
 	
 	public function generatePdf(){
 		
@@ -54,8 +55,16 @@ class AppointmentLetterFile
 		
 		// $this->pdf->AddPage("P");
 		// $this->writeTask();
-
-		$this->pdf->Output('surat-perlantikan.pdf', 'I');
+		$file_name = $this->model->staffInvolved->staff->user->fullname . '-' . $this->model->courseOffered->course->course_code;
+		$file_name = str_replace(['/', "\\", "'"],'', $file_name);
+		if($this->store){
+		    $path = Yii::getAlias('@upload/temp/');
+		    $this->pdf->Output($path . $file_name . '.pdf', 'F');
+		    return $file_name . '.pdf';
+		}else{
+		    $this->pdf->Output($file_name . '.pdf', 'I'); 
+		}
+        
 	}
 	
 	public function writeHeaderFooter(){

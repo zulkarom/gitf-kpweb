@@ -731,7 +731,10 @@ $this->pdf->lineFooterTable = false;
 		$f = basename($file);
 		$paste = 'images/temp/'. $f;
 		if($sign){
-			copy($file, $paste);
+		    if(is_file($file)){
+		        copy($file, $paste);
+		    }
+			
 		}
 		
 
@@ -817,8 +820,10 @@ EOD;
 			$file = Yii::getAlias('@upload/'. $sign);
 			$f = basename($file);
 			$paste = 'images/temp/'. $f;
+			if(is_file($file)){
+			    copy($file, $paste);
+			}
 			
-			copy($file, $paste);
 		}
 		
 

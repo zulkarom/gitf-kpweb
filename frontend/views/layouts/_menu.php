@@ -33,16 +33,7 @@ use dmstr\widgets\Alert;
 				    <a href="http://fkp.umk.edu.my/directory-webadmin.cfm">Web Admin</a>
 				  </div>
 				</div>
-				<div class="dropdown">
-				  <a href="http://fkp.umk.edu.my/research.cfm" class="dropbtn ">RESEARCH</a>
-				  <div class="dropdown-content">
-				    <a href="http://fkp.umk.edu.my/research-book.cfm">Publication Book</a>
-				    <a href="http://fkp.umk.edu.my/research-journal.cfm">Publication Journals</a>
-				    <a href="http://fkp.umk.edu.my/research-prosiding.cfm">Publication Prosiding</a>
-				    <a href="http://fkp.umk.edu.my/research-public.cfm">Public Publication</a>
-				    <a href="http://fkp.umk.edu.my/research-recognition.cfm">Recognition</a>
-				  </div>
-				</div>
+
 				<div class="dropdown">
 				  <a href="http://fkp.umk.edu.my/activity.cfm" class="dropbtn ">ACTIVITY</a>
 				  <div class="dropdown-content">
@@ -62,7 +53,7 @@ use dmstr\widgets\Alert;
 				  </div>
 				</div>
 				<div class="dropdown">
-				  <a href="http://unik19.com/" title="UMKPRENEUR" target="_blank" style="color:white;">UMKPRENEUR</a>
+				  <a href="#" title="UMKPRENEUR" target="_blank" style="color:white;">UMKPRENEUR</a>
 				</div>
 				<div class="dropdown">
 				  <a href="http://fkp.umk.edu.my/students.cfm" class="dropbtn ">STUDENTS</a>

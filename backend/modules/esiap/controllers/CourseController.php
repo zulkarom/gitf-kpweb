@@ -1627,15 +1627,22 @@ class CourseController extends Controller
 	
 	//---------TABLE 4 end--------------------
 	
-	public function actionFk3($course, $dev = false, $version = false, $offer = false, $cqi = false){
+	public function actionFk3($course, $dev = false, $version = false, $offer = false, $cqi = false, $xana = false){
 			
-			$pdf = new Fk3;
-			$pdf->model = $this->decideVersion($course, $dev, $version);
-			if($offer){
-				$pdf->offer = $this->findCourseOffered($offer);
-				$pdf->cqi = $cqi;
+		$pdf = new Fk3;
+		$pdf->model = $this->decideVersion($course, $dev, $version);
+		if($offer){
+			$pdf->offer = $this->findCourseOffered($offer);
+			if($cqi == 1){
+			   $pdf->cqi = true; 
 			}
-			$pdf->generatePdf();
+			if($xana == 1){
+			    $pdf->xana = true;
+			}
+			
+		}
+		$pdf->generatePdf();
+			
 	}
 	
 	protected function findCourseOffered($id){

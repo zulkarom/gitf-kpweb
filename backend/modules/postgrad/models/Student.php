@@ -39,14 +39,14 @@ use backend\models\Semester;
  * @property int $city_campus
  * @property int $student_status
  */
-class StudentPostGrad extends \yii\db\ActiveRecord
+class Student extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'student_pg';
+        return 'pg_student';
     }
 
     /**
