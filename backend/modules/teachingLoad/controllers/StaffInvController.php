@@ -317,6 +317,8 @@ class StaffInvController extends Controller
             exit;
         }else{
             echo 'dalam proses utk enable ZipArchive class';
+            die();
+            exit;
         }
         
 
