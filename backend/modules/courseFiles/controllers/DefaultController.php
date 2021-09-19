@@ -206,6 +206,41 @@ class DefaultController extends Controller
 		$offer = $this->findOffered($id);
 		$offer->setProgressCoordinator();
 		$offer->save();
+		
+		
+		if ($offer->load(Yii::$app->request->post())) {
+		    $course = $offer->course;
+		    
+		    
+		    if($offer->coorsign_file){
+		        if($offer->prg_overall == 1){
+		            if($offer->status == 0){
+		                $offer->status = 10;
+		                $offer->submitted_at = new Expression('NOW()');
+		            }else if($offer->status == 20){
+		                $offer->status = 40;
+		            }
+		            
+		            if($offer->save()){
+		                Yii::$app->session->addFlash('success', "The course file for ".$course->course_code ." ". $course->course_name ." has been successfully submitted.");
+		                return $this->redirect(['teaching-assignment']);
+		                
+		            }
+		        }else{
+		            Yii::$app->session->addFlash('error', "The progress of course file must be 100% in order to submit.");
+		            return $this->redirect(['coordinator-view', 'id' => $id]);
+		        }
+		    }else{
+		        Yii::$app->session->addFlash('error', "Kindly upload your signature");
+		        return $this->redirect(['coordinator-view', 'id' => $id]);
+		    }
+		    
+		    
+
+		}
+		    
+		
+		
 		return $this->render('coordinator-view', [
             'model' => $model,
             'modelOffer' => $offer,

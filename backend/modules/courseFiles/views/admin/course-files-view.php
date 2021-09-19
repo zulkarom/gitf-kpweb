@@ -82,7 +82,7 @@ if($modelOffer->auditor_file){
 echo $form->field($modelOffer, 'option_course')->dropDownList( [1 => 'YES' , 0 => 'NO'], ['prompt' => 'Please Select' ])->label('Reupdate Course Information');
 
 
-$modelOffer->status = 50;
+//$modelOffer->status = 50;
 echo $form->field($modelOffer, 'status')->dropDownList( $modelOffer->statusArray, ['prompt' => 'Please Select' ])->label('Status') ?>
 
 

@@ -588,7 +588,10 @@ $this->prepare_y = $this->pdf->getY();
 		$f = basename($file);
 		$paste = 'images/temp/'. $f;
 		if($sign){
-			copy($file, $paste);
+		    if (is_file($file)) {
+		        copy($file, $paste);
+		    }
+			
 		}
 		
 		$y = $this->prepare_y;
@@ -673,7 +676,10 @@ EOD;
 		$f = basename($file);
 		$paste = 'images/temp/'. $f;
 		if($sign){
-			copy($file, $paste);
+		    if(is_file($file)){
+		        copy($file, $paste);
+		    }
+			
 		}
 		
 		$y = $this->prepare_y;
@@ -776,8 +782,10 @@ $this->verify_y = $this->pdf->getY();
 			$file = Yii::getAlias('@upload/'. $sign);
 			$f = basename($file);
 			$paste = 'images/temp/'. $f;
+			if(is_file($file)){
+			    copy($file, $paste);
+			}
 			
-			copy($file, $paste);
 		}
 		
 
