@@ -5,11 +5,13 @@ namespace backend\modules\courseFiles\controllers;
 use Yii;
 use yii\web\Controller;
 use yii\filters\AccessControl;
+use yii\helpers\Json;
 use yii\db\Expression;
 use yii\web\NotFoundHttpException;
 use backend\models\Semester;
 use backend\modules\esiap\models\Course;
 use backend\modules\teachingLoad\models\CourseOffered;
+use common\models\UploadFile;
 
 
 /**
@@ -101,6 +103,65 @@ class CoordinatorController extends Controller
 		
 		//jadi kena cari offer id 
 		
+	}
+	
+	public function actionUploadFile($attr, $id){
+	    $attr = $this->clean($attr);
+	    $model = $this->findOffered($id);
+	    $model->file_controller = 'coordinator';
+	    
+	    $path = 'course-files/'.$model->semester_id.'/'.$model->course->course_code;
+	    
+	    return UploadFile::upload($model, $attr, 'updated_at', $path);
+	    
+	}
+	
+	protected function clean($string){
+	    $allowed = ['coorsign'];
+	    if(in_array($string,$allowed)){
+	        return $string;
+	    }
+	    throw new NotFoundHttpException('Invalid Attribute');
+	}
+	
+	public function actionDeleteFile($attr, $id)
+	{
+	    $attr = $this->clean($attr);
+	    $model = $this->findOffered($id);
+	    $attr_db = $attr . '_file';
+	    
+	    $file = Yii::getAlias('@upload/' . $model->{$attr_db});
+	    
+	    $model->scenario = $attr . '_delete';
+	    $model->{$attr_db} = '';
+	    $model->updated_at = new Expression('NOW()');
+	    if($model->save()){
+	        if (is_file($file)) {
+	            unlink($file);
+	            
+	        }
+	        
+	        return Json::encode([
+	            'good' => 1,
+	        ]);
+	    }else{
+	        return Json::encode([
+	            'errors' => $model->getErrors(),
+	        ]);
+	    }
+	    
+	    
+	    
+	}
+	
+	public function actionDownloadFile($attr, $id, $identity = true){
+	    $attr = $this->clean($attr);
+	    $model = $this->findOffered($id);
+	    $filename = 'COOR_SIGN_' . $model->course->course_code;
+	    
+	    
+	    
+	    UploadFile::download($model, $attr, $filename);
 	}
 	
 	

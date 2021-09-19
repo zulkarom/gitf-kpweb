@@ -65,6 +65,7 @@ class CourseOffered extends \yii\db\ActiveRecord
 	
 	public $auditor_instance;
 	public $verified_instance;
+	public $coorsign_instance;
 
     /**
      * {@inheritdoc}
@@ -142,6 +143,10 @@ class CourseOffered extends \yii\db\ActiveRecord
 			[['verified_file'], 'required', 'on' => 'verified_upload'],
             [['verified_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 2000000],
             [['updated_at'], 'required', 'on' => 'verified_delete'],
+            
+            [['coorsign_file'], 'required', 'on' => 'coorsign_upload'],
+            [['coorsign_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png', 'maxSize' => 2000000],
+            [['updated_at'], 'required', 'on' => 'coorsign_delete'],
 			
         ];
     }
@@ -177,6 +182,7 @@ class CourseOffered extends \yii\db\ActiveRecord
             'scriptlow3_file' => 'Scriptlow3 File',
 			'statusName' => 'Status',
 			'auditor_file' => 'Auditor\'s Report',
+            'coorsign_file' => 'Coordinator Signature',
         ];
     }
 	

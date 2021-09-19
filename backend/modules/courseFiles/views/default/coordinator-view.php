@@ -2,7 +2,9 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\widgets\ActiveForm;
 use backend\modules\courseFiles\models\Common;
+use common\models\UploadFile;
 
 
 /* @var $this yii\web\View */
@@ -54,8 +56,53 @@ $this->params['breadcrumbs'][] = 'View ';
 </div>
 
 <?php if(!Common::isDue($modelOffer->semesterDates->open_deadline) && in_array($modelOffer->status, [0,20])){ // draft & reupdate?>
-<div class="form-group">
-<a href="<?=Url::to(['submit-course-file', 'id' =>$modelOffer->id ])?>" class="btn btn-primary" data-confirm="Are you sure to submit this course file?">Submit Course File</a>
+
+<div class="box box-solid">
+<div class="box-body">
+
+
+<br />
+
+<?php 
+$form = ActiveForm::begin(); 
+
+$modelOffer->file_controller = 'coordinator';
+echo UploadFile::fileInput($modelOffer, 'coorsign', true)?>
+
+
+
+<div class="row">
+<div class="col-md-2">
+    <?= $form->field($modelOffer, 'coorsign_size')->textInput(['maxlength' => true, 'type' => 'number'
+                            ])->label('Adjust Size') ?>
+    </div>
+<div class="col-md-2">
+    <?= $form->field($modelOffer, 'coorsign_adj_y')->textInput(['maxlength' => true, 'type' => 'number'
+                            ])->label('Adjust Y') ?>
+    </div>
+
+</div>
+<i>
+* For the signature, use png format image with transparent background. You can click <a href="https://www.remove.bg/" target="_blank">Remove.bg</a> to easily remove background.<br />
+* Approximate size 200 x 100 (pixel).<br />
+* Increase Adjust Size to make the image bigger and vice versa.<br />
+* Increase Adjust Y Size to move the image upwards and vice versa. <br />
+</i>
+</div>
 </div>
 
-<?php } ?>
+
+<div class="form-group">
+<?=Html::submitButton('Submit Course File', ['class' => 'btn btn-primary'])?>
+</div>
+
+
+
+<?php 
+ActiveForm::end(); 
+    
+    }
+
+
+
+?>

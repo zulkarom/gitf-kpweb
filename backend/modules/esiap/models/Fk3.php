@@ -38,7 +38,12 @@ class Fk3
 		$this->improvement();
 		
 		$this->signiture();
-		$this->signiturePrepare();
+		if($this->offer && $this->offer->coorsign_file){
+			$this->signitureCoor();
+		}else{
+			$this->signiturePrepare();
+		}
+		
 		$this->signiture2();
 		
 		$this->signitureVerify();
@@ -573,8 +578,12 @@ $this->prepare_y = $this->pdf->getY();
 		if(Yii::$app->params['faculty_id'] != 1){
 			return false;
 		}
+		
+		
 		$sign = $this->model->preparedsign_file;
-
+		$adjy = $this->model->prepared_adj_y;
+		$adj_size = $this->model->prepared_size;
+		
 		$file = Yii::getAlias('@upload/'. $sign);
 		$f = basename($file);
 		$paste = 'images/temp/'. $f;
@@ -582,17 +591,13 @@ $this->prepare_y = $this->pdf->getY();
 			copy($file, $paste);
 		}
 		
-
 		$y = $this->prepare_y;
-		
-		
-		$adjy = $this->model->prepared_adj_y;
-		
+
 		$posY = $y  - $adjy - 44;
 		$this->pdf->setY($posY);
 		
 		
-		$size = 100 + ($this->model->prepared_size * 3);
+		$size = 100 + ($adj_size * 3);
 		if($size < 0){
 			$size = 10;
 		}
@@ -633,6 +638,91 @@ $this->prepare_y = $this->pdf->getY();
 		
 		$html .= $coor.'
 		<br /> Course Owner
+		<br /> '.$this->model->course->course_code.'
+		<br /> '.$this->model->course->course_name.'
+		<br /> '.$date ; 
+		
+		$html .= '</td>
+		
+		
+		
+		</tr>
+		
+		</table>';
+		
+		
+		$tbl = <<<EOD
+		$html
+EOD;
+		//$this->pdf->setY($this->prepare_y_start);
+		$this->pdf->writeHTML($tbl, true, false, false, false, '');
+	}
+	
+	
+	public function signitureCoor(){
+		if(Yii::$app->params['faculty_id'] != 1){
+			return false;
+		}
+		
+		
+		$sign = $this->offer->coorsign_file;
+		$adjy = $this->offer->coorsign_adj_y;
+		$adj_size = $this->offer->coorsign_size;
+		
+		$file = Yii::getAlias('@upload/'. $sign);
+		$f = basename($file);
+		$paste = 'images/temp/'. $f;
+		if($sign){
+			copy($file, $paste);
+		}
+		
+		$y = $this->prepare_y;
+
+		$posY = $y  - $adjy - 44;
+		$this->pdf->setY($posY);
+		
+		
+		$size = 100 + ($adj_size * 3);
+		if($size < 0){
+			$size = 10;
+		}
+		
+		$coor = '';
+		$date = '';
+		if($this->offer->coor){
+			$coor = $this->offer->coor->niceName;
+		}
+		if(!is_null($this->offer->submitted_at) and $this->offer->submitted_at != '0000-00-00 00:00:00'){
+			$date = date('d/m/Y', strtotime($this->offer->submitted_at));
+		}
+		
+		$col1 = 250;
+		$col_sign = 410 ;
+		$html = '<table>
+
+		<tr><td><br /><br /></td><td></td></tr>
+		<tr>
+		<td width="'. $col1 .'"></td>
+		
+		<td width="'.$col_sign .'">';
+		if($this->offer->coorsign_file){
+			if(is_file($file)){
+				$html .= '<img width="'.$size.'" src="images/temp/'.$f.'" />';
+			}
+		}
+		
+		$html .= '</td>
+
+		
+		</tr>
+		
+		<tr>
+		<td width="'. $col1 .'"></td>
+		
+		<td width="'.$col_sign .'">';
+		
+		$html .= $coor.'
+		<br /> Course Coordinator
 		<br /> '.$this->model->course->course_code.'
 		<br /> '.$this->model->course->course_name.'
 		<br /> '.$date ; 

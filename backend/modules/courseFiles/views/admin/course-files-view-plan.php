@@ -74,7 +74,7 @@ use backend\modules\courseFiles\models\Common;
 				echo 'The coordinator needs to select course version.';
 			}else{
 				echo '<ul>
-					<li><a href="'.Url::to(['/esiap/course/fk3', 'course'=> $offer->course_id, 'version' => $version, 'team' => $offer->id]).'" target="_blank">FK03 - PENJAJARAN KONSTRUKTIF</a></li>
+					<li><a href="'.Url::to(['/esiap/course/fk3', 'course'=> $offer->course_id, 'version' => $version, 'offer' => $offer->id]).'" target="_blank">FK03 - PENJAJARAN KONSTRUKTIF</a></li>
 					</ul>
 					';
 			}
