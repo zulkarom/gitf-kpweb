@@ -82,7 +82,8 @@ $form = ActiveForm::begin([
     </div></div>
 	<div class="col-md-6" align="right"><div class="form-group">
         
-<?= Html::a('<span class="glyphicon glyphicon-download-alt"></span> Download All', ['download-all', 'sem' => $semester->semester_id], ['class' => 'btn btn-danger', 'target' => '_blank']) ?>
+<?= Html::a('<span class="glyphicon glyphicon-download-alt"></span> Download (zip)', ['download-all', 'sem' => $semester->semester_id], ['class' => 'btn btn-danger', 'target' => '_blank']) ?> 
+<?php //= Html::a('<span class="glyphicon glyphicon-download-alt"></span> Download (combined)', ['download-combined', 'sem' => $semester->semester_id], ['class' => 'btn btn-danger', 'target' => '_blank']) ?>
     </div></div>
 </div>
 

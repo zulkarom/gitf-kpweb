@@ -20,6 +20,8 @@ class AppointmentLetterFile
 	public $en = false;
 	public $margin_left = 37;
 	public $store = false;
+	public $multiple = false;
+	public $modelMultiple;
 	
 	public function generatePdf(){
 		
@@ -65,6 +67,10 @@ class AppointmentLetterFile
 		    $this->pdf->Output($file_name . '.pdf', 'I'); 
 		}
         
+	}
+	
+	public function generateSingle(){
+	    
 	}
 	
 	public function writeHeaderFooter(){

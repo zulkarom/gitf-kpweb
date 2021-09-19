@@ -271,37 +271,54 @@ class StaffInvController extends Controller
     }
     
     public function actionDownloadAll($sem){
-        $archive_file_name='APPOINTMENT_LETTER.zip';
-        $zip = new \ZipArchive();
-        if ($zip->open($archive_file_name, \ZIPARCHIVE::CREATE )!==TRUE) {
-            exit("cannot open <$archive_file_name>\n");
-        }
-        $file_path = Yii::getAlias('@upload/temp/');
-        
-        $list = AppointmentLetter::find()
-        ->joinWith('staffInvolved.staff.user')
-        ->where(['semester_id' => $sem])->orderBy('user.fullname ASC')->all();
-        
-        if($list){
-            foreach($list as $s){
-                $pdf = new AppointmentLetterFile;
-                $pdf->model = $s;
-                $pdf->store = true;
-                $file_name = $pdf->generatePdf();
-                $zip->addFile($file_path.$file_name,$file_name);
+        if(class_exists('\ZipArchive')){
+            $archive_file_name='APPOINTMENT_LETTER2.zip';
+            $zip = new \ZipArchive();
+            if ($zip->open($archive_file_name, \ZIPARCHIVE::CREATE )!==TRUE) {
+                exit("cannot open <$archive_file_name>\n");
             }
+            $file_path = Yii::getAlias('@upload/temp/');
+            
+            $list = AppointmentLetter::find()->alias('a')
+            ->joinWith('staffInvolved.staff.user')
+            ->where(['a.status' => 10, 'semester_id' => $sem])->orderBy('user.fullname ASC')->all();
+            
+            if($list){
+                foreach($list as $s){
+                    if($s->manual_file){
+                        $file_name = $s->staffInvolved->staff->user->fullname . '-' . $s->courseOffered->course->course_code . '.pdf';
+                        
+                        $attr_db = 'manual_file';
+                        $file = Yii::getAlias('@upload/' . $s->{$attr_db});
+                        if($s->{$attr_db}){
+                            if (file_exists($file)) {
+                                $zip->addFile($file,$file_name);
+                            }
+                        }
+                        
+                    }else{
+                        $pdf = new AppointmentLetterFile;
+                        $pdf->model = $s;
+                        $pdf->store = true;
+                        $file_name = $pdf->generatePdf();
+                        $zip->addFile($file_path.$file_name,$file_name);
+                    }
+                    
+                }
+            }
+            
+            $zip->close();
+            //then send the headers to force download the zip file
+            header("Content-type: application/zip");
+            header("Content-Disposition: attachment; filename=$archive_file_name");
+            header("Pragma: no-cache");
+            header("Expires: 0");
+            readfile("$archive_file_name");
+            exit;
+        }else{
+            echo 'dalam proses utk enable ZipArchive class';
         }
-
-
         
-        $zip->close();
-        //then send the headers to force download the zip file
-        header("Content-type: application/zip");
-        header("Content-Disposition: attachment; filename=$archive_file_name");
-        header("Pragma: no-cache");
-        header("Expires: 0");
-        readfile("$archive_file_name");
-        exit;
 
     }
 
