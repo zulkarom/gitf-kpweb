@@ -56,12 +56,16 @@ class AttendanceSummary
 			<td width="'.$matrik.'"  style="line-height: 250%;"><b>  Matric No</b></td>
 			<td width="'.$name.'" style="line-height: 250%;"><b>  Student Name</b></td>
 			';
+
+		
 			$attendance = json_decode($this->model->attendance_header);
 			if($attendance){
 				foreach($attendance as $attend){
 				$html .= '<td width="'.$box.'" style="line-height: 250%;" align="center"><b>'.date('d-m', strtotime($attend)) .'</b></td>';
 				
 				}
+			}else{
+			        $html .= '<td width="'.$box.'" style="line-height: 250%;" align="center"></td>';
 			}
 			
 		
@@ -87,8 +91,46 @@ class AttendanceSummary
 						</table>
 						</td>
 						';
-						$attendance = json_decode($student->attendance_check);
-						if($attendance){
+						
+						$attendance = [];
+						if($student->attendance_check){
+						    $attendance = json_decode($student->attendance_check);
+						}
+						
+						$column = [1];
+						if($this->model->attendance_header){
+						    $column = json_decode($this->model->attendance_header);
+						}
+						
+						$count_total = count($column);
+						//echo $count_total; die();
+						$count = 0;
+						if($column){
+						    foreach($column as $idx => $col){
+						        if(array_key_exists($idx, $attendance)){
+						            $attend = $attendance[$idx];
+						            if($attend == 1){
+						                $hadir = '<b style="font-size:14px;color:#1b3110"><span style="font-family:zapfdingbats;">3</span></b>';
+						                $count++;
+						            }else if($attend == -1){
+						                $hadir = '';
+						            }else{
+						                $hadir = '';
+						            }
+						            
+						            $html .= '<td width="'.$box.'" style="line-height: 250%;" align="center"><b>'.$hadir .'</b></td>';
+						        }else{
+						            $html .= '<td width="'.$box.'" style="line-height: 250%;" align="center"></td>';
+						        }
+						        
+						    }
+						    $percentage = ($count / $count_total)*100;
+						    $html .= '<td style="height: 27px;" width="'.$bil.'"  align="center">'.round($percentage).'%</td></tr>';
+						}
+						
+						
+						
+						/* if($attendance){
 							$count = 0;
 							foreach($attendance as $attend){
 								// $res = $this->response->attend[$col->id]->students[$row->id]->status;
@@ -108,8 +150,7 @@ class AttendanceSummary
 							}
 							$percentage = ($count / 14)*100;
 							$html .= '<td style="height: 27px;" width="'.$bil.'"  align="center">'.round($percentage).'%</td></tr>';
-						}
-						else{
+						}else{
 							$column = json_decode($this->model->attendance_header);
 							if($column){
 								foreach($column as $col){
@@ -117,7 +158,7 @@ class AttendanceSummary
 								}
 								$html .= '<td style="height: 27px;" width="'.$bil.'"  align="center"></td></tr>';
 							}
-						}
+						} */
 						
 					$x++;
 				}
