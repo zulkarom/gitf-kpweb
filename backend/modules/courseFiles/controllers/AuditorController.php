@@ -80,12 +80,14 @@ class AuditorController extends Controller
 
     public function actionCourseFilesView($id)
     {
+        //kena check ada access tak
         $model = new Checklist();
         $modelOffer = $this->findModel($id);  
 		$modelOffer->scenario = 'audit';
+		$version = CourseVersion::findOne($modelOffer->course_version);
+		$old_status = $modelOffer->status;
 		
 		if ($modelOffer->load(Yii::$app->request->post())) {
-			$valid = true;
 			if($modelOffer->option_review == 30 and $modelOffer->option_course == 1){
 				Yii::$app->session->addFlash('error', "Input not valid");
 			}else{
@@ -94,30 +96,46 @@ class AuditorController extends Controller
 					$modelOffer->status = $modelOffer->option_review;
 						if($modelOffer->status == 30){
 							$modelOffer->reviewed_at = new Expression('NOW()');
-						}
-					//20 reupdate //30 complete
-					if($modelOffer->option_course == 1){
-						$version = CourseVersion::findOne($modelOffer->course_version);
-						if($version){
-							$version->status = 0;
-							if($version->save()){
-								$modelOffer->prg_crs_ver = 0.5;
-							}else{
-								$version->flashError();
-							}
-						}else{
-							Yii::$app->session->addFlash('error', "Course version not found");
+						}else if($modelOffer->status == 20){
+						    if($old_status == 0){
+						        $modelOffer->status == 0;
+						    }
 						}
 						
+					//20 reupdate //30 complete
+					if($modelOffer->option_course == 1){
+					    $modelOffer->prg_crs_ver = 0.5;
+					    //kena check klu dah verified tak boleh tukar
+					    if($version){
+					        
+					        if($version->status < 20){ // klu belum verified
+					            
+					            $version->status = 0;
+					            if($version->save()){
+					                
+					            }else{
+					                $version->flashError();
+					            }
+					        }
+					        
+					    }else{
+					        Yii::$app->session->addFlash('error', "Course version not found");
+					    }
+						
+						
+					}else{
+					    $modelOffer->prg_crs_ver = 1;
 					}
+					
 					$modelOffer->is_audited = 1;
+					$modelOffer->audit_freq++;
 					$modelOffer->reviewed_at = new Expression('NOW()');
 					$modelOffer->save();
 					Yii::$app->session->addFlash('success', "Audit Report Submitted");
 					return $this->redirect(['index']);
 					
 				}else{
-					Yii::$app->session->addFlash('error', "Please update auditor report");
+					Yii::$app->session->addFlash('error', "Please upload auditor report");
 				}
 			}
 			
@@ -126,6 +144,7 @@ class AuditorController extends Controller
         return $this->render('course-files-view', [
             'model' => $model,
             'modelOffer' => $modelOffer,
+            'version' => $version
         ]);
     }
 

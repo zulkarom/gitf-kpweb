@@ -87,7 +87,7 @@ class CourseOffered extends \yii\db\ActiveRecord
 			
 			[['option_course', 'option_review'], 'required', 'on' => 'audit'],
 			
-            [['semester_id', 'course_id', 'total_students', 'max_lec', 'max_tut', 'created_by', 'coordinator', 'course_version', 'material_version',  'na_cont_rubrics', 'na_script_final', 'coor_access', 'option_course', 'option_review', 'status'], 'integer'],
+            [['semester_id', 'course_id', 'total_students', 'max_lec', 'max_tut', 'created_by', 'coordinator', 'course_version', 'material_version',  'na_cont_rubrics', 'na_script_final', 'coor_access', 'option_course', 'option_review', 'status', 'audit_freq'], 'integer'],
 			
             [['created_at', 'courses'], 'safe'],
 			
@@ -183,6 +183,7 @@ class CourseOffered extends \yii\db\ActiveRecord
 			'statusName' => 'Status',
 			'auditor_file' => 'Auditor\'s Report',
             'coorsign_file' => 'Coordinator Signature',
+            'audit_freq' => 'Number of Completed Audit'
         ];
     }
 	

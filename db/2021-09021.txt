@@ -1,0 +1,3 @@
+ALTER TABLE `tld_course_offered` ADD `audit_freq` TINYINT(4) NOT NULL DEFAULT '0' AFTER `is_audited`;
+
+ALTER TABLE `cf_date` ADD `audit_session` TINYINT(1) NOT NULL DEFAULT '1' AFTER `audit_deadline`;

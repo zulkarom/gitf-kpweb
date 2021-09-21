@@ -58,9 +58,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
 </div>
 
-<?php 
-if($modelOffer->status == 0 or $modelOffer->status == 10){
-	?>
+<?php
+//status draft / submit & resubmit
+if($modelOffer->status < 50){ ?>
 	
 <?php $form = ActiveForm::begin(); ?>
 
@@ -104,11 +104,9 @@ echo Html::submitButton('Submit Audit Review',
 </div>
 
 
-
-
-    <?php ActiveForm::end(); ?>
+<?php ActiveForm::end(); ?>
 	
-	<?php
+<?php
 }
 }
 ?>
