@@ -24,6 +24,7 @@ $dirAsset = Yii::$app->assetManager->getPublishedUrl('@student/assets/adminlte')
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
+    <link rel="icon" type="image/x-icon" href="<?=$dirAsset?>/images/umkicon.png" />
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
       <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
@@ -42,7 +43,7 @@ $dirAsset = Yii::$app->assetManager->getPublishedUrl('@student/assets/adminlte')
                 <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars"></i></a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="index3.html" class="nav-link">Home</a>
+                <a href="<?=Url::to(['/'])?>" class="nav-link">Home</a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
                 <a href="#" class="nav-link">Contact</a>
@@ -81,7 +82,7 @@ $dirAsset = Yii::$app->assetManager->getPublishedUrl('@student/assets/adminlte')
             </li>
             <li class="nav-item dropdown user-menu">
         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-          <img src="<?=$dirAsset?>/dist/img/user.png" class="user-image img-circle elevation-2" alt="User Image">
+          <img src="<?=$dirAsset?>/dist/img/user.png" class="user-image img-circle" alt="User Image">
           <span class="d-none d-md-inline"></span>
         </a>
         <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
@@ -119,16 +120,16 @@ $dirAsset = Yii::$app->assetManager->getPublishedUrl('@student/assets/adminlte')
     <!-- /.navbar -->
 
     <!-- Main Sidebar Container -->
-    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <aside class="main-sidebar sidebar-dark-primary" style="background-color: #020031!important">
         <!-- Brand Logo -->
         <center>
-        <a href="index3.html" class="brand-link">
+        <a href="<?=Url::to(['/'])?>" class="brand-link">
             <!-- <img src="<?=$dirAsset?>/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8"> -->
             <!-- <span class="brand-text font-weight-light">AdminLTE 3</span> -->
             <!-- <span class="brand-text font-weight-light">
             <img src="<?=$dirAsset?>/dist/img/logo-txt.png">
             </span> -->
-            <span class="brand-text font-weight-light">FKP PORTAL</span>
+            <span class="brand-text font-weight-bold">FKP STUDENTS</span>
         </a>
         </center>
 
@@ -215,11 +216,9 @@ $dirAsset = Yii::$app->assetManager->getPublishedUrl('@student/assets/adminlte')
     <!-- Main Footer -->
     <footer class="main-footer">
         <!-- To the right -->
-        <div class="float-right d-none d-sm-inline">
-            <?= Yii::powered() ?>
-        </div>
+  
         <!-- Default to the left -->
-        <strong>&copy; My Company <?= date('Y') ?></strong> All rights reserved.
+        <strong>&copy; FKP Student Portal <?= date('Y') ?></strong> All rights reserved.
     </footer>
 
 </div>

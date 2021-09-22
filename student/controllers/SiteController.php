@@ -1,17 +1,10 @@
 <?php
 namespace student\controllers;
 
-use frontend\models\SignupForm;
 use Yii;
-use yii\web\NotFoundHttpException;
 use yii\web\Controller;
 use yii\filters\AccessControl;
-use yii\db\Expression;
-use backend\modules\conference\models\Conference;
-use backend\modules\conference\models\ConfRegistration;
-use confsite\models\ConferenceSearch;
-use confsite\models\LoginForm;
-use common\models\UploadFile;
+use student\models\LoginForm;
 
 
 
@@ -31,11 +24,11 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'index', 'error', 'register'],
+                        'actions' => ['login', 'error', 'register'],
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'member', 'error'],
+                        'actions' => ['index', 'logout', 'member', 'error'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -57,6 +50,16 @@ class SiteController extends Controller
             ]
         ];
     }
+    
+    public function beforeAction($action) {
+        if (parent::beforeAction($action)) {
+            // change layout for error action
+            if ($action->id=='error') $this->layout ='error';
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     /**
      * Displays homepage.
@@ -65,6 +68,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+
        return $this->render('index');
         
     }
@@ -94,7 +98,7 @@ class SiteController extends Controller
     {
         Yii::$app->user->logout();
         
-        return $this->redirect(['/user/login']);
+        return $this->redirect(['/site/login']);
     }
 	
 

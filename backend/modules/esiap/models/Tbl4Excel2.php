@@ -1785,7 +1785,7 @@ Independent Learning
 
 
 		$this->sheet
-			->setCellValue('D' . $line1, "Continous Assessement")
+			->setCellValue('D' . $line1, "Continuous Assessement")
 			->setCellValue('K' . $line1 , '%')
 			->setCellValue('M' . $line1 , 'Face-to-Face (F2F)')
 			->setCellValue('U' . $line1 , 'NF2F

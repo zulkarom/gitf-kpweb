@@ -14,8 +14,8 @@ $this->params['breadcrumbs'][] = ['label' => 'Pendaftaran Kursus', 'url' => ['in
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="box">
-<div class="box-body">
+<div class="card">
+<div class="card-body"> 
 <div class="kursus-anjur-index">
 
     <?= GridView::widget([
@@ -73,4 +73,4 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
         ],
     ]); ?>
-</div>
+</div></div></div>

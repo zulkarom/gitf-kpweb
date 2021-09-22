@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\helpers\Url;
-use yii\bootstrap\Modal;
+use yii\bootstrap4\Modal;
 
 /* @var $this yii\web\View */
 /* @var $searchModel student\models\KursusPesertaSearch */
@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php echo Html::button('Daftar Kursus', ['value' => Url::to(['create']), 'class' => 'btn btn-success', 'id' => 'modalBttnKursus']);
     
         Modal::begin([
-            'header' => '<h4>Lihat Kursus Kategori</h4>',
+            'title' => '<h4>Lihat Kursus Kategori</h4>',
             'id' =>'createKursus',
             'size' => 'modal-lg'
         ]);
@@ -40,8 +40,8 @@ $this->params['breadcrumbs'][] = $this->title;
     ?>
 </p>
 
-<div class="box">
-<div class="box-body">
+<div class="card">
+<div class="card-body"> 
 <div class="kursus-peserta-index">
 
     <?= GridView::widget([
@@ -86,4 +86,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
         ],
     ]); ?>
+</div>
+</div>
 </div>

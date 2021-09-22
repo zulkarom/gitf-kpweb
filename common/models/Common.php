@@ -119,6 +119,10 @@ class Common {
 		return [1 => 'Berkahwin', 2 => 'Tidak Berkahwin'];
 	}
 	
+	public static function marital2(){
+	    return [1 => 'Berkahwin', 2 => 'Bujang'];
+	}
+	
 	public static function citizen(){
 		return ['Malaysia' => 'Malaysia', 'Bukan Malaysia' => 'Bukan Malaysia'];
 	}
@@ -131,13 +135,10 @@ class Common {
 		return [1 => 'Ya', 0 => 'Tidak'];
 	}
 	
-	public static function eduLevel(){
+	public static function studyMode(){
 		return [1 => 'Sepenuh Masa', 2 => 'Separuh Masa'];
 	}
 
-	public static function sponsor(){
-		return [1 => 'Pembiayaan Sendiri', 2 => 'Tajaan'];
-	}
 	
 	public static function race(){
 		return [1 => 'Malay', 2 => 'Chinese', 3 => 'Indian' , 4 => 'Others'];
@@ -151,9 +152,7 @@ class Common {
 		return [1 => 'Active', 0 => 'Not Active'];
 	}
 
-	public static function marital2(){
-		return [1 => 'Bujang', 2 => 'Berkahwin'];
-	}
+	
 
 	public static function statusKursus(){
 	    return [10 => 'Submit', 20 => 'Paid', 30 => 'Complete', 40 => 'Reject'];

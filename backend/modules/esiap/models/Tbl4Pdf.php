@@ -936,7 +936,7 @@ $this->html .= $html;
 		$html = '<tr align="center">
 	
 	
-		<td width="'.$this->col_topic.'" '.$style_head .' colspan="7" rowspan="2">Continous Assessement</td>
+		<td width="'.$this->col_topic.'" '.$style_head .' colspan="7" rowspan="2">Continuous Assessement</td>
 		<td width="'.$this->col_clo.'" '.$style_head.' colspan="2" rowspan="2">%</td>
 
 		<td width="'.$this->col_f2f.'" '.$this->shade_light.' colspan="8">Face-to-Face (F2F)</td>

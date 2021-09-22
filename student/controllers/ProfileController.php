@@ -3,7 +3,7 @@
 namespace student\controllers;
 
 use Yii;
-use backend\modules\postgrad\models\StudentPostGrad;
+use backend\modules\postgrad\models\Student;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -74,7 +74,7 @@ class ProfileController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = StudentPostGrad::findOne($id)) !== null) {
+        if (($model = Student::findOne($id)) !== null) {
             return $model;
         }
 

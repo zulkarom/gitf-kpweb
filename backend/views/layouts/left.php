@@ -140,6 +140,11 @@ $menuItems = [
                    // ['label' => 'Program Management', 'icon' => 'mortar-board', 'url' => ['/esiap/program'],],
 					
 					['label' => 'e-RPD', 'icon' => 'flask', 'url' => ['/erpd'],],	
+    
+    
+    ['label' => 'Postgraduate', 'icon' => 'users', 'url' => ['/postgrad/student'], 'visible' => Yii::$app->user->can('postgrad-manager')],
+    
+    ['label' => 'Students', 'icon' => 'users', 'url' => ['/students/student'], 'visible' => Yii::$app->user->can('students-manager')],
 					
 					['label' => 'eAduan', 'icon' => 'comments', 'url' => ['/aduan'],],
 					
@@ -166,9 +171,9 @@ $menuItems = [
                         ],
                     ],
 					
-					['label' => 'Students', 'icon' => 'users', 'url' => ['/students/student'], 'visible' => Yii::$app->user->can('students-manager')],
+					
 
-					['label' => 'Postgraduate Students', 'icon' => 'users', 'url' => ['/postgrad/student-post-grad'], 'visible' => Yii::$app->user->can('postgrad-manager')],
+					
 					
 					[
                         'label' => 'System Management',

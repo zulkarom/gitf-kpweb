@@ -19,8 +19,8 @@ use backend\models\Semester;
  * @property int $marital_status
  * @property int $nationality
  * @property int $citizenship
- * @property string $prog_code
- * @property int $edu_level
+ * @property string $program_code
+ * @property int $study_mode
  * @property string $address
  * @property string $city
  * @property string $phone_no
@@ -28,16 +28,16 @@ use backend\models\Semester;
  * @property int $religion
  * @property int $race
  * @property string $bachelor_name
- * @property string $university_name
+ * @property string $bachelor_university
  * @property string $bachelor_cgpa
  * @property string $bachelor_year
- * @property int $session
+ * @property int $admission_semester
  * @property string $admission_year
- * @property string $admission_date_sem1
+ * @property string $admission_date
  * @property int $sponsor
- * @property int $student_current_sem
- * @property int $city_campus
- * @property int $student_status
+ * @property int $current_sem
+ * @property int $campus_id
+ * @property int $status
  */
 class Student extends \yii\db\ActiveRecord
 {
@@ -55,21 +55,23 @@ class Student extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'matric_no', 'nric', 'date_birth', 'gender', 'marital_status', 'nationality', 'citizenship', 'prog_code', 'edu_level', 'address', 'city', 'phone_no', 'personal_email', 'religion', 'race', 'bachelor_name', 'university_name', 'bachelor_cgpa', 'bachelor_year', 'session', 'admission_year', 'admission_date_sem1', 'sponsor', 'student_current_sem', 'city_campus', 'student_status'], 'required' , 'on' => 'create'],
+            [['user_id', 'matric_no', 'nric', 'date_birth', 'gender', 'marital_status', 'nationality', 'citizenship', 'program_code', 'study_mode', 'address', 'city', 'phone_no', 'personal_email', 'religion', 'race', 'bachelor_name', 'bachelor_university', 'bachelor_cgpa', 'bachelor_year', 'admission_semester', 'admission_year', 'admission_date', 'sponsor', 'current_sem', 'campus_id', 'status'], 'required' , 'on' => 'create'],
 
-            [['date_birth', 'gender', 'marital_status', 'nationality', 'citizenship', 'prog_code', 'edu_level', 'address', 'city', 'phone_no', 'personal_email', 'religion', 'race', 'bachelor_name', 'university_name', 'bachelor_cgpa', 'bachelor_year', 'session', 'admission_year', 'admission_date_sem1', 'sponsor', 'student_current_sem', 'city_campus', 'student_status'], 'required' , 'on' => 'student_update'],
+            [['date_birth', 'gender', 'marital_status', 'nationality', 'citizenship', 'program_code', 'study_mode', 'address', 'city', 'phone_no', 'personal_email', 'religion', 'race', 'bachelor_name', 'bachelor_university', 'bachelor_cgpa', 'bachelor_year', 'admission_semester', 'admission_year', 'admission_date', 'sponsor', 'current_sem', 'campus_id', 'status'], 'required' , 'on' => 'student_update'],
 
             [['personal_email'], 'email'],
+            
+            [['matric_no'], 'unique'],
 
              [['admission_year'], 'match' ,'pattern'=>'/^[0-9]+$/u', 'message'=> 'Tahun Kemasukan can contain only numeric characters.'],
 
              [['bachelor_year'], 'match' ,'pattern'=>'/^[0-9]+$/u', 'message'=> 'Tahun Sarjana Muda can contain only numeric characters.'],
 
-            [['date_birth', 'admission_date_sem1'], 'safe'],
-            [['gender', 'marital_status', 'nationality', 'citizenship', 'edu_level', 'religion', 'race', 'session', 'sponsor', 'student_current_sem', 'city_campus', 'student_status'], 'integer'],
+            [['date_birth', 'admission_date'], 'safe'],
+            [['gender', 'marital_status', 'nationality', 'citizenship', 'study_mode', 'religion', 'race', 'admission_semester', 'current_sem', 'campus_id', 'status'], 'integer'],
             [['matric_no', 'nric'], 'string', 'max' => 20],
-            [['address', 'city', 'personal_email', 'bachelor_name', 'university_name'], 'string', 'max' => 225],
-            [['prog_code', 'bachelor_cgpa'], 'string', 'max' => 10],
+            [['address', 'city', 'personal_email', 'bachelor_name', 'bachelor_university', 'sponsor'], 'string', 'max' => 225],
+            [['program_code', 'bachelor_cgpa'], 'string', 'max' => 10],
             [['phone_no'], 'string', 'max' => 50],
             [['bachelor_year', 'admission_year'], 'string', 'max' => 4],
         ];
@@ -90,8 +92,8 @@ class Student extends \yii\db\ActiveRecord
             'marital_status' => 'Taraf Perkahwinan',
             'nationality' => 'Negara Asal',
             'citizenship' => 'Kewarganegaraan',
-            'prog_code' => 'Kod Program',
-            'edu_level' => 'Taraf Pengajian',
+            'program_code' => 'Kod Program',
+            'study_mode' => 'Taraf Pengajian',
             'address' => 'Alamat',
             'city' => 'Daerah',
             'phone_no' => 'No. Telefon',
@@ -99,16 +101,16 @@ class Student extends \yii\db\ActiveRecord
             'religion' => 'Agama',
             'race' => 'Bangsa',
             'bachelor_name' => 'Nama Sarjana Muda',
-            'university_name' => 'Universiti Sarjana Muda',
+            'bachelor_university' => 'Universiti Sarjana Muda',
             'bachelor_cgpa' => 'CGPA Sarjana Muda',
             'bachelor_year' => 'Tahun Sarjana Muda',
-            'session' => 'Sesi Masuk',
+            'admission_semester' => 'Sesi Masuk',
             'admission_year' => 'Tahun Kemasukan',
-            'admission_date_sem1' => 'Tahun Kemasukan Semester 1',
+            'admission_date' => 'Tahun Kemasukan Semester 1',
             'sponsor' => 'Pembiayaan Sendiri / Tajaan',
-            'student_current_sem' => 'Semester Semasa Pelajar',
-            'city_campus' => 'Kampus',
-            'student_status' => 'Status Pelajar',
+            'current_sem' => 'Semester Semasa Pelajar',
+            'campus_id' => 'Kampus',
+            'status' => 'Status Pelajar',
         ];
     }
 
@@ -121,11 +123,11 @@ class Student extends \yii\db\ActiveRecord
     }
 
     public function getSemester(){
-         return $this->hasOne(Semester::className(), ['id' => 'session']);
+         return $this->hasOne(Semester::className(), ['id' => 'admission_semester']);
     }
 
     public function getGenderText(){
-        if($this->gender > 0){
+        if($this->gender >= 0){
             return Common::gender()[$this->gender];
         }else{
             return '';
@@ -141,16 +143,16 @@ class Student extends \yii\db\ActiveRecord
     }
 
     public function getStdStatusText(){
-        if($this->student_status > 0){
-            return Common::studentStatus()[$this->student_status];
+        if($this->status > 0){
+            return Common::studentStatus()[$this->status];
         }else{
             return '';
         }
     }
 
-    public function getEduLvlText(){
-        if($this->edu_level > 0){
-            return Common::eduLevel()[$this->edu_level];
+    public function getStudyModeText(){
+        if($this->study_mode > 0){
+            return Common::studyMode()[$this->study_mode];
         }else{
             return '';
         }
@@ -180,13 +182,7 @@ class Student extends \yii\db\ActiveRecord
         }
     }
 
-    public function getSponsorText(){
-        if($this->sponsor > 0){
-            return Common::sponsor()[$this->sponsor];
-        }else{
-            return '';
-        }
-    }
+
 
     public function flashError(){
         if($this->getErrors()){

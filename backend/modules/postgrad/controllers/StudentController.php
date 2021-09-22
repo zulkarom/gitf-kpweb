@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
 use common\models\User;
+use student\models\StudentData;
 
 /**
  * StudentPostGradController implements the CRUD actions for StudentPostGrad model.
@@ -47,6 +48,109 @@ class StudentController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+    
+    public function actionImport41rh23dfgpqjh4uy32(){
+        $list = StudentData::find()->all();
+        foreach($list as $stud){
+            //lets create user first 
+            //how? 
+            //check whether email  exist
+            $student = new Student();
+            
+            $email = $stud->EMEL_PELAJAR;
+            $exist = User::findOne(['email' => $email]);
+            if($exist){
+                $user = $exist;
+               
+            }else{
+                $user = new User();
+                $user->username = $stud->NO_MATRIK;
+                $random = rand(30,30000);
+                $user->password_hash = \Yii::$app->security->generatePasswordHash($random);
+
+                $user->email = $email;
+                
+            }
+            $user->fullname = $stud->NAMA_PELAJAR;
+            $user->status = 10;
+            if($user->save()){
+                //for student data
+                $student->user_id = $user->id;
+                $student->matric_no = $stud->NO_MATRIK;
+                $student->nric = $stud->NO_IC;
+                $student->date_birth = date('Y-m-d', strtotime($stud->TARIKH_LAHIR));
+                if($stud->TARAF_PERKAHWINAN == 'Berkahwin'){
+                    $student->marital_status = 1;
+                }else{
+                    $student->marital_status = 2;
+                }
+                
+                if($stud->JANTINA == 'LELAKI'){
+                    $student->gender = 1;
+                }else{
+                    $student->gender = 0;
+                }
+                
+                if($stud->NEGARA_ASAL == 'Malaysia'){
+                    $student->nationality = 158;
+                }else if($stud->NEGARA_ASAL == 'Pakistan'){
+                    $student->nationality = 178;
+                }else{
+                    $student->nationality = 0;
+                }
+                
+                if($stud->KEWARGANEGARAAN == 'Tempatan'){
+                    $student->citizenship = 1;
+                }else{
+                    $student->citizenship = 2;
+                }
+                
+                $student->program_code = $stud->KOD_PROGRAM;
+                
+                if($stud->TARAF_PENGAJIAN == 'Penuh Masa'){
+                    $student->study_mode = 1;
+                }else{
+                    $student->study_mode = 2;
+                }
+                
+                $student->address = $stud->ALAMAT;
+                $student->city = $stud->DAERAH;
+                $student->phone_no = $stud->NO_TELEFON;
+                $student->personal_email = $stud->EMEL_PERSONAL;
+                $student->religion = 1;
+                $student->race = 1;
+                $student->bachelor_name = $stud->NAMA_SARJANA_MUDA;
+                $student->bachelor_university = $stud->UNIVERSITI_SARJANA_MUDA;
+                $student->bachelor_cgpa = $stud->CGPA_SARJANA_MUDA;
+                $student->bachelor_year = $stud->TAHUN_SARJANA_MUDA;
+                
+                $sesi = ['201920201' => 'SEMESTER SEPTEMBER SESI AKADEMIK 2019/2020', '201920202' => 'SEMESTER FEBRUARI SESI AKADEMIK 2019/2020', '202020211' => 'SEMESTER SEPTEMBER SESI AKADEMIK 2020/2021', '202020212' => 'SEMESTER FEBRUARI SESI AKADEMIK 2020/2021'];
+                foreach($sesi as $key => $val){
+                    if($stud->SESI_MASUK == $val){
+                        $student->admission_semester = $key;
+                    }
+                }
+                
+                $student->admission_year = $stud->TAHUN_KEMASUKAN;
+                $student->admission_date = date('Y-m-d', strtotime($stud->TARIKH_KEMASUKAN));
+                $student->sponsor = $stud->PEMBIAYAAN;
+                $student->current_sem = $stud->SEMESTER;
+                $student->campus_id = 2;
+                $student->status = 1;
+                $student->save();
+                
+                
+                
+                
+            }
+            
+            
+           
+            
+            
+        }
+        
+    }
 
     /**
      * Displays a single StudentPostGrad model.
@@ -73,11 +177,12 @@ class StudentController extends Controller
         $model->scenario = 'create';
         $modelUser->scenario = 'studPost';
 
-        $random = rand(30,30000);
+        
 
         if ($model->load(Yii::$app->request->post()) 
             && $modelUser->load(Yii::$app->request->post())) {
-
+                
+            $random = rand(30,30000);
             $modelUser->username = $model->matric_no;
             $modelUser->password_hash = \Yii::$app->security->generatePasswordHash($random);
             $modelUser->status = 10;

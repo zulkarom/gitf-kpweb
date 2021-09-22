@@ -9,7 +9,7 @@ use yii\web\IdentityInterface;
 use backend\modules\staff\models\Staff;
 use backend\modules\teachingLoad\models\Staff as StaffTeaching;
 use backend\modules\conference\models\Associate;
-use backend\modules\postgrad\models\StudentPostGrad;
+use backend\modules\postgrad\models\Student as StudentPostGrad;
 
 /**
  * User model
@@ -159,6 +159,20 @@ class User extends ActiveRecord implements IdentityInterface
         ]
             )
         ->one();
+    }
+    
+    public static function findStudentByNameOrEmail($username)
+    {
+        return static::find()->alias('u')
+        ->innerJoinWith(['studentPostGrad s'])
+        ->where(['status' => self::STATUS_ACTIVE])
+        ->andWhere(['or',
+            ['u.email' => $username],
+            ['s.matric_no' => $username],
+            ['u.username' => $username]
+        ]
+            )
+            ->one();
     }
 
     /**
