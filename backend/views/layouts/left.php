@@ -141,10 +141,12 @@ $menuItems = [
 					
 					['label' => 'e-RPD', 'icon' => 'flask', 'url' => ['/erpd'],],	
     
+                    ['label' => 'Workshop', 'icon' => 'cube', 'url' => ['/workshop/kursus-anjur'], 'visible' => Yii::$app->user->can('workshop-manager')],
     
-    ['label' => 'Postgraduate', 'icon' => 'users', 'url' => ['/postgrad/student'], 'visible' => Yii::$app->user->can('postgrad-manager')],
     
-    ['label' => 'Students', 'icon' => 'users', 'url' => ['/students/student'], 'visible' => Yii::$app->user->can('students-manager')],
+                    ['label' => 'Postgraduate', 'icon' => 'cube', 'url' => ['/postgrad/student'], 'visible' => Yii::$app->user->can('postgrad-manager')],
+                    
+                    ['label' => 'Students', 'icon' => 'users', 'url' => ['/students/student'], 'visible' => Yii::$app->user->can('students-manager')],
 					
 					['label' => 'eAduan', 'icon' => 'comments', 'url' => ['/aduan'],],
 					

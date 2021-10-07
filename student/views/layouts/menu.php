@@ -13,7 +13,7 @@ use common\widgets\MenuAdminLte;
             
             ['label' => 'Dashboard', 'level' => 1, 'url' => ['/site/index'], 'icon' => 'fas fa-tachometer-alt', 'children' => []],
 
-            ['label' => 'My Profile', 'level' => 1, 'url' => ['/profile/index'], 'icon' => 'fas fa-tachometer-alt', 'children' => []],
+            ['label' => 'My Profile', 'level' => 1, 'url' => ['/profile/view'], 'icon' => 'fas fa-tachometer-alt', 'children' => []],
 
             ['label' => 'Course Registration', 'level' => 1, 'url' => ['/kursus-peserta/index'], 'icon' => 'fas fa-tachometer-alt', 'children' => []],
             

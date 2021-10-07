@@ -1,6 +1,6 @@
 <?php
 
-namespace backend\modules\postgrad\models;
+namespace backend\modules\workshop\models;
 
 use Yii;
 use backend\modules\postgrad\models\Kursus;
@@ -44,7 +44,7 @@ class KursusKategori extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'Kursus Kategori',
-            'kategori_name' => 'Kategori Name',
+            'kategori_name' => 'Category Name',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
@@ -54,4 +54,18 @@ class KursusKategori extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Kursus::className(), ['kategori_id' => 'id']);
     }
+    
+    public function flashError(){
+        if($this->getErrors()){
+            foreach($this->getErrors() as $error){
+                if($error){
+                    foreach($error as $e){
+                        Yii::$app->session->addFlash('error', $e);
+                    }
+                }
+            }
+        }
+
+    }
+
 }

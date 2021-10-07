@@ -1,10 +1,10 @@
 <?php
 
-namespace backend\modules\postgrad\models;
+namespace backend\modules\workshop\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\modules\postgrad\models\KursusPeserta;
+use backend\modules\workshop\models\KursusPeserta;
 
 /**
  * KursusPesertaSearch represents the model behind the search form of `backend\modules\postgrad\models\KursusPeserta`.

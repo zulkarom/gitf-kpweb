@@ -181,11 +181,22 @@ class StudentController extends Controller
 
         if ($model->load(Yii::$app->request->post()) 
             && $modelUser->load(Yii::$app->request->post())) {
-                
-            $random = rand(30,30000);
-            $modelUser->username = $model->matric_no;
-            $modelUser->password_hash = \Yii::$app->security->generatePasswordHash($random);
-            $modelUser->status = 10;
+            //check email exist  
+            $email = $modelUser->email;
+                $user = User::find()
+                ->where(['or',
+                    ['email' => $email],
+                    ['username' => $email]
+                ])->one();
+                if($user){
+                    $modelUser = $user;
+                }else{
+                    $random = rand(30,30000);
+                    $modelUser->username = $model->matric_no;
+                    $modelUser->password_hash = \Yii::$app->security->generatePasswordHash($random);
+                }
+                $modelUser->status = 10;
+            
             if($modelUser->save()){
 
                 $model->user_id = $modelUser->id;

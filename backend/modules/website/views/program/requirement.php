@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = 'Requirement';
 <div class="box">
 <div class="box-header">
 <div class="box-title">
-<?=$typeName?> for <?=$model->program->pro_name_short?>
+<?=$typeName?> for <?=$model->program->program_code?>
 </div>
 </div>
 <div class="box-body">

@@ -1,9 +1,9 @@
 <?php
 
-namespace backend\modules\postgrad\models;
+namespace backend\modules\workshop\models;
 
 use Yii;
-use backend\modules\postgrad\models\KursusAnjur;
+use yii\helpers\ArrayHelper;
 /**
  * This is the model class for table "kursus_anjur".
  *
@@ -31,10 +31,10 @@ class KursusAnjur extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['kursus_siri', 'date_start', 'date_end', 'capacity', 'location', 'kursus_id'], 'required'],
+            [['kursus_name', 'date_start', 'date_end', 'capacity', 'location', 'kategori_id'], 'required'],
             [['date_start', 'date_end'], 'safe'],
-            [['capacity', 'kursus_id'], 'integer'],
-            [['kursus_siri', 'location'], 'string', 'max' => 225],
+            [['capacity', 'kategori_id'], 'integer'],
+            [['kursus_name', 'location'], 'string', 'max' => 225],
             [['description'], 'string'],
         ];
     }
@@ -46,18 +46,25 @@ class KursusAnjur extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'kursus_siri' => 'Kursus Siri',
+            'kursus_name' => 'Workshop Name',
             'date_start' => 'Date Start',
             'date_end' => 'Date End',
             'capacity' => 'Capacity',
             'location' => 'Location',
-            'kursus_id' => 'Kursus',
+            'kategori_id' => 'Category',
         ];
     }
 
-    public function getKursus()
+    public function getCategory()
     {
-        return $this->hasOne(Kursus::className(), ['id' => 'kursus_id']);
+        return $this->hasOne(KursusKategori::className(), ['id' => 'kategori_id']);
+    }
+    
+
+    
+    public function getCategoryList(){
+        $list = KursusKategori::find()->all();
+        return ArrayHelper::map($list, 'id' , 'kategori_name');
     }
     
     public function getPeserta(){

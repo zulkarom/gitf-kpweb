@@ -1,34 +1,26 @@
 <?php
 
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 use yii\widgets\DetailView;
-
+use common\models\Common;
+use kartik\select2\Select2;
+use common\models\Country;
+use yii\helpers\ArrayHelper;
+use kartik\date\DatePicker;
+use backend\models\Semester;
 /* @var $this yii\web\View */
-/* @var $model backend\modules\postgrad\models\Student */
-
-$this->title = $model->user->fullname;
-$this->params['breadcrumbs'][] = ['label' => 'Postgraduate Students', 'url' => ['index']];
+/* @var $model backend\modules\postgrad\models\StudentPostGrad */
+/* @var $form yii\widgets\ActiveForm */
+$this->title = 'My Profile';
 $this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
 ?>
-<div class="student-post-grad-view">
+<div class="card">
+<div class="card-body">  
 
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
 
-<div class="box">
-<div class="box-body">  
-  
-  
-  <div class="row">
+
+<div class="row">
 	<div class="col-md-6"> <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
@@ -153,8 +145,8 @@ $this->params['breadcrumbs'][] = $this->title;
 	
 	 </div>
 </div>
-  
-  
-</div>
+
+
+ 
 </div>
 </div>

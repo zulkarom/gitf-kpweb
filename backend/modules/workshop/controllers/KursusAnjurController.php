@@ -1,18 +1,18 @@
 <?php
 
-namespace backend\modules\postgrad\controllers;
+namespace backend\modules\workshop\controllers;
 
 use Yii;
-use backend\modules\postgrad\models\Kursus;
-use backend\modules\postgrad\models\KursusSearch;
+use backend\modules\workshop\models\KursusAnjur;
+use backend\modules\workshop\models\KursusAnjurSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
-
+use backend\modules\workshop\models\KursusPesertaSearch;
 /**
- * KursusController implements the CRUD actions for Kursus model.
+ * KursusAnjurController implements the CRUD actions for KursusAnjur model.
  */
-class KursusController extends Controller
+class KursusAnjurController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -33,12 +33,12 @@ class KursusController extends Controller
     }
 
     /**
-     * Lists all Kursus models.
+     * Lists all KursusAnjur models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new KursusSearch();
+        $searchModel = new KursusAnjurSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -48,46 +48,50 @@ class KursusController extends Controller
     }
 
     /**
-     * Displays a single Kursus model.
+     * Displays a single KursusAnjur model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+
+        $searchModel = new KursusPesertaSearch(['anjur_id' => $id]);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
     /**
-     * Creates a new Kursus model.
+     * Creates a new KursusAnjur model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($pid)
+    public function actionCreate()
     {
-        $model = new Kursus();
-
+        $model = new KursusAnjur();
+        
         if ($model->load(Yii::$app->request->post())) {
-            $model->kategori_id = $pid;
+            
             if($model->save()){
-
-                Yii::$app->session->addFlash('success', "New Kursus Added");
-                
-            }else{
-                $model->flashError();
+                Yii::$app->session->addFlash('success', "Kursus Anjur Added");
+                return $this->redirect(['view', 'id' => $model->id]);
             }
-            return $this->redirect(['/postgrad/kursus-kategori/view', 'id' => $pid]);
+            
         }
 
-        return $this->renderAjax('create', [
+        return $this->render('create', [
             'model' => $model,
         ]);
     }
 
     /**
-     * Updates an existing Kursus model.
+     * Updates an existing KursusAnjur model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -107,7 +111,7 @@ class KursusController extends Controller
     }
 
     /**
-     * Deletes an existing Kursus model.
+     * Deletes an existing KursusAnjur model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -115,21 +119,29 @@ class KursusController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        
+        if($model->peserta){
+            Yii::$app->session->addFlash('error', "Delete failed!");
+
+        }else{
+            $model->delete();
+        }
+        
 
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the Kursus model based on its primary key value.
+     * Finds the KursusAnjur model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Kursus the loaded model
+     * @return KursusAnjur the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Kursus::findOne($id)) !== null) {
+        if (($model = KursusAnjur::findOne($id)) !== null) {
             return $model;
         }
 

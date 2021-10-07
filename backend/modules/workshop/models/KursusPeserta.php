@@ -1,6 +1,6 @@
 <?php
 
-namespace backend\modules\postgrad\models;
+namespace backend\modules\workshop\models;
 
 use Yii;
 use common\models\User;

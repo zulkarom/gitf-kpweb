@@ -17,8 +17,8 @@ class StudentPostGradSearch extends Student
     public function rules()
     {
         return [
-            [['id', 'gender', 'marital_status', 'nationality', 'citizenship', 'edu_level', 'religion', 'race', 'session', 'sponsor', 'student_current_sem', 'city_campus', 'student_status'], 'integer'],
-            [['matric_no', 'nric', 'date_birth', 'prog_code', 'address', 'city', 'phone_no', 'personal_email', 'bachelor_name', 'university_name', 'bachelor_cgpa', 'bachelor_year', 'admission_year', 'admission_date_sem1', 'name'], 'safe'],
+            [['id', 'gender', 'marital_status', 'nationality', 'citizenship', 'study_mode', 'religion', 'race', 'admission_semester', 'sponsor', 'current_sem', 'campus_id', 'status'], 'integer'],
+            [['matric_no', 'nric', 'date_birth', 'program_code', 'address', 'city', 'phone_no', 'personal_email', 'bachelor_name', 'university_name', 'bachelor_cgpa', 'bachelor_year', 'admission_year', 'admission_date', 'name'], 'safe'],
         ];
     }
 
@@ -65,20 +65,20 @@ class StudentPostGradSearch extends Student
             'marital_status' => $this->marital_status,
             'nationality' => $this->nationality,
             'citizenship' => $this->citizenship,
-            'edu_level' => $this->edu_level,
+            'study_mode' => $this->study_mode,
             'religion' => $this->religion,
             'race' => $this->race,
-            'session' => $this->session,
-            'admission_date_sem1' => $this->admission_date_sem1,
+            'admission_semester' => $this->admission_semester,
+            'admission_date' => $this->admission_date,
             'sponsor' => $this->sponsor,
-            'student_current_sem' => $this->student_current_sem,
-            'city_campus' => $this->city_campus,
-            'student_status' => $this->student_status,
+            'current_sem' => $this->current_sem,
+            'campus_id' => $this->campus_id,
+            'status' => $this->status,
         ]);
 
         $query->andFilterWhere(['like', 'matric_no', $this->matric_no])
             ->andFilterWhere(['like', 'nric', $this->nric])
-            ->andFilterWhere(['like', 'prog_code', $this->prog_code])
+            ->andFilterWhere(['like', 'program_code', $this->program_code])
             ->andFilterWhere(['like', 'user.fullname', $this->name]);
 
         return $dataProvider;

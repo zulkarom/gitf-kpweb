@@ -7,11 +7,11 @@ use yii\grid\GridView;
 /* @var $searchModel backend\modules\postgrad\models\KursusKategoriSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Kategori Kursus';
+$this->title = 'Training Category';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <p>
-    <?= Html::a('Kategori Baru', ['create'], ['class' => 'btn btn-success']) ?>
+    <?= Html::a('New Category', ['create'], ['class' => 'btn btn-success']) ?>
 </p>
 <div class="box">
 <div class="box-header"></div>
@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 ['class' => 'yii\grid\ActionColumn',
                 'contentOptions' => ['style' => 'width: 18%'],
-                'template' => '{view} {update} {delete}',
+                'template' => '{update} {delete}',
                 //'visible' => false,
                 'buttons'=>[
                 'view'=>function ($url, $model) {

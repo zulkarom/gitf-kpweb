@@ -1,9 +1,10 @@
 <?php
 
-namespace backend\modules\postgrad\models;
+namespace backend\modules\workshop\models;
 
 use Yii;
 use backend\modules\postgrad\models\KursusKategori;
+use yii\helpers\ArrayHelper;
 /**
  * This is the model class for table "kursus".
  *
@@ -41,15 +42,12 @@ class Kursus extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'kursus_name' => 'Kursus Name',
-            'kategori_id' => 'Kategori ID',
+            'kursus_name' => 'Training Name',
+            'kategori_id' => 'Category',
         ];
     }
 
-     public function getKursusKategori()
-    {
-        return $this->hasOne(KursusKategori::className(), ['id' => 'kategori_id']);
-    }
+    
 
     public function flashError(){
         if($this->getErrors()){

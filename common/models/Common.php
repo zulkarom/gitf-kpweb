@@ -158,7 +158,5 @@ class Common {
 	    return [10 => 'Submit', 20 => 'Paid', 30 => 'Complete', 40 => 'Reject'];
 	}
 
-	public static function campus(){
-		return [1 => 'Kampus Kota'];
-	}
+
 }

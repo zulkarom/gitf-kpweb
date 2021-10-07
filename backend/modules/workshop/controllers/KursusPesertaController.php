@@ -1,19 +1,19 @@
 <?php
 
-namespace backend\modules\postgrad\controllers;
+namespace backend\modules\workshop\controllers;
 
 use Yii;
-use backend\modules\postgrad\models\KursusKategori;
-use backend\modules\postgrad\models\KursusKategoriSearch;
+use backend\modules\postgrad\models\KursusPeserta;
+use backend\modules\postgrad\models\KursusPesertaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
-use yii\db\Expression;
-use backend\modules\postgrad\models\Kursus;
+use backend\modules\postgrad\models\KursusAnjur;
+
 /**
- * KursusKategoriController implements the CRUD actions for KursusKategori model.
+ * KursusPesertaController implements the CRUD actions for KursusPeserta model.
  */
-class KursusKategoriController extends Controller
+class KursusPesertaController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -34,22 +34,25 @@ class KursusKategoriController extends Controller
     }
 
     /**
-     * Lists all KursusKategori models.
+     * Lists all KursusPeserta models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($anjur_id)
     {
-        $searchModel = new KursusKategoriSearch();
+        $searchModel = new KursusPesertaSearch(['anjur_id' => $anjur_id]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        $anjur = KursusAnjur::findOne($anjur_id);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'anjur' => $anjur,
         ]);
     }
 
     /**
-     * Displays a single KursusKategori model.
+     * Displays a single KursusPeserta model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -62,24 +65,17 @@ class KursusKategoriController extends Controller
     }
 
     /**
-     * Creates a new KursusKategori model.
+     * Creates a new KursusPeserta model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new KursusKategori();
+        $model = new KursusPeserta();
 
-        if ($model->load(Yii::$app->request->post())) {
-            $model->created_at = new Expression('NOW()');
-            
-            if($model->save()){
-                Yii::$app->session->addFlash('success', "Kursus Kategori Added");
-                return $this->redirect('index');
-            }
-            
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
         }
-
 
         return $this->render('create', [
             'model' => $model,
@@ -87,7 +83,7 @@ class KursusKategoriController extends Controller
     }
 
     /**
-     * Updates an existing KursusKategori model.
+     * Updates an existing KursusPeserta model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -97,14 +93,8 @@ class KursusKategoriController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post())) {
-            $model->updated_at = new Expression('NOW()');
-            
-            if($model->save()){
-                Yii::$app->session->addFlash('success', "Kursus Kategori Updated");
-                return $this->redirect('index');
-            }
-            
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
@@ -113,7 +103,7 @@ class KursusKategoriController extends Controller
     }
 
     /**
-     * Deletes an existing KursusKategori model.
+     * Deletes an existing KursusPeserta model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -125,36 +115,20 @@ class KursusKategoriController extends Controller
 
         return $this->redirect(['index']);
     }
-    
-    public function actionDeleteKursus($id, $cat)
-    {
-        $this->findKursus($id)->delete();
-        
-        return $this->redirect(['view', 'id' => $cat]);
-    }
 
     /**
-     * Finds the KursusKategori model based on its primary key value.
+     * Finds the KursusPeserta model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return KursusKategori the loaded model
+     * @return KursusPeserta the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = KursusKategori::findOne($id)) !== null) {
+        if (($model = KursusPeserta::findOne($id)) !== null) {
             return $model;
         }
 
-        throw new NotFoundHttpException('The requested page does not exist.');
-    }
-    
-    protected function findKursus($id)
-    {
-        if (($model = Kursus::findOne($id)) !== null) {
-            return $model;
-        }
-        
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

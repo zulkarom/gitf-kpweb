@@ -26,10 +26,21 @@ class ProfileController extends Controller
                     [
                         'allow' => true,
                         'roles' => ['@'],
+          
                     ],
                 ],
+                
+                
             ],
         ];
+    }
+     
+    public function beforeAction($action){
+        
+        if (!Yii::$app->user->identity->studentPostGrad){
+            return $this->redirect(['site/login'])->send();  // login path
+        }
+        return true;
     }
 
     /**
@@ -38,6 +49,8 @@ class ProfileController extends Controller
      */
     public function actionIndex()
     {
+        die();
+        //echo Yii::$app->user->identity->fullname;die();
         $id = Yii::$app->user->identity->studentPostGrad->id;
         
         $model = $this->findModel($id);
@@ -63,6 +76,24 @@ class ProfileController extends Controller
             'modelUser' => $modelUser,
         ]);
 
+    }
+    
+    public function actionView()
+    {
+        //echo Yii::$app->user->identity->fullname;die();
+        $modelUser = Yii::$app->user->identity;
+        $model = $modelUser->studentPostGrad;
+
+        
+        $model->setScenario('student_update');
+        
+
+        
+        return $this->render('view', [
+            'model' => $model,
+            'modelUser' => $modelUser,
+        ]);
+        
     }
    
     /**

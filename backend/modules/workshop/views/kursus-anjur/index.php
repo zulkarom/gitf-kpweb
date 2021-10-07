@@ -25,13 +25,12 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             [
-                'label' => 'Nama Kursus',
+                'label' => 'Workshop Name',
                 'value' => function($model){
                     return $model->kursus->kursus_name;
                     
                 }
             ],
-            'kursus_siri',
             'date_start:date',
             'date_end:date',
             'capacity',

@@ -165,7 +165,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return static::find()->alias('u')
         ->innerJoinWith(['studentPostGrad s'])
-        ->where(['status' => self::STATUS_ACTIVE])
+        ->where(['u.status' => self::STATUS_ACTIVE])
         ->andWhere(['or',
             ['u.email' => $username],
             ['s.matric_no' => $username],

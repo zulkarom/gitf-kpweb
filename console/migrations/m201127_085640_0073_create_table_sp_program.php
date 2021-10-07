@@ -17,7 +17,7 @@ class m201127_085640_0073_create_table_sp_program extends Migration
                 'id' => $this->primaryKey(),
                 'pro_name' => $this->string(250)->notNull(),
                 'pro_name_bi' => $this->string(250)->notNull(),
-                'pro_name_short' => $this->string(50)->notNull(),
+                'program_code' => $this->string(50)->notNull(),
                 'pro_level' => $this->boolean()->notNull()->comment('4=diploma,6=sarjana muda, 7=sarjana,8=phd'),
                 'faculty_id' => $this->integer()->notNull()->defaultValue('1'),
                 'department_id' => $this->integer()->notNull(),

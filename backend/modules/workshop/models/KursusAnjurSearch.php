@@ -1,15 +1,14 @@
 <?php
 
-namespace backend\modules\postgrad\models;
+namespace backend\modules\workshop\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\modules\postgrad\models\KursusKategori;
 
 /**
- * KursusKategoriSearch represents the model behind the search form of `backend\modules\postgrad\models\KursusKategori`.
+ * KursusAnjurSearch represents the model behind the search form of `backend\modules\postgrad\models\KursusAnjur`.
  */
-class KursusKategoriSearch extends KursusKategori
+class KursusAnjurSearch extends KursusAnjur
 {
     /**
      * {@inheritdoc}
@@ -17,8 +16,9 @@ class KursusKategoriSearch extends KursusKategori
     public function rules()
     {
         return [
-            [['id'], 'integer'],
-            [['kategori_name', 'created_at', 'updated_at'], 'safe'],
+            [['id', 'capacity', 'kategori_id'], 'integer'],
+            [['kursus_name', 'location'], 'string'],
+            [['date_start', 'date_end',], 'safe'],
         ];
     }
 
@@ -40,7 +40,7 @@ class KursusKategoriSearch extends KursusKategori
      */
     public function search($params)
     {
-        $query = KursusKategori::find();
+        $query = KursusAnjur::find();
 
         // add conditions that should always apply here
 
@@ -59,11 +59,14 @@ class KursusKategoriSearch extends KursusKategori
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'date_start' => $this->date_start,
+            'date_end' => $this->date_end,
+            'capacity' => $this->capacity,
+            'kategori_id' => $this->kategori_id,
         ]);
 
-        $query->andFilterWhere(['like', 'kategori_name', $this->kategori_name]);
+        $query->andFilterWhere(['like', 'kursus_name', $this->kursus_name])
+            ->andFilterWhere(['like', 'location', $this->location]);
 
         return $dataProvider;
     }

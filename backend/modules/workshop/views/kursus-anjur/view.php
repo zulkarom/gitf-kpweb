@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\postgrad\models\KursusAnjur */
 
-$this->title = $model->kursus_siri;
+$this->title = 'View Workshop';
 $this->params['breadcrumbs'][] = ['label' => 'Kursus Anjurs', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -35,11 +35,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'html',
                 'label' => 'Kursus Name',
                 'value' => function($model){
-                    return $model->kursus->kursus_name;
+                    return $model->kursus_name;
                     
                 }
             ],
-            'kursus_siri',
+            'kursus_name',
             'date_start',
             'date_end',
             'capacity',

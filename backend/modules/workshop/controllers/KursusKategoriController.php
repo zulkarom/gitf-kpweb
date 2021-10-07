@@ -1,18 +1,19 @@
 <?php
 
-namespace backend\modules\postgrad\controllers;
+namespace backend\modules\workshop\controllers;
 
 use Yii;
-use backend\modules\postgrad\models\KursusAnjur;
-use backend\modules\postgrad\models\KursusAnjurSearch;
+use backend\modules\postgrad\models\KursusKategori;
+use backend\modules\postgrad\models\KursusKategoriSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
-use backend\modules\postgrad\models\KursusPesertaSearch;
+use yii\db\Expression;
+use backend\modules\postgrad\models\Kursus;
 /**
- * KursusAnjurController implements the CRUD actions for KursusAnjur model.
+ * KursusKategoriController implements the CRUD actions for KursusKategori model.
  */
-class KursusAnjurController extends Controller
+class KursusKategoriController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -33,12 +34,12 @@ class KursusAnjurController extends Controller
     }
 
     /**
-     * Lists all KursusAnjur models.
+     * Lists all KursusKategori models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new KursusAnjurSearch();
+        $searchModel = new KursusKategoriSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -48,42 +49,37 @@ class KursusAnjurController extends Controller
     }
 
     /**
-     * Displays a single KursusAnjur model.
+     * Displays a single KursusKategori model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
-        $model = $this->findModel($id);
-
-        $searchModel = new KursusPesertaSearch(['anjur_id' => $id]);
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('view', [
-            'model' => $model,
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+        /* return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]); */
     }
 
     /**
-     * Creates a new KursusAnjur model.
+     * Creates a new KursusKategori model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new KursusAnjur();
-        
+        $model = new KursusKategori();
+
         if ($model->load(Yii::$app->request->post())) {
+            $model->created_at = new Expression('NOW()');
             
             if($model->save()){
-                Yii::$app->session->addFlash('success', "Kursus Anjur Added");
-                return $this->redirect(['view', 'id' => $model->id]);
+                Yii::$app->session->addFlash('success', "Training Category Added");
+                return $this->redirect(['index']);
             }
             
         }
+
 
         return $this->render('create', [
             'model' => $model,
@@ -91,7 +87,7 @@ class KursusAnjurController extends Controller
     }
 
     /**
-     * Updates an existing KursusAnjur model.
+     * Updates an existing KursusKategori model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -101,8 +97,16 @@ class KursusAnjurController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->updated_at = new Expression('NOW()');
+            
+            if($model->save()){
+                Yii::$app->session->addFlash('success', "Training Category Updated");
+                return $this->redirect(['index']);
+            }else{
+                $model->flashError();
+            }
+            
         }
 
         return $this->render('update', [
@@ -111,7 +115,7 @@ class KursusAnjurController extends Controller
     }
 
     /**
-     * Deletes an existing KursusAnjur model.
+     * Deletes an existing KursusKategori model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -119,32 +123,40 @@ class KursusAnjurController extends Controller
      */
     public function actionDelete($id)
     {
-        $model = $this->findModel($id);
-        
-        if($model->peserta){
-            Yii::$app->session->addFlash('error', "Delete failed!");
-
-        }else{
-            $model->delete();
-        }
-        
+        $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }
+    
+    public function actionDeleteKursus($id, $cat)
+    {
+        $this->findKursus($id)->delete();
+        
+        return $this->redirect(['view', 'id' => $cat]);
+    }
 
     /**
-     * Finds the KursusAnjur model based on its primary key value.
+     * Finds the KursusKategori model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return KursusAnjur the loaded model
+     * @return KursusKategori the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = KursusAnjur::findOne($id)) !== null) {
+        if (($model = KursusKategori::findOne($id)) !== null) {
             return $model;
         }
 
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    
+    protected function findKursus($id)
+    {
+        if (($model = Kursus::findOne($id)) !== null) {
+            return $model;
+        }
+        
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

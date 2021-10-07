@@ -6,7 +6,9 @@ use Yii;
 use common\models\User;
 use common\models\Common;
 use common\models\Country;
+use backend\models\Campus;
 use backend\models\Semester;
+use backend\modules\esiap\models\Program;
 /**
  * This is the model class for table "student_pg".
  *
@@ -92,7 +94,7 @@ class Student extends \yii\db\ActiveRecord
             'marital_status' => 'Taraf Perkahwinan',
             'nationality' => 'Negara Asal',
             'citizenship' => 'Kewarganegaraan',
-            'program_code' => 'Kod Program',
+            'program_code' => 'Program',
             'study_mode' => 'Taraf Pengajian',
             'address' => 'Alamat',
             'city' => 'Daerah',
@@ -109,7 +111,7 @@ class Student extends \yii\db\ActiveRecord
             'admission_date' => 'Tahun Kemasukan Semester 1',
             'sponsor' => 'Pembiayaan Sendiri / Tajaan',
             'current_sem' => 'Semester Semasa Pelajar',
-            'campus_id' => 'Kampus',
+            'campus.campus_name' => 'Kampus',
             'status' => 'Status Pelajar',
         ];
     }
@@ -125,6 +127,14 @@ class Student extends \yii\db\ActiveRecord
     public function getSemester(){
          return $this->hasOne(Semester::className(), ['id' => 'admission_semester']);
     }
+    
+    public function getCampus(){
+        return $this->hasOne(Campus::className(), ['id' => 'campus_id']);
+    }
+    
+    public function getProgram(){
+        return $this->hasOne(Program::className(), ['program_code' => 'program_code']);
+    }
 
     public function getGenderText(){
         if($this->gender >= 0){
@@ -133,6 +143,8 @@ class Student extends \yii\db\ActiveRecord
             return '';
         }
     }
+    
+    
 
     public function getMaritalText(){
         if($this->marital_status > 0){

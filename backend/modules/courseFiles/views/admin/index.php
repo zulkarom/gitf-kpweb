@@ -74,7 +74,7 @@ $semester->action = ['/course-files/admin/index'];
                 'label' => 'Program',
 				'value' => function($model){
 					if($model->course->program){
-						return $model->course->program->pro_name_short;
+						return $model->course->program->program_code;
 					}
 					
 				}

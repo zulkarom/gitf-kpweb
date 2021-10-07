@@ -24,7 +24,7 @@ $form = ActiveForm::begin([
 </div>
 <div class="col-md-3">
 <?=$form->field($model, 'program_search')->label(false)->dropDownList(
-        ArrayHelper::map(Program::find()->where(['faculty_id' => Yii::$app->params['faculty_id'], 'status' => 1, 'trash' => 0])->all(),'id', 'pro_name_short'), ['prompt' => 'Select Program' ]);?>
+        ArrayHelper::map(Program::find()->where(['faculty_id' => Yii::$app->params['faculty_id'], 'status' => 1, 'trash' => 0])->all(),'id', 'program_code'), ['prompt' => 'Select Program' ]);?>
 </div>
 </div>
     <?php ActiveForm::end(); ?>

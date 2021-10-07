@@ -8,8 +8,10 @@ use common\models\Country;
 use yii\helpers\ArrayHelper;
 use kartik\date\DatePicker;
 use backend\models\Semester;
+use backend\models\Campus;
+use backend\modules\esiap\models\Program;
 /* @var $this yii\web\View */
-/* @var $model backend\modules\postgrad\models\StudentPostGrad */
+/* @var $model backend\modules\postgrad\models\Student*/
 /* @var $form yii\widgets\ActiveForm */
 ?>
 <div class="box">
@@ -80,8 +82,8 @@ use backend\models\Semester;
             <?= $form->field($model, 'phone_no')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="col-md-3">
-            <?= $form->field($model, 'edu_level')->dropDownList(
-                Common::eduLevel(), ['prompt' => 'Pilih Taraf Pengajian',  'class' => 'form-control select-choice']) ?>
+            <?= $form->field($model, 'study_mode')->dropDownList(
+                Common::studyMode(), ['prompt' => 'Pilih Taraf Pengajian',  'class' => 'form-control select-choice']) ?>
         </div>
         
     </div>
@@ -107,14 +109,15 @@ use backend\models\Semester;
     
 
     <div class="row">
-        <div class="col-md-2">
-            <?= $form->field($model, 'prog_code')->textInput(['maxlength' => true]) ?>
+        <div class="col-md-3">
+            <?= $form->field($model, 'program_code')->dropDownList(
+                ArrayHelper::map(Program::find()->where(['pro_level' => 3])->all(), 'program_code', 'programNameCode'), ['prompt' => 'Pilih Program',  'class' => 'form-control select-choice']) ?>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <?= $form->field($model, 'bachelor_name')->textInput(['maxlength' => true]) ?>
         </div>
-        <div class="col-md-4">
-            <?= $form->field($model, 'university_name')->textInput(['maxlength' => true]) ?>
+        <div class="col-md-3">
+            <?= $form->field($model, 'bachelor_university')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="col-md-2">
             <?= $form->field($model, 'bachelor_cgpa')->textInput(['maxlength' => true]) ?>
@@ -130,19 +133,19 @@ use backend\models\Semester;
                 $session = Yii::$app->session;
                 if($model->isNewRecord){
                     if($session->has('semester')){
-                        $model->session = $session->get('semester');
+                        $model->admission_semester = $session->get('semester');
                     }else{
-                        $model->session = Semester::getCurrentSemester();
+                        $model->admission_semester = Semester::getCurrentSemester();
                     }
                 }
-                echo $form->field($model, 'session')->dropDownList(Semester::listSemesterArray()) 
+                echo $form->field($model, 'admission_semester')->dropDownList(Semester::listSemesterArray()) 
             ?>
         </div>
         <div class="col-md-3">
             <?= $form->field($model, 'admission_year')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="col-md-3">
-            <?=$form->field($model, 'admission_date_sem1')->widget(DatePicker::classname(), [
+            <?=$form->field($model, 'admission_date')->widget(DatePicker::classname(), [
                 'removeButton' => false,
                 'pluginOptions' => [
                     'autoclose'=>true,
@@ -157,18 +160,17 @@ use backend\models\Semester;
 
     <div class="row">
         <div class="col-md-3">
-            <?= $form->field($model, 'sponsor')->dropDownList(
-                Common::sponsor(), ['prompt' => 'Pilih Pembiayaan',  'class' => 'form-control select-choice']) ?>
+            <?= $form->field($model, 'sponsor') ?>
         </div>
         <div class="col-md-3">
-            <?= $form->field($model, 'student_current_sem')->input('number', ['min' => 1, 'step' => 1]) ?>
+            <?= $form->field($model, 'current_sem')->input('number', ['min' => 1, 'step' => 1]) ?>
         </div>
         <div class="col-md-3">
-            <?= $form->field($model, 'city_campus')->dropDownList(
-                Common::campus(), ['prompt' => 'Pilih Kampus',  'class' => 'form-control select-choice']) ?>
+            <?= $form->field($model, 'campus_id')->dropDownList(
+                ArrayHelper::map(Campus::find()->all(), 'id', 'campus_name'), ['prompt' => 'Pilih Kampus',  'class' => 'form-control select-choice']) ?>
         </div>
         <div class="col-md-3">
-            <?= $form->field($model, 'student_status')->dropDownList(
+            <?= $form->field($model, 'status')->dropDownList(
                 Common::studentStatus(), ['prompt' => 'Pilih Status',  'class' => 'form-control select-choice']) ?>
         </div>
     </div>

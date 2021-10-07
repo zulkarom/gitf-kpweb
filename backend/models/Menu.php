@@ -132,11 +132,14 @@ class Menu
 			        'icon' => 'cube',
 			        'url' => '#',
 			        'items' => [
+			            ['label' => 'Organise Training', 'icon' => 'book', 'url' => ['/postgrad/kursus-anjur'], 'visible' => Yii::$app->user->can('postgrad-manager')],
+			           
+			            
+			            ['label' => 'Traning List', 'icon' => 'book', 'url' => ['/postgrad/kursus/index'], 'visible' => Yii::$app->user->can('postgrad-manager')],
+			            
 			            ['label' => 'Categories', 'icon' => 'book', 'url' => ['/postgrad/kursus-kategori/index'], 'visible' => Yii::$app->user->can('postgrad-manager')],
 			            
-			            ['label' => 'Traning List', 'icon' => 'book', 'url' => ['/postgrad/kursus-kategori/index'], 'visible' => Yii::$app->user->can('postgrad-manager')],
 			            
-			            ['label' => 'Organize Traning', 'icon' => 'book', 'url' => ['/postgrad/kursus-anjur'], 'visible' => Yii::$app->user->can('postgrad-manager')],
 			            
 			            
 			        ]
