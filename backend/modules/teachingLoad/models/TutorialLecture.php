@@ -167,7 +167,11 @@ class TutorialLecture extends \yii\db\ActiveRecord
     }
 	
 	public function getTutorialGroup(){
-		return $this->lecturePrefix . $this->tutorial_name;
+	    if (strpos($this->tutorial_name, $this->lecturePrefix) !== false) {
+	        return $this->tutorial_name;
+	    }else{
+	        return $this->lecturePrefix . $this->tutorial_name;
+	    }
 	}
 	
 	public function getLecturePrefix(){
