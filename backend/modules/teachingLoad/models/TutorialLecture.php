@@ -180,6 +180,11 @@ class TutorialLecture extends \yii\db\ActiveRecord
 	}
 	
 	public function getTutorialName(){
-		return $this->lecturePrefix . $this->tutorial_name;
+	    if (strpos($this->tutorial_name, $this->lecturePrefix) !== false) {
+	        return $this->tutorial_name;
+	    }else{
+	        return $this->lecturePrefix . $this->tutorial_name;
+	    }
+		
 	}
 }
