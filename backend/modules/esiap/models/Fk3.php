@@ -674,6 +674,7 @@ EOD;
 		$adj_size = $this->offer->coorsign_size;
 		
 		$file = Yii::getAlias('@upload/'. $sign);
+		list($width, $height) = getimagesize($file);
 		$f = basename($file);
 		$paste = 'images/temp/'. $f;
 		if($sign){
@@ -688,11 +689,22 @@ EOD;
 		$posY = $y  - $adjy - 44;
 		$this->pdf->setY($posY);
 		
+		if($adj_size == 0 and $width < 100){
+			$size = $width;
+		}else{
+			$size = 100 + ($adj_size * 3);
+			
+		}
 		
-		$size = 100 + ($adj_size * 3);
+		if($height > 90){
+			$res = $height - 90;
+			$size = $size - $res;
+		}
+		
 		if($size < 0){
 			$size = 10;
 		}
+		
 		
 		$coor = '';
 		$date = '';

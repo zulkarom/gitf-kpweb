@@ -322,7 +322,7 @@ $closed = Common::isDue($dates->open_deadline);
 							  echo '<tr><td>'.$i.'</td>
 							  <td>'.$course->course_code.' '.$course->course_name.'</td>
 							  
-							  <td>'.$lec . $tutorial->tutorialLec->tutorial_name.'</td>
+							  <td>'.$tutorial->tutorialLec->tutorialName.'</td>
 							  
 							  <td>';
 							   if(($status == 0 or $status == 20) and !$closed){

@@ -82,6 +82,24 @@ class CourseOfferedController extends Controller
         ]);
     }
 	
+	public function actionRemoveLectureFromTutorialString($sem){
+		$tutorials = TutorialLecture::find()->joinWith(['lecture.courseOffered'])
+		->where(['semester_id' => $sem])
+		->all();
+		foreach($tutorials as $tutorial){
+		   // echo $tutorial->tutorial_name;
+		  //echo $tutorial->lecture->lec_name;
+		   
+		   if (strpos($tutorial->tutorial_name, $tutorial->lecture->lec_name) !== false) {
+		       echo 'true';
+		   }else{
+		       echo 'false';
+		   }
+		   
+		    echo '<br />';
+		}
+	}
+	
 	public function actionProgramCoor()
     {
         $semester = new SemesterForm;

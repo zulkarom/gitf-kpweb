@@ -939,7 +939,7 @@ class DefaultController extends Controller
 		$api = new Api;
 		$api->semester = $tutorial->lecture->courseOffered->semester_id;
 		$api->subject = $tutorial->lecture->courseOffered->course->course_code;
-		$api->group = $tutorial->tutorialGroup;
+		$api->group = $tutorial->tutorialName;
 		$data = $api->attendList();
 		if($data){
 			if($data->result){

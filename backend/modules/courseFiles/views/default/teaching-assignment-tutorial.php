@@ -7,7 +7,7 @@ use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
 
-$this->title = 'Tutorial ['.$tutorial->lecture->lec_name.$tutorial->tutorial_name.']';
+$this->title = 'Tutorial ['.$tutorial->tutorialName.']';
 $this->params['breadcrumbs'][] = ['label' => 'My Course File', 'url' => ['/course-files/default/teaching-assignment']];
 $this->params['breadcrumbs'][] = $this->title;
 $course = $tutorial->lecture->courseOffered->course;

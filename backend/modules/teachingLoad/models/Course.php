@@ -146,7 +146,7 @@ class Course extends \backend\modules\esiap\models\Course
 							foreach ($lecture->tutorials as $tutorial){
 								
 								$d = $i == 1 ? '' : $br;
-								$str .= $d.$lecture->lec_name . $tutorial->tutorial_name.' ('.$tutorial->student_num.') - ';
+								$str .= $d. $tutorial->tutorialName.' ('.$tutorial->student_num.') - ';
 								$i++;
 								$str_tut = '';
 								if($tutorial->tutors){
