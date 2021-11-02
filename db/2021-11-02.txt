@@ -1,0 +1,1 @@
+ALTER TABLE `tld_course_offered` ADD `course_version2` INT NOT NULL DEFAULT '0' AFTER `audit_freq`, ADD `group1_name` VARCHAR(200) NULL DEFAULT NULL AFTER `course_version2`, ADD `group2_name` VARCHAR(200) NULL DEFAULT NULL AFTER `group1_name`;
