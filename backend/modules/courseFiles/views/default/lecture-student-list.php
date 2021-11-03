@@ -5,7 +5,6 @@ use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use kartik\grid\GridView;
 use backend\assets\ExcelAsset;
-use kartik\export\ExportMenu;
 
 
 $offer = $lecture->courseOffered;
@@ -143,47 +142,110 @@ if($lvl == 'UG'){ ?>
 
 <div class="box">
 
-<div class="box-body"><?= GridView::widget([
+<div class="box-body">
+
+
+<?php 
+
+$more_group = false;
+if($lecture->courseOffered->course_version2 > 0){
+    $more_group = true;
+}
+
+
+if($more_group){
+    $colums[] = ['class' => 'yii\grid\CheckboxColumn'];
+}
+
+$colums[] = ['class' => 'yii\grid\SerialColumn'];
+    
+    
+
+
+
+
+
+
+
+$colums[] = [
+    'label' => 'Student Id',
+    'value' => function($model){
+    return $model->matric_no;
+    }
+    
+    ];
+    
+    
+    
+        
+$colums[] = [
+            'label' => 'Name',
+            'value' => function($model){
+            return $model->student->st_name;
+            }
+            
+            ];
+            
+                    
+if($more_group){
+    $colums[] = [
+        
+        'label' => 'Group',
+        'value' => function($model){
+        return 'Group ' . $model->stud_group;
+        }
+        ];
+}
+
+
+
+$colums[] = ['class' => 'yii\grid\ActionColumn',
+    'contentOptions' => ['style' => 'width: 10%'],
+    'template' => '{delete}',
+    //'visible' => false,
+    'buttons'=>[
+        'delete'=>function ($url, $model) {
+        return Html::a('<span class="glyphicon glyphicon-trash"></span>',['delete-student-lecture', 'id' => $model->id, 'lec' => $model->lecture_id],['data' => [
+            'confirm' => 'Are you sure to remove this student ('.$model->student->st_name.') from this lecture class?'
+        ],
+        ]);
+        }
+        ],
+        
+        ];
+
+?>
+
+
+
+<?php 
+$lecture->assign_group = 0;
+
+$form = ActiveForm::begin(['id' => 'assign-group-form']); ?>
+<?=GridView::widget([
         'dataProvider' => $dataProvider,
         'export' => false,
-        'columns' => [
-            
-            ['class' => 'yii\grid\SerialColumn'],
-            
-            
-            [
-                'label' => 'Student Id',
-                'value' => function($model){
-                    return $model->matric_no;
-                }
-                
-            ],
-
-            [
-                'label' => 'Name',
-                'value' => function($model){
-                    return $model->student->st_name;
-                }
-                
-            ],
-			
-			['class' => 'yii\grid\ActionColumn',
-                 'contentOptions' => ['style' => 'width: 10%'],
-                'template' => '{delete}',
-                //'visible' => false,
-                'buttons'=>[
-					'delete'=>function ($url, $model) {
-                        return Html::a('<span class="glyphicon glyphicon-trash"></span>',['delete-student-lecture', 'id' => $model->id, 'lec' => $model->lecture_id],['data' => [
-                'confirm' => 'Are you sure to remove this student ('.$model->student->st_name.') from this lecture class?'
-            ],
-]);
-                    }
-                ],
-            
-            ],
-            
-        ],
+    'columns' => $colums,
     ]); ?>
+    
+    <div class="row">
+	<div class="col-md-6"> <?= $form->field($lecture, 'assign_group')->dropDownList([1 => 'Group 1', 2 => 'Group 2'], ['prompt' => 'Select Group']) ?></div>
+
+</div>
+    
+   
+    
+    
+    
+    
+<div class="form-group">
+        
+    </div>
+
+    <?php ActiveForm::end(); ?>
+
+    
+    
     </div>
 </div>
 
@@ -193,6 +255,11 @@ if($lvl == 'UG'){ ?>
 <?php 
 
 $this->registerJs('
+
+$("#courselecture-assign_group").change(function(){
+    $("#assign-group-form").submit();
+
+});
 
 $("#btn-importexcel").click(function(){
 	document.getElementById("xlf").click();     

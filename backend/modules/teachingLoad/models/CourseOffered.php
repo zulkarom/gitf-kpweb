@@ -87,7 +87,7 @@ class CourseOffered extends \yii\db\ActiveRecord
 			
 			[['option_course', 'option_review'], 'required', 'on' => 'audit'],
 			
-            [['semester_id', 'course_id', 'total_students', 'max_lec', 'max_tut', 'created_by', 'coordinator', 'course_version', 'material_version',  'na_cont_rubrics', 'na_script_final', 'coor_access', 'option_course', 'option_review', 'status', 'audit_freq'], 'integer'],
+            [['semester_id', 'course_id', 'total_students', 'max_lec', 'max_tut', 'created_by', 'coordinator', 'course_version', 'material_version',  'na_cont_rubrics', 'na_script_final', 'coor_access', 'option_course', 'option_review', 'status', 'audit_freq', 'course_version2'], 'integer'],
 			
             [['created_at', 'courses'], 'safe'],
 			
@@ -95,7 +95,7 @@ class CourseOffered extends \yii\db\ActiveRecord
 			
             [['prefix_lec', 'prefix_tut'], 'string', 'max' => 225],
 			
-			 [['course_cqi'], 'string'],
+			 [['course_cqi', 'group1_name', 'group2_name'], 'string'],
 			
 			
 			[['scriptbest1_file', 'scriptbest2_file', 'scriptbest3_file', 'scriptmod1_file', 'scriptmod2_file', 'scriptmod3_file', 'scriptlow1_file', 'scriptlow2_file', 'scriptlow3_file'], 'string'],

@@ -157,9 +157,9 @@ if($course_version > 0){
 <td>2. </td>
 <td><b>Teaching Material Group</b></td>
 <td><?php
-$array = ArrayHelper::map($offer->course->materialCourseFile, 'id', 'material_name');
-$array[-1] = ' <Manage Teaching Material> ';
-echo $form->field($offer, 'material_version')->dropDownList($array,['prompt' => 'Please Select', 'class' => 'form-control course-matrial-update'])->label(false);
+$array2 = ArrayHelper::map($offer->course->materialCourseFile, 'id', 'material_name');
+$array2[-1] = ' <Manage Teaching Material> ';
+echo $form->field($offer, 'material_version')->dropDownList($array2,['prompt' => 'Please Select', 'class' => 'form-control course-matrial-update'])->label(false);
 
 if(!$offer->course->materialSubmit){
 	//echo '<i>* Please make sure the material group is submitted first. Please click the Update button.</i>';
@@ -238,7 +238,96 @@ if($material){
 </table>
 
 
+
     <?php ActiveForm::end(); ?>
+
+
+<div align="center" style="font-size:13px" id="btn-more-setting"><a href="javascript:void(0)">More Setting</a></div>
+<?php 
+
+$d = 'style="display: none"';
+if($offer->course_version2 > 0){
+    $d = '';
+}
+?>
+<div id="more-setting" <?=$d?>> 
+<?php $form = ActiveForm::begin(['id' => 'more-setting-form']); ?>
+<table class="table">
+<thead>
+
+<tr>
+<th width="5%"></th>
+<th width="20%"></th>
+<th style="width:45%; font-weight:normal"><i>Applicable if there are two cohorts need different course information</i></th>
+<th style="width:10%"></th>
+<th style="width:10%"></th>
+<th width="10%"></th>
+</tr>
+
+
+</thead>
+
+<tr>
+<td>3. </td>
+<td><b>Course Information Version 2</b></td>
+<td>
+<?php echo $form->field($offer, 'course_version2')->dropDownList($array, ['prompt' => 'Please Select'])->label(false) ?>
+
+
+</td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td>4. </td>
+<td><b>Group 1 (default) Label</b></td>
+<td>
+<?php echo $form->field($offer, 'group1_name')->label(false) ?>
+
+
+</td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td>5. </td>
+<td><b>Group 2 Label</b></td>
+<td>
+<?php echo $form->field($offer, 'group2_name')->label(false) ?>
+
+
+</td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td></td>
+<td></td>
+<td>
+<div class="form-group">
+        
+<?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+    </div>
+
+
+
+</td>
+<td></td>
+<td></td>
+</tr>
+
+
+
+
+
+</table>
+    <?php ActiveForm::end(); ?>
+
+
+</div>
 
 
 </div>
@@ -248,6 +337,18 @@ if($material){
 
 
 $this->registerJs('
+
+$("#btn-more-setting").click(function(){
+    if($("#more-setting").css("display") == "none"){
+        $("#more-setting").slideDown();
+    }else{
+        $("#more-setting").slideUp();
+    }
+    
+
+});
+
+
     
 $("#courseoffered-course_version").change(function(){
     var course = $(this).val();

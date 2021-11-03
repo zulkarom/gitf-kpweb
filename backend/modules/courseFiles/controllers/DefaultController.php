@@ -251,6 +251,7 @@ class DefaultController extends Controller
     {
         $model = new Checklist();
         $offer = $this->findOffered($id);
+        $offer2 = $this->findOffered($id);
 		if(!in_array($offer->status, [0,20])){
 			return $this->redirect(['coordinator-view', 'id' => $id]);
 		}
@@ -302,6 +303,7 @@ class DefaultController extends Controller
         return $this->render('teaching-assignment-coordinator', [
             'model' => $model,
             'offer' => $offer,
+            'offer2' => $offer2,
 			'dates' => $dates
         ]);
     }
@@ -342,6 +344,18 @@ class DefaultController extends Controller
         if($kira == 0){
 			$this->importStudentListApi($lecture);
         } */
+		
+		if ($lecture->load(Yii::$app->request->post())) {
+		    //print_r($selections = Yii::$app->request->post());
+		    //die();
+		    $selection = Yii::$app->request->post('selection');
+		    if(StudentLecture::updateAll(['stud_group' => $lecture->assign_group], ['id' => $selection])){
+		        Yii::$app->session->addFlash('success', "Data Updated");
+		        return $this->refresh();
+		        
+
+		    }
+		}
 
         $searchModel = new StudentLectureSearch();
         $searchModel->lecture_id = $lecture->id;

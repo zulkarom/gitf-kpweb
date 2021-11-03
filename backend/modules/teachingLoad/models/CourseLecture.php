@@ -24,6 +24,7 @@ class CourseLecture extends \yii\db\ActiveRecord
 {
     public $attendance_instance;
     public $file_controller;
+    public $assign_group;
     
     /**
      * {@inheritdoc}
@@ -41,7 +42,7 @@ class CourseLecture extends \yii\db\ActiveRecord
         return [
             [['offered_id', 'created_at', 'updated_at'], 'required'],
 			
-            [['offered_id', 'student_num', 'prg_stu_list'], 'integer'],
+            [['offered_id', 'student_num', 'prg_stu_list', 'assign_group'], 'integer'],
 			
             [['prg_stu_attend', 'prg_attend_complete', 'prg_stu_assess', 'prg_class_cancel'], 'number'],
 			
@@ -66,6 +67,7 @@ class CourseLecture extends \yii\db\ActiveRecord
             'lec_name' => 'Lec Name',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            'assign_group' => 'Move Selected Students to:',
         ];
     }
 	
