@@ -91,7 +91,15 @@ use backend\modules\courseFiles\models\Common;
                 foreach ($offer->lectures as $lecture) {
 					if($lecture->prg_stu_assess == 1){
 						$boo = $boo == false ? false : true;
-						$clo_html .= '<li><a href="'.Url::to(['/course-files/default/clo-analysis-pdf', 'id'=> $lecture->id]).'" target="_blank">'.$lecture->lec_name .' - CLO ANALYSIS '.Common::pTick().'</a></li>';
+						
+						if($version2 > 0){
+						    $clo_html .= '<li><a href="'.Url::to(['/course-files/default/clo-analysis-pdf', 'id'=> $lecture->id, 'group' => 1]).'" target="_blank">'.$lecture->lec_name .' - CLO ANALYSIS '.Common::pTick().'</a></li>';
+						}else{
+						    $clo_html .= '<li><a href="'.Url::to(['/course-files/default/clo-analysis-pdf', 'id'=> $lecture->id]).'" target="_blank">'.$lecture->lec_name .' - CLO ANALYSIS '.Common::pTick().'</a></li>';
+						}
+						
+						
+						
 					}else{
 						$boo = false;
 						$clo_html .= '<li>'.$lecture->lec_name .' - CLO ANALYSIS ' .Common::pTick(false). '</li>';
@@ -100,8 +108,14 @@ use backend\modules\courseFiles\models\Common;
 				}
 				
 				
-				echo '<li><a href="'.Url::to(['/course-files/default/clo-summary-pdf', 'id'=> $offer->id]).'" target="_blank">CLO SUMMARY '.Common::pTick($boo).'</a></li>';
-				echo $clo_html;
+				if($version2 > 0){
+				    echo '<li><a href="'.Url::to(['/course-files/default/clo-summary-pdf', 'id'=> $offer->id, 'group' => 1]).'" target="_blank">CLO SUMMARY '.Common::pTick($boo).'</a></li>';
+				    echo $clo_html;
+				}else{
+				    echo '<li><a href="'.Url::to(['/course-files/default/clo-summary-pdf', 'id'=> $offer->id]).'" target="_blank">CLO SUMMARY '.Common::pTick($boo).'</a></li>';
+				    echo $clo_html;
+				}
+				
 				
 			}else{
 				$boo = false;
@@ -113,6 +127,46 @@ use backend\modules\courseFiles\models\Common;
 		
 		if($version2 > 0){
 					echo '<div class="grup"><i>Group 2</i></div>';
+					
+					
+					echo '<ul>';
+					
+					
+					$boo = true;
+					$clo_html = '';
+					if($offer->lectures){
+					    foreach ($offer->lectures as $lecture) {
+					        if($lecture->studentGroup2){
+					            if($lecture->prg_stu_assess == 1){
+					                $boo = $boo == false ? false : true;
+					                if($version2 > 0){
+					                    $clo_html .= '<li><a href="'.Url::to(['/course-files/default/clo-analysis-pdf', 'id'=> $lecture->id, 'group' => 2]).'" target="_blank">'.$lecture->lec_name .' - CLO ANALYSIS '.Common::pTick().'</a></li>';
+					                }else{
+					                    $clo_html .= '<li><a href="'.Url::to(['/course-files/default/clo-analysis-pdf', 'id'=> $lecture->id]).'" target="_blank">'.$lecture->lec_name .' - CLO ANALYSIS '.Common::pTick().'</a></li>';
+					                }
+					                
+					            }else{
+					                $boo = false;
+					                $clo_html .= '<li>'.$lecture->lec_name .' - CLO ANALYSIS ' .Common::pTick(false). '</li>';
+					            }
+					        }
+					        
+					        
+					    }
+					    
+					    
+					    echo '<li><a href="'.Url::to(['/course-files/default/clo-summary-pdf', 'id'=> $offer->id, 'group' => 2]).'" target="_blank">CLO SUMMARY '.Common::pTick($boo).'</a></li>';
+					    echo $clo_html;
+					    
+					}else{
+					    $boo = false;
+					    echo'<li>'.Common::pTick(false).'</li>';
+					}
+					
+					
+					echo '</ul>';
+					
+					
 				}
 		
 		echo '</td>

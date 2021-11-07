@@ -228,56 +228,58 @@ EOD;
 						
 					$num++;
 				}
-			$colspan = 3 + $kira_assess;
-			$html .= '<tr style="line-height: 180%;"><td  colspan="' .$colspan . ' " align="right"><b>AVERAGE</b></td>';
-				  $weightage_html = '';
-				  $percent = '';
-				  $achievement = '';
-				  $html_analysis = '';
-                    if($this->listClo){
-                      foreach ($this->listClo as $clo) {
-                        $strtotal = 'clo'.$clo.'_total';
-                        $strcount = 'clo'.$clo.'_count';
-						$average = 0;
-                        if($$strcount > 0){
-                           $average = $$strtotal/$$strcount;
-                           $html .= '<td align="center">'.number_format($average,2).'</td>';
-                        }else{
-                            $html .= '<td></td>';
-                        }
-						
-						$value = $this->cloValue($clo,$weightage,$cloSet);
-                        $weightage_html .= '<td align="center" >'.$value.'</td>';
-						if($value == 0){
-							$percentage = 0;
-						}else{
-							$percentage = $average / $value;
-						}
-						
-						$percent .= '<td align="center">'.number_format($percentage,2).'</td>';
-						$achieve = $percentage * 4;
-						$achievement .= '<td align="center">'.number_format($achieve,2).'</td>';
-						$analysis = $this->analysis($achieve);
-						$html_analysis .= '<td align="center">'.$analysis.'</td>';
-                       
-                      }
-                    }
-                
-                $html .= '</tr>
-				<tr style="line-height: 180%;"><td  colspan="'. $colspan . ' "  align="right"><b>CLO WEIGHTAGE</b></td>';
-				$html .=  $weightage_html;
-                $html .= '</tr>
-				<tr style="line-height: 180%;"><td colspan="' . $colspan . ' "  align="right"><b></b></td>';
-				$html .=  $percent;
-                $html .= '</tr>
-				<tr style="line-height: 180%;"><td colspan=" ' . $colspan . '"  align="right"><b>STUDENT ACHIEVEMENT(0-4) *</b></td>';
-				$html .=  $achievement;
-                $html .= '</tr>
-				
-				<tr style="line-height: 180%;"><td colspan="' . $colspan . '"  align="right"><b>ACHIEVEMENT ANALYSIS **</b></td>';
-				$html .=  $html_analysis;
-                $html .= '</tr>';
+			
 		}
+		
+		$colspan = 3 + $kira_assess;
+		$html .= '<tr style="line-height: 180%;"><td  colspan="' .$colspan . ' " align="right"><b>AVERAGE</b></td>';
+		$weightage_html = '';
+		$percent = '';
+		$achievement = '';
+		$html_analysis = '';
+		if($this->listClo){
+		    foreach ($this->listClo as $clo) {
+		        $strtotal = 'clo'.$clo.'_total';
+		        $strcount = 'clo'.$clo.'_count';
+		        $average = 0;
+		        if($$strcount > 0){
+		            $average = $$strtotal/$$strcount;
+		            $html .= '<td align="center">'.number_format($average,2).'</td>';
+		        }else{
+		            $html .= '<td></td>';
+		        }
+		        
+		        $value = $this->cloValue($clo,$weightage,$cloSet);
+		        $weightage_html .= '<td align="center" >'.$value.'</td>';
+		        if($value == 0){
+		            $percentage = 0;
+		        }else{
+		            $percentage = $average / $value;
+		        }
+		        
+		        $percent .= '<td align="center">'.number_format($percentage,2).'</td>';
+		        $achieve = $percentage * 4;
+		        $achievement .= '<td align="center">'.number_format($achieve,2).'</td>';
+		        $analysis = $this->analysis($achieve);
+		        $html_analysis .= '<td align="center">'.$analysis.'</td>';
+		        
+		    }
+		}
+		
+		$html .= '</tr>
+				<tr style="line-height: 180%;"><td  colspan="'. $colspan . ' "  align="right"><b>CLO WEIGHTAGE</b></td>';
+		$html .=  $weightage_html;
+		$html .= '</tr>
+				<tr style="line-height: 180%;"><td colspan="' . $colspan . ' "  align="right"><b></b></td>';
+		$html .=  $percent;
+		$html .= '</tr>
+				<tr style="line-height: 180%;"><td colspan=" ' . $colspan . '"  align="right"><b>STUDENT ACHIEVEMENT(0-4) *</b></td>';
+		$html .=  $achievement;
+		$html .= '</tr>
+		    
+				<tr style="line-height: 180%;"><td colspan="' . $colspan . '"  align="right"><b>ACHIEVEMENT ANALYSIS **</b></td>';
+		$html .=  $html_analysis;
+		$html .= '</tr>';
 	
 		
 		$html .= '</table><div style="height:2px;">&nbsp;</div>

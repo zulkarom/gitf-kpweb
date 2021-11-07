@@ -11,6 +11,7 @@ class CloSummaryStart extends \TCPDF {
 	public $course;
 	public $curr_page;
 	public $total_page;
+	public $group = false;
 
     //Page header
     public function Header() {
@@ -27,8 +28,14 @@ class CloSummaryStart extends \TCPDF {
 		$height = 31;
 		$line_height = 220;
 		$time = strtoupper(date('d-M-Y h:m A', time()));
+		$grup = ''; 
+		if($this->group == 1){
+		    $grup = '(GROUP 1)';
+		}else if($this->group == 2){
+		    $grup = '(GROUP 2)';
+		}
 		$html ='
-		<b>CLO SUMMARY ANALYSIS</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<b>CLO SUMMARY ANALYSIS ' . $grup . '</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<b>SEMESTER: </b>'. strtoupper($this->semester->shortFormat()).'
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>COURSE: </b>'.$this->course->course_code.' - '.strtoupper($this->course->course_name).'
 		<br />

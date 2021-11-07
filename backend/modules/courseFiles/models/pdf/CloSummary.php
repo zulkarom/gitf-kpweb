@@ -15,6 +15,7 @@ class CloSummary
 	public $pdf;
 	public $listClo;
 	public $directoryAsset;
+	public $group = null;
 	
 	public function generatePdf(){
 			
@@ -26,6 +27,7 @@ class CloSummary
 			$this->pdf->model = $this->model;
 			$this->pdf->semester = $this->semester;
 			$this->pdf->course = $this->course;
+			$this->pdf->group = $this->group;
 			
 			
 			$this->startPage();
@@ -76,7 +78,14 @@ class CloSummary
 		if($this->model->lectures){
 			
 			foreach($this->model->lectures as $lecture){
-				$arr = json_decode($lecture->clo_achieve);
+				$has_value = true;
+				if($this->group == 2){
+				    $arr = json_decode($lecture->clo_achieve2);
+				    
+				}else{
+				    $arr = json_decode($lecture->clo_achieve);
+				}
+				
 				/* if(!is_array($arr)){
 					$arr = [];
 				} */
@@ -84,7 +93,14 @@ class CloSummary
 				if($arr == null){
 					$arr = [];
 					$counted = false;
+					
 				}
+				
+				if(!$arr){
+				    $has_value = false;
+				}
+				
+				if($has_value){
 				$html .= '<tr><td>'.$i.'. </td><td align="center">'.$lecture->lec_name.'</td><td>';
 				if($lecture->lecturers){
 					foreach($lecture->lecturers as $b => $lecturer){
@@ -121,7 +137,10 @@ class CloSummary
 				
 				
 				$html .= '</tr>';
+				
+				
 				$i++;
+				}
 			}
 		
 		}

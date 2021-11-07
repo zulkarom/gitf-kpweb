@@ -407,13 +407,18 @@ class DefaultController extends Controller
 	
 
 	
-	public function actionCloSummaryPdf($id){
+	public function actionCloSummaryPdf($id, $group = false){
 		$model = $this->findOffered($id);
 		$pdf = new CloSummary;
 		$pdf->model = $model;
 		$pdf->course = $model->course;
 		$pdf->semester = $model->semester;
 		$pdf->listClo = $model->listClo();
+		if($group == 1){
+		    $pdf->group = 1;
+		}else if($group == 2){
+		    $pdf->group = 2;
+		}
 		$pdf->generatePdf();
 	}
 	
