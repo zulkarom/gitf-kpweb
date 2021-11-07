@@ -1639,7 +1639,7 @@ class CourseController extends Controller
 	
 	//---------TABLE 4 end--------------------
 	
-	public function actionFk3($course, $dev = false, $version = false, $offer = false, $cqi = false, $xana = false){
+	public function actionFk3($course, $dev = false, $version = false, $offer = false, $cqi = false, $xana = false, $group = false){
 			
 		$pdf = new Fk3;
 		$pdf->model = $this->decideVersion($course, $dev, $version);

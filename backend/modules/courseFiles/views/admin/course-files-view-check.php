@@ -182,12 +182,32 @@ use backend\modules\courseFiles\models\Common;
 				  if($version == 0){
 				echo 'The coordinator needs to select course version.';
 			}else{
-				echo '<ul>
-				<li><a href="'.Url::to(['/esiap/course/fk3', 'course'=> $offer->course_id, 'version' => $version, 'offer' => $offer->id ,'xana' => 1]).'" target="_blank">FK03 - PENJAJARAN KONSTRUKTIF</a><br />
-				<i>(CLO achievement result)</i>
-				</li>
-				</ul>
+				if($version2 > 0){
+					echo '<div class="grup"><i>Group 1</i></div>';
+					echo '<ul>
+					<li><a href="'.Url::to(['/esiap/course/fk3', 'course'=> $offer->course_id, 'version' => $version, 'offer' => $offer->id ,'xana' => 1, 'group' => 1]).'" target="_blank">FK03 - PENJAJARAN KONSTRUKTIF</a><br />
+					<i>(CLO achievement result)</i>
+					</li>
+					</ul>
 				';
+				}else{
+					echo '<ul>
+					<li><a href="'.Url::to(['/esiap/course/fk3', 'course'=> $offer->course_id, 'version' => $version, 'offer' => $offer->id ,'xana' => 1]).'" target="_blank">FK03 - PENJAJARAN KONSTRUKTIF</a><br />
+					<i>(CLO achievement result)</i>
+					</li>
+					</ul>
+					';
+				}
+				
+				if($version2 > 0){
+					echo '<div class="grup"><i>Group 2</i></div>';
+					echo '<ul>
+					<li><a href="'.Url::to(['/esiap/course/fk3', 'course'=> $offer->course_id, 'version' => $version, 'offer' => $offer->id ,'xana' => 1, 'group' => 2]).'" target="_blank">FK03 - PENJAJARAN KONSTRUKTIF</a><br />
+					<i>(CLO achievement result)</i>
+					</li>
+					</ul>
+					';
+				}
 			}
 				
 			echo '</td>

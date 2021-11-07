@@ -20,6 +20,7 @@ class Fk3
 	public $offer = false;
 	public $cqi = false;
 	public $xana = false;
+	public $group = false;
 	
 	public $wtab;
 	
@@ -664,6 +665,7 @@ EOD;
 	
 	
 	public function signitureCoor(){
+		$html = '';
 		if(Yii::$app->params['faculty_id'] != 1){
 			return false;
 		}
@@ -675,6 +677,8 @@ EOD;
 		
 		$file = Yii::getAlias('@upload/'. $sign);
 		list($width, $height) = getimagesize($file);
+		$ratio_w = $height / $width;
+		$ratio_h = $width / $height;
 		$f = basename($file);
 		$paste = 'images/temp/'. $f;
 		if($sign){
@@ -695,10 +699,10 @@ EOD;
 			$size = 100 + ($adj_size * 3);
 			
 		}
-		
+		$height = $size * $ratio_w;
+		//$html .= $height;
 		if($height > 90){
-			$res = $height - 90;
-			$size = $size - $res;
+			$size = 90 * $ratio_h;
 		}
 		
 		if($size < 0){
@@ -717,7 +721,7 @@ EOD;
 		
 		$col1 = 250;
 		$col_sign = 410 ;
-		$html = '<table>
+		$html .= '<table>
 
 		<tr><td><br /><br /></td><td></td></tr>
 		<tr>
