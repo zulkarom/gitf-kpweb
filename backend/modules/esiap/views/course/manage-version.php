@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <h4><?=$course->course_code . ' ' . $course->course_name ?></h4>
 <div class="form-group">
-<a href="<?=Url::to(['create-version', 'course' => $course->id])?>" class="btn btn-success">New Version</a>
+<a href="<?=Url::to(['create-version', 'course' => $course->id])?>" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> New Version</a>
 </div>
 
 <div class="course-index">
@@ -29,8 +29,25 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'version_name',
+			[
+				'attribute' => 'version_type_id',
+				'label' => 'MQF',
+				'value' => function($model){
+					return $model->versionType->type_name;
+				}
+				
+			],
+			
+			[
+				'label' => 'In Course File',
+				'format' => 'html',
+				'value' => function($model){
+					return $model->courseFilesHtml;
+				}
+				
+			],
             
-            'preparedBy.fullname',
+
             
             'labelStatus:html',
             
@@ -43,7 +60,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			     'label' => 'Documents',
                 'format' => 'raw',
                 'value' => function($model){
-                    return $model->course->reportList('View Doc Report', $model->id);
+                    return $model->course->reportList('View', $model->id);
                     
                 }
                 
@@ -57,7 +74,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 //'visible' => false,
                 'buttons'=>[
                     'update'=>function ($url, $model) {
-                        return Html::a('<span class="fa fa-pencil"></span> Version',['/esiap/course/update-version/', 'course' => $model->course->id, 'version' => $model->id],['class'=>'btn btn-warning btn-sm']);
+                        return Html::a('<span class="fa fa-cog"></span> Version',['/esiap/course/update-version/', 'course' => $model->course->id, 'version' => $model->id],['class'=>'btn btn-warning btn-sm']);
                     },
                     
                     'course'=>function ($url, $model) {

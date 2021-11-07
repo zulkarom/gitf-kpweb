@@ -91,7 +91,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function($model){
 					if($model->course){
 						if($model->course->developmentVersion){
-						return $model->course->reportList('View Doc Report', $model->course->developmentVersion->id);
+						return $model->course->reportList('View Documents', $model->course->developmentVersion->id);
 					}else{
 						return 'NONE';
 					}
@@ -161,7 +161,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
                 'value' => function($model){
 					if($model->course){
-						return $model->course->reportList('View Doc Report');
+						return $model->course->reportList('View Documents');
 					}
 					
                     

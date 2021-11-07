@@ -460,6 +460,10 @@ class CourseOffered extends \yii\db\ActiveRecord
         return $this->hasOne(CourseVersion::className(), ['id' => 'course_version']);
     }
 	
+	public function getCourseVersion2(){
+        return $this->hasOne(CourseVersion::className(), ['id' => 'course_version2']);
+    }
+	
 	//return array
 	public function getCloSummary(){
 		$array = array();
@@ -541,6 +545,10 @@ class CourseOffered extends \yii\db\ActiveRecord
 
     public function getAssessment(){
         return $this->hasMany(CourseAssessment::className(), ['crs_version_id' => 'course_version']);
+    }
+	
+	public function getAssessment2(){
+        return $this->hasMany(CourseAssessment::className(), ['crs_version_id' => 'course_version2']);
     }
     
     public function getTeamTeaching(){

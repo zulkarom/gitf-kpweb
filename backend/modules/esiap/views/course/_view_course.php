@@ -24,7 +24,7 @@ use yii\helpers\Url;
       </tr>
 	  <tr>
         <td width="20%"><b>DOCUMENTS</b></td>
-        <td><?=$model->reportList('View Doc Report', $version->id)?></td>
+        <td><?=$model->reportList('View Documents', $version->id)?></td>
       </tr>
 		  
 		  <?php

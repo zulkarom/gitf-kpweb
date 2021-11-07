@@ -246,7 +246,7 @@ echo Select2::widget([
                 //'visible' => false,
                 'buttons'=>[
                     'update'=>function ($url, $model) {
-						return $model->course->reportList('View Doc Report', $model->id);
+						return $model->course->reportList('View Documents', $model->id);
                     }
                 ],
             

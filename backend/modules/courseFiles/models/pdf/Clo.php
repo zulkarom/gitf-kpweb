@@ -12,6 +12,7 @@ class Clo
 	public $course;
 	public $semester;
 	public $group;
+	public $analysis_group = null;
 	public $response;
 	public $pdf;
 	public $directoryAsset;
@@ -29,6 +30,7 @@ class Clo
 			$this->pdf->course = $this->course;
 			$this->pdf->semester = $this->semester;
 			$this->pdf->group = $this->group;
+			$this->pdf->analysis_group = $this->analysis_group;
 			
 			$this->startPage();
 			//$this->setHeader();
@@ -41,9 +43,15 @@ class Clo
 	
 	
 	public function setHeader(){
-
+		if($this->analysis_group == 1){
+			$group = '(GROUP 1)';
+		}else if($this->analysis_group == 2){
+			$group = '(GROUP 2)';
+		}else{
+			$group = '';
+		}
 		$html ='
-		<b>CLO ANALYSIS</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<b>CLO ANALYSIS '.$group.'</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<b>SEMESTER: </b>'. strtoupper($this->semester->fullFormat()).'
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>COURSE: </b>'.$this->course->course_code.' ('.$this->group.') - '.strtoupper($this->course->course_name).'
 		<br />
@@ -148,11 +156,19 @@ EOD;
 		</thead>
 		';
 		
-		if($this->model->students){
+		if($this->analysis_group == 1){
+			$list_student = $this->model->studentGroup1;
+		}else if($this->analysis_group == 2){
+			$list_student = $this->model->studentGroup2;
+		}else{
+			$list_student = $this->model->students;
+		}
+		
+		if($list_student){
 			// if($this->response->student->result){
 				$num = 1;
 				//style="line-height: 150%;"
-				foreach($this->model->students as $student){
+				foreach($list_student as $student){
 						$html .= '
 						<tr nobr="true">
 						<td style="height: 27px;" width="'.$bil.'"  align="center">'.$num.'. </td>

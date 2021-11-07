@@ -78,10 +78,19 @@ echo $note;
 
 
 </thead>
+<?php 
 
+$d = 'style="display: none"';
+if($offer->course_version2 > 0){
+    $d = '';
+}
+?>
 <tr>
 <td>1. </td>
-<td><b>Course Information Version</b></td>
+<td><b>Course Information Version</b>
+<span id="grup1-label" <?=$d?>><br /><i>(Group 1)</i></span>
+
+</td>
 <td><?php  
 $array = ArrayHelper::map($offer->course->versionNotArchived, 'id', 'versionNameAndStatus');
 $array[-1] = ' <Manage Course Info Version> ';
@@ -245,10 +254,7 @@ if($material){
 <div align="center" style="font-size:13px" id="btn-more-setting"><a href="javascript:void(0)">More Setting</a></div>
 <?php 
 
-$d = 'style="display: none"';
-if($offer->course_version2 > 0){
-    $d = '';
-}
+
 ?>
 <div id="more-setting" <?=$d?>> 
 <?php $form = ActiveForm::begin(['id' => 'more-setting-form']); ?>
@@ -258,7 +264,7 @@ if($offer->course_version2 > 0){
 <tr>
 <th width="5%"></th>
 <th width="20%"></th>
-<th style="width:45%; font-weight:normal"><i>Applicable if there are two cohorts need different course information</i></th>
+<th style="width:45%; font-weight:normal"><i>Applicable if there are two cohorts with different course information</i></th>
 <th style="width:10%"></th>
 <th style="width:10%"></th>
 <th width="10%"></th>
@@ -269,7 +275,9 @@ if($offer->course_version2 > 0){
 
 <tr>
 <td>3. </td>
-<td><b>Course Information Version 2</b></td>
+<td><b>Course Information Version</b>
+<br /><i>(Group 2)</i>
+</td>
 <td>
 <?php echo $form->field($offer, 'course_version2')->dropDownList($array, ['prompt' => 'Please Select'])->label(false) ?>
 
@@ -279,6 +287,10 @@ if($offer->course_version2 > 0){
 <td></td>
 </tr>
 
+
+<?php 
+
+/* 
 <tr>
 <td>4. </td>
 <td><b>Group 1 (default) Label</b></td>
@@ -290,7 +302,6 @@ if($offer->course_version2 > 0){
 <td></td>
 <td></td>
 </tr>
-
 <tr>
 <td>5. </td>
 <td><b>Group 2 Label</b></td>
@@ -302,25 +313,9 @@ if($offer->course_version2 > 0){
 <td></td>
 <td></td>
 </tr>
+ */
 
-<tr>
-<td></td>
-<td></td>
-<td>
-<div class="form-group">
-        
-<?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
-    </div>
-
-
-
-</td>
-<td></td>
-<td></td>
-</tr>
-
-
-
+?>
 
 
 </table>
@@ -340,9 +335,15 @@ $this->registerJs('
 
 $("#btn-more-setting").click(function(){
     if($("#more-setting").css("display") == "none"){
-        $("#more-setting").slideDown();
+        $("#more-setting").slideDown(function(){
+			$("#grup1-label").show();
+		});
+		
     }else{
-        $("#more-setting").slideUp();
+        $("#more-setting").slideUp(function(){
+			$("#grup1-label").hide();
+		});
+		
     }
     
 
@@ -357,9 +358,12 @@ $("#courseoffered-course_version").change(function(){
     }else{
         $("#course-material-form").submit();
     }
-    
 });
-    
+
+$("#courseoffered-course_version2").change(function(){
+    $("#more-setting-form").submit();
+});
+
     
 $(".course-matrial-update").change(function(){
     var material = $(this).val();

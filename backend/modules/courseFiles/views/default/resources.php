@@ -28,7 +28,7 @@ $version = $offer->courseVersion;
 	
 	<?php 
 	if($version){
-	    echo $course->reportList('View Doc Report', $version->id);
+	    echo $course->reportList('View Documents', $version->id);
 	}
 	
 	

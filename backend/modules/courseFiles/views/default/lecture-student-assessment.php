@@ -14,6 +14,11 @@ ExcelAsset::register($this);
 $offer = $lecture->courseOffered;
 $assessment = $offer->assessment;
 
+if($offer->course_version2 > 0){
+	$assessment2 = $offer->assessment2;
+}
+
+
 $course = $offer->course;
 $listClo = $offer->listClo();
 /* @var $this yii\web\View */
@@ -54,7 +59,21 @@ if($assessment){
 <input type="file" id="xlf" style="display:none;" />
 <button type="button" id="btn-importexcel" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-import"></span> IMPORT MARKS </button>
 
-<a href=<?=Url::to(['default/clo-analysis-pdf', 'id' => $lecture->id])?> class="btn btn-danger btn-sm" target="_blank"><span class="glyphicon glyphicon-download-alt"></span> DOWNLOAD ANALYSIS</a> 
+<?php 
+if($offer->course_version2 > 0){
+	?>
+	<a href=<?=Url::to(['default/clo-analysis-pdf', 'id' => $lecture->id, 'group' => 1])?> class="btn btn-danger btn-sm" target="_blank"><span class="glyphicon glyphicon-download-alt"></span> ANALYSIS 1</a>  <a href=<?=Url::to(['default/clo-analysis-pdf', 'id' => $lecture->id, 'group' => 2])?> class="btn btn-danger btn-sm" target="_blank"><span class="glyphicon glyphicon-download-alt"></span> ANALYSIS 2</a> 
+	<?php
+}else{
+	?>
+	<a href=<?=Url::to(['default/clo-analysis-pdf', 'id' => $lecture->id])?> class="btn btn-danger btn-sm" target="_blank"><span class="glyphicon glyphicon-download-alt"></span> DOWNLOAD ANALYSIS</a> 
+	<?php
+}
+
+?>
+
+
+
 </div>
 
 <?php 
@@ -87,14 +106,14 @@ if(!$lecture->clo_achieve){
    		<li>Download excel template</li>
    		<li>Fill in the mark in the excel
    			<ul> 
-   				<li>The assessment colum should not be changed</li>
+   				<li>The assessment column should not be changed</li>
    				<li>The different sorting of the students is allowed</li>
-   				<li>You are allowed to change the total in the template header to suit your data. The system will convert the mark to weighted value</li>
+   				<li>You are allowed to change the total mark in the template header to suit your data. The system will convert the mark to the weighted value</li>
    			</ul>
    		
    		</li>
    		
-   		<li>Import the mark from the excel</li>
+   		<li>Clik Import button to import the mark from the excel</li>
    		<li>Make sure all students have the mark. If there are extra students, kindly make adjustment on student list page</li>
    </ol>
    
@@ -103,13 +122,241 @@ if(!$lecture->clo_achieve){
     </div>
     <?php 
 }
-
+$group1 = '';
+if($offer->course_version2 > 0){
+	$group1 = '(Group 1)';
+}
 ?>
 
 <div class="box">
         <div class="box-header">
-      
-            <div class="box-title"><b>Student Assessment</b></div>
+
+            <div class="box-title"><b>Student Assessment <?=$group1?></b></div>
+     
+        </div>
+          <div class="box-body">
+            <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+          
+                    <?php
+					
+					$empty_clo = '';
+					$header_clo = '';
+					if($listClo){
+                          foreach ($listClo as $clo) {
+                            $empty_clo .= '<td></td>';
+							$header_clo .= '<td align="center"><span class="label label-primary">CLO'.$clo.'</span></td>';
+							$strtotal = 'clo'.$clo.'_total';
+							$strcount = 'clo'.$clo.'_count';
+							$$strtotal = 0;
+							$$strcount = 0;
+                          }
+                    }
+					
+					 echo'</tr> 
+                    <tr align="center">
+                   
+                    <td colspan="3" align="right">Course Learning Outcome</td>';
+					$cloSet = array();
+					$count_assess = count($assessment);
+					foreach ($assessment as $assess) {
+                        $cloSet[] = $assess->cloNumber;
+                        echo'<td align="center" style="text-align:center"><span class="label label-primary">CLO'.$assess->cloNumber.'</span>
+                        </td>';
+						
+
+                      }
+                   echo $empty_clo;
+                    
+                    echo'</tr> 
+					
+                    <tr align="center">
+                    <td colspan="3" align="right"><b>Weightage</b></td>';
+					$weightage = array();
+					   foreach ($assessment as $assess) {
+                        echo'<td>'.$assess->assessmentPercentage.'%
+                        </td>';
+						$weightage[] = $assess->assessmentPercentage;
+                      }
+					  echo $empty_clo;
+                    echo'</tr> ';
+
+                  /*  echo ' <tr align="center">
+                    <td colspan="3" align="right"><b>Total Mark</b></td>'; 
+                      foreach ($assessment as $assess) {
+                        echo'<td>'.$assess->assessmentPercentage.'
+                        </td>';
+
+                      }
+					  echo $empty_clo;
+                  echo'</tr>',  */
+
+                  echo '<tr >
+                    <td><b>No.</b></td>
+                    <td><b>Matric No.</b></td>
+                    <td><b>Name</b></td>';
+                      foreach ($assessment as $assess) {
+                        echo'<td align="center">'.$assess->assess_name_bi.'
+                        </td>';
+
+                      }
+					echo $header_clo;
+                  ?>
+				  
+				  
+				  
+				  
+				  
+				  
+                  </tr>
+                </thead>
+                <tr>
+                  <?php
+                    $i=1;
+                    $student1 = $offer->course_version2 > 0 ? $lecture->studentGroup1 : $lecture->students;
+
+                      foreach ($student1 as $student) {
+                        
+                        
+
+                        echo'<tr><td>'.$i.'</td>
+                          <td>'.$student->matric_no.'</td>
+                          <td>'.$student->student->st_name.'</td>';
+						  
+
+                          $result = json_decode($student->assess_result);
+
+                           if($assessment)
+                            {
+                              $x = 0;
+                              foreach ($assessment as $assess) {
+                                
+                                if($result){
+                                  if(array_key_exists($x, $result)){
+                                    $mark = $result[$x];
+                                    echo'<td align="center">'.$mark.'</td>';
+                                  }
+                                  else{
+                                    echo'<td></td>';
+                                  }
+                                  
+                                }
+                                else{
+                                   echo'<td></td>';
+                                }
+                               
+                                $x++;
+                              }
+                            }
+							
+
+                          if($listClo){
+                            foreach ($listClo as $clo) {
+                              $value = cloValue($clo,$result,$cloSet);
+							  $show_value = $value == 0 ? '':$value;
+                             echo'<td align="center">'.$show_value.'</td>';
+
+                              $strtotal = 'clo'.$clo.'_total';
+                              $strcount = 'clo'.$clo.'_count';
+                              
+                              if(!empty($value)){
+                                $$strcount++;
+                              }
+                              
+                              $$strtotal += $value;
+
+
+                            }
+                          }
+
+                        
+                        echo'</tr>';
+                        $i++;
+                      }
+
+                    
+
+				$colspan = 3 + $count_assess;
+                ?>
+				
+				
+                <tr><td colspan="<?=$colspan?>" align="right"><b>AVERAGE</b></td>
+                  <?php
+				  $weightage_html = '';
+				  $percent = '';
+				  $achievement = '';
+				  $html_analysis = '';
+				  $arr_achieve = [];
+				  $arr_achieve2 = [];
+                    if($listClo){
+                      foreach ($listClo as $clo) {
+                        $strtotal = 'clo'.$clo.'_total';
+                        $strcount = 'clo'.$clo.'_count';
+						$average = 0;
+                        if($$strcount > 0){
+                           $average = $$strtotal/$$strcount;
+                            echo'<td align="center">'.number_format($average,2).'</td>';
+                        }else{
+                            echo'<td></td>';
+                        }
+						
+						$value = cloValue($clo,$weightage,$cloSet);
+                        $weightage_html .= '<td align="center" style="border-bottom:1px #000000 solid">'.$value.'</td>';
+						if($value == 0){
+							$percentage = 0;
+						}else{
+							$percentage = $average / $value;
+						}
+						
+						$percent .= '<td align="center">'.number_format($percentage,2).'</td>';
+						$achieve = $percentage * 4;
+						$arr_achieve[] = number_format($achieve,2);
+						$achievement .= '<td align="center"><span class="label label-primary" >'.number_format($achieve,2).'</span></td>';
+						$analysis = analysis($achieve);
+						$html_analysis .= '<td align="center">'.$analysis.'</td>';
+                       
+                      }
+                    }
+                  ?>
+                </tr>
+				<tr><td colspan="<?=$colspan?>"  align="right"><b>CLO WEIGHTAGE</b></td>
+                  <?php
+				  echo $weightage_html;
+                  ?>
+                </tr>
+				<tr><td colspan="<?=$colspan?>"  align="right"><b></b></td>
+                  <?php
+				  echo $percent;
+                  ?>
+                </tr>
+				
+				<tr><td colspan="<?=$colspan?>"  align="right"><b>STUDENT ACHIEVEMENT(0-4) *</b></td>
+                  <?php
+				  echo $achievement;
+                  ?>
+                </tr>
+				
+				<tr><td colspan="<?=$colspan?>"  align="right"><b>ACHIEVEMENT ANALYSIS **</b></td>
+                  <?php
+				  echo $html_analysis;
+                  ?>
+                </tr>
+				
+            </table>
+
+            </div>
+
+          </div> </div>
+
+<?php 
+if($offer->course_version2 > 0){
+?>
+
+<div class="box">
+        <div class="box-header">
+
+            <div class="box-title"><b>Student Assessment (Group 2)</b></div>
      
         </div>
           <div class="box-body">
@@ -194,7 +441,7 @@ if(!$lecture->clo_achieve){
                     $i=1;
                     
 
-                      foreach ($lecture->students as $student) {
+                      foreach ($lecture->studentGroup2 as $student) {
                         
                         
 
@@ -265,7 +512,7 @@ if(!$lecture->clo_achieve){
 				  $percent = '';
 				  $achievement = '';
 				  $html_analysis = '';
-				  $arr_achieve = [];
+				  
                     if($listClo){
                       foreach ($listClo as $clo) {
                         $strtotal = 'clo'.$clo.'_total';
@@ -288,7 +535,7 @@ if(!$lecture->clo_achieve){
 						
 						$percent .= '<td align="center">'.number_format($percentage,2).'</td>';
 						$achieve = $percentage * 4;
-						$arr_achieve[] = number_format($achieve,2);
+						$arr_achieve2[] = number_format($achieve,2);
 						$achievement .= '<td align="center"><span class="label label-primary" >'.number_format($achieve,2).'</span></td>';
 						$analysis = analysis($achieve);
 						$html_analysis .= '<td align="center">'.$analysis.'</td>';
@@ -325,6 +572,11 @@ if(!$lecture->clo_achieve){
             </div>
 
           </div> </div>
+
+<?php	
+}
+
+?>
 		  
 
 
@@ -365,11 +617,13 @@ if(save == 1){
 
 function saveClos(){
 	var achived = '<?=json_encode($arr_achieve)?>';
+	var achived2 = '<?=json_encode($arr_achieve2)?>';
 	$.ajax({url: "<?=Url::to(['/course-files/default/save-clos', 'id' => $lecture->id])?>", 
 	timeout: 2000,     // timeout milliseconds
 	type: 'POST',  // http method
 	data: { 
 		achived: achived,
+		achived2: achived2,
 	},
 	success: function(result){
 		//alert(result);

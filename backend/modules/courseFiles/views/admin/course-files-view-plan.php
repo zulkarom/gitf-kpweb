@@ -5,7 +5,13 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use backend\modules\courseFiles\models\Common;
 ?>
-
+<style>
+.grup {
+	margin-left:24px;
+	font-weight:normal;
+	font-style:italic;
+}
+</style>
 
 <div class="box">
 <div class="box-header">
@@ -30,6 +36,7 @@ use backend\modules\courseFiles\models\Common;
        $item = $model->itemPlan;
        $offer =  $modelOffer;
 	   $version = $offer->course_version;
+	   $version2 = $offer->course_version2;
 	   $material = $offer->material;
         $check = '';
           echo '<tr><td>'.$item[0]->id.'</td>
@@ -40,10 +47,23 @@ use backend\modules\courseFiles\models\Common;
 				echo 'Coordinator need to select course version.';
 			}else{
 				$check = Common::pTick();
+				if($version2 > 0){
+					echo '<div class="grup"><i>Group 1</i></div>';
+				}
+				
 				echo '<ul>
+			
 				<li><a href="'.Url::to(['/esiap/course/fk1', 'course'=> $offer->course_id, 'version' => $version]).'" target="_blank">FK01 - PRO FORMA KURSUS</a></li>
 				</ul>
 				';
+				if($version2 > 0){
+					echo '<div class="grup"><i>Group 2</i></div>';
+					echo '<ul>
+			
+				<li><a href="'.Url::to(['/esiap/course/fk1', 'course'=> $offer->course_id, 'version' => $version2]).'" target="_blank">FK01 - PRO FORMA KURSUS</a></li>
+				</ul>
+				';
+				}
 			}
 				 
 				
@@ -56,11 +76,25 @@ use backend\modules\courseFiles\models\Common;
 				if($version == 0){
 				echo 'The coordinator needs to select course version.';
 			}else{
+				if($version2 > 0){
+					echo '<div class="grup"><i>Group 1</i></div>';
+				}
 				echo '<ul>
-					<li><a href="'.Url::to(['/esiap/course/fk2', 'course'=> $offer->course_id, 'version' => $version]).'" target="_blank">FK02 - MAKLUMAT KURSUS</a></li>
-					<li><a href="'.Url::to(['/esiap/course/tbl4-pdf', 'course'=> $offer->course_id, 'version' => $version, 'team' => $offer->id]).'" target="_blank">TABLE 4</a></li>
+					<li><a href="'.Url::to(['/esiap/course/fk2', 'course'=> $offer->course_id, 'version' => $version]).'" target="_blank">FK02 - MAKLUMAT KURSUS</a></li>';
+					
+					$type_link = $offer->courseVersion->version_type_id == 1 ? 'tbl4' : 'tbl4-pdf';
+					echo '<li><a href="'.Url::to(['/esiap/course/' . $type_link, 'course'=> $offer->course_id, 'version' => $version, 'team' => $offer->id]).'" target="_blank">TABLE 4</a></li>
 					</ul>
 					';
+				if($version2 > 0){
+					echo '<div class="grup"><i>Group 2</i></div>';
+					echo '<ul>
+					<li><a href="'.Url::to(['/esiap/course/fk2', 'course'=> $offer->course_id, 'version' => $version2]).'" target="_blank">FK02 - MAKLUMAT KURSUS</a></li>';
+					$type_link = $offer->courseVersion2->version_type_id == 1 ? 'tbl4' : 'tbl4-pdf';
+					echo '<li><a href="'.Url::to(['/esiap/course/' . $type_link, 'course'=> $offer->course_id, 'version' => $version2, 'team' => $offer->id]).'" target="_blank">TABLE 4</a></li>
+					</ul>
+					';
+				}
 			}
 				
 				
@@ -73,10 +107,19 @@ use backend\modules\courseFiles\models\Common;
 				if($version == 0){
 				echo 'The coordinator needs to select course version.';
 			}else{
+				if($version2 > 0){
+					echo '<div class="grup"><i>Group 1</i></div>';
+				}
 				echo '<ul>
 					<li><a href="'.Url::to(['/esiap/course/fk3', 'course'=> $offer->course_id, 'version' => $version, 'offer' => $offer->id]).'" target="_blank">FK03 - PENJAJARAN KONSTRUKTIF</a></li>
 					</ul>
 					';
+				if($version2 > 0){
+					echo '<div class="grup"><i>Group 2</i></div>';
+					echo '<ul>
+					<li><a href="'.Url::to(['/esiap/course/fk3', 'course'=> $offer->course_id, 'version' => $version2, 'offer' => $offer->id]).'" target="_blank">FK03 - PENJAJARAN KONSTRUKTIF</a></li>
+					</ul>';
+				}
 			}
 				
 			echo '</td>

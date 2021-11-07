@@ -191,6 +191,18 @@ class CourseLecture extends \yii\db\ActiveRecord
     {
         return $this->hasMany(StudentLecture::className(), ['lecture_id' => 'id']);
     }
+	
+	public function getStudentGroup1()
+    {
+        return $this->hasMany(StudentLecture::className(), ['lecture_id' => 'id'])
+		->where(['stud_group' => 1]);
+    }
+	
+	public function getStudentGroup2()
+    {
+        return $this->hasMany(StudentLecture::className(), ['lecture_id' => 'id'])
+		->where(['stud_group' => 2]);
+    }
     
     public function getCourseOffered(){
         return $this->hasOne(CourseOffered::className(), ['id' => 'offered_id']);

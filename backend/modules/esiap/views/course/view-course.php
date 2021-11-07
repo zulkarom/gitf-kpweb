@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $model->course_code;
   <a href="<?=Url::to(['/esiap/course/manage-version', 'course' => $model->id])?>" class="btn btn-default"><i class="fa fa-cog"></i> Course Info Version</a>
 
 
-<?php echo $model->reportList('View Doc Report', $version->id); ?>
+<?php echo $model->reportList('View Documents', $version->id); ?>
 <?php 
 if(array_key_exists('course-files',Yii::$app->modules)){
 	echo Html::a('Back to Course File', ['/course-files/coordinator/current-coordinator-page', 'course' => $model->id], ['class' => 'btn btn-default']);

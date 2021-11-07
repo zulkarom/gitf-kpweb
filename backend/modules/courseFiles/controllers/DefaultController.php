@@ -386,7 +386,7 @@ class DefaultController extends Controller
 		
     }
 	
-	public function actionCloAnalysisPdf($id){
+	public function actionCloAnalysisPdf($id, $group = false){
 		$model = $this->findLecture($id);
 		$pdf = new Clo;
 		$pdf->model = $model;
@@ -396,9 +396,16 @@ class DefaultController extends Controller
 		$pdf->group =  $model->lec_name;
 		$pdf->assessment = $offer->assessment;
 		$pdf->listClo = $offer->listClo();
+		if($group == 1){
+			$pdf->analysis_group = 1;
+		}else if($group == 2){
+			$pdf->analysis_group = 2;
+		}
 		
 		$pdf->generatePdf();
 	}
+	
+
 	
 	public function actionCloSummaryPdf($id){
 		$model = $this->findOffered($id);
@@ -414,7 +421,9 @@ class DefaultController extends Controller
 		if(Yii::$app->request->post()){
 			$model = $this->findLecture($id);
 			$data = Yii::$app->request->post('achived');
+			$data2 = Yii::$app->request->post('achived2');
 			$model->clo_achieve = $data;
+			$model->clo_achieve2 = $data2;
 			$model->save();
 		}
 		

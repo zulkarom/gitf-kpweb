@@ -1,3 +1,7 @@
 ALTER TABLE `tld_course_offered` ADD `course_version2` INT NOT NULL DEFAULT '0' AFTER `audit_freq`, ADD `group1_name` VARCHAR(200) NULL DEFAULT NULL AFTER `course_version2`, ADD `group2_name` VARCHAR(200) NULL DEFAULT NULL AFTER `group1_name`;
 
-ALTER TABLE `cf_student_lec` ADD `stud_group` TINYINT(1) NOT NULL DEFAULT '1' AFTER `attendance_check`;
+ALTER TABLE `cf_student_lec` ADD `stud_group` TINYINT(1) NOT NULL DEFAULT '1' AFTER `attendance_check
+
+
+UPDATE `sp_version_type` SET `type_name` = 'MQF 1.0' WHERE `sp_version_type`.`id` = 1; UPDATE `sp_version_type` SET `type_name` = 'MQF 2.0' WHERE `sp_version_type`.`id` = 2;
+ALTER TABLE `tld_course_lec` ADD `clo_achieve2` VARCHAR(100) NULL DEFAULT NULL AFTER `clo_achieve`;

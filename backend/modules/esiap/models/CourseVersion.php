@@ -330,6 +330,38 @@ class CourseVersion extends \yii\db\ActiveRecord
     {
         return $this->hasMany(CourseOffered::className(), ['course_version' => 'id']);
     }
+	
+	public function getCourseFiles2()
+    {
+        return $this->hasMany(CourseOffered::className(), ['course_version2' => 'id']);
+    }
+	
+	public function getCourseFilesHtml(){
+		$list = $this->courseFiles;
+		$str = '';
+		$i = 0;
+		if($list){
+			$html = '';
+			foreach($list as $file){
+				$br = $i == 0 ? '' : '<br />';
+				$html .= $br.$file->semester->niceFormat();
+				$i++;
+			}
+			$str .= $html;
+		}
+		
+		$list = $this->courseFiles2;
+		if($list){
+			$html = '';
+			foreach($list as $file){
+				$br = $i == 0 ? '' : '<br />';
+				$html .= $br.$file->semester->niceFormat(). '*';
+				$i++;
+			}
+			$str .= $html;
+		}
+		return $str ? $str : '';
+	}
 
 	
 	public function getMainReferences()
@@ -504,6 +536,55 @@ class CourseVersion extends \yii\db\ActiveRecord
         }
 
     }
+	
+	public function deleteVersion(){
+		if($this->status > 0){
+			Yii::$app->session->addFlash('error', "Only draft status is allowed to be deleted");
+			return false;
+		}
+		
+		$file1 = $this->courseFiles;
+		$file2 = $this->courseFiles2;
+		if($file1 || $file2){
+			Yii::$app->session->addFlash('error', "This version have been put in some of course files");
+			return false;
+		}
+		
+		$transaction = Yii::$app->db->beginTransaction();
+		$id = $this->id;
+		
+		try {
+			$clos = CourseClo::find()->where(['crs_version_id' => $id])->all();
+			if($clos){
+				foreach($clos as $clo){
+					$clo_id = $clo->id;
+					CourseCloAssessment::deleteAll(['clo_id' => $clo_id]);
+					CourseCloDelivery::deleteAll(['clo_id' => $clo_id]);
+				}
+			}
+			CourseClo::deleteAll(['crs_version_id' => $id]);
+			CourseReference::deleteAll(['crs_version_id' => $id]);
+			CourseSyllabus::deleteAll(['crs_version_id' => $id]);
+			CourseSlt::deleteAll(['crs_version_id' => $id]);
+			CourseAssessment::deleteAll(['crs_version_id' => $id]);
+			CourseProfile::deleteAll(['crs_version_id' => $id]);
+			CourseTransferable::deleteAll(['crs_version_id' => $id]);
+			CourseStaff::deleteAll(['crs_version_id' => $id]);
+			
+			if($this->delete()){
+				$transaction->commit();
+				return true;
+			}
+			
+		}
+		catch (Exception $e) 
+		{
+			$transaction->rollBack();
+			Yii::$app->session->addFlash('error', $e->getMessage());
+		}
+		
+		return false;
+	}
 
 
 	

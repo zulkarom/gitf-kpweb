@@ -19,6 +19,8 @@ class Tbl4
 	
 	public $wtab;
 	
+	public $offer;
+	
 	public function generatePdf(){
 
 		$this->directoryAsset = Yii::$app->assetManager->getPublishedUrl('@frontend/views/myasset');
@@ -89,14 +91,32 @@ $html = '<table border="0" width="'.$wtab.'" cellpadding="5">
 <tr>
 <td width="'.$colnum.'" '.$style_shade.' align="center">3. </td>
 
-<td width="'.$col_label.'" '.$style_shade.'>Name(s) of academic staff:</td>
+<td width="'.$col_label.'" '.$style_shade.'>Name(s) of academic staff:';
+
+if($this->offer){
+		    $html .= '<br /><i>(' . $this->offer->semester->longFormatEn() . ')</i>';
+		}
+
+$html .= '</td>
 <td width="'.$col_content.'" colspan="14" '.$border.'>';
+
+$arr_staff = array();
+if($this->offer){
+	$arr_staff = $this->offer->staffInvolved;
+}else{
+	$staff = $this->model->profile->academicStaff;
+	if($staff){
+		foreach($staff as $st){
+			$arr_staff[] = $st->staff->niceName;
+		}
+	}
+}
 
 $staff = $this->model->profile->academicStaff;
 
-if($staff){
-	foreach($staff as $st){
-		$html .= $st->staff->niceName . '<br />';
+if($arr_staff){
+	foreach($arr_staff as $st){
+		$html .= $st . '<br />';
 	}
 }
 

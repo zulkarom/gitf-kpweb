@@ -29,6 +29,7 @@ use backend\modules\courseFiles\models\Common;
         $item = $model->itemCheck;
         $offer =  $modelOffer;
 	   $version = $offer->course_version;
+	   $version2 = $offer->course_version2;
 
         echo '<tr><td>'.$item[0]->id.'</td>
                 <td>'.$item[0]->item.'<i><br/>'.$item[0]->item_bi.'</i></td>
@@ -75,7 +76,13 @@ use backend\modules\courseFiles\models\Common;
         
         echo '<tr><td>'.$item[2]->id.'</td>
                 <td>'.$item[2]->item.'<i><br/>'.$item[2]->item_bi.'</i></td>
-                <td><ul>';
+                <td>';
+				
+				if($version2 > 0){
+					echo '<div class="grup"><i>Group 1</i></div>';
+				}
+		
+		echo '<ul>';
 				
 				
 				$boo = true;
@@ -92,6 +99,7 @@ use backend\modules\courseFiles\models\Common;
 					
 				}
 				
+				
 				echo '<li><a href="'.Url::to(['/course-files/default/clo-summary-pdf', 'id'=> $offer->id]).'" target="_blank">CLO SUMMARY '.Common::pTick($boo).'</a></li>';
 				echo $clo_html;
 				
@@ -101,7 +109,13 @@ use backend\modules\courseFiles\models\Common;
 			}
 				
 				
-		echo '</ul></td>
+		echo '</ul>';
+		
+		if($version2 > 0){
+					echo '<div class="grup"><i>Group 2</i></div>';
+				}
+		
+		echo '</td>
                 <td>' . Common::pTick($boo);
       
                   

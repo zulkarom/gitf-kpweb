@@ -94,8 +94,8 @@ class CourseController extends Controller
         $model->scenario = 'create_coor';
         
         if ($model->load(Yii::$app->request->post())) {
-            $model->version_type_id = 2;
-            $model->is_developed = 1;
+            //$model->version_type_id = 2;
+			//$model->is_developed = 1;
             
             
             $transaction = Yii::$app->db->beginTransaction();
@@ -124,7 +124,7 @@ class CourseController extends Controller
                 
                 if ($flag) {
                     $transaction->commit();
-                    return $this->redirect(['/esiap/course/view-course', 'course' => $course->id, 'version' => $model->id]);
+                    return $this->redirect(['manage-version', 'course' => $course->id, 'version' => $model->id]);
                 } else {
                     $transaction->rollBack();
                 }
@@ -189,7 +189,16 @@ class CourseController extends Controller
     }
     
     
-	
+	public function actionDeleteVersion($id, $course){
+		$course = $this->findModel($course);
+        $model = $this->findVersion($id);
+		if($model->deleteVersion()){
+			Yii::$app->session->addFlash('success', "Course Version Deleted");
+			return $this->redirect(['manage-version', 'course' => $course->id]);
+		}else{
+			return $this->redirect(['update-version', 'version' => $id, 'course' => $course->id]);
+		}
+	}
 
 
     /**
@@ -1595,9 +1604,12 @@ class CourseController extends Controller
 	
 	//---------TABLE 4 start--------------------
 	//version 1.0 pdf
-	public function actionTbl4($course, $dev = false, $version = false){
+	public function actionTbl4($course, $dev = false, $version = false, $team = false){
 			$pdf = new Tbl4;
 			$pdf->model = $this->decideVersion($course, $dev, $version);
+			if($team){
+			    $pdf->offer = $this->findOffer($team);
+			}
 			$pdf->generatePdf();
 	}
 	

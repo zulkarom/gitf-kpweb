@@ -133,7 +133,7 @@ echo GridView::widget([
                 'label' => 'Report',
                 'format' => 'raw',
                 'value' => function($model){
-					return $model->course->reportList('View', $model->id);
+					return $model->course->reportList('View Documents', $model->id);
                     
                 }
             ],

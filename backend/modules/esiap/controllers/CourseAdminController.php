@@ -439,51 +439,13 @@ class CourseAdminController extends Controller
 	
 	public function actionCourseVersionDelete($id){
 		$model = $this->findVersionModel($id);
-		$course = $model->course_id;
-		if($model->status != 0){
-			Yii::$app->session->addFlash('error', "You can only delete draft status");
-		}else{
-			$transaction = Yii::$app->db->beginTransaction();
-			try {
-				$clos = CourseClo::find()->where(['crs_version_id' => $id])->all();
-				if($clos){
-					foreach($clos as $clo){
-						$clo_id = $clo->id;
-						CourseCloAssessment::deleteAll(['clo_id' => $clo_id]);
-						CourseCloDelivery::deleteAll(['clo_id' => $clo_id]);
-					}
-				}
-				CourseClo::deleteAll(['crs_version_id' => $id]);
-				CourseReference::deleteAll(['crs_version_id' => $id]);
-				CourseSyllabus::deleteAll(['crs_version_id' => $id]);
-				CourseSlt::deleteAll(['crs_version_id' => $id]);
-				CourseAssessment::deleteAll(['crs_version_id' => $id]);
-				CourseProfile::deleteAll(['crs_version_id' => $id]);
-				CourseTransferable::deleteAll(['crs_version_id' => $id]);
-				CourseStaff::deleteAll(['crs_version_id' => $id]);
-				
-				if(CourseVersion::findOne($id)->delete()){
-					
-					$transaction->commit();
-					Yii::$app->session->addFlash('success', "Version Deleted");
-				}
-				
-				
-				
-				
-			}
-			catch (Exception $e) 
-			{
-				$transaction->rollBack();
-				Yii::$app->session->addFlash('error', $e->getMessage());
-			}
-
+		if($model->deleteVersion()){
+			Yii::$app->session->addFlash('success', "Course Version Deleted");
 			
 		}
 		
-		
 		return $this->redirect(['/esiap/course-admin/update', 'course' => $model->course->id]);
-		
+
 	}
 	
 	public function actionCourseVersionUpdate($id)

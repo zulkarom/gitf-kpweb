@@ -323,7 +323,7 @@ class Course extends \yii\db\ActiveRecord
 		}
 		$html = '';
 		if($version !==null){
-			$html = '<button type="button" class="btn btn-default" data-toggle="modal" data-target="#course-'.$this->id.'-version-'.$version->id .'"><span class="fa fa-files-o"></span> View Documents</button>
+			$html = '<button type="button" class="btn btn-default" data-toggle="modal" data-target="#course-'.$this->id.'-version-'.$version->id .'"><span class="fa fa-files-o"></span> '.$text.'</button>
 
 		<div id="course-'.$this->id.'-version-'.$version->id .'" class="fade modal" role="dialog" tabindex="-1" style="display: none;">
 		<div class="modal-dialog modal-md">
@@ -340,6 +340,7 @@ class Course extends \yii\db\ActiveRecord
 		<div class="form-group">
 		
 		VERSION: '.$version->version_name .'
+		<br />'.$version->versionType->type_name .'
 		<br />STATUS: '.$version->labelStatus .'
 		
 		</div>
