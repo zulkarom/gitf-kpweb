@@ -303,7 +303,8 @@ $gtotal = 0;
 $plo_num = $this->model->ploNumber;
 $clo_assess = $this->model->assessments;
 if($this->xana){
-	$clo_achieve = $this->offer->cloSummary;
+    //echo $this->group;die();
+	$clo_achieve = $this->offer->getCloSummary($this->group);
 }
 foreach($this->model->clos as $clo){
 	$idx = $x - 1;

@@ -1651,7 +1651,11 @@ class CourseController extends Controller
 			if($xana == 1){
 			    $pdf->xana = true;
 			}
-			
+			if($group == 1){
+			    $pdf->group = 1;
+			}else if($group == 2){
+			    $pdf->group = 2;
+			}
 		}
 		$pdf->generatePdf();
 			

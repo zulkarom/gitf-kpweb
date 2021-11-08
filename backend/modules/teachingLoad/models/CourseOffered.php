@@ -465,7 +465,7 @@ class CourseOffered extends \yii\db\ActiveRecord
     }
 	
 	//return array
-	public function getCloSummary(){
+	public function getCloSummary($group = false){
 		$array = array();
 		if($this->listClo()){
 			  foreach ($this->listClo() as $clo) {
@@ -475,7 +475,13 @@ class CourseOffered extends \yii\db\ActiveRecord
 				$$str_count = 0;
 			  }
 		foreach($this->lectures as $lecture){
-			$arr = json_decode($lecture->clo_achieve);
+		    $has_value = true;
+		    if($group == 2){
+		        $arr = json_decode($lecture->clo_achieve2);
+		        
+		    }else{
+		        $arr = json_decode($lecture->clo_achieve);
+		    }
 			/* if(!is_array($arr)){
 				$arr = [];
 			} */
@@ -484,20 +490,29 @@ class CourseOffered extends \yii\db\ActiveRecord
 				$arr = [];
 				$counted = false;
 			}
-			$x = 0;
-				$total = 0;
-				$count = 0;
-				foreach ($this->listClo() as $clo) {
-					$str_total = 'total_clo'. $clo;
-					$str_count = 'count_clo'. $clo;
-					$val = 0;
-					if($counted){$$str_count++;}
-					if(array_key_exists($x, $arr)){
-						$val = $arr[$x];
-					}
-					$$str_total += $val;
-					$x++;
-				}
+			
+			if(!$arr){
+			    $has_value = false;
+			}
+			
+			if($has_value){
+			    $x = 0;
+			    $total = 0;
+			    $count = 0;
+			    foreach ($this->listClo() as $clo) {
+			        $str_total = 'total_clo'. $clo;
+			        $str_count = 'count_clo'. $clo;
+			        $val = 0;
+			        if($counted){$$str_count++;}
+			        if(array_key_exists($x, $arr)){
+			            $val = $arr[$x];
+			        }
+			        $$str_total += $val;
+			        $x++;
+			    }
+			}
+			    
+			
 		}
 		
 		$p =0;
