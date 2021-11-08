@@ -265,7 +265,7 @@ if($material){
 <tr>
 <th width="5%"></th>
 <th width="20%"></th>
-<th style="width:45%; font-weight:normal"><i>Applicable if there are two cohorts with different course information</i></th>
+<th style="width:45%; font-weight:normal"><i>Applicable if there are different cohorts with two course information</i></th>
 <th style="width:10%"></th>
 <th style="width:10%"></th>
 <th width="10%"></th>
