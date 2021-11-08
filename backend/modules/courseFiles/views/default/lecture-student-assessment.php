@@ -21,6 +21,7 @@ if($offer->course_version2 > 0){
 
 $course = $offer->course;
 $listClo = $offer->listClo();
+$listClo2 = $offer->listClo2();
 /* @var $this yii\web\View */
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
 
@@ -60,7 +61,7 @@ if($assessment){
 <button type="button" id="btn-importexcel" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-import"></span> IMPORT MARKS </button>
 
 <?php 
-if($offer->course_version2 > 0){
+if($offer->course_version2 > 0 && $lecture->studentGroup2 ){
 	?>
 	<a href=<?=Url::to(['default/clo-analysis-pdf', 'id' => $lecture->id, 'group' => 1])?> class="btn btn-danger btn-sm" target="_blank"><span class="glyphicon glyphicon-download-alt"></span> ANALYSIS 1</a>  <a href=<?=Url::to(['default/clo-analysis-pdf', 'id' => $lecture->id, 'group' => 2])?> class="btn btn-danger btn-sm" target="_blank"><span class="glyphicon glyphicon-download-alt"></span> ANALYSIS 2</a> 
 	<?php
@@ -123,7 +124,7 @@ if(!$lecture->clo_achieve){
     <?php 
 }
 $group1 = '';
-if($offer->course_version2 > 0){
+if($offer->course_version2 > 0 && $lecture->studentGroup2 ){
 	$group1 = '(Group 1)';
 }
 ?>
@@ -350,7 +351,7 @@ if($offer->course_version2 > 0){
           </div> </div>
 
 <?php 
-if($offer->course_version2 > 0){
+if($offer->course_version2 > 0 && $lecture->studentGroup2 ){
 ?>
 
 <div class="box">
@@ -368,8 +369,8 @@ if($offer->course_version2 > 0){
 					
 					$empty_clo = '';
 					$header_clo = '';
-					if($listClo){
-                          foreach ($listClo as $clo) {
+					if($listClo2){
+                          foreach ($listClo2 as $clo) {
                             $empty_clo .= '<td></td>';
 							$header_clo .= '<td align="center"><span class="label label-primary">CLO'.$clo.'</span></td>';
 							$strtotal = 'clo'.$clo.'_total';
@@ -384,8 +385,8 @@ if($offer->course_version2 > 0){
                    
                     <td colspan="3" align="right">Course Learning Outcome</td>';
 					$cloSet = array();
-					$count_assess = count($assessment);
-					foreach ($assessment as $assess) {
+					$count_assess = count($assessment2);
+					foreach ($assessment2 as $assess) {
                         $cloSet[] = $assess->cloNumber;
                         echo'<td align="center" style="text-align:center"><span class="label label-primary">CLO'.$assess->cloNumber.'</span>
                         </td>';
@@ -399,7 +400,7 @@ if($offer->course_version2 > 0){
                     <tr align="center">
                     <td colspan="3" align="right"><b>Weightage</b></td>';
 					$weightage = array();
-					   foreach ($assessment as $assess) {
+					   foreach ($assessment2 as $assess) {
                         echo'<td>'.$assess->assessmentPercentage.'%
                         </td>';
 						$weightage[] = $assess->assessmentPercentage;
@@ -421,7 +422,7 @@ if($offer->course_version2 > 0){
                     <td><b>No.</b></td>
                     <td><b>Matric No.</b></td>
                     <td><b>Name</b></td>';
-                      foreach ($assessment as $assess) {
+                      foreach ($assessment2 as $assess) {
                         echo'<td align="center">'.$assess->assess_name_bi.'
                         </td>';
 
@@ -452,10 +453,10 @@ if($offer->course_version2 > 0){
 
                           $result = json_decode($student->assess_result);
 
-                           if($assessment)
+                           if($assessment2)
                             {
                               $x = 0;
-                              foreach ($assessment as $assess) {
+                              foreach ($assessment2 as $assess) {
                                 
                                 if($result){
                                   if(array_key_exists($x, $result)){
@@ -476,8 +477,8 @@ if($offer->course_version2 > 0){
                             }
 							
 
-                          if($listClo){
-                            foreach ($listClo as $clo) {
+                          if($listClo2){
+                            foreach ($listClo2 as $clo) {
                               $value = cloValue($clo,$result,$cloSet);
 							  $show_value = $value == 0 ? '':$value;
                              echo'<td align="center">'.$show_value.'</td>';
@@ -513,8 +514,8 @@ if($offer->course_version2 > 0){
 				  $achievement = '';
 				  $html_analysis = '';
 				  
-                    if($listClo){
-                      foreach ($listClo as $clo) {
+                    if($listClo2){
+                      foreach ($listClo2 as $clo) {
                         $strtotal = 'clo'.$clo.'_total';
                         $strcount = 'clo'.$clo.'_count';
 						$average = 0;

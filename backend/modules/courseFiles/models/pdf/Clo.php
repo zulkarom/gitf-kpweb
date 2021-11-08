@@ -80,7 +80,12 @@ EOD;
 		$name = $matrik * 3;
 		$non_box_assesss = $bil + $matrik + $name + $clos;
 		$all_box_assesss = $wtable - $non_box_assesss;
-		$box_assess = $all_box_assesss / $kira_assess; 
+		if($kira_assess == 0){
+		    $box_assess = 0; 
+		}else{
+		    $box_assess = $all_box_assesss / $kira_assess; 
+		}
+		
 		$w3 = $bil + $matrik + $name;
 		
 		$empty_clo = '';
@@ -145,7 +150,12 @@ EOD;
 					$strcount = 'clo'.$clo.'_count';
 					$$strtotal = 0;
 					$$strcount = 0;
-					$str = $assess->assess_name_bi;
+					/* if($assess){
+					    $str = $assess->assess_name_bi;
+					}else{
+					    $str = '';
+					} */
+					
 					$html .= '<td width="'.$box_clo.'"  align="center" style="line-height: 250%;"><b>CLO'.$clo.'</b></td>';
 				}
 			}

@@ -266,16 +266,22 @@ class CourseOffered extends \yii\db\ActiveRecord
 	
 	
 	public function setProgressCoordinator(){
-		$p1 = $this->prg_crs_ver; //1
-		$p2 = $this->prg_material; //2
-		$p3 = $this->prg_cont_rubrics ; //3
-		$p4 = $this->prg_sum_assess;
-		$p5 = $this->prg_cont_material;
-		$p6 = $this->prg_result_final;
-		$p7 = $this->prg_cont_script;
-		$p8 = $this->prg_sum_script;
-		$p9 = $this->prg_cqi;
-		$avg = ($p1 + $p2 + $p3 + $p4 + $p5 + $p6 + $p7 + $p8 + $p9)/9;
+	    $total = 9;
+	    $sum = 0;
+	    if($this->course_version2 > 0){
+	        $total = 10;
+	        $sum += $this->prg_crs_ver2;
+	    }
+	    $sum += $this->prg_crs_ver; //1
+	    $sum += $this->prg_material; //2
+	    $sum += $this->prg_cont_rubrics ; //3
+	    $sum += $this->prg_sum_assess;
+	    $sum += $this->prg_cont_material;
+	    $sum += $this->prg_result_final;
+	    $sum += $this->prg_cont_script;
+	    $sum += $this->prg_sum_script;
+	    $sum += $this->prg_cqi;
+	    $avg = $sum / $total;
 		$this->prg_coordinator = Common::withoutRounding($avg,2);
 		$this->setOverallProgress();
 	}
@@ -309,8 +315,17 @@ class CourseOffered extends \yii\db\ActiveRecord
 		$this->setProgressCoordinator();
 	}
 	
+	public function setProgressCourseVersion2($val){
+	    $this->prg_crs_ver2 = $val;
+	    $this->setProgressCoordinator();
+	}
+	
 	public function getProgressCourseVersionBar(){
 		return Common::progress($this->prg_crs_ver);
+	}
+	
+	public function getProgressCourseVersion2Bar(){
+	    return Common::progress($this->prg_crs_ver2);
 	}
 	
 	public function setProgressMaterial($val){
@@ -554,6 +569,26 @@ class CourseOffered extends \yii\db\ActiveRecord
 			}
 			
 		}
+        
+        return $array;
+    }
+    
+    public function listClo2()
+    {
+        $array = array();
+        if($this->courseVersion2){
+            if($this->courseVersion2->clos){
+                $list = $this->courseVersion2->clos;
+                if($list){
+                    $i =1;
+                    foreach ($list as $clo) {
+                        $array[] = $i;
+                        $i++;
+                    }
+                }
+            }
+            
+        }
         
         return $array;
     }

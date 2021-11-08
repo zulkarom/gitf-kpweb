@@ -276,6 +276,17 @@ class DefaultController extends Controller
 		        $offer->progressCourseVersion = 0;
 		    }
 		    
+		    if($offer->course_version2 > 0){
+		        if($offer->courseVersion2->status > 0){
+		            $offer->progressCourseVersion2 = 1;
+		        }else{
+		            $offer->progressCourseVersion2 = 0.5;
+		        }
+		        
+		    }else{
+		        $offer->progressCourseVersion2 = 0;
+		    }
+		    
 		    if($offer->material_version > 0){
 		        //check ada file ke tak 
 		        if($offer->material->items){
@@ -340,8 +351,9 @@ class DefaultController extends Controller
 	 public function actionLectureStudentList($id){
 		$lecture = $this->findLecture($id);
 		
-		/* $kira = StudentLecture::find()->where(['lecture_id' => $id])->count();
-        if($kira == 0){
+		$kira = StudentLecture::find()->where(['lecture_id' => $id])->count();
+		
+		/* if($kira == 0){
 			$this->importStudentListApi($lecture);
         } */
 		
@@ -349,12 +361,20 @@ class DefaultController extends Controller
 		    //print_r($selections = Yii::$app->request->post());
 		    //die();
 		    $selection = Yii::$app->request->post('selection');
-		    if(StudentLecture::updateAll(['stud_group' => $lecture->assign_group], ['id' => $selection])){
-		        Yii::$app->session->addFlash('success', "Data Updated");
-		        return $this->refresh();
-		        
+		    $kira_sel = count($selection);
+		    $half_student = $kira / 2;
+		    if($kira_sel > $half_student && $lecture->assign_group == 2){
+		        Yii::$app->session->addFlash('error', "Group 2 cannot be the majority!");
 
+		    }else{
+		        if(StudentLecture::updateAll(['stud_group' => $lecture->assign_group], ['id' => $selection])){
+		            Yii::$app->session->addFlash('success', "Data Updated");
+		            return $this->refresh();
+		            
+		            
+		        }
 		    }
+		    
 		}
 
         $searchModel = new StudentLectureSearch();
@@ -400,6 +420,8 @@ class DefaultController extends Controller
 			$pdf->analysis_group = 1;
 		}else if($group == 2){
 			$pdf->analysis_group = 2;
+			$pdf->assessment = $offer->assessment2;
+			$pdf->listClo = $offer->listClo2();
 		}
 		
 		$pdf->generatePdf();

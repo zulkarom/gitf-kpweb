@@ -14,6 +14,7 @@ $closed = Common::isDue($offer->semesterDates->open_deadline);
 $course = $offer->course;
 $offered_id = $offer->id;
 $course_version = $offer->course_version;
+$course_version2 = $offer->course_version2;
 $this->title = 'Coordinator';
 $this->params['breadcrumbs'][] = ['label' => 'My Course File', 'url' => ['/course-files/default/teaching-assignment']];
 $this->params['breadcrumbs'][] = $this->title;
@@ -279,12 +280,70 @@ if($material){
 <br /><i>(Group 2)</i>
 </td>
 <td>
-<?php echo $form->field($offer, 'course_version2')->dropDownList($array, ['prompt' => 'Please Select'])->label(false) ?>
+<?php echo $form->field($offer, 'course_version2')
+->dropDownList(ArrayHelper::map($offer->course->versionNotArchived, 'id', 'versionNameAndStatus'), 
+    ['prompt' => 'Please Select'])->label(false) ?>
 
 
 </td>
-<td></td>
-<td></td>
+<td><?php 
+$count_doc = 0;
+if($course_version2 > 0){
+	$count_doc = 4;
+}
+ Modal::begin([
+                      'header' => '<h5>Course Information</h5>',
+                      'toggleButton' => ['label' => 'View Files ('.$count_doc.')', 'class'=>'btn btn-sm btn-default'],
+                  ]);
+                      echo '<table class="table">
+                                <tr>
+                                <th>#</th>
+                                <th>File Name</th>
+                                <th>Action</th>
+                                </tr>';
+		if($course_version > 0){
+				?>
+				
+				<tbody><tr>
+		<td width="5%">1.</td>
+		<td>FK01 - PRO FORMA KURSUS / <i>COURSE PRO FORMA</i>                             </td>
+		<td><a href="<?=Url::to(['/esiap/course/fk1', 'course' => $course->id, 'version' => $course_version2])?>" target="_blank" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-download-alt"></span> Download</a></td>
+	</tr>
+	<tr>
+		<td width="5%">2.</td>
+		<td>FK02 - MAKLUMAT KURSUS / <i>COURSE INFORMATION </i>                               </td>
+		<td><a href="<?=Url::to(['/esiap/course/fk2', 'course' => $course->id, 'version' => $course_version2])?>" target="_blank"  class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-download-alt"></span> Download</a></td>
+	</tr>
+	<tr>
+		<td width="5%">3.</td>
+		<td>FK03 - PENJAJARAN KONSTRUKTIF / <i>CONSTRUCTIVE ALIGNMENT       </i>                         </td>
+		<td><a href="<?=Url::to(['/esiap/course/fk3', 'course' => $course->id, 'version' => $course_version2])?>" target="_blank" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-download-alt"></span> Download</a></td>
+	</tr>
+	
+	<tr>
+		<td width="5%">4.</td>
+		<td>TABLE 4 - SUMMARY OF COURSE INFORMATION</td>
+		<td>
+
+		<a href="<?=Url::to(['/esiap/course/tbl4-pdf', 'course' => $course->id, 'version' => $course_version2, 'team' => $offer->id])?>" target="_blank"  class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-download-alt"></span> TABLE 4 v2.0</a>
+		</td>
+	</tr>
+	
+</tbody>
+				
+				<?php
+                   }
+                                echo'</td>
+                                </tr>
+                                </table>';
+                       
+                  Modal::end();
+
+
+?></td>
+<td><a href="<?=Url::to(['/esiap/course/view-course', 'course' => $course->id, 'version' => $course_version2])?>" class="btn btn-default btn-sm" ><span class="fa fa-pencil"></span> Update</a></td>
+<td><?=$offer->progressCourseVersion2Bar?></td>
+</tr>
 </tr>
 
 
