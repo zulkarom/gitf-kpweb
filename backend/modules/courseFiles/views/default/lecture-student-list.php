@@ -221,7 +221,7 @@ $colums[] = ['class' => 'yii\grid\ActionColumn',
 <?php 
 $lecture->assign_group = 0;
 
-if($more_group){
+
     $form = ActiveForm::begin(['id' => 'assign-group-form']); ?>
 <?=GridView::widget([
         'dataProvider' => $dataProvider,
@@ -229,22 +229,24 @@ if($more_group){
     'columns' => $colums,
     ]); ?>
     
+    
+    
+    
+    <?php 
+    if($more_group){
+    
+    ?>
     <div class="row">
 	<div class="col-md-6"> <?= $form->field($lecture, 'assign_group')->dropDownList([1 => 'Group 1', 2 => 'Group 2'], ['prompt' => 'Select Group']) ?></div>
 
 </div>
     
-   
-    
-    
-    
-    
-<div class="form-group">
-        
-    </div>
 
-    <?php ActiveForm::end(); 
-}
+
+    <?php 
+    }
+    ActiveForm::end(); 
+
     ?>
 
 
