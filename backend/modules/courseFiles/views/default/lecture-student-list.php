@@ -243,8 +243,10 @@ if($more_group){
         
     </div>
 
-    <?php ActiveForm::end(); ?>
+    <?php ActiveForm::end(); 
 }
+    ?>
+
 
 
 
