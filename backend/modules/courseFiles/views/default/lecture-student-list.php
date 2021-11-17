@@ -221,7 +221,8 @@ $colums[] = ['class' => 'yii\grid\ActionColumn',
 <?php 
 $lecture->assign_group = 0;
 
-$form = ActiveForm::begin(['id' => 'assign-group-form']); ?>
+if($more_group){
+    $form = ActiveForm::begin(['id' => 'assign-group-form']); ?>
 <?=GridView::widget([
         'dataProvider' => $dataProvider,
         'export' => false,
@@ -243,6 +244,9 @@ $form = ActiveForm::begin(['id' => 'assign-group-form']); ?>
     </div>
 
     <?php ActiveForm::end(); ?>
+}
+
+
 
     
     
