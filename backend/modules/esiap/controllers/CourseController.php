@@ -33,6 +33,7 @@ use yii\helpers\Json;
 use yii\data\ActiveDataProvider;
 use backend\modules\esiap\models\CourseVersionClone;
 use backend\modules\teachingLoad\models\CourseOffered;
+use backend\modules\esiap\models\Fk3Word;
 
 /**
  * CourseController implements the CRUD actions for Course model.
@@ -1659,6 +1660,28 @@ class CourseController extends Controller
 		}
 		$pdf->generatePdf();
 			
+	}
+	public function actionFk3Word($course, $dev = false, $version = false, $offer = false, $cqi = false, $xana = false, $group = false){
+	    
+	    $doc = new Fk3Word();
+	    $doc->model = $this->decideVersion($course, $dev, $version);
+	    if($offer){
+	        $doc->offer = $this->findCourseOffered($offer);
+	        if($cqi == 1){
+	            $doc->cqi = true;
+	        }
+	        if($xana == 1){
+	            $doc->xana = true;
+	        }
+	        if($group == 1){
+	            $doc->group = 1;
+	        }else if($group == 2){
+	            $doc->group = 2;
+	        }
+	    }
+	    $doc->generate();
+	    exit;
+	    
 	}
 	
 	protected function findCourseOffered($id){

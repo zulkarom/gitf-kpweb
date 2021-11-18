@@ -345,7 +345,7 @@ class Course extends \yii\db\ActiveRecord
 		
 		</div>
 	  
-		<a target="_blank" href="'.Url::to(['/esiap/course/html-view', 'course' => $this->id, 'version' => $version->id]).'" class="btn btn-app"> <i class="fa fa-globe" style="color:blue"></i> HTML</a>
+		
 		
 		
 		<a target="_blank" href="'.Url::to(['/esiap/course/fk1', 'course' => $this->id, 'version' => $version->id]).'" class="btn btn-app"><i class="fa fa-file-pdf-o" style="color:red"></i> FK01</a>
@@ -353,6 +353,16 @@ class Course extends \yii\db\ActiveRecord
 		<a target="_blank" href="'.Url::to(['/esiap/course/fk2', 'course' => $this->id, 'version' => $version->id]).'" class="btn btn-app"><i class="fa fa-file-pdf-o" style="color:red"></i> FK02</a>
 		
 		<a target="_blank" href="'.Url::to(['/esiap/course/fk3', 'course' => $this->id, 'version' => $version->id]).'" class="btn btn-app"><i class="fa fa-file-pdf-o" style="color:red"></i> FK03</a>
+		
+		<br />
+
+<a target="_blank" href="'.Url::to(['/esiap/course/fk1-word', 'course' => $this->id, 'version' => $version->id]).'" class="btn btn-app"><i class="fa fa-file-word-o" style="color:blue"></i> FK01</a>
+		
+		<a target="_blank" href="'.Url::to(['/esiap/course/fk2-word', 'course' => $this->id, 'version' => $version->id]).'" class="btn btn-app"><i class="fa fa-file-word-o" style="color:blue"></i> FK02</a>
+		
+		<a target="_blank" href="'.Url::to(['/esiap/course/fk3-word', 'course' => $this->id, 'version' => $version->id]).'" class="btn btn-app"><i class="fa fa-file-word-o" style="color:blue"></i> FK03</a> 
+
+<a target="_blank" href="'.Url::to(['/esiap/course/html-view', 'course' => $this->id, 'version' => $version->id]).'" class="btn btn-app"> <i class="fa fa-globe" style="color:blue"></i> HTML</a>
 		
 		<br />
 		
