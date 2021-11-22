@@ -299,6 +299,7 @@ $html .= '</td>
 </tr>';
 
 $x=1;
+$clo_num = 1;
 $gtotal = 0;
 $plo_num = $this->model->ploNumber;
 $clo_assess = $this->model->assessments;
@@ -310,9 +311,10 @@ foreach($this->model->clos as $clo){
 	$idx = $x - 1;
 	$html .='
 <tr nobr="true" style="font-size:10pt">
-<td width="'.$col1d1.'">'.$x.'. </td>
+<td width="'.$col1d1.'">'.$clo_num.'. </td>
 <td width="'.$col1d2.'">'.$clo->clo_text .'<br/><i>'.$clo->clo_text_bi .'</i>
 </td>';
+$clo_num++;
 $html .='<td align="center">';
 
 $i=1;
