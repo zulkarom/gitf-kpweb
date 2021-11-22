@@ -362,7 +362,7 @@ class Course extends \yii\db\ActiveRecord
 		
 		<a target="_blank" href="'.Url::to(['/esiap/course/fk3-word', 'course' => $this->id, 'version' => $version->id]).'" class="btn btn-app"><i class="fa fa-file-word-o" style="color:blue"></i> FK03</a> 
 
-<a target="_blank" href="'.Url::to(['/esiap/course/html-view', 'course' => $this->id, 'version' => $version->id]).'" class="btn btn-app"> <i class="fa fa-globe" style="color:blue"></i> HTML</a>
+<a target="_blank" href="'.Url::to(['/esiap/course/html-view', 'course' => $this->id, 'version' => $version->id]).'" class="btn btn-app"> <i class="fa fa-globe" style="color:blue"></i> Web</a>
 		
 		<br />
 		

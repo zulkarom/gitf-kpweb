@@ -268,7 +268,7 @@ PELAJAR
 
 </td>
 <td width="'.$col7.'" align="center">
-ANALISIS PENCAPAIAN / <i>ACHIEVEMENT ANALYSIS</i>
+ANALISIS PENCAPAIAN / <i>ACHIEVEMENT ANALYSIS</i> +
 </td>
 </tr>';
 

@@ -31,7 +31,7 @@ class Fk3Word
 	    $this->word->setDefaultFontSize(12);
 	    $this->word->setDefaultFontName('arial narrow');
 		$this->word->setDefaultParagraphStyle(array('align' => 'both', 'spaceAfter' => \PhpOffice\PhpWord\Shared\Converter::pointToTwip(0), 'spacing' => 0));
-	    $this->section = $this->word->addSection(['marginTop' => 900, 'marginLeft' => 600, 'marginRight' => 600]);
+		$this->section = $this->word->addSection(['marginTop' => 900, 'marginLeft' => 600, 'marginRight' => 600, 'marginBottom' => 900]);
 	    $sectionStyle = $this->section->getStyle();
 	    $sectionStyle->setOrientation($sectionStyle::ORIENTATION_LANDSCAPE);
 	    $this->headerPage();
@@ -40,6 +40,7 @@ class Fk3Word
 		$this->headerClo2();
 		$this->cloData();
 		$this->note();
+		$this->cqi();
 		//$this->sampleSpan();
 		$this->saveDoc();
 	    
@@ -85,44 +86,89 @@ class Fk3Word
 	
 	public function headerInfo(){
 		$styleTable = array('borderSize' => 6, 'unit' => 'pct', 'width' => 5000, 'cellMargin' => 60);
+		$fontTitle = array('bold' => true, 'size' => 10);
+		$fontTitleItalic = array('bold' => true, 'size' => 10, 'italic' => true);
+		$font = array('size' => 10);
+		$fontItalic = array('size' => 10, 'italic' => true);
+		$paraTitle = array('align'=>'left', 'spaceBefore'=>0, 'spaceafter' => 0);
+		
 		
 	    $table = $this->section->addTable($styleTable);
 	    $table->addRow();
 	    $cell = $table->addCell(5350, ['bgColor' => 'd9d9d9']);
-	       $fontTitle = array('bold' => true, 'size' => 10);
-		   $fontTitleItalic = array('bold' => true, 'size' => 10, 'italic' => true);
-	       $paraTitle = array('align'=>'left', 'spaceBefore'=>0, 'spaceafter' => 0);
-			$cell->addText(htmlspecialchars('Kod Kursus:'), $fontTitle, $paraTitle);
-			$cell->addText(htmlspecialchars('Course Code:'), $fontTitleItalic, $paraTitle);
+	        $text = $cell->addTextRun();
+			$text->addText('Kod Kursus: ', $fontTitle, $paraTitle);
+			$text->addText($this->model->course->course_code, $font, $paraTitle);
+			$text = $cell->addTextRun();
+			$text->addText('Course Code: ', $fontTitleItalic, $paraTitle);
+			$text->addText($this->model->course->course_code, $fontItalic, $paraTitle);
 		$cell = $table->addCell(null, ['bgColor' => 'd9d9d9', 'gridSpan' => 3]);
-			$cell->addText(htmlspecialchars('Nama Kursus:'), $fontTitle, $paraTitle);
-			$cell->addText(htmlspecialchars('Course Name:'), $fontTitleItalic, $paraTitle);
+		    $text = $cell->addTextRun();
+			$text->addText('Nama Kursus: ', $fontTitle, $paraTitle);
+			$text->addText($this->model->course->course_name, $font, $paraTitle);
+			$text = $cell->addTextRun();
+			$text->addText('Course Name: ', $fontTitleItalic, $paraTitle);
+			$text->addText($this->model->course->course_name_bi, $fontItalic, $paraTitle);
 		
 		 $table->addRow();
 	    $cell = $table->addCell(null, ['bgColor' => 'd9d9d9']);
-	       $fontTitle = array('bold' => true, 'size' => 10);
-	       $paraTitle = array('align'=>'left', 'spaceBefore'=>0, 'spaceafter' => 0);
-	    $cell->addText(htmlspecialchars('Prasyarat:'), $fontTitle, $paraTitle);
-		$cell->addText(htmlspecialchars('Pre-requisite(s):'), $fontTitleItalic, $paraTitle);
+    	    $pre = $this->model->profile->coursePrerequisite;
+    	    $text = $cell->addTextRun();
+    	    $text->addText('Prasyarat: ', $fontTitle, $paraTitle);
+    	    $text->addText($pre[0], $font, $paraTitle);
+    	    $text = $cell->addTextRun();
+    		$text->addText('Pre-requisite(s): ', $fontTitleItalic, $paraTitle);
+    		$text->addText($pre[1], $fontItalic, $paraTitle);
 		$cell = $table->addCell(8000, ['bgColor' => 'd9d9d9', 'gridSpan' => 2]);
-	    $cell->addText(htmlspecialchars('Jam Pembelajaran Pelajar (JPP):'), $fontTitle, $paraTitle);
-		$cell->addText(htmlspecialchars('Student Learning Time (SLT):'), $fontTitleItalic, $paraTitle);
+		    $slt = $this->model->course->credit_hour * 40;
+    		$text = $cell->addTextRun();
+    	    $text->addText('Jam Pembelajaran Pelajar (JPP): ', $fontTitle, $paraTitle);
+    	    $text->addText($slt, $font, $paraTitle);
+    	    $text = $cell->addTextRun();
+    		$text->addText('Student Learning Time (SLT): ', $fontTitleItalic, $paraTitle);
+    		$text->addText($slt, $fontItalic, $paraTitle);
 		$cell = $table->addCell(null, ['bgColor' => 'd9d9d9']);
-			$cell->addText(htmlspecialchars('Kredit:'), $fontTitle, $paraTitle);
-			$cell->addText(htmlspecialchars('Credit:'), $fontTitleItalic, $paraTitle);
-			
+		    $text = $cell->addTextRun();
+			$text->addText('Kredit: ', $fontTitle, $paraTitle);
+			$text->addText($this->model->course->credit_hour, $font, $paraTitle);
+			$text = $cell->addTextRun();
+			$text->addText('Credit:', $fontTitleItalic, $paraTitle);
+			$text->addText($this->model->course->credit_hour, $fontItalic, $paraTitle);
 		$table->addRow();
 	    $cell = $table->addCell(null, ['bgColor' => 'd9d9d9']);
-	       $fontTitle = array('bold' => true, 'size' => 10);
-	       $paraTitle = array('align'=>'left', 'spaceBefore'=>0, 'spaceafter' => 0);
-	    $cell->addText(htmlspecialchars('Fakulti/ Pusat:'), $fontTitle, $paraTitle);
-		$cell->addText(htmlspecialchars('Faculty/ Centre:'), $fontTitleItalic, $paraTitle);
+	       $text = $cell->addTextRun();
+	       $text->addText('Fakulti/ Pusat: ', $fontTitle, $paraTitle);
+	       $text->addText($this->model->course->faculty->faculty_name, $font, $paraTitle);
+	       $text = $cell->addTextRun();
+		  $text->addText('Faculty/ Centre: ', $fontTitleItalic, $paraTitle);
+		  $text->addText($this->model->course->faculty->faculty_name, $fontItalic, $paraTitle);
 		$cell = $table->addCell(5500, ['bgColor' => 'd9d9d9']);
-	    $cell->addText(htmlspecialchars('Jabatan:'), $fontTitle, $paraTitle);
-		$cell->addText(htmlspecialchars('Department:'), $fontTitleItalic, $paraTitle);
+    		$dep = ' - ';
+    		$dep_bi = ' - ';
+    		if($this->model->course->department){
+    		    $dep = $this->model->course->department->dep_name;
+    		    $dep_bi = $this->model->course->department->dep_name_bi;
+    		}
+    		$text = $cell->addTextRun();
+    	    $text->addText('Jabatan: ', $fontTitle, $paraTitle);
+    	    $text->addText($dep, $font, $paraTitle);
+    	    $text->addText($this->model->course->faculty->faculty_name, $font, $paraTitle);
+    	    $text = $cell->addTextRun();
+    		$text->addText('Department: ', $fontTitleItalic, $paraTitle);
+    		$text->addText($dep_bi, $fontItalic, $paraTitle);
 		$cell = $table->addCell(null, ['bgColor' => 'd9d9d9', 'gridSpan' => 2]);
-			$cell->addText(htmlspecialchars('Program:'), $fontTitle, $paraTitle);
-			$cell->addText(htmlspecialchars('Programme:'), $fontTitleItalic, $paraTitle);
+    		$pro = ' - ';
+    		$pro_bi = ' - ';
+    		if($this->model->course->program){
+    		    $pro = $this->model->course->program->pro_name;
+    		    $pro_bi = $this->model->course->program->pro_name_bi;
+    		}
+    		$text = $cell->addTextRun();
+			$text->addText('Program: ', $fontTitle, $paraTitle);
+			$text->addText($pro, $font, $paraTitle);
+			$text = $cell->addTextRun();
+			$text->addText('Programme: ', $fontTitleItalic, $paraTitle);
+			$text->addText($pro_bi, $fontItalic, $paraTitle);
 	}
 	
 	public function headerClo(){
@@ -324,7 +370,7 @@ class Fk3Word
 	
 	public function note(){
 		$this->section->addTextBreak(1);
-		$styleTable = array('border' => 0, 'unit' => 'pct', 'width' => 5000, 'cellMargin' => 60);
+		$styleTable = array('border' => 0, 'unit' => 'pct', 'width' => 98 * 50, 'cellMargin' => 60, 'align' => 'right');
 		$fontTitle = array('size' => 9.5);
 		$fontTitleEn = array('size' => 9.5, 'italic' => true);
 	   $para = array('align'=>'left',  'spaceBefore'=>0, 'spaceafter' => 0);
@@ -361,7 +407,64 @@ class Fk3Word
 			$text->addText('Excellent', $fontTitleEn, $para);
 			$text->addText('). Laporan pencapaian pelajar ini dibuat pada penghujung semester kursus ditawarkan/ ', $fontTitle, $para);
 			$text->addText('This achievement report of students is done at the end of the semester of the course offered.', $fontTitleEn, $para);
+			$cell->addTextBreak(1);
 		
+	}
+	
+	public function cqi(){
+	    $fontBold = array('size' => 10 ,'bold' => true, 'underline' => 'single');
+	    $fontBoldEn = array('size' => 10 ,'bold' => true, 'italic' => true, 'underline' => 'single');
+	    $fontSm = array('size' => 9);
+	    $fontSmEn = array('size' => 9, 'italic' => true);
+	    $font = array('size' => 10);
+	    $fontEn = array('size' => 10, 'italic' => true);
+	    $para = array('align'=>'left',  'spaceBefore'=>0, 'spaceafter' => 0);
+	    $styleTable = array('borderSize' => 6,'unit' => 'pct', 'width' => 95 * 50, 'cellMargin' => 60);
+	    
+	    $this->table->addRow();
+	    $cell = $this->table->addCell();
+	    $cell = $this->table->addCell();
+	    $cell->addText('Rancangan Penambahbaikan Kursus (jika ada)#:', $fontBold, $para);
+	    $cell->addText('Plan for Course Improvement (if any)#:', $fontBold, $para);
+	    $cell->addTextBreak(1);
+	    $table= $cell->addTable($styleTable);
+    	    $table->addRow(3500);
+    	    $cell2 = $table->addCell();
+	    $cell->addText('# Berasaskan kepada laporan pencapaian pelajar di atas dan sumber lain (jika mana-mana CLO/ PLO tidak tercapai).', $fontSm, $para);
+	    $cell->addText('  Based on the students’ achievement report above and other sources (if any CLO/ PLO is not achieved).', $fontSmEn, $para);
+	    
+	    $cell->addTextBreak(1);
+	    $cell->addText('Nama Penyelaras/  Pensyarah Kursus', $font, $para);
+	    $cell->addText('Course Coordinator/  Lecturer’s Name:  ______________________________________' , $fontEn, $para);
+	    $cell->addTextBreak(1);
+	    $text = $cell->addTextRun();
+	       $text->addText('Tandatangan/ ', $font, $para);
+	       $text->addText('Signature:                         ______________________________________', $fontEn, $para);
+	       $cell->addTextBreak(1);
+	       $text = $cell->addTextRun();
+	       $text->addText('Tarikh/ ', $font, $para);
+	       $text->addText('Date: 		                  ______________________________________', $fontEn, $para);
+	       
+	       $cell->addTextBreak(1);
+	       $text = $cell->addTextRun();
+	       $text->addText('Disahkan oleh/ ', $font, $para);
+	       $text->addText('Verified by:                      ______________________________________', $fontEn, $para);
+	       
+	       $cell->addTextBreak(1);
+	       $text = $cell->addTextRun();
+	       $text->addText('                                                              (Cop Ketua Jabatan/ Penyelaras Program)/ ', $font, $para);
+	       $text->addText('(Head of Department/  Programme Coordinator’s Stamp)', $fontEn, $para);
+	       
+	       $cell->addTextBreak(1);
+	       $text = $cell->addTextRun();
+	       $text->addText('Tarikh/ ', $font, $para);
+	       $text->addText('Date: 		                  ______________________________________', $fontEn, $para);
+	       $cell->addTextBreak(2);
+	       $cell->addText('* Sebarang perubahan kepada maklumat atau kandungan kursus perlu mendapat kelulusan Fakulti/ Pusat atau Senat mengikut kesesuaian.', $font, $para);
+	       $cell->addText('  Any change to the course information or content must be approved by the Faculty/ Centre or the Senate wherever applicable.', $fontEn, $para);
+	    
+    
+	    
 	}
 	
 	
@@ -403,6 +506,8 @@ class Fk3Word
 		$table->addCell(null, $cellRowContinue);
 
 	}
+	
+	
 	
 	public function saveDoc(){
 		// Saving the document as OOXML file...

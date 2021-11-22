@@ -1445,17 +1445,17 @@ class CourseController extends Controller
 		return $this->redirect(['course-assessment','course'=>$course, 'version' => $version->id]);
 	}
 	
-	public function actionAddAssessmentClo($course, $clo){
+	public function actionAddAssessmentClo($course, $clo, $v){
 		$clo_as = new CourseCloAssessment;
 		$clo_as->clo_id = $clo;
 		$clo_as->save();
-		$this->redirect(['clo-assessment', 'course' => $course]);
+		$this->redirect(['clo-assessment', 'course' => $course, 'version' => $v]);
 	}
 	
-	public function actionDeleteAssessmentClo($course, $id){
+	public function actionDeleteAssessmentClo($course, $id, $v){
 		$clo_as = CourseCloAssessment::findOne($id);
 		$clo_as->delete();
-		$this->redirect(['clo-assessment', 'course' => $course]);
+		$this->redirect(['clo-assessment', 'course' => $course, 'version' => $v]);
 	}
 	
 	

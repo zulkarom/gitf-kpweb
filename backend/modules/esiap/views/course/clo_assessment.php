@@ -54,7 +54,7 @@ if($clos){
 		colum_2_first($form,$clo->cloAssessments, $assess, $model);
 		echo '</tr>';
 		colum_2($form,$clo->cloAssessments, $assess, $model);
-		echo '<tr><td colspan="3"><a href="'.Url::to(['add-assessment-clo', 'course' => $model->course->id, 'clo' => $clo->id]).'" class="add-item btn btn-default btn-sm"><span class="fa fa-plus"></span> Add Assessment to CLO'.$i.'</a></td></tr>';
+		echo '<tr><td colspan="3"><a href="'.Url::to(['add-assessment-clo', 'course' => $model->course->id, 'clo' => $clo->id, 'v' => $model->id]).'" class="add-item btn btn-default btn-sm"><span class="fa fa-plus"></span> Add Assessment to CLO'.$i.'</a></td></tr>';
 		$i++;
 	}
 	echo '</table>';
@@ -131,7 +131,7 @@ function colum_2_td($form,$cloAs, $assess,$model){
 						'tag' => false, // Don't wrap with "form-group" div
 					]])->textInput()->label(false) . '</td>
 					<td class="text-center vcenter" style="width: 90px;">
-                    <a href="'.Url::to(['delete-assessment-clo', 'course' => $model->course->id, 'id' => $cloAs->id]).'" class="remove-item btn btn-default btn-sm"><span class="fa fa-remove"></span></a></td>';
+                    <a href="'.Url::to(['delete-assessment-clo', 'course' => $model->course->id, 'id' => $cloAs->id, 'v' => $model->id]).'" class="remove-item btn btn-default btn-sm"><span class="fa fa-remove"></span></a></td>';
 				
 }
 
