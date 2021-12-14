@@ -87,7 +87,7 @@ class CourseOffered extends \yii\db\ActiveRecord
 			
 			[['option_course', 'option_review'], 'required', 'on' => 'audit'],
 			
-            [['semester_id', 'course_id', 'total_students', 'max_lec', 'max_tut', 'created_by', 'coordinator', 'course_version', 'material_version',  'na_cont_rubrics', 'na_script_final', 'coor_access', 'option_course', 'option_review', 'status', 'audit_freq', 'course_version2'], 'integer'],
+            [['semester_id', 'course_id', 'total_students', 'max_lec', 'max_tut', 'created_by', 'coordinator', 'course_version', 'material_version',  'na_cont_rubrics', 'na_script_final', 'coor_access', 'option_course', 'option_review', 'status', 'audit_freq', 'course_version2', 'auditor_staff_id', 'auditor_ex_id'], 'integer'],
 			
             [['created_at', 'courses'], 'safe'],
 			
@@ -741,6 +741,26 @@ class CourseOffered extends \yii\db\ActiveRecord
 	
 	public function getAuditor(){
         return $this->hasOne(Staff::className(), ['id' => 'auditor_staff_id']);
+    }
+    
+    public function getExternalAuditor(){
+        return $this->hasOne(Staff::className(), ['id' => 'auditor_ex_id']);
+    }
+    
+    public function getAuditorStr(){
+        $str = '';
+        $in = false;
+        if($this->auditor){
+            $str .= '<i class="fa fa-user"></i> ' . $this->auditor->user->fullname;
+            $in = true;
+        }
+        if($this->externalAuditor){
+            if($in){
+                $str .= '<br />';
+            }
+            $str .=  '<i class="fa fa-user-times"></i> ' . $this->externalAuditor->user->fullname;
+        }
+        return $str;
     }
     
     public function getSemester(){

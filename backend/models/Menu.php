@@ -274,7 +274,7 @@ class Menu
 				
 				['label' => 'My Course File', 'icon' => 'book', 'url' => ['/course-files/default/teaching-assignment']],
 				
-				['label' => 'Internal Auditors', 'icon' => 'check-square-o', 'url' => ['/course-files/auditor/index']],
+				['label' => 'I/E Auditors', 'icon' => 'check-square-o', 'url' => ['/course-files/auditor/index']],
                             
                 ['label' => 'Program Coordinator', 'icon' => 'user', 'url' => ['/course-files/program/program-coordinator']],
                             

@@ -1,0 +1,1 @@
+ALTER TABLE `tld_course_offered` ADD `auditor_ex_id` INT NOT NULL DEFAULT '0' AFTER `auditor_staff_id`;

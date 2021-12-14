@@ -28,12 +28,14 @@ $semester->action = ['/course-files/admin/index'];
     </div>
 </div>
 
-<?php $form = ActiveForm::begin(); ?>
+<?php $form = ActiveForm::begin(['id' =>'form-auditor']); ?>
 
 <div class="row">
 <div class="col-md-6"><?php
+$list = ArrayHelper::map(Staff::getAcademicStaff(), 'id', 'user.fullname');
+$list["0"] = 'NONE';
 		echo $form->field($audit, 'staff_id')->widget(Select2::classname(), [
-    'data' => ArrayHelper::map(Staff::getAcademicStaff(), 'id', 'user.fullname'),
+    'data' => $list,
     'options' => ['placeholder' => 'Select an Auditor ...'],
     'pluginOptions' => [
         'allowClear' => true
@@ -41,7 +43,22 @@ $semester->action = ['/course-files/admin/index'];
 ])->label(false);
 
 ?></div>
-<div class="col-md-6"><?= Html::submitButton('Assign', ['class' => 'btn btn-success']) ?></div>
+<div class="col-md-6">
+<input type="hidden" value="" id="form-action" name="form-action" />
+
+<div class="dropdown">
+<button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+With selection:
+<span class="caret"></span>
+</button>
+<ul class="dropdown-menu" aria-labelledby="about-us">
+<li><a href="#" class="li-action" data-value="1">Assign Internal Auditor</a></li>
+<li><a href="#" class="li-action" data-value="2">Assign External Auditor</a></li>
+</ul>
+</div>
+
+
+</div>
 </div>
 
 
@@ -92,7 +109,10 @@ $semester->action = ['/course-files/admin/index'];
 			
 			
 			[
-				'attribute' => 'auditor.user.fullname',
+			    'value' => function($model){
+			         return $model->auditorStr;
+			    },
+			    'format' => 'html',
 				'label' => 'Auditor',
 			],
 			[
@@ -132,3 +152,27 @@ $semester->action = ['/course-files/admin/index'];
 </div>
 
 <?php ActiveForm::end(); ?>
+
+
+
+<?php 
+
+$this->registerJs(' 
+
+
+$(".li-action").click(function(){
+var action = $(this).data("value");
+$("#form-action").val(action);
+$("#form-auditor").submit();
+
+});
+
+
+
+
+
+');
+
+
+
+?>

@@ -48,6 +48,7 @@ class AuditorSearch extends CourseOffered
         $query = CourseOffered::find()
         ->joinWith('course')
 		->where(['auditor_staff_id' => Yii::$app->user->identity->staff->id])
+		->orWhere(['auditor_ex_id' => Yii::$app->user->identity->staff->id])
 		;
 
         // // add conditions that should always apply here

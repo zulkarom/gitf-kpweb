@@ -1,5 +1,6 @@
 <?php 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\grid\GridView;
 use backend\modules\courseFiles\models\Common;
 
@@ -7,9 +8,16 @@ use backend\modules\courseFiles\models\Common;
 /* @var $searchModel backend\modules\teachingLoad\models\CourseOfferedSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$closed = Common::isDue($dates->audit_deadline);
+if($dates){
+    $closed = Common::isDue($dates->audit_deadline);
+    $msg = Common::deadlineMessage($dates->audit_deadline);
+}else{
+    $closed = false;
+    $msg = '';
+}
 
-$this->title = 'Internal Auditors';
+
+$this->title = 'Internal / External Auditors';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -20,13 +28,15 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="row">
 
     <div class="col-md-10" align="right">
-        <?= $this->render('../admin/_form_course_files', [
+        <?php 
+        $semester->action = Url::to(['/course-files/auditor/index']);
+        echo $this->render('../admin/_form_course_files', [
                 'model' => $semester,
             ]) ?>
     </div>
 </div>
 
-<div class="form-group"><i style="color:red"><?=Common::deadlineMessage($dates->audit_deadline)?></i></div>
+<div class="form-group"><i style="color:red"><?=$msg?></i></div>
 
 
 <div class="box">

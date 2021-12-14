@@ -15,7 +15,7 @@ $modelOffer->file_controller = 'auditor';
 /* @var $this yii\web\View */
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
 $this->title = $modelOffer->course->course_name;
-$this->params['breadcrumbs'][] = ['label' => 'Internal Auditor', 'url' => ['/course-files/auditor/index']];
+$this->params['breadcrumbs'][] = ['label' => 'Internal / External Auditor', 'url' => ['/course-files/auditor/index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
@@ -59,8 +59,8 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 <?php
-//status draft / submit & resubmit
-if($modelOffer->status < 50){ ?>
+//status draft / submit & resubmit  && internal auditor only
+if($modelOffer->status < 50 && $modelOffer->auditor_staff_id == Yii::$app->user->identity->staff->id){ ?>
 	
 <?php $form = ActiveForm::begin(); ?>
 

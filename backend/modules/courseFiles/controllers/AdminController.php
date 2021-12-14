@@ -63,22 +63,44 @@ class AdminController extends Controller
         }
 		
 		if ($audit->load(Yii::$app->request->post())) {
+		    $action = Yii::$app->request->post('form-action');
+		   
 			$selection = Yii::$app->request->post('selection');
-			if($selection){
-				if($audit->staff_id){
-					foreach($selection as $offer_id){
-						$offer = CourseOffered::findOne($offer_id);
-						if($offer){
-							$offer->auditor_staff_id = $audit->staff_id;
-							$offer->save();
-						}
-					}
-					Yii::$app->session->addFlash('success', "Assigning successful");
-					return $this->refresh();
-				}
+			
+			if($action){
+			    
+			    if($selection){
+			       
+			        if($audit->staff_id >= 0){
+			           // print_r($selection);die();
+			            foreach($selection as $offer_id){
+			                $offer = CourseOffered::findOne($offer_id);
+			                
+			                if($offer){
+			                    switch($action){
+			                        case 1:
+			                            $offer->auditor_staff_id = $audit->staff_id;
+			                        break;
+			                        case 2:
+			                            $offer->auditor_ex_id = $audit->staff_id;
+			                        break;
+			                    }
+			                    
+			                    if(!$offer->save()){
+			                        $offer->flashError();
+			                    }
+			                }
+			            }
+			            Yii::$app->session->addFlash('success', "Assigning successful");
+			            return $this->refresh();
+			        }
+			    }else{
+			        Yii::$app->session->addFlash('error', "Please select courses to assign");
+			    }
 			}else{
-				Yii::$app->session->addFlash('error', "Please select courses to assign");
+			    Yii::$app->session->addFlash('error', "no action");
 			}
+			
 			
 		}
 
