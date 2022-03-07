@@ -1,6 +1,7 @@
 <?php 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\Url;
 
 $this->title = 'Course Management';
 $this->params['breadcrumbs'][] = $this->title;
@@ -86,7 +87,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
 			
 			[
-                'label' => 'Report',
+                'label' => 'Documents',
                 'format' => 'raw',
                 'value' => function($model){
 					if($model->course){
@@ -103,10 +104,11 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
 			
 			[
-				'label' => 'Update',
+				'label' => '',
 			//	'contentOptions' => ['style' => 'width: 45%'],
 				'format' => 'html',
 				'value' => function($model){
+				$str = '<a href="'. Url::to(['/esiap/course/resources', 'id' => $model->course_id]) .'" class="btn btn-primary btn-sm"><i class="fa fa-book"></i> Resources</a> ';
 					if($model->course){
 						$course = $model->course;
 					
@@ -114,11 +116,11 @@ $this->params['breadcrumbs'][] = $this->title;
 					
 					
 						if($version){
-							return Html::a( '<span class="fa fa-pencil"></span> Update',['/esiap/course/view-course/', 'course' => $course->id], ['class' => 'btn btn-primary btn-sm']);
+							$str .= Html::a( '<span class="fa fa-pencil"></span> Update',['/esiap/course/view-course/', 'course' => $course->id], ['class' => 'btn btn-warning btn-sm']);
 						}
 					}
 					
-					
+					return $str;
 					
 				}
 				
@@ -157,7 +159,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
 
 			[
-                'label' => 'Report',
+                'label' => 'Documents',
                 'format' => 'raw',
                 'value' => function($model){
 					if($model->course){
@@ -166,8 +168,16 @@ $this->params['breadcrumbs'][] = $this->title;
 					
                     
                 }
+            ],
+			[
+                'label' => 'Resources',
+                'format' => 'raw',
+                'value' => function($model){
+					return '<a href="'. Url::to(['/esiap/course/resources', 'id' => $model->course_id]) .'" class="btn btn-primary btn-sm"><i class="fa fa-book"></i> Resources</a>';
+					
+                    
+                }
             ]
-            ,
         ],
     ]); ?></div></div>
 </div>

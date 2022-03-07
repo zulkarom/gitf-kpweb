@@ -3,6 +3,7 @@
 namespace backend\modules\esiap\controllers;
 
 use Yii;
+use backend\models\Semester;
 use backend\modules\esiap\models\Course;
 use backend\modules\esiap\models\CourseProfile;
 use backend\modules\esiap\models\CourseClo;
@@ -34,6 +35,8 @@ use yii\data\ActiveDataProvider;
 use backend\modules\esiap\models\CourseVersionClone;
 use backend\modules\teachingLoad\models\CourseOffered;
 use backend\modules\esiap\models\Fk3Word;
+use backend\models\SemesterForm;
+use backend\modules\courseFiles\models\Checklist;
 
 /**
  * CourseController implements the CRUD actions for Course model.
@@ -73,6 +76,31 @@ class CourseController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]); */
+    }
+    
+    public function actionResources($id)
+    {
+        $semester = new SemesterForm;
+        $session = Yii::$app->session;
+        if(Yii::$app->getRequest()->getQueryParam('SemesterForm')){
+            $sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');
+            $semester->semester_id = $sem['semester_id'];
+            $session->set('semester', $sem['semester_id']);
+        }else if($session->has('semester')){
+            $semester->semester_id = $session->get('semester');
+        }else{
+            $semester->semester_id = Semester::getCurrentSemester()->id;
+        }
+        
+        $model = new Checklist();
+        $offer = $this->findOfferBySemester($id, $semester->semester_id);
+        
+         
+         return $this->render('resources', [
+            'semester' => $semester,
+             'model' => $model,
+             'offer' => $offer,
+         ]); 
     }
     
     public function actionManageVersion($course)
@@ -1496,6 +1524,15 @@ class CourseController extends Controller
         }
         
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    
+    protected function findOfferBySemester($course, $semester)
+    {
+        if (($model = CourseOffered::findOne(['course_id' => $course, 'semester_id' => $semester])) !== null) {
+            return $model;
+        }
+        
+       // throw new NotFoundHttpException('The requested page does not exist.');
     }
 	
 	
