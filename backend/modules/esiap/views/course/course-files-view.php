@@ -205,7 +205,7 @@ use backend\modules\courseFiles\views\admin\Show;
           
           
           
-          echo Show::showCoor($offer, 'coordinatorAssessmentMaterialFiles', 'coordinator-assessment-material-file', 'cont_material');
+          echo Show::showCoor($offer, 'coordinatorAssessmentMaterialFiles', '/course-files/coordinator-assessment-material-file', 'cont_material');
           
           
           
@@ -213,14 +213,14 @@ use backend\modules\courseFiles\views\admin\Show;
                 <td>'.$item[5]->item.'<i><br/>'.$item[5]->item_bi.'</i></td>
                 <td>';
           
-          echo Show::showCoor($offer, 'coordinatorAssessmentScriptFiles', 'coordinator-assessment-script-file', 'cont_script');
+          echo Show::showCoor($offer, 'coordinatorAssessmentScriptFiles', '/course-files/coordinator-assessment-script-file', 'cont_script');
           
           
           echo '<tr><td>8</td>
                 <td>'.$item[6]->item.'<i><br/>'.$item[6]->item_bi.'</i></td>
                 <td>';
           
-          echo Show::showCoor($offer, 'coordinatorSummativeAssessmentFiles', 'coordinator-summative-assessment-file', 'sum_assess');
+          echo Show::showCoor($offer, 'coordinatorSummativeAssessmentFiles', '/course-files/coordinator-summative-assessment-file', 'sum_assess');
           
           
           
