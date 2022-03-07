@@ -8,6 +8,7 @@ use yii\grid\GridView;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Course Resources';
+$this->params['breadcrumbs'][] = ['label' => 'Course Management', 'url' => ['/esiap/default/index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="course-index">
