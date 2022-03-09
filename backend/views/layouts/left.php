@@ -173,7 +173,7 @@ $menuItems = [
                         ],
                     ],
 					
-					
+                ['label' => 'User Manual', 'icon' => 'book', 'visible' => Yii::$app->user->can('sysadmin'), 'url' => ['/manual/module']],
 
 					
 					
