@@ -5,9 +5,12 @@ namespace backend\modules\manual\controllers;
 use Yii;
 use backend\modules\manual\models\Title;
 use backend\modules\manual\models\TitleSearch;
+use backend\modules\manual\models\ItemSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use backend\modules\manual\models\Section;
 
 /**
  * TitleController implements the CRUD actions for Title model.
@@ -20,10 +23,13 @@ class TitleController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
                 ],
             ],
         ];
@@ -33,14 +39,17 @@ class TitleController extends Controller
      * Lists all Title models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($section)
     {
+        $section = $this->findSection($section);
         $searchModel = new TitleSearch();
+        $searchModel->section = $section;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'section' => $section
         ]);
     }
 
@@ -52,8 +61,15 @@ class TitleController extends Controller
      */
     public function actionView($id)
     {
+        $searchModel = new ItemSearch();
+        $searchModel->title = $id;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -62,12 +78,15 @@ class TitleController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($section)
     {
         $model = new Title();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $model->section_id = $section;
+        if ($model->load(Yii::$app->request->post())) {
+            if($model->save()){
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+            
         }
 
         return $this->render('create', [
@@ -122,6 +141,15 @@ class TitleController extends Controller
             return $model;
         }
 
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    
+    protected function findSection($id)
+    {
+        if (($model = Section::findOne($id)) !== null) {
+            return $model;
+        }
+        
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

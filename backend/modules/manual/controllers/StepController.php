@@ -3,10 +3,12 @@
 namespace backend\modules\manual\controllers;
 
 use Yii;
+use backend\modules\manual\models\Item;
 use backend\modules\manual\models\Step;
 use backend\modules\manual\models\StepSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 
 /**
@@ -20,10 +22,13 @@ class StepController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
                 ],
             ],
         ];
@@ -62,16 +67,18 @@ class StepController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($item)
     {
         $model = new Step();
-
+        $item = $this->findItem($item);
+        $model->item_id = $item->id;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['item/view', 'id' => $item->id]);
         }
 
         return $this->render('create', [
             'model' => $model,
+            'item' => $item
         ]);
     }
 
@@ -87,7 +94,7 @@ class StepController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['item/view', 'id' => $model->item_id]);
         }
 
         return $this->render('update', [
@@ -122,6 +129,15 @@ class StepController extends Controller
             return $model;
         }
 
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    
+    protected function findItem($id)
+    {
+        if (($model = Item::findOne($id)) !== null) {
+            return $model;
+        }
+        
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

@@ -28,9 +28,13 @@ class Item extends \yii\db\ActiveRecord
     {
         return [
             [['title_id', 'item_text'], 'required'],
-            [['title_id'], 'integer'],
+            [['title_id', 'type'], 'integer'],
             [['item_text'], 'string'],
         ];
+    }
+    
+    public function getTypes(){
+        return [0 => 'Normal', 1 => 'Steps', 2 => 'Bullet Points'];
     }
 
     /**
@@ -44,4 +48,9 @@ class Item extends \yii\db\ActiveRecord
             'item_text' => 'Item Text',
         ];
     }
+    
+    public function getTitle(){
+         return $this->hasOne(Title::className(), ['id' => 'title_id']);
+    }
+
 }

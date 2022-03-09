@@ -12,7 +12,6 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'item_id')->textInput() ?>
 
     <?= $form->field($model, 'step_text')->textarea(['rows' => 6]) ?>
 

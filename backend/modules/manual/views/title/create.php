@@ -6,12 +6,11 @@ use yii\helpers\Html;
 /* @var $model backend\modules\manual\models\Title */
 
 $this->title = 'Create Title';
-$this->params['breadcrumbs'][] = ['label' => 'Titles', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Titles', 'url' => ['index', 'section' => $model->section_id]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="title-create">
 
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
         'model' => $model,

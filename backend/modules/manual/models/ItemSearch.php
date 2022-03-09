@@ -11,6 +11,7 @@ use backend\modules\manual\models\Item;
  */
 class ItemSearch extends Item
 {
+    public $title;
     /**
      * {@inheritdoc}
      */
@@ -59,7 +60,7 @@ class ItemSearch extends Item
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'title_id' => $this->title_id,
+            'title_id' => $this->title,
         ]);
 
         $query->andFilterWhere(['like', 'item_text', $this->item_text]);

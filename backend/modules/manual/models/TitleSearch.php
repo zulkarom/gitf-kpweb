@@ -11,6 +11,7 @@ use backend\modules\manual\models\Title;
  */
 class TitleSearch extends Title
 {
+    public $section;
     /**
      * {@inheritdoc}
      */
@@ -59,7 +60,7 @@ class TitleSearch extends Title
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'section_id' => $this->section_id,
+            'section_id' => $this->section,
         ]);
 
         $query->andFilterWhere(['like', 'title_text', $this->title_text]);

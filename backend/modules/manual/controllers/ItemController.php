@@ -5,9 +5,12 @@ namespace backend\modules\manual\controllers;
 use Yii;
 use backend\modules\manual\models\Item;
 use backend\modules\manual\models\ItemSearch;
+use backend\modules\manual\models\StepSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use backend\modules\manual\models\Title;
 
 /**
  * ItemController implements the CRUD actions for Item model.
@@ -20,10 +23,13 @@ class ItemController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
                 ],
             ],
         ];
@@ -52,8 +58,14 @@ class ItemController extends Controller
      */
     public function actionView($id)
     {
+        $searchModel = new StepSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -62,16 +74,18 @@ class ItemController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($title)
     {
         $model = new Item();
-
+        $title = $this->findTitle($title);
+        $model->title_id = $title->id;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['title/view', 'id' => $title->id]);
         }
 
         return $this->render('create', [
             'model' => $model,
+            'title' => $title
         ]);
     }
 
@@ -87,7 +101,7 @@ class ItemController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['title/view', 'id' => $model->title_id]);
         }
 
         return $this->render('update', [
@@ -122,6 +136,15 @@ class ItemController extends Controller
             return $model;
         }
 
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    
+    protected function findTitle($id)
+    {
+        if (($model = Title::findOne($id)) !== null) {
+            return $model;
+        }
+        
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

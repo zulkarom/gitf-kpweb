@@ -12,7 +12,6 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'section_id')->textInput() ?>
 
     <?= $form->field($model, 'title_text')->textInput(['maxlength' => true]) ?>
 

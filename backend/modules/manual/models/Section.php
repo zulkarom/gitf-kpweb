@@ -44,4 +44,9 @@ class Section extends \yii\db\ActiveRecord
             'section_name' => 'Section Name',
         ];
     }
+    
+    public function getModule(){
+         return $this->hasOne(Module::className(), ['id' => 'module_id']);
+    }
+
 }
