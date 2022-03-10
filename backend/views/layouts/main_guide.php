@@ -39,7 +39,7 @@ use yii\helpers\Html;
 
 
         <?= $this->render(
-            'content.php',
+            'content-guide.php',
             ['content' => $content, 'directoryAsset' => $directoryAsset]
         ) ?>
 

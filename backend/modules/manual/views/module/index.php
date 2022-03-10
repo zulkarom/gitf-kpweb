@@ -12,7 +12,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="module-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
         <?= Html::a('Create Module', ['create'], ['class' => 'btn btn-success']) ?>
@@ -27,12 +26,17 @@ $this->params['breadcrumbs'][] = $this->title;
             'module_name',
             [
 			'label' => 'Section',
-                'format' => 'html',
+                'format' => 'raw',
                 'value' => function($model){
+
                     $section = $model->sections;
                     $html = '';
-                    foreach($section as $s){
-                        $html .= Html::a($s->section_name, ['/manual/title/index', 'section' => $s->id], ['class' => 'btn btn-primary btn-sm']) . ' ';
+                    if($section){
+                        echo '<ul>';
+                            foreach($section as $s){
+                                $html .= '<li>' . Html::a($s->section_name, ['/manual/title/index', 'section' => $s->id]) . '</li>';
+                            }
+                        echo '</ul>';
                     }
                     return $html;
                     

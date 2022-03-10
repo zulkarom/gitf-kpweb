@@ -1,7 +1,6 @@
 <?php 
-use common\models\Todo;
-use yii\helpers\Url;
-use backend\models\Menu;
+use backend\modules\manual\models\Module;
+use backend\modules\manual\models\Section;
 
 ?>
 <aside class="main-sidebar">
@@ -12,36 +11,46 @@ use backend\models\Menu;
 		
 		<?php 
 
-$menuItems = [
-
-					['label' => 'HOME', 'icon' => 'dashboard', 'url' => ['/user-manual']],
-					
-
-					[
-                        'label' => 'COURSE FILE',
-                        'icon' => 'book',
-                        'url' => '#',
-                        'items' => [
-												
-                            ['label' => 'User Manual', 'icon' => 'book', 'url' => ['/user-manual', 'm' => 2, 's' => 1]],
-							
-                            ['label' => 'FAQ', 'icon' => 'book', 'url' => ['/user-manual', 'm' => 2, 's' => 2]],
-
-                        ],
-                    ],
-					
-             
-];
-
-$favouriteMenuItems[] = ['label' => 'MAIN MENU', 'options' => ['class' => 'header']];
+		
+		
+		
+$menuItems = array();
 
 
+$modules = Module::find()->all();
+
+foreach($modules as $m){
+    
+    $section = Section::findAll(['module_id' => $m->id]);
+    $sub = array();
+    
+    if($section){
+        foreach($section as $s){
+            $sub[] = ['label' => strtoupper($s->section_name), 'icon' => 'book', 'url' => ['/content', 's' => $s->id]];
+        }
+    }
+    
+    $menuItems[] = [
+        'label' => strtoupper($m->module_name),
+        'icon' => 'book',
+        'url' => '#',
+        'items' => $sub,
+    ];
+
+}
+
+
+
+
+$top[] = ['label' => 'MAIN MENU', 'options' => ['class' => 'header']];
+
+$top[] = ['label' => 'HOME', 'icon' => 'dashboard', 'url' => ['/user-manual']];
 
 
 
 // TODO: display menu
 echo common\widgets\Menu::widget([
-    'items' => \yii\helpers\ArrayHelper::merge($favouriteMenuItems, $menuItems),
+    'items' => \yii\helpers\ArrayHelper::merge($top, $menuItems),
 ]);
 		
 		
