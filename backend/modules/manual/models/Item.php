@@ -52,5 +52,9 @@ class Item extends \yii\db\ActiveRecord
     public function getTitle(){
          return $this->hasOne(Title::className(), ['id' => 'title_id']);
     }
+    
+    public function getSteps(){
+        return $this->hasMany(Step::className(), ['item_id' => 'id']);
+    }
 
 }

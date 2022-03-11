@@ -4,6 +4,7 @@ namespace backend\modules\manual\controllers;
 
 use Yii;
 use backend\modules\manual\models\Module;
+use backend\modules\manual\models\Section;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -56,8 +57,13 @@ class ModuleController extends Controller
      */
     public function actionView($id)
     {
+        $dataProvider = new ActiveDataProvider([
+            'query' => Section::find()->where(['module_id' => $id]),
+        ]);
+        
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'dataProvider' => $dataProvider,
         ]);
     }
 

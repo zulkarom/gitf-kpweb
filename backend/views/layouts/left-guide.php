@@ -26,12 +26,12 @@ foreach($modules as $m){
     
     if($section){
         foreach($section as $s){
-            $sub[] = ['label' => strtoupper($s->section_name), 'icon' => 'book', 'url' => ['/content', 's' => $s->id]];
+            $sub[] = ['label' => $s->section_name, 'icon' => 'book', 'url' => ['/user-manual/titles', 's' => $s->id]];
         }
     }
     
     $menuItems[] = [
-        'label' => strtoupper($m->module_name),
+        'label' => $m->module_name,
         'icon' => 'book',
         'url' => '#',
         'items' => $sub,
@@ -42,9 +42,9 @@ foreach($modules as $m){
 
 
 
-$top[] = ['label' => 'MAIN MENU', 'options' => ['class' => 'header']];
+$top[] = ['label' => 'FKP PORTAL USER MANUAL', 'options' => ['class' => 'header']];
 
-$top[] = ['label' => 'HOME', 'icon' => 'dashboard', 'url' => ['/user-manual']];
+$top[] = ['label' => 'Module Outline', 'icon' => 'dashboard', 'url' => ['/user-manual']];
 
 
 

@@ -90,9 +90,12 @@ With selection:
 			[
                 'label' => 'Program',
 				'value' => function($model){
-					if($model->course->program){
-						return $model->course->program->program_code;
-					}
+				if($model->course){
+				    if($model->course->program){
+				        return $model->course->program->program_code;
+				    }
+				}
+					
 					
 				}
                 

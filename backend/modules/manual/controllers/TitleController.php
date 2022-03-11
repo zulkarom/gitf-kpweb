@@ -84,7 +84,7 @@ class TitleController extends Controller
         $model->section_id = $section;
         if ($model->load(Yii::$app->request->post())) {
             if($model->save()){
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['section/view', 'id' => $model->section_id]);
             }
             
         }
@@ -106,7 +106,7 @@ class TitleController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['section/view', 'id' => $model->section_id]);
         }
 
         return $this->render('update', [

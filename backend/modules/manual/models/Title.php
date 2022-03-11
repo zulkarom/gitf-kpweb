@@ -44,4 +44,12 @@ class Title extends \yii\db\ActiveRecord
             'title_text' => 'Title Text',
         ];
     }
+    
+    public function getSection(){
+        return $this->hasOne(Section::className(), ['id' => 'section_id']);
+    }
+    
+    public function getItems(){
+        return $this->hasMany(Item::className(), ['title_id' => 'id']);
+    }
 }

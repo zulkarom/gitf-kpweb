@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\manual\models\Item */
 
-$this->title = $model->id;
+$this->title = $model->item_text;
 $this->params['breadcrumbs'][] = ['label' => 'Title Page', 'url' => ['title/view', 'id' => $model->title_id]];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+          //  'id',
             'title.title_text',
             'item_text:ntext',
         ],
@@ -43,11 +43,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+        //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'step_text:ntext',
+            'step_text:html',
 
             ['class' => 'yii\grid\ActionColumn',
                 'contentOptions' => ['style' => 'width: 13%'],

@@ -28,6 +28,8 @@ class Module extends \yii\db\ActiveRecord
     {
         return [
             [['module_name', 'module_route'], 'string', 'max' => 255],
+            
+            ['is_published', 'integer'],
         ];
     }
 
@@ -45,5 +47,9 @@ class Module extends \yii\db\ActiveRecord
     
     public function getSections(){
          return $this->hasMany(Section::className(), ['module_id' => 'id']);
+    }
+    
+    public function getPublishedSections(){
+        return $this->hasMany(Section::className(), ['module_id' => 'id'])->where(['is_published' => 1]);
     }
 }

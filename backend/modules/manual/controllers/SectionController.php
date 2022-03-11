@@ -4,11 +4,11 @@ namespace backend\modules\manual\controllers;
 
 use Yii;
 use backend\modules\manual\models\Section;
+use backend\modules\manual\models\TitleSearch;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
-use yii\filters\VerbFilter;
 
 /**
  * SectionController implements the CRUD actions for Section model.
@@ -56,8 +56,16 @@ class SectionController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $searchModel = new TitleSearch();
+        $searchModel->section = $model->id;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -66,12 +74,12 @@ class SectionController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($module)
     {
         $model = new Section();
-
+        $model->module_id = $module;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['module/view', 'id' => $model->module_id]);
         }
 
         return $this->render('create', [
@@ -91,7 +99,7 @@ class SectionController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['module/view', 'id' => $model->module_id]);
         }
 
         return $this->render('update', [

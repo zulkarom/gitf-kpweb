@@ -2,7 +2,10 @@
 
 namespace backend\modules\manual\controllers;
 
+use common\models\Upload;
+use Yii;
 use yii\filters\AccessControl;
+use yii\helpers\Url;
 use yii\web\Controller;
 
 /**
@@ -18,19 +21,22 @@ class DefaultController extends Controller
     {
         return $this->render('index');
     }
-
-    public function behaviors()
-    {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-        ];
+    
+    public function actionShowImage($file){
+        
+        $file_path = Yii::getAlias('@upload/manual/'.$file);
+        
+        if (file_exists($file_path)) {
+            $ext = pathinfo($file, PATHINFO_EXTENSION);
+            
+            Upload::sendFile($file_path, $file, $ext);
+            
+            
+        }else{
+            echo 'file not exist';
+        }
+        
     }
+    
+
 }

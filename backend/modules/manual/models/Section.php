@@ -28,7 +28,7 @@ class Section extends \yii\db\ActiveRecord
     {
         return [
             [['module_id'], 'required'],
-            [['module_id'], 'integer'],
+            [['module_id', 'is_published'], 'integer'],
             [['section_name'], 'string', 'max' => 255],
         ];
     }
@@ -47,6 +47,10 @@ class Section extends \yii\db\ActiveRecord
     
     public function getModule(){
          return $this->hasOne(Module::className(), ['id' => 'module_id']);
+    }
+    
+    public function getTitles(){
+        return $this->hasMany(Title::className(), ['section_id' => 'id']);
     }
 
 }

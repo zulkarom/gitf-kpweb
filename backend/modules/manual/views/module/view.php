@@ -1,19 +1,18 @@
 <?php
 
+use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\manual\models\Module */
 
-$this->title = $model->id;
+$this->title = $model->module_name;
 $this->params['breadcrumbs'][] = ['label' => 'Modules', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="module-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -34,5 +33,47 @@ $this->params['breadcrumbs'][] = $this->title;
             'module_route',
         ],
     ]) ?>
+    
+    <?= Html::a('Add Section', ['section/create', 'module' => $model->id], ['class' => 'btn btn-success']) ?>
+    
+    
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+
+            'id',
+            'section_name',
+
+            ['class' => 'yii\grid\ActionColumn',
+                'contentOptions' => ['style' => 'width: 13%'],
+                'template' => '{view} {update} {delete}',
+                //'visible' => false,
+                'buttons'=>[
+                    'view'=>function ($url, $model) {
+                    return Html::a('<span class="fa fa-search"></span>',
+                        ['section/view', 'id' => $model->id], ['class'=>'btn btn-primary btn-sm']);
+                    },
+                    'update'=>function ($url, $model) {
+                    return Html::a('<span class="fa fa-edit"></span>',
+                        ['section/update', 'id' => $model->id], ['class'=>'btn btn-warning btn-sm']);
+                    },
+                    'delete'=>function ($url, $model) {
+                    return Html::a('<span class="fa fa-trash"></span>', ['section/ delete', 'id' => $model->id], [
+                        'class' => 'btn btn-danger btn-sm',
+                        'data' => [
+                            'confirm' => 'Are you sure you want to delete this item?',
+                            'method' => 'post',
+                        ],
+                    ]);
+                    }
+                    ],
+                    
+                    ],
+        ],
+    ]); ?>
+    
+    
+    
 
 </div>

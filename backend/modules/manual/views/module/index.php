@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     if($section){
                         echo '<ul>';
                             foreach($section as $s){
-                                $html .= '<li>' . Html::a($s->section_name, ['/manual/title/index', 'section' => $s->id]) . '</li>';
+                                $html .= '<li>' . Html::a($s->section_name, ['/manual/section/view', 'id' => $s->id]) . '</li>';
                             }
                         echo '</ul>';
                     }
