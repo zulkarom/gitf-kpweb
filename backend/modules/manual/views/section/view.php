@@ -62,7 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ['title/update', 'id' => $model->id], ['class'=>'btn btn-warning btn-sm']);
                     },
                     'delete'=>function ($url, $model) {
-                    return Html::a('<span class="fa fa-trash"></span>', ['title/ delete', 'id' => $model->id], [
+                    return Html::a('<span class="fa fa-trash"></span>', ['title/delete', 'id' => $model->id], [
                         'class' => 'btn btn-danger btn-sm',
                         'data' => [
                             'confirm' => 'Are you sure you want to delete this item?',

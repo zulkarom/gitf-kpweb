@@ -173,7 +173,7 @@ class MaterialController extends Controller
 			if($model->save()){
 				Yii::$app->session->addFlash('success', "Data Updated");
 				
-				return $this->redirect(['update', 'id' => $model->id]);
+				return $this->redirect(['view', 'id' => $model->id]);
 			}
         }
 		
