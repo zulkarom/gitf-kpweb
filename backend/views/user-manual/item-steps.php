@@ -9,9 +9,9 @@ $this->title = 'FKP PORTAL';
 
 <div> 
 <ul> 
-<li><?=$title->section->module->module_name?>
+<li><?=Html::a($title->section->module->module_name, ['/user-manual/module-sections', 'm' => $title->section->module_id])?>
 	<ul>
-	<li><?=$title->section->section_name?></li>
+	<li><?=Html::a($title->section->section_name, ['/user-manual/titles', 's' => $title->section_id])?></li>
 	</ul>
 
 </li>
