@@ -11,6 +11,8 @@ use backend\modules\manual\models\Step;
  */
 class StepSearch extends Step
 {
+    public $item;
+    
     /**
      * {@inheritdoc}
      */
@@ -59,7 +61,7 @@ class StepSearch extends Step
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'item_id' => $this->item_id,
+            'item_id' => $this->item,
         ]);
 
         $query->andFilterWhere(['like', 'step_text', $this->step_text]);

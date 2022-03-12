@@ -71,6 +71,7 @@ class ItemController extends Controller
     public function actionView($id)
     {
         $searchModel = new StepSearch();
+        $searchModel->item = $id;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         
 
