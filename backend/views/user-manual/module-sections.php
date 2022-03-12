@@ -1,15 +1,11 @@
 <?php
 
-
-use backend\modules\manual\models\Module;
-use backend\modules\manual\models\Section;
 use yii\helpers\Html;
 
-$this->title = $module->module_name;
 ?>
 
 
-
+<h3><?=$module->module_name?></h3>
 
 <?php 
 

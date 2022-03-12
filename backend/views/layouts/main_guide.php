@@ -20,6 +20,15 @@ use yii\helpers\Html;
         <?= Html::csrfMetaTags() ?>
         <title>FKP PORTAL USER MANUAL | <?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
+        <style type="text/css">
+        
+        img {
+            display: block;
+              max-width: 100%;
+              height: auto;
+        }
+        
+        </style>
     </head>
     <body class="hold-transition skin-blue sidebar-mini">
     <?php $this->beginBody() ?>
