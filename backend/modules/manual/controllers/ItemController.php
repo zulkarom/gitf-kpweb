@@ -1,7 +1,5 @@
 <?php
-
 namespace backend\modules\manual\controllers;
-
 use Yii;
 use backend\modules\manual\models\Item;
 use backend\modules\manual\models\ItemSearch;
@@ -9,8 +7,8 @@ use backend\modules\manual\models\StepSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
-use yii\filters\VerbFilter;
 use backend\modules\manual\models\Title;
+use common\models\Upload;
 
 /**
  * ItemController implements the CRUD actions for Item model.
@@ -49,7 +47,21 @@ class ItemController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
-
+    
+    public function actionShowImage($file){
+        
+        $file_path = Yii::getAlias('@upload/manual/'.$file);
+        
+        if (file_exists($file_path)) {
+            $ext = pathinfo($file, PATHINFO_EXTENSION);
+            
+            Upload::sendFile($file_path, $file, $ext);
+            
+            
+        }else{
+            echo 'file not exist';
+        }
+    }
     /**
      * Displays a single Item model.
      * @param integer $id
