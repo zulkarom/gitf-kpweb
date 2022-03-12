@@ -1,31 +1,3 @@
--- phpMyAdmin SQL Dump
--- version 5.0.4
--- https://www.phpmyadmin.net/
---
--- Host: 127.0.0.1
--- Generation Time: Mar 10, 2022 at 06:03 AM
--- Server version: 10.4.17-MariaDB
--- PHP Version: 7.4.13
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Database: `fkpportalumkedu_fkpapps2021`
---
-
--- --------------------------------------------------------
-
---
--- Table structure for table `mnl_item`
---
 
 CREATE TABLE `mnl_item` (
   `id` int(11) NOT NULL,
@@ -50,16 +22,17 @@ INSERT INTO `mnl_item` (`id`, `title_id`, `item_text`, `type`) VALUES
 CREATE TABLE `mnl_module` (
   `id` int(11) NOT NULL,
   `module_name` varchar(255) DEFAULT NULL,
-  `module_route` varchar(255) DEFAULT NULL
+  `module_route` varchar(255) DEFAULT NULL,
+  `is_published` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `mnl_module`
 --
 
-INSERT INTO `mnl_module` (`id`, `module_name`, `module_route`) VALUES
-(1, 'Course Management', NULL),
-(2, 'Course File', NULL);
+INSERT INTO `mnl_module` (`id`, `module_name`, `module_route`, `is_published`) VALUES
+(1, 'Course Management', NULL, 1),
+(2, 'Course File', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -70,18 +43,21 @@ INSERT INTO `mnl_module` (`id`, `module_name`, `module_route`) VALUES
 CREATE TABLE `mnl_section` (
   `id` int(11) NOT NULL,
   `module_id` int(11) NOT NULL,
-  `section_name` varchar(255) DEFAULT NULL
+  `section_name` varchar(255) DEFAULT NULL,
+  `is_published` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `mnl_section`
 --
 
-INSERT INTO `mnl_section` (`id`, `module_id`, `section_name`) VALUES
-(1, 1, 'User Manual'),
-(2, 1, 'FAQ'),
-(3, 2, 'User Manual'),
-(4, 2, 'FAQ');
+INSERT INTO `mnl_section` (`id`, `module_id`, `section_name`, `is_published`) VALUES
+(1, 1, 'User Manual', 1),
+(2, 1, 'FAQ', 0),
+(3, 2, 'General', 1),
+(4, 2, 'As Coordinator', 1),
+(5, 2, 'As Lecturer', 1),
+(6, 2, 'As Tutor', 1);
 
 -- --------------------------------------------------------
 
@@ -100,7 +76,8 @@ CREATE TABLE `mnl_step` (
 --
 
 INSERT INTO `mnl_step` (`id`, `item_id`, `step_text`) VALUES
-(1, 1, 'Login to https://fkp-portal.umk.edu.my');
+(1, 1, '<p>Login to <a href=\"https://fkp-portal.umk.edu.my\" target=\"_blank\" rel=\"noopener\">https://fkp-portal.umk.edu.my</a></p>'),
+(2, 1, '<p>Click Course File</p>\r\n<p><img style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"index.php?r=manual%2Fdefault%2Fshow-image&amp;file=1646935842622a3f22d7e167.87101823.jpg\" alt=\"\" width=\"529\" height=\"529\" /></p>\r\n<p>&nbsp;</p>');
 
 -- --------------------------------------------------------
 
@@ -119,8 +96,9 @@ CREATE TABLE `mnl_title` (
 --
 
 INSERT INTO `mnl_title` (`id`, `section_id`, `title_text`) VALUES
-(1, 3, 'How to go the main Course File page?'),
-(2, 3, 'Course Section: Uploding Student Evaluation');
+(1, 3, 'Navigate to main page of Course File in FKP Portal.'),
+(2, 3, 'Uploding Student Evaluation'),
+(3, 3, 'Uploading Timetable');
 
 --
 -- Indexes for dumped tables
@@ -176,21 +154,16 @@ ALTER TABLE `mnl_module`
 -- AUTO_INCREMENT for table `mnl_section`
 --
 ALTER TABLE `mnl_section`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `mnl_step`
 --
 ALTER TABLE `mnl_step`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `mnl_title`
 --
 ALTER TABLE `mnl_title`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;

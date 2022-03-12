@@ -206,7 +206,7 @@ class StepController extends Controller
             // Respond to the successful upload with JSON.
             // Use a location key to specify the path to the saved image resource.
             // { location : '/your/uploaded/image/file'}
-            $url = Url::to(['/manual/default/show-image', 'file' => $new_file_name]);
+            $url = Url::to(['/manual/step/show-image', 'file' => $new_file_name]);
             // $filetowrite = 'egayong/mahaguru/' . $new_file_name;
             echo json_encode(array('location' => $url));
             //echo json_encode(array('location' => $baseurl . $filetowrite));
@@ -216,6 +216,22 @@ class StepController extends Controller
         }
         
         exit;
+    }
+    
+    public function actionShowImage($file){
+        
+        $file_path = Yii::getAlias('@upload/manual/'.$file);
+        
+        if (file_exists($file_path)) {
+            $ext = pathinfo($file, PATHINFO_EXTENSION);
+            
+            Upload::sendFile($file_path, $file, $ext);
+            
+            
+        }else{
+            echo 'file not exist';
+        }
+        
     }
     
     public function beforeAction($action)
