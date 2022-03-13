@@ -27,7 +27,7 @@ class Section extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['module_id'], 'required'],
+            [['module_id', 'is_published'], 'required'],
             [['module_id', 'is_published'], 'integer'],
             [['section_name'], 'string', 'max' => 255],
         ];
