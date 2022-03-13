@@ -27,7 +27,7 @@ class Item extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title_id', 'item_text'], 'required'],
+            [['title_id', 'item_text', 'type'], 'required'],
             [['title_id', 'type'], 'integer'],
             [['item_text'], 'string'],
         ];

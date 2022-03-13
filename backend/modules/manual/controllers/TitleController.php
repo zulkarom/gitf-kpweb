@@ -11,6 +11,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use backend\modules\manual\models\Section;
+use common\models\Upload;
 
 /**
  * TitleController implements the CRUD actions for Title model.
@@ -153,5 +154,21 @@ class TitleController extends Controller
         }
         
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    
+    public function actionShowImage($file){
+        
+        $file_path = Yii::getAlias('@upload/manual/'.$file);
+        
+        if (file_exists($file_path)) {
+            $ext = pathinfo($file, PATHINFO_EXTENSION);
+            
+            Upload::sendFile($file_path, $file, $ext);
+            
+            
+        }else{
+            echo 'file not exist';
+        }
+        
     }
 }
