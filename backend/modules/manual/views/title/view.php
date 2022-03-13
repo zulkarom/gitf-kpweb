@@ -49,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'item_text:ntext',
+            'item_text:html',
             
             ['class' => 'yii\grid\ActionColumn',
                  'contentOptions' => ['style' => 'width: 13%'],
