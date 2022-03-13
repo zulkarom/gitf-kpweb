@@ -83,8 +83,9 @@ echo UploadFile::fileInput($modelOffer, 'coorsign', true)?>
 
 </div>
 <i>
-* For the signature, use png format image with transparent background. You can click <a href="https://www.remove.bg/" target="_blank">Remove.bg</a> to easily remove background.<br />
-* Approximate size 200 x 100 (pixel).<br />
+* For the signature, use png format with transparent background and crop the image properly. <br />
+* You can use free online tools such as  <a href="https://www.fococlipping.com/" target="_blank">fococlipping.com</a> to remove background, crop or resize the image.<br />
+* Approximate image size 200 x 100 (pixel).<br />
 * Increase Adjust Size to make the image bigger and vice versa.<br />
 * Increase Adjust Y Size to move the image upwards and vice versa. <br />
 </i>
