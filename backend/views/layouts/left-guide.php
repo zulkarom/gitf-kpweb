@@ -44,7 +44,7 @@ foreach($modules as $m){
 
 $top[] = ['label' => 'FKP PORTAL USER MANUAL', 'options' => ['class' => 'header']];
 
-$top[] = ['label' => 'Module Outline', 'icon' => 'dashboard', 'url' => ['/user-manual']];
+$top[] = ['label' => 'Documentation Outline', 'icon' => 'dashboard', 'url' => ['/user-manual']];
 
 
 

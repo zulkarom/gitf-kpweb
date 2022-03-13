@@ -10,7 +10,7 @@ use dmstr\widgets\Alert;
             <h1><?= $this->blocks['content-header'] ?></h1>
         <?php } else { ?>
             <h1>
-                <?=Html::a('Module Outline', ['/user-manual'])?>
+                <?=Html::a('Documentation Outline', ['/user-manual'])?>
             </h1>
         <?php } ?>
 
