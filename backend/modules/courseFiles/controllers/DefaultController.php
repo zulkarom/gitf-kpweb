@@ -284,6 +284,7 @@ class DefaultController extends Controller
 		        }
 		        
 		    }else{
+		        $offer->course_version2 = 0;
 		        $offer->progressCourseVersion2 = 0;
 		    }
 		    
