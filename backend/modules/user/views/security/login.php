@@ -101,6 +101,13 @@ $fieldOptions2 = [
 		
 		
 		<br>
+		
+		<?= Html::a('User Manual',
+                           ['/user-manual'],['target' => '_blank']
+                                ) ?>
+		
+		
+		<br>
 
 
 

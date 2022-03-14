@@ -41,7 +41,13 @@ $form = ActiveForm::begin([
 
   <div class="box">
 <div class="box-header"></div>
-<div class="box-body"><?= GridView::widget([
+<div class="box-body">
+
+
+<div class="table-responsive">
+
+
+<?= GridView::widget([
         'dataProvider' => $dataProvider,
         'export' => false,
         'columns' => [
@@ -127,6 +133,8 @@ $form = ActiveForm::begin([
             
         ],
     ]); ?>
+    
+    </div>
     </div>
 </div>
 <div class="form-group">
