@@ -1,0 +1,1 @@
+ALTER TABLE `mnl_section` ADD `sec_order` INT NULL DEFAULT NULL AFTER `section_name`;

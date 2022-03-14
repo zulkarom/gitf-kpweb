@@ -36,7 +36,7 @@ use dmstr\widgets\Alert;
 </div>
 
 <footer class="main-footer">
-    Copyright &copy; 2018 <a href="#">FKP PORTAL</a>. All rights
+    Copyright &copy; 2018 - <?=date('Y')?> <a href="#">FKP PORTAL</a>. All rights
     reserved.
 </footer>
 

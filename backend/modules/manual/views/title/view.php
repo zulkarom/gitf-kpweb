@@ -7,9 +7,11 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\manual\models\Title */
 
-$this->title = $model->title_text;
-$this->params['breadcrumbs'][] = ['label' => 'Titles', 'url' => ['index', 'section' => $model->section_id]];
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = $model->title_text . ' - Item List';
+$this->params['breadcrumbs'][] = ['label' => 'Module', 'url' => ['/manual/module']];
+$this->params['breadcrumbs'][] = ['label' => 'Sections List', 'url' => ['module/view', 'id' => $model->section->module_id]];
+$this->params['breadcrumbs'][] = ['label' => 'Titles List', 'url' => ['section/view', 'id' => $model->section_id]];
+$this->params['breadcrumbs'][] = 'Items';
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="title-view">

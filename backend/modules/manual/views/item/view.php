@@ -7,9 +7,14 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\manual\models\Item */
 
-$this->title = 'Item View';
-$this->params['breadcrumbs'][] = ['label' => 'Title Page', 'url' => ['title/view', 'id' => $model->title_id]];
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = 'Item View  - Steps List';
+$this->params['breadcrumbs'][] = ['label' => 'Module', 'url' => ['/manual/module']];
+$this->params['breadcrumbs'][] = ['label' => 'Sections List', 'url' => ['module/view', 'id' => $model->title->section->module_id]];
+$this->params['breadcrumbs'][] = ['label' => 'Titles List', 'url' => ['section/view', 'id' => $model->title->section_id]];
+
+
+$this->params['breadcrumbs'][] = ['label' => 'Item List', 'url' => ['title/view', 'id' => $model->title_id]];
+$this->params['breadcrumbs'][] = 'Steps';
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="item-view">

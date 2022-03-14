@@ -58,7 +58,7 @@ class ModuleController extends Controller
     public function actionView($id)
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Section::find()->where(['module_id' => $id]),
+            'query' => Section::find()->where(['module_id' => $id])->orderBy('sec_order ASC'),
         ]);
         
         return $this->render('view', [

@@ -14,8 +14,7 @@ echo '<ul>';
 foreach($modules as $m){
     echo '<li>' . Html::a($m->module_name, ['/user-manual/module-sections', 'm' => $m->id]) . '</li>';
     
-    $section = Section::findAll(['module_id' => $m->id]);
-    $sub = array();
+    $section = $m->sections;
     
     if($section){
         echo '<ul>';

@@ -46,7 +46,7 @@ class Module extends \yii\db\ActiveRecord
     }
     
     public function getSections(){
-         return $this->hasMany(Section::className(), ['module_id' => 'id']);
+         return $this->hasMany(Section::className(), ['module_id' => 'id'])->orderBy('sec_order ASC');
     }
     
     public function getPublishedSections(){

@@ -7,9 +7,9 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\manual\models\Module */
 
-$this->title = $model->module_name;
+$this->title = $model->module_name . ' - Section List';
 $this->params['breadcrumbs'][] = ['label' => 'Modules', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = 'Section List';
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="module-view">
@@ -30,7 +30,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'module_name',
-            'module_route',
         ],
     ]) ?>
     
