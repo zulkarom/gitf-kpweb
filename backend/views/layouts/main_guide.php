@@ -18,7 +18,7 @@ use yii\helpers\Html;
         <meta charset="<?= Yii::$app->charset ?>"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <?= Html::csrfMetaTags() ?>
-        <title>FKP PORTAL USER MANUAL | <?= Html::encode($this->title) ?></title>
+        <title><?= Html::encode($this->title) ?> - FKP PORTAL USER MANUAL</title>
         <?php $this->head() ?>
         <style type="text/css">
         

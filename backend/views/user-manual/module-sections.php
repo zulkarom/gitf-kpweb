@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-
+$this->title = strtoupper($module->module_name);
 ?>
 
 
