@@ -21,7 +21,7 @@ $modules = Module::find()->all();
 
 foreach($modules as $m){
     
-    $section = Section::findAll(['module_id' => $m->id]);
+    $section = $m->sections;
     $sub = array();
     
     if($section){
