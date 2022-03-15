@@ -18,7 +18,7 @@ class ExternalSearch extends External
     {
         return [
             [['id', 'created_at', 'updated_at'], 'integer'],
-            [['ex_name', 'inst_name'], 'safe'],
+            [['ex_name', 'university_id'], 'safe'],
         ];
     }
 
@@ -64,7 +64,7 @@ class ExternalSearch extends External
         ]);
 
         $query->andFilterWhere(['like', 'ex_name', $this->ex_name])
-            ->andFilterWhere(['like', 'inst_name', $this->inst_name]);
+            ->andFilterWhere(['like', 'university_id', $this->university_id]);
 
         return $dataProvider;
     }

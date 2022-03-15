@@ -6,14 +6,18 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\postgrad\models\External */
 
-$this->title = $model->id;
+$this->title = $model->ex_name;
 $this->params['breadcrumbs'][] = ['label' => 'Externals', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="external-view">
+<style>
+table.detail-view th {
+    width:15%;
+}
+</style>
 
-    <h1><?= Html::encode($this->title) ?></h1>
+<div class="external-view">
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -25,16 +29,24 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
     </p>
+    
+     <div class="box">
+<div class="box-header"></div>
+<div class="box-body">
 
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
             'id',
             'ex_name',
-            'inst_name',
+            'universityName',
             'created_at',
             'updated_at',
         ],
     ]) ?>
+</div>
+</div>
+
+
 
 </div>

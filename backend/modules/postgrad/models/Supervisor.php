@@ -40,10 +40,25 @@ class Supervisor extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'staff_id' => 'Staff ID',
-            'external_id' => 'External ID',
+            'is_internal' => 'Internal/External',
+            'staff_id' => 'Staff',
+            'external_id' => 'External',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
+    }
+    
+    public function listType(){
+        return [
+            1 => 'Internal',
+            2 => 'External'
+        ];
+    }
+    
+    public function typeTypeName(){
+        $list = $this->listType();
+        if(array_key_exists($this->is_internal, $list)){
+            return $list[$this->is_internal];
+        }
     }
 }

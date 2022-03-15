@@ -31,7 +31,7 @@ class External extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['created_at', 'updated_at'], 'required'],
+            [['ex_name', 'created_at', 'updated_at'], 'required'],
             [['created_at', 'updated_at', 'university_id'], 'integer'],
             [['ex_name'], 'string', 'max' => 200],
         ];
