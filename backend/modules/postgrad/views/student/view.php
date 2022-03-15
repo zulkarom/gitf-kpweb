@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\postgrad\models\Student */
 
-$this->title = $model->user->fullname;
+$this->title = '-';//$model->user->fullname;
 $this->params['breadcrumbs'][] = ['label' => 'Postgraduate Students', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Name',
                 'value' => function($model){
-                    return $model->user->fullname;
+                    //return $model->user->fullname;
                 }
             ],
             [
@@ -53,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Emel Pelajar',
                 'value' => function($model){
-                return $model->user->email;
+                //return $model->user->email;
                 }
             ],
             'current_sem',
@@ -73,7 +73,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
                 ],
             [
-                'label' => 'Pembiayaan Sendiri',
+                'label' => 'Pembiayaan',
                 'value' => function($model){
                 return $model->sponsor;
                 }
@@ -81,7 +81,10 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Sesi Masuk',
                 'value' => function($model){
-                return $model->semester->longFormat();
+                if($model->semester){
+                    return $model->semester->longFormat();
+                }
+                
                 }
             ],
             
@@ -152,5 +155,13 @@ $this->params['breadcrumbs'][] = $this->title;
   
   
 </div>
+
+
+<div class="col-md-6">
+- semester - supervisor - research stage 
+
+</div>
+
+
 </div>
 </div>
