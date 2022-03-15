@@ -20,15 +20,34 @@ use backend\modules\esiap\models\Program;
 
     <?php $form = ActiveForm::begin(); ?>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <?= $form->field($modelUser, 'fullname')->textInput(['maxlength' => true])->label('Nama Pelajar') ?>
+        </div>
+          <div class="col-md-3">
+            <?= $form->field($model, 'matric_no')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'program_code')->dropDownList(
+                ArrayHelper::map(Program::find()->where(['pro_level' => 3])->all(), 'program_code', 'programNameCode'), ['prompt' => 'Pilih Program',  'class' => 'form-control select-choice']) ?>
+        </div>
+        
+        <div class="col-md-3">
+            <?= $form->field($model, 'status')->dropDownList(
+                $model->statusList(), ['prompt' => 'Pilih Status',  'class' => 'form-control select-choice']) ?>
+        </div>
+
+    </div>
+    
+    <div class="row">
+
+        <div class="col-md-3">
+            <?= $form->field($model, 'study_mode')->dropDownList(
+                Common::studyMode(), ['prompt' => 'Pilih Taraf Pengajian',  'class' => 'form-control select-choice']) ?>
         </div>
         <div class="col-md-3">
             <?= $form->field($model, 'nric')->textInput(['maxlength' => true]) ?>
         </div>
-        <div class="col-md-3">
-            <?= $form->field($model, 'matric_no')->textInput(['maxlength' => true]) ?>
-        </div>
+
         <div class="col-md-2">
              <?=$form->field($model, 'date_birth')->widget(DatePicker::classname(), [
                 'removeButton' => false,
@@ -81,10 +100,7 @@ use backend\modules\esiap\models\Program;
         <div class="col-md-3">
             <?= $form->field($model, 'phone_no')->textInput(['maxlength' => true]) ?>
         </div>
-        <div class="col-md-3">
-            <?= $form->field($model, 'study_mode')->dropDownList(
-                Common::studyMode(), ['prompt' => 'Pilih Taraf Pengajian',  'class' => 'form-control select-choice']) ?>
-        </div>
+
         
     </div>
     
@@ -109,10 +125,7 @@ use backend\modules\esiap\models\Program;
     
 
     <div class="row">
-        <div class="col-md-3">
-            <?= $form->field($model, 'program_code')->dropDownList(
-                ArrayHelper::map(Program::find()->where(['pro_level' => 3])->all(), 'program_code', 'programNameCode'), ['prompt' => 'Pilih Program',  'class' => 'form-control select-choice']) ?>
-        </div>
+        
         <div class="col-md-3">
             <?= $form->field($model, 'bachelor_name')->textInput(['maxlength' => true]) ?>
         </div>
@@ -169,10 +182,7 @@ use backend\modules\esiap\models\Program;
             <?= $form->field($model, 'campus_id')->dropDownList(
                 ArrayHelper::map(Campus::find()->all(), 'id', 'campus_name'), ['prompt' => 'Pilih Kampus',  'class' => 'form-control select-choice']) ?>
         </div>
-        <div class="col-md-3">
-            <?= $form->field($model, 'status')->dropDownList(
-                Common::studentStatus(), ['prompt' => 'Pilih Status',  'class' => 'form-control select-choice']) ?>
-        </div>
+        
     </div>
 
     <div class="form-group">

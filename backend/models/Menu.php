@@ -120,15 +120,21 @@ class Menu
 	public static function adminPostGradStudents(){
 		return [
 			'label' => 'Postgraduate Menu',
-			'icon' => 'users',
+			'icon' => 'cube',
+		    'visible' => Yii::$app->user->can('postgrad-manager'),
 			'url' => '#',
 			'items' => [
 
-				['label' => 'Active Students', 'icon' => 'user', 'url' => ['/postgrad/student'], 'visible' => Yii::$app->user->can('postgrad-manager')],
+				['label' => 'Active Students', 'icon' => 'user', 'url' => ['/postgrad/student']],
+			    ['label' => 'Modules', 'icon' => 'book', 'url' => ['/postgrad/module']],
+			    ['label' => 'Supervisors', 'icon' => 'user', 'url' => ['/postgrad/supervisor']],
+			    ['label' => 'Externals', 'icon' => 'user', 'url' => ['/postgrad/external']],
+			    ['label' => 'Field of Study', 'icon' => 'mortar-board', 'url' => ['/postgrad/field']],
 				
 			    
 			    [
 			        'label' => 'Workshop Training',
+			        'visible' => false,
 			        'icon' => 'cube',
 			        'url' => '#',
 			        'items' => [

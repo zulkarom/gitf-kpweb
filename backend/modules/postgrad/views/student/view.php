@@ -24,12 +24,15 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
     </p>
 
+
+  <div class="row">
+	<div class="col-md-6">
+
 <div class="box">
 <div class="box-body">  
   
   
-  <div class="row">
-	<div class="col-md-6"> <?= DetailView::widget([
+ <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
 
@@ -39,6 +42,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->user->fullname;
                 }
             ],
+            [
+                'label' => 'Status Pelajar',
+                'value' => function($model){
+                return $model->statusText;
+                }
+                ],
             'matric_no',
             'nric',
             [
@@ -76,12 +85,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             
-            [
-                'label' => 'Status Pelajar',
-                'value' => function($model){
-                return $model->stdStatusText;
-                }
-            ],
+            
             [
                 'label' => 'Negara Asal',
                 'value' => function($model){
@@ -89,15 +93,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
                 ],
 
-            
-        ],
-    ]) ?></div>
-	<div class="col-md-6">
-	
-	
-	 <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
+
 
             [
                 'label' => 'Tarikh Lahir',

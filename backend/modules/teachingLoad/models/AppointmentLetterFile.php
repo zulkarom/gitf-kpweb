@@ -174,9 +174,9 @@ class AppointmentLetterFile
 		}
 		
 		if($this->en){
-		    $fak = 'Faculty of Entrepreneurship and Business';
+		    $fak = $this->model->staffInvolved->staff->faculty->faculty_name;
 		}else{
-		    $fak = 'Fakulti Keusahawanan dan Perniagaan';
+		    $fak = $this->model->staffInvolved->staff->faculty->faculty_name_bi;
 		}
 		
 		

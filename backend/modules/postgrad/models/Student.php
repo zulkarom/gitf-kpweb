@@ -115,6 +115,24 @@ class Student extends \yii\db\ActiveRecord
             'status' => 'Status Pelajar',
         ];
     }
+    
+    public function statusList(){
+        return [
+            10 => 'Active',
+            20 => 'Postponed',
+            30 => 'Not Active',
+            90 => 'Dropped',
+            100 => 'Graduate'
+        ];
+    }
+    
+    public function getStatusText(){
+        if($this->status > 0){
+            return $this->statusList()[$this->status];
+        }else{
+            return '';
+        }
+    }
 
     public function getUser(){
          return $this->hasOne(User::className(), ['id' => 'user_id']);
@@ -154,13 +172,7 @@ class Student extends \yii\db\ActiveRecord
         }
     }
 
-    public function getStdStatusText(){
-        if($this->status > 0){
-            return Common::studentStatus()[$this->status];
-        }else{
-            return '';
-        }
-    }
+    
 
     public function getStudyModeText(){
         if($this->study_mode > 0){
