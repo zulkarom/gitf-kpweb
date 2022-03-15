@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\postgrad\models\Supervisor */
 
-$this->title = $model->id;
+$this->title = 'View Supervisor';
 $this->params['breadcrumbs'][] = ['label' => 'Supervisors', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -36,15 +36,17 @@ table.detail-view th {
      <div class="box">
 <div class="box-header"></div>
 <div class="box-body">
-    <?= DetailView::widget([
+    <?php 
+    
+    $data = ['typeName'];
+        $data[] = 'svName';
+        $data[] = 'svFieldsString';
+    $data[] = 'created_at';
+    $data[] = 'updated_at';
+    
+    echo DetailView::widget([
         'model' => $model,
-        'attributes' => [
-            'id',
-            'staff_id',
-            'external_id',
-            'created_at',
-            'updated_at',
-        ],
+        'attributes' => $data,
     ]) ?>
 
 </div>

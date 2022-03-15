@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'name',
                 'label' => 'Name',
                 'value' => function($model){
-                    return $model->user->fullname;
+                   // return $model->user->fullname;
                 }
             ],
             'matric_no',

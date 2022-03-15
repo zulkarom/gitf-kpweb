@@ -3,6 +3,7 @@
 namespace backend\modules\postgrad\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "pg_field".
@@ -40,5 +41,11 @@ class Field extends \yii\db\ActiveRecord
             'id' => 'ID',
             'field_name' => 'Field Name',
         ];
+    }
+    
+    public static function listFieldArray(){
+        $list = self::find()->all();
+        return ArrayHelper::map($list, 'id', 'field_name');
+        
     }
 }

@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use backend\modules\postgrad\models\SupervisorField;
 
 /**
  * SupervisorController implements the CRUD actions for Supervisor model.
@@ -70,13 +71,98 @@ class SupervisorController extends Controller
     {
         $model = new Supervisor();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            
+            $model->created_at = time();
+            $model->updated_at = time();
+            
+            if($model->is_internal == 1){
+                $model->external_id = 0;
+            }else{
+                $model->staff_id = 0;
+            }
+            
+            
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                
+                if($model->save()){
+                    
+                    if($this->updateFields($model)){
+                        $transaction->commit();
+                        return $this->redirect(['view', 'id' => $model->id]);
+                    }
+                    
+                }
+
+            }
+            catch (\Exception $e)
+            {
+                $transaction->rollBack();
+                Yii::$app->session->addFlash('error', $e->getMessage());
+            }
+            
+            
+            
+            
         }
 
         return $this->render('create', [
             'model' => $model,
         ]);
+    }
+    
+    private function updateFields($model){
+        $fields = $model->fields;
+        if($fields){
+            
+            $kira_post = count($fields);
+            $kira_lama = count($model->svFields);
+            if($kira_post > $kira_lama){
+                
+                $bil = $kira_post - $kira_lama;
+                for($i=1;$i<=$bil;$i++){
+                    //echo $bil;
+                    //die();
+                    $insert = new SupervisorField();
+                    $insert->sv_id = $model->id;
+                    if(!$insert->save()){
+                        print_r($insert->getErrors());
+                    }
+                }
+            }else if($kira_post < $kira_lama){
+                
+                $bil = $kira_lama - $kira_post;
+                $deleted = SupervisorField::find()
+                ->where(['sv_id'=>$model->id])
+                ->limit($bil)
+                ->all();
+                if($deleted){
+                    foreach($deleted as $del){
+                        $del->delete();
+                    }
+                }
+            }
+            
+            $update_sv = SupervisorField::find()
+            ->where(['sv_id' => $model->id])
+            ->all();
+            
+            if($update_sv){
+                $i=0;
+                foreach($update_sv as $ut){
+                    $ut->field_id = $fields[$i];
+                    $ut->save();
+                    $i++;
+                }
+            }
+            
+            
+            
+            
+        }
+        
+        return true;
     }
 
     /**
@@ -90,8 +176,33 @@ class SupervisorController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->updated_at = time();
+            
+            if($model->is_internal == 1){
+                $model->external_id = 0;
+            }else{
+                $model->staff_id = 0;
+            }
+            
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                
+                if($model->save()){
+                    
+                    if($this->updateFields($model)){
+                        $transaction->commit();
+                        return $this->redirect(['view', 'id' => $model->id]);
+                    }
+                    
+                }
+                
+            }
+            catch (\Exception $e)
+            {
+                $transaction->rollBack();
+                echo $e->getMessage(); die();
+            }
         }
 
         return $this->render('update', [

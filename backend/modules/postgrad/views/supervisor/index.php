@@ -28,12 +28,41 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'staff_id',
-            'external_id',
+            'svName',
+            [
+                'attribute' => 'is_internal',
+                'value' => function($model){
+                    return $model->typeName;
+                
+                
+                }
+                
+                ],
+                'svFieldsString',
+                
 
-
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn',
+                'contentOptions' => ['style' => 'width: 13%'],
+                'template' => '{update} {delete}',
+                //'visible' => false,
+                'buttons'=>[
+                    'update'=>function ($url, $model) {
+                    return Html::a('<span class="fa fa-edit"></span>',['update', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
+                    },
+                    'delete'=>function ($url, $model) {
+                    return Html::a('<span class="fa fa-trash"></span>', ['delete', 'id' => $model->id], [
+                        'class' => 'btn btn-danger btn-sm',
+                        'data' => [
+                            'confirm' => 'Are you sure you want to delete this data?',
+                            'method' => 'post',
+                        ],
+                    ])
+                    ;
+                    }
+                    ],
+                    
+                    ],
+                    
         ],
     ]); ?>
 

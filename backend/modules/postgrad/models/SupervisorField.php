@@ -27,7 +27,7 @@ class SupervisorField extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['sv_id', 'field_id'], 'required'],
+            [['sv_id'], 'required'],
             [['sv_id', 'field_id'], 'integer'],
         ];
     }
@@ -43,4 +43,13 @@ class SupervisorField extends \yii\db\ActiveRecord
             'field_id' => 'Field ID',
         ];
     }
+    
+    public function getField(){
+        return $this->hasOne(Field::className(), ['id' => 'field_id']);
+    }
+    
+    public function getFieldName(){
+        return $this->field->field_name;
+    }
+    
 }

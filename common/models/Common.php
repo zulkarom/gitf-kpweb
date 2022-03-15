@@ -157,6 +157,20 @@ class Common {
 	public static function statusKursus(){
 	    return [10 => 'Submit', 20 => 'Paid', 30 => 'Complete', 40 => 'Reject'];
 	}
+	
+	public static function array2Str($array){
+	    $str = '';
+	    if($array){
+	        $i = 1;
+	        foreach($array as $a){
+	            $comma = $i == 1 ? '':', ';
+	            $str .=$comma.$a;
+	            $i++;
+	        }
+	    }
+	    
+	    return $str;
+	}
 
 
 }

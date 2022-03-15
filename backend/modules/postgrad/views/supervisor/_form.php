@@ -4,6 +4,8 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\select2\Select2;
 use backend\modules\staff\models\Staff;
+use backend\modules\postgrad\models\External;
+use backend\modules\postgrad\models\Field;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\postgrad\models\Supervisor */
@@ -12,7 +14,11 @@ use backend\modules\staff\models\Staff;
 $show_in = '';
 $show_ex = 'style="display:none"';
 
-if($model->is_internal = 0){
+if($model->isNewRecord){
+    $model->is_internal = 1;
+}
+
+if($model->is_internal == 0){
     $show_in = 'style="display:none"';
     $show_ex = '';
 }
@@ -37,7 +43,7 @@ if($model->is_internal = 0){
 
 
 echo $form->field($model, 'staff_id')->widget(Select2::classname(), [
-    'data' => Staff::activeStaffUserArray(),
+    'data' => Staff::listAcademicStaffArray(),
     'options' => ['placeholder' => 'Select ..'],
     'pluginOptions' => [
         'allowClear' => true
@@ -50,7 +56,41 @@ echo $form->field($model, 'staff_id')->widget(Select2::classname(), [
  
  </div>
 
-   <div id="con_ex" <?=$show_ex?>> <?= $form->field($model, 'external_id')->textInput() ?> </div>
+   <div id="con_ex" <?=$show_ex?>> 
+   
+   
+    <?php 
+
+
+echo $form->field($model, 'external_id')->widget(Select2::classname(), [
+    'data' => External::listExternalArray(),
+    'options' => ['placeholder' => 'Select ..'],
+    'pluginOptions' => [
+        'allowClear' => true
+    ],
+]);
+
+?>
+   
+   
+   </div>
+   
+   
+       <?php 
+
+$model->fields = $model->getSvFieldsArray();
+echo $form->field($model, 'fields')->widget(Select2::classname(), [
+    'data' => Field::listFieldArray(),
+    'options' => ['multiple' => true, 'placeholder' => 'Select ..'],
+    'pluginOptions' => [
+        'allowClear' => true
+    ],
+]);
+
+?>
+
+
+
 	
 	
 	</div>
@@ -80,7 +120,17 @@ echo $form->field($model, 'staff_id')->widget(Select2::classname(), [
 
 $this->registerJs(' 
 
-
+$("#supervisor-is_internal").change(function(){
+    //alert(123);
+    var val = $(this).val();
+    if(val == 1){
+        $("#con_in").slideDown();
+        $("#con_ex").slideUp();
+    }else{
+        $("#con_in").slideUp();
+        $("#con_ex").slideDown();
+    }
+});
 
 
 ');

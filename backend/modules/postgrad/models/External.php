@@ -66,5 +66,10 @@ class External extends \yii\db\ActiveRecord
             return $uni->uni_name;
         }
     }
+    
+    public static function listExternalArray(){
+        $list = self::find()->all();
+        return ArrayHelper::map($list, 'id', 'ex_name');
+    }
 
 }
