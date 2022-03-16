@@ -164,10 +164,13 @@ class Student extends \yii\db\ActiveRecord
     
     public function getStudentSemesters()
     {
-        return $this->hasMany(StudentSemester::className(), ['student_id' => 'id']);
+        return $this->hasMany(StudentSemester::className(), ['student_id' => 'id'])->orderBy('semester_id ASC');
     }
     
-    
+    public function getSupervisors()
+    {
+        return $this->hasMany(StudentSupervisor::className(), ['student_id' => 'id'])->orderBy('sv_role ASC');
+    }
 
     public function getMaritalText(){
         if($this->marital_status > 0){

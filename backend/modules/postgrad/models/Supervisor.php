@@ -16,9 +16,12 @@ use common\models\Common;
  * @property int $created_at
  * @property int $updated_at
  */
+
 class Supervisor extends \yii\db\ActiveRecord
 {
     public $fields;
+    public $fullname;
+    public $ex_name;
     /**
      * {@inheritdoc}
      */

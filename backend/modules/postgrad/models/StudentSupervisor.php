@@ -27,12 +27,12 @@ class StudentSupervisor extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['supervisor_id'], 'required'],
-            [['supervisor_id'], 'integer'],
+            [['supervisor_id', 'student_id'], 'required'],
+            [['supervisor_id', 'sv_role', 'student_id'], 'integer'],
             [['appoint_at'], 'safe'],
         ];
     }
-
+    
     /**
      * {@inheritdoc}
      */
@@ -40,8 +40,50 @@ class StudentSupervisor extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'supervisor_id' => 'Supervisor ID',
+            'supervisor_id' => 'Supervisor',
+            'sv_role' => 'Role',
             'appoint_at' => 'Appoint At',
         ];
     }
+    
+    public function getSupervisor(){
+         return $this->hasOne(Supervisor::className(), ['id' => 'supervisor_id']);
+    }
+
+    
+    public function roleList(){
+        return [
+            1 => 'Main',
+            2 => 'Second',
+            3 => 'Third'
+        ];
+        
+    }
+    
+    public function roleName(){
+        $list = $this->roleList();
+        if(array_key_exists($this->sv_role, $list)){
+            return $list[$this->sv_role];
+        }
+    }
+    
+    public function supervisorListArray(){
+        $list =Supervisor::find()->alias('a')
+        ->select('a.id, u.fullname, x.ex_name, a.is_internal')
+        ->joinWith(['staff.user u', 'external x'])
+        ->all();
+        $array = array();
+        if($list){
+            foreach($list as $s){
+                if($s->is_internal == 1){
+                    $name = $s->fullname;
+                }else{
+                    $name = $s->ex_name;
+                }
+                $array[$s->id] = $name;
+            }
+        }
+        return $array;
+    }
+    
 }

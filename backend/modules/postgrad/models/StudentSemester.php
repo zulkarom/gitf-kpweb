@@ -3,6 +3,7 @@
 namespace backend\modules\postgrad\models;
 
 use Yii;
+use backend\models\Semester;
 
 /**
  * This is the model class for table "pg_student_sem".
@@ -56,4 +57,21 @@ class StudentSemester extends \yii\db\ActiveRecord
             100 => 'Complete'
         ];
     }
+    
+    public function statusText(){
+        $list = $this->statusList();
+        if(array_key_exists($this->status, $list)){
+            return $list[$this->status];
+        }
+    }
+    
+    public function getSemester(){
+         return $this->hasOne(Semester::className(), ['id' => 'semester_id']);
+    }
+    
+    public function getStudent(){
+        return $this->hasOne(Student::className(), ['id' => 'student_id']);
+    }
+    
+    
 }

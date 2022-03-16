@@ -3,17 +3,17 @@
 namespace backend\modules\postgrad\controllers;
 
 use Yii;
-use backend\modules\postgrad\models\StudentSemester;
-use backend\modules\postgrad\models\StudentSemesterSearch;
+use backend\modules\postgrad\models\Student;
+use backend\modules\postgrad\models\StudentSupervisor;
+use backend\modules\postgrad\models\StudentSupervisorSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use backend\modules\postgrad\models\Student;
 
 /**
- * StudentSemesterController implements the CRUD actions for StudentSemester model.
+ * StudentSupervisorController implements the CRUD actions for StudentSupervisor model.
  */
-class StudentSemesterController extends Controller
+class StudentSupervisorController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -31,12 +31,12 @@ class StudentSemesterController extends Controller
     }
 
     /**
-     * Lists all StudentSemester models.
+     * Lists all StudentSupervisor models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new StudentSemesterSearch();
+        $searchModel = new StudentSupervisorSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -46,7 +46,7 @@ class StudentSemesterController extends Controller
     }
 
     /**
-     * Displays a single StudentSemester model.
+     * Displays a single StudentSupervisor model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -59,15 +59,15 @@ class StudentSemesterController extends Controller
     }
 
     /**
-     * Creates a new StudentSemester model.
+     * Creates a new StudentSupervisor model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate($s)
     {
-        $model = new StudentSemester();
+        $model = new StudentSupervisor();
         $student = $this->findStudent($s);
-
+        
         if ($model->load(Yii::$app->request->post())) {
             $model->student_id = $s;
             if($model->save()){
@@ -78,12 +78,12 @@ class StudentSemesterController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'student' => $student,
+            'student' => $student
         ]);
     }
 
     /**
-     * Updates an existing StudentSemester model.
+     * Updates an existing StudentSupervisor model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -94,7 +94,7 @@ class StudentSemesterController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['student/view', 'id' => $model->student_id]);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
@@ -103,7 +103,7 @@ class StudentSemesterController extends Controller
     }
 
     /**
-     * Deletes an existing StudentSemester model.
+     * Deletes an existing StudentSupervisor model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -117,15 +117,15 @@ class StudentSemesterController extends Controller
     }
 
     /**
-     * Finds the StudentSemester model based on its primary key value.
+     * Finds the StudentSupervisor model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return StudentSemester the loaded model
+     * @return StudentSupervisor the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = StudentSemester::findOne($id)) !== null) {
+        if (($model = StudentSupervisor::findOne($id)) !== null) {
             return $model;
         }
 
@@ -140,4 +140,6 @@ class StudentSemesterController extends Controller
         
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+    
+    
 }

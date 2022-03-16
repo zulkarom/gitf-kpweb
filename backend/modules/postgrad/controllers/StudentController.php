@@ -162,10 +162,12 @@ class StudentController extends Controller
     {
         $model = $this->findModel($id);
         $semesters = $model->studentSemesters;
+        $supervisors = $model->supervisors;
         
         return $this->render('view', [
             'model' => $model,
-            'semesters' => $semesters
+            'semesters' => $semesters,
+            'supervisors' => $supervisors
         ]);
     }
 
@@ -180,8 +182,6 @@ class StudentController extends Controller
         $modelUser = new User();
         $model->scenario = 'create';
         $modelUser->scenario = 'studPost';
-
-        
 
         if ($model->load(Yii::$app->request->post()) 
             && $modelUser->load(Yii::$app->request->post())) {

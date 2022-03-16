@@ -4,15 +4,13 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\postgrad\models\StudentSemester */
-
-$this->title = 'Update Student Semester: ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Student Semesters', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
+$name = $model->student->user->fullname;
+$this->title = 'Update Semester: ' . $name;
+$this->params['breadcrumbs'][] = ['label' => 'Students', 'url' => ['student/index']];
+$this->params['breadcrumbs'][] = ['label' => $name, 'url' => ['student/view', 'id' => $model->student_id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="student-semester-update">
-
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
         'model' => $model,
