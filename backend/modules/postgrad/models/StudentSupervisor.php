@@ -49,6 +49,10 @@ class StudentSupervisor extends \yii\db\ActiveRecord
     public function getSupervisor(){
          return $this->hasOne(Supervisor::className(), ['id' => 'supervisor_id']);
     }
+    
+    public function getStudent(){
+        return $this->hasOne(Student::className(), ['id' => 'student_id']);
+    }
 
     
     public function roleList(){

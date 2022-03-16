@@ -36,13 +36,14 @@ class StudentSupervisorController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new StudentSupervisorSearch();
+        return $this->redirect(['student/index']);
+        /* $searchModel = new StudentSupervisorSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-        ]);
+        ]); */
     }
 
     /**
@@ -94,7 +95,7 @@ class StudentSupervisorController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['student/view', 'id' => $model->student_id]);
         }
 
         return $this->render('update', [

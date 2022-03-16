@@ -247,8 +247,9 @@ Supervisor
           ?>
            <tr>
       <th scope="row"><?=$i?></th>
-      <td><?=$s->svName?></td>
-      <td><?=$s->is_internal?></td>
+      <td><?=$s->supervisor->svName?></td>
+      <td><?=$s->roleName()?></td>
+      <td><?=$s->supervisor->typeName?></td>
       <td><a href="<?=Url::to(['student-supervisor/update', 'id' => $s->id])?>" class="btn btn-warning btn-sm">View</a></td>
     </tr>
           
