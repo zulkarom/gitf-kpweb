@@ -28,8 +28,8 @@ class StudentSemester extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['semester_id', 'status'], 'required'],
-            [['semester_id', 'status'], 'integer'],
+            [['student_id', 'semester_id', 'status'], 'required'],
+            [['semester_id', 'status', 'student_id'], 'integer'],
             ['fee_amount', 'number'],
             [['date_register', 'fee_paid_at'], 'safe'],
         ];
@@ -45,6 +45,7 @@ class StudentSemester extends \yii\db\ActiveRecord
             'semester_id' => 'Semester',
             'date_register' => 'Date Register',
             'status' => 'Status',
+            'free_paid_at' => 'Payment Date'
         ];
     }
     

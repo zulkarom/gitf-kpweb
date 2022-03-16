@@ -1,34 +1,31 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\postgrad\models\Student */
 
-$this->title = '-';//$model->user->fullname;
+$this->title = $model->user->fullname;
 $this->params['breadcrumbs'][] = ['label' => 'Postgraduate Students', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="student-post-grad-view">
 
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
+
 
 
   <div class="row">
 	<div class="col-md-6">
-
 <div class="box">
+<div class="box-header">
+<h3 class="box-title">
+Profile
+</h3>
+</div>
+
 <div class="box-body">  
   
   
@@ -39,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Name',
                 'value' => function($model){
-                    //return $model->user->fullname;
+                    return $model->user->fullname;
                 }
             ],
             [
@@ -53,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Emel Pelajar',
                 'value' => function($model){
-                //return $model->user->email;
+                return $model->user->email;
                 }
             ],
             'current_sem',
@@ -152,12 +149,47 @@ $this->params['breadcrumbs'][] = $this->title;
 	
 	 </div>
 </div>
+
+    <p>
+        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+            'class' => 'btn btn-danger',
+            'data' => [
+                'confirm' => 'Are you sure you want to delete this item?',
+                'method' => 'post',
+            ],
+        ]) ?>
+    </p>
   
   
 </div>
 
 
 <div class="col-md-6">
+
+
+
+<div class="box">
+<div class="box-header">
+<h3 class="box-title">
+Semester
+</h3>
+</div>
+<div class="box-body">
+
+
+<a href="<?=Url::to(['student-semester/create', 's' => $model->id])?>" class="btn btn-primary btn-sm">New Semester</a>
+
+
+</div>
+</div>
+
+
+
+
+
+
+
 - semester - supervisor - research stage 
 
 </div>

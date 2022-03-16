@@ -1,0 +1,1 @@
+ALTER TABLE `pg_student_sem` ADD `student_id` INT NOT NULL AFTER `id`

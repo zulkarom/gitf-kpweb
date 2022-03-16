@@ -162,6 +162,11 @@ class Student extends \yii\db\ActiveRecord
         }
     }
     
+    public function getStudentSemesters()
+    {
+        return $this->hasMany(StudentSemester::className(), ['student_id' => 'id']);
+    }
+    
     
 
     public function getMaritalText(){
