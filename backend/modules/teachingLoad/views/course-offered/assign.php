@@ -125,7 +125,7 @@ if($model->course->tut_hour == 0){
 			 <td '.$rowspan_1.'>'.$i.'. </td> 
 
 		   <td '.$rowspan_1.'>
-		   <input name="Lecture['.$lec->id.'][lec_name]" type="text" class="form-control"  value="'.$lec->lec_name.'" /></td>
+		   <input name="Lecture['.$lec->id.'][lec_name]" type="text" class="form-control"  value="'.$lec->lec_name.'" required /></td>
 				
 		  <td '.$rowspan_1.'>
 			<input name ="Lecture['.$lec->id.'][student_num]" type="number" class="form-control" value="'.$lec->student_num.'" />
@@ -270,7 +270,7 @@ function colum_2_td($tutorial,$offer, $lec){
     }
 	echo'
 	
-	<td><input name="Lecture['.$lec->id.'][tutorial]['.$tutorial->id.'][tutorial_name]" type="text" class="form-control" value="'.$tutorial->tutorial_name.'" /></td>
+	<td><input name="Lecture['.$lec->id.'][tutorial]['.$tutorial->id.'][tutorial_name]" type="text" required class="form-control" value="'.$tutorial->tutorial_name.'" /></td>
 	<td><input name="Lecture['.$lec->id.'][tutorial]['.$tutorial->id.'][lec_prefix]" type="text" class="form-control" value="'.$tutorial->lec_prefix.'" /></td>
     <td>
 <input type="hidden" name="Lecture['.$lec->id.'][tutorial]['.$tutorial->id.'][is_scheduled]" value="0" />
