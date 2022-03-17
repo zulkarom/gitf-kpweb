@@ -105,6 +105,7 @@ if($model->course->tut_hour == 0){
 		
 		 <th width="10%">Tutorial Name<br/><span class="font-weight:normal:font-style:italic">(e.g. T1,T2,T3)</span></th>
 		 <th width="10%">Lecture Prefix*<br/><span class="font-weight:normal:font-style:italic">(if any)</span></th>
+		 <th width="3%">Scheduled</th>
 		 <th width="10%">No.Students</th>
 		 <th>Tutors</th>
 		
@@ -262,10 +263,18 @@ function colum_2($tutorials,$offer, $lec){
 }
 
 function colum_2_td($tutorial,$offer, $lec){
+    if($tutorial->is_scheduled == 1){
+        $check = 'checked';
+    }else{
+        $check = '';
+    }
 	echo'
 	
 	<td><input name="Lecture['.$lec->id.'][tutorial]['.$tutorial->id.'][tutorial_name]" type="text" class="form-control" value="'.$tutorial->tutorial_name.'" /></td>
 	<td><input name="Lecture['.$lec->id.'][tutorial]['.$tutorial->id.'][lec_prefix]" type="text" class="form-control" value="'.$tutorial->lec_prefix.'" /></td>
+    <td>
+<input type="hidden" name="Lecture['.$lec->id.'][tutorial]['.$tutorial->id.'][is_scheduled]" value="0" />
+<input type="checkbox" name="Lecture['.$lec->id.'][tutorial]['.$tutorial->id.'][is_scheduled]" value="1" '. $check .' /></td>
 	<td><input name ="Lecture['.$lec->id.'][tutorial]['.$tutorial->id.'][student_num]" class="form-control" type="number"  value="'.$tutorial->student_num.'" /></td>
 	<td>';
 

@@ -299,6 +299,11 @@ class CourseOfferedController extends Controller
                         $tutor->tutorial_name = $post_lectures[$lec->id]['tutorial'][$tutor->id]['tutorial_name'];
 						$tutor->lec_prefix = $post_lectures[$lec->id]['tutorial'][$tutor->id]['lec_prefix'];
                         $tutor->student_num = $post_lectures[$lec->id]['tutorial'][$tutor->id]['student_num'];
+                        if($post_lectures[$lec->id]['tutorial'][$tutor->id]['is_scheduled']){
+                            $tutor->is_scheduled = 1;
+                        }else{
+                            $tutor->is_scheduled = 0;
+                        }
 
                         if(array_key_exists('tutoriallecturers', $post_lectures[$lec->id]['tutorial'][$tutor->id])){
                             $tutoriallecturers = $post_lectures[$lec->id]['tutorial'][$tutor->id]['tutoriallecturers'];
