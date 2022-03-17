@@ -144,9 +144,13 @@ class Course extends \backend\modules\esiap\models\Course
 						if($lecture->tutorials){
 							
 							foreach ($lecture->tutorials as $tutorial){
-								
+							    if($tutorial->is_scheduled == 1){
+							        $sc = ' *';
+							    }else{
+							        $sc = '';
+							    }
 								$d = $i == 1 ? '' : $br;
-								$str .= $d. $tutorial->tutorialName.' ('.$tutorial->student_num.') - ';
+								$str .= $d . $tutorial->tutorialName.' ('.$tutorial->student_num.') - ';
 								$i++;
 								$str_tut = '';
 								if($tutorial->tutors){
@@ -156,6 +160,7 @@ class Course extends \backend\modules\esiap\models\Course
 										$str_tut .= $slash .  ' ' .$tutor->staff->staff_title . ' ' . $tutor->staff->user->fullname . ' ';
 										$x++;
 									}
+									$str_tut .= $sc;
 								}else{
 									$str_tut .= '<span class="label label-danger">???</span>';
 								}

@@ -173,7 +173,11 @@ class Staff extends \backend\modules\staff\models\Staff
 		if($list){
 			$i = 1;
 			foreach($list as $item){
-				
+			    if($item->tutorialLec->is_scheduled == 1){
+			        $sc = ' *';
+			    }else{
+			        $sc = '';
+			    }
 				if($item->tutorialLec){
 					$d = $i == 1 ? '' : $br;
 					if($item->tutorialLec->lecture){
@@ -184,7 +188,7 @@ class Staff extends \backend\modules\staff\models\Staff
 							->courseOffered
 							->course
 							->course_code;
-							$str .= $d.$code.' - '.$item->tutorialLec->tutorialName.' ('.$item->tutorialLec->student_num.') ';
+							$str .= $d.$code.' - '.$item->tutorialLec->tutorialName.' ('.$item->tutorialLec->student_num.')'. $sc;
 							$i++;
 						}
 					}

@@ -48,6 +48,15 @@ $this->params['breadcrumbs'][] = $this->title;
 				
 			],
             
+            [
+  
+                'label' => 'Level',
+                'value' => function($model){
+                    return $model->course->study_level;
+                }
+                
+            ],
+            
 
             ['class' => 'yii\grid\ActionColumn',
                  'contentOptions' => ['style' => 'width: 12.7%'],

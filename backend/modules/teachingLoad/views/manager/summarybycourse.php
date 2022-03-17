@@ -18,6 +18,14 @@ $columns = [
 			
 			'course_code',
 			'course_name',
+    [
+        
+        'label' => 'Level',
+        'value' => function($model){
+        return $model->course->study_level;
+        }
+        
+        ],
 
             [
                 'label' => 'Coordinator',
@@ -29,6 +37,8 @@ $columns = [
                     
                 }
             ],
+            
+            
 
 			
 
@@ -99,6 +109,14 @@ $columns = [
 			
 			'course.course_code',
 			'course.course_name',
+            [
+                
+                'label' => 'Level',
+                'value' => function($model){
+                return $model->course->study_level;
+                }
+                
+                ],
 
 			[
                 'label' => 'Coordinator',
@@ -160,7 +178,12 @@ $columns = [
             ], */
 	
         ],
-    ]); ?></div>
+    ]); ?>
+    
+    
+    * Scheduled
+    
+    </div>
 </div>
 
 </div>
