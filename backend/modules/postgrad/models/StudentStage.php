@@ -3,6 +3,9 @@
 namespace backend\modules\postgrad\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
+use backend\modules\staff\models\Staff;
+use backend\models\Semester;
 
 /**
  * This is the model class for table "pd_student_stage".
@@ -20,7 +23,7 @@ class StudentStage extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'pd_student_stage';
+        return 'pg_student_stage';
     }
 
     /**
@@ -29,8 +32,9 @@ class StudentStage extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['student_id', 'stage_id'], 'required'],
-            [['student_id', 'stage_id', 'status'], 'integer'],
+            [['student_id', 'stage_id', 'semester_id'], 'required'],
+            [['student_id', 'stage_id', 'status', 'chairman_id', 'semester_id'], 'integer'],
+            [['remark'], 'string'],
             [['stage_date'], 'safe'],
         ];
     }
@@ -42,12 +46,71 @@ class StudentStage extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'student_id' => 'Student ID',
-            'stage_id' => 'Stage ID',
+            'student_id' => 'Student',
+            'chairman_id' => 'Chairman',
+            'semester_id' => 'Semester',
+            'semesterName' => 'Semester',
+            'chairmanName' => 'Chairman',
+            'stage_id' => 'Stage',
             'stage_date' => 'Stage Date',
             'status' => 'Status',
         ];
     }
+    
+    public function regSemesters(){
+        $list = StudentSemester::find()
+        ->where(['student_id' => $this->student_id])
+        ->all();
+        $array = array();
+        if($list){
+            foreach($list as $s){
+                $array[$s->semester_id] = $s->semester->longFormat();
+            }
+        }
+        
+        return $array;
+    }
+    
+    public function getSemesterName(){
+        return $this->semester->longFormat();
+    }
+    
+    public function getStage(){
+         return $this->hasOne(ResearchStage::className(), ['id' => 'stage_id']);
+    }
+    
+    public function getSemester(){
+        return $this->hasOne(Semester::className(), ['id' => 'semester_id']);
+    }
+    
+    public function getExaminers(){
+         return $this->hasMany(StageExaminer::className(), ['stage_id' => 'id']);
+    }
+    
+    public function getStudent(){
+        return $this->hasOne(Student::className(), ['id' => 'student_id']);
+    }
+    
+    public function getChairman(){
+        return $this->hasOne(Staff::className(), ['id' => 'chairman_id']);
+    }
+    
+    public function getChairmanName(){
+        return $this->chairman->user->fullname;
+    }
+    
+    public function getStageListArray(){
+        return ArrayHelper::map(ResearchStage::find()->all(), 'id', 'stage_name');
+    }
+    
+    public function getStageName(){
+        return $this->stage->stage_name;
+    }
+    
+    public function getStudentName(){
+        return $this->student->user->fullname;
+    }
+
     
     public function statusList(){
         return [
@@ -57,5 +120,12 @@ class StudentStage extends \yii\db\ActiveRecord
             90 => 'Passed with Minor Correction',
             100 => 'Passed without Correction'
         ];
+    }
+    
+    public function getStatusName(){
+        $list = $this->statusList();
+        if(array_key_exists($this->status, $list)){
+            return $list[$this->status];
+        }
     }
 }

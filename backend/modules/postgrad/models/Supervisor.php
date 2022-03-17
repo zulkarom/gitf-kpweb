@@ -55,7 +55,7 @@ class Supervisor extends \yii\db\ActiveRecord
             'external_id' => 'External',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
-            'svName' => 'Supervisor',
+            'svName' => 'Supervisor / Examiner',
             'svFieldsString' => 'Fields'
         ];
     }

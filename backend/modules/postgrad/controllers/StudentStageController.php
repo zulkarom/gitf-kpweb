@@ -4,15 +4,16 @@ namespace backend\modules\postgrad\controllers;
 
 use Yii;
 use backend\modules\postgrad\models\Student;
-use backend\modules\postgrad\models\StudentSupervisor;
+use backend\modules\postgrad\models\StudentStage;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
 
 /**
- * StudentSupervisorController implements the CRUD actions for StudentSupervisor model.
+ * StudentStageController implements the CRUD actions for StudentStage model.
  */
-class StudentSupervisorController extends Controller
+class StudentStageController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -35,42 +36,40 @@ class StudentSupervisorController extends Controller
     }
 
     /**
-     * Lists all StudentSupervisor models.
+     * Lists all StudentStage models.
      * @return mixed
      */
     public function actionIndex()
     {
-        return $this->redirect(['student/index']);
-        /* $searchModel = new StudentSupervisorSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]); */
+       return $this->redirect(['student/index']);
     }
 
     /**
-     * Displays a single StudentSupervisor model.
+     * Displays a single StudentStage model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        
+        $examiners = $model->examiners;
+        
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'examiners' => $examiners
         ]);
     }
 
     /**
-     * Creates a new StudentSupervisor model.
+     * Creates a new StudentStage model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate($s)
     {
-        $model = new StudentSupervisor();
+        $model = new StudentStage();
         $student = $this->findStudent($s);
         
         if ($model->load(Yii::$app->request->post())) {
@@ -80,15 +79,24 @@ class StudentSupervisorController extends Controller
             }
             
         }
-
+        
         return $this->render('create', [
             'model' => $model,
             'student' => $student
         ]);
     }
+    
+    protected function findStudent($id)
+    {
+        if (($model = Student::findOne($id)) !== null) {
+            return $model;
+        }
+        
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
 
     /**
-     * Updates an existing StudentSupervisor model.
+     * Updates an existing StudentStage model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -98,8 +106,10 @@ class StudentSupervisorController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['student/view', 'id' => $model->student_id]);
+        if ($model->load(Yii::$app->request->post())) {
+            if($model->save()){
+                return $this->redirect(['view', 'id' => $id]);
+            }
         }
 
         return $this->render('update', [
@@ -108,7 +118,7 @@ class StudentSupervisorController extends Controller
     }
 
     /**
-     * Deletes an existing StudentSupervisor model.
+     * Deletes an existing StudentStage model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -122,29 +132,18 @@ class StudentSupervisorController extends Controller
     }
 
     /**
-     * Finds the StudentSupervisor model based on its primary key value.
+     * Finds the StudentStage model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return StudentSupervisor the loaded model
+     * @return StudentStage the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = StudentSupervisor::findOne($id)) !== null) {
+        if (($model = StudentStage::findOne($id)) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
-    
-    protected function findStudent($id)
-    {
-        if (($model = Student::findOne($id)) !== null) {
-            return $model;
-        }
-        
-        throw new NotFoundHttpException('The requested page does not exist.');
-    }
-    
-    
 }

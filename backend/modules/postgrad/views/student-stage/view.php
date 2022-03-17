@@ -5,15 +5,20 @@ use yii\helpers\Url;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model backend\modules\postgrad\models\StudentSemester */
+/* @var $model backend\modules\postgrad\models\StudentStage */
 
-$name = $model->student->user->fullname;
-$this->title = 'View Semester: ' . $name;
+$this->title = 'View Stage: ' . $model->student->user->fullname;
+
+
 $this->params['breadcrumbs'][] = ['label' => 'Students', 'url' => ['student/index']];
-$this->params['breadcrumbs'][] = ['label' => $name, 'url' => ['student/view', 'id' => $model->student_id]];
-$this->params['breadcrumbs'][] = 'View';
+$this->params['breadcrumbs'][] = ['label' => $model->student->user->fullname, 'url' => ['student/view', 'id' => $model->student->id]];
+$this->params['breadcrumbs'][] = 'View Stage';
+
+
+
 ?>
-<div class="student-semester-view">
+<div class="student-stage-view">
+
 
 
 <div class="row">
@@ -24,19 +29,23 @@ $this->params['breadcrumbs'][] = 'View';
 <div class="box-header"></div>
 <div class="box-body">
 
+
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
             'studentName',
+            'stageName',
             'semesterName',
-            'date_register:date',
-            'statusText',
-            'fee_amount',
-            'fee_paid_at',
+            'stage_date',
+            'chairmanName',
+            'statusName',
+            'remark'
         ],
     ]) ?>
-    <br />
-        <p>
+
+<br />
+
+    <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
@@ -46,7 +55,6 @@ $this->params['breadcrumbs'][] = 'View';
             ],
         ]) ?>
     </p>
-    
 
 </div>
 </div>
@@ -58,10 +66,10 @@ $this->params['breadcrumbs'][] = 'View';
 	
 	
 	
-	<div class="box">
+<div class="box">
 <div class="box-header">
 <h3 class="box-title">
-Modules
+Examiners
 </h3>
 </div>
 <div class="box-body">
@@ -70,20 +78,22 @@ Modules
   <thead>
     <tr>
       <th scope="col">#</th>
-      <th scope="col">Module</th>
+      <th scope="col">Examiners</th>
+      <th scope="col">Type</th>
       <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
   <?php  
-  if($modules){
+  if($examiners){
       $i = 1;
-      foreach($modules as $m){
+      foreach($examiners as $s){
           ?>
            <tr>
        <th scope="row"><?=$i?></th>
-      <td><?=$m->module->module_name?></td>
-      <td><a href="<?=Url::to(['semester-module/update', 'id' => $m->id])?>" class="btn btn-warning btn-sm">View</a></td>
+      <td><?=$s->examiner->svName?></td>
+      <td><?=$s->examiner->typeName?></td>
+      <td><a href="<?=Url::to(['stage-examiner/update', 'id' => $s->id])?>" class="btn btn-warning btn-sm">View</a></td>
     </tr>
           
           <?php 
@@ -100,7 +110,7 @@ Modules
 
 <br />
 <div class="form-group">
-<a href="<?=Url::to(['semester-module/create', 'stage' => $model->id])?>" class="btn btn-primary btn-sm">Add Module</a>
+<a href="<?=Url::to(['stage-examiner/create', 'stage' => $model->id])?>" class="btn btn-primary btn-sm">Add Examiner</a>
 </div>
 
 

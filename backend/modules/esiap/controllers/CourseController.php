@@ -300,7 +300,7 @@ class CourseController extends Controller
         ]);
     }
 	
-	public function actionUpdate($course, $version = null)
+	public function actionUpdate($course, $version)
     {
         $model = $this->findModel($course);
         if($version){

@@ -127,7 +127,7 @@ class Menu
 
 				['label' => 'Active Students', 'icon' => 'user', 'url' => ['/postgrad/student']],
 			    ['label' => 'Modules', 'icon' => 'book', 'url' => ['/postgrad/module']],
-			    ['label' => 'Supervisors', 'icon' => 'user', 'url' => ['/postgrad/supervisor']],
+			    ['label' => 'Supervisors/Examiners', 'icon' => 'user', 'url' => ['/postgrad/supervisor']],
 			    ['label' => 'Externals', 'icon' => 'user', 'url' => ['/postgrad/external']],
 			    ['label' => 'Field of Study', 'icon' => 'mortar-board', 'url' => ['/postgrad/field']],
 				

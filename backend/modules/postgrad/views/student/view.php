@@ -195,8 +195,8 @@ Semester
            <tr>
       <th scope="row"><?=$i?></th>
       <td><?=$s->semester->longFormat()?></td>
-      <td><?=$s->statusText()?></td>
-      <td><a href="<?=Url::to(['student-semester/update', 'id' => $s->id])?>" class="btn btn-warning btn-sm">View</a></td>
+      <td><?=$s->statusText?></td>
+      <td><a href="<?=Url::to(['student-semester/view', 'id' => $s->id])?>" class="btn btn-warning btn-sm">View</a></td>
     </tr>
           
           <?php 
@@ -213,7 +213,7 @@ Semester
 
 <br />
 <div class="form-group">
-<a href="<?=Url::to(['student-semester/create', 's' => $model->id])?>" class="btn btn-primary btn-sm">New Semester</a>
+<a href="<?=Url::to(['student-semester/create', 's' => $model->id])?>" class="btn btn-primary btn-sm">Add Semester</a>
 </div>
 
 
@@ -267,7 +267,62 @@ Supervisor
 
 <br />
 <div class="form-group">
-<a href="<?=Url::to(['student-supervisor/create', 's' => $model->id])?>" class="btn btn-primary btn-sm">New Supervisor</a>
+<a href="<?=Url::to(['student-supervisor/create', 's' => $model->id])?>" class="btn btn-primary btn-sm">Add Supervisor</a>
+</div>
+
+
+
+</div>
+</div>
+
+
+<div class="box">
+<div class="box-header">
+<h3 class="box-title">
+Research Stage
+</h3>
+</div>
+<div class="box-body">
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Stage</th>
+      <th scope="col">Status</th>
+      <th scope="col">Date</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+  <?php  
+  if($stages){
+      $i = 1;
+      foreach($stages as $s){
+          ?>
+           <tr>
+      <th scope="row"><?=$i?></th>
+      <td><?=$s->stage->stage_name?></td>
+      <td><?=$s->statusName?></td>
+      <td><?=date('d/m/Y', strtotime($s->stage_date))?></td>
+      <td><a href="<?=Url::to(['student-stage/view', 'id' => $s->id])?>" class="btn btn-warning btn-sm">View</a></td>
+    </tr>
+          
+          <?php 
+          $i++;
+      }
+  }
+  
+  ?>
+   
+
+  </tbody>
+</table>
+
+
+<br />
+<div class="form-group">
+<a href="<?=Url::to(['student-stage/create', 's' => $model->id])?>" class="btn btn-primary btn-sm">Add Stage</a>
 </div>
 
 
@@ -281,7 +336,7 @@ Supervisor
 
 
 
-- semester - supervisor - research stage 
+
 
 </div>
 

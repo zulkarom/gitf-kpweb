@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\postgrad\models\Supervisor */
 
-$this->title = 'View Supervisor';
+$this->title = 'View Supervisor / Examiner';
 $this->params['breadcrumbs'][] = ['label' => 'Supervisors', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);

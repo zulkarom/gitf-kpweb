@@ -7,7 +7,7 @@ use backend\modules\postgrad\models\StudentSemester;
 use backend\modules\postgrad\models\StudentSemesterSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 use backend\modules\postgrad\models\Student;
 
 /**
@@ -18,13 +18,18 @@ class StudentSemesterController extends Controller
     /**
      * {@inheritdoc}
      */
+    
+
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
                 ],
             ],
         ];
@@ -36,13 +41,13 @@ class StudentSemesterController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new StudentSemesterSearch();
+    /*     $searchModel = new StudentSemesterSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-        ]);
+        ]); */
     }
 
     /**
@@ -53,11 +58,15 @@ class StudentSemesterController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $modules = $model->modules;
+        
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'modules' => $modules
         ]);
     }
-
+    
     /**
      * Creates a new StudentSemester model.
      * If creation is successful, the browser will be redirected to the 'view' page.

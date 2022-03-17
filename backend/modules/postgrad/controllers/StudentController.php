@@ -163,11 +163,13 @@ class StudentController extends Controller
         $model = $this->findModel($id);
         $semesters = $model->studentSemesters;
         $supervisors = $model->supervisors;
+        $stages = $model->stages;
         
         return $this->render('view', [
             'model' => $model,
             'semesters' => $semesters,
-            'supervisors' => $supervisors
+            'supervisors' => $supervisors,
+            'stages' => $stages
         ]);
     }
 

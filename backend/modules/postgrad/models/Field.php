@@ -28,6 +28,7 @@ class Field extends \yii\db\ActiveRecord
     {
         return [
             [['field_name'], 'required'],
+            [['field_name'], 'unique'],
             [['field_name'], 'string', 'max' => 200],
         ];
     }

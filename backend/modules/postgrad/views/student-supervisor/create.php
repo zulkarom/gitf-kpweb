@@ -6,8 +6,12 @@ use yii\helpers\Html;
 /* @var $model backend\modules\postgrad\models\StudentSupervisor */
 
 $this->title = 'Add Supervisor: ' . $student->user->fullname;
-$this->params['breadcrumbs'][] = ['label' => 'Student Supervisors', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+
+
+$this->params['breadcrumbs'][] = ['label' => 'Students', 'url' => ['student/index']];
+$this->params['breadcrumbs'][] = ['label' => $student->user->fullname, 'url' => ['student/view', 'id' => $student->id]];
+
+$this->params['breadcrumbs'][] = 'Add Supervisor';
 ?>
 <div class="student-supervisor-create">
 

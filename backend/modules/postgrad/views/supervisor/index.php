@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel backend\modules\postgrad\models\SupervisorSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Supervisors';
+$this->title = 'Supervisors / Examiners List';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="supervisor-index">
@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Add Supervisor', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Add Supervisor / Examiner', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
 

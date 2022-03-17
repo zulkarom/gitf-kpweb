@@ -44,8 +44,11 @@ class StudentSemester extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'semester_id' => 'Semester',
-            'date_register' => 'Date Register',
+            'semesterName' => 'Semester',
+            'studentName' => 'Student',
+            'date_register' => 'Semester Register',
             'status' => 'Status',
+            'statusText' => 'Status',
             'free_paid_at' => 'Payment Date'
         ];
     }
@@ -58,7 +61,11 @@ class StudentSemester extends \yii\db\ActiveRecord
         ];
     }
     
-    public function statusText(){
+    public function getModules(){
+         return $this->hasMany(SemesterModule::className(), ['student_sem_id' => 'id']);
+    }
+    
+    public function getStatusText(){
         $list = $this->statusList();
         if(array_key_exists($this->status, $list)){
             return $list[$this->status];
@@ -69,9 +76,15 @@ class StudentSemester extends \yii\db\ActiveRecord
          return $this->hasOne(Semester::className(), ['id' => 'semester_id']);
     }
     
+    public function getSemesterName(){
+        return $this->semester->longFormat();
+    }
+    
     public function getStudent(){
         return $this->hasOne(Student::className(), ['id' => 'student_id']);
     }
     
-    
+    public function getStudentName(){
+        return $this->student->user->fullname;
+    }
 }

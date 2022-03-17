@@ -171,6 +171,11 @@ class Student extends \yii\db\ActiveRecord
     {
         return $this->hasMany(StudentSupervisor::className(), ['student_id' => 'id'])->orderBy('sv_role ASC');
     }
+    
+    public function getStages()
+    {
+        return $this->hasMany(StudentStage::className(), ['student_id' => 'id'])->orderBy('stage_id');
+    }
 
     public function getMaritalText(){
         if($this->marital_status > 0){
@@ -179,9 +184,7 @@ class Student extends \yii\db\ActiveRecord
             return '';
         }
     }
-
     
-
     public function getStudyModeText(){
         if($this->study_mode > 0){
             return Common::studyMode()[$this->study_mode];

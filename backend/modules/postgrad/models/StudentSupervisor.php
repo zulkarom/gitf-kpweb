@@ -71,7 +71,7 @@ class StudentSupervisor extends \yii\db\ActiveRecord
         }
     }
     
-    public function supervisorListArray(){
+    public static function supervisorListArray(){
         $list =Supervisor::find()->alias('a')
         ->select('a.id, u.fullname, x.ex_name, a.is_internal')
         ->joinWith(['staff.user u', 'external x'])

@@ -3,55 +3,49 @@
 namespace backend\modules\postgrad\controllers;
 
 use Yii;
-use backend\modules\postgrad\models\Student;
-use backend\modules\postgrad\models\StudentSupervisor;
+use backend\modules\postgrad\models\SemesterModule;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 
 /**
- * StudentSupervisorController implements the CRUD actions for StudentSupervisor model.
+ * SemesterModuleController implements the CRUD actions for SemesterModule model.
  */
-class StudentSupervisorController extends Controller
+class SemesterModuleController extends Controller
 {
     /**
      * {@inheritdoc}
      */
-    
-
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
                 ],
             ],
         ];
     }
 
     /**
-     * Lists all StudentSupervisor models.
+     * Lists all SemesterModule models.
      * @return mixed
      */
     public function actionIndex()
     {
-        return $this->redirect(['student/index']);
-        /* $searchModel = new StudentSupervisorSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = new ActiveDataProvider([
+            'query' => SemesterModule::find(),
+        ]);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-        ]); */
+        ]);
     }
 
     /**
-     * Displays a single StudentSupervisor model.
+     * Displays a single SemesterModule model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -64,31 +58,25 @@ class StudentSupervisorController extends Controller
     }
 
     /**
-     * Creates a new StudentSupervisor model.
+     * Creates a new SemesterModule model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($s)
+    public function actionCreate()
     {
-        $model = new StudentSupervisor();
-        $student = $this->findStudent($s);
-        
-        if ($model->load(Yii::$app->request->post())) {
-            $model->student_id = $s;
-            if($model->save()){
-                return $this->redirect(['student/view', 'id' => $s]);
-            }
-            
+        $model = new SemesterModule();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
             'model' => $model,
-            'student' => $student
         ]);
     }
 
     /**
-     * Updates an existing StudentSupervisor model.
+     * Updates an existing SemesterModule model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -99,7 +87,7 @@ class StudentSupervisorController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['student/view', 'id' => $model->student_id]);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
@@ -108,7 +96,7 @@ class StudentSupervisorController extends Controller
     }
 
     /**
-     * Deletes an existing StudentSupervisor model.
+     * Deletes an existing SemesterModule model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -122,29 +110,18 @@ class StudentSupervisorController extends Controller
     }
 
     /**
-     * Finds the StudentSupervisor model based on its primary key value.
+     * Finds the SemesterModule model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return StudentSupervisor the loaded model
+     * @return SemesterModule the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = StudentSupervisor::findOne($id)) !== null) {
+        if (($model = SemesterModule::findOne($id)) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
-    
-    protected function findStudent($id)
-    {
-        if (($model = Student::findOne($id)) !== null) {
-            return $model;
-        }
-        
-        throw new NotFoundHttpException('The requested page does not exist.');
-    }
-    
-    
 }
