@@ -4,26 +4,30 @@ namespace backend\modules\postgrad\controllers;
 
 use Yii;
 use backend\modules\postgrad\models\SemesterModule;
+use backend\modules\postgrad\models\StudentSemester;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * SemesterModuleController implements the CRUD actions for SemesterModule model.
  */
 class SemesterModuleController extends Controller
 {
-    /**
-     * {@inheritdoc}
-     */
+    
+    
+
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
                 ],
             ],
         ];
@@ -62,16 +66,22 @@ class SemesterModuleController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($semester)
     {
         $model = new SemesterModule();
+        $studentSemester = $this->findStudentSemester($semester);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->student_sem_id = $studentSemester->id;
+            if($model->save()){
+                return $this->redirect(['student-semester/view', 'id' => $semester]);
+            }
+            
         }
 
         return $this->render('create', [
             'model' => $model,
+            'studentSemester' => $studentSemester
         ]);
     }
 
@@ -87,7 +97,7 @@ class SemesterModuleController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['student-semester/view', 'id' => $model->student_sem_id]);
         }
 
         return $this->render('update', [
@@ -104,9 +114,20 @@ class SemesterModuleController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        try {
+            $model = $this->findModel($id);
+            $sem = $model->student_sem_id;
+            $model->delete();
+            Yii::$app->session->addFlash('success', "Module Deleted");
+        } catch(\yii\db\IntegrityException $e) {
+            
+            Yii::$app->session->addFlash('error', "Cannot delete module at this stage");
+            
+        }
+        
 
-        return $this->redirect(['index']);
+        return $this->redirect(['student-semester/view', 'id' => $sem]);
+        
     }
 
     /**
@@ -122,6 +143,15 @@ class SemesterModuleController extends Controller
             return $model;
         }
 
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    
+    protected function findStudentSemester($id)
+    {
+        if (($model = StudentSemester::findOne($id)) !== null) {
+            return $model;
+        }
+        
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

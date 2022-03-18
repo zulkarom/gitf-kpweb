@@ -71,7 +71,8 @@ Modules
     <tr>
       <th scope="col">#</th>
       <th scope="col">Module</th>
-      <th scope="col"></th>
+      <th scope="col">Result</th>
+      <th scope="col" width="20%"></th>
     </tr>
   </thead>
   <tbody>
@@ -82,8 +83,13 @@ Modules
           ?>
            <tr>
        <th scope="row"><?=$i?></th>
-      <td><?=$m->module->module_name?></td>
-      <td><a href="<?=Url::to(['semester-module/update', 'id' => $m->id])?>" class="btn btn-warning btn-sm">View</a></td>
+      <td><?=$m->moduleName?></td>
+      <td><?=$m->resultName?></td>
+      <td><a href="<?=Url::to(['semester-module/update', 'id' => $m->id])?>" class="btn btn-warning btn-sm">View</a>  
+      
+       <a href="<?=Url::to(['semester-module/delete', 'id' => $m->id])?>" class="btn btn-danger btn-sm" data-confirm="Are you sure to delete this module?"><i class="fa fa-trash"></i></a>
+       
+       </td>
     </tr>
           
           <?php 
@@ -100,7 +106,7 @@ Modules
 
 <br />
 <div class="form-group">
-<a href="<?=Url::to(['semester-module/create', 'stage' => $model->id])?>" class="btn btn-primary btn-sm">Add Module</a>
+<a href="<?=Url::to(['semester-module/create', 'semester' => $model->id])?>" class="btn btn-primary btn-sm">Add Module</a>
 </div>
 
 

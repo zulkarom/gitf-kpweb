@@ -5,13 +5,16 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\postgrad\models\SemesterModule */
 
-$this->title = 'Create Semester Module';
-$this->params['breadcrumbs'][] = ['label' => 'Semester Modules', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+
+
+$this->title = 'Add Module: ' . $studentSemester->student->user->fullname;
+$this->params['breadcrumbs'][] = ['label' => $studentSemester->student->user->fullname , 'url' => ['student/view', 'id' => $studentSemester->student_id]];
+$this->params['breadcrumbs'][] = ['label' => 'Semester', 'url' => ['student-semester/view', 'id' => $studentSemester->id]];
+$this->params['breadcrumbs'][] = 'Add Module';
+
+
 ?>
 <div class="semester-module-create">
-
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
         'model' => $model,

@@ -19,6 +19,7 @@ $this->params['breadcrumbs'][] = 'Add Stage';
 
     <?= $this->render('_form', [
         'model' => $model,
+        'student' => $student
     ]) ?>
 
 </div>

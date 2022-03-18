@@ -196,7 +196,9 @@ Semester
       <th scope="row"><?=$i?></th>
       <td><?=$s->semester->longFormat()?></td>
       <td><?=$s->statusText?></td>
-      <td><a href="<?=Url::to(['student-semester/view', 'id' => $s->id])?>" class="btn btn-warning btn-sm">View</a></td>
+      <td><a href="<?=Url::to(['student-semester/view', 'id' => $s->id])?>" class="btn btn-warning btn-sm">View</a> 
+       <a href="<?=Url::to(['student-semester/delete', 'id' => $s->id])?>" class="btn btn-danger btn-sm" data-confirm="Are you sure to delete this semester?"><i class="fa fa-trash"></i></a>
+      </td>
     </tr>
           
           <?php 
@@ -250,7 +252,10 @@ Supervisor
       <td><?=$s->supervisor->svName?></td>
       <td><?=$s->roleName()?></td>
       <td><?=$s->supervisor->typeName?></td>
-      <td><a href="<?=Url::to(['student-supervisor/update', 'id' => $s->id])?>" class="btn btn-warning btn-sm">View</a></td>
+      <td><a href="<?=Url::to(['student-supervisor/update', 'id' => $s->id])?>" class="btn btn-warning btn-sm">View</a>  
+      
+       <a href="<?=Url::to(['student-supervisor/delete', 'id' => $s->id])?>" class="btn btn-danger btn-sm" data-confirm="Are you sure to delete this supervisor?"><i class="fa fa-trash"></i></a>
+      </td>
     </tr>
           
           <?php 
@@ -305,7 +310,10 @@ Research Stage
       <td><?=$s->stage->stage_name?></td>
       <td><?=$s->statusName?></td>
       <td><?=date('d/m/Y', strtotime($s->stage_date))?></td>
-      <td><a href="<?=Url::to(['student-stage/view', 'id' => $s->id])?>" class="btn btn-warning btn-sm">View</a></td>
+      <td><a href="<?=Url::to(['student-stage/view', 'id' => $s->id])?>" class="btn btn-warning btn-sm">View</a> 
+      
+        <a href="<?=Url::to(['student-stage/delete', 'id' => $s->id])?>" class="btn btn-danger btn-sm" data-confirm="Are you sure to delete this stage?"><i class="fa fa-trash"></i></a>
+      </td>
     </tr>
           
           <?php 

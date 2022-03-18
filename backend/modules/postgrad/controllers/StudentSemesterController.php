@@ -120,9 +120,21 @@ class StudentSemesterController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        try {
+            $model = $this->findModel($id);
+            $student = $model->student_id;
+            $model->delete();
+            Yii::$app->session->addFlash('success', "Semester Deleted");
+        } catch(\yii\db\IntegrityException $e) {
+            
+            Yii::$app->session->addFlash('error', "Cannot delete semester at this stage");
+            
+        }
+        
+        
+        
 
-        return $this->redirect(['index']);
+        return $this->redirect(['student/view', 'id' => $student]);
     }
 
     /**

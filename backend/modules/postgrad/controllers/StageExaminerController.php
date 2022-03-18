@@ -7,7 +7,7 @@ use backend\modules\postgrad\models\StageExaminer;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 use backend\modules\postgrad\models\StudentStage;
 
 /**
@@ -18,13 +18,18 @@ class StageExaminerController extends Controller
     /**
      * {@inheritdoc}
      */
+    
+
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
                 ],
             ],
         ];
@@ -111,9 +116,22 @@ class StageExaminerController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        try {
+            $model = $this->findModel($id);
+            $s = $model->stage_id;
+            $model->delete();
+            Yii::$app->session->addFlash('success', "Examiner Deleted");
+        } catch(\yii\db\IntegrityException $e) {
+            
+            Yii::$app->session->addFlash('error', "Cannot delete the examiner at this stage");
+            
+        }
+        
+        
+        
+        
+        return $this->redirect(['student-stage/view', 'id' => $s]);
+        
     }
 
     /**

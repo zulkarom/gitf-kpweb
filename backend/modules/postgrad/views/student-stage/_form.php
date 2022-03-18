@@ -27,7 +27,7 @@ use kartik\select2\Select2;
 	
 	    <?= $form->field($model, 'stage_id')->dropDownList($model->stageListArray) ?>
 	    
-	     <?= $form->field($model, 'semester_id')->dropDownList($model->regSemesters(), ['prompt' => 'Select..']) ?>
+	     <?= $form->field($model, 'semester_id')->dropDownList($model->regSemesters($student->id), ['prompt' => 'Select..']) ?>
     
     
 

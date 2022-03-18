@@ -171,6 +171,18 @@ class Course extends \yii\db\ActiveRecord
 		return self::find()->where(['is_dummy' => 0, 'is_active' => 1, 'faculty_id' => Yii::$app->params['faculty_id']])->orderBy('course_name ASC')->all();
 	}
 	
+	public static function activeCoursesPg(){
+	    return self::find()->where(
+	        [
+	            'is_dummy' => 0, 
+	            'is_active' => 1, 
+	            'faculty_id' => Yii::$app->params['faculty_id'],
+	            'study_level' => 'PG'
+	        ])
+	    ->orderBy('course_name ASC')
+	    ->all();
+	}
+	
 	public static function activeCoursesNameCode(){
 		return self::find()
 		->select(['id', 'concat(course_code, " - ", course_name) AS course_code_name'])
@@ -205,6 +217,23 @@ class Course extends \yii\db\ActiveRecord
 			$array[$row->id] = $row->course_name .' - '.$row->course_code;
 		}
 		return $array;
+	}
+	
+	public static function activeCoursesPgArray(){
+	    $result = self::find()->where(
+	        [
+	            'is_dummy' => 0,
+	            'is_active' => 1,
+	            'faculty_id' => Yii::$app->params['faculty_id'],
+	            'study_level' => 'PG'
+	        ])
+	        ->orderBy('course_name ASC')
+	        ->all();
+	    
+	    foreach($result as $row){
+	        $array[$row->id] = $row->course_code . ' ' . $row->course_name;
+	    }
+	    return $array;
 	}
 	
 	public function flashError(){

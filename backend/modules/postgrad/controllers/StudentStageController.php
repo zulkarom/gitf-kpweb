@@ -126,9 +126,22 @@ class StudentStageController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        try {
+            $model = $this->findModel($id);
+            $student = $model->student_id;
+            $model->delete();
+            Yii::$app->session->addFlash('success', "Stage Deleted");
+        } catch(\yii\db\IntegrityException $e) {
+            
+            Yii::$app->session->addFlash('error', "Cannot delete the research stage. Delete all related data first e.g. examiners");
+            
+        }
+        
+        
+        
+        
+        return $this->redirect(['student/view', 'id' => $student]);
+        
     }
 
     /**

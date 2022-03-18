@@ -93,7 +93,10 @@ Examiners
        <th scope="row"><?=$i?></th>
       <td><?=$s->examiner->svName?></td>
       <td><?=$s->examiner->typeName?></td>
-      <td><a href="<?=Url::to(['stage-examiner/update', 'id' => $s->id])?>" class="btn btn-warning btn-sm">View</a></td>
+      <td><a href="<?=Url::to(['stage-examiner/update', 'id' => $s->id])?>" class="btn btn-warning btn-sm">View</a>  
+      
+        <a href="<?=Url::to(['stage-examiner/delete', 'id' => $s->id])?>" class="btn btn-danger btn-sm" data-confirm="Are you sure to delete this examiner?"><i class="fa fa-trash"></i></a>
+      </td>
     </tr>
           
           <?php 
@@ -110,7 +113,9 @@ Examiners
 
 <br />
 <div class="form-group">
-<a href="<?=Url::to(['stage-examiner/create', 'stage' => $model->id])?>" class="btn btn-primary btn-sm">Add Examiner</a>
+<a href="<?=Url::to(['stage-examiner/create', 'stage' => $model->id])?>" class="btn btn-primary btn-sm">Add Examiner</a> 
+
+  
 </div>
 
 

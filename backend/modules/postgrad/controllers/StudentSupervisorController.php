@@ -116,10 +116,23 @@ class StudentSupervisorController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        try {
+            $model = $this->findModel($id);
+            $student = $model->student_id;
+            $model->delete();
+            Yii::$app->session->addFlash('success', "Supervisor Deleted");
+        } catch(\yii\db\IntegrityException $e) {
+            
+            Yii::$app->session->addFlash('error', "Cannot delete supervisor at this stage");
+            
+        }
+        
+        
+        
+        
+        return $this->redirect(['student/view', 'id' => $student]);
     }
+    
 
     /**
      * Finds the StudentSupervisor model based on its primary key value.

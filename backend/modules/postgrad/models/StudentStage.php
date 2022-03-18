@@ -57,9 +57,9 @@ class StudentStage extends \yii\db\ActiveRecord
         ];
     }
     
-    public function regSemesters(){
+    public function regSemesters($student){
         $list = StudentSemester::find()
-        ->where(['student_id' => $this->student_id])
+        ->where(['student_id' => $student])
         ->all();
         $array = array();
         if($list){
