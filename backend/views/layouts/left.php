@@ -137,6 +137,8 @@ $menuItems = [
 					
 					['label' => 'Course Management', 'icon' => 'mortar-board', 'url' => ['/esiap'],],
     
+    ['label' => 'Postgraduate', 'icon' => 'cube', 'url' => ['/postgrad/student'], 'visible' => Yii::$app->user->can('postgrad-manager')],
+    
                    // ['label' => 'Program Management', 'icon' => 'mortar-board', 'url' => ['/esiap/program'],],
 					
 					['label' => 'e-RPD', 'icon' => 'flask', 'url' => ['/erpd'],],	
@@ -144,13 +146,13 @@ $menuItems = [
                     ['label' => 'Workshop', 'icon' => 'cube', 'url' => ['/workshop/kursus-anjur'], 'visible' => Yii::$app->user->can('workshop-manager')],
     
     
-                    ['label' => 'Postgraduate', 'icon' => 'cube', 'url' => ['/postgrad/student'], 'visible' => Yii::$app->user->can('postgrad-manager')],
+                    
                     
                     ['label' => 'Students', 'icon' => 'users', 'url' => ['/students/student'], 'visible' => Yii::$app->user->can('students-manager')],
 					
 					['label' => 'eAduan', 'icon' => 'comments', 'url' => ['/aduan'],],
 					
-					['label' => 'JEB Journal', 'icon' => 'book', 'url' => ['/site/jeb-web'], 'template'=>'<a href="{url}" target="_blank">{icon} {label}</a>'],
+					['label' => 'JEB Journal', 'visible' => false, 'icon' => 'book', 'url' => ['/site/jeb-web'], 'template'=>'<a href="{url}" target="_blank">{icon} {label}</a>'],
 					
 					['label' => 'Conference', 'icon' => 'microphone', 'visible' => Yii::$app->user->can('conference-manager'), 'url' => ['/conference/conference/index']],
 					
@@ -161,6 +163,7 @@ $menuItems = [
 					[
                         'label' => 'Website',
                         'icon' => 'tv',
+					    'visible' => false,
                         'url' => '#',
                         'items' => [
 						
