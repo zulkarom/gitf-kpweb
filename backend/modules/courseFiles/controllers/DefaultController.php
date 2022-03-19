@@ -492,10 +492,16 @@ class DefaultController extends Controller
 				$full_mark = array_slice($full_mark,3);
 				
 				foreach (array_slice($data,4) as $stud) {
+				    $matric = trim($stud[1]);
+				    $name = trim($stud[2]);
 				    if(is_array($stud) and $stud){
 				        $assess = array_slice($stud, 3);
 				        $t =0;
 				        foreach($assess as $raw){
+				            if(!is_numeric($raw)){
+				                Yii::$app->session->addFlash('error', "Only number is accepted. Check student: " . $name . '; Mark : ' . $raw );
+				                return $this->redirect(['lecture-student-assessment', 'id' => $id]);
+				            }
 		
 				            if($t < $max){ //verify good colum
 				                if($full_mark[$t] == 0 or $full_mark[$t] == null){
@@ -503,7 +509,7 @@ class DefaultController extends Controller
 				                    return $this->redirect(['lecture-student-assessment', 'id' => $id]);
 				                }
 				                if($raw > $full_mark[$t]){
-				                    Yii::$app->session->addFlash('error', "Please check your data, make sure the mark does not exceed the total mark");
+				                    Yii::$app->session->addFlash('error', "Please check your data, make sure the mark does not exceed the total mark. Check student: " . $name . '; Mark : ' . $raw . ' > ' . $full_mark[$t]);
 				                    return $this->redirect(['lecture-student-assessment', 'id' => $id]);
 				                }
 				            } 
@@ -560,9 +566,11 @@ class DefaultController extends Controller
 
 				$re = $dprogress / 100;
 				//echo $re ; die();
-				$lecture->progressStudentAssessment = $re;
+				//$lecture->progressStudentAssessment = $re;
 				//echo $lecture->prg_stu_assess;die();
+				$lecture->progressStudentAssessment = 0.5;
 				$lecture->save();
+				
                 Yii::$app->session->addFlash('success', "Import Marks done"); 
 				return $this->redirect(['lecture-student-assessment', 'id' => $id, 'save' => 1]);
             }

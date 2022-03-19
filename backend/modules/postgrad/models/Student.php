@@ -43,6 +43,9 @@ use backend\modules\esiap\models\Program;
  */
 class Student extends \yii\db\ActiveRecord
 {
+    public $stage_name;
+    public $fullname;
+    public $stage_status;
     /**
      * {@inheritdoc}
      */

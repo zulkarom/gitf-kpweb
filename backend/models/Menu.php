@@ -125,10 +125,9 @@ class Menu
 			'url' => '#',
 			'items' => [
 
-				['label' => 'Active Students', 'icon' => 'user', 'url' => ['/postgrad/student']],
-			    ['label' => 'Modules', 'icon' => 'book', 'url' => ['/postgrad/module']],
-			    ['label' => 'Supervisors/Examiners', 'icon' => 'user', 'url' => ['/postgrad/supervisor']],
-			    ['label' => 'Externals', 'icon' => 'user', 'url' => ['/postgrad/external']],
+				['label' => 'Students', 'icon' => 'user', 'url' => ['/postgrad/student']],
+			    ['label' => 'Supervisors/Examiners', 'icon' => 'hand-o-right', 'url' => ['/postgrad/supervisor']],
+			    ['label' => 'Externals', 'icon' => 'external-link', 'url' => ['/postgrad/external']],
 			    ['label' => 'Field of Study', 'icon' => 'mortar-board', 'url' => ['/postgrad/field']],
 				
 			    

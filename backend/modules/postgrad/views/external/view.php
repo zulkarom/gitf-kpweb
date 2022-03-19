@@ -37,7 +37,6 @@ table.detail-view th {
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
             'ex_name',
             'universityName',
             'created_at',

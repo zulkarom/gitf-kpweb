@@ -57,8 +57,14 @@ class SupervisorController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $supervisees = $model->supervisees;
+        $examinees = $model->examinees;
+        
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'supervisees' => $supervisees,
+            'examinees' => $examinees
         ]);
     }
 
@@ -77,9 +83,9 @@ class SupervisorController extends Controller
             $model->updated_at = time();
             
             if($model->is_internal == 1){
-                $model->external_id = 0;
+                $model->external_id = null;
             }else{
-                $model->staff_id = 0;
+                $model->staff_id = null;
             }
             
             
@@ -114,9 +120,11 @@ class SupervisorController extends Controller
     
     private function updateFields($model){
         $fields = $model->fields;
-        if($fields){
+        //if($fields){
+        
             
-            $kira_post = count($fields);
+            $kira_post = $fields ? count($fields) : 0;
+           // echo $kira_post; die();
             $kira_lama = count($model->svFields);
             if($kira_post > $kira_lama){
                 
@@ -126,6 +134,7 @@ class SupervisorController extends Controller
                     //die();
                     $insert = new SupervisorField();
                     $insert->sv_id = $model->id;
+                    $insert->field_id = null;
                     if(!$insert->save()){
                         print_r($insert->getErrors());
                     }
@@ -160,7 +169,7 @@ class SupervisorController extends Controller
             
             
             
-        }
+        //}//
         
         return true;
     }
@@ -180,21 +189,24 @@ class SupervisorController extends Controller
             $model->updated_at = time();
             
             if($model->is_internal == 1){
-                $model->external_id = 0;
+                $model->external_id = null;
             }else{
-                $model->staff_id = 0;
+                $model->staff_id = null;
             }
             
             $transaction = Yii::$app->db->beginTransaction();
             try {
                 
                 if($model->save()){
-                    
+                   // echo 'hai';die();
                     if($this->updateFields($model)){
                         $transaction->commit();
                         return $this->redirect(['view', 'id' => $model->id]);
                     }
                     
+                }else{
+                    print_r($model->getErrors());
+                    die();
                 }
                 
             }
@@ -219,9 +231,21 @@ class SupervisorController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
+        try {
+            $model = $this->findModel($id);
+            $model->delete();
+            Yii::$app->session->addFlash('success', "Supervisor Deleted");
+        } catch(\yii\db\IntegrityException $e) {
+            
+            Yii::$app->session->addFlash('error', "Cannot delete supervisor at this stage");
+            
+        }
+        
+        
+        
+        
         return $this->redirect(['index']);
+        
     }
 
     /**

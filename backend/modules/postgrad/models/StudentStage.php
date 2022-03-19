@@ -32,7 +32,7 @@ class StudentStage extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['student_id', 'stage_id', 'semester_id'], 'required'],
+            [['student_id', 'stage_id', 'semester_id', 'stage_date'], 'required'],
             [['student_id', 'stage_id', 'status', 'chairman_id', 'semester_id'], 'integer'],
             [['remark'], 'string'],
             [['stage_date'], 'safe'],
@@ -112,7 +112,7 @@ class StudentStage extends \yii\db\ActiveRecord
     }
 
     
-    public function statusList(){
+    public static function statusList(){
         return [
             10 => 'Applied',
             70 => 'Failed',
@@ -122,10 +122,14 @@ class StudentStage extends \yii\db\ActiveRecord
         ];
     }
     
-    public function getStatusName(){
-        $list = $this->statusList();
-        if(array_key_exists($this->status, $list)){
-            return $list[$this->status];
+    public static function statusText($status){
+        $list = self::statusList();
+        if(array_key_exists($status, $list)){
+            return $list[$status];
         }
+    }
+    
+    public function getStatusName(){
+        return self::statusText($this->status);
     }
 }

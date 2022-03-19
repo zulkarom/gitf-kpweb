@@ -75,7 +75,7 @@ class StudentStageController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $model->student_id = $s;
             if($model->save()){
-                return $this->redirect(['student/view', 'id' => $s]);
+                return $this->redirect(['view', 'id' => $s]);
             }
             
         }

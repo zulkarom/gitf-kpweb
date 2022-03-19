@@ -24,13 +24,14 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="box-body">
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-       // 'filterModel' => $searchModel,
+        'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
             'svName',
             [
                 'attribute' => 'is_internal',
+                'filter' => Html::activeDropDownList($searchModel, 'is_internal', $searchModel->listType(),['class'=> 'form-control','prompt' => 'Choose']),
                 'value' => function($model){
                     return $model->typeName;
                 
@@ -43,11 +44,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
             ['class' => 'yii\grid\ActionColumn',
                 'contentOptions' => ['style' => 'width: 13%'],
-                'template' => '{update} {delete}',
+                'template' => '{view} {delete}',
                 //'visible' => false,
                 'buttons'=>[
-                    'update'=>function ($url, $model) {
-                    return Html::a('<span class="fa fa-edit"></span>',['update', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
+                    'view'=>function ($url, $model) {
+                    return Html::a('View',['view', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
                     },
                     'delete'=>function ($url, $model) {
                     return Html::a('<span class="fa fa-trash"></span>', ['delete', 'id' => $model->id], [

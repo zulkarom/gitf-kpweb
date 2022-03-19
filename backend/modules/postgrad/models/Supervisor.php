@@ -38,6 +38,8 @@ class Supervisor extends \yii\db\ActiveRecord
         return [
             [['staff_id', 'external_id', 'created_at', 'updated_at', 'is_internal'], 'integer'],
             
+            [['staff_id', 'external_id'], 'unique'],
+            
             ['fields', 'each', 'rule' => ['integer']],
         ];
     }
@@ -101,6 +103,22 @@ class Supervisor extends \yii\db\ActiveRecord
     public function getSvFields()
     {
         return $this->hasMany(SupervisorField::className(), ['sv_id' => 'id']);
+    }
+    
+    public function getSupervisees()
+    {
+        return $this->hasMany(StudentSupervisor::className(), ['supervisor_id' => 'id']);
+    }
+    
+    public function getExaminees(){
+        return Student::find()->alias('a')
+        ->select('u.fullname, r.stage_name, s.status as stage_status')
+        ->joinWith(['user u'])
+        ->leftJoin('pg_student_stage s', 's.student_id = a.id')
+        ->leftJoin('pg_stage_examiner e', 'e.stage_id = s.id')
+        ->leftJoin('pg_res_stage r', 'r.id = s.stage_id')
+        ->where(['e.examiner_id' => $this->id])
+        ->all();
     }
     
     public function getSvFieldsArray(){

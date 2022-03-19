@@ -108,9 +108,21 @@ class FieldController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
+        try {
+            $model = $this->findModel($id);
+            $model->delete();
+            Yii::$app->session->addFlash('success', "Field Deleted");
+        } catch(\yii\db\IntegrityException $e) {
+            
+            Yii::$app->session->addFlash('error', "Cannot delete the field at this stage");
+            
+        }
+        
+        
+        
+        
         return $this->redirect(['index']);
+        
     }
 
     /**

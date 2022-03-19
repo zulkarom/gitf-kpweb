@@ -11,13 +11,18 @@ use backend\modules\postgrad\models\Supervisor;
  */
 class SupervisorSearch extends Supervisor
 {
+    
+    public $svName;
+    public $svFieldsString;
+    
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id', 'staff_id', 'external_id', 'created_at', 'updated_at'], 'integer'],
+            [['is_internal'], 'integer'],
+            [['svName', 'svFieldsString'], 'string'],
         ];
     }
 
@@ -39,7 +44,8 @@ class SupervisorSearch extends Supervisor
      */
     public function search($params)
     {
-        $query = Supervisor::find();
+        $query = Supervisor::find()->alias('a')
+        ->joinWith(['staff.user u', 'external x', 'svFields.field f']);
 
         // add conditions that should always apply here
 
@@ -57,12 +63,18 @@ class SupervisorSearch extends Supervisor
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'staff_id' => $this->staff_id,
-            'external_id' => $this->external_id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'is_internal' => $this->is_internal
         ]);
+        
+        $query->andFilterWhere(['or',
+            ['like', 'u.fullname', $this->svName],
+            ['like', 'x.ex_name', $this->svName]
+        ]);
+        
+        $query->andFilterWhere(
+            ['like', 'f.field_name', $this->svFieldsString]
+        );
+        
 
         return $dataProvider;
     }
