@@ -568,7 +568,7 @@ class DefaultController extends Controller
 				//echo $re ; die();
 				//$lecture->progressStudentAssessment = $re;
 				//echo $lecture->prg_stu_assess;die();
-				$lecture->progressStudentAssessment = 0.5;
+				$lecture->progressStudentAssessment = 1;
 				$lecture->save();
 				
                 Yii::$app->session->addFlash('success', "Import Marks done"); 
