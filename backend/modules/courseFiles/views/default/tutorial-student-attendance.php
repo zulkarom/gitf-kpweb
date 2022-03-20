@@ -77,8 +77,10 @@ $this->params['breadcrumbs'][] = 'Student Attendance';
                       if($attendance){
 						
                         foreach($attendance as $attend){
-                          echo'<th><center>'. date('d-m', strtotime($attend)) .'</center></th>';
-						  $kira++;
+                            $kira++;
+                          echo'<th><center>'. date('d-m', strtotime($attend)) .'<br />  
+<a href="javascript:void(0)" data-class="'.$kira.'" class="check-all-class" >**</a></center></th>';
+						  
                         }
                       }
                   echo'<th>%</th></tr>
@@ -98,7 +100,7 @@ $this->params['breadcrumbs'][] = 'Student Attendance';
                           <td>'.$student->matric_no.'
 						  
 						  </td>
-                          <td>'.$student->student->st_name.'</td>';
+                          <td>'.$student->student->st_name.'  <a href="javascript:void(0)" style="font-size:20px" data-matric="'.$student->matric_no.'" class="check-all-student">*</a></td>';
 
                             $attendance = json_decode($student->attendance_check);
 							
@@ -173,7 +175,12 @@ $this->params['breadcrumbs'][] = 'Student Attendance';
             </div>
             <?php /*  =$form->field($model, 'attendance_json',['options' => ['tag' => false]])->hiddenInput(['value' => ''])->label(false) */?>
              
-
+             
+	<i>
+	* checking all classes for a student <br />
+** checking all students for a class
+	
+	</i>	
            
           </div>
         </div>
@@ -200,6 +207,34 @@ $js = "
 
 $('#btn-save').click(function(){
 	//calcAll();
+});
+
+$('.check-all-class').click(function(){
+    var arr = [".$st_arr."];
+    var ses = $(this).attr('data-class');
+//alert(ses);
+    var matric;
+    for(x=0;x<arr.length;x++){
+		matric = arr[x];
+//console.log('#cb_' + matric + '_' + ses);
+        $('#cb_' + matric + '_' + ses ).attr('checked', true);
+		$('#per_' + matric).text(calcPercent(matric));
+	   $('#con_' + matric).val(JSON.stringify(calcAttend(matric)));
+	}  
+    
+
+});
+
+$('.check-all-student').click(function(){
+    var cnt = ".$kira."  ;
+    var matric = $(this).attr('data-matric');
+   // alert(matric+cnt);
+    for(i=1;i<=cnt;i++){
+		$('#cb_' + matric + '_' + i ).attr('checked', true);
+	}
+    $('#per_' + matric).text(calcPercent(matric));
+	$('#con_' + matric).val(JSON.stringify(calcAttend(matric)));
+
 });
 
 $('.checkbxAtt').click(function(){
