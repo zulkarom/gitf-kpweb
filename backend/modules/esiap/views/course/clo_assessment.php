@@ -57,6 +57,14 @@ if($clos){
 		echo '<tr><td colspan="3"><a href="'.Url::to(['add-assessment-clo', 'course' => $model->course->id, 'clo' => $clo->id, 'v' => $model->id]).'" class="add-item btn btn-default btn-sm"><span class="fa fa-plus"></span> Add Assessment to CLO'.$i.'</a></td></tr>';
 		$i++;
 	}
+
+	echo '<tr>
+<td colspan="2" align="right"></td><td>
+<a href="'.Url::to(['course-assessment', 'course' => $model->course->id, 'course' => $model->course_id, 'version' => $model->id]).'" >Related Link: Setting Course Assessment</a></td>
+</tr>';
+	$i++;
+	
+	
 	echo '</table>';
 }
 ?>

@@ -69,7 +69,7 @@ $this->params['breadcrumbs'][] = 'Assessment';
                 <td class="text-center vcenter" style="width: 90px;">
 				
 				<?= Html::a('<span class="fa fa-remove"></span>', ['course-assessment-delete', 'version' => $model->id, 'id' => $item->id], [
-            'class' => 'remove-item btn btn-default btn-sm',
+
             'data' => [
                 'confirm' => 'Are you sure you want to delete this Assessment? All setting related to this Assessment also will be deleted.',
                 'method' => 'post',
@@ -103,6 +103,8 @@ $this->params['breadcrumbs'][] = 'Assessment';
 <?=$form->field($model, 'updated_at')->hiddenInput(['value' => time()])->label(false)?>
 
 
+
+<a href="<?php echo Url::to(['clo-assessment', 'course' => $model->course->id, 'course' => $model->course_id, 'version' => $model->id]) ?>" >Related Link: Setting Course Assessment Percentage + CLO mapping</a>
 
 
 

@@ -36,7 +36,7 @@ class CourseAssessment extends \yii\db\ActiveRecord
     {
         return [
 			
-           [['assess_name', 'assess_name_bi', 'assess_cat'], 'required', 'on' => 'saveall'],
+          // [['assess_name', 'assess_name_bi', 'assess_cat'], 'required', 'on' => 'saveall'],
 			
 			[['crs_version_id'], 'required', 'on' => 'add'],
 			

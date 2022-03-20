@@ -412,7 +412,11 @@ class CourseController extends Controller
                     if ($flag) {
                         $transaction->commit();
                             Yii::$app->session->addFlash('success', "Course Information updated");
-                            return $this->redirect(['update', 'course' => $course, 'version' => $version->id]);
+                            if(Yii::$app->request->post('complete') == 1){
+                                return $this->redirect(['view-course','course'=>$course, 'version' => $version->id]);
+                            }else{
+                                return $this->redirect(['update', 'course' => $course, 'version' => $version->id]);
+                            }
                     } else {
                         $transaction->rollBack();
                     }
@@ -554,7 +558,14 @@ class CourseController extends Controller
 				}
 
 			}
-			return $this->redirect(['course-reference', 'course' => $course, 'version' => $model->id]);
+			
+			
+			if(Yii::$app->request->post('complete') == 1){
+			    return $this->redirect(['view-course','course'=>$course, 'version' => $model->id]);
+			}else{
+			    return $this->redirect(['course-reference', 'course' => $course, 'version' => $model->id]);
+			}
+			
 		}
 		
 		return $this->render('reference', [
@@ -714,7 +725,15 @@ class CourseController extends Controller
 				
 				
 			}
-			return $this->redirect(['course-syllabus', 'course' => $course, 'version' => $model->id]);
+			
+			if(Yii::$app->request->post('complete') == 1 && $verify_content && $verify_clo){
+			    return $this->redirect(['view-course','course'=>$course, 'version' => $model->id]);
+			}else{
+			    return $this->redirect(['course-syllabus', 'course' => $course, 'version' => $model->id]);
+			}
+			
+			
+			
 			
 		}
 		
@@ -799,6 +818,8 @@ class CourseController extends Controller
 			// //
 		}
 		$version = CourseVersion::findOne($version);
+		$version->pgrs_clo = 1;
+		$version->save();
 		$course = $version->course_id;
 		return $this->redirect(['course-clo','course'=>$course, 'version' => $version->id]);
 	}
@@ -868,7 +889,15 @@ class CourseController extends Controller
 				}
 				
 				Yii::$app->session->addFlash('success', "Data Updated");
-				return $this->redirect(['course-clo','course'=>$course, 'version' => $version->id]);
+				if(Yii::$app->request->post('complete') == 1 && $boo){
+				    return $this->redirect(['view-course','course'=>$course, 'version' => $model->id]);
+				}else{
+				    return $this->redirect(['course-clo','course'=>$course, 'version' => $version->id]);
+				}
+				
+				
+				
+				
 			}
 			
 		}
@@ -926,7 +955,16 @@ class CourseController extends Controller
 				}
 				
 				Yii::$app->session->addFlash('success', "Data Updated");
-				return $this->redirect(['clo-plo', 'course' => $course, 'version' => $model->id]);
+				
+				
+				if(Yii::$app->request->post('complete') == 1){
+				    return $this->redirect(['view-course','course'=>$course, 'version' => $model->id]);
+				}else{
+				    return $this->redirect(['clo-plo', 'course' => $course, 'version' => $model->id]);
+				}
+				
+				
+				
 			}
 			
 			
@@ -973,10 +1011,21 @@ class CourseController extends Controller
 					$model->flashError();
 				}
             }
-			return $this->redirect(['clo-taxonomy', 'course' => $course, 'version' => $model->id]);
+            
+            Yii::$app->session->addFlash('success', "Data Updated");
+            if(Yii::$app->request->post('complete') == 1){
+                return $this->redirect(['view-course','course'=>$course, 'version' => $model->id]);
+            }else{
+                return $this->redirect(['clo-taxonomy', 'course' => $course, 'version' => $model->id]);
+            }
+            
+            
+			
 			
 		}
 	
+		
+
 		return $this->render('clo_taxonomy', [
 				'model' => $model,
 				'clos' => $clos
@@ -1034,7 +1083,16 @@ class CourseController extends Controller
 				
 				
             }
-			return $this->redirect(['clo-delivery', 'course' => $course, 'version' => $model->id]);
+			
+			
+			
+			Yii::$app->session->addFlash('success', "Data Updated");
+			if(Yii::$app->request->post('complete') == 1){
+			    return $this->redirect(['view-course','course'=>$course, 'version' => $model->id]);
+			}else{
+			    return $this->redirect(['clo-delivery', 'course' => $course, 'version' => $model->id]);
+			}
+			
 			
 		}
 	
@@ -1077,7 +1135,18 @@ class CourseController extends Controller
 					$model->flashError();
 				}
             }
-            return $this->redirect(['clo-softskill', 'course' => $course, 'version' => $model->id]);
+            
+            
+            
+            Yii::$app->session->addFlash('success', "Data Updated");
+
+            if(Yii::$app->request->post('complete') == 1){
+                return $this->redirect(['view-course','course'=>$course, 'version' => $model->id]);
+            }else{
+                return $this->redirect(['clo-softskill', 'course' => $course, 'version' => $model->id]);
+            }
+            
+            
 		}
 		return $this->render('clo_softskill', [
 				'model' => $model,
@@ -1231,8 +1300,13 @@ class CourseController extends Controller
 				
             }
 			
+            if(Yii::$app->request->post('complete') == 1){
+                return $this->redirect(['view-course','course'=>$course, 'version' => $model->id]);
+            }else{
+                return $this->redirect(['clo-assessment', 'course' => $course, 'version' => $model->id]);
+            }
 						
-            return $this->redirect(['clo-assessment', 'course' => $course, 'version' => $model->id]);
+            
 			
 		}
 	
@@ -1352,7 +1426,13 @@ class CourseController extends Controller
 				}
 				Yii::$app->session->addFlash('success', "Student Learning Time has been successfully updated");
 			}
-			return $this->redirect(['course-slt', 'course' => $course, 'version' => $model->id]);
+			
+			if(Yii::$app->request->post('complete') == 1){
+			    return $this->redirect(['view-course','course'=>$course, 'version' => $model->id]);
+			}else{
+			    return $this->redirect(['course-slt', 'course' => $course, 'version' => $model->id]);
+			}
+			
 			
 		}
 
@@ -1393,6 +1473,7 @@ class CourseController extends Controller
 				$final = 0;
 				$flag = true;
 				$transaction = Yii::$app->db->beginTransaction();
+				$boo = true;
 				foreach($assess as $key => $as){
 					if(!$flag ){
 						break;
@@ -1400,6 +1481,14 @@ class CourseController extends Controller
 					//Yii::$app->session->addFlash('info', $as['id']);
 					$assesment = CourseAssessment::findOne($as['id']);
 					if($assesment){
+					    
+					    if(!empty($as['assess_name']) and !empty($as['assess_name_bi']) and !empty($as['assess_cat'])){
+					        $boo = $boo == false ? false : true;
+					    }else{
+					        $boo = false;
+					    }
+					    
+					    
 						$assesment->assess_name = $as['assess_name'];
 						$assesment->assess_name_bi = $as['assess_name_bi'];
 						$assesment->assess_cat = $as['assess_cat'];
@@ -1407,7 +1496,16 @@ class CourseController extends Controller
 						//update progress
 						$model->scenario = 'pgrs_assess';
 						if(Yii::$app->request->post('complete') == 1){
-							$model->pgrs_assess = 2;
+						    
+						    
+						    if($boo){
+						        $model->pgrs_assess = 2;
+						    }else{
+						        $model->pgrs_assess = 1;
+						        Yii::$app->session->addFlash('error', "Cannot mark as complete, make sure all assessments are filled");
+						    }
+						    
+
 						}else{
 							$model->pgrs_assess = 1;
 						}
@@ -1424,7 +1522,12 @@ class CourseController extends Controller
 				if($flag){
 					$transaction->commit();
 					Yii::$app->session->addFlash('success', "Data Updated");
-					return $this->redirect(['course-assessment','course'=>$course, 'version' => $model->id]);
+					if(Yii::$app->request->post('complete') == 1 && $boo){
+    					    return $this->redirect(['view-course','course'=>$course, 'version' => $model->id]);
+    					}else{
+    					    return $this->redirect(['course-assessment','course'=>$course, 'version' => $model->id]);
+    					}
+					
 					
 				}else{
 					$transaction->rollBack();
@@ -1458,6 +1561,8 @@ class CourseController extends Controller
 		$as->assess_name_bi = 'assesment name - en'; */
 		if($as->save()){
 			$version = CourseVersion::findOne($version);
+			$version->pgrs_assess = 1;
+			$version->save();
 			$course = $version->course_id;
 			$this->redirect(['course-assessment', 'course' => $course, 'version' => $version->id]);
 		}else{

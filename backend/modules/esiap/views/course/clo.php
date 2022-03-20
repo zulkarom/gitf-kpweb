@@ -59,7 +59,6 @@ $this->params['breadcrumbs'][] = 'CLO Text';
                 <td class="text-center vcenter">
 				
 				<?= Html::a('<span class="fa fa-remove"></span>', ['course-clo-delete', 'version' => $model->id, 'clo' => $clo->id], [
-            'class' => 'remove-clo btn btn-default btn-sm',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this CLO? All setting related to this CLO also will be deleted.',
                 'method' => 'post',
