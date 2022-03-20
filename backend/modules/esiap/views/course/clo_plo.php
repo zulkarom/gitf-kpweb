@@ -75,6 +75,14 @@ if($clos){
 
 
 </div>
+
+
+
+
+
+
+
+
 </div>
 
 <div class="form-group">
@@ -89,6 +97,43 @@ $check = $model->pgrs_plo == 2 ? 'checked' : ''; ?>
         <?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> SAVE CLO PLO', ['class' => 'btn btn-primary']) ?>
     </div>
 <?php ActiveForm::end()?>
+
+
+
+<br />
+
+
+<?php 
+
+
+if($model->versionType->id == 2){
+   echo 'NOTE: <p>List of PLO MQF 2.0</p>';
+   echo '<ul>';
+   for($i=1;$i<=$plo_num;$i++){
+       $plo = 'plo'.$i.'_bi';
+       echo '<li>PLO'.$i.': '. $model->versionType->$plo .'</li>';
+   }
+   echo '</ul>';
+    
+}else if($model->versionType->id == 1){
+    echo 'NOTE: <p>List of PLO MQF 1.0</p>';
+    echo '<ul>';
+    for($i=1;$i<=$plo_num;$i++){
+        $plo = 'plo'.$i.'_bi';
+        echo '<li>PLO'.$i.': '. $model->versionType->$plo .'</li>';
+    }
+    echo '</ul>';
+}
+
+?>
+
+
+
+
+
+
+
+
 
 <?php JSRegister::begin(); ?>
 <script>
