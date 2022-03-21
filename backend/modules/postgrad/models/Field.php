@@ -49,4 +49,10 @@ class Field extends \yii\db\ActiveRecord
         return ArrayHelper::map($list, 'id', 'field_name');
         
     }
+    
+    public static function listMainFieldArray(){
+        $list = self::find()->where(['is_main' => 1])->all();
+        return ArrayHelper::map($list, 'id', 'field_name');
+        
+    }
 }

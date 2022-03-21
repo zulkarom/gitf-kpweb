@@ -9,6 +9,7 @@ use common\models\Country;
 use backend\models\Campus;
 use backend\models\Semester;
 use backend\modules\esiap\models\Program;
+use backend\models\University;
 /**
  * This is the model class for table "student_pg".
  *
@@ -21,7 +22,7 @@ use backend\modules\esiap\models\Program;
  * @property int $marital_status
  * @property int $nationality
  * @property int $citizenship
- * @property string $program_code
+ * @property string $program_id
  * @property int $study_mode
  * @property string $address
  * @property string $city
@@ -60,9 +61,11 @@ class Student extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'matric_no', 'nric', 'date_birth', 'gender', 'marital_status', 'nationality', 'citizenship', 'program_code', 'study_mode', 'address', 'city', 'phone_no', 'personal_email', 'religion', 'race', 'bachelor_name', 'bachelor_university', 'bachelor_cgpa', 'bachelor_year', 'admission_semester', 'admission_year', 'admission_date', 'sponsor', 'current_sem', 'campus_id', 'status'], 'required' , 'on' => 'create'],
+            [['user_id', 'matric_no', 'program_id', 'status'], 'required' , 'on' => 'create'],
+            
+            [['user_id', 'matric_no', 'program_id', 'status'], 'required' , 'on' => 'student_update'],
 
-            [['date_birth', 'gender', 'marital_status', 'nationality', 'citizenship', 'program_code', 'study_mode', 'address', 'city', 'phone_no', 'personal_email', 'religion', 'race', 'bachelor_name', 'bachelor_university', 'bachelor_cgpa', 'bachelor_year', 'admission_semester', 'admission_year', 'admission_date', 'sponsor', 'current_sem', 'campus_id', 'status'], 'required' , 'on' => 'student_update'],
+           // [['date_birth', 'gender', 'marital_status', 'nationality', 'citizenship', 'program_id', 'study_mode', 'address', 'city', 'phone_no', 'personal_email', 'religion', 'race', 'bachelor_name', 'bachelor_university', 'bachelor_cgpa', 'bachelor_year', 'admission_semester', 'admission_year', 'admission_date', 'sponsor', 'current_sem', 'campus_id', 'status'], 'required' , 'on' => 'student_update'],
 
             [['personal_email'], 'email'],
             
@@ -73,11 +76,21 @@ class Student extends \yii\db\ActiveRecord
              [['bachelor_year'], 'match' ,'pattern'=>'/^[0-9]+$/u', 'message'=> 'Tahun Sarjana Muda can contain only numeric characters.'],
 
             [['date_birth', 'admission_date'], 'safe'],
-            [['gender', 'marital_status', 'nationality', 'citizenship', 'study_mode', 'religion', 'race', 'admission_semester', 'current_sem', 'campus_id', 'status'], 'integer'],
+            
+            [['gender', 'marital_status', 'nationality', 'citizenship', 'study_mode', 'religion', 'race', 'admission_semester', 'current_sem', 'campus_id', 'status', 'field_id', 'related_university_id'], 'integer'],
+            
             [['matric_no', 'nric'], 'string', 'max' => 20],
+            
             [['address', 'city', 'personal_email', 'bachelor_name', 'bachelor_university', 'sponsor'], 'string', 'max' => 225],
-            [['program_code', 'bachelor_cgpa'], 'string', 'max' => 10],
+            
+            [['remark'], 'string'],
+            
+            [['outstanding_fee'], 'number'],
+            
+            [['program_id', 'bachelor_cgpa'], 'string', 'max' => 10],
+            
             [['phone_no'], 'string', 'max' => 50],
+            
             [['bachelor_year', 'admission_year'], 'string', 'max' => 4],
         ];
     }
@@ -95,9 +108,9 @@ class Student extends \yii\db\ActiveRecord
             'date_birth' => 'Tarikh Lahir',
             'gender' => 'Jantina',
             'marital_status' => 'Taraf Perkahwinan',
-            'nationality' => 'Negara Asal',
+            'nationality' => 'Negara',
             'citizenship' => 'Kewarganegaraan',
-            'program_code' => 'Program',
+            'program_id' => 'Program',
             'study_mode' => 'Taraf Pengajian',
             'address' => 'Alamat',
             'city' => 'Daerah',
@@ -115,8 +128,15 @@ class Student extends \yii\db\ActiveRecord
             'sponsor' => 'Pembiayaan Sendiri / Tajaan',
             'current_sem' => 'Semester Semasa Pelajar',
             'campus.campus_name' => 'Kampus',
+            'campus_id' => 'Kampus',
             'status' => 'Status Pelajar',
-        ];
+            'field_id' => 'Bidang Pengajian',
+            'program.pro_name' => 'Program',
+            'field.field_name' => 'Bidang Pengajian',
+            'related_university_id' => 'Institusi Berkaitan',
+            'relatedUniversity.uni_name' => 'Institusi Berkaitan',
+            'outstanding_fee' => 'Hutang Tertunggak'
+         ];
     }
     
     public function statusList(){
@@ -154,8 +174,29 @@ class Student extends \yii\db\ActiveRecord
         return $this->hasOne(Campus::className(), ['id' => 'campus_id']);
     }
     
+    public function getField(){
+        return $this->hasOne(Field::className(), ['id' => 'field_id']);
+    }
+    
     public function getProgram(){
-        return $this->hasOne(Program::className(), ['program_code' => 'program_code']);
+        return $this->hasOne(Program::className(), ['id' => 'program_id']);
+    }
+    
+    public function getRelatedUniversity(){
+        return $this->hasOne(University::className(), ['id' => 'related_university_id']);
+    }
+    
+    public function getProgramCode(){
+        if($this->program){
+           $f = '';
+           if(in_array($this->program_id, [84,85])){
+               if($this->field){
+                   $f = '<br />('. $this->field->field_name .')';
+               }
+               
+           }
+           return $this->program->program_code . $f;
+        }
     }
 
     public function getGenderText(){

@@ -10,8 +10,8 @@ use backend\modules\esiap\models\ProgramVersion;
 use backend\modules\esiap\models\CourseVersion;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
 
 /**
  * ProgramController implements the CRUD actions for Program model.
@@ -24,10 +24,13 @@ class ProgramController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
                 ],
             ],
         ];
@@ -79,14 +82,14 @@ class ProgramController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($program)
+    public function actionUpdate($id)
     {
-        $model = $this->findModel($program);
+        $model = $this->findModel($id);
 		$model->scenario = 'update';
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
 			Yii::$app->session->addFlash('success', "Data Updated");
-            return $this->redirect(['update', 'program' => $program]);
+            return $this->redirect(['update', 'id' => $id]);
         }
 
         return $this->render('update', [

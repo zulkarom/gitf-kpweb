@@ -129,6 +129,7 @@ class Menu
 			    ['label' => 'Supervisors/Examiners', 'icon' => 'hand-o-right', 'url' => ['/postgrad/supervisor']],
 			    ['label' => 'Externals', 'icon' => 'external-link', 'url' => ['/postgrad/external']],
 			    ['label' => 'Field of Study', 'icon' => 'mortar-board', 'url' => ['/postgrad/field']],
+			    ['label' => 'Universities/Institutions', 'icon' => 'bank', 'url' => ['/postgrad/university']],
 				
 			    
 			    [

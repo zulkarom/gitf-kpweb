@@ -189,7 +189,7 @@ if($model->student_upload == 1){
 
 
 <input type="checkbox" id="student_list" name="student_list" value="1" <?=$check_student?> /> Manually Upload Student List
-<br />&nbsp;&nbsp; <i>(remain unticked except for special case e.g. ppta)</i>
+<br />&nbsp;&nbsp; <i>(remain unticked except for example grouping system different from etadbir)</i>
 </div>
 
 <?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> Save Teaching Assignment', ['class' => 'btn btn-primary']) ?>

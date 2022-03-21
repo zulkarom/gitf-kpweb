@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use kartik\widgets\ActiveForm;
 use common\models\Common;
 use kartik\select2\Select2;
 use common\models\Country;
@@ -10,6 +10,8 @@ use kartik\date\DatePicker;
 use backend\models\Semester;
 use backend\models\Campus;
 use backend\modules\esiap\models\Program;
+use backend\modules\postgrad\models\Field;
+use backend\models\University;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\postgrad\models\Student*/
 /* @var $form yii\widgets\ActiveForm */
@@ -27,18 +29,31 @@ use backend\modules\esiap\models\Program;
             <?= $form->field($model, 'matric_no')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="col-md-3">
-            <?= $form->field($model, 'program_code')->dropDownList(
-                ArrayHelper::map(Program::find()->where(['pro_level' => 3])->all(), 'program_code', 'programNameCode'), ['prompt' => 'Pilih Program',  'class' => 'form-control select-choice']) ?>
+            <?= $form->field($model, 'program_id')->dropDownList(
+                ArrayHelper::map(Program::find()->where(['pro_level' => [3,4], 'status' => 1])->orderBy('pro_order ASC')->all(), 'id', 'programNameCode'), ['prompt' => 'Pilih Program',  'class' => 'form-control select-choice']) ?>
         </div>
         
         <div class="col-md-3">
-            <?= $form->field($model, 'status')->dropDownList(
-                $model->statusList(), ['prompt' => 'Pilih Status',  'class' => 'form-control select-choice']) ?>
+            <?= $form->field($model, 'field_id')->dropDownList(
+                Field::listMainFieldArray(), ['prompt' => 'Pilih Bidang',  'class' => 'form-control select-choice']) ?>
         </div>
+        
+       
+        
+        
 
     </div>
     
     <div class="row">
+    
+    <div class="col-md-3">
+            <?= $form->field($model, 'status')->dropDownList(
+                $model->statusList(), ['prompt' => 'Pilih Status',  'class' => 'form-control select-choice']) ?>
+        </div>
+    
+     <div class="col-md-3">
+            <?= $form->field($modelUser, 'email')->textInput(['maxlength' => true])->label('Emel Pelajar') ?>
+        </div>
 
         <div class="col-md-3">
             <?= $form->field($model, 'study_mode')->dropDownList(
@@ -48,7 +63,50 @@ use backend\modules\esiap\models\Program;
             <?= $form->field($model, 'nric')->textInput(['maxlength' => true]) ?>
         </div>
 
-        <div class="col-md-2">
+    
+    </div>
+
+    <div class="row">
+    
+      <div class="col-md-3">
+            <?php 
+                $session = Yii::$app->session;
+                if($model->isNewRecord){
+                    if($session->has('semester')){
+                        $model->admission_semester = $session->get('semester');
+                    }else{
+                        $model->admission_semester = Semester::getCurrentSemester();
+                    }
+                }
+                echo $form->field($model, 'admission_semester')->dropDownList(Semester::listSemesterArray()) 
+            ?>
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'admission_year')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'gender')->dropDownList(
+                Common::gender(), ['prompt' => 'Pilih Jantina',  'class' => 'form-control select-choice']) ?>
+
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'marital_status')->dropDownList(
+                Common::marital2(), ['prompt' => 'Pilih Taraf Perkahwinan',  'class' => 'form-control select-choice']) ?>
+        </div>
+       
+       
+    </div>
+
+    <div class="row">
+       
+        <div class="col-md-3">
+            <?= $form->field($model, 'personal_email')->textInput() ?>
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'phone_no')->textInput(['maxlength' => true]) ?>
+        </div>
+        
+            <div class="col-md-2">
              <?=$form->field($model, 'date_birth')->widget(DatePicker::classname(), [
                 'removeButton' => false,
                 'pluginOptions' => [
@@ -62,43 +120,10 @@ use backend\modules\esiap\models\Program;
             ]);
             ?>
         </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-3">
-            <?= $form->field($model, 'gender')->dropDownList(
-                Common::gender(), ['prompt' => 'Pilih Jantina',  'class' => 'form-control select-choice']) ?>
-
-        </div>
-        <div class="col-md-3">
-            <?= $form->field($model, 'marital_status')->dropDownList(
-                Common::marital2(), ['prompt' => 'Pilih Taraf Perkahwinan',  'class' => 'form-control select-choice']) ?>
-        </div>
-        <div class="col-md-3">
-            <?= $form->field($model, 'nationality')->widget(Select2::classname(), [
-                'data' =>  ArrayHelper::map(Country::find()->all(),'id', 'country_name'),
-                'options' => ['placeholder' => 'Pilih Negara'],
-                'pluginOptions' => [
-                    'allowClear' => true
-                ],
-                ]);
-            ?>
-        </div>
-        <div class="col-md-3">
+        
+         <div class="col-md-3">
             <?= $form->field($model, 'citizenship')->dropDownList(
                 Common::citizenship(), ['prompt' => 'Pilih Kewarganegaraan',  'class' => 'form-control select-choice']) ?>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-3">
-            <?= $form->field($modelUser, 'email')->textInput(['maxlength' => true])->label('Emel Pelajar') ?>
-        </div>
-        <div class="col-md-3">
-            <?= $form->field($model, 'personal_email')->textInput() ?>
-        </div>
-        <div class="col-md-3">
-            <?= $form->field($model, 'phone_no')->textInput(['maxlength' => true]) ?>
         </div>
 
         
@@ -115,6 +140,16 @@ use backend\modules\esiap\models\Program;
         </div>
         <div class="col-md-3">
             <?= $form->field($model, 'city')->textInput(['maxlength' => true]) ?>
+        </div>
+         <div class="col-md-3">
+            <?= $form->field($model, 'nationality')->widget(Select2::classname(), [
+                'data' =>  ArrayHelper::map(Country::find()->all(),'id', 'country_name'),
+                'options' => ['placeholder' => 'Pilih Negara'],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+                ]);
+            ?>
         </div>
     </div>
     <div class="row">
@@ -135,40 +170,15 @@ use backend\modules\esiap\models\Program;
         <div class="col-md-2">
             <?= $form->field($model, 'bachelor_cgpa')->textInput(['maxlength' => true]) ?>
         </div>
-    </div>
-
-    <div class="row">
         <div class="col-md-3">
             <?= $form->field($model, 'bachelor_year')->textInput(['maxlength' => true]) ?>
         </div>
-        <div class="col-md-3">
-            <?php 
-                $session = Yii::$app->session;
-                if($model->isNewRecord){
-                    if($session->has('semester')){
-                        $model->admission_semester = $session->get('semester');
-                    }else{
-                        $model->admission_semester = Semester::getCurrentSemester();
-                    }
-                }
-                echo $form->field($model, 'admission_semester')->dropDownList(Semester::listSemesterArray()) 
-            ?>
-        </div>
-        <div class="col-md-3">
-            <?= $form->field($model, 'admission_year')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="col-md-3">
-            <?=$form->field($model, 'admission_date')->widget(DatePicker::classname(), [
-                'removeButton' => false,
-                'pluginOptions' => [
-                    'autoclose'=>true,
-                    'format' => 'yyyy-mm-dd',
-                    'todayHighlight' => true,
-                    
-                ],
-            ]);
-            ?>
-        </div>
+    </div>
+
+    <div class="row">
+        
+      
+
     </div>
 
     <div class="row">
@@ -183,6 +193,41 @@ use backend\modules\esiap\models\Program;
                 ArrayHelper::map(Campus::find()->all(), 'id', 'campus_name'), ['prompt' => 'Pilih Kampus',  'class' => 'form-control select-choice']) ?>
         </div>
         
+    </div>
+    
+    <div class="row">
+        <div class="col-md-3">
+
+            
+            <?= $form->field($model, 'outstanding_fee', [
+    'addon' => ['prepend' => ['content'=> 'RM']]
+]); ?>
+        </div>
+        <div class="col-md-6">
+
+            <?php 
+
+
+echo $form->field($model, 'related_university_id')->widget(Select2::classname(), [
+    'data' => University::listUniversityArray(),
+    'options' => ['placeholder' => 'Select ...'],
+    'pluginOptions' => [
+        'allowClear' => true
+    ],
+]);
+
+?>
+            
+            
+        </div>
+
+        
+    </div>
+    
+     <div class="row">
+        <div class="col-md-9">
+            <?= $form->field($model, 'remark')->textarea(['rows' => '3']) ?>
+        </div>
     </div>
 
     <div class="form-group">

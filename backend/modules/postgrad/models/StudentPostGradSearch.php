@@ -18,7 +18,7 @@ class StudentPostGradSearch extends Student
     {
         return [
             [['id', 'gender', 'marital_status', 'nationality', 'citizenship', 'study_mode', 'religion', 'race', 'admission_semester', 'sponsor', 'current_sem', 'campus_id', 'status'], 'integer'],
-            [['matric_no', 'nric', 'date_birth', 'program_code', 'address', 'city', 'phone_no', 'personal_email', 'bachelor_name', 'university_name', 'bachelor_cgpa', 'bachelor_year', 'admission_year', 'admission_date', 'name'], 'safe'],
+            [['matric_no', 'nric', 'date_birth', 'program_id', 'address', 'city', 'phone_no', 'personal_email', 'bachelor_name', 'university_name', 'bachelor_cgpa', 'bachelor_year', 'admission_year', 'admission_date', 'name'], 'safe'],
         ];
     }
 
@@ -78,7 +78,7 @@ class StudentPostGradSearch extends Student
 
         $query->andFilterWhere(['like', 'matric_no', $this->matric_no])
             ->andFilterWhere(['like', 'nric', $this->nric])
-            ->andFilterWhere(['like', 'program_code', $this->program_code])
+            ->andFilterWhere(['like', 'program_id', $this->program_id])
             ->andFilterWhere(['like', 'user.fullname', $this->name]);
 
         return $dataProvider;

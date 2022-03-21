@@ -55,7 +55,8 @@ Profile
             ],
             'current_sem',
             'campus.campus_name',
-            'program_code',
+            'program.pro_name',
+            'field.field_name',
             [
                 'label' => 'Taraf Pengajian',
                 'value' => function($model){
@@ -142,6 +143,9 @@ Profile
             'bachelor_university',
             'bachelor_cgpa',
             'bachelor_year',
+            'relatedUniversity.uni_name',
+            'outstanding_fee',
+            'remark:ntext'
 
             
         ],

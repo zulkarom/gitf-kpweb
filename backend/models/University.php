@@ -3,6 +3,7 @@
 namespace backend\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "university".
@@ -45,12 +46,17 @@ class University extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'uni_name' => 'Uni Name',
-            'uni_name_en' => 'Uni Name En',
-            'uni_abbr' => 'Uni Abbr',
+            'uni_name' => 'Institution Name',
+            'uni_name_en' => 'Institution Name (En)',
+            'uni_abbr' => 'Abbr',
             'type' => 'Type',
             'thrust' => 'Thrust',
             'main_location' => 'Main Location',
         ];
+    }
+    
+    public static function listUniversityArray(){
+        $list = self::find()->all();
+        return ArrayHelper::map($list, 'id', 'uni_name');
     }
 }

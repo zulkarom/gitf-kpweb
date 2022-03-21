@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'matric_no',
             'nric',
-            'program_code',
+            'programCode:html',
             
             ['class' => 'yii\grid\ActionColumn',
                  'contentOptions' => ['style' => 'width: 8.7%'],

@@ -127,7 +127,7 @@ class Staff extends \backend\modules\staff\models\Staff
 					$d = $i == 1 ? '' : $br;
 					if($item->courseLecture->courseOffered){
 						$code = $item->courseLecture->courseOffered->course->course_code . ' ' . $item->courseLecture->courseOffered->course->course_name;
-						$str .= $d.$code.' - '.$item->courseLecture->lec_name.' ('.$item->courseLecture->student_num.') ';
+						$str .= $d.$code.' - '.$item->courseLecture->lec_name.' ';
 						$i++;
 					}
 					
@@ -188,7 +188,7 @@ class Staff extends \backend\modules\staff\models\Staff
 							->courseOffered
 							->course
 							->course_code;
-							$str .= $d.$code.' - '.$item->tutorialLec->tutorialName.' ('.$item->tutorialLec->student_num.')'. $sc;
+							$str .= $d.$code.' - '.$item->tutorialLec->tutorialName. $sc;
 							$i++;
 						}
 					}

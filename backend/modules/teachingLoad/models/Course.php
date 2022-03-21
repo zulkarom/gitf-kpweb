@@ -105,7 +105,7 @@ class Course extends \backend\modules\esiap\models\Course
 					
 					foreach ($item->lectures as $lecture) {
 						$d = $i == 1 ? '' : $br;
-						$str .= $d.$lecture->lec_name.' ('.$lecture->student_num.') - ';
+						$str .= $d.$lecture->lec_name.' - ';
 						$str_lec = '';
 						$i++;
 						
@@ -150,7 +150,7 @@ class Course extends \backend\modules\esiap\models\Course
 							        $sc = '';
 							    }
 								$d = $i == 1 ? '' : $br;
-								$str .= $d . $tutorial->tutorialName.' ('.$tutorial->student_num.') - ';
+								$str .= $d . $tutorial->tutorialName.' - ';
 								$i++;
 								$str_tut = '';
 								if($tutorial->tutors){
