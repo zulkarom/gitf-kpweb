@@ -50,6 +50,11 @@ class CoordinatorUploadController extends Controller
 			}else{
 				$model->na_script_final = 0;
 			}
+			if(Yii::$app->request->post('complete') == 1){
+			    $model->complete = 1;
+			}else{
+			    $model->complete = 0;
+			}
 			$model->setProgressSumScript();
 			if($model->save()){
 				Yii::$app->session->addFlash('success', "Data Updated");

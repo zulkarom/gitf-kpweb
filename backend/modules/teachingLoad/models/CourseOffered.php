@@ -66,6 +66,7 @@ class CourseOffered extends \yii\db\ActiveRecord
 	public $auditor_instance;
 	public $verified_instance;
 	public $coorsign_instance;
+	public $complete;
 
     /**
      * {@inheritdoc}
@@ -388,9 +389,18 @@ class CourseOffered extends \yii\db\ActiveRecord
 		if($this->na_script_final == 1){
 			$this->prg_sum_script = 1;
 		}else{
-			$per = $this->countScripts / 9;
-			$per = number_format($per, 2);
-			$this->prg_sum_script = $per;
+		    if($this->complete == 1){
+		        if($this->countScripts >= 1){
+		            $this->prg_sum_script = 1;
+		        }else{
+		            $this->prg_sum_script = 0.5;
+		        }
+		    }else{
+		        $per = $this->countScripts / 9;
+		        $per = number_format($per, 2);
+		        $this->prg_sum_script = $per;
+		    }
+			
 		}
 		$this->setProgressCoordinator();
 	}

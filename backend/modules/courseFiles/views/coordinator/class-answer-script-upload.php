@@ -20,6 +20,7 @@ $model->file_controller = 'coordinator-upload';
 <h4>Nine (9) Copies of Student’s Final Exam Answer Scripts</h4>
 
 <?php 
+
 if($model->na_script_final == 1){
 	$check_na = 'checked';
 	$show_form = 'style="display:none"';
@@ -109,22 +110,28 @@ if($model->na_script_final == 1){
 </div></div>
 
 
-<?php 
-$form = ActiveForm::begin(); 
+<?php
+$form = ActiveForm::begin();
+$show_na = '';
+$check_complete = '';
+if($model->prg_sum_script == 1){
+    $check_complete = 'checked';
+    if($model->na_script_final == 1){
+        $show_na = '';
+    }
+}else{
+    $show_form = '';
+    $check_na = '';
+}
 ?>
 
-<div class="form-group"><label>
-<input type="checkbox" id="na" name="na" value="1" <?=$check_na?> /> Mark as not applicable
-</label></div>
-
-<?php 
-$check_complete = $model->prg_sum_script == 1 ? 'checked' : ''; 
-?>
-<div class="form-group"><label>
+<div class="form-group" id="con-complete" <?=$show_form ?>><label>
 <input type="checkbox" id="complete" name="complete" value="1" <?php echo $check_complete;?>  /> Mark as complete
 </label></div>
 
-
+<div class="form-group" id="con-na" <?=$show_na ?>><label>
+<input type="checkbox" id="na" name="na" value="1" <?=$check_na?> /> Mark as not applicable
+</label></div>
 
  <div class="form-group">
   <?=$form->field($model, 'updated_at')->hiddenInput(['value' => time()])->label(false)?>
@@ -138,13 +145,27 @@ $check_complete = $model->prg_sum_script == 1 ? 'checked' : '';
 $this->registerJs('
 $("#na").click(function(){
 	var val = $(this).prop(\'checked\')
-
+    $("#complete").prop(\'checked\', false);
 	if(val){
 		$("#con-form").slideUp();
+        $("#con-complete").slideUp();
+        
 	}else{
 		$("#con-form").slideDown();
+        $("#con-complete").slideDown();
 	}
 });
+
+$("#complete").click(function(){
+	var val = $(this).prop(\'checked\')
+	if(val){
+        $("#con-na").slideUp();
+	}else{
+        $("#con-na").slideDown();
+	}
+});
+
+
 
 ');
 
