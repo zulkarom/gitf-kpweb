@@ -27,6 +27,9 @@ if($model->na_script_final == 1){
 	$show_form = '';
 	$check_na = '';
 }
+
+
+
 ?>
 
   <div id="con-form" class="box box-primary" <?=$show_form ?>>
@@ -113,6 +116,15 @@ $form = ActiveForm::begin();
 <div class="form-group"><label>
 <input type="checkbox" id="na" name="na" value="1" <?=$check_na?> /> Mark as not applicable
 </label></div>
+
+<?php 
+$check_complete = $model->prg_sum_script == 1 ? 'checked' : ''; 
+?>
+<div class="form-group"><label>
+<input type="checkbox" id="complete" name="complete" value="1" <?php echo $check_complete;?>  /> Mark as complete
+</label></div>
+
+
 
  <div class="form-group">
   <?=$form->field($model, 'updated_at')->hiddenInput(['value' => time()])->label(false)?>
