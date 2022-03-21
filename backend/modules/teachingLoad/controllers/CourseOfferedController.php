@@ -205,24 +205,21 @@ class CourseOfferedController extends Controller
 	public function actionAssign($id){
 
 		$model = $this->findModel($id);
-        
 		$lectures = $model->lectures;
-
 		$addLecure = new AddLectureForm;
-
-        //tutorial
         $addTutorial = new AddTutorialForm;
-
         $modelLecture = new CourseLecture;
 
-        
-		
 		if(Yii::$app->request->post()){
 
             if ($model->load(Yii::$app->request->post())) {
+                if(Yii::$app->request->post('student_list') == 1){
+                    $model->student_upload = 1;
+                }else{
+                    $model->student_upload = 0;
+                }
 				$model->updated_at = new Expression('NOW()');
                 $model->save();
-
             }
 
 			if(Yii::$app->request->post('AddLectureForm')){
@@ -315,20 +312,16 @@ class CourseOfferedController extends Controller
                         }
                         $tutor->save();
                     }
-                    
-                    
+
                 }
                  
                  Yii::$app->session->addFlash('success', "Data Saved");
             }
 
-
         return $this->refresh();
 
 		}
 
-		
-		
 		return $this->render('assign', [
            'model' => $model, 
 		   'addLecure' => $addLecure,

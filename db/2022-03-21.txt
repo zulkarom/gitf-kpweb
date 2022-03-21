@@ -1,0 +1,1 @@
+ALTER TABLE `tld_course_offered` ADD `student_upload` TINYINT(1) NULL DEFAULT '0' AFTER `coorsign_adj_y`;

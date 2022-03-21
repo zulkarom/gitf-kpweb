@@ -175,6 +175,23 @@ if($model->course->tut_hour == 0){
 
 </div>
 
+<?php 
+
+if($model->student_upload == 1){
+    $check_student = 'checked';
+}else{
+    $check_student = '';
+}
+
+?>
+
+<div class="form-group">
+
+
+<input type="checkbox" id="student_list" name="student_list" value="1" <?=$check_student?> /> Manually Upload Student List
+<br />&nbsp;&nbsp; <i>(remain unticked except for special case e.g. ppta)</i>
+</div>
+
 <?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> Save Teaching Assignment', ['class' => 'btn btn-primary']) ?>
 
 

@@ -121,11 +121,11 @@ class Student extends \yii\db\ActiveRecord
     
     public function statusList(){
         return [
-            10 => 'Active',
-            20 => 'Postponed',
-            30 => 'Not Active',
-            90 => 'Dropped',
-            100 => 'Graduate'
+            10 => 'Aktif',
+            20 => 'Tangguh',
+            30 => 'Tarik Diri',
+            80 => 'Digantung',
+            90 => 'Lanjut semester'
         ];
     }
     
