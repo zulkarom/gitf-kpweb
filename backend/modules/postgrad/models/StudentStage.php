@@ -114,11 +114,11 @@ class StudentStage extends \yii\db\ActiveRecord
     
     public static function statusList(){
         return [
-            10 => 'Applied',
-            70 => 'Failed',
-            80 => 'Passed with Major Correction',
-            90 => 'Passed with Minor Correction',
-            100 => 'Passed without Correction'
+            10 => 'Permohonan',
+            20 => 'Cadangan Penyelidikan Ditolak',
+            30 => 'Pembentangan Semula', 
+            90 => 'Lulus dengan Pindaan Kecil',
+            100 => 'Lulus Tanpa Pindaan'
         ];
     }
     

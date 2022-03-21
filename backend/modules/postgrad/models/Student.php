@@ -125,7 +125,8 @@ class Student extends \yii\db\ActiveRecord
             20 => 'Tangguh',
             30 => 'Tarik Diri',
             80 => 'Digantung',
-            90 => 'Lanjut semester'
+            90 => 'Lanjut semester',
+            100 => 'Graduasi'
         ];
     }
     
