@@ -472,8 +472,7 @@ EOD;
 		
 		
 		
-		$html .=  $sk .' - '. $tda .'
-		';
+		//$html .=  $sk .' - '. $tda .'';
 		
 		if($this->template->is_computer == 1){
 		    $html .= '<br /><div align="center"><i>';
