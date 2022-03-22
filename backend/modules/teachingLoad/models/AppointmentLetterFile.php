@@ -85,6 +85,7 @@ class AppointmentLetterFile
 	    return [
 	        'Prof. Madya' => 'Assoc. Prof.',
 	        'Tuan' => 'Mr.',
+	        'Encik' => 'Mr.',
 	        'Puan' => 'Mrs.',
 	        'Cik' => 'Miss'
 	    ];
