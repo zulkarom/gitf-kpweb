@@ -476,7 +476,7 @@ EOD;
 		';
 		
 		if($this->template->is_computer == 1){
-		    $html .= '<br /><br /><div align="center"><i>';
+		    $html .= '<br /><div align="center"><i>';
 		    if($this->en){
 		        $html .= 'This is a computer-generated document. No signature is required.';
 		    }else{
