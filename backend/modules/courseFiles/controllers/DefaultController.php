@@ -498,6 +498,7 @@ class DefaultController extends Controller
 				        $assess = array_slice($stud, 3);
 				        $t =0;
 				        foreach($assess as $raw){
+				            $raw = trim($raw);
 				            if(!is_numeric($raw)){
 				                Yii::$app->session->addFlash('error', "Only number is accepted. Check student: " . $name . '; Mark : ' . $raw );
 				                return $this->redirect(['lecture-student-assessment', 'id' => $id]);
@@ -533,6 +534,7 @@ class DefaultController extends Controller
 						$weighted_assess = array();
 						$x = 0;
 						foreach($assess as $raw){
+						    $raw = trim($raw);
 							//print_r($raw);die();
 							//echo $weight[$x];
 						    if($x < $max){
