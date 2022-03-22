@@ -456,11 +456,30 @@ EOD;
 		
 	   $html = '<b>'.$tema.'</b>
 		<br /><br />
-		'.$benar.',<br />
-		<br /><br /><br />
-		<b>'.strtoupper($dekan).'</b><br />
-		' .  $dekan_text . '<br /><br />
-		'. $sk .' - '. $tda .'
+		'.$benar.',<br /><br />';
+	   
+	   if($this->template->is_computer != 1){
+	       $html .= '<br /><br />';
+	   }
+		
+		
+		$html .= '<b>'.strtoupper($dekan).'</b><br />';
+	   
+	   
+		$html .=  $dekan_text . '<br /><br />';
+		
+		if($this->template->is_computer == 1){
+		    if($this->en){
+		        $html .= '<i>This is a computer-generated document. No signature is required.</i><br /><br />';
+		    }else{
+		        $html .= '<i>Surat ini adalah cetakan komputer, tandatangan tidak diperlukan.</i><br /><br />';
+		    }
+		    
+		    
+		}
+		
+		
+		$html .=  $sk .' - '. $tda .'
 		';
 		$this->pdf->SetFont('arialnarrow','', $this->fontSize);
 		$tbl = <<<EOD
