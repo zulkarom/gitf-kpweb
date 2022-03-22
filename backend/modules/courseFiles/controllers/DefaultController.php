@@ -498,13 +498,14 @@ class DefaultController extends Controller
 				        $assess = array_slice($stud, 3);
 				        $t =0;
 				        foreach($assess as $raw){
+				            $raw = trim($raw);
 				            if(!is_numeric($raw)){
 				                Yii::$app->session->addFlash('error', "Only number is accepted. Check student: " . $name . '; Mark : ' . $raw );
 				                return $this->redirect(['lecture-student-assessment', 'id' => $id]);
 				            }
 		
 				            if($t < $max){ //verify good colum
-				                if($full_mark[$t] == 0 or $full_mark[$t] == null){
+				                if($full_mark[$t] == 0 or $full_mark[$t] == null or $full_mark[$t] == ''){
 				                    Yii::$app->session->addFlash('error', "Please check your excel, total mark must have a value or cannot be zero");
 				                    return $this->redirect(['lecture-student-assessment', 'id' => $id]);
 				                }
