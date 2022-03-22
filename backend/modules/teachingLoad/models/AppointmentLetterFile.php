@@ -478,7 +478,7 @@ EOD;
 		if($this->template->is_computer == 1){
 		    $html .= '<br /><div align="center"><i>';
 		    if($this->en){
-		        $html .= 'This is a computer-generated document. No signature is required.';
+		        $html .= 'This is a computer-generated document and no signature is required.';
 		    }else{
 		        $html .= 'Surat ini adalah cetakan komputer dan tandatangan tidak diperlukan.';
 		    }
