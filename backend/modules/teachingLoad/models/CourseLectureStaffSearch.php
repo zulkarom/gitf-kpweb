@@ -43,7 +43,7 @@ class CourseLectureStaffSearch extends Staff
     {
         $query = Staff::find()
         ->joinWith('user')
-        ->where(['staff_active' => 1, 'is_academic' => 1, 'working_status' => 1])->orderBy('user.fullname ASC');
+        ->where(['staff_active' => 1, 'is_academic' => 1, 'working_status' => 1, 'faculty_id' => 1])->orderBy('user.fullname ASC');
 
         // add conditions that should always apply here
 

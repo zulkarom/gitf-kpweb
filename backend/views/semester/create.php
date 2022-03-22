@@ -14,7 +14,10 @@ $curr = date('Y') + 0;
 $last = $curr - 1;
 $next = $curr + 1;
 
-$years = [$last => $last, $curr => $curr, $next => $next];
+//$years = [$last => $last, $curr => $curr, $next => $next];
+for($y = $next; $y>=2010;$y--){
+    $years[$y] = $y;
+}
 ?>
 <div class="semester-create">
 

@@ -1,0 +1,5 @@
+ALTER TABLE `tld_tmpl_appoint` ADD `is_computer` TINYINT(1) NOT NULL DEFAULT '0' AFTER `adj_y`;
+
+
+
+ALTER TABLE `tld_tmpl_appoint` ADD `background_file` TEXT NULL DEFAULT NULL AFTER `is_computer`;

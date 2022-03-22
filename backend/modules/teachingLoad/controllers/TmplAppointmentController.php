@@ -67,17 +67,34 @@ class TmplAppointmentController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($id)
     {
-        $model = new TmplAppointment();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $new = new TmplAppointment();
+        $model = $this->findModel($id);
+        
+        $colums = ['template_name',
+            'dekan',
+            'yg_benar',
+            'tema',
+            'per1',
+            'per1_en',
+            'signiture_file',
+            'adj_y',
+            'is_computer',
+            'background_file'];
+        
+        foreach($colums as $col){
+            $new->$col = $model->$col;
+        }
+        
+        $new->updated_at = new Expression('NOW()');
+        $new->created_at = new Expression('NOW()');
+        
+        if($new->save()){
+            Yii::$app->session->addFlash('success', "The new template has been copied.");
+            return $this->redirect(['update', 'id' => $new->id]);
         }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
     }
 
     /**

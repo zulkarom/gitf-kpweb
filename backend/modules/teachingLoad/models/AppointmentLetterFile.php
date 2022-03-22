@@ -85,6 +85,7 @@ class AppointmentLetterFile
 	    return [
 	        'Prof. Madya' => 'Assoc. Prof.',
 	        'Tuan' => 'Mr.',
+	        'Encik' => 'Mr.',
 	        'Puan' => 'Mrs.',
 	        'Cik' => 'Miss'
 	    ];
@@ -456,12 +457,33 @@ EOD;
 		
 	   $html = '<b>'.$tema.'</b>
 		<br /><br />
-		'.$benar.',<br />
-		<br /><br /><br />
-		<b>'.strtoupper($dekan).'</b><br />
-		' .  $dekan_text . '<br /><br />
-		'. $sk .' - '. $tda .'
-		';
+		'.$benar.',<br /><br />';
+	   
+	   if($this->template->is_computer != 1){
+	       $html .= '<br /><br />';
+	   }
+		
+		
+		$html .= '<b>'.strtoupper($dekan).'</b><br />';
+	   
+	   
+		$html .=  $dekan_text . '<br /><br />';
+		
+		
+		
+		
+		//$html .=  $sk .' - '. $tda .'';
+		
+		if($this->template->is_computer == 1){
+		    $html .= '<br /><div align="center"><i>';
+		    if($this->en){
+		        $html .= 'This is a computer-generated document and no signature is required.';
+		    }else{
+		        $html .= 'Surat ini adalah cetakan komputer dan tandatangan tidak diperlukan.';
+		    }
+		    
+		    $html .= '</i></div><br />';
+		}
 		$this->pdf->SetFont('arialnarrow','', $this->fontSize);
 		$tbl = <<<EOD
 		$html

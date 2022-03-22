@@ -505,7 +505,7 @@ class DefaultController extends Controller
 				            }
 		
 				            if($t < $max){ //verify good colum
-				                if($full_mark[$t] == 0 or $full_mark[$t] == null){
+				                if($full_mark[$t] == 0 or $full_mark[$t] == null or $full_mark[$t] == ''){
 				                    Yii::$app->session->addFlash('error', "Please check your excel, total mark must have a value or cannot be zero");
 				                    return $this->redirect(['lecture-student-assessment', 'id' => $id]);
 				                }
