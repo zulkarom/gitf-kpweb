@@ -18,6 +18,10 @@ class Tcpdf extends \TCPDF {
 	
 	public $font_header_size = 10;
 	
+	public $image_background = null;
+	
+	public $margin_top = 0;
+	
 
     //Page header
     public function Header() {
@@ -25,6 +29,11 @@ class Tcpdf extends \TCPDF {
 		//$this->myY = $this->getY();
 		//$savedX = $this->x;
 		//savedY = $this->y;
+        if($this->image_background){
+            $img_file = 'images/'.$this->image_background;
+            $this->Image($img_file, 0, 0, 210, 297, '', '', '', false, 300, '', false, false, 0);
+        }
+        
 		
 		$page = $this->getPage();
 		
@@ -49,7 +58,7 @@ class Tcpdf extends \TCPDF {
 			
 		}else{
 	
-			$this->SetTopMargin(30);
+		    $this->SetTopMargin($this->margin_top);
 			//$this->setY(10);
 		}
 		
