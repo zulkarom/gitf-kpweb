@@ -22,6 +22,7 @@ class AppointmentLetterFile
 	public $store = false;
 	public $multiple = false;
 	public $modelMultiple;
+	public $ref_left = 390;
 	
 	public function generatePdf(){
 		
@@ -81,7 +82,10 @@ class AppointmentLetterFile
 		}else if($this->template->background_file == 2){
 		    $this->pdf->image_background = 'lh-fkp-2022.jpg';
 		    $this->pdf->margin_top = 38;
+		    $this->margin_left = 21;
+		    $this->ref_left = 490;
 		}
+	
 		//$this->pdf->header_html ='<img src="images/letterhead.jpg" />';
 		
 		$this->pdf->footer_first_page_only = true;
@@ -122,16 +126,13 @@ class AppointmentLetterFile
 		    }
 		}
 		
-		$w = 390;
-		if($this->template->background_file == 2){
-		    $w = 430;
-		}
+		
 		
 		$html = '<br /><br />
         <div style="line-height:24px;">&nbsp;</div>
 		<table cellpadding="1" border="0">
 		<tr>
-			<td width="'. $w .'"></td>
+			<td width="'. $this->ref_left .'"></td>
 			<td width="300" align="left">'.$this->model->ref_no . '</td>
 		</tr>
 		<tr>
@@ -389,7 +390,12 @@ EOD;
 	public function writeEnding(){
 		
 		
+		
 		$wd = 630;
+		
+		if($this->template->background_file == 2){
+		    $wd = 720;
+		}
         
 		if($this->en){
 		    $per4 = $this->template->per1_en;
@@ -405,7 +411,7 @@ EOD;
 		}else{
 		    $per4 = $this->template->per1;
 		    $html = '<br />
-		<table  width="'. $wd .'"><tr><td><span style="text-align:justify;">3. &nbsp;&nbsp;&nbsp;</span><span style="text-align:justify;">Untuk makluman, pelantikan ini adalah berkuatkuasa daripada semester berkenaan tertakluk kepada perubahan.
+		<table  width="'. $wd .'"><tr><td><span style="text-align:justify;">3. &nbsp;&nbsp;</span><span style="text-align:justify;">Untuk makluman, pelantikan ini adalah berkuatkuasa daripada semester berkenaan tertakluk kepada perubahan.
 		
 
 </span>
