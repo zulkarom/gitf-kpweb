@@ -32,6 +32,15 @@ $model->file_controller = 'tmpl-appointment';
     <?= $form->field($model, 'tema')->textarea(['rows' => 2]) ?>
 
     <?= $form->field($model, 'per1')->textarea(['rows' => 6]) ?>
+    
+    <div class="row">
+	<div class="col-md-3">
+	<?= $form->field($model, 'is_computer')->dropDownList([ 1 => 'Yes', 0 => 'No']) ?>
+	</div>
+	<div class="col-md-2">
+	<?= $form->field($model, 'background_file')->dropDownList($model->listBackground()) ?>
+	</div>
+</div>
 
     <div class="row">
     <div class="col-md-9">

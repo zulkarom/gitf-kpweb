@@ -42,6 +42,8 @@ class TmplAppointment extends \yii\db\ActiveRecord
             [['dekan'], 'string', 'max' => 100],
 
             [['adj_y'], 'number'],
+            
+            [['is_computer', 'background_file'], 'integer'],
 
             [['signiture_file'], 'required', 'on' => 'signiture_upload'],
             [['signiture_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png', 'maxSize' => 5000000],
@@ -58,11 +60,20 @@ class TmplAppointment extends \yii\db\ActiveRecord
             'id' => 'ID',
             'template_name' => 'Nama Template',
             'dekan' => 'Nama Dekan',
-            'yg_benar' => 'Yang menjalanakan tugas',
+            'yg_benar' => 'Yang menjalankan tugas',
             'tema' => 'Daulat Raja',
             'per1' => 'Perkara 1',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            'is_computer' => 'Computer generated notice',
+            'background_file' => 'Letterhead Background'
+        ];
+    }
+    
+    public function listBackground(){
+        return [
+            1 => '2021',
+            2 => '2022'
         ];
     }
 }
