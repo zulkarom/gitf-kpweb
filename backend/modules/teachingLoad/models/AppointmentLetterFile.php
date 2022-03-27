@@ -192,9 +192,10 @@ class AppointmentLetterFile
 		}
 		
 		if($this->en){
-		    $fak = $this->model->staffInvolved->staff->faculty->faculty_name;
-		}else{
+		    
 		    $fak = $this->model->staffInvolved->staff->faculty->faculty_name_bi;
+		}else{
+		    $fak = $this->model->staffInvolved->staff->faculty->faculty_name;
 		}
 		
 		
