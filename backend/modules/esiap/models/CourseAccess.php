@@ -3,6 +3,7 @@
 namespace backend\modules\esiap\models;
 
 use Yii;
+use backend\models\Department;
 use backend\modules\staff\models\Staff;
 
 /**
@@ -82,6 +83,36 @@ class CourseAccess extends \yii\db\ActiveRecord
             }
         }
 
+    }
+    
+    public static function hasHigherAccess($course_id){
+        //KP 
+        $staff_id = Yii::$app->user->identity->staff->id;
+        if(Yii::$app->user->can('esiap-program-coor')){
+            $program = Program::findOne(['head_program' => $staff_id]);
+            if($program){
+                $course = Course::findOne(['id' => $course_id, 'program_id' => $program->id]);
+                if($course){
+                    return true;
+                }
+            }
+        }
+        
+        //KJ pulak 
+        
+        $department = Department::findOne(['head_dep' => $staff_id]);
+        if($department){
+            $course::find()->alias('c')
+            ->joinWith('program.department d')
+            ->where(['c.id' => $course_id, 'd.id' => $department->id])
+            ->one();
+            if($course){
+                return true;
+            }
+        }
+        
+        
+        return false;
     }
 
 }
