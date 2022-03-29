@@ -28,6 +28,8 @@ $this->params['breadcrumbs'][] = $this->title;
 	echo $this->render('course-files-view-plan', [    
             'model' => $model,
             'modelOffer' =>$modelOffer,
+	    'controller' => 'admin',
+	    'method' => 'course-files-view'
            ]);
     ?>
 
@@ -42,6 +44,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <?=$this->render('course-files-view-check', [    
             'model' => $model,
             'modelOffer' =>$modelOffer,
+        'controller' => 'admin',
+        'method' => 'course-files-view'
            ]);
     ?>
 

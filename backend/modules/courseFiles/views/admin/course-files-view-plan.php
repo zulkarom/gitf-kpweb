@@ -1,9 +1,19 @@
 
 <?php
-use yii\bootstrap\Modal;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use backend\modules\courseFiles\models\Common;
+use backend\modules\esiap\models\CourseAccess;
+
+$item = $model->itemPlan;
+$offer =  $modelOffer;
+$closed = Common::isDue($offer->semesterDates->open_deadline);
+$access = false;
+if(CourseAccess::hasAccess($offer) and !$closed){
+    $access = true;
+}
+
+
 ?>
 <style>
 .grup {
@@ -33,8 +43,7 @@ use backend\modules\courseFiles\models\Common;
         <tr>
         <?php 
     
-       $item = $model->itemPlan;
-       $offer =  $modelOffer;
+      
 	   $version = $offer->course_version;
 	   $version2 = $offer->course_version2;
 	   $material = $offer->material;
@@ -242,12 +251,16 @@ use backend\modules\courseFiles\models\Common;
 				foreach ($offer->appointmentLetter as $letter) {
 						if($letter->staffInvolved){
 						$name =  $letter->staffInvolved->staff->staff_title . ' ' .$letter->staffInvolved->staff->user->fullname; 
+						$link = '';
+						if($access){
+						    $link = ' <a href="'. Url::to(['default/timetable', 's' => $offer->semester_id, 'staff' => $letter->staffInvolved->staff_id, 'c' => $controller, 'm' => $method, 'offer' => $offer->id]) .'" class="btn btn-warning btn-xs"> <i class="fa fa-edit"></i> Update<a/>';
+						}
 						if($letter->staffInvolved->timetable_file){
 							$boo = $boo == false ? false : true;
-							echo'<li><a href="'.Url::to(['/course-files/staff/download-file/', 'attr' => 'timetable', 'id' => $letter->staffInvolved->id]).'" target="_blank" >'.strtoupper($name).'  '.Common::pTick().'</a></li>';
+							echo'<li><a href="'.Url::to(['/course-files/staff/download-file/', 'attr' => 'timetable', 'id' => $letter->staffInvolved->id]).'" target="_blank" >'.strtoupper($name).'  '.Common::pTick().'</a> '.$link.'</li>';
 						}else{
 							$boo = false;
-							echo'<li>'.strtoupper($name).'  '.Common::pTick(false).'</li>';
+							echo'<li>'.strtoupper($name).'  '.Common::pTick(false).' '. $link .'</li>';
 						}
 						
 						

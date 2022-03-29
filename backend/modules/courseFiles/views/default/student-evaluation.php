@@ -19,6 +19,7 @@ $this->params['breadcrumbs'][] = ['label' => 'My Course File', 'url' => ['/cours
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
+<h4><?=$model->staffInvolved->staff->niceName?></h4>
 <h4><?=$model->courseOffered->semester->longFormat()?></h4>
 <h4><?=$model->courseOffered->course->course_code?> <?=$model->courseOffered->course->course_name?></h4>
 <div class="box">
@@ -30,6 +31,17 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 </div>
 
-<?=Html::a('<span class="glyphicon glyphicon-floppy-disk"></span> Save', ['appointment/appointment-progress', 'id' => $model->id], ['class' => 'btn btn-primary'])?>
 
 
+
+<?php  
+
+if($controller){
+    echo Html::a('<span class="glyphicon glyphicon-floppy-disk"></span> Save', ['appointment/appointment-progress', 'id' => $model->id, 'c' => $controller, 'm' => $method, 'offer' => $offer], ['class' => 'btn btn-primary']);
+}else{
+    echo Html::a('<span class="glyphicon glyphicon-floppy-disk"></span> Save', ['appointment/appointment-progress', 'id' => $model->id], ['class' => 'btn btn-primary']);
+}
+
+
+
+?>

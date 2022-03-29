@@ -2,6 +2,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use backend\modules\courseFiles\models\Common;
+use backend\modules\esiap\models\CourseAccess;
 
 $closed = Common::isDue($offer->semesterDates->open_deadline);
 
@@ -9,14 +10,7 @@ $closed = Common::isDue($offer->semesterDates->open_deadline);
 <h4><?=$offer->semester->longFormat()?></h4>
 <?php 
 $access = false;
-//coordinator
-if($offer->coor_access == 1 and $offer->coordinator == Yii::$app->user->identity->staff->id and !$closed){
-	$access = true;
-}
-//program coordinator
-
-
-if(Yii::$app->user->can('esiap-program-coor') and !$closed){
+if(CourseAccess::hasAccess($offer) and !$closed){
     $access = true;
 }
 

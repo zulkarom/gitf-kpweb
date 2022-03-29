@@ -85,9 +85,16 @@ class CourseAccess extends \yii\db\ActiveRecord
 
     }
     
-    public static function hasHigherAccess($course_id){
-        //KP 
+    public static function hasAccess($offer){
         $staff_id = Yii::$app->user->identity->staff->id;
+        
+        if($offer->coor_access == 1 and $offer->coordinator == $staff_id){
+            return true;
+        }
+        
+        //KP 
+        $course_id = $offer->course_id;
+      
         if(Yii::$app->user->can('esiap-program-coor')){
             $program = Program::findOne(['head_program' => $staff_id]);
             if($program){

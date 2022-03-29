@@ -6,8 +6,7 @@ use Yii;
 use yii\db\Expression;
 use yii\web\Controller;
 use yii\filters\AccessControl;
-use yii\helpers\ArrayHelper;
-use backend\models\Semester;
+use yii\web\NotFoundHttpException;
 use common\models\UploadFile;
 use yii\helpers\Json;
 use backend\modules\teachingLoad\models\AppointmentLetter;
@@ -55,7 +54,7 @@ class AppointmentController extends Controller
 
     }
 	
-	public function actionAppointmentProgress($id){
+    public function actionAppointmentProgress($id, $c = false, $m = false, $offer = false){
 		$model = $this->findModel($id);
 		$model->setProgressAppointment();
 		if($model->save()){
@@ -63,6 +62,10 @@ class AppointmentController extends Controller
 				Yii::$app->session->addFlash('error', "No student evaluation file has been uploaded!");
 			}else{
 				Yii::$app->session->addFlash('success', "Data Updated");
+			}
+			
+			if($c && $m && $offer){
+			    return $this->redirect([$c. '/' . $m, 'id' => $offer]);
 			}
 			return $this->redirect(['default/teaching-assignment']);
 		}
