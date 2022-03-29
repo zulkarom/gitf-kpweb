@@ -109,7 +109,7 @@ class CourseAccess extends \yii\db\ActiveRecord
         
         $department = Department::findOne(['head_dep' => $staff_id]);
         if($department){
-            $course::find()->alias('c')
+            $course = Course::find()->alias('c')
             ->joinWith('program.department d')
             ->where(['c.id' => $course_id, 'd.id' => $department->id])
             ->one();
