@@ -1201,7 +1201,7 @@ class CourseController extends Controller
 				if($version->save()){
 					//echo $action;die();
 					Yii::$app->session->addFlash('success', "Signiture updated");
-					return $this->redirect(['course/view-course','course' => $course]);
+					return $this->refresh();
 				}else{
 					$version->flashError();
 				}
