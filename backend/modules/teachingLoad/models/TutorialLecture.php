@@ -185,7 +185,9 @@ class TutorialLecture extends \yii\db\ActiveRecord
 	
 	public function getTutorialName(){
 	    if($this->tutorial_name){
-	        if (strpos($this->tutorial_name, $this->lecturePrefix) !== false) {
+	        if($this->tutorial_name == $this->lecturePrefix){
+	            return $this->lecturePrefix . $this->tutorial_name;
+	        }else if (strpos($this->tutorial_name, $this->lecturePrefix) !== false) {
 	            return $this->tutorial_name;
 	        }else{
 	            return $this->lecturePrefix . $this->tutorial_name;

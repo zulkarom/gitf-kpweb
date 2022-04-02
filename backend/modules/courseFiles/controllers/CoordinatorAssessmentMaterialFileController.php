@@ -112,7 +112,7 @@ class CoordinatorAssessmentMaterialFileController extends Controller
 						Yii::$app->session->addFlash('error', "Make sure all files are uploaded");
 						$transaction->rollBack();
 					}
-				} catch (Exception $e) {
+				} catch (\Exception $e) {
                     $transaction->rollBack();
 					//die();
                     

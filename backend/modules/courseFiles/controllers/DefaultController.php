@@ -131,30 +131,46 @@ class DefaultController extends Controller
     }
 	
 	
-	public function actionTimetable($s, $back=false){
-      
-		$model = StaffInvolved::findOne(['staff_id' => Yii::$app->user->identity->staff->id, 'semester_id' => $s]);
+	public function actionTimetable($s, $back=false, $staff = false, $c = false, $m = false, $offer = false){
+	    if($staff){
+	        $staff_id = $staff;
+	    }else{
+	        $staff_id = Yii::$app->user->identity->staff->id;
+	    }
+	    $staff = $this->findStaff($staff_id);
+	    $model = StaffInvolved::findOne(['staff_id' => $staff_id, 'semester_id' => $s]);
+		
 		if($model){
-				if($back){
-				
+			if($back){
 				if(empty($model->timetable_file)){
 					Yii::$app->session->addFlash('error', "No timetable file has been uploded!");
 				}else{
 					Yii::$app->session->addFlash('success', "Data Updated");
 				}
-			return $this->redirect(['default/teaching-assignment', 'SemesterForm[semester_id]' => $s]);
+				if($c && $m && $offer){
+				    return $this->redirect([$c. '/' . $m, 'id' => $offer]);
+				}
+			     return $this->redirect(['default/teaching-assignment', 'SemesterForm[semester_id]' => $s]);
 			}
 
 			return $this->render('timetable', [
 				'model' => $model,
+			    'staff' => $staff,
+			    'controller' => $c,
+			    'method' => $m,
+			    'offer' => $offer
 			]);
 		}
     }
 	
-	public function actionStudentEvaluation($id){
+	public function actionStudentEvaluation($id, $c = false, $m = false, $offer = false){
 		$model = $this->findAppointment($id);
         return $this->render('student-evaluation', [
 			'model' => $model,
+            'controller' => $c,
+            'method' => $m,
+            'offer' => $offer
+            
         ]);
 
 
@@ -172,6 +188,15 @@ class DefaultController extends Controller
     protected function findCourse($id)
     {
         if (($model = Course::findOne($id)) !== null) {
+            return $model;
+        }
+        
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    
+    protected function findStaff($id)
+    {
+        if (($model = Staff::findOne($id)) !== null) {
             return $model;
         }
         

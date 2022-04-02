@@ -4,6 +4,7 @@ namespace backend\modules\esiap\models;
 
 use backend\models\Department;
 use Yii;
+use backend\modules\staff\models\Staff;
 
 /**
  * This is the model class for table "sp_program".
@@ -174,12 +175,18 @@ class Program extends \yii\db\ActiveRecord
 		return $this->hasMany(ProgramPic::className(), ['program_id' => 'id']);
 	}
 	
+	
+	
 	public function getProgramAccesses(){
 		return $this->hasMany(ProgramAccess::className(), ['program_id' => 'id']);
 	}
 	
 	public function getProgramLevel(){
         return $this->hasOne(ProgramLevel::className(), ['id' => 'pro_level']);
+    }
+    
+    public function getProgramHead(){
+        return $this->hasOne(Staff::className(), ['id' => 'head_program']);
     }
     
     public function getDepartment(){

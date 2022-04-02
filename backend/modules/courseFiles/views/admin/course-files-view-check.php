@@ -1,9 +1,16 @@
 <?php
-use yii\bootstrap\Modal;
-use yii\helpers\Html;
 use yii\helpers\Url;
 use backend\modules\courseFiles\views\admin\Show;
 use backend\modules\courseFiles\models\Common;
+use backend\modules\esiap\models\CourseAccess;
+
+$item = $model->itemCheck;
+$offer =  $modelOffer;
+$closed = Common::isDue($offer->semesterDates->open_deadline);
+$access = false;
+if(CourseAccess::hasAccess($offer) and !$closed){
+    $access = true;
+}
 ?>
 
 
@@ -26,8 +33,7 @@ use backend\modules\courseFiles\models\Common;
         <tr>
         <?php 
     
-        $item = $model->itemCheck;
-        $offer =  $modelOffer;
+ 
 	   $version = $offer->course_version;
 	   $version2 = $offer->course_version2;
 
@@ -47,12 +53,16 @@ use backend\modules\courseFiles\models\Common;
 				foreach ($offer->appointmentLetter as $letter) {
 						if($letter->staffInvolved && $letter->tutorial_only == 0){
 							$name =  $letter->staffInvolved->staff->staff_title . ' ' .$letter->staffInvolved->staff->user->fullname; 
+							$link = '';
+							if($access){
+							    $link = ' <a href="'. Url::to(['default/student-evaluation', 'id' => $letter->id, 'c' => $controller, 'm' => $method, 'offer' => $offer->id]) .'" class="btn btn-warning btn-xs"> <i class="fa fa-edit"></i> Update<a/>';
+							}
 								if($letter->steva_file){
 									$boo = $boo == false ? false : true;
-									echo'<li><a href="'.Url::to(['appointment/download-file', 'attr' => 'steva', 'id' => $letter->id]).'" target="_blank" >'.strtoupper($name).' '. Common::pTick().'</a></li>';
+									echo'<li><a href="'.Url::to(['appointment/download-file', 'attr' => 'steva', 'id' => $letter->id]).'" target="_blank" >'.strtoupper($name).' '. Common::pTick().'</a> '. $link .'</li>';
 								}else{
 									$boo = false;
-									echo'<li>'.strtoupper($name).' '.Common::pTick(false).'</li>';
+									echo'<li>'.strtoupper($name).' '.Common::pTick(false).' '.$link.'</li>';
 								}
 						
 						

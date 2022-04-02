@@ -2,6 +2,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use backend\modules\courseFiles\models\Common;
+use backend\modules\esiap\models\CourseAccess;
 
 $closed = Common::isDue($offer->semesterDates->open_deadline);
 
@@ -9,9 +10,11 @@ $closed = Common::isDue($offer->semesterDates->open_deadline);
 <h4><?=$offer->semester->longFormat()?></h4>
 <?php 
 $access = false;
-if($offer->coor_access == 1 and $offer->coordinator == Yii::$app->user->identity->staff->id and !$closed){
-	$access = true;
-}?>
+if(CourseAccess::hasAccess($offer) and !$closed){
+    $access = true;
+}
+
+?>
 <div class="box">
 
 <div class="box-body">
@@ -19,7 +22,20 @@ if($offer->coor_access == 1 and $offer->coordinator == Yii::$app->user->identity
 
   <table class="table table-striped">
   <tr>
-  <td width="20%">Coordinator</td><td><?=$offer->coor->niceName ?></td>
+  <td width="20%">Coordinator</td><td>
+  
+  
+  <?php
+  if($access){
+      echo '<a href="'.Url::to(['default/teaching-assignment-coordinator', 'id' => $offer->id]).'" target="_blank">' . $offer->coor->niceName  . '</a>'; 
+  }else{
+      echo $offer->coor->niceName ;
+  }
+  
+  ?>
+  
+  
+  </td>
   </tr>
    <tr>
   <td>Coordinator Progress</td><td><div class="row"><div class="col-md-2"><?=$offer->progressCoordinatorBar ?></div></div></td>
@@ -65,7 +81,7 @@ if($offer->coor_access == 1 and $offer->coordinator == Yii::$app->user->identity
 
 		   <td '.$rowspan_1.'>';
 		   if($access){
-			  echo '<a href="'.Url::to(['teaching-assignment-lecture', 'id' => $lec->id]).'" target="_blank">' . $lec->lec_name . '</a>'; 
+			  echo '<a href="'.Url::to(['default/teaching-assignment-lecture', 'id' => $lec->id]).'" target="_blank">' . $lec->lec_name . '</a>'; 
 		   }else{
 			  echo $lec->lec_name;  
 		   }
@@ -83,7 +99,7 @@ if($offer->coor_access == 1 and $offer->coordinator == Yii::$app->user->identity
 			}
 			
 			if($access){
-			  echo '<a href="'.Url::to(['teaching-assignment-lecture', 'id' => $lec->id]).'" target="_blank">' . $str_lec . '</a>'; 
+			  echo '<a href="'.Url::to(['default/teaching-assignment-lecture', 'id' => $lec->id]).'" target="_blank">' . $str_lec . '</a>'; 
 		   }else{
 			  echo $str_lec;  
 		   }
@@ -169,7 +185,7 @@ function colum_2_td($tutorial,$offer, $lec, $access){
 	<td>';
 	
 	if($access){
-	  echo '<a href="'.Url::to(['teaching-assignment-tutorial', 'id' => $tutorial->id]).'" target="_blank">' . $tutorial->tutorialName . '</a>'; 
+	  echo '<a href="'.Url::to(['default/teaching-assignment-tutorial', 'id' => $tutorial->id]).'" target="_blank">' . $tutorial->tutorialName . '</a>'; 
    }else{
 	 echo $tutorial->tutorialName;
    }
@@ -190,7 +206,7 @@ function colum_2_td($tutorial,$offer, $lec, $access){
 			$n++;
 			}
 		if($access){
-		  echo '<a href="'.Url::to(['teaching-assignment-tutorial', 'id' => $tutorial->id]).'" target="_blank">' . $str_tut . '</a>'; 
+		  echo '<a href="'.Url::to(['default/teaching-assignment-tutorial', 'id' => $tutorial->id]).'" target="_blank">' . $str_tut . '</a>'; 
 	   }else{
 		 echo $str_tut;
 	   }
