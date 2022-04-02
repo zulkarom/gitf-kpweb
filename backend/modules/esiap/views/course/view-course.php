@@ -137,7 +137,7 @@ if($version->status == 13){
 
 
 <?php 
-if(in_array($version->status, [0, 13]) and $model->IAmCoursePic()){
+if(in_array($version->status, [0, 13])){ //and $model->IAmCoursePic()
 $form = ActiveForm::begin(); 
 
 if($version->prepared_by == 0){
@@ -225,7 +225,7 @@ echo UploadFile::fileInput($version, 'preparedsign', true)?>
     <?php ActiveForm::end(); 
 	
 }else{
-	echo 'This course information has been submitted at ' . date('d M Y', strtotime($version->prepared_at));
+	echo 'This course information has been submitted
 }
 	?>
 
