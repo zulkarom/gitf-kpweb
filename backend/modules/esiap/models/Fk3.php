@@ -860,10 +860,14 @@ $this->verify_y = $this->pdf->getY();
 		<td width="'. $col1 .'"></td>
 		
 		<td width="'.$col_sign .'" >';
-		$html .= $verifier.'
+		
+		if($this->model->verifiedsign_file){
+		    $html .= $verifier.'
 		<br /> '.$this->model->verifier_position.'
 		<br /> '.$faculty->faculty_name.'
 		<br /> '.$datev ;
+		}
+		
 		
 		$html .= '</td>
 
