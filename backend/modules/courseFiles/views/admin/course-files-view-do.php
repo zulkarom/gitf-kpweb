@@ -64,33 +64,68 @@ use backend\modules\courseFiles\views\admin\Show;
           echo '<tr><td>'.$item[1]->id.'</td>
                 <td>'.$item[1]->item.'<i><br/>'.$item[1]->item_bi.'</i></td>
                 <td>';
-			if($offer->lectures){
-			$i=1;
-			echo '<ul>';
-			$boo = true;
+          
+          $att = true;
+          if($offer->course->method_type == 0){ // non classroom
+              
+              echo '<li><a href="'.Url::to('@web/doc/na.pdf').'" target="_blank">CLASS ATTENDANCE (N/A)</a> ' . Common::ptick().'</li>';
+              
+          }else{
+              
+              
+              if($offer->lectures){
+                  $i=1;
+                  echo '<ul>';
+                  $boo = true;
+                  
+                  foreach ($offer->lectures as $lecture) {
+                      if($lecture->prg_stu_attend == 1){
+                          
+                          $boo = $boo == false ? false : true;
+                          echo '<li><a href="'.Url::to(['/course-files/default/attendance-summary-pdf', 'id'=> $lecture->id]).'" target="_blank">'.$lecture->lec_name .' - CLASS ATTENDANCE  '.Common::pTick().'</a></li>';
+                          
+                      }else{
+                          $boo = false;
+                          echo '<li>'.$lecture->lec_name .' - CLASS ATTENDANCE '.Common::pTick(false).'</li>';
+                      }
+                      
+                  }
+                  
+                  
+                  echo '</ul>';
+              }else{
+                  $boo = false;
+                  echo'<ul><li>'.Common::pTick(false).'</li></ul>';
+              }
+              
+              //tutorial attendance
+              if($offer->lectures){
+                  echo  '<ul>';
+                  $i=1;
+                  foreach ($offer->lectures as $lecture) {
+                      if($lecture->tutorials){
+                          foreach ($lecture->tutorials as $tutorial) {
+                              if($tutorial->prg_stu_attend == 1){
+                                  
+                                  $boo = $boo == false ? false : true;
+                                  echo '<li><a href="'.Url::to(['/course-files/default/attendance-summary-tutorial-pdf', 'id'=> $tutorial->id]).'" target="_blank">'.$tutorial->tutorialName .' - CLASS ATTENDANCE  '.Common::pTick().'</a></li>';
+                                  
+                              }else{
+                                  $boo = false;
+                                  echo '<li>'.$tutorial->tutorialName .' - CLASS ATTENDANCE '.Common::pTick(false).'</li>';
+                              }
+                          }
+                      }
+                  }
+                  echo '</ul>';
+              }
+              ///end tutorial attendance
+              
+          }
+          
 			
-			    foreach ($offer->lectures as $lecture) {
-			        if($lecture->prg_stu_attend == 1){
-			            if($lecture->courseOffered->course->method_type == 0){
-			                echo '<li><a href="'.Url::to('@web/doc/na.pdf').'" target="_blank">'.$lecture->lec_name .' - CLASS ATTENDANCE (N/A)</a> ' . Common::ptick().'</li>';
-			            }else{
-			                $boo = $boo == false ? false : true;
-			                 echo '<li><a href="'.Url::to(['/course-files/default/attendance-summary-pdf', 'id'=> $lecture->id]).'" target="_blank">'.$lecture->lec_name .' - CLASS ATTENDANCE  '.Common::pTick().'</a></li>';
-			            }
-			            
-			        }else{
-			            $boo = false;
-			            echo '<li>'.$lecture->lec_name .' - CLASS ATTENDANCE '.Common::pTick(false).'</li>';
-			        }
-			        
-			    }
-	
 			
-			echo '</ul>';
-		}else{
-				$boo = false;
-				echo'<ul><li>'.Common::pTick(false).'</li></ul>';
-			}
+			
 			
 		echo '</td>
                 <td>'.Common::pTick($boo).'</td>';
