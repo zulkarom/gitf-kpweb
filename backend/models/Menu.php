@@ -344,6 +344,28 @@ class Menu
 		return $website;
 	}
 	
+	public static function adminEcert(){
+	    $website = [
+	        'label' => 'eCert Admin',
+	        'icon' => 'list-ul',
+	        'visible' => Yii::$app->user->can('manage-aduan'),
+	        'url' => '#',
+	        'items' => [
+	            
+	            ['label' => 'Events', 'icon' => 'code', 'url' => ['/ecert/event']],
+	            ['label' => 'Participants', 'icon' => 'code', 'url' => ['/ecert/participant']],
+	            ['label' => 'Document', 'icon' => 'code', 'url' => ['/ecert/document']],
+	            
+	            ['label' => 'Stats', 'icon' => 'pie-chart', 'url' => ['']],
+	            
+	       
+	            
+	            
+	        ]
+	    ];
+	    return $website;
+	}
+	
 	public static function staff(){
 		$staff = [];
 		if(Yii::$app->user->can('staff-management')){

@@ -95,6 +95,9 @@ use backend\models\Menu;
 			case 'conference':
 			$focus = Menu::conference();
 			break;
+			case 'ecert':
+			$admin_focus = Menu::adminEcert();
+		    break;
 
 			
 
@@ -157,6 +160,8 @@ $menuItems = [
 					['label' => 'Conference', 'icon' => 'microphone', 'visible' => Yii::$app->user->can('conference-manager'), 'url' => ['/conference/conference/index']],
 					
 					['label' => 'Downloads', 'icon' => 'download', 'visible' => Yii::$app->user->can('download-manager'), 'url' => ['/downloads/download/index']],
+					
+					['label' => 'e-Certificate', 'icon' => 'file', 'url' => ['/ecert']],
 					
 					
 					
