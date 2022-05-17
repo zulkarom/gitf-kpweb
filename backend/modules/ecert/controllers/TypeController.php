@@ -3,16 +3,16 @@
 namespace backend\modules\ecert\controllers;
 
 use Yii;
-use backend\modules\ecert\models\Participant;
-use backend\modules\ecert\models\ParticipantSearch;
+use backend\modules\ecert\models\Type;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * ParticipantController implements the CRUD actions for Participant model.
+ * TypeController implements the CRUD actions for Type model.
  */
-class ParticipantController extends Controller
+class TypeController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -30,22 +30,22 @@ class ParticipantController extends Controller
     }
 
     /**
-     * Lists all Participant models.
+     * Lists all Type models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new ParticipantSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = new ActiveDataProvider([
+            'query' => Type::find(),
+        ]);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
 
     /**
-     * Displays a single Participant model.
+     * Displays a single Type model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -58,13 +58,13 @@ class ParticipantController extends Controller
     }
 
     /**
-     * Creates a new Participant model.
+     * Creates a new Type model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Participant();
+        $model = new Type();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -76,7 +76,7 @@ class ParticipantController extends Controller
     }
 
     /**
-     * Updates an existing Participant model.
+     * Updates an existing Type model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -96,7 +96,7 @@ class ParticipantController extends Controller
     }
 
     /**
-     * Deletes an existing Participant model.
+     * Deletes an existing Type model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -110,15 +110,15 @@ class ParticipantController extends Controller
     }
 
     /**
-     * Finds the Participant model based on its primary key value.
+     * Finds the Type model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Participant the loaded model
+     * @return Type the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Participant::findOne($id)) !== null) {
+        if (($model = Type::findOne($id)) !== null) {
             return $model;
         }
 

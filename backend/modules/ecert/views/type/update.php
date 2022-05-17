@@ -3,14 +3,14 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model backend\modules\ecert\models\Participant */
+/* @var $model backend\modules\ecert\models\Type */
 
-$this->title = 'Update Participant: ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Participants', 'url' => ['index']];
+$this->title = 'Update Type: ' . $model->id;
+$this->params['breadcrumbs'][] = ['label' => 'Types', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
-<div class="participant-update">
+<div class="type-update">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

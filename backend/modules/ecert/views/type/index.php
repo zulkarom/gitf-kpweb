@@ -3,19 +3,14 @@ use yii\grid\GridView;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $searchModel backend\modules\ecert\models\DocumentSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Documents';
+$this->title = 'Types';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="document-index">
-
-    <?php
-    // echo $this->render('_search', ['model' => $searchModel]); ?>
-
+<div class="type-index">
     <p>
-        <?=Html::a('Create Document', ['create'], ['class' => 'btn btn-success'])?>
+        <?=Html::a('Create Type', ['create'], ['class' => 'btn btn-success'])?>
     </p>
 
 
@@ -25,20 +20,15 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="box-body">
 
     <?php
-    echo GridView::widget([
+
+echo GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
         'columns' => [
             [
                 'class' => 'yii\grid\SerialColumn'
             ],
-
             'id',
-            'identifier',
-            'participant_name',
-            'field1',
-            'field2',
-
+            'type_name',
             [
                 'class' => 'yii\grid\ActionColumn'
             ]

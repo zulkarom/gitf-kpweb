@@ -1,7 +1,6 @@
 <?php
-
-use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\modules\ecert\models\EventSearch */
@@ -12,23 +11,35 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="event-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php
+    // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Event', ['create'], ['class' => 'btn btn-success']) ?>
+        <?=Html::a('Create Event', ['create'], ['class' => 'btn btn-success'])?>
     </p>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'event_name',
+     <div class="box">
+<div class="box-header"></div>
+<div class="box-body">
 
-            ['class' => 'yii\grid\ActionColumn'],
+  <?php
+
+echo GridView::widget([
+    'dataProvider' => $dataProvider,
+    // 'filterModel' => $searchModel,
+    'columns' => [
+        [
+            'class' => 'yii\grid\SerialColumn'
         ],
-    ]); ?>
+        'id',
+        'event_name',
+        [
+            'class' => 'yii\grid\ActionColumn'
+        ]
+    ]
+]);
+?>
+</div>
+</div>
 </div>
