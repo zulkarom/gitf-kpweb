@@ -1,5 +1,4 @@
 <?php
-
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -10,28 +9,54 @@ use yii\widgets\ActiveForm;
 
 <div class="document-form">
 
-    <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'participant_id')->textInput() ?>
+ <div class="box">
+<div class="box-header"></div>
+<div class="box-body">
 
-    <?= $form->field($model, 'participant_name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'field1')->textInput(['maxlength' => true]) ?>
+<div class="row">
+	<div class="col-md-6">
 
-    <?= $form->field($model, 'field2')->textInput(['maxlength' => true]) ?>
+	 <?php
 
-    <?= $form->field($model, 'field3')->textInput(['maxlength' => true]) ?>
+$form = ActiveForm::begin();
+?>
 
-    <?= $form->field($model, 'field4')->textInput(['maxlength' => true]) ?>
+    <?=$form->field($model, 'identifier')->textInput()?>
 
-    <?= $form->field($model, 'field5')->textInput(['maxlength' => true]) ?>
+    <?=$form->field($model, 'participant_name')->textInput(['maxlength' => true])?>
 
-    <?= $form->field($model, 'downloaded')->textInput() ?>
+    <?=$form->field($model, 'field1')->textInput(['maxlength' => true])?>
+
+    <?=$form->field($model, 'field2')->textInput(['maxlength' => true])?>
+
+    <?=$form->field($model, 'field3')->textInput(['maxlength' => true])?>
+
+    <?=$form->field($model, 'field4')->textInput(['maxlength' => true])?>
+
+    <?=$form->field($model, 'field5')->textInput(['maxlength' => true])?>
+
+    <?=$form->field($model, 'downloaded')->textInput()?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?=Html::submitButton('Save', ['class' => 'btn btn-success'])?>
     </div>
 
-    <?php ActiveForm::end(); ?>
+    <?php
+
+    ActiveForm::end();
+    ?>
+
+	</div>
+
+</div>
+
+
+</div>
+</div>
+
+
+
 
 </div>

@@ -35,7 +35,48 @@ echo GridView::widget([
         'id',
         'event_name',
         [
-            'class' => 'yii\grid\ActionColumn'
+            'class' => 'yii\grid\ActionColumn',
+
+            'template' => '{type} {certs} {update} {delete}',
+            // 'visible' => false,
+            'buttons' => [
+                'type' => function ($url, $model) {
+                    return Html::a('<span class="fa fa-cube"></span>', [
+                        'update',
+                        'id' => $model->id
+                    ], [
+                        'class' => 'btn btn-info btn-sm'
+                    ]);
+                },
+                'certs' => function ($url, $model) {
+                    return Html::a('<span class="fa fa-list"></span>', [
+                        'update',
+                        'id' => $model->id
+                    ], [
+                        'class' => 'btn btn-success btn-sm'
+                    ]);
+                },
+                'update' => function ($url, $model) {
+                    return Html::a('<span class="fa fa-edit"></span>', [
+                        'update',
+                        'id' => $model->id
+                    ], [
+                        'class' => 'btn btn-warning btn-sm'
+                    ]);
+                },
+                'delete' => function ($url, $model) {
+                    return Html::a('<span class="fa fa-trash"></span>', [
+                        'delete',
+                        'id' => $model->id
+                    ], [
+                        'class' => 'btn btn-danger btn-sm',
+                        'data' => [
+                            'confirm' => 'Are you sure you want to delete this data?',
+                            'method' => 'post'
+                        ]
+                    ]);
+                }
+            ]
         ]
     ]
 ]);

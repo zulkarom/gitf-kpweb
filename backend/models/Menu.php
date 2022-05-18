@@ -112,7 +112,6 @@ class Menu
             ]
         ];
 
-
         return $erpd_admin;
     }
 
@@ -205,7 +204,6 @@ class Menu
                 ]
             ]
         ];
-
     }
 
     public static function adminEsiap()
@@ -725,20 +723,20 @@ class Menu
                         '/ecert/event'
                     ]
                 ],
-                [
+           /*      [
                     'label' => 'Types',
                     'icon' => 'code',
                     'url' => [
                         '/ecert/type'
                     ]
-                ],
-                [
+                ], */
+          /*       [
                     'label' => 'Document',
                     'icon' => 'code',
                     'url' => [
                         '/ecert/document'
                     ]
-                ],
+                ], */
 
                 [
                     'label' => 'Stats',

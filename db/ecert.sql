@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 17, 2022 at 09:56 AM
+-- Generation Time: May 18, 2022 at 05:18 AM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 7.4.13
 
@@ -256,14 +256,14 @@ CREATE TABLE `cert_data_com` (
 --
 
 INSERT INTO `cert_data_com` (`id`, `name`, `jawatan`, `matric`) VALUES
-(0, 'Siti Afiqah Binti Zainuddin', 'Webinar Coordinator', '00685A'),
-(0, 'Noorul Azwin Binti Md Nasir', 'Head of Webinar Project', '00185A'),
-(0, 'Amira Binti Jamil', 'Promotion and Advertising Committee', '01049A'),
-(0, 'Zul Karami Bin Che Musa', 'IT and Technical Committee', '01619A'),
-(0, 'Siti Fariha Binti Muhamad', 'Registration and Certificate Committee', '00694A'),
-(0, 'Mohd Rushdan Bin Yasoa\'', 'Finance Committee', '01332A'),
-(0, 'Tahirah Binti Abdullah', 'Invitation Committee', '00709A'),
-(0, 'Nadzirah Binti Mohd Said', 'Publication Committee', '01721A');
+(1, 'Siti Afiqah Binti Zainuddin', 'Webinar Coordinator', '00685A'),
+(2, 'Noorul Azwin Binti Md Nasir', 'Head of Webinar Project', '00185A'),
+(3, 'Amira Binti Jamil', 'Promotion and Advertising Committee', '01049A'),
+(4, 'Zul Karami Bin Che Musa', 'IT and Technical Committee', '01619A'),
+(5, 'Siti Fariha Binti Muhamad', 'Registration and Certificate Committee', '00694A'),
+(6, 'Mohd Rushdan Bin Yasoa\'', 'Finance Committee', '01332A'),
+(7, 'Tahirah Binti Abdullah', 'Invitation Committee', '00709A'),
+(8, 'Nadzirah Binti Mohd Said', 'Publication Committee', '01721A');
 
 -- --------------------------------------------------------
 
@@ -301,6 +301,32 @@ CREATE TABLE `cert_event` (
 
 INSERT INTO `cert_event` (`id`, `event_name`) VALUES
 (1, 'WEBINAR THE 2ND ACCOUNTING WEBINAR SERIES (AWS) 2022 : Reflecting on Accounting\'s Philosophical and Historical Foundations');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cert_event_type`
+--
+
+CREATE TABLE `cert_event_type` (
+  `id` int(11) NOT NULL,
+  `event_id` int(11) NOT NULL,
+  `type_name` varchar(100) NOT NULL,
+  `field1_mt` double DEFAULT NULL,
+  `field1_size` double DEFAULT NULL,
+  `field2_mt` double DEFAULT NULL,
+  `field2_size` double DEFAULT NULL,
+  `field3_mt` double DEFAULT NULL,
+  `field3_size` double DEFAULT NULL,
+  `field4_mt` double DEFAULT NULL,
+  `field4_size` double DEFAULT NULL,
+  `field5_mt` double DEFAULT NULL,
+  `field5_size` double DEFAULT NULL,
+  `margin_right` double DEFAULT NULL,
+  `margin_left` double DEFAULT NULL,
+  `set_type` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1=preset,2=custom_html',
+  `custom_html` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -346,6 +372,12 @@ ALTER TABLE `cert_data`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `cert_data_com`
+--
+ALTER TABLE `cert_data_com`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `cert_doc`
 --
 ALTER TABLE `cert_doc`
@@ -357,6 +389,13 @@ ALTER TABLE `cert_doc`
 --
 ALTER TABLE `cert_event`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `cert_event_type`
+--
+ALTER TABLE `cert_event_type`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `event_id` (`event_id`);
 
 --
 -- Indexes for table `cert_participant`
@@ -382,6 +421,12 @@ ALTER TABLE `cert_data`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=208;
 
 --
+-- AUTO_INCREMENT for table `cert_data_com`
+--
+ALTER TABLE `cert_data_com`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
 -- AUTO_INCREMENT for table `cert_doc`
 --
 ALTER TABLE `cert_doc`
@@ -392,6 +437,12 @@ ALTER TABLE `cert_doc`
 --
 ALTER TABLE `cert_event`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `cert_event_type`
+--
+ALTER TABLE `cert_event_type`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `cert_participant`
@@ -414,6 +465,12 @@ ALTER TABLE `cert_type`
 --
 ALTER TABLE `cert_doc`
   ADD CONSTRAINT `cert_doc_ibfk_1` FOREIGN KEY (`type_id`) REFERENCES `cert_type` (`id`);
+
+--
+-- Constraints for table `cert_event_type`
+--
+ALTER TABLE `cert_event_type`
+  ADD CONSTRAINT `cert_event_type_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `cert_event` (`id`);
 
 --
 -- Constraints for table `cert_participant`

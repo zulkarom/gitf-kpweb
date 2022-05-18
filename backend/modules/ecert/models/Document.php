@@ -73,7 +73,7 @@ class Document extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'identifier' => 'Participant ID',
+            'identifier' => 'Identifier',
             'participant_name' => 'Participant Name',
             'field1' => 'Field1',
             'field2' => 'Field2',
