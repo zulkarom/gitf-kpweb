@@ -1,2 +1,0 @@
-ALTER TABLE `mnl_section` ADD `sec_order` INT NULL DEFAULT NULL AFTER `section_name`;
-ALTER TABLE `mnl_title` ADD `is_new` TINYINT(1) NOT NULL DEFAULT '0' AFTER `title_text`;

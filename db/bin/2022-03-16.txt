@@ -1,0 +1,3 @@
+ALTER TABLE `pg_student_sem` ADD `student_id` INT NOT NULL AFTER `id`
+ALTER TABLE `pg_student_sv` ADD `sv_role` TINYINT(1) NOT NULL DEFAULT '1' AFTER `appoint_at`;
+ALTER TABLE `pg_student_sv` ADD `student_id` INT NOT NULL AFTER `id`;

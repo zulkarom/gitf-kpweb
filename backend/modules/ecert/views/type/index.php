@@ -11,6 +11,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="type-index">
     <p>
         <?=Html::a('Create Type', ['create'], ['class' => 'btn btn-success'])?>
+
     </p>
 
 
@@ -21,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php
 
-echo GridView::widget([
+    echo GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
             [

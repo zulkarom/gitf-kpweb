@@ -6,7 +6,8 @@ $this->title = 'Update Document: ' . $model->id;
 $this->params['breadcrumbs'][] = [
     'label' => 'Documents',
     'url' => [
-        'index'
+        'index',
+        'type' => $model->type_id
     ]
 ];
 $this->params['breadcrumbs'][] = [

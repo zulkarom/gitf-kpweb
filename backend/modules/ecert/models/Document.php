@@ -94,4 +94,10 @@ class Document extends \yii\db\ActiveRecord
             'id' => 'type_id'
         ]);
     }
+
+    public function getEventName()
+    {
+        $event = $this->eventType->event;
+        return $event->event_name;
+    }
 }

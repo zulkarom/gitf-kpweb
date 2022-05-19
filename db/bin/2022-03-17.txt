@@ -1,0 +1,7 @@
+ALTER TABLE `tld_tutorial_lec` ADD `is_scheduled` TINYINT(1) NOT NULL DEFAULT '1' AFTER `lec_prefix`;
+
+
+ALTER TABLE `pg_student_stage` ADD `remark` TEXT NOT NULL AFTER `status`;
+ALTER TABLE `pg_student_stage` ADD `chairman_id` TEXT NULL DEFAULT NULL AFTER `remark`;
+ALTER TABLE `pg_student_stage` ADD `semester_id` INT NOT NULL AFTER `chairman_id`;
+ALTER TABLE `pg_semester_module` ADD `result` TINYINT(4) NULL DEFAULT NULL AFTER `module_id`;

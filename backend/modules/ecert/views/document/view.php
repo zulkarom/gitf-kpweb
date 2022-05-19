@@ -1,44 +1,48 @@
 <?php
-
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\ecert\models\Document */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Documents', 'url' => ['index']];
+$this->title = $model->participant_name;
+$this->params['breadcrumbs'][] = [
+    'label' => 'Documents',
+    'url' => [
+        'index',
+        'type' => $model->type_id
+    ]
+];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="document-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
+        <?=Html::a('Update', ['update','id' => $model->id], ['class' => 'btn btn-primary'])?>
+        <?=Html::a('Delete', ['delete','id' => $model->id], ['class' => 'btn btn-danger','data' => ['confirm' => 'Are you sure you want to delete this item?','method' => 'post']])?>
     </p>
+ <div class="box">
+<div class="box-header"></div>
+<div class="box-body">
 
-    <?= DetailView::widget([
+    <?php
+
+    echo DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
-            'participant_id',
             'participant_name',
-            'field1',
+            'eventName',
             'field2',
             'field3',
             'field4',
             'field5',
-            'downloaded',
-        ],
-    ]) ?>
+            'downloaded'
+        ]
+    ])?>
+</div>
+</div>
+
 
 </div>

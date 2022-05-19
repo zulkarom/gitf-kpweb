@@ -27,6 +27,10 @@ namespace backend\modules\ecert\models;
 class EventType extends \yii\db\ActiveRecord
 {
 
+    public $template_instance;
+
+    public $file_controller;
+
     /**
      *
      * {@inheritdoc}
@@ -53,12 +57,15 @@ class EventType extends \yii\db\ActiveRecord
             [
                 [
                     'event_id',
-                    'set_type'
+                    'set_type',
+                    'is_portrait'
                 ],
                 'integer'
             ],
             [
                 [
+                    'name_mt',
+                    'name_size',
                     'field1_mt',
                     'field1_size',
                     'field2_mt',
@@ -97,6 +104,30 @@ class EventType extends \yii\db\ActiveRecord
                 'targetAttribute' => [
                     'event_id' => 'id'
                 ]
+            ],
+
+            [
+                [
+                    'template_file'
+                ],
+                'required',
+                'on' => 'template_upload'
+            ],
+            [
+                [
+                    'template_instance'
+                ],
+                'file',
+                'skipOnEmpty' => true,
+                'extensions' => 'png,jpg',
+                'maxSize' => 5000000
+            ],
+            [
+                [
+                    'updated_at'
+                ],
+                'required',
+                'on' => 'template_delete'
             ]
         ];
     }
@@ -111,6 +142,8 @@ class EventType extends \yii\db\ActiveRecord
             'id' => 'ID',
             'event_id' => 'Event ID',
             'type_name' => 'Type Name',
+            'name_mt' => 'Participant Name Mt',
+            'name_size' => 'Participant Name Size',
             'field1_mt' => 'Field1 Mt',
             'field1_size' => 'Field1 Size',
             'field2_mt' => 'Field2 Mt',
@@ -124,7 +157,8 @@ class EventType extends \yii\db\ActiveRecord
             'margin_right' => 'Margin Right',
             'margin_left' => 'Margin Left',
             'set_type' => 'Set Type',
-            'custom_html' => 'Custom Html'
+            'custom_html' => 'Custom Html',
+            'publishLabel' => 'Status'
         ];
     }
 
@@ -138,8 +172,25 @@ class EventType extends \yii\db\ActiveRecord
             'id' => 'event_id'
         ]);
     }
-    
-    public function getEventName(){
+
+    public function getEventName()
+    {
         return $this->event->event_name;
+    }
+
+    public function getDocuments()
+    {
+        return $this->hasMany(Document::className(), [
+            'type_id' => 'id'
+        ]);
+    }
+
+    public function getPublishLabel()
+    {
+        if ($this->published == 1) {
+            return '<span class="label label-success">PUBLISHED</span>';
+        } else {
+            return '<span class="label label-warning">UNPUBLISHED</span>';
+        }
     }
 }

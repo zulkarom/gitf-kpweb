@@ -68,7 +68,10 @@ class DocumentSearch extends Document
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
-            'query' => $query
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 100
+            ]
         ]);
 
         $this->load($params);

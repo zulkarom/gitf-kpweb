@@ -6,14 +6,14 @@ $this->title = 'Create Document';
 $this->params['breadcrumbs'][] = [
     'label' => 'Cert Types',
     'url' => [
-        'index',
-        'type'
+        'index'
     ]
 ];
 $this->params['breadcrumbs'][] = [
     'label' => 'Documents',
     'url' => [
-        'index'
+        'index',
+        'type' => $certType->id
     ]
 ];
 $this->params['breadcrumbs'][] = $this->title;

@@ -1,0 +1,6 @@
+ALTER TABLE `tld_course_offered` ADD `coorsign_file` TEXT NOT NULL AFTER `verified_note`;
+
+ALTER TABLE `tld_course_offered` ADD `coorsign_size` INT NOT NULL DEFAULT '0' AFTER `coorsign_file`, ADD `coorsign_adj_y` INT NOT NULL DEFAULT '0' AFTER `coorsign_size`;
+
+ALTER TABLE `tld_course_offered` CHANGE `coorsign_file` `coorsign_file` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL;
+
