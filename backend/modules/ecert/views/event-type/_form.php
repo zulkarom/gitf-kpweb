@@ -8,11 +8,16 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
+ <div class="box">
+<div class="box-header"></div>
+<div class="box-body">
+
 <div class="event-type-form">
 
-    <?php $form = ActiveForm::begin(); ?>
-
-    <?= $form->field($model, 'event_id')->textInput() ?>
+<div class="row">
+	<div class="col-md-6">
+	
+	  <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'type_name')->textInput(['maxlength' => true]) ?>
 
@@ -39,6 +44,13 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'margin_right')->textInput() ?>
 
     <?= $form->field($model, 'margin_left')->textInput() ?>
+    
+    <?php  
+    if($model->isNewRecord){
+        $model->set_type = 1;
+    }
+    
+    ?>
 
     <?= $form->field($model, 'set_type')->textInput() ?>
 
@@ -49,5 +61,15 @@ use yii\widgets\ActiveForm;
     </div>
 
     <?php ActiveForm::end(); ?>
+	
+	</div>
 
 </div>
+
+  
+
+</div>
+</div>
+</div>
+
+

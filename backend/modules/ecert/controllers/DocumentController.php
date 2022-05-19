@@ -7,7 +7,8 @@ use backend\modules\ecert\models\Document;
 use backend\modules\ecert\models\DocumentSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+use backend\modules\ecert\models\EventType;
 
 /**
  * DocumentController implements the CRUD actions for Document model.
@@ -20,10 +21,13 @@ class DocumentController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
                 ],
             ],
         ];
@@ -33,14 +37,17 @@ class DocumentController extends Controller
      * Lists all Document models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($type)
     {
+        $certType = $this->findCertType($type);
         $searchModel = new DocumentSearch();
+        $searchModel->type_id = $certType->id;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'certType'  => $certType,
         ]);
     }
 
@@ -62,16 +69,18 @@ class DocumentController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($type)
     {
+        $certType = $this->findCertType($type);
         $model = new Document();
-
+        $model->type_id = $certType->id;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
             'model' => $model,
+            'certType'  => $certType,
         ]);
     }
 
@@ -122,6 +131,14 @@ class DocumentController extends Controller
             return $model;
         }
 
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    protected function findCertType($id)
+    {
+        if (($model = EventType::findOne($id)) !== null) {
+            return $model;
+        }
+        
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

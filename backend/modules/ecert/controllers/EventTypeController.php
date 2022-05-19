@@ -3,11 +3,12 @@
 namespace backend\modules\ecert\controllers;
 
 use Yii;
+use backend\modules\ecert\models\Event;
 use backend\modules\ecert\models\EventType;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * EventTypeController implements the CRUD actions for EventType model.
@@ -20,10 +21,13 @@ class EventTypeController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
                 ],
             ],
         ];
@@ -33,14 +37,16 @@ class EventTypeController extends Controller
      * Lists all EventType models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($event)
     {
+        $event = $this->findEvent($event);
         $dataProvider = new ActiveDataProvider([
-            'query' => EventType::find(),
+            'query' => EventType::find()->where(['event_id' => $event->id]),
         ]);
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
+            'event' => $event,
         ]);
     }
 
@@ -62,16 +68,18 @@ class EventTypeController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($event)
     {
+        $event = $this->findEvent($event);
         $model = new EventType();
-
+        $model->event_id = $event->id;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
             'model' => $model,
+            'event' => $event,
         ]);
     }
 
@@ -122,6 +130,15 @@ class EventTypeController extends Controller
             return $model;
         }
 
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    
+    protected function findEvent($id)
+    {
+        if (($model = Event::findOne($id)) !== null) {
+            return $model;
+        }
+        
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

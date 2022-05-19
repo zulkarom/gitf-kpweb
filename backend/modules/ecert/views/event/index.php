@@ -36,24 +36,15 @@ echo GridView::widget([
         'event_name',
         [
             'class' => 'yii\grid\ActionColumn',
-
             'template' => '{type} {certs} {update} {delete}',
             // 'visible' => false,
             'buttons' => [
                 'type' => function ($url, $model) {
                     return Html::a('<span class="fa fa-cube"></span>', [
-                        'update',
-                        'id' => $model->id
+                        '/ecert/event-type',
+                        'event' => $model->id
                     ], [
                         'class' => 'btn btn-info btn-sm'
-                    ]);
-                },
-                'certs' => function ($url, $model) {
-                    return Html::a('<span class="fa fa-list"></span>', [
-                        'update',
-                        'id' => $model->id
-                    ], [
-                        'class' => 'btn btn-success btn-sm'
                     ]);
                 },
                 'update' => function ($url, $model) {

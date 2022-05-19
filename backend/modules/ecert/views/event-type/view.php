@@ -6,14 +6,12 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\ecert\models\EventType */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Event Types', 'url' => ['index']];
+$this->title = $model->type_name;
+$this->params['breadcrumbs'][] = ['label' => 'Event Types', 'url' => ['index', 'event' => $model->event_id]];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="event-type-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -26,11 +24,15 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
     </p>
 
+ <div class="box">
+<div class="box-header"></div>
+<div class="box-body">
+
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
             'id',
-            'event_id',
+            'eventName',
             'type_name',
             'field1_mt',
             'field1_size',
@@ -48,5 +50,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'custom_html:ntext',
         ],
     ]) ?>
+
+</div>
+</div>
+
 
 </div>

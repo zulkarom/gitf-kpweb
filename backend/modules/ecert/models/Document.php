@@ -75,11 +75,11 @@ class Document extends \yii\db\ActiveRecord
             'id' => 'ID',
             'identifier' => 'Identifier',
             'participant_name' => 'Participant Name',
-            'field1' => 'Field1',
-            'field2' => 'Field2',
-            'field3' => 'Field3',
-            'field4' => 'Field4',
-            'field5' => 'Field5',
+            'field1' => 'Field 1',
+            'field2' => 'Field 2',
+            'field3' => 'Field 3',
+            'field4' => 'Field 4',
+            'field5' => 'Field 5',
             'downloaded' => 'Downloaded'
         ];
     }
@@ -88,9 +88,9 @@ class Document extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getType()
+    public function getEventType()
     {
-        return $this->hasOne(Type::className(), [
+        return $this->hasOne(EventType::className(), [
             'id' => 'type_id'
         ]);
     }

@@ -3,6 +3,7 @@
 namespace backend\modules\ecert\controllers;
 
 use yii\web\Controller;
+use yii\filters\AccessControl;
 
 /**
  * Default controller for the `ecert` module
@@ -16,5 +17,21 @@ class DefaultController extends Controller
     public function actionIndex()
     {
         return $this->render('index');
+    }
+    
+
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
     }
 }

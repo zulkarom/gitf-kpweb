@@ -138,4 +138,8 @@ class EventType extends \yii\db\ActiveRecord
             'id' => 'event_id'
         ]);
     }
+    
+    public function getEventName(){
+        return $this->event->event_name;
+    }
 }
