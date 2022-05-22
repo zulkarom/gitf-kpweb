@@ -1,62 +1,82 @@
 <?php
-
 namespace frontend\controllers;
 
-use Yii;
-use backend\modules\downloads\models\Download;
-use frontend\models\DownloadFormExternal;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use backend\modules\downloads\models\UploadFile;
-
+use backend\modules\ecert\models\Document;
+use frontend\models\DownloadFormExternal;
+use frontend\models\EcertificateForm;
+use Yii;
+use yii\web\Controller;
 
 /**
  * ProceedingController implements the CRUD actions for Proceeding model.
  */
 class EcertificateController extends Controller
 {
-    public function actionIndex(){
+
+    public function actionIndex()
+    {
+        $model = new EcertificateForm();
+
         return $this->render('index', [
-            //'model' => $model
+            'model' => $model
         ]);
     }
 
-	public function actionExternal()
+    public function actionResult()
     {
-		$model = new DownloadFormExternal;
-		if ($model->load(Yii::$app->request->post())) {
-			
-			$student = $this->findDownload($model->category, $model->nric);
-			if($student){
-				if(!UploadFile::downloadCategory($student)){
-					Yii::$app->session->addFlash('error', "File not found!");
-					//return $this->refresh();
-				}
-			}else{
-				Yii::$app->session->addFlash('error', "No document found for this NRIC under the selected category!");
-				//return $this->refresh();
-			}
-		}
+        $model = new EcertificateForm();
+        if ($model->load(Yii::$app->request->post())) {
+
+            $docs = Document::find()->alias('a')
+                ->joinWith([
+                'eventType t'
+            ])
+                ->where([
+                'a.identifier' => $model->identifier,
+                't.event_id' => $model->event
+            ])
+                ->all();
+
+            return $this->render('result', [
+                'docs' => $docs
+            ]);
+        }
+    }
+
+    public function actionExternal()
+    {
+        $model = new DownloadFormExternal();
+        if ($model->load(Yii::$app->request->post())) {
+
+            $student = $this->findDownload($model->category, $model->nric);
+            if ($student) {
+                if (! UploadFile::downloadCategory($student)) {
+                    Yii::$app->session->addFlash('error', "File not found!");
+                    // return $this->refresh();
+                }
+            } else {
+                Yii::$app->session->addFlash('error', "No document found for this NRIC under the selected category!");
+                // return $this->refresh();
+            }
+        }
 
         return $this->render('external', [
-			'model' => $model
+            'model' => $model
         ]);
     }
-	
-	
-	protected function findDownload($category, $nric)
+
+    protected function findEcertificate($type, $identifier)
     {
-        $model = Download::find()
-		->where(['category_id' => $category, 'nric' => $nric])
-		->one();
-		
-		if($model !== null){
-			return $model;
-		}
+        $model = Document::find()->where([
+            'type_id' => $type,
+            'identifier' => $identifier
+        ])->one();
+
+        if ($model !== null) {
+            return $model;
+        }
 
         return false;
     }
-	
-
 }
