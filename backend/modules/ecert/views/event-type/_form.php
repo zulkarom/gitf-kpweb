@@ -22,6 +22,21 @@ $form = ActiveForm::begin();
 ?>
 
     <?=$form->field($model, 'type_name')->textInput(['maxlength' => true])?>
+    
+    <?=$form->field($model, 'is_portrait')->dropDownList([1 => 'Yes',0 => 'No'])?>
+    
+      <?php
+    if ($model->isNewRecord) {
+        $model->set_type = 1;
+    }
+
+    ?>
+
+    <?=$form->field($model, 'set_type')->dropDownList($model->listType())?>
+    
+     <?=$form->field($model, 'name_mt')->textInput()?>
+
+    <?=$form->field($model, 'name_size')->textInput()?>
 
     <?=$form->field($model, 'field1_mt')->textInput()?>
 
@@ -46,16 +61,9 @@ $form = ActiveForm::begin();
     <?=$form->field($model, 'margin_right')->textInput()?>
 
     <?=$form->field($model, 'margin_left')->textInput()?>
-    <?=$form->field($model, 'is_portrait')->dropDownList([1 => 'Yes',0 => 'No'])?>
+    
 
-    <?php
-    if ($model->isNewRecord) {
-        $model->set_type = 1;
-    }
-
-    ?>
-
-    <?=$form->field($model, 'set_type')->textInput()?>
+  
 
     <?=$form->field($model, 'custom_html')->textarea(['rows' => 6])?>
 

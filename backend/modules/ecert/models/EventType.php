@@ -161,6 +161,10 @@ class EventType extends \yii\db\ActiveRecord
             'publishLabel' => 'Status'
         ];
     }
+    
+    public function listtype(){
+        return [1 => 'Preset', 2 => 'Custom Html'];
+    }
 
     /**
      *

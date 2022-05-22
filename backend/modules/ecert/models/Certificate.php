@@ -27,13 +27,7 @@ class Certificate
             $this->pdf->image_background = 'images/ecert/' . $f;
         }
 
-        if ($this->model->eventType->is_portrait == 1) {
-            $this->pdf->AddPage("P");
-            $this->pdf->portrait = true;
-        } else {
-            $this->pdf->portrait = false;
-            $this->pdf->AddPage("L");
-        }
+      
 
         $this->startPage();
         $this->writeData();
@@ -48,11 +42,8 @@ class Certificate
 
         $all = 740;
 
-        $left = 70;
-        $kuda = 260;
-        $laju = 157;
-        $jarak = 153;
-        $right = $all - $left - $kuda - $laju - $jarak;
+
+        $preset = $this->model->set_type;
 
         $html = '<table border="0">
 <tr>
@@ -67,9 +58,6 @@ class Certificate
 <tr>
 <td colspan="2" height="493"></td>
 </tr>
-
-
-
 
 </table>';
         $tbl = <<<EOD
@@ -116,7 +104,8 @@ class Certificate
         $this->pdf->SetFooterMargin(0);
 
         // set auto page breaks
-        $this->pdf->SetAutoPageBreak(false, 0); // margin bottom
+        //$this->pdf->SetAutoPageBreak(false, 0); // margin bottom
+        $this->pdf->SetAutoPageBreak(TRUE, -30); //margin bottom
 
         // set image scale factor
         $this->pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
@@ -130,6 +119,14 @@ class Certificate
         // ---------------------------------------------------------
 
         $this->pdf->setImageScale(1.53);
+        
+        if ($this->model->eventType->is_portrait == 1) {
+            $this->pdf->AddPage("P");
+            $this->pdf->portrait = true;
+        } else {
+            $this->pdf->portrait = false;
+            $this->pdf->AddPage("L");
+        }
 
         // add a page
     }

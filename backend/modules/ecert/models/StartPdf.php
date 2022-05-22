@@ -13,10 +13,12 @@ class StartPdf extends \TCPDF
     {
         if ($this->image_background) {
             $img_file = $this->image_background;
+            $width = $this->getPageWidth();
+            $height = $this->getPageHeight();
             if ($this->portrait) {
                 $this->Image($img_file, 0, 0, 210, 297, '', '', '', false, 300, '', false, false, 0);
             } else {
-                $this->Image($img_file, 0, 0, 297, 210, '', '', '', false, 300, '', false, false, 0);
+                $this->Image($img_file, 0, 0, $width, $height, '', '', '', false, 300, '', false, false, 0);
             }
         }
     }
