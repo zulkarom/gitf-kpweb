@@ -63,7 +63,11 @@ class DocumentSearch extends Document
      */
     public function search($params)
     {
-        $query = Document::find();
+        $this->load($params);
+
+        $query = Document::find()->where([
+            'type_id' => $this->type_id
+        ]);
 
         // add conditions that should always apply here
 
@@ -74,8 +78,6 @@ class DocumentSearch extends Document
             ]
         ]);
 
-        $this->load($params);
-
         if (! $this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
@@ -84,40 +86,13 @@ class DocumentSearch extends Document
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'identifier' => $this->identifier,
-            'downloaded' => $this->downloaded
+            'identifier' => $this->identifier
         ]);
 
         $query->andFilterWhere([
             'like',
             'participant_name',
             $this->participant_name
-        ])
-            ->andFilterWhere([
-            'like',
-            'field1',
-            $this->field1
-        ])
-            ->andFilterWhere([
-            'like',
-            'field2',
-            $this->field2
-        ])
-            ->andFilterWhere([
-            'like',
-            'field3',
-            $this->field3
-        ])
-            ->andFilterWhere([
-            'like',
-            'field4',
-            $this->field4
-        ])
-            ->andFilterWhere([
-            'like',
-            'field5',
-            $this->field5
         ]);
 
         return $dataProvider;

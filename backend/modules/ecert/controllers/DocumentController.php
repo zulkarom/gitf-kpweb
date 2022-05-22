@@ -228,6 +228,9 @@ class DocumentController extends Controller
                             $new->field5 = $f5;
                             $new->data_check = 1;
                             if (! $new->save()) {}
+                        } else {
+                            $st->data_check = 1;
+                            if (! $st->save()) {}
                         }
                     }
                 }

@@ -27,8 +27,6 @@ class Certificate
             $this->pdf->image_background = 'images/ecert/' . $f;
         }
 
-      
-
         $this->startPage();
         $this->writeData();
 
@@ -39,32 +37,68 @@ class Certificate
     {
         $this->pdf->SetFont('helvetica', 'b', 10);
         $this->pdf->SetTextColor(35, 22, 68);
+        $html = '';
+        $preset = $this->model->eventType->set_type;
+        if ($preset == 1) {
+            $html .= $this->html_preset();
+        } else {
+            $html = $this->model->eventType->custom_html;
+        }
 
-        $all = 740;
-
-
-        $preset = $this->model->set_type;
-
-        $html = '<table border="0">
-<tr>
-<td colspan="2" height="330"></td>
-</tr>
-
-<tr>
-<td width="170"></td>
-<td align="center" width="740" style="font-size:17pt"></td>
-</tr>
-
-<tr>
-<td colspan="2" height="493"></td>
-</tr>
-
-</table>';
         $tbl = <<<EOD
         		$html
         EOD;
 
         $this->pdf->writeHTML($tbl, true, false, false, false, '');
+    }
+
+    public function html_preset()
+    {
+        $portrait = $this->model->eventType->is_portrait;
+        if ($portrait == 1) {
+            $all = 740;
+        } else {
+            $all = 1290;
+        }
+
+        $left = $this->model->eventType->margin_left;
+        $left = $left > 1 ? $left : 1;
+        $right = $this->model->eventType->margin_right;
+        $right = $right > 1 ? $right : 1;
+        $main = $all - $right - $left;
+
+        $margin_name = $this->model->eventType->name_mt;
+        $margin_field1 = $this->model->eventType->field1_mt;
+
+        $html = '<table border="0" width="' . $all . '">
+<tr>
+    <td width="' . $left . '"></td>
+    <td align="center" width="' . $main . '">';
+
+        $html .= '<table>';
+
+        if ($margin_name > 0) {
+            $size = $this->model->eventType->name_size;
+            $html .= '
+<tr><td height="' . $margin_name . '"></td></tr>
+<tr><td style="font-size:' . $size . 'px">' . strtoupper($this->model->participant_name) . '</td></tr>';
+        }
+
+        if ($margin_field1 > 0) {
+            $size = $this->model->eventType->field1_size;
+            $html .= '
+<tr><td height="' . $margin_field1 . '"></td></tr>
+<tr><td style="font-size:' . $size . 'px">' . strtoupper($this->model->field1) . '</td></tr>';
+        }
+
+        $html .= '</table>';
+
+        $html .= '</td>
+    <td width="' . $right . '"></td>
+</tr>';
+        $html .= '</table>';
+
+        return $html;
     }
 
     public function startPage()
@@ -104,8 +138,8 @@ class Certificate
         $this->pdf->SetFooterMargin(0);
 
         // set auto page breaks
-        //$this->pdf->SetAutoPageBreak(false, 0); // margin bottom
-        $this->pdf->SetAutoPageBreak(TRUE, -30); //margin bottom
+        // $this->pdf->SetAutoPageBreak(false, 0); // margin bottom
+        $this->pdf->SetAutoPageBreak(TRUE, - 30); // margin bottom
 
         // set image scale factor
         $this->pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
@@ -119,7 +153,7 @@ class Certificate
         // ---------------------------------------------------------
 
         $this->pdf->setImageScale(1.53);
-        
+
         if ($this->model->eventType->is_portrait == 1) {
             $this->pdf->AddPage("P");
             $this->pdf->portrait = true;
