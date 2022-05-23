@@ -29,17 +29,20 @@ class EcertificateController extends Controller
         if ($model->load(Yii::$app->request->post())) {
 
             $docs = Document::find()->alias('a')
+                ->select('a.*, t.type_name')
                 ->joinWith([
                 'eventType t'
             ])
                 ->where([
                 'a.identifier' => $model->identifier,
-                't.event_id' => $model->event
+                't.event_id' => $model->event,
+                't.published' => 1
             ])
                 ->all();
 
             return $this->render('result', [
-                'docs' => $docs
+                'docs' => $docs,
+                'model' => $model
             ]);
         }
     }

@@ -21,7 +21,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php
 
-$form = ActiveForm::begin();
+$form = ActiveForm::begin([
+    'action' => [
+        'result'
+    ]
+]);
 ?>
 
 <div class="row">
@@ -49,7 +53,7 @@ $form = ActiveForm::begin();
 
 <div class="form-group">
 
-<?=Html::submitButton('Find Certificate', ['class' => 'btn btn-primary'])?>
+<?=Html::submitButton('Search Certificate', ['class' => 'btn btn-primary'])?>
     </div>
 
     <?php
