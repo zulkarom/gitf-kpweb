@@ -148,7 +148,11 @@ echo GridView::widget([
             'attribute' => 'pub_title',
             'format' => 'html',
             'value' => function ($model) {
-                return $model->showApaStyle();
+                $tag = '';
+                if ($model->staff) {
+                    $tag = '<br /><i class="fa fa-tags"></i> by ' . $model->staff->user->fullname;
+                }
+                return $model->showApaStyle() . $tag;
             },
             'contentOptions' => [
                 'style' => 'width: 60%;'
