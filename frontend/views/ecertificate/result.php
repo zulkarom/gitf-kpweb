@@ -6,7 +6,7 @@ use yii\helpers\Url;
 /* @var $searchModel backend\modules\proceedings\models\ProceedingSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'E-certificate Search Result';
+$this->title = 'e-Certificate Search Result';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 

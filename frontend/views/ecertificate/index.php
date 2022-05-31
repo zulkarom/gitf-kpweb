@@ -6,7 +6,7 @@ use yii\widgets\ActiveForm;
 /* @var $searchModel backend\modules\proceedings\models\ProceedingSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'E-certificate';
+$this->title = 'e-Certificate';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 

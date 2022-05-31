@@ -22,7 +22,7 @@ class Certificate
         $f = basename($file);
 
         if ($this->frontend) {
-            $this->pdf->image_background = 'web/ecert/images/ecert/' . $f;
+            $this->pdf->image_background = '../images/ecert/' . $f;
         } else {
             $this->pdf->image_background = 'images/ecert/' . $f;
         }
