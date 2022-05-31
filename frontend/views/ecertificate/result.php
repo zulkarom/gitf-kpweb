@@ -50,7 +50,10 @@ if ($docs) {
 
         echo '<tr>';
         echo '<td></td><td>';
-        echo strtoupper($doc->participant_name);
+        echo '<a href="' . Url::to([
+            'document',
+            'id' => $doc->id
+        ]) . '" target="_blank"><i class="fa fa-download"></i> Download<br /><br />';
         echo '</td>';
         echo '</tr>';
     }
@@ -66,7 +69,7 @@ if ($docs) {
 </div>
 <br /><br />
 <div class="form-group">
-<a href="<?=Url::to(['index'])?>">Back to search form</a>
+<a href="<?=Url::to(['index'])?>"><i class="fa fa-arrow-left"></i> Back to search form</a>
 </div>
 
 
