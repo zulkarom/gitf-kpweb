@@ -56,6 +56,9 @@ class EcertificateController extends Controller
         $pdf->frontend = true;
         $pdf->model = $model;
         $pdf->generatePdf();
+        $d = $model->downloaded;
+        $model->downloaded = $d + 1;
+        $model->save();
         exit();
     }
 
