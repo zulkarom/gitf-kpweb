@@ -22,7 +22,7 @@ class Certificate
         $f = basename($file);
 
         if ($this->frontend) {
-            $this->pdf->image_background = 'web/ecert/images/ecert/' . $f;
+            $this->pdf->image_background = '../images/ecert/' . $f;
         } else {
             $this->pdf->image_background = 'images/ecert/' . $f;
         }
@@ -101,13 +101,19 @@ class Certificate
         return $html;
     }
 
+    public function sub_name()
+    {
+        $event = $this->model->eventType->event->event_abbr;
+        return preg_replace('/[^a-zA-Z0-9-]+/', '_', strtoupper($event . '_' . $this->model->eventType->type_name . '_' . $this->model->identifier));
+    }
+
     public function startPage()
     {
-        $this->filename = 'ECERT';
+        $this->filename = 'FKP_ECERT_' . $this->sub_name();
         $this->pdf->SetCreator(PDF_CREATOR);
         $this->pdf->SetAuthor('FKP PORTAL');
-        $this->pdf->SetTitle('ECERT');
-        $this->pdf->SetSubject('ECERT');
+        $this->pdf->SetTitle($this->filename);
+        $this->pdf->SetSubject($this->filename);
         $this->pdf->SetKeywords('');
 
         // set default header data

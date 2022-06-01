@@ -86,7 +86,8 @@ class DocumentSearch extends Document
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'identifier' => $this->identifier
+            'identifier' => $this->identifier,
+            'downloaded' => $this->downloaded
         ]);
 
         $query->andFilterWhere([

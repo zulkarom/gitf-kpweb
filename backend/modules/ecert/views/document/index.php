@@ -69,6 +69,7 @@ echo $certType->type_name?></h3>
             ],
             'identifier',
             'participant_name',
+            'downloaded',
             [
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{cert} {view} {update} {delete}',

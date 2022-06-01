@@ -1,6 +1,4 @@
-<?php 
-use yii\helpers\Url;
-use dmstr\widgets\Alert;
+<?php
 ?>
 <ul class="main-menu">
 				<li><a href="http://fkp.umk.edu.my/index.cfm"><i class="fa fa-home" style="font-size:20px;"></i></a></li>
@@ -10,7 +8,12 @@ use dmstr\widgets\Alert;
 				    <a href="http://fkp.umk.edu.my/intro-faculty.cfm">Introduction</a>
 				    <a href="http://fkp.umk.edu.my/dean.cfm">From The Dean Desk</a>
 				    <a href="http://fkp.umk.edu.my/vision-mission-objectives.cfm">Vision,Mission and Objectives</a>
+				    <a href="http://fkp.umk.edu.my/council-of-strategic.cfm">Council of Strategics</a>
+				    <a href="http://fkp.umk.edu.my/adjunct-professors.cfm">Adjunct Professors</a>
+				    <a href="http://fkp.umk.edu.my/top-management.cfm">Top Management</a>
+				    <a href="http://fkp.umk.edu.my/client-charter.cfm">Client Charter</a>
 				    <a href="http://fkp.umk.edu.my/organization-chart.cfm">Organization Chart</a>
+				    <a href="http://fkp.umk.edu.my/strategic-partners.cfm">Strategic Partners</a>
 				    <a href="http://fkp.umk.edu.my/contact.cfm">Contact Us</a>
 				  </div>
 				</div>
@@ -42,6 +45,7 @@ use dmstr\widgets\Alert;
 				    <a href="http://fkp.umk.edu.my/image-gallery.cfm">Image Gallery</a>
 				    <a href="http://fkp.umk.edu.my/video-gallery.cfm">Video Gallery</a>
 				    <a href="http://fkp.umk.edu.my/latest-news.cfm">Latest News</a>
+				    <a href="http://fkp.umk.edu.my/newspaper.cfm">Newspaper</a>
 				  </div>
 				</div>
 				<div class="dropdown">
@@ -54,6 +58,10 @@ use dmstr\widgets\Alert;
 				</div>
 				<div class="dropdown">
 				  <a href="#" title="UMKPRENEUR" target="_blank" style="color:white;">UMKPRENEUR</a>
+				  <div class="dropdown-content">
+				    <a href="#">2U2I</a>
+				    <a href="https://www.unik19.com.my/">UNIK!(</a>
+				  </div>
 				</div>
 				<div class="dropdown">
 				  <a href="http://fkp.umk.edu.my/students.cfm" class="dropbtn ">STUDENTS</a>
@@ -66,10 +74,9 @@ use dmstr\widgets\Alert;
 				    <a href="http://fkp.umk.edu.my/jobs-board.cfm">Jobs and Internship Board</a>
 				  </div>
 				</div>
-				
-			
+
+
 </ul>
 
 
-        
-    
+

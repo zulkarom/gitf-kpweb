@@ -19,6 +19,8 @@ namespace backend\modules\ecert\models;
 class Document extends \yii\db\ActiveRecord
 {
 
+    public $type_name;
+
     /**
      *
      * {@inheritdoc}
