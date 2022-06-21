@@ -96,9 +96,13 @@ $model->file_controller = 'setting';
 
 </div>
 
-<br />
+<div class="form-group">
 <?= $form->field($model, 'conf_address')->textarea(['rows' => 5]) ?>
-<br />
+</div>
+
+<div class="form-group">
+<?= $form->field($model, 'system_only')->dropdownlist([1 => 'Yes', 0 => 'No']) ?>
+</div>
 
 
     <div class="form-group">
@@ -107,5 +111,6 @@ $model->file_controller = 'setting';
 
     <?php ActiveForm::end(); ?>
 
-</div></div>
+</div>
+</div>
 </div>

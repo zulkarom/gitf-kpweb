@@ -54,7 +54,7 @@ class Conference extends \yii\db\ActiveRecord
 			
 			[['email_contact'], 'unique'],
 			
-			[['user_id', 'created_by', 'commercial'], 'integer'],
+			[['user_id', 'created_by', 'commercial', 'system_only'], 'integer'],
 			
 			[['banner_file'], 'required', 'on' => 'banner_upload'],
             [['banner_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg, jpeg, png', 'maxSize' => 2000000],

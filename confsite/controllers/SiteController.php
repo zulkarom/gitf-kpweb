@@ -85,8 +85,9 @@ class SiteController extends Controller
 		if (Yii::$app->user->isGuest) {
             return $this->redirect(['site/login', 'confurl' => $confurl]);
         }
-		$this->layout = 'main-login';
+		
 		$model = $this->findConferenceByUrl($confurl);
+        
 		
 		if($confurl){
 			
@@ -141,7 +142,7 @@ class SiteController extends Controller
 				return $this->redirect(['member/index', 'confurl' => $confurl]);
 				
 			} else {
-				return $this->render('login', [
+				return $this->render('/account/login', [
 					'model' => $model,
 					'conf' => $conf
 				]);
