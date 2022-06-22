@@ -1,1 +1,2 @@
 ALTER TABLE `conference` ADD `system_only` TINYINT(1) NOT NULL DEFAULT '0' AFTER `type_name`;
+ALTER TABLE `user` ADD `verification_token` TEXT NULL DEFAULT NULL AFTER `user_image`;

@@ -31,7 +31,7 @@ class NewUserForm extends Model
             
             ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email has already been taken.'],
             
-            ['password', 'string', 'min' => 8],
+            ['password', 'string', 'min' => 6],
             
             [['fullname', 'institution'], 'string', 'min' => 2, 'max' => 100],
             
@@ -67,6 +67,7 @@ class NewUserForm extends Model
         $user->username = $this->email;
         $user->email = $this->email;
         $user->institution = $this->institution;
+        $user->status = 9;
         $user->setPassword($this->password);
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();

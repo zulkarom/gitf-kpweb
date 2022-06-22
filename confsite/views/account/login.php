@@ -6,15 +6,15 @@ use yii\widgets\ActiveForm;
 $this->title = 'Sign Up/Sign In';
 ?>
 
-<h4>LOGIN OR REGISTER TO SUBMIT OR UPDATE YOUR PAPER.</h4>
-
+<h4 style="text-align:center">LOGIN OR REGISTER TO SUBMIT OR UPDATE YOUR PAPER.</h4>
+<br /><br />
 <div class="row">
     <div class="col-md-6 col-lg-6"> 
     <?php $form = ActiveForm::begin([
     'validateOnChange' => false
 ]); ?>
 
-        <h3>LOGIN</h3>
+        <h5>LOGIN</h5>
         <br />
 
         
@@ -30,7 +30,7 @@ $this->title = 'Sign Up/Sign In';
 
           <p>
                 <?= Html::a('Forget Password?',
-                           ['/site/request-password-reset'],['class' => 'field-label text-muted mb10',]
+                           ['/site/request-password-reset', 'confurl' => $confurl] ,['class' => 'field-label text-muted mb10',]
                                 ) ?>
             </p>
         
@@ -47,7 +47,7 @@ $this->title = 'Sign Up/Sign In';
     <?php $form = ActiveForm::begin([
     'validateOnChange' => false
 ]); ?>
-      <h3>REGISTER</h3>
+      <h5>REGISTER</h5>
        <br />
       <?php if(true){?>
  

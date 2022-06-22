@@ -11,7 +11,9 @@ use backend\modules\conference\models\Conference;
 use backend\modules\conference\models\ConfRegistration;
 use confsite\models\ConferenceSearch;
 use confsite\models\LoginForm;
+use confsite\models\PasswordResetRequestForm;
 use common\models\UploadFile;
+use confsite\models\VerifyEmailForm;
 
 
 
@@ -31,7 +33,7 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'index', 'error', 'register', 'home', 'download-file'],
+                        'actions' => ['login', 'index', 'error', 'register', 'home', 'download-file', 'verify-email', 'request-password-reset', 'reset-password'],
                         'allow' => true,
                     ],
                     [
@@ -72,6 +74,9 @@ class SiteController extends Controller
 	public function actionHome($confurl=null)
     {
 		$model = $this->findConferenceByUrl($confurl);
+        if($model->system_only == 1){
+            return $this->redirect(['/account/index', 'confurl' => $confurl]);
+        }
 		if($confurl){
 			return $this->render('home', [
 			'model' => $model
@@ -142,7 +147,7 @@ class SiteController extends Controller
 				return $this->redirect(['member/index', 'confurl' => $confurl]);
 				
 			} else {
-				return $this->render('/account/login', [
+				return $this->render('login', [
 					'model' => $model,
 					'conf' => $conf
 				]);
@@ -220,7 +225,60 @@ class SiteController extends Controller
         throw new NotFoundHttpException('Invalid Attribute');
 
     }
+
+    public function actionRequestPasswordReset()
+    {
+        $this->layout = 'system';
+        $model = new PasswordResetRequestForm();
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            if ($model->sendEmail()) {
+                Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
+                
+                return $this->redirect(['/site/login']);
+            } else {
+                Yii::$app->session->setFlash('error', 'Sorry, we are unable to reset password for the provided email address.');
+            }
+        }
+        
+        return $this->render('requestPasswordResetToken', [
+            'model' => $model,
+        ]);
+    }
+    
+    public function actionResetPassword($token)
+    {
+        $this->layout = "//main-login";
+        try {
+            $model = new ResetPasswordForm($token);
+        } catch (InvalidArgumentException $e) {
+            throw new BadRequestHttpException($e->getMessage());
+        }
+        
+        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
+            Yii::$app->session->setFlash('success', 'Your new password has been successfully created.');
+            
+            return $this->redirect(['/site/login']);
+        }
+        
+        return $this->render('resetPassword', [
+            'model' => $model,
+        ]);
+    }
 	
 
-	
+	public function actionVerifyEmail($token, $c)
+    {
+        try {
+            $model = new VerifyEmailForm($token);
+        } catch (InvalidArgumentException $e) {
+            throw new BadRequestHttpException($e->getMessage());
+        }
+        if ($model->verifyEmail()) {
+                Yii::$app->session->setFlash('success', 'Thank you, your email has been confirmed. You can now login to submit your application');
+                return $this->redirect(['/site/login']);
+        }
+        
+        Yii::$app->session->setFlash('error', 'Sorry, we are unable to verify your account with provided token.');
+        return $this->redirect(['/site/login']);
+    }
 }

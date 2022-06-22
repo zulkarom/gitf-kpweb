@@ -43,6 +43,7 @@ class AccountController extends SiteController
         return $this->render('login', [
             'model' => $model,
             'modelLogin' => $modelLogin,
+            'confurl' => $confurl
         ]);
 		
     }

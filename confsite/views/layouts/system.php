@@ -48,8 +48,8 @@ if($conf){
 	<!-- content page -->
 	<section class="bgwhite">
 		<div class="container">
-		<section class="bg-title-page flex-col-c-m">
-		<h1 style="margin-top:20px;margin-bottom:20px;text-align:center;font-size:34px;"><?=$conf_name?></h1>
+		<section class="bg-title-page flex-col-c-m"><a href="<?=Url::to(['/site/home','confurl' => $confurl])?>">
+		<h1 style="margin-top:20px;margin-bottom:30px;text-align:center;font-size:30px;"><?=$conf_name?></h1></a>
 	</section>
 			<div class="row">
 		
