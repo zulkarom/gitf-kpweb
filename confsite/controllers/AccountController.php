@@ -4,6 +4,8 @@ namespace confsite\controllers;
 use Yii;
 use yii\web\NotFoundHttpException;
 use confsite\models\LoginForm;
+use confsite\models\NewUserForm;
+use confsite\models\SignInForm;
 
 
 

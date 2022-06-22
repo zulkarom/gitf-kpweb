@@ -2,32 +2,21 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use frontend\models\Application;
-
-$dirAssests = Yii::$app->assetManager->getPublishedUrl('@frontend/assets/swissAsset');
 
 $this->title = 'Sign Up/Sign In';
-$this->params['breadcrumbs'][] = $this->title;
-
 ?>
 
+<h4>LOGIN OR REGISTER TO SUBMIT OR UPDATE YOUR PAPER.</h4>
 
-<div class="wrapper row3">
-  <main class="hoc container clear" style="padding-top:40px;"> 
-  
-  <h4 style="padding-bottom:40px;text-align:center">LOGIN OR REGISTER TO SUBMIT OR VIEW YOUR APPLICATION.</h4>
-  
-    <!-- main body -->
-    <!-- ################################################################################################ -->
-
- <?php $form = ActiveForm::begin([
+<div class="row">
+    <div class="col-md-6 col-lg-6"> 
+    <?php $form = ActiveForm::begin([
     'validateOnChange' => false
 ]); ?>
-    <div class="sidebar one_half first"> 
+
         <h3>LOGIN</h3>
         <br />
-        <div class="row">
-        <div class="col-md-10">
+
         
             <?= $form->field($modelLogin, 'username')->textInput(['class' => 'form-control form-control-lg'])
             ?>
@@ -36,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ?>
 
           <div class="form-group">
-            <?= Html::submitButton('<i class="fas fa-sign-in-alt"></i> Log in', ['value' => '1', 'class' => 'btn btn-outline-danger']) ?>
+            <?= Html::submitButton('Log in', ['value' => '1', 'class' => 'btn btn-primary']) ?>
           </div>
 
           <p>
@@ -46,27 +35,22 @@ $this->params['breadcrumbs'][] = $this->title;
             </p>
         
         
-        </div>
-        <div></div>
-        </div>
+            <?php ActiveForm::end(); ?>
         
     </div>
 
-<?php ActiveForm::end(); ?>
 
 
- <?php $form = ActiveForm::begin([
+
+
+    <div class="col-md-6 col-lg-6"> 
+    <?php $form = ActiveForm::begin([
     'validateOnChange' => false
 ]); ?>
-    <div class="content one_half"> 
-
       <h3>REGISTER</h3>
        <br />
-      <?php if(Application::isOpen()){?>
-      <div class="row">
-        <div class="col-md-10">
-        
-       
+      <?php if(true){?>
+ 
 
             <?= $form->field($model, 'fullname')->textInput(['class' => 'form-control form-control-lg'])
             ?>
@@ -83,27 +67,18 @@ $this->params['breadcrumbs'][] = $this->title;
             ?>
 
           <div class="form-group">
-            <?= Html::submitButton('<i class="fas fa-sign-in-alt"></i> Register', ['value' => '2', 'class' => 'btn btn-outline-danger']) ?>
+            <?= Html::submitButton('Register', ['value' => '2', 'class' => 'btn btn-primary']) ?>
           </div>
         
         
-        </div>
-        
-        </div>
+     
          <?php }else{
 			 
 			 echo '<p>Kindly be informed that the new registration has been closed </p>';
 		 } ?>
       
-      
-    
-      <!-- ################################################################################################ -->
+      <?php ActiveForm::end(); ?>
     </div>
-    <?php ActiveForm::end(); ?>
-    <!-- ################################################################################################ -->
-    <!-- / main body -->
-    <div class="clear"></div>
-  </main>
+    
+
 </div>
-
-

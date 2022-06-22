@@ -16,6 +16,9 @@ $dirAsset = Yii::$app->assetManager->getPublishedUrl('@confsite/views/myasset');
 
 $confurl = Yii::$app->getRequest()->getQueryParam('confurl');
 $conf = Conference::findOne(['conf_url' => $confurl]);
+if($conf){
+	$conf_name = $conf->conf_name;
+}
 
 
 ?>
@@ -36,17 +39,21 @@ $conf = Conference::findOne(['conf_url' => $confurl]);
 	
 </head>
 <body class="animsition">
+
 <?php $this->beginBody() ?>
+
+
 
 
 	<!-- content page -->
 	<section class="bgwhite">
 		<div class="container">
+		<section class="bg-title-page flex-col-c-m">
+		<h1 style="margin-top:20px;margin-bottom:20px;text-align:center;font-size:34px;"><?=$conf_name?></h1>
+	</section>
 			<div class="row">
-			<div class="col-md-3 col-lg-3 p-b-75 myleftbar">
 		
-				</div>
-				<div class="col-md-6 col-lg-6 p-b-75">
+				<div class="col-md-12 col-lg-12 p-b-75">
 					<div class="p-r-50 p-r-0-lg">
 						<!-- item blog -->
 						<div class="item-blog p-b-80">
@@ -61,9 +68,7 @@ $conf = Conference::findOne(['conf_url' => $confurl]);
 
 				</div>
 				
-				<div class="col-md-3 col-lg-3 p-b-75">
-				
-				</div>
+		
 
 				
 			</div>
