@@ -204,6 +204,15 @@ class SiteController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    protected function findConference($id)
+    {
+        if (($model = Conference::findOne($id) !== null)) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
 	
 	public function actionDownloadFile($attr, $url, $identity = true){
 	    
@@ -268,6 +277,7 @@ class SiteController extends Controller
 
 	public function actionVerifyEmail($token, $c)
     {
+        $conf = $this->findConference($c);
         try {
             $model = new VerifyEmailForm($token);
         } catch (InvalidArgumentException $e) {
@@ -275,10 +285,9 @@ class SiteController extends Controller
         }
         if ($model->verifyEmail()) {
                 Yii::$app->session->setFlash('success', 'Thank you, your email has been confirmed. You can now login to submit your application');
-                return $this->redirect(['/site/login']);
+        }else{
+            Yii::$app->session->setFlash('error', 'Sorry, we are unable to verify your account with provided token.');
         }
-        
-        Yii::$app->session->setFlash('error', 'Sorry, we are unable to verify your account with provided token.');
-        return $this->redirect(['/site/login']);
+        return $this->redirect(['/account/index', 'confurl' => $conf->conf_url]);
     }
 }
