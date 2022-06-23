@@ -23,6 +23,7 @@ use confsite\models\UploadPaperFile as UploadFile;
 use confsite\models\ConfPaperSearch;
 use confsite\models\ReviewSearch;
 use backend\modules\conference\models\Associate;
+use backend\modules\conference\models\ConfRegistration;
 
 /**
  * PaperController implements the CRUD actions for ConfPaper model.
@@ -78,8 +79,13 @@ class MemberController extends Controller
      */
     public function actionPaper($confurl=null)
     {
-		$this->layout = 'main-member';
+		
 		$conf = $this->findConferenceByUrl($confurl);
+		if($conf->system_only == 1){
+			$this->layout = 'system-member';
+		}else{
+			$this->layout = 'main-member';
+		}
         $searchModel = new ConfPaperSearch();
 		$searchModel->conf_id = $conf->id;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -96,8 +102,13 @@ class MemberController extends Controller
 	
 	public function actionReview($confurl=null)
     {
-		$this->layout = 'main-member';
 		$conf = $this->findConferenceByUrl($confurl);
+		if($conf->system_only == 1){
+			$this->layout = 'system-member';
+		}else{
+			$this->layout = 'main-member';
+		}
+
         $searchModel = new ReviewSearch();
 		$searchModel->conf_id = $conf->id;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -128,6 +139,14 @@ class MemberController extends Controller
     }
 	
 	public function actionReviewForm($confurl=null,$id){
+		$conf = $this->findConferenceByUrl($confurl);
+		if($conf->system_only == 1){
+			$this->layout = 'system-member';
+		}else{
+			$this->layout = 'main-member';
+		}
+
+
 		if($confurl){
         $model = $this->findModel($id);
 		$review = $this->findReviewer($id);
@@ -137,6 +156,11 @@ class MemberController extends Controller
 		} */
 		
 		if($review->load(Yii::$app->request->post())){
+			$reg = ConfRegistration::findOne(['conf_id' => $conf->id, 'user_id' => Yii::$app->user->identity->id]);
+			if($reg){
+				$reg->is_reviewer = 1;
+				$reg->save();
+			}
 			$wfaction = Yii::$app->request->post('wfaction');
 			if($wfaction=='save'){
 				if($review->save()){
@@ -191,7 +215,12 @@ class MemberController extends Controller
 	
 	public function actionPayment($confurl=null)
     {
-		$this->layout = 'main-member';
+		$conf = $this->findConferenceByUrl($confurl);
+		if($conf->system_only == 1){
+			$this->layout = 'system-member';
+		}else{
+			$this->layout = 'main-member';
+		}
 		
 		if($confurl){
 			return $this->render('payment', [
@@ -254,7 +283,12 @@ class MemberController extends Controller
     
 	public function actionProfile($confurl=null)
     {
-		$this->layout = 'main-member';
+		$conf = $this->findConferenceByUrl($confurl);
+		if($conf->system_only == 1){
+			$this->layout = 'system-member';
+		}else{
+			$this->layout = 'main-member';
+		}
 		
 		if($confurl){
 			$user = User::findOne(Yii::$app->user->identity->id);
@@ -264,8 +298,13 @@ class MemberController extends Controller
 			    $new = new Associate();
 			    $new->scenario = 'raw';
 			    $new->user_id = $user->id;
-			    $new->save();
+			    if(!$new->save()){
+					print_r($new->getErrors());
+					die();
+				}
+				$associate = $user->associate;
 			}
+			
 			$associate->scenario = 'conf_profile';
 			$user->scenario = 'conf_profile';
 		
@@ -310,6 +349,14 @@ class MemberController extends Controller
      */
 	public function actionCreate($confurl=null)
     {
+		$conf = $this->findConferenceByUrl($confurl);
+		if($conf->system_only == 1){
+			$this->layout = 'system-member';
+		}else{
+			$this->layout = 'main-member';
+		}
+
+
 		if($confurl){
 		$model = new ConfPaper();
 		$conf = $this->findConferenceByUrl($confurl);
@@ -361,7 +408,12 @@ class MemberController extends Controller
                                 break;
                             }
                         }
-
+						// update reg as author 
+						$reg = ConfRegistration::findOne(['conf_id' => $conf->id, 'user_id' => Yii::$app->user->identity->id]);
+						if($reg){
+							$reg->is_author = 1;
+							$reg->save();
+						}
                     }else{
                         //print_r($model->getErrors());die();
                         $model->flashError();
@@ -403,6 +455,13 @@ class MemberController extends Controller
 	}
 	
 	public function actionUpload($confurl=null,$id){
+		$conf = $this->findConferenceByUrl($confurl);
+		if($conf->system_only == 1){
+			$this->layout = 'system-member';
+		}else{
+			$this->layout = 'main-member';
+		}
+
 		if($confurl){
         $model = $this->findModel($id);
 		$model->scenario = 'fullpaper';
@@ -652,9 +711,15 @@ class MemberController extends Controller
      */
 	public function actionUpdate($confurl=null,$id)
     {
+		$conf = $this->findConferenceByUrl($confurl);
+		if($conf->system_only == 1){
+			$this->layout = 'system-member';
+		}else{
+			$this->layout = 'main-member';
+		}
+
 		if($confurl){
         $model = $this->findModel($id);
-        $conf = $this->findConferenceByUrl($confurl);
         $authors = $model->authors;
        
         if ($model->load(Yii::$app->request->post())) {

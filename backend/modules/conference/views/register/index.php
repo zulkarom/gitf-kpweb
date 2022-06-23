@@ -42,6 +42,26 @@ $this->params['breadcrumbs'][] = $this->title;
 				}
 				
 			],
+
+            [
+				'attribute' => 'is_author',
+				'label' => 'Author',
+				'value' => function($model){
+					return $model->is_author == 1 ? 'Yes' : 'No';
+				}
+				
+			],
+
+            [
+				'attribute' => 'is_reviewer',
+				'label' => 'Reviewer',
+				'value' => function($model){
+					return $model->is_reviewer == 1 ? 'Yes' : 'No';
+				}
+				
+			],
+
+            
 			
             'reg_at:datetime',
 

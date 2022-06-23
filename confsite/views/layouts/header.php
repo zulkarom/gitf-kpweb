@@ -24,7 +24,7 @@ if (Yii::$app->user->isGuest) {
 	$menu[] = ['<i class="fa fa-book"></i> My Review', ['/member/review', 'confurl' => $confurl], 'files-o', $conf->myReviewCount];
 	
 	if($conf->commercial){
-		$menu[] = ['<i class="fa fa-dollar"></i> Transaction', ['/member/payment', 'confurl' => $confurl], 'table', 0];
+		$menu[] = ['<i class="fa fa-dollar"></i> Fee Payment', ['/member/payment', 'confurl' => $confurl], 'table', 0];
 	}
 	
 	

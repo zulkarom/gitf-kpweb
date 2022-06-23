@@ -71,8 +71,14 @@ class NewUserForm extends Model
         $user->setPassword($this->password);
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
-        return $user->save() && $this->sendEmail($user, $conf_id);
-        
+        if($user->save()){
+            if($this->sendEmail($user, $conf_id)){
+                return true;
+            }
+        }else{
+            print_r($user->getErrors());
+        };
+        return false;
     }
     
     /**
@@ -82,6 +88,7 @@ class NewUserForm extends Model
      */
     protected function sendEmail($user, $conf_id)
     {
+        
         return Yii::$app
         ->mailer
         ->compose(

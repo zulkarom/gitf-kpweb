@@ -21,13 +21,11 @@ class AccountController extends SiteController
     {
         $conf = $this->findConferenceByUrl($confurl);
         if (!\Yii::$app->user->isGuest) {
-            //$this->goHome();
-            return $this->user_redirect();
+            return $this->redirect(['/site/member', 'confurl' => $confurl]);
         }
         
         $model = new NewUserForm();
         // $model->scenario = 'register';
-        
         if ($model->load(Yii::$app->request->post()) && $model->signup($conf->id)) {
             Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for email verification.');
             return $this->refresh();
@@ -38,7 +36,7 @@ class AccountController extends SiteController
         // $modelLogin->scenario = 'login';
         
         if ($modelLogin->load(Yii::$app->request->post()) && $modelLogin->login()){
-            return $this->redirect(['home']);
+            return $this->redirect(['/site/home', 'confurl' => $confurl]);
         }
         
         

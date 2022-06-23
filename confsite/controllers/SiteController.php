@@ -93,11 +93,15 @@ class SiteController extends Controller
 		
 		$model = $this->findConferenceByUrl($confurl);
         
-		
+
 		if($confurl){
 			
+            $user = ConfRegistration::findOne(['conf_id' => $model->id, 'user_id' => Yii::$app->user->identity->id]);
+            if($user){
+                return $this->redirect(['/member/index', 'confurl' => $confurl]);
+            }
 			if ($model->load(Yii::$app->request->post())) {
-				$user = ConfRegistration::findOne(['conf_id' => $model->id, 'user_id' => Yii::$app->user->identity->id]);
+				
 			
 				if(!$user){
 					$user_id = Yii::$app->user->identity->id;
@@ -110,18 +114,20 @@ class SiteController extends Controller
 						//email registration
 						//$model->sendEmail(1, $user_id);
 						Yii::$app->session->addFlash('success', "You have been successfully registered to " . $model->conf_abbr);
-						return $this->redirect(['member/index', 'confurl' => $confurl]);
+						return $this->redirect(['/member/index', 'confurl' => $confurl]);
 					}else{
 						$reg->flashError();
 					}
 				}else{
-					return $this->redirect(['member/index', 'confurl' => $confurl]);
+					return $this->redirect(['/member/index', 'confurl' => $confurl]);
 				}
 				
 				
 			}
 			
-			
+			if($model->system_only == 1){
+                $this->layout = 'system';
+            }
 			
 			return $this->render('member', [
 			'model' => $model
@@ -134,12 +140,16 @@ class SiteController extends Controller
 	
 	public function actionLogin($confurl=null)
     {
+        $this->layout = '//main-login';
+		$conf = $this->findConferenceByUrl($confurl);
+        if($conf->system_only == 1){
+            return $this->redirect(['/account/index', 'confurl' => $confurl]);
+        }
 		
 		if (!Yii::$app->user->isGuest) {
             return $this->redirect(['member/index', 'confurl' => $confurl]);
         }
-		$this->layout = '//main-login';
-		$conf = $this->findConferenceByUrl($confurl);
+		
 		
 		if($confurl){
 			$model = new LoginForm();
@@ -205,14 +215,7 @@ class SiteController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
-    protected function findConference($id)
-    {
-        if (($model = Conference::findOne($id) !== null)) {
-            return $model;
-        }
-
-        throw new NotFoundHttpException('The requested page does not exist.');
-    }
+    
 	
 	public function actionDownloadFile($attr, $url, $identity = true){
 	    
@@ -272,6 +275,16 @@ class SiteController extends Controller
         return $this->render('resetPassword', [
             'model' => $model,
         ]);
+    }
+
+    protected function findConference($id)
+    {
+        $model = Conference::findOne($id);
+        if ($model) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 	
 

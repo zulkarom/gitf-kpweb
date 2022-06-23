@@ -33,8 +33,10 @@ class ConfRegistration extends \yii\db\ActiveRecord
     {
         return [
             [['conf_id', 'user_id', 'reg_at', 'confly_number'], 'required'],
-            [['conf_id', 'user_id', 'confly_number'], 'integer'],
+            [['conf_id', 'user_id', 'confly_number','fee_paid_at','fee_verified_at','fee_currency','is_author','is_reviewer'], 'integer'],
             [['reg_at'], 'safe'],
+            [['fee_note'], 'string'],
+            [['fee_amount'], 'number'],
             [['conf_id'], 'exist', 'skipOnError' => true, 'targetClass' => Conference::className(), 'targetAttribute' => ['conf_id' => 'id']],
         ];
     }
