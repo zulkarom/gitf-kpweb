@@ -56,7 +56,7 @@ class NewUserForm extends Model
     } */
     
     
-    public function signup()
+    public function signup($conf_id)
     {
         if (!$this->validate()) {
             return null;
@@ -71,7 +71,7 @@ class NewUserForm extends Model
         $user->setPassword($this->password);
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
-        return $user->save() && $this->sendEmail($user);
+        return $user->save() && $this->sendEmail($user, $conf_id);
         
     }
     
@@ -80,13 +80,13 @@ class NewUserForm extends Model
      * @param User $user user model to with email should be send
      * @return bool whether the email was sent
      */
-    protected function sendEmail($user)
+    protected function sendEmail($user, $conf_id)
     {
         return Yii::$app
         ->mailer
         ->compose(
             ['html' => 'emailVerify-html', 'text' => 'emailVerify-text'],
-            ['user' => $user]
+            ['user' => $user, 'conf_id' => $conf_id]
             )
         ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->params['senderName']])
         ->setTo($this->email)

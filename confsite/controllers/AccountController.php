@@ -6,6 +6,7 @@ use yii\web\NotFoundHttpException;
 use confsite\models\LoginForm;
 use confsite\models\NewUserForm;
 use confsite\models\SignInForm;
+use backend\modules\conference\models\Conference;
 
 
 
@@ -18,6 +19,7 @@ class AccountController extends SiteController
 
     public function actionIndex($confurl=null)
     {
+        $conf = $this->findConferenceByUrl($confurl);
         if (!\Yii::$app->user->isGuest) {
             //$this->goHome();
             return $this->user_redirect();
@@ -26,7 +28,7 @@ class AccountController extends SiteController
         $model = new NewUserForm();
         // $model->scenario = 'register';
         
-        if ($model->load(Yii::$app->request->post()) && $model->signup()) {
+        if ($model->load(Yii::$app->request->post()) && $model->signup($conf->id)) {
             Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for email verification.');
             return $this->refresh();
         }
@@ -46,6 +48,15 @@ class AccountController extends SiteController
             'confurl' => $confurl
         ]);
 		
+    }
+
+    protected function findConferenceByUrl($url)
+    {
+        if (($model = Conference::findOne(['conf_url' => $url])) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 	
 	
