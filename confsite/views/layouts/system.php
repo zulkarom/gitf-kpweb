@@ -17,7 +17,7 @@ $dirAsset = Yii::$app->assetManager->getPublishedUrl('@confsite/views/myasset');
 $confurl = Yii::$app->getRequest()->getQueryParam('confurl');
 $conf = Conference::findOne(['conf_url' => $confurl]);
 if($conf){
-	$conf_name = $conf->conf_name;
+	$conf_name = $conf->conf_name . ' ('. $conf->conf_abbr .')';
 }
 
 
@@ -30,11 +30,16 @@ if($conf){
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	 <?= Html::csrfMetaTags() ?>
-	<link rel="icon" type="image/png" href="<?=$dirAsset?>/images/icons/favicon.png"/>
 	
 	<?php $this->head() ?>
 	
-	
+	<style>
+.btn-primary {
+    color: #fff;
+    background-color: #13294e;
+    border-color: #13294e;
+}
+</style>
 
 	
 </head>
@@ -43,14 +48,23 @@ if($conf){
 <?php $this->beginBody() ?>
 
 
+<section class="flex-col-c-m" style="background-color:#13294e;margin-bottom:30px;">
+<div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
 
+
+	<a href="<?=Url::to(['/site/home','confurl' => $confurl])?>" style="color:white;font-weight:bold">
+		<h1 style="margin-top:20px;text-align:center;font-size:30px;margin-bottom:30px;"><?=$conf_name?></h1></a>
+	</div>
+</div>
+
+	</section>
 
 	<!-- content page -->
 	<section class="bgwhite">
 		<div class="container">
-		<section class="bg-title-page flex-col-c-m"><a href="<?=Url::to(['/site/home','confurl' => $confurl])?>">
-		<h1 style="margin-top:20px;margin-bottom:30px;text-align:center;font-size:30px;"><?=$conf_name?></h1></a>
-	</section>
+		
 			<div class="row">
 		
 				<div class="col-md-12 col-lg-12 p-b-75">

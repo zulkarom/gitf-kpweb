@@ -32,7 +32,7 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@confsite/views/myas
 				
 			],
             
-            'date_start:date',
+            'conferenceDateRange',
 
 
         ],

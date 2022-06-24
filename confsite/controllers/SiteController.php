@@ -33,11 +33,12 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'index', 'error', 'register', 'home', 'download-file', 'verify-email', 'request-password-reset', 'reset-password'],
+                        'actions' => ['login', 'index', 'error', 'register', 'home', 'download-file', 'verify-email', 'request-password-reset', 'reset-password', 'test'],
+                        'roles' => ['?'],
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'member', 'error'],
+                        'actions' => ['logout', 'member', 'error','verify-email', 'home'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -50,6 +51,15 @@ class SiteController extends Controller
                 ],
             ], */
         ];
+    }
+
+    public function actionTest(){
+        echo 'jutawan';
+    }
+
+    public function actionError(){
+        
+        
     }
 
 

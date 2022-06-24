@@ -75,6 +75,7 @@ return [
             'showScriptName' => false,
             'rules' => [
 				'<confurl>' => 'site/home',
+                '<controller>/<action>' => '<controller>/<action>', 
             ],
         ],
     ],

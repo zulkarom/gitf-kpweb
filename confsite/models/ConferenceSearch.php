@@ -41,7 +41,7 @@ class ConferenceSearch extends Conference
      */
     public function search($params)
     {
-        $query = Conference::find();
+        $query = Conference::find()->where(['is_active' => 1])->orderBy('date_start DESC');
 
         // add conditions that should always apply here
 

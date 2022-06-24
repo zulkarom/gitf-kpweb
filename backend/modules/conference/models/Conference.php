@@ -54,7 +54,7 @@ class Conference extends \yii\db\ActiveRecord
 			
 			[['email_contact'], 'unique'],
 			
-			[['user_id', 'created_by', 'commercial', 'system_only'], 'integer'],
+			[['user_id', 'created_by', 'commercial', 'system_only', 'is_active'], 'integer'],
 			
 			[['banner_file'], 'required', 'on' => 'banner_upload'],
             [['banner_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg, jpeg, png', 'maxSize' => 2000000],
@@ -87,6 +87,7 @@ class Conference extends \yii\db\ActiveRecord
 			'currency_local' => 'Local Currency',
 			'logo_file' => 'Invoice/Receipt Logo',
 			'payment_info_inv' => 'Invoice Payment Info',
+			'conferenceDateRange' => 'Date'
 			
         ];
     }
@@ -96,7 +97,7 @@ class Conference extends \yii\db\ActiveRecord
     }
 	
 	public function getConferenceDate($sep = ' - '){
-		if(($this->date_start == $this->date_end) or ($this->date_end == '0000-00-00')){
+		if(($this->date_start == $this->date_end) or ($this->date_end == '0000-00-00') or ($this->date_end == null)){
 			return date('d M Y', strtotime($this->date_start));
 		}else{
 			return date('d M Y', strtotime($this->date_end)) . $sep . date('d M Y', strtotime($this->date_end));
@@ -106,7 +107,7 @@ class Conference extends \yii\db\ActiveRecord
 	public function getConferenceDateRange($long = false){
 		$start = $this->date_start;
 		$end = $this->date_end;
-		if($end == '0000-00-00' or $start == $end){
+		if($end == '0000-00-00' or $start == $end or $end == null){
 			if($long){
 				return date('d F Y', strtotime($start));
 			}else{

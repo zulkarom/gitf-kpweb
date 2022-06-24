@@ -7,13 +7,14 @@ use confsite\models\LoginForm;
 use confsite\models\NewUserForm;
 use confsite\models\SignInForm;
 use backend\modules\conference\models\Conference;
+use yii\web\Controller;
 
 
 
 /**
  * Site controller
  */
-class AccountController extends SiteController
+class AccountController extends Controller
 {
     public $layout = 'system';
 

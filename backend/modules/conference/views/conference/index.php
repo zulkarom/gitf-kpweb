@@ -28,10 +28,21 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'conf_name',
+            [
+                'attribute' => 'conf_name',
+                'value' => function($model){
+                    return $model->conf_name . ' ('. $model->conf_abbr .')';
+                }
+            ],
             
-            'date_start:date',
+            'conferenceDateRange',
             'conf_venue',
+            [
+                'label' => 'Active',
+                'value' => function($model){
+                    return $model->is_active == 1 ? 'YES' : 'NO';
+                }
+            ],
             //'conf_url:url',
 			
 			
