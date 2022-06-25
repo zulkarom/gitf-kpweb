@@ -20,9 +20,8 @@ class ConfRegistrationSearch extends ConfRegistration
     public function rules()
     {
         return [
-            [['id', 'conf_id', 'user_id'], 'integer'],
-			[['email', 'fullname'], 'string'],
-            [['reg_at'], 'safe'],
+            [['id', 'conf_id', 'user_id', 'is_author', 'is_reviewer', 'fee_status'], 'integer'],
+			[['email', 'fullname', 'institution'], 'string'],
         ];
     }
 
@@ -45,8 +44,7 @@ class ConfRegistrationSearch extends ConfRegistration
     public function search($params)
     {
         $query = ConfRegistration::find()->where(['conf_id' => $this->conf_id]);
-		
-		$query->joinWith(['user']);
+		$query->joinWith(['user', 'associate']);
 
         // add conditions that should always apply here
 
@@ -65,6 +63,15 @@ class ConfRegistrationSearch extends ConfRegistration
             // $query->where('0=1');
             return $dataProvider;
         }
+
+        $query->andFilterWhere([
+            'is_author' => $this->is_author,
+            'is_reviewer' => $this->is_reviewer,
+            'fee_status' => $this->fee_status,
+        ]);
+
+        $query->andFilterWhere(['like', 'user.fullname', $this->fullname]);
+        $query->andFilterWhere(['like', 'user.email', $this->email]);
 		
 		$dataProvider->sort->attributes['fullname'] = [
         'asc' => ['user.fullname' => SORT_ASC],

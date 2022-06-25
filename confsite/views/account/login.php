@@ -6,7 +6,7 @@ use yii\widgets\ActiveForm;
 $this->title = 'Sign Up/Sign In';
 ?>
 
-<h4 style="text-align:center">LOGIN OR REGISTER TO SUBMIT OR UPDATE YOUR PAPER.</h4>
+<h4 style="text-align:center; font-size:20px;">LOGIN OR REGISTER TO SUBMIT OR UPDATE YOUR PAPER.</h4>
 <br /><br />
 <div class="row">
     <div class="col-md-6 col-lg-6"> 

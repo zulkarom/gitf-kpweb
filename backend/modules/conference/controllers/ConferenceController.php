@@ -294,7 +294,7 @@ class ConferenceController extends Controller
                     } else {
                         $transaction->rollBack();
                     }
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     $transaction->rollBack();
                     
                 }
@@ -371,7 +371,7 @@ class ConferenceController extends Controller
                     } else {
                         $transaction->rollBack();
                     }
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     $transaction->rollBack();
                     
                 }
@@ -491,7 +491,7 @@ class ConferenceController extends Controller
                     } else {
                         $transaction->rollBack();
                     }
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     $transaction->rollBack();
                 }
             }

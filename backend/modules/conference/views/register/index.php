@@ -7,13 +7,11 @@ use yii\grid\GridView;
 /* @var $searchModel confmanager\models\ConfRegistrationSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Registration';
+$this->title = 'Participants';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="panel panel-headline">
-						<div class="panel-heading">
-							<h3 class="panel-title"><?=$this->title?></h3>
-						</div>
+					
 						<div class="panel-body">
 			
 			
@@ -23,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        //'filterModel' => $searchModel,
+        'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 			[
@@ -46,6 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
 				'attribute' => 'is_author',
 				'label' => 'Author',
+				'filter' => Html::activeDropDownList($searchModel, 'is_author', [0 => 'No', 1=>'Yes'],['class'=> 'form-control','prompt' => 'Choose']),
 				'value' => function($model){
 					return $model->is_author == 1 ? 'Yes' : 'No';
 				}
@@ -55,19 +54,38 @@ $this->params['breadcrumbs'][] = $this->title;
             [
 				'attribute' => 'is_reviewer',
 				'label' => 'Reviewer',
+				'filter' => Html::activeDropDownList($searchModel, 'is_reviewer', [0 => 'No', 1=>'Yes'],['class'=> 'form-control','prompt' => 'Choose']),
 				'value' => function($model){
 					return $model->is_reviewer == 1 ? 'Yes' : 'No';
 				}
 				
 			],
 
+			[
+				'attribute' => 'fee_status',
+				'label' => 'Payment',
+				'filter' => Html::activeDropDownList($searchModel, 'fee_status',$searchModel->listFeeStatus(),['class'=> 'form-control','prompt' => 'Choose']),
+				'value' => function($model){
+					return $model->statusFeeLabel;;
+				}
+				
+			],
+
+			[
+				'label' => 'Paper',
+				'value' => function($model){
+					//return $model->statusFeeLabel;;
+				}
+				
+			],
+
             
 			
-            'reg_at:datetime',
+           // 'reg_at:datetime',
 
             ['class' => 'yii\grid\ActionColumn',
                  'contentOptions' => ['style' => 'width: 8.7%'],
-                'template' => '{update}',
+                'template' => '{view} {update}',
                 //'visible' => false,
                 'buttons'=>[
                     'update'=>function ($url, $model) {
@@ -77,6 +95,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'confirm' => 'Are you sure you want to unregister this user?',
                 'method' => 'post',
             ],
+        ]) 
+;
+                    },
+					'view'=>function ($url, $model) {
+                        return Html::a('View', ['view', 'id' => $model->id, 'conf' => $model->conf_id], [
+            'class' => 'btn btn-warning btn-sm',
         ]) 
 ;
                     }

@@ -55,7 +55,7 @@ if($conf){
 
 
 	<a href="<?=Url::to(['/site/home','confurl' => $confurl])?>" style="color:white;font-weight:bold">
-		<h1 style="margin-top:20px;text-align:center;font-size:30px;margin-bottom:30px;"><?=$conf_name?></h1></a>
+		<h1 style="margin-top:20px;text-align:center;font-size:25px;margin-bottom:30px;"><?=$conf_name?></h1></a>
 	</div>
 </div>
 

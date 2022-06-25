@@ -31,6 +31,7 @@ use backend\modules\conference\models\ConfRegistration;
 class MemberController extends Controller
 {
 	public $layout = 'main-member';
+	
     /**
      * {@inheritdoc}
      */
@@ -213,21 +214,7 @@ class MemberController extends Controller
 		
 	}
 	
-	public function actionPayment($confurl=null)
-    {
-		$conf = $this->findConferenceByUrl($confurl);
-		if($conf->system_only == 1){
-			$this->layout = 'system-member';
-		}else{
-			$this->layout = 'main-member';
-		}
-		
-		if($confurl){
-			return $this->render('payment', [
-			]);
-		}
-        
-    }
+	
 	
 	public function actionInvoiceView($confurl=null, $id)
     {
@@ -302,10 +289,14 @@ class MemberController extends Controller
 					print_r($new->getErrors());
 					die();
 				}
-				$associate = $user->associate;
+
+				return $this->refresh();
 			}
 			
-			$associate->scenario = 'conf_profile';
+			if($conf->is_pg == 1){
+				$associate->scenario = 'conf_profile_pg';
+			}
+			
 			$user->scenario = 'conf_profile';
 		
 			if ($user->load(Yii::$app->request->post()) && $associate->load(Yii::$app->request->post())) {
@@ -320,10 +311,18 @@ class MemberController extends Controller
 			
 			}
 
-			return $this->render('profile', [
-				'user' => $user,
-				'associate' => $associate
-			]);
+			if($conf->is_pg == 1){
+				return $this->render('profile_pg', [
+					'user' => $user,
+					'associate' => $associate
+				]);
+			}else{
+				return $this->render('profile', [
+					'user' => $user,
+					'associate' => $associate
+				]);
+			}
+			
 
 		}
         
@@ -853,7 +852,7 @@ class MemberController extends Controller
     }
 
 	protected function clean($string){
-        $allowed = ['paper', 'payment', 'repaper'];
+        $allowed = ['paper', 'payment', 'repaper', 'fee'];
         
         foreach($allowed as $a){
             if($string == $a){

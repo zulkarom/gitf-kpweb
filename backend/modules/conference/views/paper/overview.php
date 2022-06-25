@@ -223,202 +223,153 @@ $columns = [
 						<div class="panel-body">
 
 <div class="conf-paper-index">
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        //'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-            [
-                'attribute' => 'created_at',
-                'label' => 'Date',
-                'format' => 'date'
+    <?php 
+    
+    $web_col = [
+        ['class' => 'yii\grid\SerialColumn'],
+        [
+            'attribute' => 'created_at',
+            'label' => 'Date',
+            'format' => 'date'
+        ],
+        [
+            
+            'attribute' => 'confly_number',
+            'label' => 'Paper Id',
+            //'contentOptions' => [ 'style' => 'width: 60%;' ],
+            'value' => function($model){
+            
+            return $model->paperId;
+            
+            }
             ],
-            [
-                
-                'attribute' => 'confly_number',
-                'label' => 'Paper Id',
-                //'contentOptions' => [ 'style' => 'width: 60%;' ],
-                'value' => function($model){
-                
-                return $model->paperId;
-                
-                }
-                ],
-			[
-			    
-			 'attribute' => 'pap_title',
-			 'format' => 'raw',
-			 //'contentOptions' => [ 'style' => 'width: 60%;' ],
-			 'value' => function($model){
+        [
+            
+         'attribute' => 'pap_title',
+         'format' => 'raw',
+         //'contentOptions' => [ 'style' => 'width: 60%;' ],
+         'value' => function($model){
 
-					 return "<a href='#' data-toggle='modal' idx='".$model->id."' data-target='#modal-article-info'>".Html::encode($model->pap_title) ."    &nbsp;<span class='glyphicon glyphicon-pencil'></span> </a>";
-				 
-			 }
-			],
-			
-			[
-			    'label' => 'Field of Study',
-			    'value' => function($model){
-			    if($model->scope){
-			        return $model->scope->scope_name;
-			    }else{
-			        return 'NULL';
-			    }
-			    
-			    }
-			    
-			    ],
-			
-			
-            [
-				'label' => 'Participant',
-                'format' => 'html',
-				'value' => function($model){
-				return $model->user->fullname . '<br />(<i>' . $model->user->email . ')</i>';
-				}
-				
-			],
-			[
-			    'label' => 'Supervisors',
-			    'format' => 'html',
-			    'value' => function($model){
-    			    if($model->user->associate){
-    			        return $model->user->associate->supervisorsList;
-    			    }
-			         
-			    }
-			    
-			    ],
-			
-			[
-			    'label' => 'Reviewer',
-			    'value' => function($model){
-			    if($model->reviewer){
-			        return $model->reviewer->fullname;
-			    }else{
-			        return '-';
-			    }
-			    
-			    }
-			    
-			    ],
-			    
-			    [
-			        'label' => 'Rate',
-			        'value' => function($model){
-			        if($model->reviewer){
-			            return $model->paperReviewer->paper_rate;
-			        }else{
-			            return '-';
-			        }
-			        
-			        }
-			        
-			        ],
-			    
-			    [
-			        'attribute' => 'paper_file',
-			        'label' => 'Download Paper',
-			        'format' => 'raw',
-			        'value' => function($model){
-			        if($model->paper_file){
-			            if($model->repaper_file){
-			                $attr = 'repaper';
-			            }else{
-			                $attr = 'paper';
-			            }
-			            return Html::a('<span class="fa fa-download"></span> Paper', ['paper/download-file', 'id' => $model->id, 'attr' => $attr], ['target' => '_blank']);
-			        }else{
-			            return '-';
-			        }
-			        
-			        }
-			        ],
-			[
-			    'attribute' => 'status',
-			    'format' => 'raw',
-			    'value' => function($model){
-			    return $model->statusLabel;
-			    }
-			    
-			    ],
-			['class' => 'yii\grid\ActionColumn',
-                'template' => '{update} {delete}',
-                //'visible' => false,
-                'buttons'=>[
-                    'update'=>function ($url, $model) {
-                        return "<a href='javascript:void(0)' class='btn btn-warning btn-sm' data-toggle='modal' idx='".$model->id."' data-target='#modal-article-info'><span class='fa fa-edit'></span></a>";
-                    },
-                    'delete'=>function ($url, $model) {
-                        return Html::a('<span class="fa fa-trash"></span>', ['delete', 'id' => $model->id], [
-                            'class' => 'btn btn-danger btn-sm',
-                            'data' => [
-                                'confirm' => 'Are you sure you want to delete this paper?',
-                                'method' => 'post',
-                            ],
-                        ]);
-                    }
-                ],
+                 return "<a href='#' data-toggle='modal' idx='".$model->id."' data-target='#modal-article-info'>".Html::encode($model->pap_title) ."    &nbsp;<span class='glyphicon glyphicon-pencil'></span> </a>";
+             
+         }
+        ],
+        
+        [
+            'label' => 'Field of Study',
+            'value' => function($model){
+            if($model->scope){
+                return $model->scope->scope_name;
+            }else{
+                return 'NULL';
+            }
+            
+            }
             
             ],
-			/* [
-				'label' => 'Role',
-				'value' => function($model){
-					if($model->authorRole){
-						return $model->authorRole->fee_name;
-					}
-					
-				}
-				
-			],
-			[
-				'label' => 'Invoice',
-				'format' => 'raw',
-				'value' => function($model){
-					if($model->payment_file){
-						return '<a href="'.Url::to(['paper/invoice-pdf', 'id' => $model->id]).'" target="_blank"><span class="label label-danger">Invoice</span></a>';
-					}else{
-						return 'Issue Now';
-					}
-					
-				}
-				
-			],
-			[
-				'label' => 'Amount',
-				'value' => function($model){
-					return $model->niceAmount;
-					
-				}
-				
-			],
-			[
-				'label' => 'Payment',
-				'value' => function($model){
-					if($model->receipt_ts == 0){
-						return 'NO';
-					}else{
-						return 'YES';
-					}
-					
-				}
-				
-			],
-			[
-				'label' => 'Presenter',
-				'value' => function($model){
-					if($model->attending == 0){
-						return 'NO';
-					}else{
-						return 'YES';
-					}
-				}
-				
-			], */
-			
-			
+        
+        
+        [
+            'label' => 'Participant',
+            'format' => 'html',
+            'value' => function($model){
+            return $model->user->fullname . '<br />(<i>' . $model->user->email . ')</i>';
+            }
+            
+        ]
+        ];
+        if($conf->is_pg == 1){
+            $web_col[] = [
+                'label' => 'Supervisors',
+                'format' => 'html',
+                'value' => function($model){
+                    if($model->user->associate){
+                        return $model->user->associate->supervisorsList;
+                    }
+                     
+                }
+                
+            ];
+        }
+       
 
+        $web_col[] = [
+            'label' => 'Reviewer',
+            'value' => function($model){
+            if($model->reviewer){
+                return $model->reviewer->fullname;
+            }else{
+                return '-';
+            }
+            
+            }
+            
+        ];
+    
+        $web_col[] = [
+            'label' => 'Rate',
+            'value' => function($model){
+            if($model->reviewer){
+                return $model->paperReviewer->paper_rate;
+            }else{
+                return '-';
+            }
+            
+            }
+            
+        ];
+
+        $web_col[] = [
+            'attribute' => 'paper_file',
+            'label' => 'Download Paper',
+            'format' => 'raw',
+            'value' => function($model){
+            if($model->paper_file){
+                if($model->repaper_file){
+                    $attr = 'repaper';
+                }else{
+                    $attr = 'paper';
+                }
+                return Html::a('<span class="fa fa-download"></span> Paper', ['paper/download-file', 'id' => $model->id, 'attr' => $attr], ['target' => '_blank']);
+            }else{
+                return '-';
+            }
+            
+            }
+        ];
+        $web_col[] =[
+            'attribute' => 'status',
+            'format' => 'raw',
+            'value' => function($model){
+            return $model->statusLabel;
+            }
+            
+        ];
+        $web_col[] = ['class' => 'yii\grid\ActionColumn',
+        'template' => '{update} {delete}',
+        //'visible' => false,
+        'buttons'=>[
+            'update'=>function ($url, $model) {
+                return "<a href='javascript:void(0)' class='btn btn-warning btn-sm' data-toggle='modal' idx='".$model->id."' data-target='#modal-article-info'><span class='fa fa-edit'></span></a>";
+            },
+            'delete'=>function ($url, $model) {
+                return Html::a('<span class="fa fa-trash"></span>', ['delete', 'id' => $model->id], [
+                    'class' => 'btn btn-danger btn-sm',
+                    'data' => [
+                        'confirm' => 'Are you sure you want to delete this paper?',
+                        'method' => 'post',
+                    ],
+                ]);
+            }
         ],
+    
+    ];
+    
+    echo GridView::widget([
+        'dataProvider' => $dataProvider,
+        //'filterModel' => $searchModel,
+        'columns' => $web_col,
+			
     ]); ?>
 </div></div>
 </div>
@@ -453,7 +404,7 @@ $('#modal-article-info').on('show.bs.modal', function (event) {
   var button = $(event.relatedTarget) ;
   var manuscript = button.attr('idx') ;
   var modal = $(this);
-  modal.find('#con-info').load("<?=Url::to(['paper/overwrite-form', 'conf' => $conf, 'id' => ''])?>" + manuscript);
+  modal.find('#con-info').load("<?=Url::to(['paper/overwrite-form', 'conf' => $conf->id, 'id' => ''])?>" + manuscript);
 });
 
 $('body').on('hidden.bs.modal', '.modal', function () {

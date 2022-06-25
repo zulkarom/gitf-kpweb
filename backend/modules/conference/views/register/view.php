@@ -6,34 +6,38 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\conference\models\ConfRegistration */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Conf Registrations', 'url' => ['index']];
+$this->title = $model->user->fullname;
+$this->params['breadcrumbs'][] = ['label' => 'Participants', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="conf-registration-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
+
+    <style>
+table.detail-view th {
+    width:15%;
+}
+</style>
+
+<div class="box">
+<div class="box-header">
+</div>
+<div class="box-body">
+
 
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
-            'conf_id',
-            'user_id',
-            'reg_at',
+            'user.fullname',
+            'user.email',
+            'associate.institution',
+            'associate.country_id'
         ],
     ]) ?>
+</div></div>
+
+
 
 </div>

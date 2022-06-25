@@ -8,3 +8,14 @@ ALTER TABLE `conf_reg` ADD `fee_amount` DOUBLE NULL DEFAULT NULL AFTER `confly_n
 
 ALTER TABLE `conf_reg` ADD `is_author` TINYINT(1) NOT NULL DEFAULT '0' AFTER `fee_currency`, ADD `is_reviewer` TINYINT(1) NOT NULL DEFAULT '0' AFTER `is_author`;
 ALTER TABLE `conf_reg` ADD `fee_status` TINYINT(4) NOT NULL DEFAULT '0' AFTER `is_reviewer`;
+
+
+
+
+ALTER TABLE `conference` ADD `is_active` TINYINT(1) NOT NULL DEFAULT '1' AFTER `system_only`;
+
+ALTER TABLE `conference` ADD `is_pg` TINYINT(1) NOT NULL DEFAULT '0' AFTER `is_active`;
+
+ALTER TABLE `conf_reg` ADD `fee_file` VARCHAR(255) NULL DEFAULT NULL AFTER `fee_paid_at`;
+
+ALTER TABLE `conf_reg` ADD `updated_at` INT NULL DEFAULT NULL AFTER `fee_status`;

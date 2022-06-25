@@ -45,16 +45,16 @@ $model = $associate;
 				<div class="row">
 			
 			
-				<div class="col-md-4"><?= $form
-            ->field($model, 'title')
-            ->textInput() ?></div>	
+			
 			
 <div class="col-md-8"><?= $form
             ->field($user, 'fullname')
             ->label('Full Name')
             ->textInput() ?></div>
 			
-			
+			<div class="col-md-4"><?= $form
+            ->field($model, 'matric_no')
+            ->textInput() ?></div>
 			
 			
 
@@ -87,20 +87,39 @@ echo $form->field($model, 'phone');
 				
 
 
+<div class="row">
+<div class="col-md-6"><?= $form
+            ->field($model, 'pro_study')
+           ->dropDownList($model->listProgramStudy(), ['prompt' => 'Select']) ?></div>
+<div class="col-md-4"><?= $form
+            ->field($model, 'cumm_sem')
+            ->dropDownList($model->listSemNumber(), ['prompt' => 'Select']) ?></div>
+</div>	
+							
+
+
 
 <div class="row">
+<div class="col-md-6"><?= $form
+            ->field($model, 'sv_main')
+			->label('Main Supervisor')
+            ->textInput() ?></div>
+<div class="col-md-6"><?= $form
+            ->field($model, 'sv_co1')
+            ->textInput() ?></div>
+</div>	
+<div class="row">
+<div class="col-md-6"><?= $form
+            ->field($model, 'sv_co2')
+            ->textInput() ?></div>
 
-<div class="col-md-6">
-<?php 
+<div class="col-md-6"><?= $form
+            ->field($model, 'sv_co3')
+            ->textInput() ?></div>
+</div>
 
 
-echo $form->field($associate, 'institution');
-
-
-?>
-	</div>
-
-
+<div class="row">
 	<div class="col-md-6">
 <?php 
 

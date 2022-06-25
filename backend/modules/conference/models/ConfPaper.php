@@ -54,7 +54,7 @@ class ConfPaper extends \yii\db\ActiveRecord
         return [
             [['conf_id', 'confly_number', 'user_id', 'pap_title', 'pap_abstract', 'created_at', 'status', 'scope_id'], 'required', 'on' => 'create'],
 			
-			[['conf_id', 'user_id', 'pap_title', 'pap_abstract', 'created_at', 'status', 'paper_file', 'keyword', 'myrole'], 'required', 'on' => 'fullpaper'],
+			[['conf_id', 'user_id', 'pap_title', 'pap_abstract', 'created_at', 'status', 'paper_file', 'keyword'], 'required', 'on' => 'fullpaper'],
             
             [['conf_id', 'user_id', 'pap_title', 'pap_abstract', 'created_at', 'status', 'repaper_file', 'keyword'], 'required', 'on' => 'correction'],
 			

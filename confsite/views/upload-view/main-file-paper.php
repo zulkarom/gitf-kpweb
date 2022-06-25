@@ -25,11 +25,13 @@ if($model->{$db_file}){
 
 $unique = $attr_name . '_' . $model->id;
 $required = '';
+$star = '';
 $val = $model->getActiveValidators($db_file);
 if($val){
 	foreach($val as $v){
 		if ($v instanceof yii\validators\RequiredValidator) {
             $required =  'required';
+			$star = 'has-star';
 			break;
         }
 	}
@@ -40,7 +42,7 @@ if($val){
 <div class="form-group <?=$required?>">
 <div class="row">
 <div class="col-md-3">
-<label class="control-label"><?=$model->getAttributeLabel($db_file)?></label>
+<label class="control-label <?=$star?>"><?=$model->getAttributeLabel($db_file)?></label>
 </div>
 <div class="col-md-5">
 

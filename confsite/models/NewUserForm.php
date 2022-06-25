@@ -4,6 +4,8 @@ namespace confsite\models;
 use yii\base\Model;
 use Yii;
 use common\models\User;
+use backend\modules\conference\models\Associate;
+
 /**
  * Signup form
  */
@@ -42,7 +44,7 @@ class NewUserForm extends Model
 
     }
 	
-/* 	public function attributeLabels()
+	public function attributeLabels()
     {
         $label = parent::attributeLabels();
 
@@ -53,7 +55,7 @@ class NewUserForm extends Model
         $label['fullname'] = 'Name';
         $label['institution'] = 'Institution';
         return $label;
-    } */
+    } 
     
     
     public function signup($conf_id)
@@ -66,12 +68,26 @@ class NewUserForm extends Model
         $user->fullname = $this->fullname;
         $user->username = $this->email;
         $user->email = $this->email;
-        $user->institution = $this->institution;
+        
         $user->status = 9;
         $user->setPassword($this->password);
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
         if($user->save()){
+            //check maklumat associate
+            $associate = $user->associate;
+			
+			if(!$associate){
+			    $new = new Associate();
+			    $new->scenario = 'raw';
+                $new->institution = $this->institution;
+			    $new->user_id = $user->id;
+			    if(!$new->save()){
+					print_r($new->getErrors());
+					die();
+				}
+			}
+
             if($this->sendEmail($user, $conf_id)){
                 return true;
             }

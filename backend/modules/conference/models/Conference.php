@@ -54,7 +54,7 @@ class Conference extends \yii\db\ActiveRecord
 			
 			[['email_contact'], 'unique'],
 			
-			[['user_id', 'created_by', 'commercial', 'system_only', 'is_active'], 'integer'],
+			[['user_id', 'created_by', 'commercial', 'system_only', 'is_active', 'is_pg'], 'integer'],
 			
 			[['banner_file'], 'required', 'on' => 'banner_upload'],
             [['banner_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg, jpeg, png', 'maxSize' => 2000000],
@@ -87,6 +87,7 @@ class Conference extends \yii\db\ActiveRecord
 			'currency_local' => 'Local Currency',
 			'logo_file' => 'Invoice/Receipt Logo',
 			'payment_info_inv' => 'Invoice Payment Info',
+			'is_pg' => 'For Postgraduate',
 			'conferenceDateRange' => 'Date'
 			
         ];

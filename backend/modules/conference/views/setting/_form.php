@@ -102,11 +102,14 @@ $model->file_controller = 'setting';
 
 <div class="form-group">
 <div class="row">
-<div class="col-md-6">
+<div class="col-md-4">
 <?= $form->field($model, 'is_active')->dropdownlist([1 => 'Yes', 0 => 'No']) ?>
 </div>
-<div class="col-md-6">
+<div class="col-md-4">
 <?= $form->field($model, 'system_only')->dropdownlist([1 => 'Yes', 0 => 'No']) ?>
+</div>
+<div class="col-md-4">
+<?= $form->field($model, 'is_pg')->dropdownlist([1 => 'Yes', 0 => 'No']) ?>
 </div>
 </div>
 

@@ -933,7 +933,14 @@ class Menu
                     // 'visible' => $teaching_load,
                     'url' => '#',
                     'items' => [
-
+                        [
+                            'label' => 'Participants',
+                            'icon' => 'users',
+                            'url' => [
+                                '/conference/register/index',
+                                'conf' => $confurl
+                            ]
+                            ],
                         [
                             'label' => 'Paper\'s Flow',
                             'icon' => 'files-o',
@@ -1039,14 +1046,7 @@ class Menu
                             ]
                         ],
 
-                        [
-                            'label' => 'Participants',
-                            'icon' => 'users',
-                            'url' => [
-                                '/conference/register/index',
-                                'conf' => $confurl
-                            ]
-                        ]
+                        
                     ]
                 ];
                 return $menus;

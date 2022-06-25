@@ -24,7 +24,7 @@ if (Yii::$app->user->isGuest) {
 	$menu[] = ['<i class="fa fa-book"></i> My Review', ['/member/review', 'confurl' => $confurl], 'files-o', $conf->myReviewCount];
 	
 	if($conf->commercial){
-		$menu[] = ['<i class="fa fa-dollar"></i> Fee Payment', ['/member/payment', 'confurl' => $confurl], 'table', 0];
+		$menu[] = ['<i class="fa fa-dollar"></i> Fee Payment', ['/payment/index', 'confurl' => $confurl], 'table', 0];
 	}
 	
 	
@@ -135,28 +135,32 @@ if (Yii::$app->user->isGuest) {
 					if (Yii::$app->user->isGuest) {
 						
 					}
-					$list = json_decode($conf->page_menu);
-					if($list){
-						foreach($list as $item){
-							$page = $conf->pages[$item];
-							echo '<li class="item-menu-mobile">
-							<a href="'. Url::to(['page/' . $page[1],'confurl' => $conf->conf_url]) . '">
-								'.strtoupper($page[0]).'
+
+					if($conf->system_only == 0){
+						$list = json_decode($conf->page_menu);
+						if($list){
+							foreach($list as $item){
+								$page = $conf->pages[$item];
+								echo '<li class="item-menu-mobile">
+								<a href="'. Url::to(['page/' . $page[1],'confurl' => $conf->conf_url]) . '">
+									'.strtoupper($page[0]).'
+									</a>
+								</li>';
+							}
+						}
+						
+						$downloads = $conf->confDownloads;
+						if($downloads){
+							foreach($downloads as $d){
+								echo '<li class="item-menu-mobile">
+								<a href="'.Url::to(['download/download-file', 'id' => $d->id]).'" target="_blank">
+									'.strtoupper($d->download_name) .'
 								</a>
 							</li>';
+							}
 						}
 					}
 					
-					$downloads = $conf->confDownloads;
-					if($downloads){
-						foreach($downloads as $d){
-							echo '<li class="item-menu-mobile">
-							<a href="'.Url::to(['download/download-file', 'id' => $d->id]).'" target="_blank">
-								'.strtoupper($d->download_name) .'
-							</a>
-						</li>';
-						}
-					}
 					
 					
 					?>

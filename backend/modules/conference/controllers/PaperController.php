@@ -4,6 +4,7 @@ namespace backend\modules\conference\controllers;
 
 use Yii;
 use backend\modules\conference\models\ConfPaper;
+use backend\modules\conference\models\Conference;
 use backend\modules\conference\models\ConfAuthor;
 use backend\modules\conference\models\pdf\InvoicePdf;
 use backend\modules\conference\models\pdf\AcceptLetterPdf;
@@ -158,8 +159,9 @@ class PaperController extends Controller
 	
 	public function actionOverview($conf)
     {
+        $conf = $this->findConference($conf);
         $searchModel = new OverwriteSearch();
-		$searchModel->conf_id = $conf;
+		$searchModel->conf_id = $conf->id;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('overview', [
@@ -222,7 +224,7 @@ class PaperController extends Controller
                     } else {
                         $transaction->rollBack();
                     }
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     $transaction->rollBack();
                     
                 }
@@ -575,6 +577,15 @@ class PaperController extends Controller
     protected function findModel($id)
     {
         if (($model = ConfPaper::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    protected function findConference($id)
+    {
+        if (($model = Conference::findOne($id)) !== null) {
             return $model;
         }
 

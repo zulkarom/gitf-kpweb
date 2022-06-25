@@ -30,7 +30,7 @@ class Associate extends \yii\db\ActiveRecord
         return [
             [['user_id'], 'required', 'on' => 'raw'],
 			
-			[['sv_main', 'pro_study', 'cumm_sem', 'matric_no', 'phone', 'country_id'], 'required', 'on' => 'conf_profile'],
+			[['sv_main', 'pro_study', 'cumm_sem', 'matric_no', 'phone', 'country_id'], 'required', 'on' => 'conf_profile_pg'],
 			
 			[['institution', 'country_id', 'title'], 'required', 'on' => 'update_external'],
 			
