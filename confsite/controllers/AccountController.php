@@ -27,7 +27,7 @@ class AccountController extends Controller
         
         $model = new NewUserForm();
         // $model->scenario = 'register';
-        if ($model->load(Yii::$app->request->post()) && $model->signup($conf->id)) {
+        if ($model->load(Yii::$app->request->post()) && $model->signup($conf)) {
             Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for email verification.');
             return $this->refresh();
         }

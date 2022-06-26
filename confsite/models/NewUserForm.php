@@ -5,6 +5,8 @@ use yii\base\Model;
 use Yii;
 use common\models\User;
 use backend\modules\conference\models\Associate;
+use backend\modules\conference\models\ConfRegistration;
+use yii\db\Expression;
 
 /**
  * Signup form
@@ -58,7 +60,7 @@ class NewUserForm extends Model
     } 
     
     
-    public function signup($conf_id)
+    public function signup($conf)
     {
         if (!$this->validate()) {
             return null;
@@ -87,8 +89,17 @@ class NewUserForm extends Model
 					die();
 				}
 			}
+            //register conference terus
 
-            if($this->sendEmail($user, $conf_id)){
+            $reg = new ConfRegistration;
+            $reg->user_id = $user->id;
+            $reg->conf_id = $conf->id;
+            $reg->reg_at = new Expression('NOW()');
+            $reg->confly_number = $reg->nextConflyNumber();
+            $reg->save();
+
+
+            if($this->sendEmail($user, $conf)){
                 return true;
             }
         }else{
@@ -102,10 +113,26 @@ class NewUserForm extends Model
      * @param User $user user model to with email should be send
      * @return bool whether the email was sent
      */
-    protected function sendEmail($user, $conf_id)
+    protected function sendEmail($user, $conf)
     {
-        
-        return Yii::$app
+        $email = urlencode($user->email);
+        $from = urlencode($conf->conf_abbr);
+        $confurl = urlencode($conf->conf_url);
+        $code = $user->verification_token;
+        $secret = "dj38rqp";
+        $key = md5($code.$secret);
+        $url = "https://api-mailer.skyhint.com/fkpconf/recover/" . $email . "/" . $from .  "/" . $confurl . "/" . $code . "/" . $key;
+        try {
+			if(file_get_contents($url) == 'true'){
+                return true;
+            }else{
+                return false;
+            }
+		}
+		catch (\Exception $e) {
+			return false;
+		}
+        /* return Yii::$app
         ->mailer
         ->compose(
             ['html' => 'emailVerify-html', 'text' => 'emailVerify-text'],
@@ -114,7 +141,7 @@ class NewUserForm extends Model
         ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->params['senderName']])
         ->setTo($this->email)
         ->setSubject('Account registration at ' . Yii::$app->name)
-        ->send();
+        ->send(); */
     }
 
     public function flashError(){
