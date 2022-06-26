@@ -34,7 +34,7 @@ class PasswordResetRequestForm extends Model
      *
      * @return bool whether the email was send
      */
-    public function sendEmail()
+    public function sendEmail($conf)
     {
         $user = $this->findUser();
 
@@ -49,13 +49,24 @@ class PasswordResetRequestForm extends Model
             }
         }
 
-        //https://api-mailer.skyhint.com/fkp/fpconf/zulkarom%40gmail.com/InCEBT/incebt/13jjsdfo2/kjj
+
+        $email = urlencode($this->email);
+        $from = urlencode($conf->conf_abbr);
+        $confurl = urlencode($conf->conf_url);
+        $code = $user->password_reset_token;
+        $secret = "dj38rqp";
+        $key = md5($code.$secret);
+        $url = "https://api-mailer.skyhint.com/fkpconf/recover/" . $email . "/" . $from .  " /" . $confurl . "/" . $code . "/" . $key;
 
         try {
-			return file_get_contents($this->url);
+			if(file_get_contents($url) == 'true'){
+                return true;
+            }else{
+                return false;
+            }
 		}
 		catch (\Exception $e) {
-			return "[]";
+			return false;
 		}
 
         /* return Yii::$app

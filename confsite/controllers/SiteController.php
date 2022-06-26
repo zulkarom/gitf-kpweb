@@ -248,12 +248,16 @@ class SiteController extends Controller
 
     }
 
-    public function actionRequestPasswordReset()
+    public function actionRequestPasswordReset($confurl = null)
     {
-        $this->layout = 'system';
+        $conf = $this->findConferenceByUrl($confurl);
+        if($conf->system_only == 1){
+            $this->layout = 'system';
+        }
+        
         $model = new PasswordResetRequestForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail()) {
+            if ($model->sendEmail($conf)) {
                 Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
                 
                 return $this->redirect(['/site/login']);
