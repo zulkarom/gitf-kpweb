@@ -28,14 +28,16 @@ $this->title = 'Sign Up/Sign In';
             <?= Html::submitButton('Log in', ['value' => '1', 'class' => 'btn btn-primary']) ?>
           </div>
 
-          <p>
+      
+        
+        
+            <?php ActiveForm::end(); ?>
+
+            <p>
                 <?= Html::a('Forget Password?',
                            ['/site/request-password-reset', 'confurl' => $confurl] ,['class' => 'field-label text-muted mb10',]
                                 ) ?>
             </p>
-        
-        
-            <?php ActiveForm::end(); ?>
         
     </div>
 
