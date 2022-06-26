@@ -309,9 +309,9 @@ class SiteController extends Controller
     }
 	
 
-	public function actionVerifyEmail($token, $c)
+	public function actionVerifyEmail($token, $confurl)
     {
-        $conf = $this->findConference($c);
+        $conf = $this->findConferenceByUrl($confurl);
         try {
             $model = new VerifyEmailForm($token);
         } catch (InvalidArgumentException $e) {

@@ -33,7 +33,7 @@ class NewUserForm extends Model
             ['email', 'trim'],
             ['email', 'string', 'max' => 100],
             
-            ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email has already been taken.'],
+            ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email has already been taken. If you are sure this is your email, probably you have already registered to the system. Try use forget password feature to reset your password'],
             
             ['password', 'string', 'min' => 6],
             
@@ -65,8 +65,10 @@ class NewUserForm extends Model
         if (!$this->validate()) {
             return null;
         }
-        
-        $user = new User();
+
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            $user = new User();
         $user->fullname = $this->fullname;
         $user->username = $this->email;
         $user->email = $this->email;
@@ -85,8 +87,7 @@ class NewUserForm extends Model
                 $new->institution = $this->institution;
 			    $new->user_id = $user->id;
 			    if(!$new->save()){
-					print_r($new->getErrors());
-					die();
+					$new->flashError();
 				}
 			}
             //register conference terus
@@ -96,15 +97,34 @@ class NewUserForm extends Model
             $reg->conf_id = $conf->id;
             $reg->reg_at = new Expression('NOW()');
             $reg->confly_number = $reg->nextConflyNumber();
-            $reg->save();
+            $flag = $reg->save();
 
 
-            if($this->sendEmail($user, $conf)){
-                return true;
+            if($this->sendEmailApi($user, $conf)){
+                $flag = true;
+            }else{
+                $flag = false;
+                Yii::$app->session->addFlash('danger', "Cannot send email verification");
             }
         }else{
-            print_r($user->getErrors());
+            $user->flashError();
         };
+
+            if($flag){
+                $transaction->commit();
+                return true;
+            }
+            
+            
+        }
+        catch (\Exception $e) 
+        {
+            $transaction->rollBack();
+            echo $e->getMessage();die();
+            Yii::$app->session->addFlash('error', $e->getMessage());
+        }
+        
+        
         return false;
     }
     
@@ -113,7 +133,7 @@ class NewUserForm extends Model
      * @param User $user user model to with email should be send
      * @return bool whether the email was sent
      */
-    protected function sendEmail($user, $conf)
+    protected function sendEmailApi($user, $conf)
     {
         $email = urlencode($user->email);
         $from = urlencode($conf->conf_abbr);
@@ -121,7 +141,8 @@ class NewUserForm extends Model
         $code = $user->verification_token;
         $secret = "dj38rqp";
         $key = md5($code.$secret);
-        $url = "https://api-mailer.skyhint.com/fkpconf/recover/" . $email . "/" . $from .  "/" . $confurl . "/" . $code . "/" . $key;
+        $url = "https://api-mailer.skyhint.com/fkpconf/verify/" . $email . "/" . $from .  "/" . $confurl . "/" . $code . "/" . $key;
+        echo $url;die();
         try {
 			if(file_get_contents($url) == 'true'){
                 return true;
@@ -142,6 +163,20 @@ class NewUserForm extends Model
         ->setTo($this->email)
         ->setSubject('Account registration at ' . Yii::$app->name)
         ->send(); */
+    }
+
+    protected function sendEmail($user, $conf)
+    {
+        return Yii::$app
+        ->mailer
+        ->compose(
+            ['html' => 'emailVerify-html', 'text' => 'emailVerify-text'],
+            ['user' => $user, 'conf_id' => $conf->id]
+            )
+        ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->params['senderName']])
+        ->setTo($this->email)
+        ->setSubject('Account registration at ' . Yii::$app->name)
+        ->send(); 
     }
 
     public function flashError(){
