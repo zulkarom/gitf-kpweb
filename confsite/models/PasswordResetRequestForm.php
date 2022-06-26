@@ -49,7 +49,16 @@ class PasswordResetRequestForm extends Model
             }
         }
 
-        return Yii::$app
+        //https://api-mailer.skyhint.com/fkp/fpconf/zulkarom%40gmail.com/InCEBT/incebt/13jjsdfo2/kjj
+
+        try {
+			return file_get_contents($this->url);
+		}
+		catch (\Exception $e) {
+			return "[]";
+		}
+
+        /* return Yii::$app
             ->mailer
             ->compose(
                 ['html' => 'passwordResetToken-html', 'text' => 'passwordResetToken-text'],
@@ -58,7 +67,7 @@ class PasswordResetRequestForm extends Model
             ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->params['senderName']]) 
             ->setTo($this->email)
             ->setSubject('Password reset for ' . Yii::$app->name)
-            ->send();
+            ->send(); */
     }
 
     /**

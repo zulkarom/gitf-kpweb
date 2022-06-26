@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $model backend\modules\conference\models\Conference */
 
 $this->title = 'UPDATE: ' . $model->conf_abbr;
-$this->params['breadcrumbs'][] = ['label' => 'Conferences', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Conferences', 'url' => ['/conference/conference/index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>

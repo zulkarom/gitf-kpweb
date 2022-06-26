@@ -1,4 +1,4 @@
-ALTER TABLE `conference` ADD `system_only` TINYINT(1) NOT NULL DEFAULT '0' AFTER `type_name`;
+
 
 
 
@@ -11,7 +11,7 @@ ALTER TABLE `conf_reg` ADD `fee_status` TINYINT(4) NOT NULL DEFAULT '0' AFTER `i
 
 
 
-
+ALTER TABLE `conference` ADD `system_only` TINYINT(1) NOT NULL DEFAULT '0' AFTER `type_name`;
 ALTER TABLE `conference` ADD `is_active` TINYINT(1) NOT NULL DEFAULT '1' AFTER `system_only`;
 
 ALTER TABLE `conference` ADD `is_pg` TINYINT(1) NOT NULL DEFAULT '0' AFTER `is_active`;
