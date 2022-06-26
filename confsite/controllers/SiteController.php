@@ -272,9 +272,15 @@ class SiteController extends Controller
         ]);
     }
     
-    public function actionResetPassword($token)
+    public function actionResetPassword($token, $confurl)
     {
-        $this->layout = "//main-login";
+        $conf = $this->findConferenceByUrl($confurl);
+        if($conf->system_only == 1){
+            $this->layout = 'system';
+        }else{
+            $this->layout = "//main-login";
+        }
+       
         try {
             $model = new ResetPasswordForm($token);
         } catch (InvalidArgumentException $e) {
