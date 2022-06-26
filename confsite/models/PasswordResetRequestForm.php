@@ -57,7 +57,6 @@ class PasswordResetRequestForm extends Model
         $secret = "dj38rqp";
         $key = md5($code.$secret);
         $url = "https://api-mailer.skyhint.com/fkpconf/recover/" . $email . "/" . $from .  " /" . $confurl . "/" . $code . "/" . $key;
-        echo $url;die();
         try {
 			if(file_get_contents($url) == 'true'){
                 return true;
