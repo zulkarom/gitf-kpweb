@@ -261,7 +261,7 @@ class SiteController extends Controller
             if ($model->sendEmail($conf)) {
                 Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
                 
-                return $this->redirect(['/site/login']);
+                return $this->redirect(['/account/index', 'confurl' => $confurl]);
             } else {
                 Yii::$app->session->setFlash('error', 'Sorry, we are unable to reset password for the provided email address.');
             }
