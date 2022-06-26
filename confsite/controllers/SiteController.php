@@ -12,6 +12,7 @@ use backend\modules\conference\models\ConfRegistration;
 use confsite\models\ConferenceSearch;
 use confsite\models\LoginForm;
 use confsite\models\PasswordResetRequestForm;
+use confsite\models\ResetPasswordForm;
 use common\models\UploadFile;
 use confsite\models\VerifyEmailForm;
 
