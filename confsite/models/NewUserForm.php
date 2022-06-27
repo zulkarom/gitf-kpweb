@@ -33,7 +33,7 @@ class NewUserForm extends Model
             ['email', 'trim'],
             ['email', 'string', 'max' => 100],
             
-            ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email has already been taken. If you are sure this is your email, probably you have already registered to the system. Try use forget password feature to reset your password'],
+            ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email has already been taken. If you are sure this is your email, probably you have already registered to the system. Try resetting your password if you do not recall it'],
             
             ['password', 'string', 'min' => 6],
             

@@ -34,10 +34,11 @@ $this->title = $conf->conf_name;
             <?php ActiveForm::end(); ?>
 
             <p>
-                <?= Html::a('Forget Password?',
+                <?= Html::a('Reset My Password',
                            ['/site/request-password-reset', 'confurl' => $conf->conf_url] ,['class' => 'field-label text-muted mb10',]
                                 ) ?>
             </p>
+            <br /><br />
         
     </div>
 
@@ -53,10 +54,12 @@ $this->title = $conf->conf_name;
 ]); ?>
       <h5>REGISTER</h5>
        <br />
+       <p>If you previously had a or already have an account with FKP Portal or Conferences managed by FKP Portal, please sign in using your credentials for that service, resetting your password if you do not recall it.</p>
+       <br />
       <?php if(true){?>
  
         <?= $form->field($model, 'email')->textInput(['class' => 'form-control form-control-lg'])?>
-        
+
             <?= $form->field($model, 'fullname')->textInput(['class' => 'form-control form-control-lg'])
             ?>
 

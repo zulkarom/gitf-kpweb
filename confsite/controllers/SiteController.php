@@ -212,6 +212,7 @@ class SiteController extends Controller
 	public function actionLogout($confurl=null){
 		if($confurl){
 			Yii::$app->user->logout();
+            Yii::$app->session->addFlash('success', "You have been logged out.");
 			return $this->redirect(['site/login', 'confurl' => $confurl]);
 		}
 	}

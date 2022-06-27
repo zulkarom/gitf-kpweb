@@ -20,7 +20,7 @@ $this->title= 'CONFERENCE REGISTRATION';
 	
 <div class="form-group">
         
-<?= Html::submitButton('Proceed', ['class' => 'btn btn-primary']) ?>
+<?= Html::submitButton('Proceed', ['class' => 'btn btn-primary']) ?>  <?= Html::a('Logout', ['/site/logout', 'confurl' => $model->conf_url], ['class' => 'btn btn-warning']) ?> 
     </div>
 
     <?php ActiveForm::end(); ?>
