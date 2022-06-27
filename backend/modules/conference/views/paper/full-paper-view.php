@@ -167,60 +167,11 @@ table.detail-view th {
 
 						<div class="panel-body">
 
-<?php
-if($model->conference->commercial == 1){
-	$local = $model->conference->currency_local;
-	$int = $model->conference->currency_int;
-	$curr = [$local => $local, $int=>$int];
 
-	if($model->myrole){
-		if(!$model->invoice_currency){
-			$model->invoice_currency = $model->authorRole->fee_currency;
-		}
-		if($model->invoice_amount == 0){
-			$model->invoice_amount = $model->authorRole->fee_amount;
-		}
-		if($model->invoice_final == 0){
-			$model->invoice_final = $model->authorRole->fee_amount;
-		}
-		if($model->invoice_early == 0){
-			$model->invoice_early = $model->authorRole->fee_early;
-		}
-		
-	}
-
-	echo $form->field($accept, "invoice_currency")->dropDownList($curr);
-
-
- 
- 
-?>
-
-<div class="row">
-<div class="col-md-3"><?= $form->field($accept, 'invoice_amount'); ?></div>
-
-</div>
-
-<div class="row">
-<div class="col-md-4"><?= $form->field($accept, 'invoice_final'); ?></div>
-</div>
-
-<div class="row">
-<div class="col-md-4"><?= $form->field($accept, 'invoice_early'); ?></div>
-</div>
-
-<?php } ?>
 	
 <div class="form-group">
 <?php
-if($model->conference->commercial == 1){
-	
-	echo Html::submitButton('Save', ['class' => 'btn btn-default', 'name' => 'wfaction', 'value' => 'save'
-    ]);
-$btn_text = 'Accept Full Paper & Issue Invoice';
-}else{
 $btn_text = 'Accept Full Paper';	
-}
 ?>
 
 	

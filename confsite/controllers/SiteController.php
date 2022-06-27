@@ -316,7 +316,8 @@ class SiteController extends Controller
         try {
             $model = new VerifyEmailForm($token);
         } catch (InvalidArgumentException $e) {
-            throw new BadRequestHttpException($e->getMessage());
+           // throw new BadRequestHttpException($e->getMessage());
+           Yii::$app->session->setFlash('error', 'Sorry, we are unable to verify your account with provided token.');
         }
         if ($model->verifyEmail()) {
                 Yii::$app->session->setFlash('success', 'Thank you, your email has been confirmed. You can now login to submit your application');
