@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
-$this->title = 'Sign Up/Sign In';
+$this->title = $conf->conf_name;
 ?>
 
 <h4 style="text-align:center; font-size:20px;">LOGIN OR REGISTER TO SUBMIT OR UPDATE YOUR PAPER.</h4>
@@ -35,7 +35,7 @@ $this->title = 'Sign Up/Sign In';
 
             <p>
                 <?= Html::a('Forget Password?',
-                           ['/site/request-password-reset', 'confurl' => $confurl] ,['class' => 'field-label text-muted mb10',]
+                           ['/site/request-password-reset', 'confurl' => $conf->conf_url] ,['class' => 'field-label text-muted mb10',]
                                 ) ?>
             </p>
         

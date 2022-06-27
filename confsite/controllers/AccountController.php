@@ -44,7 +44,7 @@ class AccountController extends Controller
         return $this->render('login', [
             'model' => $model,
             'modelLogin' => $modelLogin,
-            'confurl' => $confurl
+            'conf' => $conf
         ]);
 		
     }
