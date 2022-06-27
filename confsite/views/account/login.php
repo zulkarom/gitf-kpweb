@@ -47,17 +47,20 @@ $this->title = $conf->conf_name;
 
     <div class="col-md-6 col-lg-6"> 
     <?php $form = ActiveForm::begin([
-    'validateOnChange' => false
+      'enableClientValidation' => true,
+      'enableAjaxValidation' => true,
+      'validateOnChange' => true,
 ]); ?>
       <h5>REGISTER</h5>
        <br />
       <?php if(true){?>
  
-
+        <?= $form->field($model, 'email')->textInput(['class' => 'form-control form-control-lg'])?>
+        
             <?= $form->field($model, 'fullname')->textInput(['class' => 'form-control form-control-lg'])
             ?>
 
-   <?= $form->field($model, 'email')->textInput(['class' => 'form-control form-control-lg'])?>
+ 
             
             
             <?= $form->field($model, 'institution')->textInput(['class' => 'form-control form-control-lg'])
