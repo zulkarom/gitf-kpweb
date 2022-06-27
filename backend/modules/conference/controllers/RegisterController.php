@@ -123,7 +123,7 @@ class RegisterController extends Controller
 		$reg = $this->findModel($id);
 		$kira = ConfPaper::find()->where(['user_id' => $reg->user_id, 'conf_id' => $conf])->count();
 		if($kira > 0){
-			Yii::$app->session->addFlash('error', "Failed due to the user has submitted at least one paper!");
+			Yii::$app->session->addFlash('error', "The action failed since the user has submitted at least one paper!");
 			
 		}else{
 			if($reg->delete()){

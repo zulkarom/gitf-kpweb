@@ -21,7 +21,7 @@ class ConfRegistrationSearch extends ConfRegistration
     {
         return [
             [['id', 'conf_id', 'user_id', 'is_author', 'is_reviewer', 'fee_status'], 'integer'],
-			[['email', 'fullname', 'institution'], 'string'],
+			[['email', 'fullname'], 'string'],
         ];
     }
 
@@ -43,8 +43,9 @@ class ConfRegistrationSearch extends ConfRegistration
      */
     public function search($params)
     {
-        $query = ConfRegistration::find()->where(['conf_id' => $this->conf_id]);
-		$query->joinWith(['user', 'associate']);
+        $query = ConfRegistration::find()
+        ->where(['conf_id' => $this->conf_id]);
+		$query->joinWith(['user']);
 
         // add conditions that should always apply here
 

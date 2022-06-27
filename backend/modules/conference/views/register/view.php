@@ -32,8 +32,18 @@ table.detail-view th {
         'attributes' => [
             'user.fullname',
             'user.email',
-            'associate.institution',
-            'associate.country_id'
+            [
+                'label' =>'Institution',
+                'value' => function($model){
+                    return $model->user->associate ? $model->user->associate->institution : '';
+                }
+            ],
+            [
+                'label' =>'Country',
+                'value' => function($model){
+                    return $model->user->associate ? $model->user->associate->country->country_name: '';
+                }
+            ]
         ],
     ]) ?>
 </div></div>

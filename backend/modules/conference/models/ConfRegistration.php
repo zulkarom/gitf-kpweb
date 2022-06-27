@@ -19,6 +19,7 @@ class ConfRegistration extends \yii\db\ActiveRecord
 {
     public $file_controller;
     public $fee_instance;
+    public $institution;
 	
     /**
      * {@inheritdoc}
