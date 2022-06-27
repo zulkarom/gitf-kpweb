@@ -315,15 +315,17 @@ class SiteController extends Controller
         $conf = $this->findConferenceByUrl($confurl);
         try {
             $model = new VerifyEmailForm($token);
+            if ($model->verifyEmail()) {
+                Yii::$app->session->setFlash('success', 'Thank you, your email has been confirmed. You can now login to submit your application');
+            }else{
+                Yii::$app->session->setFlash('error', 'Sorry, we are unable to verify your account with provided token.');
+            }
+
         } catch (InvalidArgumentException $e) {
            // throw new BadRequestHttpException($e->getMessage());
            Yii::$app->session->setFlash('error', 'Sorry, we are unable to verify your account with provided token.');
         }
-        if ($model->verifyEmail()) {
-                Yii::$app->session->setFlash('success', 'Thank you, your email has been confirmed. You can now login to submit your application');
-        }else{
-            Yii::$app->session->setFlash('error', 'Sorry, we are unable to verify your account with provided token.');
-        }
+        
         return $this->redirect(['/account/index', 'confurl' => $conf->conf_url]);
     }
 }
