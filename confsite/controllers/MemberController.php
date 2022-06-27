@@ -218,7 +218,12 @@ class MemberController extends Controller
 	
 	public function actionInvoiceView($confurl=null, $id)
     {
-		$this->layout = 'main-member';
+		$conf = $this->findConferenceByUrl($confurl);
+		if($conf->system_only == 1){
+			$this->layout = 'system-member';
+		}else{
+			$this->layout = 'main-member';
+		}
         $model = $this->findModel($id);
 		$model->scenario = 'payment';
 		if($confurl){
@@ -244,7 +249,13 @@ class MemberController extends Controller
 	
 	public function actionCompleteView($confurl=null, $id)
     {
-		$this->layout = 'main-member';
+		$conf = $this->findConferenceByUrl($confurl);
+		if($conf->system_only == 1){
+			$this->layout = 'system-member';
+		}else{
+			$this->layout = 'main-member';
+		}
+
         $model = $this->findModel($id);
 		if($confurl){
 			
@@ -257,7 +268,13 @@ class MemberController extends Controller
 	
     public function actionRejectView($confurl=null, $id)
     {
-        $this->layout = 'main-member';
+		$conf = $this->findConferenceByUrl($confurl);
+		if($conf->system_only == 1){
+			$this->layout = 'system-member';
+		}else{
+			$this->layout = 'main-member';
+		}
+
         $model = $this->findModel($id);
         if($confurl){
             
@@ -487,6 +504,14 @@ class MemberController extends Controller
 	}
 	
 	public function actionFullPaper($confurl=null,$id){
+		$conf = $this->findConferenceByUrl($confurl);
+		if($conf->system_only == 1){
+			$this->layout = 'system-member';
+		}else{
+			$this->layout = 'main-member';
+		}
+
+
 		if($confurl){
         $model = $this->findModel($id);
 		$model->scenario = 'fullpaper';
@@ -589,6 +614,14 @@ class MemberController extends Controller
 	}
 	
 	public function actionCorrection($confurl=null,$id){
+		$conf = $this->findConferenceByUrl($confurl);
+		if($conf->system_only == 1){
+			$this->layout = 'system-member';
+		}else{
+			$this->layout = 'main-member';
+		}
+
+		
 	    if($confurl){
 	        $model = $this->findModel($id);
 	        $model->scenario = 'correction';

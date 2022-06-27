@@ -10,6 +10,10 @@ use backend\modules\conference\models\ConfRegistrationSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
+use common\models\UploadFile;
+use yii\helpers\Json;
+use yii\base\Exception;
+use yii\db\Expression;
 
 /**
  * RegisterController implements the CRUD actions for ConfRegistration model.
@@ -67,9 +71,33 @@ class RegisterController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->addFlash('success', "Data Updated");
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
         ]);
+    }
+
+    public function actionVerifyPayment($id){
+        $model = $this->findModel($id);
+        $model->fee_status = 10;
+        $model->fee_verified_at = time();
+        $model->save();
+        Yii::$app->session->addFlash('success', "Data Updated");
+        return $this->redirect(['view', 'id' => $model->id]);
+    }
+
+    public function actionRevertPayment($id){
+        $model = $this->findModel($id);
+        $model->fee_status = 1;
+        $model->fee_verified_at = 0;
+        $model->save();
+        Yii::$app->session->addFlash('success', "Data Updated");
+        return $this->redirect(['view', 'id' => $model->id]);
     }
 
     /**
@@ -159,5 +187,68 @@ class RegisterController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    
+	public function actionUploadFile($attr, $id){
+        $attr = $this->clean($attr);
+        $model = $this->findModel($id);
+        $model->file_controller = 'payment';
+        $conf = $model->conference;
+        $confurl = $conf->conf_url;
+
+        return UploadFile::upload($model, $attr, 'updated_at');
+
+    }
+
+	protected function clean($string){
+        $allowed = ['fee'];
+        
+        foreach($allowed as $a){
+            if($string == $a){
+                return $a;
+            }
+        }
+        
+        throw new NotFoundHttpException('Invalid Attribute');
+
+    }
+
+    public function actionDeleteFile($attr, $id)
+    {
+        $attr = $this->clean($attr);
+        $model = $this->findModel($id);
+        $attr_db = $attr . '_file';
+        
+        $file = Yii::getAlias('@upload/' . $model->{$attr_db});
+        
+        $model->scenario = $attr . '_delete';
+        $model->{$attr_db} = '';
+        $model->updated_at = new Expression('NOW()');
+        if($model->save()){
+            if (is_file($file)) {
+                unlink($file);
+                
+            }
+            
+            return Json::encode([
+                        'good' => 1,
+                    ]);
+        }else{
+            return Json::encode([
+                        'errors' => $model->getErrors(),
+                    ]);
+        }
+        
+
+
+    }
+
+	public function actionDownloadFile($attr, $id, $identity = true){
+        $attr = $this->clean($attr);
+        $model = $this->findModel($id);
+        $id = $model->confly_number;
+        $filename = $id . '-payment-info' ;
+        UploadFile::download($model, $attr, $filename);
     }
 }

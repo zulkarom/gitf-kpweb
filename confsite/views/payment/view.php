@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Url;
+use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
@@ -68,6 +69,14 @@ table.detail-view th {
 
         ],
     ]) ?>
+
+    <?php 
+      if($model->fee_status == 1){ //submit
+        echo '<p><div class="form-group">';
+        echo Html::a('Edit',['payment/update', 'confurl' => $conf->conf_url],['class' => 'btn btn-secondary btn-sm']);
+        echo '</div></p>';
+}
+?>
 
 
 </div>

@@ -53,27 +53,45 @@ class PaymentController extends Controller
 			
 		}
 	}
+
+    public function actionIndex($confurl=null){
+        $conf = $this->findConferenceByUrl($confurl);
+        if($conf->system_only == 1){
+			$this->layout = 'system-member';
+		}else{
+			$this->layout = 'main-member';
+		}
+		$model = ConfRegistration::findOne(['conf_id' => $conf->id, 'user_id' => Yii::$app->user->identity->id]);
+        if($model->fee_status > 0){
+			return $this->redirect(['view', 'confurl' => $confurl]);
+		}else{
+            return $this->redirect(['update', 'confurl' => $confurl]);
+        }
+    }
 	
 	
-	public function actionIndex($confurl=null)
+	public function actionUpdate($confurl=null)
     {
 		$conf = $this->findConferenceByUrl($confurl);
-		$model = ConfRegistration::findOne(['conf_id' => $conf->id, 'user_id' => Yii::$app->user->identity->id]);
-		if($model->fee_status > 0){
-			return $this->redirect(['view', 'confurl' => $confurl]);
-		}
-		if($conf->system_only == 1){
+        
+
+        if($conf->system_only == 1){
 			$this->layout = 'system-member';
 		}else{
 			$this->layout = 'main-member';
 		}
 
+		$model = ConfRegistration::findOne(['conf_id' => $conf->id, 'user_id' => Yii::$app->user->identity->id]);
+		if($model->fee_status == 10){
+			return $this->redirect(['view', 'confurl' => $confurl]);
+		}
+		
         if ($model->load(Yii::$app->request->post())) {
 			$model->fee_paid_at = time();
 			$model->fee_status = 1; // submitted
 			if($model->save()){
 				Yii::$app->session->addFlash('success', "Thank you, your payment has been succeessfully submited");
-				return $this->refresh();
+				return $this->redirect(['view', 'confurl' => $confurl]);
 			}else{
 				$model->flashError();
 			}
@@ -81,7 +99,7 @@ class PaymentController extends Controller
 		$model->scenario = 'payment';
 
 		if($confurl){
-			return $this->render('index', [
+			return $this->render('update', [
 				'model' => $model,
 				'conf' => $conf
 			]);

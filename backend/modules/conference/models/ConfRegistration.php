@@ -133,6 +133,12 @@ class ConfRegistration extends \yii\db\ActiveRecord
         ->where(['user_id' => $this->user_id, 'conf_id' => $this->conf_id])
         ->all() ;
     }
+
+    public function getCountPapers(){
+        return ConfPaper::find()
+        ->where(['user_id' => $this->user_id, 'conf_id' => $this->conf_id])
+        ->count() ;
+    }
 	
 	public function nextConflyNumber(){
 		$max = self::find()->where(['conf_id' => $this->conf_id])->max('confly_number');
