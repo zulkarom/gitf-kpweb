@@ -49,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             ['class' => 'yii\grid\ActionColumn',
                  //'contentOptions' => ['style' => 'width: 13%'],
-                'template' => '{paper} {update} {website} {delete}',
+                'template' => '{paper} {update} {website}',
                 //'visible' => false,
                 'buttons'=>[
                     'paper'=>function ($url, $model) {
