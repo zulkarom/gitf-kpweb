@@ -184,7 +184,7 @@ class StudentController extends Controller
             //lets create user first 
             //how? 
             //check whether email  exist
-            $student = new Student();
+            
             
             $email = $stud->EMEL_PELAJAR;
             $exist = User::findOne(['email' => $email]);
@@ -204,8 +204,15 @@ class StudentController extends Controller
             $user->status = 10;
             if($user->save()){
                 //for student data
+				$ada = Student::findOne(['matric_no' => $stud->NO_MATRIK]);
+				if($ada){
+					$student = $ada;
+				}else{
+					$student = new Student();
+					$student->matric_no = $stud->NO_MATRIK;
+				}
                 $student->user_id = $user->id;
-                $student->matric_no = $stud->NO_MATRIK;
+                
                 $student->nric = $stud->NO_IC;
                 $student->date_birth = date('Y-m-d', strtotime($stud->TARIKH_LAHIR));
                 if($stud->TARAF_PERKAHWINAN == 'Berkahwin'){
@@ -371,7 +378,10 @@ class StudentController extends Controller
                 
                 
                 
-            }
+            }else{
+				echo 'FAILED AT USER: ' . $stud->NO_MATRIK . ' ' . $stud->EMEL_PELAJAR . ' ';
+					print_r($user->getErrors());
+			}
             
             
            
