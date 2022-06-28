@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
@@ -66,15 +67,16 @@ $this->params['breadcrumbs'][] = $this->title;
 				'label' => 'Payment',
 				'filter' => Html::activeDropDownList($searchModel, 'fee_status',$searchModel->listFeeStatus(),['class'=> 'form-control','prompt' => 'Choose']),
 				'value' => function($model){
-					return $model->statusFeeLabel;;
+					return $model->statusFeeLabel;
 				}
 				
 			],
 
 			[
 				'label' => 'Paper',
+				'format' => 'html',
 				'value' => function($model){
-					//return $model->statusFeeLabel;;
+					return '<a href="' . Url::to(['paper/overview', 'conf' => $model->conf_id, 'OverwriteSearch[user_id]' => $model->user_id]) . '"><i class="fa fa-files-o"></i> <span style="font-weight:bold;font-size:18px;">' . $model->countPapers . '</span></a>';
 				}
 				
 			],
@@ -84,7 +86,6 @@ $this->params['breadcrumbs'][] = $this->title;
            // 'reg_at:datetime',
 
             ['class' => 'yii\grid\ActionColumn',
-                 'contentOptions' => ['style' => 'width: 8.7%'],
                 'template' => '{view} {update}',
                 //'visible' => false,
                 'buttons'=>[

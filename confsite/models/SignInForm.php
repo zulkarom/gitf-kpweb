@@ -34,7 +34,7 @@ class SignInForm extends Model
     public function attributeLabels()
     {
         return [
-            'username' => 'Email',
+            'username' => 'Email/Username',
         ];
     }
     
@@ -77,7 +77,7 @@ class SignInForm extends Model
     protected function getUser()
     {
         if ($this->_user === null) {
-            $this->_user = User::findByUsername($this->username);
+            $this->_user = User::findByUsernameOrEmail($this->username);
         }
         
         return $this->_user;

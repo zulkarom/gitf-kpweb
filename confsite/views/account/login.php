@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
-$this->title = 'Sign Up/Sign In';
+$this->title = $conf->conf_name;
 ?>
 
 <h4 style="text-align:center; font-size:20px;">LOGIN OR REGISTER TO SUBMIT OR UPDATE YOUR PAPER.</h4>
@@ -34,10 +34,11 @@ $this->title = 'Sign Up/Sign In';
             <?php ActiveForm::end(); ?>
 
             <p>
-                <?= Html::a('Forget Password?',
-                           ['/site/request-password-reset', 'confurl' => $confurl] ,['class' => 'field-label text-muted mb10',]
+                <?= Html::a('Reset My Password',
+                           ['/site/request-password-reset', 'confurl' => $conf->conf_url] ,['class' => 'field-label text-muted mb10',]
                                 ) ?>
             </p>
+            <br /><br />
         
     </div>
 
@@ -47,17 +48,22 @@ $this->title = 'Sign Up/Sign In';
 
     <div class="col-md-6 col-lg-6"> 
     <?php $form = ActiveForm::begin([
-    'validateOnChange' => false
+      'enableClientValidation' => true,
+      'enableAjaxValidation' => true,
+      'validateOnChange' => true,
 ]); ?>
       <h5>REGISTER</h5>
        <br />
+       <p>If you previously had a or already have an account with FKP Portal or Conferences managed by FKP Portal, please sign in using your credentials for that service, resetting your password if you do not recall it.</p>
+       <br />
       <?php if(true){?>
  
+        <?= $form->field($model, 'email')->textInput(['class' => 'form-control form-control-lg'])?>
 
             <?= $form->field($model, 'fullname')->textInput(['class' => 'form-control form-control-lg'])
             ?>
 
-   <?= $form->field($model, 'email')->textInput(['class' => 'form-control form-control-lg'])?>
+ 
             
             
             <?= $form->field($model, 'institution')->textInput(['class' => 'form-control form-control-lg'])

@@ -56,7 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         return Html::a('<span class="fa fa-file"></span> Papers',['paper/overview', 'conf' => $model->id],['class'=>'btn btn-primary btn-sm']);
                     },
                     'website'=>function ($url, $model) {
-                    return Html::a('<span class="fa fa-globe"></span> Web',['conference/update', 'conf' => $model->id],['class'=>'btn btn-info btn-sm']);
+                    return Html::a('<span class="fa fa-users"></span> Participants',['register/index', 'conf' => $model->id],['class'=>'btn btn-info btn-sm']);
                     },
                     'update'=>function ($url, $model) {
                     return Html::a('<span class="fa fa-cog"></span> Config',['setting/index', 'conf' => $model->id],['class'=>'btn btn-warning btn-sm']);

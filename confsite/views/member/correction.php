@@ -86,7 +86,7 @@ label{
 	    echo '<tr>
 	<td>#</td>
 	<td>Reviewer\'s Uploaded File</td>
-	<td>'. Html::a('Download', ['reviewer/download-file', 'attr' => 'reviewed', 'id' => $review->id, 'confurl' => $model->conference->conf_url], ['class' => 'btn btn-primary'] ) .'</td>
+	<td>'. Html::a('Download', ['reviewer/download-file', 'attr' => 'reviewed', 'id' => $review->id, 'confurl' => $model->conference->conf_url], ['class' => 'btn btn-primary', 'target' => '_blank'] ) .'</td>
 	</tr>';
 	}
 	?>

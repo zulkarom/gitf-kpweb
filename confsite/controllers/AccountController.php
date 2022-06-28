@@ -8,6 +8,8 @@ use confsite\models\NewUserForm;
 use confsite\models\SignInForm;
 use backend\modules\conference\models\Conference;
 use yii\web\Controller;
+use yii\widgets\ActiveForm;
+use yii\web\Response;
 
 
 
@@ -27,7 +29,12 @@ class AccountController extends Controller
         
         $model = new NewUserForm();
         // $model->scenario = 'register';
-        if ($model->load(Yii::$app->request->post()) && $model->signup($conf)) {
+        if (Yii::$app->request->isAjax) {
+            $model->load($_POST);
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+            
+        }else if ($model->load(Yii::$app->request->post()) && $model->signup($conf)) {
             Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for email verification.');
             return $this->refresh();
         }
@@ -44,7 +51,7 @@ class AccountController extends Controller
         return $this->render('login', [
             'model' => $model,
             'modelLogin' => $modelLogin,
-            'confurl' => $confurl
+            'conf' => $conf
         ]);
 		
     }

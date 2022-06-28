@@ -15,6 +15,7 @@ use confsite\models\PasswordResetRequestForm;
 use confsite\models\ResetPasswordForm;
 use common\models\UploadFile;
 use confsite\models\VerifyEmailForm;
+use common\models\User;
 
 
 
@@ -212,6 +213,7 @@ class SiteController extends Controller
 	public function actionLogout($confurl=null){
 		if($confurl){
 			Yii::$app->user->logout();
+            Yii::$app->session->addFlash('success', "You have been logged out.");
 			return $this->redirect(['site/login', 'confurl' => $confurl]);
 		}
 	}
@@ -312,13 +314,27 @@ class SiteController extends Controller
 	public function actionVerifyEmail($token, $confurl)
     {
         $conf = $this->findConferenceByUrl($confurl);
+        if (empty($token) || !is_string($token)) {
+            //throw new InvalidArgumentException('Verify email token cannot be blank.');
+            Yii::$app->session->setFlash('error', 'Verify email token cannot be blank.');
+            return $this->redirect(['/account/index', 'confurl' => $conf->conf_url]);
+        }
+        $user = User::findByVerificationToken($token);
+        if (!$user) {
+            //throw new InvalidArgumentException('Wrong verify email token.');
+            Yii::$app->session->setFlash('error', 'Wrong verificaton token, please check the link is correct.');
+            return $this->redirect(['/account/index', 'confurl' => $conf->conf_url]);
+        }
+
         try {
             $model = new VerifyEmailForm($token);
         } catch (InvalidArgumentException $e) {
-            throw new BadRequestHttpException($e->getMessage());
+           // throw new BadRequestHttpException($e->getMessage());
+           Yii::$app->session->setFlash('error', 'Sorry, we are unable to verify your account with provided token.');
         }
+
         if ($model->verifyEmail()) {
-                Yii::$app->session->setFlash('success', 'Thank you, your email has been confirmed. You can now login to submit your application');
+            Yii::$app->session->setFlash('success', 'Thank you, your email has been confirmed. You can now login to submit your application');
         }else{
             Yii::$app->session->setFlash('error', 'Sorry, we are unable to verify your account with provided token.');
         }
