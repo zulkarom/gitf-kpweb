@@ -1,0 +1,3 @@
+ALTER TABLE `pg_student`  ADD `master_name` VARCHAR(255) NULL DEFAULT NULL  AFTER `related_university_id`,  ADD `master_university` VARCHAR(255) NULL DEFAULT NULL  AFTER `master_name`,  ADD `master_cgpa` VARCHAR(10) NULL DEFAULT NULL  AFTER `master_university`,  ADD `master_year` VARCHAR(4) NULL DEFAULT NULL  AFTER `master_cgpa`;
+
+ALTER TABLE `pg_student` ADD `program_code` VARCHAR(10) NULL DEFAULT NULL AFTER `master_year`;

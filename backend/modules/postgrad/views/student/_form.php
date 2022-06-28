@@ -177,6 +177,22 @@ use backend\models\University;
 
     <div class="row">
         
+        <div class="col-md-3">
+            <?= $form->field($model, 'master_name')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'master_university')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-md-2">
+            <?= $form->field($model, 'master_cgpa')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'master_year')->textInput(['maxlength' => true]) ?>
+        </div>
+    </div>
+
+    <div class="row">
+        
       
 
     </div>

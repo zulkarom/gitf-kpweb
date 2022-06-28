@@ -24,10 +24,10 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pg_student_data`
+-- Table structure for table `pg_student_data2`
 --
 
-CREATE TABLE `pg_student_data` (
+CREATE TABLE `pg_student_data2` (
   `id` int(11) NOT NULL,
   `NO_MATRIK` varchar(9) DEFAULT NULL,
   `NAMA_PELAJAR` varchar(53) DEFAULT NULL,
@@ -66,10 +66,10 @@ CREATE TABLE `pg_student_data` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `pg_student_data`
+-- Dumping data for table `pg_student_data2`
 --
 
-INSERT INTO `pg_student_data` (`id`, `NO_MATRIK`, `NAMA_PELAJAR`, `NO_IC`, `TARIKH_LAHIR`, `JANTINA`, `TARAF_PERKAHWINAN`, `NEGARA_ASAL`, `KEWARGANEGARAAN`, `KOD_PROGRAM`, `PROGRAM_PENGAJIAN`, `TARAF_PENGAJIAN`, `ALAMAT`, `DAERAH`, `NO_TELEFON`, `EMEL_PERSONAL`, `EMEL_PELAJAR`, `AGAMA`, `BANGSA`, `NAMA_SARJANA_MUDA`, `UNIVERSITI_SARJANA_MUDA`, `CGPA_SARJANA_MUDA`, `TAHUN_SARJANA_MUDA`, `NAMA_SARJANA`, `UNIVERSITI_SARJANA`, `TAHUN_SARJANA`, `CGPA_SARJANA`, `SESI_MASUK`, `TAHUN_KEMASUKAN`, `TARIKH_KEMASUKAN`, `PEMBIAYAAN`, `admission_date`, `SEMESTER`, `KAMPUS`, `STATUS`) VALUES
+INSERT INTO `pg_student_data2` (`id`, `NO_MATRIK`, `NAMA_PELAJAR`, `NO_IC`, `TARIKH_LAHIR`, `JANTINA`, `TARAF_PERKAHWINAN`, `NEGARA_ASAL`, `KEWARGANEGARAAN`, `KOD_PROGRAM`, `PROGRAM_PENGAJIAN`, `TARAF_PENGAJIAN`, `ALAMAT`, `DAERAH`, `NO_TELEFON`, `EMEL_PERSONAL`, `EMEL_PELAJAR`, `AGAMA`, `BANGSA`, `NAMA_SARJANA_MUDA`, `UNIVERSITI_SARJANA_MUDA`, `CGPA_SARJANA_MUDA`, `TAHUN_SARJANA_MUDA`, `NAMA_SARJANA`, `UNIVERSITI_SARJANA`, `TAHUN_SARJANA`, `CGPA_SARJANA`, `SESI_MASUK`, `TAHUN_KEMASUKAN`, `TARIKH_KEMASUKAN`, `PEMBIAYAAN`, `admission_date`, `SEMESTER`, `KAMPUS`, `STATUS`) VALUES
 (1, 'A10E006P', 'Suraini binti Saufi', '771020-03-6314', '20-Oct-77', 'PEREMPUAN', '', 'Malaysia', 'Tempatan', 'DOK', 'Doktor Falsafah', 'Separuh Masa', 'Lot 2795, Kg Wakaf Kuchelong, Jelawat, 16070 Bachok, Kelantan.', 'Bachok', '012-9621481 ', 'su_achik@yahoo.com', 'a10e006p@siswa.umk.edu.my?', 'Islam', ' Melay', ' Universiti Tun Abdul Razak', ' Bachelor of Business Adm', '2.9', '', ' Sarjana Pentadbiran', 'Universiti Teknologi Mara', '3.28', '', 'SEMESTER 2 SESI AKADEMIK 2010/2011', '2011', '', '1. Tajaan MyPhD. 3', '0000-00-00', '1', 'KAMPUS KOTA', 'AKTIF'),
 (2, 'A12E005F', 'Akram Bin Hasan', '730223-03-5409', '23-Feb-73', 'LELAKI', '', 'Malaysia', 'Tempatan', 'DOK', 'Doktor Falsafah', 'Separuh masa', 'PT 381 Taman Jaya Setia, Badang Pantai Cahaya Bulan, 15350 Kota Bharu, Kelantan.', 'Kota Bharu', '017-9003685 ', 'akram@skm.gov.my', 'a12e005f@siswa.umk.edu.my?', 'Islam', ' Melay', '', '', '', '', ' MBA ', 'Universiti Kebangsaan Malaysia ', '3.33', '', 'SEMESTER SEPTEMBER SESI AKADEMIK 2012/2013', '2012', '', '1. Tajaan JPA 9 Se', '0000-00-00', '1', 'KAMPUS KOTA', 'AKTIF'),
 (3, 'A12E014F', 'Nik Zirwatul Fatihah Binti Ismail', '870128-03-5384', '28-Jan-87', 'PEREMPUAN', '', 'Malaysia', 'Tempatan', 'DOK', 'Doktor Falsafah', 'Separuh Masa', 'B-573 Jalan Kubor, 17500 Tanah Merah, Kelantan.', 'Tanah Merah', '014-2229447', 'nickfatiha@gmail.com', 'a12e014f@siswa.umk.edu.my?', 'Islam', ' Melay', ' Universiti Putra Malaysia ', ' Sarjana Muda ', '2.97', '', 'Master Of economics', 'Universiti Putra Malaysia', '3.36', '', 'SEMESTER SEPTEMBER SESI AKADEMIK 2012/2013', '2012', '', '1. Tajaan MYpHd. 1', '0000-00-00', '1', 'KAMPUS KOTA', 'AKTIF'),
@@ -164,7 +164,7 @@ INSERT INTO `pg_student_data` (`id`, `NO_MATRIK`, `NAMA_PELAJAR`, `NO_IC`, `TARI
 (92, 'A19D028F', 'Siti Noor Asyikin binti Mazlan', '950623-04-5280', '17-Jan-83', 'PEREMPUAN', 'Bujang', 'Malaysia', 'Tempatan', 'SAR', 'Sarjana Keusahawanan', 'Penuh Masa', 'Lot 2052 Kampung Wakaf Jela\nJalan Sungai Rengas\n20050 Kuala Terengganu', 'Kuala Terengganu', '014-5383807', 'asymzn@gmail.com', 'asyikin.a19d028f@siswa.umk.edu.my', 'Islam', '', '', '', '', '', '', '', '', '', 'SEMESTER SEPTEMBER SESI AKADEMIK 2019/2020', '18-S', '', 'Pembiayaan Sendiri', '0000-00-00', '4', 'KAMPUS KOTA', 'AKTIF'),
 (93, 'A19E029P', 'Norfazlirda binti Hairani', '830117-03-6000', '14-Aug-97', 'PEREMPUAN', 'Berkahwin', 'Malaysia', 'Tempatan', 'DOK', 'Doktor Falsafah', 'Separuh Masa', 'No 96 Spg 3 Sek. Keb. Kadok\n16450 Kota Bharu\nKelantan', 'Kota Bharu', '017-9780657', 'fazlirda.h@umk.edu.my', 'irda.a19e029p@siswa.umk.edu.my', 'Islam', '', '', '', '', '', '', '', '', '', 'SEMESTER SEPTEMBER SESI AKADEMIK 2019/2020', '18-S', '', 'Pembiayaan Sendiri', '0000-00-00', '4', 'KAMPUS KOTA', 'AKTIF'),
 (94, 'A19D030F', 'Nur Izzatul Adibah binti Mohd Shahrizan', '920328-14-5900', '10-Jul-94', 'PEREMPUAN', 'Bujang', 'Malaysia', 'Tempatan', 'SAR', 'Sarjana Keusahawanan', 'Penuh Masa', 'Lot 1167 Belakang Jabatan Haiwan Batu 18\n43100 Hulu Langat\nSelangor', 'Selangor', '012-6903597', 'izzatul.a15b0681@siswa.umk.edu.my', 'adibah.a19d030f@siswa.umk.edu.my', 'Islam', '', '', '', '', '', '', '', '', '', 'SEMESTER SEPTEMBER SESI AKADEMIK 2019/2020', '23-S', '', 'Pembiayaan Sendiri', '0000-00-00', '4', 'KAMPUS KOTA', 'AKTIF');
-INSERT INTO `pg_student_data` (`id`, `NO_MATRIK`, `NAMA_PELAJAR`, `NO_IC`, `TARIKH_LAHIR`, `JANTINA`, `TARAF_PERKAHWINAN`, `NEGARA_ASAL`, `KEWARGANEGARAAN`, `KOD_PROGRAM`, `PROGRAM_PENGAJIAN`, `TARAF_PENGAJIAN`, `ALAMAT`, `DAERAH`, `NO_TELEFON`, `EMEL_PERSONAL`, `EMEL_PELAJAR`, `AGAMA`, `BANGSA`, `NAMA_SARJANA_MUDA`, `UNIVERSITI_SARJANA_MUDA`, `CGPA_SARJANA_MUDA`, `TAHUN_SARJANA_MUDA`, `NAMA_SARJANA`, `UNIVERSITI_SARJANA`, `TAHUN_SARJANA`, `CGPA_SARJANA`, `SESI_MASUK`, `TAHUN_KEMASUKAN`, `TARIKH_KEMASUKAN`, `PEMBIAYAAN`, `admission_date`, `SEMESTER`, `KAMPUS`, `STATUS`) VALUES
+INSERT INTO `pg_student_data2` (`id`, `NO_MATRIK`, `NAMA_PELAJAR`, `NO_IC`, `TARIKH_LAHIR`, `JANTINA`, `TARAF_PERKAHWINAN`, `NEGARA_ASAL`, `KEWARGANEGARAAN`, `KOD_PROGRAM`, `PROGRAM_PENGAJIAN`, `TARAF_PENGAJIAN`, `ALAMAT`, `DAERAH`, `NO_TELEFON`, `EMEL_PERSONAL`, `EMEL_PELAJAR`, `AGAMA`, `BANGSA`, `NAMA_SARJANA_MUDA`, `UNIVERSITI_SARJANA_MUDA`, `CGPA_SARJANA_MUDA`, `TAHUN_SARJANA_MUDA`, `NAMA_SARJANA`, `UNIVERSITI_SARJANA`, `TAHUN_SARJANA`, `CGPA_SARJANA`, `SESI_MASUK`, `TAHUN_KEMASUKAN`, `TARIKH_KEMASUKAN`, `PEMBIAYAAN`, `admission_date`, `SEMESTER`, `KAMPUS`, `STATUS`) VALUES
 (95, 'A19E050F', 'Marina binti Muhammad Razaki', '870824-29-5294', '24-Aug-87', 'PEREMPUAN', 'Berkahwin', 'Malaysia', 'Tempatan', 'DOK', 'Doktor Falsafah', 'Penuh Masa', 'PT 933 Kepulau\n16040 Wakaf Bharu\nKelantan', 'Wakaf Bharu', '010-4069954', 'marinarazaki@gmail.com', 'marina.a19e050f@siswa.umk.edu.my', 'Islam', '', '', '', '', '', '', '', '', '', 'SEMESTER SEPTEMBER SESI AKADEMIK 2019/2020', '31-O', '', 'Pembiayaan Sendiri', '0000-00-00', '5', 'KAMPUS KOTA', 'AKTIF'),
 (96, 'A19E038P', 'Mohd Nor bin Ismail', '640910-03-6623', '10-Sep-64', 'LELAKI', 'Berkahwin', 'Malaysia', 'Tempatan', 'DOK', 'Doktor Falsafah', 'Separuh Masa', 'PT 2/3 Jalan Dua Desa Darulnaim\nPasir Tumboh\n16150 Kota Bharu\nKelantan', 'Kota Bharu', '013-9283838', 'mohdnor6623@gmail.com', 'nor.a19e038p@siswa.umk.edu.my', 'Islam', '', '', '', '', '', '', '', '', '', 'SEMESTER SEPTEMBER SESI AKADEMIK 2019/2020', '31-O', '', 'Pembiayaan Sendiri', '0000-00-00', '4', 'KAMPUS KOTA', 'AKTIF'),
 (97, 'A19E047F', 'Hallieyana binti Sha\'ari', '851108-03-5498', '08-Nov-85', 'PEREMPUAN', 'Berkahwin', 'Malaysia', 'Tempatan', 'DOK', 'Doktor Falsafah', 'Penuh Masa', '341-N Jalan Sultan Yahya Petra\n15150 Kota Bharu\nKelantan', 'Kota Bharu', '011-14971685', 'yanna811@yahoo.com', 'hallieyana.a19e047f@siswa.umk.edu.', 'Islam', '', '', '', '', '', '', '', '', '', 'SEMESTER SEPTEMBER SESI AKADEMIK 2019/2020', '04-N', '', 'Pembiayaan Sendiri', '0000-00-00', '3', 'KAMPUS KOTA', 'AKTIF'),
@@ -262,7 +262,7 @@ INSERT INTO `pg_student_data` (`id`, `NO_MATRIK`, `NAMA_PELAJAR`, `NO_IC`, `TARI
 (189, 'A20E0300F', 'NORILAKASMANIRA BINTI NOOR', '701212-03-5232', '1970-12-12', 'Perempuan', 'Berkahwin', 'Malaysia', 'Tempatan', 'DOK', 'Doktor Falsafah', 'Penuh Masa', 'JABATAN PERHUBUNGAN PERUSAHAAN KELANTAN, ARAS 3, WISMA PERSEKUTUAN JLN BAYAM 15530, KOTA ', 'KOTA BHARU', '012-9888063', 'norilakasmanira@gmail.com', 'a20e0300f@siswa.umk.edu.my', 'Islam', 'Melayu', 'SARJANA MUDA PENTADBIRAN PERNIAGAAN', ' UiTM', '', '2007', 'SARJANA PENGURUSAN PERNIAGAAN', ' UiTM', '2.49', '', 'SEMESTER FEBRUARI SESI AKADEMIK 2020/2021', '2021', '', 'Pembiayaan Sendiri', '0000-00-00', '2', 'KAMPUS KOTA', 'AKTIF'),
 (190, 'A20E054F', 'CHEN ZAI DIE', 'E02187466', '11-Nov-81', 'lelaki', 'tidak Din', 'China', 'Antarabangsa', 'DOK', 'Doktor Falsafah', 'Penuh Masa', 'ROOM 602 UNIT 1 BUILDING WANJIA GARDEN, WANHEYUAN JIANGUAN DISTRICT, HANGZHUON CITY, 3100', 'HANGZHUON CITY', '8.61861E', 'chenzaidie@myumk.cn', 'a20e054f@siswa.umk.edu.my', 'CHINE', '', '', '', '', '', 'COMPUTER INFORMATIONS MANAGEMENT', ' HANGZHOU DIANZI UNIVERSITY', '', '2009', 'SEMESTER FEBRUARI SESI AKADEMIK 2020/2021', '2021', '', 'Pembiayaan Sendiri', '0000-00-00', '2', 'KAMPUS KOTA', 'AKTIF'),
 (191, 'A20E0293F', 'HUANG KENG', 'EJ4016398', '06-Jan-85', 'PEREMPUAN', 'BERKAHWIN', 'China', 'ANTARABANGSA', 'DOK', 'Doktor Falsafah', 'PENUH MASA', '51-18-E MENARA BHL JALAN SULTAN AHMAD SHAH GEORGETOWN,10050 PULAU PINANG', 'CHINA', '6.01134E', '407941920@qq.com', 'a20e0293f@siswa.umk.edu.my', 'Tiada', '', 'BACHELOR OF MANAGEMENT', ' ZHONGKAI UNIVERSITY OF A', '2.5', '2007', '', '', '', '', 'SEMESTER SEPTEMBER, SESI AKADEMIK 2021/202', '2021', '', 'Pembiayaan Sendiri', '0000-00-00', '1', 'KAMPUS KOTA', 'AKTIF');
-INSERT INTO `pg_student_data` (`id`, `NO_MATRIK`, `NAMA_PELAJAR`, `NO_IC`, `TARIKH_LAHIR`, `JANTINA`, `TARAF_PERKAHWINAN`, `NEGARA_ASAL`, `KEWARGANEGARAAN`, `KOD_PROGRAM`, `PROGRAM_PENGAJIAN`, `TARAF_PENGAJIAN`, `ALAMAT`, `DAERAH`, `NO_TELEFON`, `EMEL_PERSONAL`, `EMEL_PELAJAR`, `AGAMA`, `BANGSA`, `NAMA_SARJANA_MUDA`, `UNIVERSITI_SARJANA_MUDA`, `CGPA_SARJANA_MUDA`, `TAHUN_SARJANA_MUDA`, `NAMA_SARJANA`, `UNIVERSITI_SARJANA`, `TAHUN_SARJANA`, `CGPA_SARJANA`, `SESI_MASUK`, `TAHUN_KEMASUKAN`, `TARIKH_KEMASUKAN`, `PEMBIAYAAN`, `admission_date`, `SEMESTER`, `KAMPUS`, `STATUS`) VALUES
+INSERT INTO `pg_student_data2` (`id`, `NO_MATRIK`, `NAMA_PELAJAR`, `NO_IC`, `TARIKH_LAHIR`, `JANTINA`, `TARAF_PERKAHWINAN`, `NEGARA_ASAL`, `KEWARGANEGARAAN`, `KOD_PROGRAM`, `PROGRAM_PENGAJIAN`, `TARAF_PENGAJIAN`, `ALAMAT`, `DAERAH`, `NO_TELEFON`, `EMEL_PERSONAL`, `EMEL_PELAJAR`, `AGAMA`, `BANGSA`, `NAMA_SARJANA_MUDA`, `UNIVERSITI_SARJANA_MUDA`, `CGPA_SARJANA_MUDA`, `TAHUN_SARJANA_MUDA`, `NAMA_SARJANA`, `UNIVERSITI_SARJANA`, `TAHUN_SARJANA`, `CGPA_SARJANA`, `SESI_MASUK`, `TAHUN_KEMASUKAN`, `TARIKH_KEMASUKAN`, `PEMBIAYAAN`, `admission_date`, `SEMESTER`, `KAMPUS`, `STATUS`) VALUES
 (192, 'A20E0217F', 'IKLIMA HUSNA BINTI ABDUL RAHIM', '890903-03-5042', '03-SEPT-1989', 'PEREMPUAN', 'BUJANG', 'Malaysia', 'TEMPATAN', 'DOK', 'Doktor Falsafah', 'PENUH MASA', 'PT 561 BELAKANG TAMAN KOPERATIF JALAN TOK GURU, 15400 KOTA BHARU, KELANTAN', 'KOTA BHARU', '012-9880887', 'iklimahusna@gmail.com', 'a20e0217f@siswa.umk.edu.my', 'Islam', 'melayu', 'SARJANA MUDA TEKNOLOGI MAKLUMAT', ' UKM', '3.31', '2012', '', '', '', '', 'SEMESTER SEPTEMBER, SESI AKADEMIK 2021/202', '2021', '', 'SKIM LATIHAH AKADE', '0000-00-00', '1', 'KAMPUS KOTA', 'AKTIF'),
 (193, 'A20D066F', 'CHEN XU', 'EC5196052', '08-Feb-92', 'LELAKI', 'BERKAHWIN', 'China', 'ANTARABANGSA', 'SAR', 'SARJANA KEUSAHAWANAN', 'PENUH MASA', 'Room 2203, Building B, Tianzuo International Center No. 12, South Zhongguancun Street, Ha', 'BEIJING', '()1827916319', '371376861@qq.com', 'a20d066f@siswa.umk.edu.my', 'TIADA', '', 'BACHELOR OF PNEUMATIC TECHNOLOGY', ' CHINA WESTERN AVIATION V', '', '2010', '', '', '', '', 'SEMESTER SEPTEMBER, SESI AKADEMIK 2021/202', '2021', '', 'Pembiayaan Sendiri', '0000-00-00', '1', 'KAMPUS KOTA', 'AKTIF'),
 (194, 'A20E052F', 'RIFFAT SHAHZADY', 'BH5124444', '01-Feb-79', 'PEREMPUAN', 'BERKAHWIN', 'Pakistan', 'ANTARABANGSA', 'DOK', 'Doktor Falsafah', 'PENUH MASA', 'WARDON HOUSE FTZ HOSTLE WOMEN, UNIVERSITY SIALKOT, PUNJAB, PAKISTAN', 'PUNJAB', '????', 'riffatchaudharypu@gmail.com', 'a20e052f@siswa.umk.edu.my', 'ISLAM', '', 'BACHELOR OF ART (BUSINESS)', ' PUNJAB UNIVERSITY LAHHOR', '1ST ', '2000', '', '', '', '', 'SEMESTER SEPTEMBER, SESI AKADEMIK 2021/202', '2021', '', 'Pembiayaan Sendiri', '0000-00-00', '1', 'KAMPUS KOTA', 'AKTIF'),
@@ -292,9 +292,9 @@ INSERT INTO `pg_student_data` (`id`, `NO_MATRIK`, `NAMA_PELAJAR`, `NO_IC`, `TARI
 --
 
 --
--- Indexes for table `pg_student_data`
+-- Indexes for table `pg_student_data2`
 --
-ALTER TABLE `pg_student_data`
+ALTER TABLE `pg_student_data2`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -302,9 +302,9 @@ ALTER TABLE `pg_student_data`
 --
 
 --
--- AUTO_INCREMENT for table `pg_student_data`
+-- AUTO_INCREMENT for table `pg_student_data2`
 --
-ALTER TABLE `pg_student_data`
+ALTER TABLE `pg_student_data2`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=215;
 COMMIT;
 

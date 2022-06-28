@@ -1,0 +1,1373 @@
+<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+ <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
+  <Author>HP</Author>
+  <LastAuthor>HP</LastAuthor>
+  <Created>2022-06-28T05:46:03Z</Created>
+  <LastSaved>2022-06-28T05:46:14Z</LastSaved>
+  <Version>16.00</Version>
+ </DocumentProperties>
+ <CustomDocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
+  <ICV dt:dt="string">AEAB1C687CE645D6B678A56031757651</ICV>
+  <KSOProductBuildVer dt:dt="string">1033-11.2.0.11156</KSOProductBuildVer>
+ </CustomDocumentProperties>
+ <OfficeDocumentSettings xmlns="urn:schemas-microsoft-com:office:office">
+  <AllowPNG/>
+ </OfficeDocumentSettings>
+ <ExcelWorkbook xmlns="urn:schemas-microsoft-com:office:excel">
+  <WindowHeight>10308</WindowHeight>
+  <WindowWidth>23040</WindowWidth>
+  <WindowTopX>0</WindowTopX>
+  <WindowTopY>0</WindowTopY>
+  <ProtectStructure>False</ProtectStructure>
+  <ProtectWindows>False</ProtectWindows>
+ </ExcelWorkbook>
+ <Styles>
+  <Style ss:ID="Default" ss:Name="Normal">
+   <Alignment ss:Vertical="Center"/>
+   <Borders/>
+   <Font ss:FontName="Calibri" x:CharSet="134" ss:Size="11" ss:Color="#000000"/>
+   <Interior/>
+   <NumberFormat/>
+   <Protection/>
+  </Style>
+  <Style ss:ID="s65">
+   <NumberFormat ss:Format="Medium Date"/>
+  </Style>
+ </Styles>
+ <Worksheet ss:Name="pg_student_data4">
+  <Table ss:ExpandedColumnCount="5" ss:ExpandedRowCount="214" x:FullColumns="1"
+   x:FullRows="1" ss:DefaultColumnWidth="54" ss:DefaultRowHeight="14.4">
+   <Row>
+    <Cell><Data ss:Type="String">A10E006P</Data></Cell>
+    <Cell><Data ss:Type="Number">2011</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">1. Tajaan MyPhD. 3 Jan 2011 hingga 2 Jan 2014 (37 bulan). , 2. Pembiayaan sendiri.</Data></Cell>
+    <Cell><Data ss:Type="Number">18</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A12E005F</Data></Cell>
+    <Cell><Data ss:Type="Number">2012</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">1. Tajaan JPA 9 Sept 2012 - 8 Sept 2015 ( 36 Bln), 2. Pembiayaan sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">18</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A12E014F</Data></Cell>
+    <Cell><Data ss:Type="Number">2012</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">1. Tajaan MYpHd. 1 Feb 2013 hingga 31 Julai 2015 (30 bulan) , 2. Pembiayaan sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">18</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A12E021F</Data></Cell>
+    <Cell><Data ss:Type="Number">2013</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">1. Tajaan MyPhD. 1 Mac 2013 hingga 29 Feb 2016 (36 bulan), 2. Pembiayaan sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">16</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A12E019F</Data></Cell>
+    <Cell><Data ss:Type="Number">2013</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">1. Biasiswaz HLP (3 Mac 2013 - 2 Sept 2016), 2. Pembiayaan sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">17</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A13E002F</Data></Cell>
+    <Cell><Data ss:Type="Number">2013</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">1. Tajaan MyPhD 3/2/2014 - 2/8/2016 (30bln), 2. Pembiayaan sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">15</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A14E010F</Data></Cell>
+    <Cell><Data ss:Type="Number">2014</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">1. Yuran tajaan MYPHD 2 Feb 2015-1 Ogos 2017 (30 bln), 2. Pembiayaan sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">12</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A14E017F</Data></Cell>
+    <Cell><Data ss:Type="Number">2015</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">1. TAJAAN MYPHD 1 SEPT 2015- 28 FEB 2018 (30 BULAN), 2. Pembiayaan sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">14</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A14E019F</Data></Cell>
+    <Cell><Data ss:Type="Number">2015</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">1. TAJAAN MYPHD 2 MAC 2015-1 MAC 2018(36 BULAN), 2. PEMBIAYAAN SENDIRI</Data></Cell>
+    <Cell><Data ss:Type="Number">14</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A14E025F</Data></Cell>
+    <Cell><Data ss:Type="Number">2015</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">1. TAJAAN MYPHD 2 MAC 2015-1 MAC 2018 (36 BULAN), 2. Pembiayaan sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">12</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A15E007P</Data></Cell>
+    <Cell><Data ss:Type="Number">2015</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">13</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A15E009P</Data></Cell>
+    <Cell><Data ss:Type="Number">2015</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Hadiah Latihan Persekutuan 13.9.2015 hingga 12.9.2020 (60 bulan)</Data></Cell>
+    <Cell><Data ss:Type="Number">13</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A15E010P</Data></Cell>
+    <Cell><Data ss:Type="Number">2015</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">13</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A15D023F</Data></Cell>
+    <Cell><Data ss:Type="Number">2016</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">9</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">C14E008P</Data></Cell>
+    <Cell><Data ss:Type="Number">2015</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">TAJAAN MYPHD 2 MAC 2015- 1 MAC 2019 (48 BULAN)</Data></Cell>
+    <Cell><Data ss:Type="Number">13</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A16D025P</Data></Cell>
+    <Cell><Data ss:Type="Number">2016</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">pembiayaan sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">10</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A16E004P</Data></Cell>
+    <Cell><Data ss:Type="Number">2016</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String"></Data></Cell>
+    <Cell><Data ss:Type="Number">11</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A16E030F</Data></Cell>
+    <Cell><Data ss:Type="Number">2016</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String"></Data></Cell>
+    <Cell><Data ss:Type="Number">10</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A16E001F</Data></Cell>
+    <Cell><Data ss:Type="Number">2016</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">pembiayaan sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">8</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A16E026F</Data></Cell>
+    <Cell><Data ss:Type="Number">2016</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">pembiayaan sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">9</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A16E038F</Data></Cell>
+    <Cell><Data ss:Type="Number">2016</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">pembiayaan sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">11</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A16E037F</Data></Cell>
+    <Cell><Data ss:Type="Number">2016</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">pembiayaan sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">10</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A15E029F</Data></Cell>
+    <Cell><Data ss:Type="Number">2016</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">pembiayaan sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">10</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A16E069P</Data></Cell>
+    <Cell><Data ss:Type="Number">2017</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">pembiayaan sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">9</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A16E081P</Data></Cell>
+    <Cell><Data ss:Type="Number">2017</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">9</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A16E043F</Data></Cell>
+    <Cell><Data ss:Type="Number">2017</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">TAJAAN SLAB,  (01 SEPT 2017 - 31 OGOS 2020) 36 BULAN</Data></Cell>
+    <Cell><Data ss:Type="Number">9</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A16E050F</Data></Cell>
+    <Cell><Data ss:Type="Number">2017</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">pembiayaan sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">8</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A16E032P</Data></Cell>
+    <Cell><Data ss:Type="Number">2017</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">pembiayaan sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">9</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A16E033P</Data></Cell>
+    <Cell><Data ss:Type="Number">2017</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">9</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A16E045F</Data></Cell>
+    <Cell><Data ss:Type="Number">2017</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A16E062F</Data></Cell>
+    <Cell><Data ss:Type="Number">2017</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A16D100F</Data></Cell>
+    <Cell><Data ss:Type="Number">2017</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri/ PTPTN</Data></Cell>
+    <Cell><Data ss:Type="Number">9</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A16D076F</Data></Cell>
+    <Cell><Data ss:Type="Number">2017</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">6</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">P15F002F</Data></Cell>
+    <Cell><Data ss:Type="Number">2015</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">11</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">P14E011P</Data></Cell>
+    <Cell><Data ss:Type="Number">2015</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">12</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">P14E018P</Data></Cell>
+    <Cell><Data ss:Type="Number">2016</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">1. Mybrain , (MYPHD 02/09/2014-01/03/2018), 2. PEMBIAYAAN SENDIRI</Data></Cell>
+    <Cell><Data ss:Type="Number">9</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">P15F103F</Data></Cell>
+    <Cell><Data ss:Type="Number">2015</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Mybrain , (Data MGSEB Pembiayaan Sendiri), MyPhD (2 Feb 2015 - 1 Aug 2017)</Data></Cell>
+    <Cell><Data ss:Type="Number">11</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">P15F120F</Data></Cell>
+    <Cell><Data ss:Type="Number">2015</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">TAJAAN MTDC</Data></Cell>
+    <Cell><Data ss:Type="Number">11</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">P15F125F</Data></Cell>
+    <Cell><Data ss:Type="Number">2016</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">1. MYPHD (2 FEB 2016 - 1 OGOS 2018) 30 BULAN, 2. Pembiayaan sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">10</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">P15F124F</Data></Cell>
+    <Cell><Data ss:Type="Number">2016</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Tajaan Myphd (2 Feb 2016 - 1 Feb 2019) 36 bulan</Data></Cell>
+    <Cell><Data ss:Type="Number">11</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">P14E019P</Data></Cell>
+    <Cell><Data ss:Type="Number">2015</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">12</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A17E003F</Data></Cell>
+    <Cell><Data ss:Type="Number">2017</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">8</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A17E013P</Data></Cell>
+    <Cell><Data ss:Type="Number">2017</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A17E014F</Data></Cell>
+    <Cell><Data ss:Type="Number">2017</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">9</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">P15E051P</Data></Cell>
+    <Cell><Data ss:Type="Number">2015</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Mybrain , (Data MGSEB Pembiayaan Sendiri), MyPhD (1 Sept 2015 - 28 Feb 2019)</Data></Cell>
+    <Cell><Data ss:Type="Number">11</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A16E042F</Data></Cell>
+    <Cell><Data ss:Type="Number">2017</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">SLAB (19 Sept 2017 - 18 Mac 2020) 42 Bulan</Data></Cell>
+    <Cell><Data ss:Type="Number">9</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A17E012F</Data></Cell>
+    <Cell><Data ss:Type="Number">2017</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">8</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A17E016F</Data></Cell>
+    <Cell><Data ss:Type="Number">2017</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">8</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A17E018F</Data></Cell>
+    <Cell><Data ss:Type="Number">2017</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String"></Data></Cell>
+    <Cell><Data ss:Type="Number">8</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A17E021P</Data></Cell>
+    <Cell><Data ss:Type="Number">2017</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String"></Data></Cell>
+    <Cell><Data ss:Type="Number">8</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A17D022F</Data></Cell>
+    <Cell><Data ss:Type="Number">2017</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String"></Data></Cell>
+    <Cell><Data ss:Type="Number">8</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A18E017F</Data></Cell>
+    <Cell><Data ss:Type="Number">2018</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">6</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A17E023P</Data></Cell>
+    <Cell><Data ss:Type="Number">2017</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String"></Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A17D049F</Data></Cell>
+    <Cell><Data ss:Type="Number">2018</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A17E055F</Data></Cell>
+    <Cell><Data ss:Type="Number">2018</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A17E056P</Data></Cell>
+    <Cell><Data ss:Type="Number">2018</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A17E036F</Data></Cell>
+    <Cell><Data ss:Type="Number">2018</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">TAJAAN SLAB 1 April 2018 - 28 Feb 2021 (35 Bln)</Data></Cell>
+    <Cell><Data ss:Type="Number">8</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A17E057F</Data></Cell>
+    <Cell><Data ss:Type="Number">2018</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">8</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A17E063F</Data></Cell>
+    <Cell><Data ss:Type="Number">2018</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A17E064P</Data></Cell>
+    <Cell><Data ss:Type="Number">2018</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">8</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A17E005F</Data></Cell>
+    <Cell><Data ss:Type="Number">2018</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">8</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A17E052F</Data></Cell>
+    <Cell><Data ss:Type="Number">2018</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Malaysian International Scholarship (MIS), Duration: 36 months, 26 Feb 2018 - 25 Feb 2021)</Data></Cell>
+    <Cell><Data ss:Type="Number">6</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A18E001F</Data></Cell>
+    <Cell><Data ss:Type="Number">2018</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">6</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A18E004F</Data></Cell>
+    <Cell><Data ss:Type="Number">2018</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A18E014F</Data></Cell>
+    <Cell><Data ss:Type="Number">2018</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A18E003F</Data></Cell>
+    <Cell><Data ss:Type="Number">2018</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">5</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A18E021P</Data></Cell>
+    <Cell><Data ss:Type="Number">2018</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String"></Data></Cell>
+    <Cell><Data ss:Type="Number">5</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A18E025F</Data></Cell>
+    <Cell><Data ss:Type="Number">2018</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">6</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A18E024P</Data></Cell>
+    <Cell><Data ss:Type="Number">2018</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">6</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A17E001F</Data></Cell>
+    <Cell><Data ss:Type="Number">2017</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Skim Zamalah (Yuran Ditanggung UMK)</Data></Cell>
+    <Cell><Data ss:Type="Number">8</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A18E022F</Data></Cell>
+    <Cell><Data ss:Type="Number">2018</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String"></Data></Cell>
+    <Cell><Data ss:Type="Number">6</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A18E002F</Data></Cell>
+    <Cell><Data ss:Type="Number">2018</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">6</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A18D020F</Data></Cell>
+    <Cell><Data ss:Type="Number">2018</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">6</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A18E029P</Data></Cell>
+    <Cell><Data ss:Type="Number">2018</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A18E028P</Data></Cell>
+    <Cell><Data ss:Type="Number">2018</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">6</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A18E023P</Data></Cell>
+    <Cell><Data ss:Type="Number">2018</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">5</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A18E026F</Data></Cell>
+    <Cell><Data ss:Type="Number">2018</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A18E027P</Data></Cell>
+    <Cell><Data ss:Type="Number">2018</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">6</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A18E032F</Data></Cell>
+    <Cell><Data ss:Type="Number">2018</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">6</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A18E031F</Data></Cell>
+    <Cell><Data ss:Type="Number">2018</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">5</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A18E030F</Data></Cell>
+    <Cell><Data ss:Type="Number">2018</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Tajaan SLAB, (01.09.2019 - 31.01.2022)</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A18D041F</Data></Cell>
+    <Cell><Data ss:Type="Number">2019</Data></Cell>
+    <Cell ss:StyleID="s65"><Data ss:Type="DateTime">2019-02-17T00:00:00.000</Data></Cell>
+    <Cell><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">6</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A18E010F</Data></Cell>
+    <Cell><Data ss:Type="Number">2019</Data></Cell>
+    <Cell ss:StyleID="s65"><Data ss:Type="DateTime">2019-02-17T00:00:00.000</Data></Cell>
+    <Cell><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">5</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A18E034F</Data></Cell>
+    <Cell><Data ss:Type="Number">2019</Data></Cell>
+    <Cell ss:StyleID="s65"><Data ss:Type="DateTime">2019-02-25T00:00:00.000</Data></Cell>
+    <Cell><Data ss:Type="String">TAJAAN SLAB, (01.09.2016 - 31.01.2020)</Data></Cell>
+    <Cell><Data ss:Type="Number">6</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A18E045P</Data></Cell>
+    <Cell><Data ss:Type="Number">2019</Data></Cell>
+    <Cell ss:StyleID="s65"><Data ss:Type="DateTime">2019-02-28T00:00:00.000</Data></Cell>
+    <Cell><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">5</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A18E046F</Data></Cell>
+    <Cell><Data ss:Type="Number">2019</Data></Cell>
+    <Cell ss:StyleID="s65"><Data ss:Type="DateTime">2019-03-25T00:00:00.000</Data></Cell>
+    <Cell><Data ss:Type="String"></Data></Cell>
+    <Cell><Data ss:Type="Number">5</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E009P</Data></Cell>
+    <Cell><Data ss:Type="Number">2019</Data></Cell>
+    <Cell ss:StyleID="s65"><Data ss:Type="DateTime">2019-09-03T00:00:00.000</Data></Cell>
+    <Cell><Data ss:Type="String">TAJAAN SLAB, (1/9/2019 - 31/8/2022)</Data></Cell>
+    <Cell><Data ss:Type="Number">5</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E010F</Data></Cell>
+    <Cell><Data ss:Type="Number">2019</Data></Cell>
+    <Cell ss:StyleID="s65"><Data ss:Type="DateTime">2019-09-03T00:00:00.000</Data></Cell>
+    <Cell><Data ss:Type="String">TAJAAN SLAB, (1/9/19 - 31/8/2022)</Data></Cell>
+    <Cell><Data ss:Type="Number">5</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E001F</Data></Cell>
+    <Cell><Data ss:Type="Number">2019</Data></Cell>
+    <Cell ss:StyleID="s65"><Data ss:Type="DateTime">2019-09-03T00:00:00.000</Data></Cell>
+    <Cell><Data ss:Type="String">TAJAAN SLAB, (1/9/19 - 31/8/2022)</Data></Cell>
+    <Cell><Data ss:Type="Number">5</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E026F</Data></Cell>
+    <Cell><Data ss:Type="Number">2019</Data></Cell>
+    <Cell ss:StyleID="s65"><Data ss:Type="DateTime">2019-09-03T00:00:00.000</Data></Cell>
+    <Cell><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19D025F</Data></Cell>
+    <Cell><Data ss:Type="Number">2019</Data></Cell>
+    <Cell ss:StyleID="s65"><Data ss:Type="DateTime">2019-09-03T00:00:00.000</Data></Cell>
+    <Cell><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19D028F</Data></Cell>
+    <Cell><Data ss:Type="Number">2019</Data></Cell>
+    <Cell ss:StyleID="s65"><Data ss:Type="DateTime">2019-09-18T00:00:00.000</Data></Cell>
+    <Cell><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E029P</Data></Cell>
+    <Cell><Data ss:Type="Number">2019</Data></Cell>
+    <Cell ss:StyleID="s65"><Data ss:Type="DateTime">2019-09-18T00:00:00.000</Data></Cell>
+    <Cell><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19D030F</Data></Cell>
+    <Cell><Data ss:Type="Number">2019</Data></Cell>
+    <Cell ss:StyleID="s65"><Data ss:Type="DateTime">2019-09-23T00:00:00.000</Data></Cell>
+    <Cell><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E050F</Data></Cell>
+    <Cell><Data ss:Type="Number">2019</Data></Cell>
+    <Cell ss:StyleID="s65"><Data ss:Type="DateTime">2019-10-31T00:00:00.000</Data></Cell>
+    <Cell><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">5</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E038P</Data></Cell>
+    <Cell><Data ss:Type="Number">2019</Data></Cell>
+    <Cell ss:StyleID="s65"><Data ss:Type="DateTime">2019-10-31T00:00:00.000</Data></Cell>
+    <Cell><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E047F</Data></Cell>
+    <Cell><Data ss:Type="Number">2019</Data></Cell>
+    <Cell ss:StyleID="s65"><Data ss:Type="DateTime">2019-11-04T00:00:00.000</Data></Cell>
+    <Cell><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E013F</Data></Cell>
+    <Cell><Data ss:Type="Number">2019</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">5</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E044F</Data></Cell>
+    <Cell><Data ss:Type="Number">2019</Data></Cell>
+    <Cell ss:StyleID="s65"><Data ss:Type="DateTime">2019-11-05T00:00:00.000</Data></Cell>
+    <Cell><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E051F</Data></Cell>
+    <Cell><Data ss:Type="Number">2019</Data></Cell>
+    <Cell ss:StyleID="s65"><Data ss:Type="DateTime">2019-11-06T00:00:00.000</Data></Cell>
+    <Cell><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">5</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19D012F</Data></Cell>
+    <Cell><Data ss:Type="Number">2019</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E057P</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:StyleID="s65"><Data ss:Type="DateTime">2020-02-17T00:00:00.000</Data></Cell>
+    <Cell><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E058P</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:StyleID="s65"><Data ss:Type="DateTime">2020-02-17T00:00:00.000</Data></Cell>
+    <Cell><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A16E007P</Data></Cell>
+    <Cell><Data ss:Type="Number">2017</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">pembiayaan sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">8</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19D0056P</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:StyleID="s65"><Data ss:Type="DateTime">2020-02-17T00:00:00.000</Data></Cell>
+    <Cell><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E0059F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:StyleID="s65"><Data ss:Type="DateTime">2020-02-17T00:00:00.000</Data></Cell>
+    <Cell><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E059P</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:StyleID="s65"><Data ss:Type="DateTime">2020-03-02T00:00:00.000</Data></Cell>
+    <Cell><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E0100F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:StyleID="s65"><Data ss:Type="DateTime">2020-10-05T00:00:00.000</Data></Cell>
+    <Cell><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E0008F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E0011F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20D0143F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:StyleID="s65"><Data ss:Type="DateTime">2020-10-05T00:00:00.000</Data></Cell>
+    <Cell><Data ss:Type="String">Tajaan HLP</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E0031F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E0029F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E0106F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20D022F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E056F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:StyleID="s65"><Data ss:Type="DateTime">2020-02-17T00:00:00.000</Data></Cell>
+    <Cell><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E0065F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20D0107F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E0027F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E0025F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E0030F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E0019F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E0067F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E0042F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E0035F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E0110F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19D037F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E0039F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E002F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E042F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E040F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E0009F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E0138P</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E0074P</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E0040F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20D028F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E0069F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E0044F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E0034F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E0045F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E0018F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E0163F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E0023F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E0166F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E0165F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A11E003F</Data></Cell>
+    <Cell><Data ss:Type="Number">2011</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">19</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20D0177F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Tajaan Yayasan Terengganu, (2 Tahun), Sept 2020/2021 - Feb 2021/2022</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E0038F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">E20E0155F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E043F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E0102F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E052F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E041F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E0164F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A19E039F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20D0198F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E029F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E045F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20D0212F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E0179F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E0175F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E0139F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E046F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20D0239F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E0184F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20D0211F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E0199F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E0183F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20D0279F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E0141F</Data></Cell>
+    <Cell><Data ss:Type="Number">2020</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E0213F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E0214F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20D058F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20D061F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E0276F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E048F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20D070P</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E0275F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E071F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E0277F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E009F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E056F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20D0222F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E075F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E074F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20D0290F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E053F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E055F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E0300F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E054F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E0293F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E0217F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">SKIM LATIHAH AKADEMIK BUMIPUTERA (SLAB), (01.10.2021 - 30.09.2024)</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20D066F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E052F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E0238F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E0162P</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20D077P</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">TAJAAN HADIAH LATIHAN PERSEKUTUAN SAMBILAN (HLPS)</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A21E006F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A20E073F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A21E028P</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String"></Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A21E027P</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String"></Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A21D031F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A21E014F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A21E030P</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A21E016F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A21E013F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A21D029F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A21E032F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A21E015F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A21E005F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A21E019F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A21E039F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A21E038F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A21D046F</Data></Cell>
+    <Cell><Data ss:Type="Number">2021</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Pembiayaan Sendiri</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+   </Row>
+  </Table>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <PageBreakZoom>60</PageBreakZoom>
+   <Selected/>
+   <TopRowVisible>112</TopRowVisible>
+   <Panes>
+    <Pane>
+     <Number>3</Number>
+     <ActiveRow>11</ActiveRow>
+     <ActiveCol>7</ActiveCol>
+    </Pane>
+   </Panes>
+   <ProtectObjects>False</ProtectObjects>
+   <ProtectScenarios>False</ProtectScenarios>
+  </WorksheetOptions>
+ </Worksheet>
+</Workbook>

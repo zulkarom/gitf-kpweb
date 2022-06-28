@@ -75,23 +75,25 @@ class Student extends \yii\db\ActiveRecord
 
              [['bachelor_year'], 'match' ,'pattern'=>'/^[0-9]+$/u', 'message'=> 'Tahun Sarjana Muda can contain only numeric characters.'],
 
+             [['master_year'], 'match' ,'pattern'=>'/^[0-9]+$/u', 'message'=> 'Tahun Sarjana can contain only numeric characters.'],
+
             [['date_birth', 'admission_date'], 'safe'],
             
             [['gender', 'marital_status', 'nationality', 'citizenship', 'study_mode', 'religion', 'race', 'admission_semester', 'current_sem', 'campus_id', 'status', 'field_id', 'related_university_id'], 'integer'],
             
             [['matric_no', 'nric'], 'string', 'max' => 20],
             
-            [['address', 'city', 'personal_email', 'bachelor_name', 'bachelor_university', 'sponsor'], 'string', 'max' => 225],
+            [['address', 'city', 'personal_email', 'bachelor_name', 'bachelor_university',  'master_name', 'master_university', 'sponsor'], 'string', 'max' => 225],
             
             [['remark'], 'string'],
             
-            [['outstanding_fee'], 'number'],
+            [['outstanding_fee', 'bachelor_cgpa', 'master_cgpa'], 'number'],
             
-            [['program_id', 'bachelor_cgpa'], 'string', 'max' => 10],
+            [['program_id'], 'string', 'max' => 10],
             
             [['phone_no'], 'string', 'max' => 50],
             
-            [['bachelor_year', 'admission_year'], 'string', 'max' => 4],
+            [['bachelor_year', 'admission_year', 'master_year'], 'string', 'max' => 4],
         ];
     }
 
@@ -122,6 +124,10 @@ class Student extends \yii\db\ActiveRecord
             'bachelor_university' => 'Universiti Sarjana Muda',
             'bachelor_cgpa' => 'CGPA Sarjana Muda',
             'bachelor_year' => 'Tahun Sarjana Muda',
+            'master_name' => 'Nama Sarjana',
+            'master_university' => 'Universiti Sarjana',
+            'master_cgpa' => 'CGPA Sarjana',
+            'master_year' => 'Tahun Sarjana',
             'admission_semester' => 'Sesi Masuk',
             'admission_year' => 'Tahun Kemasukan',
             'admission_date' => 'Tahun Kemasukan Semester 1',
