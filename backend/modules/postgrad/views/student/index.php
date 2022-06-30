@@ -1,5 +1,6 @@
 <?php
 
+use backend\modules\esiap\models\Program;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -34,14 +35,24 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'matric_no',
             'nric',
-            'programCode:html',
+            [
+                'attribute' => 'program_id',
+                'label' => 'Program',
+                'format' => 'html',
+                'filter' => Html::activeDropDownList($searchModel, 'program_id', $searchModel->listProgram(),['class'=> 'form-control','prompt' => 'Choose']),
+                'value' => function($model){
+                   return $model->programCode;
+                }
+            ],
             
             ['class' => 'yii\grid\ActionColumn',
-                 'contentOptions' => ['style' => 'width: 8.7%'],
-                'template' => '{update}',
+                'template' => '{view} {update}',
                 //'visible' => false,
                 'buttons'=>[
                     'update'=>function ($url, $model) {
+                        return Html::a('<span class="fa fa-edit"></span>',['update', 'id' => $model->id],['class'=>'btn btn-primary btn-sm']);
+                    },
+                    'view'=>function ($url, $model) {
                         return Html::a('<span class="glyphicon glyphicon-search"></span> VIEW',['view', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
                     }
                 ],

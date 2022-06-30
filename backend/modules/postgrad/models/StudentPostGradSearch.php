@@ -17,8 +17,8 @@ class StudentPostGradSearch extends Student
     public function rules()
     {
         return [
-            [['id', 'gender', 'marital_status', 'nationality', 'citizenship', 'study_mode', 'religion', 'race', 'admission_semester', 'sponsor', 'current_sem', 'campus_id', 'status'], 'integer'],
-            [['matric_no', 'nric', 'date_birth', 'program_id', 'address', 'city', 'phone_no', 'personal_email', 'bachelor_name', 'university_name', 'bachelor_cgpa', 'bachelor_year', 'admission_year', 'admission_date', 'name'], 'safe'],
+            [['id', 'gender', 'status'], 'integer'],
+            [['matric_no', 'nric', 'program_id', 'name'], 'safe'],
         ];
     }
 
@@ -47,6 +47,9 @@ class StudentPostGradSearch extends Student
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 100,
+            ],
         ]);
 
         $this->load($params);
@@ -59,26 +62,12 @@ class StudentPostGradSearch extends Student
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'date_birth' => $this->date_birth,
-            'gender' => $this->gender,
-            'marital_status' => $this->marital_status,
-            'nationality' => $this->nationality,
-            'citizenship' => $this->citizenship,
-            'study_mode' => $this->study_mode,
-            'religion' => $this->religion,
-            'race' => $this->race,
-            'admission_semester' => $this->admission_semester,
-            'admission_date' => $this->admission_date,
-            'sponsor' => $this->sponsor,
-            'current_sem' => $this->current_sem,
-            'campus_id' => $this->campus_id,
+            'program_id' => $this->program_id,
             'status' => $this->status,
         ]);
 
         $query->andFilterWhere(['like', 'matric_no', $this->matric_no])
             ->andFilterWhere(['like', 'nric', $this->nric])
-            ->andFilterWhere(['like', 'program_id', $this->program_id])
             ->andFilterWhere(['like', 'user.fullname', $this->name]);
 
         return $dataProvider;

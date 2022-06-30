@@ -49,8 +49,21 @@ class StudentController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+
+   /*  public function actionPutProgram(){
+        $list = Student::find()->all();
+        foreach($list as $s){
+            if($s->program_code == 'DOK'){
+                $s->program_id = 85;
+                $s->save();
+            }else if($s->program_code == 'SAR'){
+                $s->program_id = 84;
+                $s->save();
+            }
+        }
+    } */
     
-    public function actionImport41rh23dfgpqjh4uy32(){
+    /* public function actionImport41rh23dfgpqjh4uy32(){
         $list = StudentData::find()->all();
         foreach($list as $stud){
             //lets create user first 
@@ -158,10 +171,10 @@ class StudentController extends Controller
             
         }
         
-    }
+    } */
 	
 	
-	public function actionBaikiData(){
+	/* public function actionBaikiData(){
         $list = StudentData4::find()->all();
         foreach($list as $stud){
 			$matric = $stud->matric;
@@ -389,7 +402,7 @@ class StudentController extends Controller
             
         }
         
-    }
+    } */
 
     /**
      * Displays a single StudentPostGrad model.

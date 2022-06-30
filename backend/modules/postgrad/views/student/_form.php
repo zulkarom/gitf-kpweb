@@ -30,7 +30,7 @@ use backend\models\University;
         </div>
         <div class="col-md-3">
             <?= $form->field($model, 'program_id')->dropDownList(
-                ArrayHelper::map(Program::find()->where(['pro_level' => [3,4], 'status' => 1])->orderBy('pro_order ASC')->all(), 'id', 'programNameCode'), ['prompt' => 'Pilih Program',  'class' => 'form-control select-choice']) ?>
+                $model->listProgram(), ['prompt' => 'Pilih Program',  'class' => 'form-control select-choice']) ?>
         </div>
         
         <div class="col-md-3">

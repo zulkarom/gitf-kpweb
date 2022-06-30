@@ -10,6 +10,7 @@ use backend\models\Campus;
 use backend\models\Semester;
 use backend\modules\esiap\models\Program;
 use backend\models\University;
+use yii\helpers\ArrayHelper;
 /**
  * This is the model class for table "student_pg".
  *
@@ -190,6 +191,10 @@ class Student extends \yii\db\ActiveRecord
     
     public function getRelatedUniversity(){
         return $this->hasOne(University::className(), ['id' => 'related_university_id']);
+    }
+
+    public function listProgram(){
+        return ArrayHelper::map(Program::find()->where(['faculty_id' => 1, 'pro_level' => [3,4], 'status' => 1])->orderBy('pro_order ASC')->all(), 'id', 'programNameCode');
     }
     
     public function getProgramCode(){
