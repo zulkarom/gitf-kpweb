@@ -65,7 +65,7 @@ Profile
             ],
             'admission_year',
             [
-                'label' => 'Tahun Kemasukan ',
+                'label' => 'Tarikh Kemasukan ',
                 'value' => function($model){
                 return date('d F Y', strtotime($model->admission_date));
                 }

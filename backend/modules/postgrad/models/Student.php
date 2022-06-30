@@ -131,7 +131,7 @@ class Student extends \yii\db\ActiveRecord
             'master_year' => 'Tahun Sarjana',
             'admission_semester' => 'Sesi Masuk',
             'admission_year' => 'Tahun Kemasukan',
-            'admission_date' => 'Tahun Kemasukan Semester 1',
+            'admission_date' => 'Tarikh Kemasukan',
             'sponsor' => 'Pembiayaan Sendiri / Tajaan',
             'current_sem' => 'Semester Semasa Pelajar',
             'campus.campus_name' => 'Kampus',
