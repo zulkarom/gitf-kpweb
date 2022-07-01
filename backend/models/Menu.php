@@ -350,6 +350,50 @@ class Menu
         ];
     }
 
+    public static function adminSae()
+    {
+        return [
+            'label' => 'SAE SCREEN Menu',
+            'icon' => 'cube',
+            'visible' => Yii::$app->user->can('postgrad-manager'),
+            'url' => '#',
+            'items' => [
+
+                [
+                    'label' => 'Summary',
+                    'icon' => 'pie-chart',
+                    'url' => [
+                        '/sae/default'
+                    ]
+                ],
+                [
+                    'label' => 'Participants',
+                    'icon' => 'hand-o-right',
+                    'url' => [
+                        '/sae/answer/index'
+                    ]
+                ],
+                [
+                    'label' => 'Batches',
+                    'icon' => 'external-link',
+                    'url' => [
+                        '/sae/batch/index'
+                    ]
+                ],
+                [
+                    'label' => 'Questions',
+                    'icon' => 'mortar-board',
+                    'url' => [
+                        '/sae/question/index'
+                    ]
+                ],
+
+
+                
+            ]
+        ];
+    }
+
     public static function adminCourseFiles()
     {
         // kena allow auditors jgk

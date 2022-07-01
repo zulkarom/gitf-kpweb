@@ -87,6 +87,10 @@ use backend\models\Menu;
 			case 'postgrad':
 			$admin_focus = Menu::adminPostGradStudents();
 			break;
+
+			case 'sae':
+				$admin_focus = Menu::adminSae();
+				break;
 			
 			case 'aduan':
 			$admin_focus = Menu::adminAduan();
