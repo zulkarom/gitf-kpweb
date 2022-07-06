@@ -92,7 +92,7 @@ class SiteController extends Controller
     {
 		$model = $this->findConferenceByUrl($confurl);
         if($model->system_only == 1){
-            return $this->redirect(['/account/index', 'confurl' => $confurl]);
+            return $this->redirect(['/site/login', 'confurl' => $confurl]);
         }
 		if($confurl){
 			return $this->render('home', [
@@ -159,10 +159,13 @@ class SiteController extends Controller
     {
         $this->layout = '//main-login';
 		$conf = $this->findConferenceByUrl($confurl);
-
         if($conf->system_only == 1){
-            return $this->redirect(['/account/index', 'confurl' => $confurl]);
+            $this->layout = 'system';
+        }else{
+            $this->layout = "//main-login";
         }
+
+
 		
 		if (!Yii::$app->user->isGuest) {
             return $this->redirect(['member/index', 'confurl' => $confurl]);
@@ -288,11 +291,7 @@ class SiteController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail($conf)) {
                 Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
-                if($conf->system_only == 1){
-                    return $this->redirect(['/account/index', 'confurl' => $confurl]);
-                }else{
-                    return $this->redirect(['/site/login', 'confurl' => $confurl]);
-                }
+                return $this->redirect(['/site/login', 'confurl' => $confurl]);
                 
             } else {
                 Yii::$app->session->setFlash('error', 'Sorry, we are unable to reset password for the provided email address.');
@@ -322,7 +321,7 @@ class SiteController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
             Yii::$app->session->setFlash('success', 'Your new password has been successfully created.');
             
-            return $this->redirect(['/account/index', 'confurl' => $confurl]);
+            return $this->redirect(['/site/login', 'confurl' => $confurl]);
         }
         
         return $this->render('resetPassword', [
@@ -347,13 +346,13 @@ class SiteController extends Controller
         if (empty($token) || !is_string($token)) {
             //throw new InvalidArgumentException('Verify email token cannot be blank.');
             Yii::$app->session->setFlash('error', 'Verify email token cannot be blank.');
-            return $this->redirect(['/account/index', 'confurl' => $conf->conf_url]);
+            return $this->redirect(['/site/login', 'confurl' => $confurl]);
         }
         $user = User::findByVerificationToken($token);
         if (!$user) {
             //throw new InvalidArgumentException('Wrong verify email token.');
             Yii::$app->session->setFlash('error', 'Wrong verificaton token, please check the link is correct.');
-            return $this->redirect(['/account/index', 'confurl' => $conf->conf_url]);
+            return $this->redirect(['/site/login', 'confurl' => $confurl]);
         }
 
         try {
@@ -369,11 +368,7 @@ class SiteController extends Controller
             Yii::$app->session->setFlash('error', 'Sorry, we are unable to verify your account with provided token.');
         }
 
-        if($conf->system_only == 1){
-            return $this->redirect(['/account/index', 'confurl' => $conf->conf_url]);
-        }else{
-            return $this->redirect(['/site/login', 'confurl' => $conf->conf_url]);
-        }
+        return $this->redirect(['/site/login', 'confurl' => $confurl]);
         
     }
 }

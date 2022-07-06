@@ -19,7 +19,7 @@ use yii\web\Controller;
  */
 class AccountController extends Controller
 {
-    public $layout = 'system';
+   /*  public $layout = 'system';
 
     public function actionIndex($confurl=null)
     {
@@ -53,7 +53,7 @@ class AccountController extends Controller
             'model' => $model,
             'modelLogin' => $modelLogin,
             'conf' => $conf
-        ]);
+        ]); */
 		
     }
 
