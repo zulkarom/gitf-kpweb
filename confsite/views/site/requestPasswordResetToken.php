@@ -14,10 +14,11 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="site-request-password-reset">
     <div class="row justify-content-center">
         <div class="col-lg-6 col-md-6">
-
-            <h4><?= Html::encode($this->title) ?></h4>
+        <br />
+            <h4 ><?= Html::encode($this->title) ?></h4>
 
             <p>Please fill out your email. A link to reset password will be sent there.</p>
+            <br />
 
             <?php $form = ActiveForm::begin(['id' => 'request-password-reset-form']); ?>
 

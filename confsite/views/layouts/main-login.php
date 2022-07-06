@@ -56,20 +56,12 @@ if (($conf = Conference::findOne(['conf_url' => $confurl])) == null) {
 	<section class="bgwhite">
 		<div class="container">
 			<div class="row">
-			<div class="col-md-3 col-lg-3 p-b-75 myleftbar">
-					<div class="rightbar">
-					
-<?= $this->render('left', [
-        'conf' => $conf,
-    ]) ?>
-
-
-					</div>
-				</div>
-				<div class="col-md-9 col-lg-9 p-b-75">
+	
+				<div class="col-md-12 col-lg-12 p-b-75">
 					<div class="p-r-50 p-r-0-lg">
 						<!-- item blog -->
 						<div class="item-blog p-b-80">
+							<br/>
 						
 <?= Alert::widget() ?>
 							<?=$content?>

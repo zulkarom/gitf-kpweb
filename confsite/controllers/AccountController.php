@@ -6,10 +6,11 @@ use yii\web\NotFoundHttpException;
 use confsite\models\LoginForm;
 use confsite\models\NewUserForm;
 use confsite\models\SignInForm;
-use backend\modules\conference\models\Conference;
-use yii\web\Controller;
 use yii\widgets\ActiveForm;
 use yii\web\Response;
+use backend\modules\conference\models\Conference;
+use yii\web\Controller;
+
 
 
 

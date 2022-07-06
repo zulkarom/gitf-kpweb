@@ -11,15 +11,25 @@ use yii\db\Expression;
 /**
  * Signup form
  */
-class NewUserForm extends Model
+class NewUserFormPg extends Model
 {
     public $fullname;
     public $email;
-    public $title;
     public $institution;
     public $country_id;
     public $password;
     public $password_repeat;
+
+	public $matric_no;
+	public $cumm_sem;
+	public $pro_study;
+	public $phone;
+	
+	public $sv_main;
+	public $sv_co1;
+	public $sv_co2;
+	public $sv_co3;
+	
 
     /**
      * @inheritdoc
@@ -29,7 +39,7 @@ class NewUserForm extends Model
         return [
             //Register
             
-            [['email', 'password', 'password_repeat', 'fullname', 'institution'], 'required'],
+            [['email', 'password', 'password_repeat', 'fullname', 'sv_main', 'pro_study', 'cumm_sem', 'matric_no', 'phone'], 'required'],
             
             [['email'], 'email'],
             ['email', 'trim'],
@@ -39,9 +49,7 @@ class NewUserForm extends Model
             
             ['password', 'string', 'min' => 6],
             
-            [['fullname', 'institution', 'title'], 'string', 'min' => 2, 'max' => 100],
-
-            [['country_id'], 'integer'],
+            [['fullname', 'institution', 'sv_main', 'sv_co1', 'sv_co2', 'sv_co3'], 'string', 'min' => 2, 'max' => 100],
             
             
             ['password_repeat', 'compare', 'compareAttribute'=>'password', 'message'=>"Passwords don't match" ],
@@ -60,6 +68,14 @@ class NewUserForm extends Model
 
         $label['fullname'] = 'Name';
         $label['institution'] = 'Institution';
+        $label['cumm_sem'] = 'Cumulative Semester';
+        $label['pro_study'] = 'Program of Study';
+
+        $label['sv_main'] = 'Main Supervisor';
+        $label['sv_co1'] = 'Co-Supervisor I';
+        $label['sv_co2'] = 'Co-Supervisor II';
+        $label['sv_co3'] = 'Co-Supervisor III';
+        
         return $label;
     } 
     
@@ -88,10 +104,17 @@ class NewUserForm extends Model
 			if(!$associate){
 			    $new = new Associate();
 			    $new->scenario = 'raw';
+                $new->user_id = $user->id;
                 $new->institution = $this->institution;
-                $new->title = $this->title;
-                $new->country_id = $this->country_id;
-			    $new->user_id = $user->id;
+                $new->matric_no = $this->matric_no;
+                $new->cumm_sem = $this->cumm_sem;
+                $new->pro_study = $this->pro_study;
+                $new->phone = $this->phone;
+                $new->sv_main = $this->sv_main;
+                $new->sv_co1 = $this->sv_co1;
+                $new->sv_co2 = $this->sv_co2;
+                $new->sv_co3 = $this->sv_co3;
+			    
 			    if(!$new->save()){
 					$new->flashError();
 				}
@@ -183,6 +206,13 @@ class NewUserForm extends Model
         ->setSubject('Account registration at ' . Yii::$app->name)
         ->send(); 
     }
+    public function listProgramStudy(){
+		return Associate::listProgramStudy();
+	}
+
+    public function listSemNumber(){
+		return Associate::listSemNumber();
+	}
 
     public function flashError(){
         if($this->getErrors()){
