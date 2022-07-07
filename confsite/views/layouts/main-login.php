@@ -46,6 +46,9 @@ if (($conf = Conference::findOne(['conf_url' => $confurl])) == null) {
 </head>
 <body class="animsition">
 <?php $this->beginBody() ?>
+
+<?php if($conf->is_active == 1){ ?>
+
 	<!-- Header -->
 	<?=$this->render('header',  ['conf' => $conf])?>
 <section class="bg-title-page flex-col-c-m">
@@ -102,7 +105,7 @@ if (($conf = Conference::findOne(['conf_url' => $confurl])) == null) {
 		</span>
 	</div>
 
-	
+	<?php }else{echo 'This conference is no longer active!';} ?>
 	<?php $this->endBody() ?>
 
 </body>

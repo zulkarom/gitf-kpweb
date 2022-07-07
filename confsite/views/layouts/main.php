@@ -38,7 +38,8 @@ $conf = Conference::findOne(['conf_url' => $confurl]);
 <body class="animsition">
 <?php $this->beginBody() ?>
 	<!-- Header -->
-	<?=$this->render('header',  ['conf' => $conf])?>
+	<?php if($conf->is_active == 1){ ?>
+	<?=$this->render('header', ['conf' => $conf])?>
 
 	<!-- Title Page -->
 	<section class="bg-title-page flex-col-c-m">
@@ -99,37 +100,36 @@ $conf = Conference::findOne(['conf_url' => $confurl]);
 						</h4>
 
 						<ul class="style-menu">
-						<?php 
-						
-						$dates = $conf->confDates;
-						if($dates){
-							foreach($dates as $date){
-								if($date->published == 1){
-									echo '<li class="p-t-6 p-b-8 bo7">
+						<?php
+                        
+                        $dates = $conf->confDates;
+                        if ($dates) {
+                            foreach ($dates as $date) {
+                                if ($date->published == 1) {
+                                    echo '<li class="p-t-6 p-b-8 bo7">
 								<a href="#" class="s-text13 p-t-5 p-b-5">
 									'.$date->dateName->date_name .': <br /><strong style="margin-left:20px"><i class="fa fa-calendar"></i> '.date('d F Y', strtotime($date->date_start)) .'</strong>
 								</a>
 							</li>';
-								}
-								
-							}
-						}
-						
-						$type = $conf->type_name;
-						if($type == 1){
-						    $n = 'Conference';
-						}else if ($type == 2){
-						    $n= 'Colloquium';
-						}
-						
-						echo '<li class="p-t-6 p-b-8 bo7">
+                                }
+                            }
+                        }
+                        
+                        $type = $conf->type_name;
+                        if ($type == 1) {
+                            $n = 'Conference';
+                        } elseif ($type == 2) {
+                            $n= 'Colloquium';
+                        }
+                        
+                        echo '<li class="p-t-6 p-b-8 bo7">
 								<a href="#" class="s-text13 p-t-5 p-b-5">
 									'.$n.' Date: <br /><strong style="margin-left:20px"><i class="fa fa-calendar"></i> '.$conf->conferenceDateRange .'</strong>
 								</a>
 							</li>';
-						
-									
-						?>
+                        
+                                    
+                        ?>
 						
 						
 
@@ -165,6 +165,8 @@ $conf = Conference::findOne(['conf_url' => $confurl]);
 			<i class="fa fa-angle-double-up" aria-hidden="true"></i>
 		</span>
 	</div>
+
+	<?php }else{echo 'This conference is no longer active!';} ?>
 
 	
 	<?php $this->endBody() ?>

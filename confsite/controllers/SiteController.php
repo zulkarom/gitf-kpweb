@@ -45,7 +45,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'member', 'error','verify-email', 'home', 'download-file'],
+                        'actions' => ['index','logout', 'member', 'error','verify-email', 'home', 'download-file'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -92,7 +92,13 @@ class SiteController extends Controller
     {
 		$model = $this->findConferenceByUrl($confurl);
         if($model->system_only == 1){
-            return $this->redirect(['/site/login', 'confurl' => $confurl]);
+            
+
+            if (Yii::$app->user->isGuest) {
+                return $this->redirect(['site/login', 'confurl' => $confurl]);
+            }else{
+                return $this->redirect(['/site/member', 'confurl' => $confurl]);
+            }
         }
 		if($confurl){
 			return $this->render('home', [
@@ -157,6 +163,11 @@ class SiteController extends Controller
 	
 	public function actionLogin($confurl=null)
     {
+        if (!Yii::$app->user->isGuest) {
+            return $this->redirect(['site/member', 'confurl' => $confurl]);
+        }
+
+
         $this->layout = '//main-login';
 		$conf = $this->findConferenceByUrl($confurl);
         if($conf->system_only == 1){
