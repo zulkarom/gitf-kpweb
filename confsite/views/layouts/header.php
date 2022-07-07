@@ -14,8 +14,8 @@ if (Yii::$app->user->isGuest) {
     $menu = [
 	['Home', ['/site/home', 'confurl' => $confurl], 'home', 0],
 	['Submit Paper', ['/page/submission', 'confurl' => $confurl], 'tachometer-alt', 0],
-	['Login', ['/site/login', 'confurl' => $confurl], 'files-o', 0],
-	['Register', ['/page/register', 'confurl' => $confurl], 'table', 0],
+	['Login / Register', ['/site/login', 'confurl' => $confurl], 'files-o', 0],
+//	['Register', ['/page/register', 'confurl' => $confurl], 'table', 0],
 	['Contact Us', ['/page/contact', 'confurl' => $confurl], 'dollar-sign', 0],
 ];
 }else{

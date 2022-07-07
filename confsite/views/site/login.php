@@ -1,87 +1,151 @@
 <?php
 
 use yii\helpers\Html;
-use yii\bootstrap\ActiveForm;
-use yii\helpers\Url;
+use kartik\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
+use common\models\Country;
+use kartik\select2\Select2;
 
-$this->title = 'CONFERENCE - LOGIN PAGE';
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = $conf->conf_name;
+?>
 
+<h4 style="text-align:center; font-size:20px;margin-top:20px;font-weight:bold">LOGIN OR REGISTER TO SUBMIT OR UPDATE YOUR PAPER.</h4>
+<br /><br />
+<div class="row">
+    <div class="col-md-6 col-lg-6"> 
+    <?php $form = ActiveForm::begin([
+    'validateOnChange' => false
+]); ?>
+
+        <h5>LOGIN</h5>
+        <br />
+
+        
+            <?= $form->field($modelLogin, 'username')->textInput(['class' => 'form-control form-control-lg'])
+            ?>
+        
+          <?= $form->field($modelLogin, 'password')->passwordInput(['class' => 'form-control form-control-lg'])
+            ?>
+
+          <div class="form-group">
+            <?= Html::submitButton('Log in', ['value' => '1', 'class' => 'btn btn-primary']) ?>
+          </div>
+
+      
+        
+        
+            <?php ActiveForm::end(); ?>
+
+            <p>
+                <?= Html::a('Reset My Password',
+                           ['/site/request-password-reset', 'confurl' => $conf->conf_url] ,['class' => 'field-label text-muted mb10',]
+                                ) ?>
+            </p>
+            <br /><br />
+        
+    </div>
+
+
+
+
+
+    <div class="col-md-6 col-lg-6"> 
+    <?php $form = ActiveForm::begin([
+      'enableClientValidation' => true,
+      'enableAjaxValidation' => true,
+      'validateOnChange' => true,
+]); ?>
+      <h5>REGISTER</h5>
+       <br />
+       <p>If you previously had a or already have an account with FKP Portal or Conferences managed by FKP Portal, please sign in using your credentials for that service, resetting your password if you do not recall it.</p>
+       <br />
+      <?php if(true){?>
+ 
+        <?= $form->field($model, 'email')->textInput(['class' => 'form-control form-control-lg'])?>
+        <?= $form->field($model, 'fullname')->textInput(['class' => 'form-control form-control-lg'])
+            ?>
+        <?php  
+if($conf->is_pg == 0){
+    echo $form->field($model, 'title')->textInput(['class' => 'form-control form-control-lg']) ;
+}
+?>
+
+        <?= $form->field($model, 'password')->passwordInput(['class' => 'form-control form-control-lg'])
+            ?>
+            <?= $form->field($model, 'password_repeat')->passwordInput(['class' => 'form-control form-control-lg'])
+            ?>
+
+            
+
+<?php  
+if($conf->is_pg == 1){
+    echo $form->field($model, 'matric_no')->textInput() ;
+   
 ?>
 
 
-<div class="row">
-<div class="col-md-8">
+<?=$form->field($model, 'phone')->textInput() ;
+   
 
-<div class="login-wrap">
-                    <div class="login-content">
-                        <div class="login-logo">
-                            <a href="#">
-                               <h4 class="m-text23 p-t-56 p-b-10">LOGIN FORM</h4>
-                            </a>
-                        </div>
-                        <p style="font-size:12px">* Login to submit/review papers<br />
-                        * For staff, use FKP Portal login credentials</p>
-                        <br />
-                        <div class="login-form">
-                           	<?php $form = ActiveForm::begin([
-                    'id' => 'login-form',
-                ]) ?>	
-				
-				<?=$form->field($model, 'username')
-										
-								->textInput()
-										;
-										?>
-										
-				
-								
-								<?= $form->field(
-                        $model,
-                        'password')
-                        ->passwordInput()
-                         ->label('Password')
-                           
-                         ?>
-						 
-						 
-                                <div class="login-checkbox">
-								<?=$form->field($model, 'rememberMe')->checkbox(['tabindex' => '3'])->label('Remember Me') ?>
-                                    
-                          
-                                </div>
-                      
-								
-								<?= Html::submitButton(
-                    Yii::t('user', 'LOG IN'),
-                    ['class' => 'btn btn-primary']
-                ) ?>
-                                
-                            <?php ActiveForm::end(); ?>
-                           
-                        </div>
-                    </div>
-					
+?>
 
-		
+<?= $form
+            ->field($model, 'pro_study')
+           ->dropDownList($model->listProgramStudy(), ['prompt' => 'Select']) ?><?= $form
+            ->field($model, 'cumm_sem')
+            ->dropDownList($model->listSemNumber(), ['prompt' => 'Select']) ?>
 
-            <p class="text-center">
-                <?= Html::a('FORGOT PASSWORD',['/user/recovery/request', 'url' => $conf->conf_url]) ?>
-            </p>
+<?= $form
+            ->field($model, 'sv_main')
+			->label('Main Supervisor')
+            ->textInput() ?>
+            <?= $form
+            ->field($model, 'sv_co1')
+            ->textInput() ?>
+            <?= $form
+            ->field($model, 'sv_co2')
+            ->textInput() ?>
+            <?= $form
+            ->field($model, 'sv_co3')
+            ->textInput() ?>
+            
 
-		
+        
+<?php }else{ ?>   
+    
+    <?= $form->field($model, 'institution')->textInput(['class' => 'form-control form-control-lg'])
+            ?>
 
-					
-					
-                </div>
+<?php 
 
+$model->country_id = 158;
+echo $form->field($model, 'country_id')->widget(Select2::classname(), [
+    'data' => ArrayHelper::map(Country::find()->all(),'id', 'country_name'),
+    'language' => 'en',
+    'options' => ['multiple' => false,'placeholder' => 'Select a country ...'],
+    'pluginOptions' => [
+        'allowClear' => true
+    ],
+])->label('Country');
+
+
+?>
+
+    <?php } ?>   
+
+          <div class="form-group">
+            <?= Html::submitButton('Register', ['value' => '2', 'class' => 'btn btn-primary']) ?>
+          </div>
+        
+        
+     
+         <?php }else{
+			 
+			 echo '<p>Kindly be informed that the new registration has been closed </p>';
+		 } ?>
+      
+      <?php ActiveForm::end(); ?>
+    </div>
+    
 
 </div>
-
-</div>
-
-
-
-				
-				
-				<br />	<br />	<br />
