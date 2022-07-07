@@ -57,7 +57,7 @@ $this->title = $conf->conf_name;
 ]); ?>
       <h5>REGISTER</h5>
        <br />
-       <p>If you previously had a or already have an account with FKP Portal or Conferences managed by FKP Portal, please sign in using your credentials for that service, resetting your password if you do not recall it.</p>
+       <p>If you previously had a or already have an account with FKP Portal or Conferences/Colloquiums managed by FKP Portal, please sign in using your credentials for that service, resetting your password if you do not recall it.</p>
        <br />
       <?php if(true){?>
  
