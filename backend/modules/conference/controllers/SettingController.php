@@ -14,6 +14,7 @@ use yii\db\Exception;
 use yii\db\Expression;
 use backend\modules\conference\models\UploadConfFile as UploadFile;
 use backend\modules\conference\models\Conference;
+use backend\modules\conference\models\ConfScope;
 use backend\modules\conference\models\EmailSet;
 use backend\modules\conference\models\EmailTemplate;
 use common\models\Model;
@@ -103,6 +104,77 @@ class SettingController extends Controller
 
         return $this->render('payment', [
             'model' => $model,
+        ]);
+    }
+
+
+
+    public function actionScopes($conf)
+    {
+        $model = $this->findModel($conf);
+        $scopes = $model->scopes;
+       
+        if ($model->load(Yii::$app->request->post())) {
+            $model->updated_at = new Expression('NOW()');
+            
+            $oldIDs = ArrayHelper::map($scopes, 'id', 'id');
+            
+            
+            $scopes = Model::createMultiple(ConfScope::classname(), $scopes);
+            
+            Model::loadMultiple($scopes, Yii::$app->request->post());
+            
+            $deletedIDs = array_diff($oldIDs, array_filter(ArrayHelper::map($scopes, 'id', 'id')));
+            
+            foreach ($scopes as $i => $scope) {
+                $scope->scope_order = $i;
+                $scope->conf_id = $model->id;
+            }
+            
+            
+            $valid = $model->validate();
+            
+            $valid = Model::validateMultiple($scopes) && $valid;
+            
+            if ($valid) {
+                $transaction = Yii::$app->db->beginTransaction();
+                try {
+                    if ($flag = $model->save(false)) {
+                        if (! empty($deletedIDs)) {
+                            ConfScope::deleteAll(['id' => $deletedIDs]);
+                        }
+                        foreach ($scopes as $i => $scope) {
+                            if ($flag === false) {
+                                break;
+                            }
+
+                            $scope->conf_id = $model->id;
+                            
+                            //do not validate this in model
+                            
+
+                            if (!($flag = $scope->save(false))) {
+                                break;
+                            }
+                        }
+                    }
+
+                    if ($flag) {
+                        $transaction->commit();
+                        Yii::$app->session->addFlash('success', "Scopes Updated");
+                        return $this->refresh();
+                    } else {
+                        $transaction->rollBack();
+                    }
+                } catch (Exception $e) {
+                    $transaction->rollBack();
+                }
+            }
+        }
+    
+        return $this->render('scope', [
+            'model' => $model,
+            'scopes' => (empty($scopes)) ? [new ConfScope] : $scopes
         ]);
     }
 	

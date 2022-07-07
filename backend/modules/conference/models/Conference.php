@@ -187,6 +187,11 @@ class Conference extends \yii\db\ActiveRecord
     {
         return $this->hasMany(ConfPaper::className(), ['conf_id' => 'id']);
     }
+
+	public function getScopes()
+    {
+        return $this->hasMany(ConfScope::className(), ['conf_id' => 'id'])->orderBy('scope_order ASC');
+    }
 	
 	public function getTentativeDays()
     {

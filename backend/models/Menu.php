@@ -1061,6 +1061,15 @@ class Menu
                                 ],
 
                                 [
+                                    'label' => 'Scopes',
+                                    'icon' => 'cube',
+                                    'url' => [
+                                        '/conference/setting/scopes',
+                                        'conf' => $confurl
+                                    ]
+                                ],
+
+                                [
                                     'label' => 'Payment & Receipt',
                                     'icon' => 'dollar',
                                     'url' => [

@@ -80,7 +80,7 @@ class ConfPaper extends \yii\db\ActiveRecord
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
 			
 			[['paper_file'], 'required', 'on' => 'paper_upload'],
-            [['paper_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'doc, docx, pdf', 'maxSize' => 5000000],
+            [['paper_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'doc, docx, docm, pdf, zip, rar', 'maxSize' => 5000000],
             [['updated_at'], 'required', 'on' => 'paper_delete'],
             
             [['repaper_file'], 'required', 'on' => 'repaper_upload'],
