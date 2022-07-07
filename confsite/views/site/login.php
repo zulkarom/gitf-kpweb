@@ -79,35 +79,37 @@ if($conf->is_pg == 0){
 
 <?php  
 if($conf->is_pg == 1){
-    echo $form->field($model, 'matric_no')->textInput() ;
+    echo $form->field($model, 'matric_no')->textInput(['class' => 'form-control form-control-lg']) ;
    
 ?>
 
 
-<?=$form->field($model, 'phone')->textInput() ;
+<?=$form->field($model, 'phone')->textInput(['class' => 'form-control form-control-lg']) ;
    
 
 ?>
 
 <?= $form
             ->field($model, 'pro_study')
-           ->dropDownList($model->listProgramStudy(), ['prompt' => 'Select']) ?><?= $form
+           ->dropDownList($model->listProgramStudy(), ['prompt' => 'Select', 'class' => 'form-control form-control-lg']) ?>
+           
+           <?= $form
             ->field($model, 'cumm_sem')
-            ->dropDownList($model->listSemNumber(), ['prompt' => 'Select']) ?>
+            ->dropDownList($model->listSemNumber(), ['prompt' => 'Select', 'class' => 'form-control form-control-lg']) ?>
 
 <?= $form
             ->field($model, 'sv_main')
 			->label('Main Supervisor')
-            ->textInput() ?>
+            ->textInput(['class' => 'form-control form-control-lg']) ?>
             <?= $form
             ->field($model, 'sv_co1')
-            ->textInput() ?>
+            ->textInput(['class' => 'form-control form-control-lg']) ?>
             <?= $form
             ->field($model, 'sv_co2')
-            ->textInput() ?>
+            ->textInput(['class' => 'form-control form-control-lg']) ?>
             <?= $form
             ->field($model, 'sv_co3')
-            ->textInput() ?>
+            ->textInput(['class' => 'form-control form-control-lg']) ?>
             
 
         

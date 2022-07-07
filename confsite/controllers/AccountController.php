@@ -19,11 +19,14 @@ use yii\web\Controller;
  */
 class AccountController extends Controller
 {
-   /*  public $layout = 'system';
+
+    public $layout = 'system';
 
     public function actionIndex($confurl=null)
     {
-        $conf = $this->findConferenceByUrl($confurl);
+        return $this->redirect(['/site/login', 'confurl' => $confurl]);
+
+       /*  $conf = $this->findConferenceByUrl($confurl);
         if (!\Yii::$app->user->isGuest) {
             return $this->redirect(['/site/member', 'confurl' => $confurl]);
         }
@@ -53,7 +56,7 @@ class AccountController extends Controller
             'model' => $model,
             'modelLogin' => $modelLogin,
             'conf' => $conf
-        ]); */
+        ]);  */
 		
     }
 
