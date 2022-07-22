@@ -140,7 +140,7 @@ use backend\modules\courseFiles\views\admin\Show;
 				$i=1;
 				echo '<ul>';
 				foreach ($offer->coordinatorRubricsFiles as $files) {
-				  echo '<li>' . Html::a(strtoupper($files->file_name), ['coordinator-rubrics-file/download-file', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
+				  echo '<li>' . Html::a(strtoupper($files->file_name), ['/course-files/coordinator-rubrics-file/download-file', 'attr' => 'path','id'=> $files->id],['target' => '_blank']);
 				  echo '</li>';
 				  $i++;
 				}
