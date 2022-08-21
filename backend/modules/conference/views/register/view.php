@@ -70,6 +70,11 @@ table.detail-view th {
         ],
     ]) ?>
 
+    <br />
+	<div class="form-group">
+    <a href="<?=Url::to(['/site/conf-login-as', 'conf_url' => $model->conference->conf_url, 'id' => $model->user_id])?>" target="_blank" class="btn btn-warning btn-sm">Login as</a>
+ </div>
+
 </div></div>
 
     </div>

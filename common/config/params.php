@@ -5,5 +5,6 @@ return [
     'user.passwordResetTokenExpire' => 3600,
 	'faculty_id' => 1,
 	'faculty_abbr' => 'FKP',
-    'senderName' => 'FKP PORTAL'
+    'senderName' => 'FKP PORTAL',
+    'confsite_url' => 'http://localhost/projects/fkp/portal/pro01/confsite/web/'
 ];

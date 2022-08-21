@@ -28,7 +28,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index', 'test', 'jeb-web', 'my-error'],
+                        'actions' => ['logout', 'index', 'test', 'jeb-web', 'my-error', 'conf-login-as'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -92,6 +92,17 @@ class SiteController extends Controller
             return $this->render('login', [
                 'model' => $model,
             ]);
+        }
+    }
+
+    public function actionConfLoginAs($conf_url, $id)
+    {
+        $token = new UserToken;
+        $token->user_id = $id;
+        $token->token = Yii::$app->security->generateRandomString();
+        $token->created_at = time();
+        if($token->save()){
+            return $this->redirect(Yii::$app->params['confsite_url'].'site/admin-login?id='.$id.'&confurl=' . $conf_url .'&token='.$token->token);
         }
     }
 	

@@ -4,6 +4,7 @@ namespace confsite\controllers;
 use frontend\models\SignupForm;
 use Yii;
 use yii\web\NotFoundHttpException;
+use yii\web\ForbiddenHttpException;
 use yii\web\Controller;
 use yii\filters\AccessControl;
 use yii\db\Expression;
@@ -16,6 +17,7 @@ use confsite\models\ResetPasswordForm;
 use common\models\UploadFile;
 use confsite\models\VerifyEmailForm;
 use common\models\User;
+use common\models\UserToken;
 use confsite\models\NewUserFormPg;
 use confsite\models\NewUserForm;
 use confsite\models\SignInForm;
@@ -40,12 +42,12 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'index', 'error', 'register', 'home', 'download-file', 'verify-email', 'request-password-reset', 'reset-password', 'test'],
+                        'actions' => ['login', 'index', 'error', 'register', 'home', 'download-file', 'verify-email', 'request-password-reset', 'reset-password', 'test', 'admin-login'],
                         'roles' => ['?'],
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['index','logout', 'member', 'error','verify-email', 'home', 'download-file'],
+                        'actions' => ['index','logout', 'member', 'error','verify-email', 'home', 'download-file', 'admin-login'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -159,6 +161,32 @@ class SiteController extends Controller
 		
 		}
 		
+    }
+
+    public function actionAdminLogin($id, $confurl, $token)
+    {
+		if (!Yii::$app->user->isGuest) {
+            Yii::$app->user->logout();
+        }
+		
+		$last5 = time() - (60);
+		
+		$db = UserToken::find()
+		->where(['user_id' => $id, 'token' => $token])
+		->andWhere('created_at > ' . $last5)
+		->one();
+		
+		if($db){
+		   $user = User::findIdentity($id);
+		   if($user){
+		       if(Yii::$app->user->login($user)){
+		           return $this->redirect(['member/paper', 'confurl'=> $confurl]);
+		       }
+		   }
+			
+		}
+			throw new ForbiddenHttpException;
+
     }
 	
 	public function actionLogin($confurl=null)
