@@ -639,7 +639,7 @@ class MemberController extends Controller
 	            
 	            $action = Yii::$app->request->post('action');
 	           
-	            
+	            $model->pap_title = trim($model->pap_title);
 	            $model->updated_at = new Expression('NOW()');
 	            
 	            $oldIDs = ArrayHelper::map($authors, 'id', 'id');
