@@ -390,6 +390,8 @@ class MemberController extends Controller
 			$model->confly_number = $model->nextConflyNumber();
 			$abstract_full = $model->form_abstract_only;
 
+			$model->pap_title = trim($model->pap_title);
+
 				
             $authors = Model::createMultiple(ConfAuthor::classname());
             Model::loadMultiple($authors, Yii::$app->request->post());
@@ -757,6 +759,7 @@ class MemberController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             
             $model->updated_at = new Expression('NOW()');
+			$model->pap_title = trim($model->pap_title);
 			$abstract_full = $model->form_abstract_only;
             
             $oldIDs = ArrayHelper::map($authors, 'id', 'id');
