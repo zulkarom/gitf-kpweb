@@ -7,8 +7,6 @@ use backend\modules\staff\models\Staff;
 use kartik\date\DatePicker;
 use common\models\UploadFile;
 
-
-
 backend\assets\KnobAsset::register($this);
 
 /* @var $this yii\web\View */
