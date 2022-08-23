@@ -223,6 +223,9 @@ $columns = [
 						<div class="panel-body">
 
 <div class="conf-paper-index">
+    <div class="table-responsive">
+    
+
     <?php 
     
     $web_col = [
@@ -371,6 +374,7 @@ $columns = [
         'columns' => $web_col,
 			
     ]); ?>
+    </div>
 </div></div>
 </div>
 
