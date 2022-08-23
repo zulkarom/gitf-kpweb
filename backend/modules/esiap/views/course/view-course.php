@@ -53,7 +53,7 @@ if(in_array($version->status, [0,13])){
 
 <div class="box-body">
 <?php 
-$per = $model->developmentVersion->progress;
+$per = $version->progress;
 
 $profile = percent($version->pgrs_info);
 $clo = percent($version->pgrs_clo);
