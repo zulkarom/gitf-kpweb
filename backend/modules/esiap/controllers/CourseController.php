@@ -330,7 +330,7 @@ class CourseController extends Controller
 			}
 			
 			
-        $profile = $this->findProfile($course);
+        $profile = $this->findProfile($version);
 		$profile->scenario = 'update';
 		$transferables = $profile->transferables;
 		$staffs = $profile->academicStaff;
@@ -1641,16 +1641,15 @@ class CourseController extends Controller
     }
 	
 	
-	protected function findProfile($id)
+	protected function findProfile($version)
     {
-		$default = $this->findDevelopmentVersion($id);
-		$model = CourseProfile::findOne(['crs_version_id' => $default->id]);
+		$model = CourseProfile::findOne(['crs_version_id' => $version->id]);
 		if($model){
 			return $model;
 		}else{
 			$profile = new CourseProfile;
 			$profile->scenario = 'fresh';
-			$profile->crs_version_id = $default->id;
+			$profile->crs_version_id = $version->id;
 			if($profile->save()){
 				return $profile;
 			}else{
