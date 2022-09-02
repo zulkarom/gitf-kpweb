@@ -30,6 +30,14 @@ $conf = Conference::findOne(['conf_url' => $confurl]);
 	<link rel="icon" type="image/png" href="<?=$dirAsset?>/images/icons/favicon.png"/>
 	
 	<?php $this->head() ?>
+
+	<style>
+
+.video {
+  aspect-ratio: 16 / 9;
+  width: 100%;
+}
+	</style>
 	
 	
 
