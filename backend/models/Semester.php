@@ -92,6 +92,8 @@ class Semester extends \yii\db\ActiveRecord
 			$sn = 'September';
 		}else if($session == 2){
 			$sn = 'Februari';
+		}else if($session == 3){
+			$sn = 'Pendek';
 		}else{
 			$sn = '';
 		}
@@ -104,6 +106,8 @@ class Semester extends \yii\db\ActiveRecord
 			$sn = 'Sep';
 		}else if($session == 2){
 			$sn = 'Feb';
+		}else if($session == 3){
+			$sn = '3';
 		}else{
 			$sn = '';
 		}
@@ -116,6 +120,8 @@ class Semester extends \yii\db\ActiveRecord
 			$sn = 'September';
 		}else if($session == 2){
 			$sn = 'Februari';
+		}else if($session == 3){
+			$sn = 'Pendek';
 		}else{
 			$sn = '';
 		}
@@ -128,6 +134,8 @@ class Semester extends \yii\db\ActiveRecord
 	        $sn = 'September';
 	    }else if($session == 2){
 	        $sn = 'February';
+	    }else if($session == 2){
+	        $sn = '3 (Short)';
 	    }else{
 	        $sn = '';
 	    }
