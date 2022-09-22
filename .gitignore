@@ -4,6 +4,8 @@
 /yii_test.bat
 /yii.bat
 
+.vscode
+
 # phpstorm project files
 .idea
 
@@ -63,11 +65,3 @@ student/web/
 #uploaded
 
 upload/
-
-
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-!.vscode/*.code-snippets
