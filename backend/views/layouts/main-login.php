@@ -52,7 +52,7 @@ $dirAsset = Yii::$app->assetManager->getPublishedUrl('@backend/views/myasset');
 	  
 		<br />
 		<div align="center">
-		<?= Html::a('Log In Page', ['/user/login']) ?></div>
+		<?= Html::a('Log In Page', ['/user/security/login']) ?></div>
 </div>
 
 </div>

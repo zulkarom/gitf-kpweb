@@ -25,9 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	
         <p class="login-box-msg"><?= Html::encode($this->title) ?></p>
                 <?php $form = ActiveForm::begin([
-                    'id' => 'password-recovery-form',
-                    'enableAjaxValidation' => true,
-                    'enableClientValidation' => false,
+                    'id' => 'password-recovery-form'
                 ]); ?>
 
                 <?= $form->field($model, 'email')->textInput(['autofocus' => true]) ?>
