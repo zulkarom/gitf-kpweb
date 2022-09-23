@@ -21,8 +21,6 @@ use backend\modules\teachingLoad\models\TmplAppointment;
     ) ?></div>
 	
 
-
-
 </div>
 
  

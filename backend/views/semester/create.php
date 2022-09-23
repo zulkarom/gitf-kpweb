@@ -33,7 +33,7 @@ for($y = $next; $y>=2010;$y--){
 	  
 	  <div class="row">
 <div class="col-md-3"><?= $form->field($model, 'session')->dropDownList(
-        [1 => 'September', 2 => 'Februari'], ['prompt' => 'Please Select' ]
+        [1 => 'September', 2 => 'Februari', 3 => 'Pendek'], ['prompt' => 'Please Select' ]
     ) ?></div>
 <div class="col-md-3"><?= $form->field($model, 'year_start')->dropDownList(
         $years, ['prompt' => 'Please Select' ]
