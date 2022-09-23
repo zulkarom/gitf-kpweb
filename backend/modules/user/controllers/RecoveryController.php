@@ -38,16 +38,10 @@ class RecoveryController extends BaseRecoveryController
     public function actionReset($id, $code)
     {
 		$this->layout = "//main-login";
-        return parent::actionReset($id, $code);
-    }
-
-    public function actionResetPassword($token)
-    {
-        $this->layout = "//main-login";
        
         try 
         {
-            $model = new ResetPasswordForm($token);
+            $model = new ResetPasswordForm($code);
         } catch (InvalidArgumentException $e) {
             throw new BadRequestHttpException($e->getMessage());
         }
@@ -62,4 +56,5 @@ class RecoveryController extends BaseRecoveryController
             'model' => $model,
         ]);
     }
+
 }
