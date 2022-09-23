@@ -18,11 +18,11 @@ class RecoveryController extends BaseRecoveryController
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {
-                Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
+                Yii::$app->session->setFlash('info', 'Check your email for further instructions.');
                 return $this->redirect(['/user/login']);
                 
             } else {
-                Yii::$app->session->setFlash('error', 'Sorry, we are unable to reset password for the provided email address.');
+                Yii::$app->session->setFlash('info', 'Sorry, we are unable to reset password for the provided email address.');
             }
         }
 
@@ -47,9 +47,9 @@ class RecoveryController extends BaseRecoveryController
         }
         
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
-            Yii::$app->session->setFlash('success', 'Your new password has been successfully created.');
+            Yii::$app->session->setFlash('info', 'Your new password has been successfully created.');
             
-            return $this->redirect(['/site/security/login']);
+            return $this->redirect(['/user/security/login']);
         }
         
         return $this->render('reset', [
