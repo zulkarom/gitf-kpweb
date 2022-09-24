@@ -13,6 +13,7 @@ use backend\modules\teachingLoad\models\CourseOffered;
 class CourseFilesSearch extends CourseOffered
 {
     public $semester;
+    public $program_id;
     public $search_course;
 
     /**
@@ -21,8 +22,8 @@ class CourseFilesSearch extends CourseOffered
     public function rules()
     {
         return [
-            [['id', 'semester_id', 'course_id', 'created_by', 'coordinator'], 'integer'],
-            [['created_at'], 'safe'],
+            [['id', 'semester_id', 'course_id','coordinator', 'is_audited', 'status', 'program_id'], 'integer'],
+            [['prg_overall'], 'number'],
             [['search_course'], 'string'],
         ];
     }
@@ -46,7 +47,7 @@ class CourseFilesSearch extends CourseOffered
     public function search($params)
     {
         $query = CourseOffered::find()
-        ->joinWith('course');
+        ->joinWith('course c');
 
         // // add conditions that should always apply here
 
@@ -69,8 +70,51 @@ class CourseFilesSearch extends CourseOffered
         $query->andFilterWhere([
             
             'semester_id' => $this->semester,
+            'c.program_id' => $this->program_id,
+            'status' => $this->status,
+            'is_audited' => $this->is_audited
             
         ]);
+
+        if($this->prg_overall){
+            if($this->prg_overall == 1){
+                $query->andFilterWhere([
+                    'prg_overall' => 0,
+                ]);
+            }else if($this->prg_overall == 25){
+                $query->andFilterWhere([
+                    '>', 'prg_overall', 0
+                ]);
+                $query->andFilterWhere([
+                    '<=', 'prg_overall', 0.25
+                ]);
+            }else if($this->prg_overall == 50){
+                $query->andFilterWhere([
+                    '>', 'prg_overall', 0.25
+                ]);
+                $query->andFilterWhere([
+                    '<=', 'prg_overall', 0.50
+                ]);
+            }else if($this->prg_overall == 75){
+                $query->andFilterWhere([
+                    '>', 'prg_overall', 0.5
+                ]);
+                $query->andFilterWhere([
+                    '<=', 'prg_overall', 0.75
+                ]);
+            }else if($this->prg_overall == 99){
+                $query->andFilterWhere([
+                    '>', 'prg_overall', 0.75
+                ]);
+                $query->andFilterWhere([
+                    '<', 'prg_overall', 1
+                ]);
+            }else if($this->prg_overall == 100){
+                $query->andFilterWhere([
+                    'prg_overall' => 1
+                ]);
+            }
+        }
 
         
         $query->andFilterWhere(['or',

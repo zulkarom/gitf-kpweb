@@ -5,6 +5,7 @@ namespace backend\modules\esiap\models;
 use backend\models\Department;
 use Yii;
 use backend\modules\staff\models\Staff;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "sp_program".
@@ -175,7 +176,13 @@ class Program extends \yii\db\ActiveRecord
 		return $this->hasMany(ProgramPic::className(), ['program_id' => 'id']);
 	}
 	
-	
+	public static function getProgramActiveArray(){
+        return ArrayHelper::map(Program::find()->where(['faculty_id' => Yii::$app->params['faculty_id'], 'status' => 1, 'trash' => 0])->all(),'id', 'program_code');
+    }
+
+    public static function getProgramActiveFileArray(){
+        return ArrayHelper::map(Program::find()->where(['faculty_id' => Yii::$app->params['faculty_id'], 'status' => 1, 'study_mode' => 1,  'trash' => 0])->all(),'id', 'program_code');
+    }
 	
 	public function getProgramAccesses(){
 		return $this->hasMany(ProgramAccess::className(), ['program_id' => 'id']);

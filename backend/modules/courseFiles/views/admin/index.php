@@ -19,17 +19,22 @@ $semester->action = ['/course-files/admin/index'];
     
 </div>
 
-<div class="row">
-
-    <div class="col-md-10" align="right">
-        <?= $this->render('_form_course_files', [
+<div class="box box-solid">
+<div class="box-header"><h3 class="box-title">FILTER COURSE FILES</h3>
+</div>
+<div class="box-body">
+<?= $this->render('_form_search', [
                 'model' => $semester,
             ]) ?>
-    </div>
-</div>
+</div></div>
+
 
 <?php $form = ActiveForm::begin(['id' =>'form-auditor']); ?>
 
+<div class="box box-solid">
+<div class="box-header"><h3 class="box-title">APPOINT AUDITORS</h3>
+</div>
+<div class="box-body">
 <div class="row">
 <div class="col-md-6"><?php
 $list = ArrayHelper::map(Staff::getAcademicStaff(), 'id', 'user.fullname');
@@ -60,6 +65,11 @@ With selection:
 
 </div>
 </div>
+</div></div>
+        
+
+
+
 
 
 

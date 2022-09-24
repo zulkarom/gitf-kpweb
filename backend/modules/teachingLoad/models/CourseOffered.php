@@ -188,7 +188,7 @@ class CourseOffered extends \yii\db\ActiveRecord
         ];
     }
 	
-	public function getStatusArray(){
+	public static function getStatusArray(){
 		return [
 			0 => 'DRAFT',
 			10 => 'SUBMIT',
@@ -216,6 +216,17 @@ class CourseOffered extends \yii\db\ActiveRecord
 			return '';
 		}
 	}
+
+    public static function getProgressGroup(){
+        // putting 1 for 0 progress
+        return [
+            1 => '0%', 
+            25 => '1% - 25%', 
+            50 => '26% - 50%', 
+            75=> '51% - 75%', 
+            99 => '76% - 99%', 
+            100 => '100%'];
+    }
 	
 	public function getProgressOverallBar(){
 		return Common::progress($this->prg_overall);
