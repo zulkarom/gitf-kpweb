@@ -12,6 +12,7 @@ use backend\modules\conference\models\ConfPaper;
  */
 class ConfPaperSearch extends ConfPaper
 {
+    public $count_paper;
     /**
      * {@inheritdoc}
      */
@@ -42,6 +43,7 @@ class ConfPaperSearch extends ConfPaper
     public function search($params)
     {
         $query = ConfPaper::find()->where(['user_id' => Yii::$app->user->identity->id, 'conf_id' => $this->conf_id]);
+        $this->count_paper = $query->count();
 
         // add conditions that should always apply here
 
