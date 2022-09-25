@@ -47,7 +47,18 @@ class AdminController extends Controller
     }
 	
 	public function actionSummary(){
+		$semester = new SemesterForm;
+
+        if(Yii::$app->getRequest()->getQueryParam('SemesterForm')){
+            $sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');
+            $semester->semester_id = $sem['semester_id'];
+        }else{
+            $semester->semester_id = Semester::getCurrentSemester()->id;
+        }
+
+
 		 return $this->render('summary', [
+			'semester' => $semester
         ]);
 	}
 	
@@ -58,11 +69,11 @@ class AdminController extends Controller
 
         if(Yii::$app->getRequest()->getQueryParam('SemesterForm')){
             $sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');
-            $semester->semester_id = $sem['semester_id'];
-            $semester->program_id = $sem['program_id'];
-			$semester->prg_overall = $sem['prg_overall'];
-			$semester->status = $sem['status'];
-			$semester->is_audited = $sem['is_audited'];
+            $semester->semester_id = isset($sem['semester_id']) ? $sem['semester_id'] : null;
+            $semester->program_id = isset($sem['program_id']) ? $sem['program_id'] : null;
+			$semester->prg_overall = isset($sem['prg_overall']) ? $sem['prg_overall'] : null;
+			$semester->status = isset($sem['status']) ? $sem['status'] : null;
+			$semester->is_audited = isset($sem['is_audited']) ? $sem['is_audited'] : null;
         }else{
             $semester->semester_id = Semester::getCurrentSemester()->id;
         }

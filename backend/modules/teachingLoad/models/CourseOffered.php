@@ -756,6 +756,12 @@ class CourseOffered extends \yii\db\ActiveRecord
         ->count();
     }
 
+    public function getCountTotalCourseFilesBySemester(){
+        return self::find()
+        ->where(['semester_id' => $this->focus_semester])
+        ->count();
+    }
+
 
     public function getCoor(){
         return $this->hasOne(Staff::className(), ['id' => 'coordinator']);
