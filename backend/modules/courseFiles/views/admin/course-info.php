@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="col-md-7" align="right">
 
-<?=$this->render('_search', ['model' => $searchModel, 'element' => 'courseverificationsearch-search_cat'])?>
+<?=$this->render('_search_course_info', ['model' => $semester])?>
 </div>
 
 </div>
@@ -62,7 +62,7 @@ echo GridView::widget([
        // 'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            ['class' => 'yii\grid\CheckboxColumn'],
+           // ['class' => 'yii\grid\CheckboxColumn'],
             
 			[
 				'attribute' => 'course_name',
@@ -79,10 +79,10 @@ echo GridView::widget([
 			],
 			
 			[
-                'label' => 'Version',
+                'label' => 'Version Name',
                 
                 'value' => function($model){
-					return $model->version_name;
+					return $model->courseVersion->version_name;
                 }
             ],
 			
@@ -93,8 +93,8 @@ echo GridView::widget([
                 'label' => 'Submission By',
                 'format' => 'html',
                 'value' => function($model){
-					if($model->preparedBy){
-						return $model->preparedBy->staff->niceName . '<br /><i> at ' . date('d M Y', strtotime($model->prepared_at)) . '</i>';
+					if($model->courseVersion->preparedBy){
+						return $model->courseVersion->preparedBy->staff->niceName . '<br /><i> at ' . date('d M Y', strtotime($model->courseVersion->prepared_at)) . '</i>';
 					}
 					
                 }
@@ -104,7 +104,7 @@ echo GridView::widget([
                 'label' => 'Status',
                 'format' => 'html',
                 'value' => function($model){
-					return $model->labelStatus;
+					return $model->courseVersion->labelStatus;
 					
                 }
             ],
@@ -113,8 +113,8 @@ echo GridView::widget([
                 'label' => 'Verification',
                 'format' => 'html',
                 'value' => function($model){
-					if($model->status == 20 and $model->verifiedBy){
-						return $model->verifiedBy->staff->niceName . '<br /><i> at ' . date('d M Y', strtotime($model->verified_at)) . '</i>';
+					if($model->courseVersion->status == 20 and $model->courseVersion->verifiedBy){
+						return $model->courseVersion->verifiedBy->staff->niceName . '<br /><i> at ' . date('d M Y', strtotime($model->courseVersion->verified_at)) . '</i>';
 					}
 					
                 }
@@ -127,15 +127,15 @@ echo GridView::widget([
 			
 			
 			[
-                'label' => 'Report',
+                'label' => 'Documents',
                 'format' => 'raw',
                 'value' => function($model){
-					return $model->course->reportList('View Documents', $model->id);
+					return $model->courseVersion->course->reportList('View Documents', $model->id);
                     
                 }
             ],
 			
-			['class' => 'yii\grid\ActionColumn',
+			/* ['class' => 'yii\grid\ActionColumn',
                  'contentOptions' => ['style' => 'width: 10%'],
                 'template' => '{update}',
                 //'visible' => false,
@@ -145,7 +145,7 @@ echo GridView::widget([
                         return Html::a('<span class="fa fa-pencil"></span> View',['verification-page', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
                     },
                 ],
-            ],
+            ], */
 			
 
 

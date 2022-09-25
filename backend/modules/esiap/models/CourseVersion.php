@@ -133,7 +133,7 @@ class CourseVersion extends \yii\db\ActiveRecord
         ];
     }
     
-    public function getStatusArray(){
+    public static function getStatusArray(){
         return [0=>'DRAFT', 10=>'SUBMIT', 13 => 'REUPDATE', 17 => 'RESUBMIT', 20 => 'VERIFIED', 80 => 'ARCHIVED'];
     }
     

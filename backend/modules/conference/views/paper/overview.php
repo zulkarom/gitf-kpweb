@@ -72,6 +72,16 @@ $columns = [
                     
                     ],
                     [
+                        'label' => 'Address',
+                        'value' => function($model){
+                        if($model->user->associate){
+                            return $model->user->associate->assoc_address;
+                        }
+                        
+                        }
+                        
+                        ],
+                    [
                         'label' => 'Country',
                         'value' => function($model){
                         if($model->user->associate){

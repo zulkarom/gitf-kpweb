@@ -2,7 +2,7 @@
 
 namespace backend\modules\courseFiles\controllers;
 
-use backend\models\Department;
+
 use Yii;
 use yii\web\Controller;
 use backend\modules\courseFiles\models\ProgramCoordinatorSearch;
@@ -16,12 +16,10 @@ use backend\models\SemesterForm;
 use backend\models\Semester;
 use backend\modules\courseFiles\models\CourseFilesSearch;
 use backend\modules\courseFiles\models\AssignAuditorForm;
+use backend\modules\courseFiles\models\CourseInfoSearch;
 use backend\modules\courseFiles\models\DateSetting;
 use backend\modules\esiap\models\CoursePic;
-use backend\modules\courseFiles\models\CourseVerificationSearch;
 use backend\modules\esiap\models\Program;
-use backend\modules\staff\models\StaffMainPosition;
-use yii\helpers\FileHelper;
 
 /**
  * Default controller for the `course-files` module
@@ -130,14 +128,29 @@ class AdminController extends Controller
 
 	public function actionCourseInfo()
     {
-        $searchModel = new CourseVerificationSearch();
+		$semester = new SemesterForm;
+
+        if(Yii::$app->getRequest()->getQueryParam('SemesterForm')){
+            $sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');
+            $semester->semester_id = $sem['semester_id'];
+			$semester->status = $sem['status'];
+        }else{
+            $semester->semester_id = Semester::getCurrentSemester()->id;
+        }
+
+        $searchModel = new CourseInfoSearch();
+		$searchModel->semester = $semester->semester_id;
+		$searchModel->status = $semester->status;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+		
+		$searchModel->status = $semester->status;
 		
 
 		
         return $this->render('course-info', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+			'semester' => $semester,
         ]);
     }
     
