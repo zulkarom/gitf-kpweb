@@ -21,6 +21,8 @@ use common\models\UserToken;
 use confsite\models\NewUserFormPg;
 use confsite\models\NewUserForm;
 use confsite\models\SignInForm;
+use InvalidArgumentException;
+use yii\web\BadRequestHttpException;
 use yii\widgets\ActiveForm;
 use yii\web\Response;
 

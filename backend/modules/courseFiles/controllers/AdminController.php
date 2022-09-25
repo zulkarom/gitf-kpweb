@@ -57,7 +57,10 @@ class AdminController extends Controller
         if(Yii::$app->getRequest()->getQueryParam('SemesterForm')){
             $sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');
             $semester->semester_id = $sem['semester_id'];
-            $semester->str_search = $sem['str_search'];
+            $semester->program_id = $sem['program_id'];
+			$semester->prg_overall = $sem['prg_overall'];
+			$semester->status = $sem['status'];
+			$semester->is_audited = $sem['is_audited'];
         }else{
             $semester->semester_id = Semester::getCurrentSemester()->id;
         }
@@ -107,7 +110,10 @@ class AdminController extends Controller
 
         $searchModel = new CourseFilesSearch();
         $searchModel->semester = $semester->semester_id;
-        $searchModel->search_course = $semester->str_search;
+        $searchModel->program_id = $semester->program_id;
+		$searchModel->prg_overall = $semester->prg_overall;
+		$searchModel->status = $semester->status;
+		$searchModel->is_audited = $semester->is_audited;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [

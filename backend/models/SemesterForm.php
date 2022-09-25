@@ -14,6 +14,10 @@ class SemesterForm extends Model
 	public $str_search;
 	public $program_search;
 	public $action;
+    public $program_id;
+    public $is_audited;
+    public $prg_overall;
+    public $status;
 
     /**
      * @inheritdoc
@@ -21,8 +25,9 @@ class SemesterForm extends Model
     public function rules()
     {
         return [
-			[['semester_id', 'program_search'], 'integer'],
-			[['str_search'], 'string'],
+			[['semester_id', 'program_search', 'program_id', 'is_audited', 'status'], 'integer'],
+			[['prg_overall'], 'number'],
+            [['str_search'], 'string'],
         ];
     }
 	
