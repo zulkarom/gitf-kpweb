@@ -58,6 +58,12 @@ table.detail-view th {
                 }
             ],
             [
+                'label' =>'Phone',
+                'value' => function($model){
+                    return $model->user->associate ? $model->user->associate->phone : '';
+                }
+            ],
+            [
                 'label' =>'Address',
                 'value' => function($model){
                     return $model->user->associate ? $model->user->associate->assoc_address : '';
