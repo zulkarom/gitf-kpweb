@@ -60,7 +60,8 @@ class Associate extends \yii\db\ActiveRecord
 			'sv_co1' => 'Co-Supervisor I',
 			'sv_co2' => 'Co-Supervisor II',
 			'sv_co3' => 'Co-Supervisor III',
-			'cumm_sem' => 'Cumulative Semester'
+			'cumm_sem' => 'Cumulative Semester',
+			'assoc_address' => 'Address'
         ];
     }
 	

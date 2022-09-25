@@ -119,6 +119,21 @@ echo $form->field($model, 'country_id')->widget(Select2::classname(), [
 	</div>
 
 </div>	
+
+<div class="row">
+
+<div class="col-md-6">
+<?php 
+
+
+echo $form->field($associate, 'assoc_address')->textarea(['rows' => 4]);
+
+
+?>
+	</div>
+
+
+</div>	
 					
 				
 				
