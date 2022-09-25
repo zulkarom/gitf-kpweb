@@ -141,6 +141,7 @@ echo GridView::widget([
                 //'visible' => false,
                 'buttons'=>[
                     'update'=>function ($url, $model) {
+                        return '';
                         return Html::a('<span class="fa fa-pencil"></span> View',['verification-page', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
                     },
                 ],

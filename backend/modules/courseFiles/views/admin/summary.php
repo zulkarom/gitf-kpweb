@@ -15,12 +15,12 @@ $this->params['breadcrumbs'][] = $this->title;
           <!-- small box -->
          <div class="small-box bg-default">
             <div class="inner">
-              <h3><?=99?></h3>
+              <h3>#</h3>
 
-              <p>BILANGAN ADUAN HARI INI</p>
+              <p>TOTAL COURSE FILES</p>
             </div>
             <div class="icon">
-              <i class="fa fa-comments"></i>
+              <i class="fa fa-folder"></i>
             </div>
             
           </div>
@@ -30,12 +30,12 @@ $this->params['breadcrumbs'][] = $this->title;
           <!-- small box -->
            <div class="small-box bg-default">
             <div class="inner">
-              <h3><?=12?></h3>
+              <h3>#</h3>
 
-              <p>BILANGAN ADUAN BULAN INI</p>
+              <p>COURSE FILE SUBMITTED</p>
             </div>
             <div class="icon">
-              <i class="fa fa-comments"></i>
+              <i class="fa fa-folder"></i>
             </div>
             
           </div>
@@ -44,12 +44,12 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-lg-3 col-xs-6">
             <div class="small-box bg-default">
             <div class="inner">
-              <h3><?=231?></h3>
+              <h3>#</h3>
 
-              <p>BILANGAN ADUAN TAHUN INI</p>
+              <p>COURSE FILES FULLFILLED</p>
             </div>
             <div class="icon">
-              <i class="fa fa-comments"></i>
+              <i class="fa fa-folder"></i>
             </div>
             
           </div>
@@ -57,12 +57,12 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-lg-3 col-xs-6">
            <div class="small-box bg-default">
             <div class="inner">
-              <h3><?=3939?></h3>
+              <h3>#</h3>
 
-              <p>BILANGAN ADUAN TAHUN LEPAS</p>
+              <p>COURSE FILE VERIFIED</p>
             </div>
             <div class="icon">
-              <i class="fa fa-comments"></i>
+              <i class="fa fa-folder"></i>
             </div>
             
           </div>
@@ -71,3 +71,62 @@ $this->params['breadcrumbs'][] = $this->title;
 	  </div>
 
     
+    <div class="row">
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+         <div class="small-box bg-default">
+            <div class="inner">
+              <h3>#</h3>
+
+              <p>COURSE FILES AUDITED</p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-edit"></i>
+            </div>
+            
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+           <div class="small-box bg-default">
+            <div class="inner">
+              <h3>#</h3>
+
+              <p>COURSE FILES NOT AUDITED</p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-edit"></i>
+            </div>
+            
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+            <div class="small-box bg-default">
+            <div class="inner">
+              <h3>#</h3>
+
+              <p>COURSE INFO SUBMITTED</p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-book"></i>
+            </div>
+            
+          </div>
+		  </div>
+        <div class="col-lg-3 col-xs-6">
+           <div class="small-box bg-default">
+            <div class="inner">
+              <h3>#</h3>
+
+              <p>COURSE INFO VERIFIED</p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-book"></i>
+            </div>
+            
+          </div>
+      </div>
+	  
+	  </div>
