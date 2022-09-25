@@ -405,19 +405,35 @@ class Menu
             'url' => '#',
             'items' => [
 
+                /* [
+                    'label' => 'Monitor Progress',
+                    'icon' => 'line-chart',
+                    'url' => [
+                        '/course-files/admin/summary'
+                    ]
+                ], */
+
                 [
                     'label' => 'Summary',
-                    'icon' => 'bar-chart',
+                    'icon' => 'line-chart',
                     'url' => [
                         '/course-files/admin/summary'
                     ]
                 ],
 
                 [
-                    'label' => 'All Courses',
-                    'icon' => 'book',
+                    'label' => 'All Course Files',
+                    'icon' => 'folder-open-o',
                     'url' => [
                         '/course-files/admin/index'
+                    ]
+                ],
+
+                [
+                    'label' => 'Course Info Status',
+                    'icon' => 'info-circle',
+                    'url' => [
+                        '/course-files/admin/course-info'
                     ]
                 ],
 

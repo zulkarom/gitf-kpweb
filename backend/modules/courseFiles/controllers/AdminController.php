@@ -2,6 +2,7 @@
 
 namespace backend\modules\courseFiles\controllers;
 
+use backend\models\Department;
 use Yii;
 use yii\web\Controller;
 use backend\modules\courseFiles\models\ProgramCoordinatorSearch;
@@ -17,7 +18,10 @@ use backend\modules\courseFiles\models\CourseFilesSearch;
 use backend\modules\courseFiles\models\AssignAuditorForm;
 use backend\modules\courseFiles\models\DateSetting;
 use backend\modules\esiap\models\CoursePic;
+use backend\modules\courseFiles\models\CourseVerificationSearch;
 use backend\modules\esiap\models\Program;
+use backend\modules\staff\models\StaffMainPosition;
+use yii\helpers\FileHelper;
 
 /**
  * Default controller for the `course-files` module
@@ -121,6 +125,19 @@ class AdminController extends Controller
             'dataProvider' => $dataProvider,
             'semester' => $semester,
 			'audit' => $audit
+        ]);
+    }
+
+	public function actionCourseInfo()
+    {
+        $searchModel = new CourseVerificationSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+		
+
+		
+        return $this->render('course-info', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
     
