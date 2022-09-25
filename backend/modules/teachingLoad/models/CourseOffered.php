@@ -67,6 +67,7 @@ class CourseOffered extends \yii\db\ActiveRecord
 	public $verified_instance;
 	public $coorsign_instance;
 	public $complete;
+    public $focus_semester;
 
     /**
      * {@inheritdoc}
