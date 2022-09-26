@@ -67,7 +67,6 @@ $semester = $semester->semester_id;
             <div class="icon">
               <i class="fa fa-folder"></i>
             </div>
-            
           </div>
         </a>
 		  </div>
