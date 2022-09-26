@@ -18,6 +18,7 @@ use backend\modules\courseFiles\models\CourseFilesSearch;
 use backend\modules\courseFiles\models\AssignAuditorForm;
 use backend\modules\courseFiles\models\CourseInfoSearch;
 use backend\modules\courseFiles\models\DateSetting;
+use backend\modules\courseFiles\models\Stats;
 use backend\modules\esiap\models\CoursePic;
 use backend\modules\esiap\models\Program;
 
@@ -56,9 +57,10 @@ class AdminController extends Controller
             $semester->semester_id = Semester::getCurrentSemester()->id;
         }
 
-
+		$stats = new Stats($semester->semester_id);
 		 return $this->render('summary', [
-			'semester' => $semester
+			'semester' => $semester,
+			'stats' => $stats
         ]);
 	}
 	
