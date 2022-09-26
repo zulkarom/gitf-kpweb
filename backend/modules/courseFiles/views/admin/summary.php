@@ -25,6 +25,11 @@ $semester = $semester->semester_id;
 
 ?>
 
+<div class="box box-solid">
+<div class="box-header">
+</div>
+<div class="box-body">
+
 <div class="row">
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
@@ -92,9 +97,10 @@ $semester = $semester->semester_id;
     <div class="row">
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
-         <div class="small-box bg-default">
+          <a href="<?=Url::to(['index', 'SemesterForm[is_audited]' => 1, 'SemesterForm[semester_id]' => $semester])?>" class="a-dash"> 
+          <div class="small-box bg-default">
             <div class="inner">
-              <h3>#</h3>
+            <h3><?=Stats::countTotalCourseFileAudited($semester, 1)?></h3>
 
               <p>COURSE FILES AUDITED</p>
             </div>
@@ -103,13 +109,15 @@ $semester = $semester->semester_id;
             </div>
             
           </div>
+          </a>
         </div>
         <!-- ./col -->
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
+          <a href="<?=Url::to(['index', 'SemesterForm[is_audited]' => 0, 'SemesterForm[semester_id]' => $semester])?>" class="a-dash"> 
            <div class="small-box bg-default">
             <div class="inner">
-              <h3>#</h3>
+            <h3><?=Stats::countTotalCourseFileAudited($semester, 0)?></h3>
 
               <p>COURSE FILES NOT AUDITED</p>
             </div>
@@ -118,12 +126,14 @@ $semester = $semester->semester_id;
             </div>
             
           </div>
+          </a>
         </div>
         <!-- ./col -->
+        <a href="<?=Url::to(['course-info', 'SemesterForm[status]' => 10, 'SemesterForm[semester_id]' => $semester])?>" class="a-dash">
         <div class="col-lg-3 col-xs-6">
             <div class="small-box bg-default">
             <div class="inner">
-              <h3>#</h3>
+            <h3><?=Stats::countTotalCourseInfo($semester, 10)?></h3>
 
               <p>COURSE INFO SUBMITTED</p>
             </div>
@@ -133,10 +143,12 @@ $semester = $semester->semester_id;
             
           </div>
 		  </div>
+        </a>
         <div class="col-lg-3 col-xs-6">
+        <a href="<?=Url::to(['course-info', 'SemesterForm[status]' => 20, 'SemesterForm[semester_id]' => $semester])?>" class="a-dash">
            <div class="small-box bg-default">
             <div class="inner">
-              <h3>#</h3>
+            <h3><?=Stats::countTotalCourseInfo($semester, 20)?></h3>
 
               <p>COURSE INFO VERIFIED</p>
             </div>
@@ -145,6 +157,10 @@ $semester = $semester->semester_id;
             </div>
             
           </div>
+        </a>
       </div>
 	  
 	  </div>
+
+</div></div>
+
