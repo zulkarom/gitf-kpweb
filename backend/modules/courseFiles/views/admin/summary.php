@@ -48,6 +48,21 @@ $semester = $semester->semester_id;
         </div>
         <!-- ./col -->
         <div class="col-lg-3 col-xs-6">
+        <a href="<?=Url::to(['index', 'SemesterForm[status]' => 0, 'SemesterForm[semester_id]' => $semester])?>" class="a-dash"> <div class="small-box bg-default">
+            <div class="inner">
+            <h3><?=Stats::countTotalCourseFileStatus($semester, 0)?></h3>
+
+              <p>COURSE FILES DRAFTED</p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-folder"></i>
+            </div>
+            
+          </div>
+        </a>
+		  </div>
+
+        <div class="col-lg-3 col-xs-6">
           <!-- small box -->
           <a href="<?=Url::to(['index', 'SemesterForm[status]' => 10, 'SemesterForm[semester_id]' => $semester])?>" class="a-dash"><div class="small-box bg-default">
             <div class="inner">
@@ -62,20 +77,7 @@ $semester = $semester->semester_id;
           </div></a>
         </div>
         <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-        <a href="<?=Url::to(['index', 'SemesterForm[status]' => 30, 'SemesterForm[semester_id]' => $semester])?>" class="a-dash"> <div class="small-box bg-default">
-            <div class="inner">
-            <h3><?=Stats::countTotalCourseFileStatus($semester, 30)?></h3>
-
-              <p>COURSE FILES FULLFILLED</p>
-            </div>
-            <div class="icon">
-              <i class="fa fa-folder"></i>
-            </div>
-            
-          </div>
-        </a>
-		  </div>
+       
         <div class="col-lg-3 col-xs-6">
         <a href="<?=Url::to(['index', 'SemesterForm[status]' => 50, 'SemesterForm[semester_id]' => $semester])?>" class="a-dash">  <div class="small-box bg-default">
             <div class="inner">
