@@ -500,6 +500,7 @@ class CourseAdminController extends Controller
 		$model->scenario = 'create';
 
         if ($model->load(Yii::$app->request->post())) {
+			$model->course_code = str_replace(' ','', $model->course_code);
 			$code = Course::findOne(['course_code' => $model->course_code]);
 			if($code){
 				Yii::$app->session->addFlash('error', "The course code has already exist!");
@@ -539,6 +540,7 @@ class CourseAdminController extends Controller
         
        
         if ($model->load(Yii::$app->request->post())) {
+			$model->course_code = str_replace(' ','', $model->course_code);
 			$model->updated_at = new Expression('NOW()');    
 			if($model->save()){
 			$flag = true;
