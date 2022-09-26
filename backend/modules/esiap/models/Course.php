@@ -63,6 +63,9 @@ class Course extends \yii\db\ActiveRecord
             [['program_id', 'department_id', 'faculty_id', 'is_dummy', 'course_type', 'is_active', 'method_type', 'component_id', 'course_class'], 'integer'],
 			
             [['course_name', 'course_name_bi'], 'string', 'max' => 100],
+
+			['course_code', 'unique'],
+
 			
             [['course_code', 'study_level'], 'string', 'max' => 50],
 			
