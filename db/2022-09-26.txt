@@ -1,0 +1,2 @@
+UPDATE `sp_course` SET `course_code` = NULL WHERE `course_code` = ''
+ALTER TABLE `sp_course` ADD UNIQUE(`course_code`);
