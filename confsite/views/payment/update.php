@@ -135,8 +135,10 @@ function calc(){
             fee = fee * qty;
 
             cur = item.fee_currency;
+            if(qty > 0 && fee > 0){
+                $("#confregistration-fee_amount").val(fee);
+            }
             
-            $("#confregistration-fee_amount").val(fee);
             $("#confregistration-fee_currency").val(cur);
 
 
