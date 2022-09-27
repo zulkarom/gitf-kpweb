@@ -1,0 +1,3 @@
+ALTER TABLE `conf_reg` ADD `fee_package` INT NULL DEFAULT NULL AFTER `fee_amount`;
+ALTER TABLE `conf_reg` ADD `paper_number` TINYINT(2) NULL DEFAULT NULL AFTER `fee_package`;
+ALTER TABLE `conf_reg` CHANGE `fee_currency` `fee_currency` VARCHAR(10) NULL DEFAULT NULL;

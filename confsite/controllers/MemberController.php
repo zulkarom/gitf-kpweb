@@ -24,6 +24,7 @@ use confsite\models\ConfPaperSearch;
 use confsite\models\ReviewSearch;
 use backend\modules\conference\models\Associate;
 use backend\modules\conference\models\ConfRegistration;
+use confsite\models\user\User as ConfUser;
 use yii\helpers\Html;
 
 /**
@@ -95,7 +96,9 @@ class MemberController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
 		if($searchModel->count_paper > 0){
-			$this->checkProfile($confurl);
+			if(!ConfUser::checkProfile($confurl)){
+				Yii::$app->session->addFlash('info', "<i class='fa fa-info'></i> For further paper submission process, kindly proceed to ". Html::a('profile page', ['profile', 'confurl' => $confurl]) ." to update your institution, phone and address.");
+			}
 		}
 		
 		if($confurl){
@@ -108,28 +111,7 @@ class MemberController extends Controller
         
     }
 
-	private function checkProfile($confurl){
-		$user = User::findOne(Yii::$app->user->identity->id);
-		$associate = $user->associate;
-			
-			if(!$associate){
-			    $new = new Associate();
-			    $new->scenario = 'raw';
-			    $new->user_id = $user->id;
-			    if(!$new->save()){
-					print_r($new->getErrors());
-					die();
-				}
-				return $this->refresh();
-			}
-		
-		$add = $associate->assoc_address;
-		$inst = $associate->institution;
-		$phone = $associate->phone;
-		if(!$add || !$inst || !$phone){
-			Yii::$app->session->addFlash('info', "<i class='fa fa-info'></i> For further paper submission process, kindly proceed to ". Html::a('profile page', ['profile', 'confurl' => $confurl]) ." to update your institution, phone and address.");
-		}
-	}
+	
 	
 	public function actionReview($confurl=null)
     {
