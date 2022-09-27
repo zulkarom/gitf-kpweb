@@ -36,9 +36,9 @@ class ConfRegistration extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['conf_id', 'user_id', 'reg_at', 'confly_number', 'paper_number'], 'required'],
+            [['conf_id', 'user_id', 'reg_at', 'confly_number'], 'required'],
 
-            [['fee_amount', 'fee_currency', 'fee_file', 'fee_package'], 'required', 'on' => 'payment'],
+            [['fee_amount', 'fee_currency', 'fee_file', 'fee_package', 'paper_number'], 'required', 'on' => 'payment'],
 
             [['conf_id', 'user_id', 'confly_number','fee_paid_at','fee_verified_at','is_author','is_reviewer', 'fee_package', 'paper_number'], 'integer'],
 
