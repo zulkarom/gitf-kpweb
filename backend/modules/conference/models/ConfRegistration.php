@@ -155,6 +155,10 @@ class ConfRegistration extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Associate::className(), ['id' => 'user_id']);
     }
+    public function getPackage()
+    {
+        return $this->hasOne(ConfFee::className(), ['id' => 'fee_package']);
+    }
 	
     public function getPapers()
     {

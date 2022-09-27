@@ -197,6 +197,44 @@ $columns = [
                                 }
                                 
                                 ],
+
+                                [
+                                    'label' => 'Payment Status',
+                                    'format' => 'raw',
+                                    'value' => function($model){
+                                    return $model->userRegistration->statusFeeLabel;
+                                    }
+                                    
+                                    ],
+                                    [
+                                        'label' => 'Payment Category',
+                                        'format' => 'raw',
+                                        'value' => function($model){
+                                            if($model->userRegistration->package){
+                                                return $model->userRegistration->package->feeText;
+                                            }
+                                        
+                                        }
+                                        
+                                        ],
+                                        [
+                                            'label' => 'Payment Currency',
+                                            'format' => 'raw',
+                                            'value' => function($model){
+                                                    return $model->userRegistration->fee_currency;
+                                            
+                                            }
+                                            
+                                            ],
+                                        [
+                                            'label' => 'Payment Amount',
+                                            'format' => 'raw',
+                                            'value' => function($model){
+                                                    return $model->userRegistration->fee_amount;
+                                            
+                                            }
+                                            
+                                            ],
                                 
 ]
 

@@ -44,7 +44,18 @@ table.detail-view th {
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-           
+            [
+                'label' => 'Category',
+                'value' => function($model){
+                    return $model->package->fee_name;
+                }
+            ], 
+            [
+                'label' => 'Paper Number',
+                'value' => function($model){
+                    return $model->paper_number;
+                }
+            ],
             [
                 'label' => 'Amount',
                 'value' => function($model){
