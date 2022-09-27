@@ -87,7 +87,7 @@ class ConfRegistration extends \yii\db\ActiveRecord
 
     public function getListPackages(){
         $list = ConfFee::find()->where(['conf_id' => $this->conf_id])->all();
-        return ArrayHelper::map($list, 'id', 'fee_name');
+        return ArrayHelper::map($list, 'id', 'feeText');
     }
 
     public function getListPackagesJson(){
