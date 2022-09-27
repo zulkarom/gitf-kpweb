@@ -115,6 +115,7 @@ $("#confregistration-paper_number").change(function(){
 
 function setPaper(){
     var kira = '.$model->countNotRejectPapers.' ;
+    kira = kira ? kira : 1;
     $("#confregistration-paper_number").val(kira);
 }
 
@@ -135,9 +136,7 @@ function calc(){
             fee = fee * qty;
 
             cur = item.fee_currency;
-            if(qty > 0 && fee > 0){
-                $("#confregistration-fee_amount").val(fee);
-            }
+            $("#confregistration-fee_amount").val(fee);
             
             $("#confregistration-fee_currency").val(cur);
 
