@@ -273,6 +273,8 @@ class CourseOfferedController extends Controller
 
 
             if(Yii::$app->request->post('Lecture')){
+                //save old lec
+
                 $post_lectures = Yii::$app->request->post('Lecture');
                 foreach ($lectures as $lec) {
                     $lec->lec_name = $post_lectures[$lec->id]['lec_name'];
@@ -314,6 +316,8 @@ class CourseOfferedController extends Controller
                     }
 
                 }
+
+                //TODO:proses staff involved & appointment letter
                  
                  Yii::$app->session->addFlash('success', "Data Saved");
             }

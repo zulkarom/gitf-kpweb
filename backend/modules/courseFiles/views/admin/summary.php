@@ -137,7 +137,7 @@ $semester = $semester->semester_id;
             
           </div></a>
         </div>
-        <!-- ./col -->
+
        
         <div class="col-lg-3 col-xs-6">
         <a href="<?=Url::to(['index', 'SemesterForm[status]' => 50, 'SemesterForm[semester_id]' => $semester])?>" class="a-dash">  <div class="small-box bg-default">
