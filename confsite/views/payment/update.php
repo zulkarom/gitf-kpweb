@@ -60,14 +60,24 @@ foreach($model->papers as $paper){
 <?=$form->field($model, 'fee_package') ->dropDownList($model->listPackages, ['prompt' => 'Select a Category'])?>
 
 <div class="row">
-<div class="col-md-5"><?php 
+<div class="col-md-5">
+<div class="form-group highlight-addon field-confregistration-paper_number required">
+<label class="has-star" for="confregistration-fee_amount">Number of Paper</label>
+
+<input type="text" class="form-control disabled" value="<?=$model->countNotRejectPapers?>"  disabled>
+
+</div>
+    
+    
+    <?php 
 $arr = [];
 for($i=1;$i<=10;$i++){
     $arr[$i] = $i;
 }
-echo $form->field($model, 'paper_number')->dropDownList($arr);
+//echo '<input type="text" id="show_number" class="form-control disabled" value="'.$model->paper_number.'">';
+echo $form->field($model, 'paper_number')->hiddenInput(['value' => $model->countNotRejectPapers])->label(false)?>
 
-?></div>
+</div>
 </div>
 
 <div class="row">
@@ -103,7 +113,7 @@ echo $form->field($model, 'paper_number')->dropDownList($arr);
 
 <?php
 $this->registerJs('
-setPaper();
+//setPaper();
 
 $("#confregistration-fee_package").change(function(){
     calc();
