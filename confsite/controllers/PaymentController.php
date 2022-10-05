@@ -64,6 +64,7 @@ class PaymentController extends Controller
 			$this->layout = 'main-member';
 		}
 		$model = ConfRegistration::findOne(['conf_id' => $conf->id, 'user_id' => Yii::$app->user->identity->id]);
+        $model->scenario = 'payment';
         if($model->fee_status > 0){
 			return $this->redirect(['view', 'confurl' => $confurl]);
 		}else{
