@@ -59,7 +59,7 @@ table.detail-view th {
 			],
             'pap_abstract:ntext',
 			'keyword:ntext',
-			[
+/* 			[
 				'attribute' => 'myrole',
 				'label' => 'Role Selection',
 				'value' => function($model){
@@ -69,7 +69,7 @@ table.detail-view th {
 					
 				}
 				
-			],
+			], */
 			[
 				'attribute' => 'paper_file',
 				'label' => 'Full Paper',
