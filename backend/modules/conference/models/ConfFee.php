@@ -62,4 +62,9 @@ class ConfFee extends \yii\db\ActiveRecord
             'fee_order' => 'Fee Order',
         ];
     }
+
+    public function getFeeText(){
+        $amt = $this->fee_amount + 0;
+        return $this->fee_name . ' ' . $this->fee_currency . $amt;
+    }
 }

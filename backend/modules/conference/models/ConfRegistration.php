@@ -4,6 +4,7 @@ namespace backend\modules\conference\models;
 
 use Yii;
 use common\models\User;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "conf_reg".
@@ -37,12 +38,12 @@ class ConfRegistration extends \yii\db\ActiveRecord
         return [
             [['conf_id', 'user_id', 'reg_at', 'confly_number'], 'required'],
 
-            [['fee_amount', 'fee_currency', 'fee_file'], 'required', 'on' => 'payment'],
+            [['fee_amount', 'fee_currency', 'fee_file', 'fee_package', 'paper_number'], 'required', 'on' => 'payment'],
 
-            [['conf_id', 'user_id', 'confly_number','fee_paid_at','fee_verified_at','fee_currency','is_author','is_reviewer'], 'integer'],
+            [['conf_id', 'user_id', 'confly_number','fee_paid_at','fee_verified_at','is_author','is_reviewer', 'fee_package', 'paper_number'], 'integer'],
 
             [['reg_at'], 'safe'],
-            [['fee_note'], 'string'],
+            [['fee_note', 'fee_currency'], 'string'],
             [['fee_amount'], 'number'],
             [['conf_id'], 'exist', 'skipOnError' => true, 'targetClass' => Conference::className(), 'targetAttribute' => ['conf_id' => 'id']],
 
@@ -68,6 +69,8 @@ class ConfRegistration extends \yii\db\ActiveRecord
             'fee_note' => 'Note of Payment',
             'user.fullname' => 'Full Name',
             'user.email' => 'Email',
+            'fee_package' => 'Category',
+            'paper_number' => 'Number of Paper'
 
         ];
     }
@@ -82,6 +85,17 @@ class ConfRegistration extends \yii\db\ActiveRecord
         }
     }
 
+    public function getListPackages(){
+        $list = ConfFee::find()->where(['conf_id' => $this->conf_id])->all();
+        return ArrayHelper::map($list, 'id', 'feeText');
+    }
+
+    public function getListPackagesJson(){
+        $list = ConfFee::find()->select('id, fee_name, fee_amount, fee_currency, fee_early')
+        ->where(['conf_id' => $this->conf_id])->asArray()->all();
+        return json_encode($list);
+    }
+
     public function getFeeAmountFormat(){
         $curr = $this->fee_currency;
         $str='';
@@ -92,6 +106,21 @@ class ConfRegistration extends \yii\db\ActiveRecord
             $conf->currency_int;
         }
         return $str . ' ' . number_format($this->fee_amount,2);
+    }
+
+    public function listCurrencyCode(){
+        $curr = [];
+        $conf= $this->conference;
+        $curr_local = $conf->currency_local;
+        $curr_int = $conf->currency_int;
+        if($curr_local){
+        $curr[$curr_local] = $curr_local;
+        }
+        if($curr_int){
+        $curr[$curr_int] = $curr_int;
+        }
+
+        return $curr;
     }
 
     public function listCurrency(){
@@ -126,6 +155,10 @@ class ConfRegistration extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Associate::className(), ['id' => 'user_id']);
     }
+    public function getPackage()
+    {
+        return $this->hasOne(ConfFee::className(), ['id' => 'fee_package']);
+    }
 	
     public function getPapers()
     {
@@ -137,6 +170,13 @@ class ConfRegistration extends \yii\db\ActiveRecord
     public function getCountPapers(){
         return ConfPaper::find()
         ->where(['user_id' => $this->user_id, 'conf_id' => $this->conf_id])
+        ->count() ;
+    }
+
+    public function getCountNotRejectPapers(){
+        return ConfPaper::find()
+        ->where(['user_id' => $this->user_id, 'conf_id' => $this->conf_id])
+        ->andWhere(['>=', 'status' , 30])
         ->count() ;
     }
 	

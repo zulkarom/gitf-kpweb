@@ -12,6 +12,8 @@ use yii\db\Expression;
 use backend\modules\conference\models\Conference;
 use confsite\models\UploadPaperFile as UploadFile;
 use backend\modules\conference\models\ConfRegistration;
+use confsite\models\user\User;
+use yii\helpers\Html;
 
 /**
  * PaperController implements the CRUD actions for ConfPaper model.
@@ -62,6 +64,7 @@ class PaymentController extends Controller
 			$this->layout = 'main-member';
 		}
 		$model = ConfRegistration::findOne(['conf_id' => $conf->id, 'user_id' => Yii::$app->user->identity->id]);
+        
         if($model->fee_status > 0){
 			return $this->redirect(['view', 'confurl' => $confurl]);
 		}else{
@@ -82,6 +85,7 @@ class PaymentController extends Controller
 		}
 
 		$model = ConfRegistration::findOne(['conf_id' => $conf->id, 'user_id' => Yii::$app->user->identity->id]);
+        $model->scenario = 'payment';
 		if($model->fee_status == 10){
 			return $this->redirect(['view', 'confurl' => $confurl]);
 		}
@@ -96,7 +100,14 @@ class PaymentController extends Controller
 				$model->flashError();
 			}
         }
-		$model->scenario = 'payment';
+
+		
+        if(!User::checkProfile($confurl)){
+            Yii::$app->session->addFlash('info', "<i class='fa fa-info'></i> You need to complete your ". Html::a('profile ', ['profile', 'confurl' => $confurl]) ." to include your information regarding institution, phone and address.");
+        }
+        
+
+
 
 		if($confurl){
 			return $this->render('update', [
