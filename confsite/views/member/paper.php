@@ -73,15 +73,16 @@ $this->params['breadcrumbs'][] = $this->title;
 							    return Html::a('CORRECTION ',['member/correction/', 'confurl' => $model->conference->conf_url ,'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
 							    break;
 							
-							case 80:
+						/* 	case 80:
 							return Html::a('ACCEPTANCE LETTER<br /> & INVOICE',['member/invoice-view/', 'confurl' => $model->conference->conf_url ,'id' => $model->id],['class'=>'btn btn-info btn-sm']);
-							break;
+							break; */
 							
 							case 95:
 							return Html::a('RESUBMIT PAYMENT',['member/invoice-view/', 'confurl' => $model->conference->conf_url ,'id' => $model->id],['class'=>'btn btn-info btn-sm']);
 							break;
 							
 							case 100:
+							case 80:
 							return Html::a('VIEW',['member/complete-view/', 'confurl' => $model->conference->conf_url ,'id' => $model->id],['class'=>'btn btn-info btn-sm']);
 							break;
 							
