@@ -65,7 +65,6 @@ $closed = Common::isDue($dates->open_deadline);
 								  echo '<span style="font-weight:normal;font-style:italic">In progress...</span>';
 							  }
 							  
-							  
 							  echo '</td>
 							  <td>';
 							  
@@ -133,12 +132,14 @@ $closed = Common::isDue($dates->open_deadline);
 						  <?php 
 							  $prg = '';
 							  if($myInv->timetable_file){
+								
 								  echo '<a href="'.  Url::to(['staff/download-file', 'attr' => 'timetable','id' => $myInv->id]) .' " class="btn btn-default btn-sm" target="_blank"><span class="fa fa-download" ></span></a> ';
 								  if($myInv->editable and !$closed){
 									  echo '<a href="'.  Url::to(['default/timetable', 's' => $semester->semester_id]) .' " class="btn btn-default btn-sm" ><span class="fa fa-pencil"></span></a>';
 								  }
 								  
-								  }else{
+							  }else{
+
 								  if($myInv->editable and !$closed){
 									  echo '<a href="'.  Url::to(['default/timetable', 's' => $semester->semester_id]) .' " class="btn btn-default btn-sm" ><span class="fa fa-upload"></span> Upload</a>';
 								  }
