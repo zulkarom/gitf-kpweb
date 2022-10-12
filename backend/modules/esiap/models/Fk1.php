@@ -147,10 +147,8 @@ EOD;
 		$pro = ' - ';
 		$pro_bi = ' - ';
 		if($this->model->course->program){
-		if($this->model->course->program->id > 0){
 			$pro = $this->model->course->program->pro_name;
 			$pro_bi = $this->model->course->program->pro_name_bi;
-		}
 		}
 		$html .= $pro;
 		
