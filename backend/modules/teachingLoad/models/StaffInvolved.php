@@ -82,7 +82,7 @@ class StaffInvolved extends \yii\db\ActiveRecord
 	}
 	
 	public function getEditable(){
-		$boo = false;
+		$boo = true;
 		$appoints = $this->appointLetters;
 		if($appoints){
 			foreach($appoints as $appoint){
