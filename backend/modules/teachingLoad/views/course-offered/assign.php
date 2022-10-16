@@ -91,7 +91,14 @@ if($model->course->tut_hour == 0){
 		</td>
       </tr>
 
-	  <tr style="display:none" id="con-asst">
+	  <?php
+		$show = 'style="display:none"';
+		if($model->coordinator2){
+			$show = '';
+		}
+	  ?>
+
+	  <tr <?=$show?> id="con-asst">
 	   
 	   <td width="20%"> Assist. Coordinator: </td>
 	   <td>
