@@ -97,6 +97,7 @@ class Staff extends \backend\modules\staff\models\Staff
 		return CourseOffered::find()
 		->joinWith('course')
 		->where(['coordinator' => Yii::$app->user->identity->staff->id , 'semester_id' => $this->semester])
+		->orWhere(['coordinator2' => Yii::$app->user->identity->staff->id , 'semester_id' => $this->semester])
 		->all();
 	}
 

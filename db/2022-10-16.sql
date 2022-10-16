@@ -1,0 +1,1 @@
+ALTER TABLE `tld_course_offered`  ADD `coordinator2` INT NULL DEFAULT NULL  AFTER `coordinator`;

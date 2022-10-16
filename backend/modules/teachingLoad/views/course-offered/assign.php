@@ -70,7 +70,10 @@ if($model->course->tut_hour == 0){
     <tbody>
       <tr>
 	   
-        <td width="20%"> Select Course Coordinator: </td>
+        <td width="20%"> Select Course Coordinator: <br />
+	<a href="javascript:void(0)" id="addcoor"><i class="fa fa-plus-square-o"></i></a>
+	<?php $this->registerJs('$("#addcoor").click(function(){$("#con-asst").slideDown()})')?>
+	</td>
         <td>
 		<?php
 		echo $form->field($model, 'coordinator')->widget(Select2::classname(), [
@@ -87,6 +90,26 @@ if($model->course->tut_hour == 0){
 		<td width="20%"><?= $form->field($model, "coor_access")->checkbox(['value' => '1', 'label'=> 'Coordinator have all access']); ?>
 		</td>
       </tr>
+
+	  <tr style="display:none" id="con-asst">
+	   
+	   <td width="20%"> Assist. Coordinator: </td>
+	   <td>
+	   <?php
+	   echo $form->field($model, 'coordinator2')->widget(Select2::classname(), [
+   'data' => ArrayHelper::map(Staff::getAcademicStaff(), 'id', 'user.fullname'),
+   'options' => ['placeholder' => 'Select a Coordinator ...'],
+   'pluginOptions' => [
+	   'allowClear' => true
+   ],
+])->label(false);
+
+?>
+	   
+	   </td><td></td>
+	   <td>
+	   </td>
+	 </tr>
       
     </tbody>
   </table>
