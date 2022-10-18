@@ -13,7 +13,7 @@ $access = false;
 if(CourseAccess::hasAccess($offer) and !$closed){
     $access = true;
 }
-$access = true;
+
 ?>
 <div class="box">
 
