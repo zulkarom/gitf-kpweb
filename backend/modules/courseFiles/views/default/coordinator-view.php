@@ -55,7 +55,7 @@ $this->params['breadcrumbs'][] = 'View ';
 
 </div>
 
-<?php if(!Common::isDue($modelOffer->semesterDates->open_deadline) && in_array($modelOffer->status, [0,20])){ // draft & reupdate?>
+<?php if(true){ // draft & reupdate?>
 
 <div class="box box-solid">
 <div class="box-body">
