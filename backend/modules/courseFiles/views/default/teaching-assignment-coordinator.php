@@ -19,7 +19,8 @@ $this->title = 'Coordinator';
 $this->params['breadcrumbs'][] = ['label' => 'My Course File', 'url' => ['/course-files/default/teaching-assignment']];
 $this->params['breadcrumbs'][] = $this->title;
 
-if(!$closed){
+//if(!$closed){
+if(true){
 ?>
 
 
