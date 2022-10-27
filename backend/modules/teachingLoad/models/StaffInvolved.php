@@ -82,21 +82,18 @@ class StaffInvolved extends \yii\db\ActiveRecord
 	}
 	
 	public function getEditable(){
-		$boo = true;
 		$appoints = $this->appointLetters;
 		if($appoints){
 			foreach($appoints as $appoint){
 				$status = $appoint->courseOffered->status;
 				//echo $status.'*';
 				if($status == 0 or $status == 20){
-					$boo = $boo == false ? false : true;
-				}else{
-					$boo = false;
+					return true;
 				}
 			}
 		}
 		//die();
-		return $boo;
+		return false;
 	}
 
     public function getStaff(){

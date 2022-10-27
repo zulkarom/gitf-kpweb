@@ -37,6 +37,7 @@ use backend\modules\teachingLoad\models\CourseOffered;
 use backend\modules\esiap\models\Fk3Word;
 use backend\models\SemesterForm;
 use backend\modules\courseFiles\models\Checklist;
+use backend\modules\esiap\models\Fk1Word;
 
 /**
  * CourseController implements the CRUD actions for Course model.
@@ -1802,6 +1803,14 @@ class CourseController extends Controller
 		$pdf->generatePdf();
 			
 	}
+
+	public function actionFk1WordX($course, $dev = false, $version = false){		
+		$doc = new Fk1Word;
+		$doc->model = $this->decideVersion($course, $dev, $version);
+		$doc->generate();
+	    exit;
+	}
+
 	public function actionFk3Word($course, $dev = false, $version = false, $offer = false, $cqi = false, $xana = false, $group = false){
 	    
 	    $doc = new Fk3Word();

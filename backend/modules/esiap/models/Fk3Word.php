@@ -152,7 +152,7 @@ class Fk3Word
     		$text = $cell->addTextRun();
     	    $text->addText('Jabatan: ', $fontTitle, $paraTitle);
     	    $text->addText($dep, $font, $paraTitle);
-    	    $text->addText($this->model->course->faculty->faculty_name, $font, $paraTitle);
+    	   // $text->addText($this->model->course->faculty->faculty_name, $font, $paraTitle);
     	    $text = $cell->addTextRun();
     		$text->addText('Department: ', $fontTitleItalic, $paraTitle);
     		$text->addText($dep_bi, $fontItalic, $paraTitle);
@@ -431,11 +431,11 @@ class Fk3Word
     	    $table->addRow(3500);
     	    $cell2 = $table->addCell();
 	    $cell->addText('# Berasaskan kepada laporan pencapaian pelajar di atas dan sumber lain (jika mana-mana CLO/ PLO tidak tercapai).', $fontSm, $para);
-	    $cell->addText('  Based on the students’ achievement report above and other sources (if any CLO/ PLO is not achieved).', $fontSmEn, $para);
+	    $cell->addText('  Based on the studentsï¿½ achievement report above and other sources (if any CLO/ PLO is not achieved).', $fontSmEn, $para);
 	    
 	    $cell->addTextBreak(1);
 	    $cell->addText('Nama Penyelaras/  Pensyarah Kursus', $font, $para);
-	    $cell->addText('Course Coordinator/  Lecturer’s Name:  ______________________________________' , $fontEn, $para);
+	    $cell->addText('Course Coordinator/  Lecturerï¿½s Name:  ______________________________________' , $fontEn, $para);
 	    $cell->addTextBreak(1);
 	    $text = $cell->addTextRun();
 	       $text->addText('Tandatangan/ ', $font, $para);
@@ -453,7 +453,7 @@ class Fk3Word
 	       $cell->addTextBreak(1);
 	       $text = $cell->addTextRun();
 	       $text->addText('                                                              (Cop Ketua Jabatan/ Penyelaras Program)/ ', $font, $para);
-	       $text->addText('(Head of Department/  Programme Coordinator’s Stamp)', $fontEn, $para);
+	       $text->addText('(Head of Department/  Programme Coordinatorï¿½s Stamp)', $fontEn, $para);
 	       
 	       $cell->addTextBreak(1);
 	       $text = $cell->addTextRun();

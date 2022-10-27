@@ -89,7 +89,7 @@ class CourseOffered extends \yii\db\ActiveRecord
 			
 			[['option_course', 'option_review'], 'required', 'on' => 'audit'],
 			
-            [['semester_id', 'course_id', 'total_students', 'max_lec', 'max_tut', 'created_by', 'coordinator', 'course_version', 'material_version',  'na_cont_rubrics', 'na_script_final', 'coor_access', 'option_course', 'option_review', 'status', 'audit_freq', 'course_version2', 'auditor_staff_id', 'auditor_ex_id'], 'integer'],
+            [['semester_id', 'course_id', 'total_students', 'max_lec', 'max_tut', 'created_by', 'coordinator', 'course_version', 'material_version',  'na_cont_rubrics', 'na_script_final', 'coor_access', 'option_course', 'option_review', 'status', 'audit_freq', 'course_version2', 'auditor_staff_id', 'auditor_ex_id', 'coordinator2'], 'integer'],
 			
             [['created_at', 'courses'], 'safe'],
 			
