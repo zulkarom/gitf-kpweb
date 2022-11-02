@@ -85,9 +85,10 @@ use backend\modules\courseFiles\views\admin\Show;
                         $boo = $boo == false ? false : true;
                         //kena check pg dulu
                         if($lvl == 'PG'){
-                            echo '<li><a href="'.Url::to(['/course-files/default/attendance-summary-pdf', 'id'=> $lecture->id]).'" target="_blank">'.$lecture->lec_name .' - CLASS ATTENDANCE  '.Common::pTick().'</a></li>';
-                        }else{
                             echo '<li><a href="'.Url::to(['/course-files/attendance-lecture-file/download-file', 'attr' => 'attendance', 'id'=> $lecture->id]).'" target="_blank">'.$lecture->lec_name .' - CLASS ATTENDANCE  '.Common::pTick().'</a></li>';
+                            
+                        }else{
+                            echo '<li><a href="'.Url::to(['/course-files/default/attendance-summary-pdf', 'id'=> $lecture->id]).'" target="_blank">'.$lecture->lec_name .' - CLASS ATTENDANCE  '.Common::pTick().'</a></li>';
                         }
                           
                       }else{
