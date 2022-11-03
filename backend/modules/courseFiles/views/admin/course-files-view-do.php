@@ -72,17 +72,24 @@ use backend\modules\courseFiles\views\admin\Show;
               
           }else{
               
-              
+              $lvl = $offer->course->study_level;
               if($offer->lectures){
                   $i=1;
                   echo '<ul>';
                   $boo = true;
                   
                   foreach ($offer->lectures as $lecture) {
+                    
+                   
                       if($lecture->prg_stu_attend == 1){
-                          
-                          $boo = $boo == false ? false : true;
-                          echo '<li><a href="'.Url::to(['/course-files/default/attendance-summary-pdf', 'id'=> $lecture->id]).'" target="_blank">'.$lecture->lec_name .' - CLASS ATTENDANCE  '.Common::pTick().'</a></li>';
+                        $boo = $boo == false ? false : true;
+                        //kena check pg dulu
+                        if($lvl == 'PG'){
+                            echo '<li><a href="'.Url::to(['/course-files/attendance-lecture-file/download-file', 'attr' => 'attendance', 'id'=> $lecture->id]).'" target="_blank">'.$lecture->lec_name .' - CLASS ATTENDANCE  '.Common::pTick().'</a></li>';
+                            
+                        }else{
+                            echo '<li><a href="'.Url::to(['/course-files/default/attendance-summary-pdf', 'id'=> $lecture->id]).'" target="_blank">'.$lecture->lec_name .' - CLASS ATTENDANCE  '.Common::pTick().'</a></li>';
+                        }
                           
                       }else{
                           $boo = false;
