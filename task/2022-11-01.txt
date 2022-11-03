@@ -1,0 +1,46 @@
+
+
+parent view receipt
+
+payment method cash & bank sahaja
+
+kotak2 gelanggang
+  info 
+  aktiviti
+  gambar & video
+  jadual & taqwim
+  pencapaian
+
+letak semua dalam page gelanggang - sesi pengajian & yuran
+
+carian sijil mcm ekuda lasak [Majlis Perlimau]
+  - nama & ic 
+  
+scan sijil pegi egayong
+ 
+Urus Kursus & Acara
+ 
+Kursus menu dlm egayong - eSijil Kursus & Acara - menu dlm egayong
+ 
+
+ Pendaftaran kursus daripada tetamu
+ 
+ 
+MAJLIS PERLIMAU KEBANGSAAN
+Maklumat peserta
+1. Nama & i.c :
+2. Gelanggang & Pendiri :
+3. Jurulatih/Gurulatih :
+4. Maklumat Perlimau :
+    i. Perlimau Tapak
+       - Tarikh
+       - Wakil Perlimau
+       - Lokasi
+       - Sijil
+    ii. Perlimau Seni
+       - Tarikh
+       - Wakil Perlimau
+       - Lokasi
+       - Sijil
+Muat Turun Sijil - Buat seperti e-Sijil Kuda Lasak. Masuk ic
+

@@ -85,7 +85,9 @@ $columns = [
                         'label' => 'Country',
                         'value' => function($model){
                         if($model->user->associate){
-                            return $model->user->associate->country->country_name;
+                            if($model->user->associate->country){
+                                return $model->user->associate->country->country_name;
+                            }
                         }
                         
                         }
@@ -120,6 +122,15 @@ $columns = [
         return Html::encode($model->pap_title);
         
         }
+        ],
+
+        [
+            'label' => 'Authors',
+            'value' => function($model){
+            
+            return $model->authorString(', ');
+            
+            }
         ],
         
         [
