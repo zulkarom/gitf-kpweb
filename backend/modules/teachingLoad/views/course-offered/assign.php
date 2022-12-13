@@ -212,6 +212,11 @@ if($model->student_upload == 1){
 }else{
     $check_student = '';
 }
+if($model->all_coordinator == 1){
+    $check_allcoor = 'checked';
+}else{
+    $check_allcoor = '';
+}
 
 ?>
 
@@ -221,6 +226,15 @@ if($model->student_upload == 1){
 <input type="checkbox" id="student_list" name="student_list" value="1" <?=$check_student?> /> Manually Upload Student List
 <br />&nbsp;&nbsp; <i>(remain unticked except for example grouping system different from etadbir)</i>
 </div>
+
+<div class="form-group">
+
+
+<input type="checkbox" id="all_coordinator" name="all_coordinator" value="1" <?=$check_allcoor?> /> All lecturers regarded as coordinator
+<br />&nbsp;&nbsp; <i>(e.g. in case of SIEP, PPTA when only coordinator of each program included here)</i>
+</div>
+
+
 
 <?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> Save Teaching Assignment', ['class' => 'btn btn-primary']) ?>
 

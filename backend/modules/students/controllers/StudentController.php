@@ -253,20 +253,20 @@ class StudentController extends Controller
                         $st = Student::findOne(['matric_no' => $matric]);
 
                         if($st === null){
-
-                            $new = new Student;
-                            $new->st_name = $name;
-                            $new->matric_no = $matric;
-                            $new->nric = $nric;
-                            $new->program = $program;
-                            $new->faculty_id = 1;
-
-                            if($new->save()){
-                                $new_student[] = 1;
-                            }else{
-                                print_r($new->getErrors()); 
+                            if($name){
+                                $new = new Student;
+                                $new->st_name = $name;
+                                $new->matric_no = $matric;
+                                $new->nric = $nric;
+                                $new->program = $program;
+                                $new->faculty_id = 1;
+    
+                                if($new->save()){
+                                    $new_student[] = 1;
+                                }else{
+                                    print_r($new->getErrors()); 
+                                }
                             }
-                            
                         }else{
                             //echo $st->matric_no;die();
                             $st->nric = $nric;

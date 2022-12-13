@@ -19,7 +19,7 @@ ExcelAsset::register($this);
 First row = Heading, data start at second row<br />
 First column = fullname, second = matric number, third = NRIC, fourth = program<br />
 <?=Html::a('Download sample file', Yii::getAlias('@web') . '/download/student-bulk-update.xlsx',['target' => '_blank'])?> <br />
-The existing data will be updated NRIC & program (abbr.) base on matric number.
+The uploaded data will updated NRIC & program (abbr.) base on matric number.
 <br />
 If matric number not found, new data will be created provided fullname available.
 <br />

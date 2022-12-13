@@ -218,6 +218,11 @@ class CourseOfferedController extends Controller
                 }else{
                     $model->student_upload = 0;
                 }
+                if(Yii::$app->request->post('all_coordinator') == 1){
+                    $model->all_coordinator = 1;
+                }else{
+                    $model->all_coordinator= 0;
+                }
 				$model->updated_at = new Expression('NOW()');
                 $model->save();
             }
