@@ -224,6 +224,91 @@ class StudentController extends Controller
         ]);
     }
 
+    public function actionBulkUpdate(){
+
+        if (Yii::$app->request->post()) {
+            $data = Yii::$app->request->post('json_student');
+            $data = json_decode($data);
+
+            if($data){
+                $data = array_slice($data, 1) ;
+                /* echo '<pre>';
+                print_r($data);die(); */
+                $new_student = [];
+                $active = [];
+                foreach ($data as $stud) {
+
+                   /*  echo '<pre>';
+                print_r($stud);die(); */
+                    
+                    //echo $program;die();
+
+                    if(!empty($stud)){
+
+                        $name = trim($stud[1]);
+                        $matric = trim($stud[2]);
+                        $nric = trim($stud[3]);
+                        $program = trim($stud[4]);
+
+                        $st = Student::findOne(['matric_no' => $matric]);
+
+                        if($st === null){
+
+                            $new = new Student;
+                            $new->st_name = $name;
+                            $new->matric_no = $matric;
+                            $new->nric = $nric;
+                            $new->program = $program;
+                            $new->faculty_id = 1;
+
+                            if($new->save()){
+                                $new_student[] = 1;
+                            }else{
+                                print_r($new->getErrors()); 
+                            }
+                            
+                        }else{
+                            //echo $st->matric_no;die();
+                            $st->nric = $nric;
+                            $st->program = $program;
+                            if($st->save())
+                            {
+                               // echo $nric;die();
+                                $active[] = 1;
+                            }
+                            else{
+                                echo $st->matric_no;
+                                print_r($st->getErrors());  
+                                die();
+                            }
+                        }
+                    }
+                }
+
+                $new_student = count($new_student);
+                $active = count($active);
+
+                if($new_student > 0){
+                    Yii::$app->session->addFlash('info', "New Student: ".$new_student);
+                }
+
+                if($active > 0){
+                    Yii::$app->session->addFlash('info', "Update info:  ".$active);
+                }
+
+                if($new_student > 0 || $active > 0){
+                    return $this->refresh();
+                }
+
+
+            }
+
+        }
+        //die();
+        return $this->render('bulk-update');
+
+    }
+
     /**
      * Deletes an existing Student model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
