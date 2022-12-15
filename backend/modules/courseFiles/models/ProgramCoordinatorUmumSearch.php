@@ -11,7 +11,7 @@ use backend\modules\teachingLoad\models\CourseOffered;
 /**
  * CourseOfferedSearch represents the model behind the search form of `backend\modules\teachingLoad\models\CourseOffered`.
  */
-class ProgramCoordinatorSearch extends CourseOffered
+class ProgramCoordinatorUmumSearch extends CourseOffered
 {
     public $semester;
     public $program;
@@ -72,7 +72,8 @@ class ProgramCoordinatorSearch extends CourseOffered
         
 
         if($this->program){
-            $query->andFilterWhere(['program_id' => $this->program->id]);
+            
+            $query->andFilterWhere(['program_id' => 80]); //kursus umum program id
         }else{
             $query->where('0=1'); //showing no result to page
         }

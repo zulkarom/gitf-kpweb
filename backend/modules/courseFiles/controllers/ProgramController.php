@@ -13,6 +13,7 @@ use yii\web\NotFoundHttpException;
 use backend\models\Department;
 use backend\models\SemesterForm;
 use backend\models\Semester;
+use backend\modules\courseFiles\models\ProgramCoordinatorUmumSearch;
 use backend\modules\esiap\models\Program;
 
 /**
@@ -60,15 +61,36 @@ class ProgramController extends Controller
         
         $searchModel = new ProgramCoordinatorSearch();
         $searchModel->semester = $semester->semester_id;
+        $searchModel->program = $program;
         $searchModel->search_course = $semester->str_search;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        $dataProviderUmum = null;
+        $searchModelUmum = null;
+        $programUmum = null;
+
+        if($program){
+            if($program->id != 80){
+                $programUmum = Program::findOne(80);
+                $searchModelUmum = new ProgramCoordinatorUmumSearch();
+                $searchModelUmum->semester = $semester->semester_id;
+                $searchModelUmum->program = $program;
+                $searchModelUmum->search_course = $semester->str_search;
+                $dataProviderUmum  = $searchModelUmum->search(Yii::$app->request->queryParams);
+            }
+            
+        }
+        
         
         
         return $this->render('program-coordinator', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'searchModelUmum' => $searchModelUmum,
+            'dataProviderUmum' => $dataProviderUmum,
             'semester' => $semester,
-            'program' => $program
+            'program' => $program,
+            'programUmum' => $programUmum
         ]);
     }
 	
