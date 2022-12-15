@@ -93,7 +93,7 @@ class ProgramController extends Controller
                 $semester->semester_id = Semester::getCurrentSemester()->id;
             }
 
-            $programUmum = Program::findOne(80);
+            $programUmum = Program::findOne(['id' => 0]);
             $searchModelUmum = new ProgramCoordinatorUmumSearch();
             $searchModelUmum->semester = $semester->semester_id;
             $searchModelUmum->search_course = $semester->str_search;

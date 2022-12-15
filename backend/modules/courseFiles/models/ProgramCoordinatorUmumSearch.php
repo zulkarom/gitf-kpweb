@@ -71,7 +71,7 @@ class ProgramCoordinatorUmumSearch extends CourseOffered
         }
         
 
-        $query->andFilterWhere(['c.program_id' => 80]); //kursus umum program id
+        $query->andFilterWhere(['c.program_id' => 0]); //kursus umum program id
        
 
         // grid filtering conditions
