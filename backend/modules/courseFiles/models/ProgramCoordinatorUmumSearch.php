@@ -50,7 +50,7 @@ class ProgramCoordinatorUmumSearch extends CourseOffered
         //check user coordinator 
         
         $query = CourseOffered::find()
-        ->joinWith('course')
+        ->joinWith('course c')
 		;
 
         // // add conditions that should always apply here
@@ -71,12 +71,7 @@ class ProgramCoordinatorUmumSearch extends CourseOffered
         }
         
 
-        if($this->program){
-            
-            $query->andFilterWhere(['program_id' => 80]); //kursus umum program id
-        }else{
-            $query->where('0=1'); //showing no result to page
-        }
+        $query->andFilterWhere(['c.program_id' => 80]); //kursus umum program id
        
 
         // grid filtering conditions

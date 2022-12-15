@@ -65,33 +65,54 @@ class ProgramController extends Controller
         $searchModel->search_course = $semester->str_search;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        $dataProviderUmum = null;
-        $searchModelUmum = null;
-        $programUmum = null;
-
-        if($program){
-            if($program->id != 80){
-                $programUmum = Program::findOne(80);
-                $searchModelUmum = new ProgramCoordinatorUmumSearch();
-                $searchModelUmum->semester = $semester->semester_id;
-                $searchModelUmum->program = $program;
-                $searchModelUmum->search_course = $semester->str_search;
-                $dataProviderUmum  = $searchModelUmum->search(Yii::$app->request->queryParams);
-            }
-            
-        }
-        
-        
         
         return $this->render('program-coordinator', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'searchModelUmum' => $searchModelUmum,
-            'dataProviderUmum' => $dataProviderUmum,
             'semester' => $semester,
             'program' => $program,
-            'programUmum' => $programUmum
         ]);
+    }
+
+    public function actionGeneralCourses()
+    {
+        //check dia coordinator ke tak
+        $kp = Program::findOne(['head_program' => Yii::$app->user->identity->staff->id]);
+        $kj = Department::findOne(['head_dep' => Yii::$app->user->identity->staff->id]);
+        if($kj || $kp){
+            $semester = new SemesterForm;
+            $session = Yii::$app->session;
+            if(Yii::$app->getRequest()->getQueryParam('SemesterForm')){
+                $sem = Yii::$app->getRequest()->getQueryParam('SemesterForm');
+                $semester->semester_id = $sem['semester_id'];
+                $semester->str_search = $sem['str_search'];
+                $session->set('semester', $sem['semester_id']);
+            }else if($session->has('semester')){
+                $semester->semester_id = $session->get('semester');
+            }else{
+                $semester->semester_id = Semester::getCurrentSemester()->id;
+            }
+
+            $programUmum = Program::findOne(80);
+            $searchModelUmum = new ProgramCoordinatorUmumSearch();
+            $searchModelUmum->semester = $semester->semester_id;
+            $searchModelUmum->search_course = $semester->str_search;
+            $dataProviderUmum  = $searchModelUmum->search(Yii::$app->request->queryParams);
+            
+            
+            
+            return $this->render('general-courses', [
+                'searchModelUmum' => $searchModelUmum,
+                'dataProviderUmum' => $dataProviderUmum,
+                'semester' => $semester,
+                'programUmum' => $programUmum
+            ]);
+
+        }else{
+            return $this->render('forbidden');
+        }
+
+        
     }
 	
     public function actionHeadDepartment()

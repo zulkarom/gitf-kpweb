@@ -651,6 +651,14 @@ class Menu
                 ],
 
                 [
+                    'label' => 'Kursus Umum',
+                    'icon' => 'book',
+                    'url' => [
+                        '/course-files/program/general-courses'
+                    ]
+                ],
+
+                [
                     'label' => 'My Teaching Selection',
                     'icon' => 'hand-pointer-o',
                     'url' => [

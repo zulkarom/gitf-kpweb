@@ -8,13 +8,10 @@ use backend\modules\courseFiles\models\Common;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 
-$this->title = 'Program Coordinator';
+$this->title = 'Kursus Umum';
 $this->params['breadcrumbs'][] = $this->title;
-$semester->action = ['/course-files/program/program-coordinator'];
-$program_name = '';
-if($program){
-    $program_name = $program->pro_name;
-}
+$semester->action = ['/course-files/program/general-courses'];
+
 ?>
 
 <div class="course-files-default-index">
@@ -31,12 +28,17 @@ if($program){
 </div>
 
 
-
+<?php
+    $program_name = '';
+    if($programUmum){
+        $program_name = $programUmum->pro_name;
+    }
+    ?>
 <h4><?php echo $program_name?></h4>
 <div class="box">
     <div class="box-header"></div>
     <div class="box-body"><div class="table-responsive"><?= GridView::widget([
-        'dataProvider' => $dataProvider,
+        'dataProvider' => $dataProviderUmum,
         //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
@@ -55,17 +57,6 @@ if($program){
 			],
 			
 			
-			
-			/* [
-                'label' => 'Program',
-				'value' => function($model){
-					if($model->course->program){
-						return $model->course->program->program_code;
-					}
-					
-				}
-                
-            ], */
 			
 			'statusName:html',
 			
@@ -113,4 +104,3 @@ if($program){
     ]); ?></div>
     </div>
 </div>
-
