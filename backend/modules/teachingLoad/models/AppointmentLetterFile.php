@@ -250,7 +250,7 @@ EOD;
 		
 		$coordinator = $this->model->courseOffered->coordinator;
 		
-		if($coordinator ==  $this->model->staffInvolved->staff_id){
+		if($coordinator ==  $this->model->staffInvolved->staff_id || $this->model->courseOffered->all_coordinator){
 		    $penyelaras = 'Penyelaras dan ';
 		    $coor1 = 'COORDINATOR AND ';
 		    $coor2 = 'a coordinator and ';

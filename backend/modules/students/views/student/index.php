@@ -22,15 +22,15 @@ $this->params['breadcrumbs'][] = $this->title;
             'program',
         ];
 ?>
-<div class="student-index">
+<div class="form-group">
 
 <div class="row">
 <div class="col-md-10">
-<p>
     <?= Html::a('Add Student', ['create'], ['class' => 'btn btn-success']) ?>
-    <?= Html::a('Synchronize', ['synchronize'], ['class' => 'btn btn-info']) ?>
+    <?= Html::a('<i class="fa fa-edit"></i> Bulk Update', ['bulk-update'], ['class' => 'btn btn-primary']) ?>
+    <?php // Html::a('Synchronize', ['synchronize'], ['class' => 'btn btn-info']) ?>
 
-</p>
+
 </div>
 
 
@@ -59,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 </div>
-<br/>
+</div>
 
 <div class="box">
 <div class="box-header"></div>
