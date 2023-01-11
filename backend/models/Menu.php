@@ -313,6 +313,14 @@ class Menu
                 ],
 
                 [
+                    'label' => 'Setting',
+                    'icon' => 'cog',
+                    'url' => [
+                        '/postgrad/setting'
+                    ]
+                ],
+
+                [
                     'label' => 'Workshop Training',
                     'visible' => false,
                     'icon' => 'cube',
