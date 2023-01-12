@@ -45,8 +45,9 @@ class CourseworkSearch extends CourseOffered
      */
     public function search($params)
     {
-        $query = CourseOffered::find()
-        ->joinWith('course c')->where(['c.program_id' => Common::arrayPgCoursework()]);
+        $query = CourseOffered::find()->alias('f')
+        ->innerJoin('sp_course c', 'c.id = f.course_id')
+        ->where(['c.program_id' => Common::arrayPgCoursework()]);
 
         // // add conditions that should always apply here
 
@@ -67,9 +68,16 @@ class CourseworkSearch extends CourseOffered
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'semester_id' => $this->semester,
-            'c.program_id' => $this->program_id
+            'semester_id' => $this->semester
         ]);
+
+        if($this->program_id){
+            $query->andFilterWhere([
+            'program_id' => $this->program_id
+        ]);
+        }
+
+        //Common::arrayPgCoursework()
 
         return $dataProvider;
     }

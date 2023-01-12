@@ -20,7 +20,7 @@ $form = ActiveForm::begin([
 </div>
 <div class="col-md-2">
 <?= $form->field($model, 'program_id') ->dropDownList(
-        Program::getProgramActiveFileArray(), ['prompt' => 'Select Program' ]
+        [81 => 'MIE', 82 => 'MIF'], ['prompt' => 'Select Program' ]
     )->label(false) ?>
 </div>
 </div>

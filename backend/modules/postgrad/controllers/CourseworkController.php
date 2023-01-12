@@ -6,6 +6,8 @@ use backend\models\Semester;
 use backend\models\SemesterForm;
 use backend\modules\courseFiles\models\DateSetting;
 use backend\modules\postgrad\models\CourseworkSearch;
+use backend\modules\teachingLoad\models\CourseOffered;
+use common\models\Common;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -64,6 +66,10 @@ class CourseworkController extends Controller
 
     public function actionPullStudentFromCourseFile($semester){
         //senarai course offer program 81,82
+        $query = CourseOffered::find()
+        ->joinWith('course c')
+        ->where(['c.program_id' => Common::arrayPgCoursework()])
+        ->all();
         //setiap course tgk student dlm lecture
         //setiap student tu tarik masuk pg
     }
