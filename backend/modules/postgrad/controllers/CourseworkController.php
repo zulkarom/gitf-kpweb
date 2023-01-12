@@ -62,6 +62,12 @@ class CourseworkController extends Controller
         ]);
     }
 
+    public function actionPullStudentFromCourseFile($semester){
+        //senarai course offer program 81,82
+        //setiap course tgk student dlm lecture
+        //setiap student tu tarik masuk pg
+    }
+
     
     
     
