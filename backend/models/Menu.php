@@ -284,6 +284,13 @@ class Menu
                     ]
                 ],
                 [
+                    'label' => 'Coursework',
+                    'icon' => 'cube',
+                    'url' => [
+                        '/postgrad/coursework'
+                    ]
+                ],
+                [
                     'label' => 'Supervisors/Examiners',
                     'icon' => 'hand-o-right',
                     'url' => [

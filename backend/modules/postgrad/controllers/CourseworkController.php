@@ -12,7 +12,7 @@ use yii\web\Controller;
 /**
  * Default controller for the `postgrad` module
  */
-class SettingController extends Controller
+class CourseworkController extends Controller
 {
     public function behaviors()
     {
@@ -48,23 +48,8 @@ class SettingController extends Controller
             $semester->semester_id = Semester::getCurrentSemester()->id;
         }
 		
-		$dates = DateSetting::find()->where(['semester_id' => $semester->semester_id])->one();
-		if($dates === null){
-			$dates = new DateSetting;
-			$dates->semester_id = $semester->semester_id;
-			$dates->save();
-		}
-		
-		if ($dates->load(Yii::$app->request->post())) {
-			if($dates->save()){
-				Yii::$app->session->addFlash('success', "Data Updated");
-				return $this->refresh();
-			}
-		}
 
-		
 		return $this->render('index', [
-			'dates' => $dates,
 			'semester' => $semester,
         ]);
     }

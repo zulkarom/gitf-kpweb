@@ -1,0 +1,1 @@
+ALTER TABLE `cf_date` ADD `pg_mark_deadline` DATE NULL DEFAULT NULL AFTER `audit_session`;

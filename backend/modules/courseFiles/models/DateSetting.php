@@ -29,7 +29,7 @@ class DateSetting extends \yii\db\ActiveRecord
     {
         return [
             [['semester_id'], 'integer'],
-            [['open_deadline', 'audit_deadline'], 'safe'],
+            [['open_deadline', 'audit_deadline', 'pg_mark_deadline'], 'safe'],
         ];
     }
 
@@ -43,6 +43,7 @@ class DateSetting extends \yii\db\ActiveRecord
             'semester_id' => 'Semester ID',
             'open_deadline' => 'Course File Deadline',
             'audit_deadline' => 'Audit Deadline',
+            'pg_mark_deadline' => 'Mark Entry Deadline'
         ];
     }
 	
