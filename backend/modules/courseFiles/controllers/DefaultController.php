@@ -35,6 +35,10 @@ use backend\modules\courseFiles\models\excel\AssessmentExcel;
 use yii\filters\AccessControl;
 use backend\modules\courseFiles\models\excel\StudentExcel;
 use backend\modules\esiap\models\Course;
+use backend\modules\postgrad\models\Student as StudentPg;
+use common\models\Common;
+use common\models\User;
+
 /**
  * Default controller for the `course-files` module
  */
@@ -396,27 +400,20 @@ class DefaultController extends Controller
 		        if(StudentLecture::updateAll(['stud_group' => $lecture->assign_group], ['id' => $selection])){
 		            Yii::$app->session->addFlash('success', "Data Updated");
 		            return $this->refresh();
-		            
-		            
 		        }
 		    }
-		    
 		}
 
         $searchModel = new StudentLectureSearch();
         $searchModel->lecture_id = $lecture->id;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-		
-		
-		
+
 		//nak check ada data ke tak
-		
         return $this->render('lecture-student-list', [
 			'lecture' => $lecture,
             'dataProvider' => $dataProvider,
 			
         ]);
-		
     }
 	
 	public function actionLectureStudentListPdf($id){
@@ -641,8 +638,14 @@ class DefaultController extends Controller
 	}
 	
 	public function actionImportStudentListExcel($id){
+		$pg = false;
 	    $lecture = $this->findLecture($id);
-	    
+	    //cari adakah coursework MIE/MIF
+		$course = $lecture->courseOffered->course;
+		if(in_array($course->program_id, Common::arrayPgCoursework())){
+			$pg = true;
+		}
+
 	    if(Yii::$app->request->post()){
 	        $data = Yii::$app->request->post('json_student');
 	        $data = json_decode($data);
@@ -659,7 +662,13 @@ class DefaultController extends Controller
 	                    $matric = trim($stud[0]);
 	                    $name = $stud[1];
 	                    
-	                    $this->processAddingStudentLecture($lecture, $matric, $name);
+						if($matric && $name){
+							$this->processAddingStudentLecture($lecture, $matric, $name);
+							if($pg){
+								$this->processAddingStudentLecturePg($course->program_id, $matric, $name);
+							}
+						}
+	                    
 	                    
 	                    
 	                }
@@ -718,7 +727,7 @@ class DefaultController extends Controller
 	private function processAddingStudentLecture($lecture, $matric, $name){
 	    $lvl = $lecture->courseOffered->course->study_level;
 	    
-	    $st = Student::findOne(['matric_no' => $matric, 'study_level' => $lvl]);
+	    $st = Student::findOne(['matric_no' => $matric]);
 	    if($st === null){
 	        $new = new Student;
 	        $new->matric_no = $matric;
@@ -749,6 +758,46 @@ class DefaultController extends Controller
 	        $st->stud_check = 1;
 	        $st->save();
 	    }
+	}
+
+	private function processAddingStudentLecturePg($pg, $matric, $name){
+			$st = StudentPg::find()->where(['matric_no' => $matric])->one();
+			
+			
+			if($st){
+				
+				//do nothing
+			}else{
+				die();
+				$exist = User::findOne(['username' => $matric]);
+				if($exist){
+					$user = $exist;
+				
+				}else{
+					$user = new User();
+					$user->username = $matric;
+					$user->fullname = $name;
+					$random = rand(30,30000);
+					$user->password_hash = \Yii::$app->security->generatePasswordHash($random);
+					$user->status = 10;
+					$user->email = 'dummy.'. strtolower($matric).'@email.com';
+					$user->save();
+					
+				}
+
+				$new = new StudentPg;
+				$new->user_id = $user->id;
+				$new->matric_no = $matric;
+				$new->status = 10; //aktif
+				$new->program_id = $pg;
+				$new->created_at = time();
+				$new->updated_at = time();
+				if(!$new->save())
+				{
+					$new->flashError();
+				}
+			}
+
 	}
 	
 	public function importTutorialStudentListApi($tutorial){

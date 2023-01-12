@@ -152,7 +152,9 @@ class Common {
 		return [1 => 'Active', 0 => 'Not Active'];
 	}
 
-	
+	public static function arrayPgCoursework(){
+		return [81,82];
+	}
 
 	public static function statusKursus(){
 	    return [10 => 'Submit', 20 => 'Paid', 30 => 'Complete', 40 => 'Reject'];

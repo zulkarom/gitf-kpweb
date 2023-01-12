@@ -90,7 +90,7 @@ class Student extends \yii\db\ActiveRecord
             
             [['outstanding_fee', 'bachelor_cgpa', 'master_cgpa'], 'number'],
             
-            [['program_id'], 'string', 'max' => 10],
+            [['program_id'], 'integer'],
             
             [['phone_no'], 'string', 'max' => 50],
             
@@ -211,7 +211,8 @@ class Student extends \yii\db\ActiveRecord
     }
 
     public function getGenderText(){
-        if($this->gender >= 0){
+
+        if($this->gender && $this->gender >= 0){
             return Common::gender()[$this->gender];
         }else{
             return '';

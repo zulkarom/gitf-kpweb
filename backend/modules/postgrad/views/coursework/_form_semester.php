@@ -34,6 +34,12 @@ $("#semesterform-semester_id").change(function(){
     $("#sel-sem-form").submit();
 });
 
+$("#semesterform-program_id").change(function(){
+    $("#sel-sem-form").submit();
+});
+
+//semesterform-program_id
+
 ');
 
 ?>

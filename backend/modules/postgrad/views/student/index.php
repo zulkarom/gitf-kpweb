@@ -29,8 +29,9 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'name',
                 'label' => 'Name',
+                'format' => 'html',
                 'value' => function($model){
-                   return $model->user->fullname;
+                   return Html::a(strtoupper($model->user->fullname),['view', 'id' => $model->id]);
                 }
             ],
             'matric_no',

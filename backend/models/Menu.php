@@ -304,30 +304,40 @@ class Menu
                         '/postgrad/external'
                     ]
                 ],
-                [
-                    'label' => 'Field of Study',
-                    'icon' => 'mortar-board',
-                    'url' => [
-                        '/postgrad/field'
-                    ]
-                ],
-                [
-                    'label' => 'Universities/Institutions',
-                    'icon' => 'bank',
-                    'url' => [
-                        '/postgrad/university'
-                    ]
-                ],
+
 
                 [
                     'label' => 'Setting',
                     'icon' => 'cog',
-                    'url' => [
-                        '/postgrad/setting'
-                    ]
-                ],
+                    'url' => '#',
+                    'items' => [
+                        [
+                            'label' => 'Mark Entry Deadline',
+                            'icon' => 'calendar',
+                            'url' => [
+                                '/postgrad/setting'
+                            ]
+                        ],
 
-                [
+                        [
+                            'label' => 'Universities/Institutions',
+                            'icon' => 'bank',
+                            'url' => [
+                                '/postgrad/university'
+                            ]
+                        ],
+
+                        [
+                            'label' => 'Field of Study',
+                            'icon' => 'mortar-board',
+                            'url' => [
+                                '/postgrad/field'
+                            ]
+                        ]
+                    ]
+                            ],
+
+                /* [
                     'label' => 'Workshop Training',
                     'visible' => false,
                     'icon' => 'cube',
@@ -360,7 +370,7 @@ class Menu
                             'visible' => Yii::$app->user->can('postgrad-manager')
                         ]
                     ]
-                ]
+                ] */
             ]
         ];
     }

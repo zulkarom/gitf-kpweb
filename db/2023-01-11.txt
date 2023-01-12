@@ -1,1 +1,3 @@
 ALTER TABLE `cf_date` ADD `pg_mark_deadline` DATE NULL DEFAULT NULL AFTER `audit_session`;
+
+ALTER TABLE `pg_student` ADD `created_at` INT NULL DEFAULT NULL AFTER `master_year`, ADD `updated_at` INT NULL DEFAULT NULL AFTER `created_at`;
