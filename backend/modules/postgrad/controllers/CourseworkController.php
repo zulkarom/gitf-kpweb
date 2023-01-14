@@ -90,11 +90,11 @@ class CourseworkController extends Controller
                         if($s){
                             foreach($s as $t){
                                 if(strlen($t->matric_no) > 4){
-                                     echo $t->matric_no;
+                                    /*  echo $t->matric_no;
                                     echo ' name ' . $t->student->st_name;
                                     echo ' program_id ' . $program;
-                                    echo '<br />'; 
-                                   // $this->processAddingStudentLecturePg($program, $t->matric_no, $t->student->st_name);
+                                    echo '<br />';  */
+                                   $this->processAddingStudentLecturePg($program, $t->matric_no, $t->student->st_name);
                                 }
                                 
                             }
