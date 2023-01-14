@@ -4,10 +4,11 @@ namespace backend\modules\postgrad\controllers;
 
 use backend\models\Semester;
 use backend\models\SemesterForm;
-use backend\modules\courseFiles\models\DateSetting;
 use backend\modules\postgrad\models\CourseworkSearch;
+use backend\modules\postgrad\models\Student;
 use backend\modules\teachingLoad\models\CourseOffered;
 use common\models\Common;
+use common\models\User;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -64,17 +65,82 @@ class CourseworkController extends Controller
         ]);
     }
 
-    public function actionPullStudentFromCourseFile($semester){
+    public function actionPull($s){
         //senarai course offer program 81,82
-        $query = CourseOffered::find()
+        $query = CourseOffered::find()->alias('a')
+        ->select('a.*, c.program_id ')
         ->joinWith('course c')
-        ->where(['c.program_id' => Common::arrayPgCoursework()])
+        ->where(['c.program_id' => Common::arrayPgCoursework(), 'semester_id' => $s])
         ->all();
-        //setiap course tgk student dlm lecture
-        //setiap student tu tarik masuk pg
+        if($query){
+            foreach($query as $q){
+                $program = $q->program_id;
+                /* echo $q->course->course_name;
+                echo '<br />'; */
+                //setiap course tgk student dlm lecture
+                //get lecture list
+
+                $lec = $q->courseLectures;
+                if($lec){
+                    foreach($lec as $l){
+                       /* echo  $l->lec_name;
+                       echo '<br />'; */
+                       //setiap student tu tarik masuk pg
+                        $s = $l->students;
+                        if($s){
+                            foreach($s as $t){
+                                if(strlen($t->matric_no) > 4){
+                                     echo $t->matric_no;
+                                    echo ' name ' . $t->student->st_name;
+                                    echo ' program_id ' . $program;
+                                    echo '<br />'; 
+                                   // $this->processAddingStudentLecturePg($program, $t->matric_no, $t->student->st_name);
+                                }
+                                
+                            }
+                        }
+                    }
+                }
+
+
+            }
+        }
+        
+        
     }
 
-    
-    
-    
+    private function processAddingStudentLecturePg($pg, $matric, $name){
+        $st = Student::find()->where(['matric_no' => $matric])->one();
+        if(!$st){
+            $exist = User::findOne(['username' => $matric]);
+            if($exist){
+                $user = $exist;
+            }else{
+                $user = new User();
+                $user->username = $matric;
+                $user->fullname = $name;
+                $random = rand(30,30000);
+                $user->password_hash = \Yii::$app->security->generatePasswordHash($random);
+                $user->status = 10;
+                $user->email = 'dummy.'. strtolower($matric).'@email.com';
+                if($user->save()){
+                    echo 'user ' . $user->fullname . ' added <br />';
+                }
+                
+            }
+
+            $new = new Student();
+            $new->user_id = $user->id;
+            $new->matric_no = $matric;
+            $new->status = 10; //aktif
+            $new->program_id = $pg;
+            $new->created_at = time();
+            $new->updated_at = time();
+            if($new->save()){
+                echo 'student ' . $user->fullname . ' added to pg data <br />';
+            } else {
+                $new->flashError();
+            }
+        }
+    }
 }

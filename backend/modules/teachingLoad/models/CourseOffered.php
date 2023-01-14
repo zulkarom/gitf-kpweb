@@ -52,7 +52,7 @@ class CourseOffered extends \yii\db\ActiveRecord
 	public $file_controller;
 	public $option_review;
 	public $option_course;
-	
+	public $program_id;
 	public $scriptbest1_instance;
 	public $scriptbest2_instance;
 	public $scriptbest3_instance;

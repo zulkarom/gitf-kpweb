@@ -768,7 +768,7 @@ class DefaultController extends Controller
 				
 				//do nothing
 			}else{
-				die();
+
 				$exist = User::findOne(['username' => $matric]);
 				if($exist){
 					$user = $exist;
