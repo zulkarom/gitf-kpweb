@@ -225,7 +225,7 @@ if($offer->course_version2 > 0 && $lecture->studentGroup2 ){
                           <td>'.$student->matric_no.'</td>
                           <td>'.$student->student->st_name.'</td>';
 						  
-
+                          
                           $result = json_decode($student->assess_result);
 
                            if($assessment)
