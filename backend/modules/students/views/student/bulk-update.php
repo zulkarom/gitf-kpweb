@@ -16,8 +16,8 @@ ExcelAsset::register($this);
 <div class="box">
 <div class="box-header"></div>
 <div class="box-body"><div class="student-form">
-First row = Heading, data start at second row<br />
-First column = fullname, second = matric number, third = NRIC, fourth = program<br />
+First row = heading (so data start at second row)<br />
+First column = number, second = fullname, third = matric number, forth = NRIC, fifth = program<br />
 <?=Html::a('Download sample file', Yii::getAlias('@web') . '/download/student-bulk-update.xlsx',['target' => '_blank'])?> <br />
 The uploaded data will updated NRIC & program (abbr.) base on matric number.
 <br />

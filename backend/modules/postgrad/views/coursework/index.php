@@ -66,7 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'template' => '{files}',
                 'buttons'=>[
                     'files'=>function ($url, $model){
-                        return Html::a('<span class="fa fa-download"></span> Download Result', ['download', 'id' => $model->id], ['class' => 'btn btn-primary btn-sm', 'target' => '_blank'
+                        return Html::a('<span class="fa fa-eye"></span> VIEW', ['view-course', 'id' => $model->id], ['class' => 'btn btn-primary btn-sm',
                         ]) 
                 ;
                     }
