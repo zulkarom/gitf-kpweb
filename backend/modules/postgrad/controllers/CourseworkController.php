@@ -106,7 +106,7 @@ class CourseworkController extends Controller
             }
         }
         
-        
+       exit; 
     }
 
     private function processAddingStudentLecturePg($pg, $matric, $name){
