@@ -28,10 +28,10 @@ class MarkReportStart extends \TCPDF {
 		$page = $this->getPage();
 		
 		
-		$this->SetFont('arial', '', 9);
+		$this->SetFont('arial', '', 7);
 
 		$html = '<table border="0"><tr><td width="60"><img src="images/umk-doc.png" width="50" /></td>
-		<td style="font-size:17px">Universiti Malaysia Kelantan<br />Fakulti Keusahawanan dan Perniagaan<br />
+		<td style="font-size:12px">Universiti Malaysia Kelantan<br />Fakulti Keusahawanan dan Perniagaan<br />
 		<b>Result and Grade Analysis</b>
 		</td>
 		</tr></table>

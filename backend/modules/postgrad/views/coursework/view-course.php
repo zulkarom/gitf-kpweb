@@ -139,7 +139,7 @@ if($assessment){
             }
         ?>
         <th style="text-align:center">Total<br />(100%)</th>
-        <th style="text-align:center">Grade</th>
+        <th style="text-align:center">Grade</th> <th style="text-align:center">Point</th>
         </tr>
     </thead>
         <?php 
@@ -179,14 +179,15 @@ if($students){
             }
         }
         $mark_arr[] = $sum;
-        echo '<td><b>'.number_format($sum,2).'</b></td><td><b>'.Grade::showGrade($sum).'</b></td>';
+        echo '<td align="center"><b>'.number_format($sum,2).'</b></td><td align="center"><b>'.Grade::showGrade($sum).'</b></td>
+        <td align="center"><b>'.number_format(Grade::showPoint($sum),2).'</b></td>';
         echo '</tr>';
 $i++;
     }
     $spn = $c + 4;
-    echo '<tr><td colspan="'.$spn.'" style="text-align:right">Average</td><td><b>
-    '. number_format(Grade::average($mark_arr),2) .'</b></td><td></td></tr>';
-    echo '<tr><td colspan="'.$spn.'" style="text-align:right">St. Dev.</td><td><b>'. number_format(Grade::stdev($mark_arr),2) .'</b></td><td></td></tr>';
+    echo '<tr><td colspan="'.$spn.'" style="text-align:right">Average</td><td align="center"><b>
+    '. number_format(Grade::average($mark_arr),2) .'</b></td><td></td><td></td></tr>';
+    echo '<tr><td colspan="'.$spn.'" style="text-align:right">St. Dev.</td><td align="center"><b>'. number_format(Grade::stdev($mark_arr),2) .'</b></td><td></td><td></td></tr>';
 }
 
 ?>
@@ -223,14 +224,14 @@ echo Html::img(Url::to(['bar', 'data' => json_encode($list)]));
 
 <table class="table">
     <thead><tr style="text-align:center">
-    <th style="text-align:center">Grade</th><th style="text-align:center">Range</th><th style="text-align:center">Count</th>
+    <th style="text-align:center">Range</th><th style="text-align:center">Point</th><th style="text-align:center">Grade</th><th style="text-align:center">Count</th>
     </tr></thead>
     <tbody>
         
         <?php
        
         foreach($list as $min=>$v){
-            echo '<tr style="text-align:center"><td>'.$v[0].'</td><td>'.$min.' - '.$v[1].'</td><td>'.$v[2].'</td></tr>';
+            echo '<tr style="text-align:center"><td>'.$min.' - '.$v[1].'</td><td>'.$v[0].'</td><td>'.number_format($v[3],2).'</td><td>'.$v[2].'</td></tr>';
         }
        
         ?>
