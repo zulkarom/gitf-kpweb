@@ -18,6 +18,8 @@ class MarkReport
 		// $this->directoryAsset = Yii::$app->assetManager->getPublishedUrl('@backend/views/myasset');
 		
 		$this->pdf = new MarkReportStart(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+		$this->pdf->course = $this->offer->course;
+		//$this->pdf->semester = $this->offer->semester;
 
 		$this->course = $this->offer->course;
 		$this->assessment = $this->offer->assessment;
@@ -28,8 +30,57 @@ class MarkReport
 
 		$this->marksTable();
 		$this->summary();
+		$this->signature();
 
 		$this->pdf->Output('mark-report.pdf', 'I');
+	}
+
+	public function signature(){
+		$html = '
+		<br /><br /><br />
+		
+
+<table border="0">
+<tr><td width="10%"></td><td width="45%">
+
+<table border="0" cellpadding="5">
+<tr><td>Nota:<br />
+Sila sahkan keputusan ini dengan tandatangan dan cop jawatan.<br /><br /></td></tr>
+<tr><td>COURSE COORDINATOR : _____________________________________
+</td></tr>
+<tr><td>NAME:
+</td></tr>
+<tr><td>DATE:
+</td></tr>
+</table>
+
+
+
+</td>
+<td width="45%">
+		
+<table border="0" cellpadding="5">
+<tr><td><br /><br /><br /><br /></td></tr>
+<tr><td>DIRECTOR APROVAL : _____________________________________
+</td></tr>
+<tr><td>NAME:
+</td></tr>
+<tr><td>DATE:
+</td></tr>
+</table>
+
+
+
+</td></tr>
+</table>
+
+		';
+		$tbl = <<<EOD
+$html
+EOD;
+		$this->pdf->SetFont('arial', '', 8);
+		$this->pdf->writeHTML($tbl, true, false, false, false, '');
+
 	}
 
 	public function summary(){
@@ -38,7 +89,7 @@ class MarkReport
 		Report::BarChart(json_encode($list), true);
 		
 
-		$html = '<table nobr="true" border="0"><tr><td>';
+		$html = '<table nobr="true" border="0"><tr><td width="24%"></td><td width="50%">';
 		
 		//chart
 
@@ -50,9 +101,9 @@ class MarkReport
 		$html .= '</td><td align="right">';
 		
 		
-		$html .= '<table border="1" width="300" align="right">
-    <thead><tr style="text-align:center">
-    <th style="text-align:center">Range</th><th style="text-align:center">Point</th><th style="text-align:center">Grade</th><th style="text-align:center">Count</th>
+		$html .= '<br /><br /><br /><br /><table border="1" width="300" align="right" cellpadding="3">
+    <thead><tr style="text-align:center;font-weight:bold">
+    <th style="text-align:center">Range</th><th style="text-align:center">Grade</th><th style="text-align:center">Point</th><th style="text-align:center">Result Count</th>
     </tr></thead>
     <tbody>';
         
@@ -68,7 +119,7 @@ class MarkReport
 $tbl = <<<EOD
 $html
 EOD;
-		$this->pdf->SetFont('arial', '', 9);
+		$this->pdf->SetFont('arial', '', 8);
 		$this->pdf->writeHTML($tbl, true, false, false, false, '');
 
 	}
@@ -77,7 +128,7 @@ EOD;
 
 
 		$c = count($this->assessment);
-
+		$total_col = 7 + $c;
 		
 
 		//$html .= '<tr></tr>';
@@ -86,17 +137,31 @@ EOD;
 		$all = 1170;
 		$bil = 30;
 		$matric = 80;
-		$group = 50;
-		$total = 80;
-		$grade = 80;
+		$group = 55;
+		$total = 70;
+		$grade = 70;
 		$wmark = 100;
-		$name = $all - ($bil + $matric + $group + $total + $grade + ($wmark * $c));
+		$point = 70;
+		$name = $all - ($bil + $matric + $group + $total + $grade + $point + ($wmark * $c));
 
 		$html = '<table border="0" cellpadding="5">';
 		$style='style="text-align:center;border:1px solid #000000"';
 		$style_shade='style="text-align:center;border:1px solid #000000;background-color: #ededed"';
 		$style_name='style="border:1px solid #000000"';
+		$style_header='style="border:1px solid #000000;line-height:25px;font-size:8pt"';
 		$html .= '<thead>
+		<tr>
+		<td '.$style_header.'  colspan="'.$total_col.'" width="'. $all .'">
+		<b>'. $this->offer->semester->longFormat() .'</b>
+		</td>
+		</tr>
+
+		<tr>
+		<td '.$style_header.'  colspan="'.$total_col.'" width="'. $all .'">
+		<b>COURSE</b>         '. $this->course->course_code .' - '. $this->course->course_name_bi   .'
+		</td>
+		</tr>
+
         <tr style="font-size:7pt">
 		<th '.$style.' width="'.$bil.'"><b>NO.</b></th>
 		<th '.$style.' width="'.$matric.'"><b>MATRIC NO.</b></th>
@@ -112,6 +177,7 @@ EOD;
             }
 		$html .='<th '.$style_shade.' width="'.$total.'"><b>TOTAL</b><br />(100%)</th>
         <th '.$style_shade.' width="'.$grade.'"><b>GRADE</b></th>
+		<th '.$style_shade.' width="'.$grade.'"><b>POINT</b></th>
         </tr>
     </thead>';
 
@@ -157,15 +223,15 @@ EOD;
 			}
 			$mark_arr[] = $sum;
 			$html .=  '<td '.$style_shade.' width="'.$total.'"><b>'.number_format($sum,2).'</b></td>
-			<td '.$style_shade.' width="'.$grade.'"><b>'.Grade::showGrade($sum).'</b></td>';
+			<td '.$style_shade.' width="'.$grade.'"><b>'.Grade::showGrade($sum).'</b></td><td '.$style_shade.' width="'.$point.'"><b>'.number_format(Grade::showPoint($sum),2).'</b></td>';
 			$html .=  '</tr>';
 	$i++;
 	}
 
 	$spn = $c + 4;
     $html .= '<tr><td colspan="'.$spn.'" style="text-align:right">Average</td><td style="text-align:center"><b>
-    '. number_format(Grade::average($mark_arr),2) .'</b></td><td></td></tr>';
-    $html .= '<tr><td colspan="'.$spn.'" style="text-align:right">St. Dev.</td><td style="text-align:center"><b>'. number_format(Grade::stdev($mark_arr),2) .'</b></td><td></td></tr>'; 
+    '. number_format(Grade::average($mark_arr),2) .'</b></td><td></td><td></td></tr>';
+    $html .= '<tr><td colspan="'.$spn.'" style="text-align:right">St. Dev.</td><td style="text-align:center"><b>'. number_format(Grade::stdev($mark_arr),2) .'</b></td><td></td><td></td></tr>'; 
 }
 
 		$html .= 	'</tbody>';

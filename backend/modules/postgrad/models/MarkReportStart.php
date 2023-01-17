@@ -6,13 +6,9 @@ use Yii;
 
 class MarkReportStart extends \TCPDF {
 	
-	public $model;
 	public $course;
-	public $semester;
-	public $group;
-	public $curr_page;
-	public $total_page;
-	public $analysis_group = null;
+	public $program;
+
 
     //Page header
     public function Header() {
@@ -28,11 +24,14 @@ class MarkReportStart extends \TCPDF {
 		$page = $this->getPage();
 		
 		
-		$this->SetFont('arial', '', 7);
+		$this->SetFont('arial', '', 8.5);
 
-		$html = '<table border="0"><tr><td width="60"><img src="images/umk-doc.png" width="50" /></td>
-		<td style="font-size:12px">Universiti Malaysia Kelantan<br />Fakulti Keusahawanan dan Perniagaan<br />
-		<b>Result and Grade Analysis</b>
+		$html = '<table border="0"><tr><td width="80"><img src="images/umk-doc.png" width="50" /></td>
+		<td>UNIVERSITI MALAYSIA KELANTAN<br />FAKULTI KEUSAHAWANAN DAN PERNIAGAAN<br /><br />
+		<b>ASSESSMENT RESULT AND GRADE ANALYSIS</b>
+<br />'. strtoupper($this->course->program->pro_name_bi)  .'
+
+
 		</td>
 		</tr></table>
 		';
@@ -40,11 +39,15 @@ class MarkReportStart extends \TCPDF {
 		$this->writeHTMLCell($w = 0, $h = 0, $x = '', $y = '', $html, $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = 'top', $autopadding = true);
 		
 		
-		$this->setY(8);
-		$this->setX(170);
-		 
-		 $this->Cell(40, 10, 'Page '.$this->getAliasNumPage().' of '.$this->getAliasNbPages(), 0, false, 'L', 0, '', 0, false, 'T', 'M'); 
 
+		$this->setY(8);
+		$this->setX(240);
+		 
+		 $this->Cell(40, 10, 'Page: '.$this->getAliasNumPage().' of '.$this->getAliasNbPages(), 0, false, 'L', 0, '', 0, false, 'T', 'M'); 
+		 $this->setY(13);
+		$this->setX(240);
+		 $this->Cell(40, 10, 'Date: ' . date('d-M-Y h:i:s A'), 0, false, 'L', 0, '', 0, false, 'T', 'M');
+		 
 		 //$this->setY(40);
 	 
 		//$this->setX($this->myX);
