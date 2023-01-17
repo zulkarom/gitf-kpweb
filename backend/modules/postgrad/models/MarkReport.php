@@ -40,7 +40,7 @@ class MarkReport
 		<br /><br /><br />
 		
 
-<table border="0">
+<table border="0" nobr="true">
 <tr><td width="10%"></td><td width="45%">
 
 <table border="0" cellpadding="5">
