@@ -17,6 +17,7 @@ use yii\web\NotFoundHttpException;
 use Amenadiel\JpGraph\Graph;
 use Amenadiel\JpGraph\Plot;
 use Amenadiel\JpGraph\Themes;
+use backend\modules\postgrad\models\MarkReport;
 
 /**
  * Default controller for the `postgrad` module
@@ -197,6 +198,25 @@ class CourseworkController extends Controller
         }
         
        exit; 
+    }
+
+    public function actionMarkPdf($id){
+
+        $pdf = new MarkReport;
+        
+		
+        $offer = $this->findOffered($id);
+        //senarai pelajar by course offered
+        $students = StudentLecture::find()->alias('a')
+        ->joinWith(['courseLecture cl'])
+        ->where(['cl.offered_id' => $id])
+        //->innerJoin('tld_course_lec cl', 'cl.id = a.lecture_id')
+        ->all();
+
+        $pdf->offer = $offer;
+        $pdf->students = $students;
+		
+		$pdf->generatePdf();
     }
 
     private function processAddingStudentLecturePg($pg, $matric, $name){

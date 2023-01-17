@@ -30,7 +30,7 @@ if($assessment){
 ?>
 <br />
  <div class="form-group"> 
-<a href=<?=Url::to(['hai', 'id' => 1])?> class="btn btn-danger btn-sm" target="_blank"><span class="glyphicon glyphicon-download-alt"></span> DOWNLOAD RESULT</a> 
+<a href=<?=Url::to(['mark-pdf', 'id' => $offer->id])?> class="btn btn-danger btn-sm" target="_blank"><span class="glyphicon glyphicon-download-alt"></span> DOWNLOAD RESULT</a> 
 
 </div>
 
@@ -126,7 +126,7 @@ if($assessment){
 
 <div class="table-responsive">
    <table class="table">
-    <tbody>
+    <thead>
         <tr><th>#</th><th>Matric No.</th><th>Students' Name</th><th>Group</th>
         <?php 
             foreach ($assessment as $assess) {
@@ -141,6 +141,7 @@ if($assessment){
         <th style="text-align:center">Total<br />(100%)</th>
         <th style="text-align:center">Grade</th>
         </tr>
+    </thead>
         <?php 
 
 if($students){
@@ -199,11 +200,8 @@ $i++;
     <div class="col-md-8">
 
 <?php
- $list = Grade::analyse($mark_arr);
-
+$list = Grade::analyse($mark_arr);
 echo Html::img(Url::to(['bar', 'data' => json_encode($list)]));
-
-
 ?>
 
 
