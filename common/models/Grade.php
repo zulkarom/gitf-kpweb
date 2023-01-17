@@ -62,5 +62,34 @@ class Grade
 
         ];
     }
+
+    public static function average(array $array, bool $includeEmpties = true): float
+    {
+        $array = array_filter($array, fn($v) => (
+            $includeEmpties ? is_numeric($v) : is_numeric($v) && ($v > 0)
+        ));
+
+        return array_sum($array) / count($array);
+    }
+
+    public static function stdev($arr)
+    {
+        $num_of_elements = count($arr);
+          
+        $variance = 0.0;
+          
+                // calculating mean using array_sum() method
+        $average = array_sum($arr)/$num_of_elements;
+          
+        foreach($arr as $i)
+        {
+            // sum of squares of differences between 
+                        // all numbers and means.
+            $variance += pow(($i - $average), 2);
+        }
+          
+        return (float)sqrt($variance/$num_of_elements);
+    }
+
     
 }

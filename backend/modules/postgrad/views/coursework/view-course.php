@@ -151,6 +151,7 @@ if($students){
         echo '<tr><td>'.$i.'. </td><td>'.$st->student->matric_no.'</td><td>'.strtoupper($st->student->st_name).'</td><td>'.$st->courseLecture->lec_name.'</td>';
         
         $result = json_decode($st->assess_result);
+        $c = count($assessment);
 
         if($assessment)
         {
@@ -182,6 +183,10 @@ if($students){
         echo '</tr>';
 $i++;
     }
+    $spn = $c + 4;
+    echo '<tr><td colspan="'.$spn.'" style="text-align:right">Average</td><td><b>
+    '. number_format(Grade::average($mark_arr),2) .'</b></td><td></td></tr>';
+    echo '<tr><td colspan="'.$spn.'" style="text-align:right">St. Dev.</td><td><b>'. number_format(Grade::stdev($mark_arr),2) .'</b></td><td></td></tr>';
 }
 
 ?>
@@ -198,11 +203,15 @@ $i++;
 
     <div class="row">
     <div class="col-md-8">
-
+<div class="box box-solid">
+<div class="box-body" style="text-align:center">
 <?php
 $list = Grade::analyse($mark_arr);
 echo Html::img(Url::to(['bar', 'data' => json_encode($list)]));
 ?>
+<br /><br />
+</div></div>
+
 
 
     </div>
@@ -237,3 +246,5 @@ echo Html::img(Url::to(['bar', 'data' => json_encode($list)]));
   
 
 </div>
+
+
