@@ -38,19 +38,19 @@ class MarkReport
 		Report::BarChart(json_encode($list), true);
 		
 
-		$html = '<table nobr="true" border="1"><tr><td>';
+		$html = '<table nobr="true" border="0"><tr><td>';
 		
 		//chart
 
 		//$html .= $from;
 		//copy($from, 'images/chartbar.png');
 
-		$html .= '<img src="images/temp/mark/bar.png" />';
+		$html .= '<img width="500" src="images/temp/mark/bar.png" />';
 
-		$html .= '</td><td>';
+		$html .= '</td><td align="right">';
 		
 		
-		$html .= '<table class="table">
+		$html .= '<table border="1" width="300" align="right">
     <thead><tr style="text-align:center">
     <th style="text-align:center">Range</th><th style="text-align:center">Point</th><th style="text-align:center">Grade</th><th style="text-align:center">Count</th>
     </tr></thead>
@@ -68,7 +68,7 @@ class MarkReport
 $tbl = <<<EOD
 $html
 EOD;
-		$this->pdf->SetFont('arial', '', 7);
+		$this->pdf->SetFont('arial', '', 9);
 		$this->pdf->writeHTML($tbl, true, false, false, false, '');
 
 	}
