@@ -9,6 +9,7 @@ use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\teachingLoad\models\CourseOffered */
 $this->title = 'Course Page';
+$this->params['back'] = ['index'];
 $this->params['breadcrumbs'][] = ['label' => 'Coursework', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 $course = $offer->course;
