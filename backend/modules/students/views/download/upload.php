@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = 'Uploads';
 <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
 
 	<?= $form->field($model, 'category')->dropDownList(
-       ArrayHelper::map(DownloadCategory::find()->all(),'id','category_name'), ['prompt' => 'Select Category']
+       ArrayHelper::map(DownloadCategory::find()->orderBy('created_at DESC')->all(),'id','category_name'), ['prompt' => 'Select Category']
     ) ?>
 
     <?= $form->field($model, 'imageFiles[]')->fileInput(['multiple' => true, 'accept' => '.pdf']) ?>

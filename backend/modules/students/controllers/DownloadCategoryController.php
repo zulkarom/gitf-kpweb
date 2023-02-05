@@ -71,6 +71,9 @@ class DownloadCategoryController extends Controller
 			
 			$model->created_by = Yii::$app->user->identity->id;
 			$model->created_at = new Expression('NOW()');
+            if($model->is_default == 1){
+                DownloadCategory::updateAll(['is_default' => 0]);
+            }
 			if($model->save()){
 				Yii::$app->session->addFlash('success', "A category created");
 			}
@@ -93,8 +96,16 @@ class DownloadCategoryController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+
+            if($model->is_default == 1){
+                DownloadCategory::updateAll(['is_default' => 0]);
+            }
+            if($model->save()){
+				Yii::$app->session->addFlash('success', "The category upated");
+			}
+
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [

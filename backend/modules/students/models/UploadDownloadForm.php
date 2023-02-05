@@ -23,6 +23,13 @@ class UploadDownloadForm extends Model
             [['imageFiles'], 'file', 'skipOnEmpty' => false, 'extensions' => 'pdf', 'maxFiles' => 10],
         ];
     }
+
+	public function attributeLabels()
+    {
+        return [
+            'imageFiles' => 'Document(s) to be uploaded',
+        ];
+    }
 	
 	public function upload()
     {
