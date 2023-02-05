@@ -21,7 +21,7 @@ class UploadDownloadForm extends Model
         return [
 			[['category'], 'required'],
 			[['category'], 'integer'],
-            [['imageFiles'], 'file', 'skipOnEmpty' => false, 'extensions' => 'pdf', 'maxFiles' => 5000000],
+            [['imageFiles'], 'file', 'skipOnEmpty' => false, 'extensions' => 'pdf', 'maxFiles' => 10],
         ];
     }
 	
