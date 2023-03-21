@@ -77,9 +77,9 @@ class PaperController extends Controller
     public function actionCreate($proc)
     {
         $model = new Paper();
-
+        $model ->proc_id = $proc;
         if ($model->load(Yii::$app->request->post()) ) {
-           $model ->proc_id = $proc;
+           
 		   $model->save();
 		   $action = Yii::$app->request->post('btn-submit');
 		   if($action == 'Next'){

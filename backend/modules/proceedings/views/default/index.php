@@ -12,14 +12,19 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="proceeding-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
         <?= Html::a('Create Proceeding', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?= GridView::widget([
+  <div class="box">
+    <div class="box-header">
+    </div>      
+<div class="box-body">
+
+<?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
@@ -57,4 +62,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
         ],
     ]); ?>
+
+</div>
+    </div>
+
+
+    
 </div>

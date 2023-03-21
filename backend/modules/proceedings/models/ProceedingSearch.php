@@ -40,7 +40,7 @@ class ProceedingSearch extends Proceeding
      */
     public function search($params)
     {
-        $query = Proceeding::find();
+        $query = Proceeding::find()->orderBy('date_start DESC');
 
         // add conditions that should always apply here
 

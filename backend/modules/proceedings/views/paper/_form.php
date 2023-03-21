@@ -11,6 +11,12 @@ $model->file_controller = 'paper';
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
+
+  <div class="box">
+    <div class="box-header">
+    </div>      
+<div class="box-body">
+
 <div class="paper-form">
 
     <?php $form = ActiveForm::begin(); ?>
@@ -42,3 +48,7 @@ $model->file_controller = 'paper';
     <?php ActiveForm::end(); ?>
 
 </div>
+
+
+</div>
+    </div>

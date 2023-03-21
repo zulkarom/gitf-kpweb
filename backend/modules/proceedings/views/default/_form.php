@@ -12,6 +12,12 @@ use common\models\UploadFile;
 $model->file_controller = 'default';
 ?>
 
+  <div class="box">
+    <div class="box-header">
+    </div>      
+<div class="box-body">
+
+
 <div class="proceeding-form">
 
     <?php $form = ActiveForm::begin(); ?>
@@ -59,3 +65,9 @@ $model->file_controller = 'default';
     <?php ActiveForm::end(); ?>
 
 </div>
+
+
+</div>
+    </div>
+
+

@@ -169,23 +169,25 @@ $menuItems = [
 					
 					
 					
-					[
-                        'label' => 'Website',
-                        'icon' => 'tv',
-					    'visible' => false,
-                        'url' => '#',
-                        'items' => [
-						
-							['label' => 'Proceedings', 'icon' => 'microphone', 'url' => ['/proceedings'], 'visible' => Yii::$app->user->can('proceedings-manager')],
-						
-                            ['label' => 'Chapter in Book', 'icon' => 'book', 'url' => ['/chapterinbook'], 'visible' => Yii::$app->user->can('chapterinbook-manager')],
-							
-							['label' => 'Caknawan', 'icon' => 'book', 'url' => ['/website/caknawan'], 'visible' => Yii::$app->user->can('internship-manager')],
-
-                        ],
-                    ],
+					
 					
                 ['label' => 'User Manual', 'icon' => 'book', 'visible' => Yii::$app->user->can('manual-manager'), 'url' => ['/manual/module']],
+
+				[
+					'label' => 'Web',
+					'icon' => 'tv',
+					'visible' => true,
+					'url' => '#',
+					'items' => [
+					
+						['label' => 'Proceedings', 'icon' => 'microphone', 'url' => ['/proceedings'], 'visible' => Yii::$app->user->can('proceedings-manager')],
+					
+					   /*  ['label' => 'Chapter in Book', 'icon' => 'book', 'url' => ['/chapterinbook'], 'visible' => Yii::$app->user->can('chapterinbook-manager')],
+						
+						['label' => 'Caknawan', 'icon' => 'book', 'url' => ['/website/caknawan'], 'visible' => Yii::$app->user->can('internship-manager')], */
+
+					],
+				],
 
 					
 					
