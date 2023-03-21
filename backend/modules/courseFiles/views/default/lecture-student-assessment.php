@@ -5,6 +5,7 @@ use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use kartik\grid\GridView;
 use backend\assets\ExcelAsset;
+use common\models\Common;
 use kartik\export\ExportMenu;
 use richardfan\widget\JSRegister;
 
@@ -57,8 +58,19 @@ if($assessment){
  <div class="form-group"> 
 <a href=<?=Url::to(['default/export-excel', 'id' => $lecture->id])?> class="btn btn-success btn-sm" target="_blank"><span class="glyphicon glyphicon-download-alt"></span> DOWNLOAD TEMPLATE</a> 
 
+<?php 
+$date = $offer->semesterDates;
+if(in_array($course->program_id, Common::arrayPgCoursework()) && time() > strtotime($date->pg_mark_deadline . ' 23:59:59')){
+//hide
+}else{
+?>
+
 <input type="file" id="xlf" style="display:none;" />
 <button type="button" id="btn-importexcel" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-import"></span> IMPORT MARKS </button>
+
+<?php
+}
+?>
 
 <?php 
 if($offer->course_version2 > 0 && $lecture->studentGroup2 ){
@@ -88,6 +100,14 @@ if($offer->course_version2 > 0 && $lecture->studentGroup2 ){
 
 ?>
 
+
+<?php 
+if(in_array($course->program_id, Common::arrayPgCoursework())){
+  
+  echo '* Postgraduate: Last day to import marks: ' . date('d M Y', strtotime($date->pg_mark_deadline)) . ' 11:59 PM';
+  echo '<br /> Current Time: ' . date('d M Y h:i:s');
+}
+?>
 
 
 </div>

@@ -15,7 +15,7 @@ $form = ActiveForm::begin([
 	
 <div class="col-md-5">
 <?= $form->field($model, 'category_id')->dropDownList(
-        ArrayHelper::map(DownloadCategory::find()->all(),'id','category_name')
+        ArrayHelper::map(DownloadCategory::find()->orderBy('created_at DESC')->all(),'id','category_name')
     )->label(false) ?>
 </div>
 <div class="col-md-4">

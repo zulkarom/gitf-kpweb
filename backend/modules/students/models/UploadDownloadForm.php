@@ -20,7 +20,14 @@ class UploadDownloadForm extends Model
         return [
 			[['category'], 'required'],
 			[['category'], 'integer'],
-            [['imageFiles'], 'file', 'skipOnEmpty' => false, 'extensions' => 'pdf', 'maxFiles' => 10000],
+            [['imageFiles'], 'file', 'skipOnEmpty' => false, 'extensions' => 'pdf', 'maxFiles' => 10],
+        ];
+    }
+
+	public function attributeLabels()
+    {
+        return [
+            'imageFiles' => 'Document(s) to be uploaded',
         ];
     }
 	
@@ -41,7 +48,7 @@ class UploadDownloadForm extends Model
 				if($student){
 					
 					if(empty($student->nric)){
-						ii::$app->session->addFlash('error', "Student Ic Number for (".$matric.") is empty. Make sure the the student ic number is set in student data!");
+						Yii::$app->session->addFlash('error', "Student Ic Number for (".$matric.") is empty. Make sure the the student ic number is set in student data!");
 					}else{
 						
 						$curr = Download::findOne(['matric_no' => $matric, 'category_id' => $this->category]);
