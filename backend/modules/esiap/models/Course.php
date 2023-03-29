@@ -66,6 +66,8 @@ class Course extends \yii\db\ActiveRecord
 
 			['course_code', 'unique'],
 
+			['course_code', 'match', 'pattern' => '/^[a-zA-Z0-9]*$/i'],
+
 			
             [['course_code', 'study_level'], 'string', 'max' => 50],
 			

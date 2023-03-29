@@ -318,15 +318,18 @@ class CourseController extends Controller
 		
 		if($status == 0 or $status == 13){
 			
-			if ($model->load(Yii::$app->request->post()) && $model->save()) {
-				$version->scenario = 'pgrs_info';
-				if(Yii::$app->request->post('complete') == 1){
-					$version->pgrs_info = 2;
-				}else{
-					$version->pgrs_info = 1;
-				}
-				if (!$version->save()) {
-					$version->flashError();
+			if ($model->load(Yii::$app->request->post())) {
+				$model->course_code = str_replace(' ','', $model->course_code);
+				if($model->save()){
+					$version->scenario = 'pgrs_info';
+					if(Yii::$app->request->post('complete') == 1){
+						$version->pgrs_info = 2;
+					}else{
+						$version->pgrs_info = 1;
+					}
+					if (!$version->save()) {
+						$version->flashError();
+					}
 				}
 			}
 			
