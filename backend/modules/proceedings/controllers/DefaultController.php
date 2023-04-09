@@ -97,7 +97,7 @@ class DefaultController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
 			if($model->save()){
-				Yii::$app->session->addFlash('success', "Data Updatedx");
+				Yii::$app->session->addFlash('success', "Data Updated");
 				return $this->redirect(['index']);
 			}else{
 				$model->flashError();
