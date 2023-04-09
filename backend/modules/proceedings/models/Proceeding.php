@@ -38,7 +38,7 @@ class Proceeding extends \yii\db\ActiveRecord
 			
             [['image_file', 'proc_url'], 'string'],
 			
-            [['proc_name'], 'string', 'max' => 200],
+            [['proc_name'], 'string', 'max' => 225],
 			
 			[['image_file'], 'required', 'on' => 'image_upload'],
             [['image_instance'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg, png, gif', 'maxSize' => 5000000],
