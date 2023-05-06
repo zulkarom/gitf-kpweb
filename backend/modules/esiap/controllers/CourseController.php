@@ -1722,9 +1722,12 @@ class CourseController extends Controller
 			$pdf->generatePdf();
 	}
 	
-	public function actionFk2($course, $dev = false, $version = false){
+	public function actionFk2($course, $dev = false, $version = false, $offer=false){
 			$pdf = new Fk2;
 			$pdf->model = $this->decideVersion($course, $dev, $version);
+			if($offer){
+			    $pdf->offer = $this->findOffer($offer);
+			}
 			$pdf->generatePdf();
 	}
 	
@@ -1767,7 +1770,7 @@ class CourseController extends Controller
 	}
 	
 	//version 2.0 pdf
-	public function actionTbl4Pdf($course, $dev = false, $version = false, $team = false){
+	public function actionTbl4Pdf($course, $dev = false, $version = false, $team = false, $offer = false){
 			$pdf = new Tbl4Pdf;
 			$pdf->model = $this->decideVersion($course, $dev, $version);
 			if($team){

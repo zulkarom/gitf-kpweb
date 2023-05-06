@@ -89,7 +89,7 @@ if(CourseAccess::hasAccess($offer) and !$closed){
 					echo '<div class="grup"><i>Group 1</i></div>';
 				}
 				echo '<ul>
-					<li><a href="'.Url::to(['/esiap/course/fk2', 'course'=> $offer->course_id, 'version' => $version]).'" target="_blank">FK02 - MAKLUMAT KURSUS</a></li>';
+					<li><a href="'.Url::to(['/esiap/course/fk2', 'course'=> $offer->course_id, 'version' => $version, 'offer' => $offer->id]).'" target="_blank">FK02 - MAKLUMAT KURSUS</a></li>';
 					
 					$type_link = $offer->courseVersion->version_type_id == 1 ? 'tbl4' : 'tbl4-pdf';
 					echo '<li><a href="'.Url::to(['/esiap/course/' . $type_link, 'course'=> $offer->course_id, 'version' => $version, 'team' => $offer->id]).'" target="_blank">TABLE 4</a></li>
@@ -98,7 +98,7 @@ if(CourseAccess::hasAccess($offer) and !$closed){
 				if($version2 > 0){
 					echo '<div class="grup"><i>Group 2</i></div>';
 					echo '<ul>
-					<li><a href="'.Url::to(['/esiap/course/fk2', 'course'=> $offer->course_id, 'version' => $version2]).'" target="_blank">FK02 - MAKLUMAT KURSUS</a></li>';
+					<li><a href="'.Url::to(['/esiap/course/fk2', 'course'=> $offer->course_id, 'version' => $version2, 'offer' => $offer->id]).'" target="_blank">FK02 - MAKLUMAT KURSUS</a></li>';
 					$type_link = $offer->courseVersion2->version_type_id == 1 ? 'tbl4' : 'tbl4-pdf';
 					echo '<li><a href="'.Url::to(['/esiap/course/' . $type_link, 'course'=> $offer->course_id, 'version' => $version2, 'team' => $offer->id]).'" target="_blank">TABLE 4</a></li>
 					</ul>

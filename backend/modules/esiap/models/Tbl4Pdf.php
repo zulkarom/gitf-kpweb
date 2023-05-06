@@ -5,6 +5,7 @@ namespace backend\modules\esiap\models;
 use Yii;
 use common\models\Common;
 use backend\models\Faculty;
+use backend\modules\courseFiles\models\BulkVerify;
 use yii\helpers\FileHelper;
 
 class Tbl4Pdf
@@ -64,10 +65,11 @@ class Tbl4Pdf
 		$this->references(); 
 		$this->additionalInfomation();
 		$this->htmlWriting();
-		$this->preparedBy();
+		//$this->preparedBy();
 		
-		$this->signiture();
-		$this->signitureVerify();
+		//$this->signiture();
+		//$this->signitureVerify();
+		$this->tableVerify();
 		
 		
 
@@ -191,6 +193,240 @@ class Tbl4Pdf
 		<td width="'.$this->col_content.'" colspan="23" '.$this->border.'>'.$this->model->profile->synopsis_bi .'</td>
 		</tr>';
 		$this->html .= $html;
+
+	}
+
+	public function tableVerify(){
+		$wtab = $this->wtab;
+		$col = $wtab / 2;
+		$logo = 50;
+		$nonlogo = $wtab - $logo;
+		$coor='';
+		$sign_prepared = '';
+		$date_prepared = '';
+		if($this->model->preparedBy){
+			$coor = $this->model->preparedBy->staff->niceName;
+		}
+
+
+		if($this->model->status >= 0) {
+
+			$sign = $this->model->preparedsign_file;
+
+			$file = Yii::getAlias('@upload/'. $sign);
+			$f = basename($file);
+			$paste = 'images/temp/'. $f;
+
+			if($sign) {
+				if(is_file($file)) {
+					copy($file, $paste);
+				}
+
+			}
+
+			$size = 100 + ($this->model->prepared_size * 3);
+			if($size < 0) {
+				$size = 10;
+			}
+
+
+			if($this->model->preparedsign_file) {
+				if(is_file($file)) {
+					$sign_prepared = '<img width="'.$size.'" src="images/temp/'.$f.'" />';
+				}
+			}
+
+			if($this->model->prepared_at != '0000-00-00'){
+				if($this->model->prepared_at){
+					$date_prepared = date('d/m/Y', strtotime($this->model->prepared_at));
+				}
+				
+			}
+
+
+		}
+
+
+		$sign_verify = '';
+		$verifier = '';
+		$datev = '';
+		$fac = '';
+		$bulk_verify = null;
+		$position = '';
+		$umk = '';
+		if($this->offer){
+			$sem_offer = $this->offer->semester_id;
+			$bulk_verify = BulkVerify::findOne(['semester_id' => $sem_offer, 'is_enabled' => 1]);
+		}
+		
+		if($bulk_verify){
+			$verifier = $bulk_verify->table4_name;
+			$sign = $bulk_verify->table4_file;
+			$file = Yii::getAlias('@upload/'. $sign);
+			$f = basename($file);
+			$paste = 'images/temp/'. $f;
+			if(is_file($file)){
+				copy($file, $paste);
+			}
+			$size = 100 + ($bulk_verify->verified_size * 3);
+				if($size < 0){
+					$size = 10;
+				}
+			if($bulk_verify->table4_file){
+				if(is_file($file)){
+					$sign_verify .= '<img width="'.$size.'" src="images/temp/'.$f.'" />';
+				}
+			}
+
+			if($bulk_verify->table4_date && $bulk_verify->table4_date != '0000-00-00'){
+				$datev = date('d/m/Y', strtotime($bulk_verify->table4_date));
+			}
+			
+			$faculty = Faculty::findOne(Yii::$app->params['faculty_id']);
+			$fac = $faculty->faculty_name;
+			$position = $bulk_verify->table4_position;
+			$umk = 'Universiti Malaysia Kelantan';
+
+		}else if($this->model->status > 19){
+
+		$sign = $this->model->verifiedsign_file;
+		$file = Yii::getAlias('@upload/'. $sign);
+		$f = basename($file);
+		$paste = 'images/temp/'. $f;
+		if(is_file($file)){
+		    copy($file, $paste);
+		}
+		
+		$size = 100 + ($this->model->verified_size * 3);
+		if($size < 0){
+			$size = 10;
+		}
+
+		
+		if($this->model->verifiedsign_file){
+			if(is_file($file)){
+				$sign_verify .= '<img width="'.$size.'" src="images/temp/'.$f.'" />';
+			}
+		}
+
+		
+
+		if($this->model->verifiedBy){
+			$verifier = $this->model->verifiedBy->staff->niceName;
+		}
+		if($this->model->verified_at != '0000-00-00'){
+			$datev = date('d/m/Y', strtotime($this->model->verified_at));
+		}
+		
+		$faculty = Faculty::findOne(Yii::$app->params['faculty_id']);
+		$fac = $faculty->faculty_name;
+		$position = $this->model->verifier_position;
+		$umk = 'Universiti Malaysia Kelantan';
+		}
+
+
+
+		$html = '<table border="1" width="'.$wtab.'" cellpadding="5" nobr="true">
+
+		<tr nobr="true">
+
+		<td colspan="2">
+		<table border="0">
+		<tr><td width="'.$logo.'"><img src="images/logo3.jpg" /></td>
+		<td width="'.$nonlogo.'" align="center"><br /><br /><b style="font-size:13px;">PENGESAHAN MAKLUMAT JADUAL 4 / <i>ENDORSEMENT OF TABLE 4 INFORMATION</i></b></td></tr>
+		
+		</table>
+
+		</td>
+		</tr>
+
+		<tr>
+		<td width="'.$col.'" style="background-color:#e7e6e6"><b>Disediakan oleh / <i>Prepared by:</i></b></td>
+		<td width="'.$col.'"></td>
+		</tr>
+
+		<tr>
+		<td width="'.$col.'" style="background-color:#e7e6e6">Tandatangan / <i>Signature:</i></td>
+		<td width="'.$col.'">'.$sign_prepared.'</td>
+		</tr>
+
+		<tr>
+		<td width="'.$col.'" style="background-color:#e7e6e6">Nama / <i>Name:</i></td>
+		<td width="'.$col.'">'.$coor.'</td>
+		</tr>
+
+		<tr>
+		<td width="'.$col.'" style="background-color:#e7e6e6">Tarikh / <i>Date:</i></td>
+		<td width="'.$col.'">'.$date_prepared.'</td>
+		</tr>
+
+		<tr>
+		<td width="'.$col.'" style="background-color:#e7e6e6"></td>
+		<td width="'.$col.'"></td>
+		</tr>
+
+		<tr>
+		<td width="'.$col.'" style="background-color:#e7e6e6">
+		<b>Tarikh Kelulusan Pindaan Maklumat Jadual 4 Peringkat Fakulti/ Pusat / <i>Date of Approval of Amendment of Information Table 4 Faculty/Central Level:</i></b>
+		</td>
+		<td width="'.$col.'"></td>
+		</tr>
+
+
+		<tr>
+		<td width="'.$col.'" style="background-color:#e7e6e6">Tandatangan / <i>Signature:</i></td>
+		<td width="'.$col.'">'.$sign_verify.'</td>
+		</tr>
+
+		<tr>
+		<td width="'.$col.'" style="background-color:#e7e6e6">Nama & Jawatan / <i>Name & Designation:  </i>     </td>
+		<td width="'.$col.'">'.$verifier.'<br />'.$position.'</td>
+		</tr>
+
+		<tr>
+		<td width="'.$col.'" style="background-color:#e7e6e6">(Cop Ketua Jabatan/ Penyelaras Program)/<i>(Head of Department/ Programme Coordinator\'s Stamp)</i></td>
+		<td width="'.$col.'" align="center" style="font-size:8pt;color:blue">
+		'.$verifier.'<br />'.nl2br($position).'
+		<br /> '.$fac.'
+		<br /> '.$umk.'
+		</td>
+		</tr>
+
+		<tr>
+		<td width="'.$col.'" style="background-color:#e7e6e6">Tarikh / <i>Date:</i></td>
+		<td width="'.$col.'">'.$datev.'</td>
+		</tr>
+
+
+		</table>
+		
+		';
+
+		$html .= '<br /><br /><table border="0" width="'.$wtab.'" cellpadding="5">
+
+
+		<tr>
+		<td width="'.$col.'">
+		<span style="font-size:9pt">Nota:*</span><br />
+		<span style="font-size:9pt">Perincian terhadap Perubahan maklumat kursus ( samada melibatkan perubahan peratusan ATAU tidak melibatkan perubahan peratusan) dan tindakan yang perlu diambil dijelaskan di dalam Garis Panduan Pembangunan Program Akademik (GPPA) UMK dan Surat Makluman MQA Bil 4/2018.</span>
+		</td>
+		<td width="'.$col.'"></td>
+
+
+		</tr>
+		</table>
+		';
+
+
+	//echo $html;die();
+		$this->pdf->SetFont('arialnarrow', '', 10); // 8
+$tbl = <<<EOD
+$html
+EOD;
+
+$this->pdf->writeHTML($tbl, true, false, false, false, '');
+
+
 
 	}
 	

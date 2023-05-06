@@ -5,7 +5,7 @@ namespace backend\modules\esiap\models;
 use Yii;
 use common\models\Common;
 use backend\models\Faculty;
-
+use backend\modules\courseFiles\models\BulkVerify;
 
 class Fk3
 {
@@ -568,6 +568,7 @@ Nama Penyelaras/  Pensyarah Kursus<br />
 <tr><td>Tarikh/<i>Date:</i></td><td>
 
 </td></tr>
+
 </table>
 <br />
 
@@ -645,9 +646,6 @@ $this->prepare_y = $this->pdf->getY();
 		<td width="'.$col_sign .'">';
 		
 		$html .= $coor.'
-		<br /> Course Owner
-		<br /> '.$this->model->course->course_code.'
-		<br /> '.$this->model->course->course_name.'
 		<br /> '.$date ; 
 		
 		$html .= '</td>
@@ -675,21 +673,31 @@ EOD;
 		
 		
 		$sign = $this->offer->coorsign_file;
-		$adjy = $this->offer->coorsign_adj_y;
-		$adj_size = $this->offer->coorsign_size;
-		
-		$file = Yii::getAlias('@upload/'. $sign);
-		list($width, $height) = getimagesize($file);
-		$ratio_w = $height / $width;
-		$ratio_h = $width / $height;
-		$f = basename($file);
-		$paste = 'images/temp/'. $f;
 		if($sign){
-		    if(is_file($file)){
-		        copy($file, $paste);
-		    }
+			$adjy = $this->offer->coorsign_adj_y;
+			$adj_size = $this->offer->coorsign_size;
 			
+			$file = Yii::getAlias('@upload/'. $sign);
+			$ratio_w = 0;
+			$ratio_h = 0;
+			$height = 0;
+			$width = 0;
+			if(is_file($file)){
+				list($width, $height) = getimagesize($file);
+				$ratio_w = $height / $width;
+				$ratio_h = $width / $height;
+			}
+			
+			$f = basename($file);
+			$paste = 'images/temp/'. $f;
+			if($sign){
+				if(is_file($file)){
+					copy($file, $paste);
+				}
+				
+			}
 		}
+		
 		
 		$y = $this->prepare_y;
 
@@ -731,7 +739,7 @@ EOD;
 		<td width="'. $col1 .'"></td>
 		
 		<td width="'.$col_sign .'">';
-		if($this->offer->coorsign_file){
+		if($sign){
 			if(is_file($file)){
 				$html .= '<img width="'.$size.'" src="images/temp/'.$f.'" />';
 			}
@@ -748,9 +756,6 @@ EOD;
 		<td width="'.$col_sign .'">';
 		
 		$html .= $coor.'
-		<br /> Course Coordinator
-		<br /> '.$this->model->course->course_code.'
-		<br /> '.$this->model->course->course_name.'
 		<br /> '.$date ; 
 		
 		$html .= '</td>
@@ -779,15 +784,22 @@ EOD;
 <tr><td>Tarikh/<i>Date</i>:</td><td>
 
 </td></tr>	
+
 </table>
-<br /><br /><br /><br /><br /><br /><br />
-* Sebarang perubahan kepada maklumat atau kandungan kursus perlu mendapat kelulusan Fakulti/ Pusat atau Senat mengikut kesesuaian.<br />
-   <i> Any change to the course information or content must be approved by the Faculty/ Centre or the Senate wherever applicable.</i>
+<br /><br /><br /><br /><br /><br />'
 	
 EOD;
 $this->pdf->setY($this->prepare_y);
 $this->pdf->writeHTML($tbl, true, false, false, false, '');
 $this->verify_y = $this->pdf->getY();
+
+$tbl = <<<EOD
+* Sebarang perubahan kepada maklumat atau kandungan kursus perlu mendapat kelulusan Fakulti/ Pusat atau Senat mengikut kesesuaian.<br />
+   <i> Any change to the course information or content must be approved by the Faculty/ Centre or the Senate wherever applicable.</i>'	
+EOD;
+$this->pdf->writeHTML($tbl, true, false, false, false, '');
+
+
 	}
 	
 	
@@ -797,40 +809,84 @@ $this->verify_y = $this->pdf->getY();
 		if(Yii::$app->params['faculty_id'] != 1){
 			return false;
 		}
-		$sign = $this->model->verifiedsign_file;
-		if($sign){
+
+		$sign_verify = '';
+		$verifier = '';
+		$datev = '';
+		$fac = '';
+		$bulk_verify = null;
+		$position = '';
+		$umk = '';
+		$adjy = 0;
+		$size = 100;
+		$sign = null;
+		if($this->offer){
+			$sem_offer = $this->offer->semester_id;
+			$bulk_verify = BulkVerify::findOne(['semester_id' => $sem_offer, 'is_enabled' => 1]);
+		}
+
+		if($bulk_verify && $bulk_verify->fk3_name){
+			$verifier = $bulk_verify->fk3_name;
+			$sign = $bulk_verify->fk3_file;
 			$file = Yii::getAlias('@upload/'. $sign);
 			$f = basename($file);
 			$paste = 'images/temp/'. $f;
 			if(is_file($file)){
-			    copy($file, $paste);
+				copy($file, $paste);
+			}
+			$size = 100 + ($bulk_verify->verified_size * 3);
+
+			if($bulk_verify->fk3_file){
+				if(is_file($file)){
+					$sign_verify .= '<img width="'.$size.'" src="images/temp/'.$f.'" />';
+				}
+			}
+
+			if($bulk_verify->fk3_file && $bulk_verify->fk3_file != '0000-00-00'){
+				$datev = date('d/m/Y', strtotime($bulk_verify->fk3_date));
 			}
 			
+			$faculty = Faculty::findOne(Yii::$app->params['faculty_id']);
+			$fac = $faculty->faculty_name;
+			$position = $bulk_verify->fk3_position;
+			$adjy = $bulk_verify->verified_adj_y;
+			$umk = 'Universiti Malaysia Kelantan';
+		}else if($this->model->status > 19){
+
+			$sign = $this->model->verifiedsign_file;
+			if($sign){
+				$file = Yii::getAlias('@upload/'. $sign);
+				$f = basename($file);
+				$paste = 'images/temp/'. $f;
+				if(is_file($file)){
+					copy($file, $paste);
+				}
+				
+			}
+
+			if($this->model->verifiedBy){
+				$verifier = $this->model->verifiedBy->staff->niceName;
+			}
+
+			$faculty = Faculty::findOne(Yii::$app->params['faculty_id']);
+			$fac = $faculty->faculty_name;
+
+			if($this->model->verified_at  && $this->model->verified_at != '0000-00-00'){
+				$datev = date('d/m/Y', strtotime($this->model->verified_at));
+			}
+			$size = 100 + ($this->model->verified_size * 3);
+			$adjy = $this->model->verified_adj_y;
+			$position = $this->model->verifier_position;
+			$umk = 'Universiti Malaysia Kelantan';
 		}
+
 		
 
 		$y = $this->verify_y;
 		
-		$verifier = '';
-		$datev = '';
-
-		if($this->model->verifiedBy){
-			$verifier = $this->model->verifiedBy->staff->niceName;
-		}
-		if($this->model->verified_at != '0000-00-00'){
-			$datev = date('d/m/Y', strtotime($this->model->verified_at));
-		}
-		$faculty = Faculty::findOne(Yii::$app->params['faculty_id']);
-
-		
-		
-		$adjy = $this->model->verified_adj_y;
-		
 		$posY = $y  - $adjy - 50;
 		$this->pdf->setY($posY);
 		
-		
-		$size = 100 + ($this->model->verified_size * 3);
 		if($size < 0){
 			$size = 10;
 		}
@@ -846,7 +902,7 @@ $this->verify_y = $this->pdf->getY();
 		<td width="'. $col1 .'"></td>
 		
 		<td width="'.$col_sign .'" >';
-		if($this->model->verifiedsign_file){
+		if($sign){
 			if(is_file($file)){
 				$html .= '<img width="'.$size.'" src="images/temp/'.$f.'" />';
 			}
@@ -861,10 +917,10 @@ $this->verify_y = $this->pdf->getY();
 		
 		<td width="'.$col_sign .'" >';
 		
-		if($this->model->verifiedsign_file){
+		if($sign){
 		    $html .= $verifier.'
-		<br /> '.$this->model->verifier_position.'
-		<br /> '.$faculty->faculty_name.'
+		<br /> '.$position.'
+		<br /> '.$fac.'
 		<br /> '.$datev ;
 		}
 		
@@ -873,6 +929,7 @@ $this->verify_y = $this->pdf->getY();
 
 		
 		</tr>
+		
 		
 		</table>';
 		

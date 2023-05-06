@@ -24,7 +24,7 @@ use backend\modules\esiap\models\Program;
 
 <?php 
 
-echo $form->field($model, 'study_level')->label(false)->dropDownList($model->getStudyLevelList(), ['prompt' => 'Select Level' ]);
+/* echo $form->field($model, 'study_level')->label(false)->dropDownList($model->getStudyLevelList(), ['prompt' => 'Select Level' ]); */
 
  ?>
 
