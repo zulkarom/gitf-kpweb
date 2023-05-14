@@ -378,7 +378,7 @@ class Menu
     public static function adminSae()
     {
         return [
-            'label' => 'SAE SCREEN Menu',
+            'label' => 'SAE',
             'icon' => 'cube',
             'visible' => Yii::$app->user->can('postgrad-manager'),
             'url' => '#',

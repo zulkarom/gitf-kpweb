@@ -152,9 +152,6 @@ $menuItems = [
     
                     ['label' => 'Workshop', 'icon' => 'cube', 'url' => ['/workshop/kursus-anjur'], 'visible' => Yii::$app->user->can('workshop-manager')],
     
-    
-                    
-                    
                     ['label' => 'Students', 'icon' => 'users', 'url' => ['/students/student'], 'visible' => Yii::$app->user->can('students-manager')],
 					
 					['label' => 'eAduan', 'icon' => 'comments', 'url' => ['/aduan'],],
@@ -166,10 +163,6 @@ $menuItems = [
 					['label' => 'Downloads', 'icon' => 'download', 'visible' => Yii::$app->user->can('download-manager'), 'url' => ['/downloads/download/index']],
 					
 					['label' => 'e-Certificate', 'icon' => 'file', 'url' => ['/ecert']],
-					
-					
-					
-					
 					
                 ['label' => 'User Manual', 'icon' => 'book', 'visible' => Yii::$app->user->can('manual-manager'), 'url' => ['/manual/module']],
 

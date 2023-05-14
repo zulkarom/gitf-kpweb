@@ -57,6 +57,7 @@ class BatchController extends Controller
         $searchModel = new BatchCandidateSearch();
         $searchModel->bat_id = $bat_id;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
         $batch = $this->findModel($bat_id);
 
 
