@@ -106,7 +106,7 @@ $grid_column3[] = array();
             'format' => 'raw',
             'attribute' => 'can_name',
             'value' => function($model) use ($batch){
-                return Html::a($model->can_name.'<span class="fa fa-pencil"></span>', ['/batch/update-candidate', 'cid' => $model->id, 'bid' => $batch->id]);
+                return Html::a($model->can_name.'<span class="fa fa-pencil"></span>', ['/sae/batch/update-candidate', 'cid' => $model->id, 'bid' => $batch->id]);
             }
         ],
         'username',       
@@ -172,7 +172,7 @@ $grid_column3[] = array();
                 return Html::a('<span class="fa fa-trash"></span> Delete',['delete-candidate', 'cid' => $model->id, 'bid' => $batch->id],['class'=>'btn btn-danger btn-sm', 'data-confirm' => 'Are you sure to delete this participant? This action cannot be undone']);
                 },
                 'edit'=>function ($url, $model) use ($batch) {
-                return Html::a('<span class="fa fa-edit"></span> Edit',['/batch/update-candidate', 'cid' => $model->id, 'bid' => $batch->id],['class'=>'btn btn-primary btn-sm']);
+                return Html::a('<span class="fa fa-edit"></span> Edit',['/sae/batch/update-candidate', 'cid' => $model->id, 'bid' => $batch->id],['class'=>'btn btn-primary btn-sm']);
                 },
             ],
             
