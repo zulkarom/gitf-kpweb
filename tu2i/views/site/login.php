@@ -9,7 +9,7 @@ use yii\bootstrap4\Html;
 
 Tu2iAsset::register($this);
 
-$dirAssets = Yii::$app->assetManager->getPublishedUrl('@tu2i/assets/tu2iAssets');
+$dirAssets = Yii::$app->assetManager->getPublishedUrl('@tu2i/assets/Tu2iAssets');
 
 $this->title = 'UJIAN PSIKOMETRIK / PSYCHOMETRIC TEST';
 ?>
