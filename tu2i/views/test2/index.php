@@ -331,7 +331,7 @@ function checkNetConnection(action){
  re="";
  r=Math.round(Math.random() * 10000);
  $.ajax({
-        url: "<?=$dirAssets?>/images/T",
+		url: "<?=$dirAssets?>/images/dot.png",
 		data:{subins:r},
         success: function(d){
 		  re=true;
