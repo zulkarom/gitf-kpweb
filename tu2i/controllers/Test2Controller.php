@@ -12,7 +12,7 @@ use backend\modules\sae\models\Question;
 /**
  * AnswerController implements the CRUD actions for Answer model.
  */
-class TestController extends Controller
+class Test2Controller extends Controller
 {
     /**
      * {@inheritdoc}
@@ -44,7 +44,6 @@ class TestController extends Controller
     public function actionIndex()
     {
         $this->layout = "//main-login";
-        
         $session = Yii::$app->session;
         $batch = $session->get('batch');
         $answer = Answer::find()
@@ -55,10 +54,7 @@ class TestController extends Controller
             return $this->redirect(['site/index']);
         }
 
-        $quest = Question::find()->all();
-        
         return $this->render('index', [
-            'quest' => $quest,
             'answer' => $answer,
         ]); 
     }
@@ -100,49 +96,38 @@ class TestController extends Controller
 
         // Answer::setStatus($status, $user->id);
         if($status == 1){
-            Answer::updateAll(['answer_status' => $status, 'created_at' => time()], ['can_id' => $user_id, 'bat_id' => $batch]);
+            Answer::updateAll(['answer_status2' => $status, 'created_at' => time()], ['can_id' => $user_id, 'bat_id' => $batch]);
         }else{
-            Answer::updateAll(['answer_status' => $status, 'updated_at' => time()], ['can_id' => $user_id, 'bat_id' => $batch]);
+            Answer::updateAll(['answer_status2' => $status, 'updated_at' => time()], ['can_id' => $user_id, 'bat_id' => $batch]);
         }
         
         Answer::processOverallStatus($status, 1, $user_id, $batch);
     }
 
-    public function actionSubmit($last=1)
+    public function actionSubmit()
     {
         $session = Yii::$app->session;
         $batch = $session->get('batch');
         $user = Yii::$app->user->identity->id;
 
         $time = Yii::$app->request->post('time');
-        $qlast = Yii::$app->request->post('qlast');
+        $karangan = Yii::$app->request->post('karangan');
+        $action = Yii::$app->request->post('aksi');
         $model = Answer::find()
         ->where(['can_id' => $user])
         ->andWhere(['bat_id' => $batch])
         ->one();
 
-        Answer::updateLastSaved($user,$batch,$time,$qlast);
+        $model->biz_idea = $karangan;
+        $model->answer_last_saved2 = $time;
+        if($action == 0){
 
-        $total = count(Question::getAllQuestions()); 
-
-        $co = 1;
-        for($i=1;$i<=$total;$i++){
-            if($i >= $last){
-                if($co==1){$c="";}else{$c=", ";}
-                // $sql .= $c."q".$i." = :q".$i;
-                $q = 'q'.$i;
-                $jwb = Yii::$app->request->post($q);
-                if($jwb == "" or $jwb == null){
-                    $jwb = -1;
-                }
-                $model->$q = $jwb;
-                $co++;
-            }
         }
+        
         if(!$model->save()){
             echo 0;                      
         }else{
-            $action = Yii::$app->request->post('aksi');
+            
             if ($action ==0){
                 Answer::setStatus(3, $user, $batch);
             }

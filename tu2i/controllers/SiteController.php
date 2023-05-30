@@ -93,9 +93,13 @@ class SiteController extends Controller
                 } */
                 
                 $session = Yii::$app->session;
+               
                 if ($model->load(Yii::$app->request->post()) && $model->login()) {
+                   
                     $session->set('batch', $openBatch->id);
-                    return $this->redirect(['/test/update']);
+                    
+                    //return $this->redirect(['test/update']);
+                    return $this->redirect(['option/index']);
                 }
                 
             }elseif ($submit == 2) {

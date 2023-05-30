@@ -332,9 +332,13 @@ class Answer extends \yii\db\ActiveRecord
             'c6' => 'Realistic',
         ];
     }
+
+    public function statusArray(){
+        return [0 => 'Not Started', 1 => 'Started', 3 => 'Submitted'];
+    }
 	
 	public function getStatusText(){
-		$list = [0 => 'Not Started', 1 => 'Started', 3 => 'Submitted'];
+		$list = $this->statusArray();
         if(array_key_exists($this->overall_status, $list)){
             return $list[$this->overall_status];
         }
@@ -374,7 +378,21 @@ class Answer extends \yii\db\ActiveRecord
         return $result->$colum;
     }
 
-    public static function processOverallStatus($status, $which, $user_id, $batch){
+    public function processOverallStatus(){
+        if($this->answer_status == 3 && $this->answer_status2 == 3){
+            $this->overall_status = 3;
+            $this->finished_at = time();
+        }
+
+        if($this->answer_status == 1 || $this->answer_status2 == 1){
+            $this->overall_status = 1;
+        }
+
+
+        return $this->save();
+    }
+
+    public function processOverallStatusx($status, $which, $user_id, $batch){
         //if 1 cari yg satu lg  - klu 0 set 1
         //if 3 cari yg satu lg - klu 3 set 3
         

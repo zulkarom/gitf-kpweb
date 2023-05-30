@@ -16,7 +16,7 @@ return [
             'csrfParam' => '_csrf-tu2i',
         ],
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'backend\modules\sae\models\User',
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-tu2i', 'httpOnly' => true],
         ],

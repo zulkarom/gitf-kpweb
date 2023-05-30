@@ -25,12 +25,27 @@ $this->title = 'UJIAN PSIKOMETRIK / PSYCHOMETRIC TEST';
             <div>
 
 
-<img src="<?=$dirAssets?>/images/umk.jpg" />
-<h3>SARJANA MUDA KEUSAHAWANAN</h3>
-<p>UNIVERSITI MALAYSIA KELANTAN</p>
 
 
-<?php
+            <div class="row">
+<div class="col-md-3" align="center"><img src="<?=$dirAssets?>/images/umk.jpg" /></div>
+
+<div class="col-md-9">
+
+<div class="row">
+				<div class="col-md-1"></div>
+				<div class="col-md-10" align="center">
+                <h4>TEMUDUGA ATAS TALIAN <br />
+				IJAZAH SARJANA MUDA KEUSAHAWANAN<br />
+				FAKULTI KEUSAHAWANAN DAN PERNIAGAAN</h4>
+				<br />
+				<i><h4>ONLINE INTERVIEW <br />
+				BACHELOR OF ENTREPRENEURSHIP<br />
+				FACULTY OF ENTREPRENEURSHIP AND BUSINESS</h4></i>
+
+
+
+                <?php
 
 $form = ActiveForm::begin([
     'validateOnSubmit' => false
@@ -51,12 +66,9 @@ $form = ActiveForm::begin([
 
 
 
-                <div class="row">
+<br /><br />
 
-                <div class="col-md-6">
-
-
-                <h4> MULA MENJAWAB / <i>START ANSWERING</i>  </h4><br />
+                <h4>LOG MASUK / <i>LOGIN FORM</i>  </h4><br />
 
 
                 <div class="form-group">
@@ -66,37 +78,7 @@ $form = ActiveForm::begin([
                 <?=Html::submitButton('LOG IN', ['class' => 'btn btn-primary','name' => 'submit','value' => '1'])?>
                 <br /><br />
 
-                </div>
-
-
-
-                <div class="col-md-6">
-
-                    <?php
-
-                    if ($batch->allow_register == 1) {
-                        ?>
-                    <h4> DAFTAR / <i>REGISTER</i>  </h4><br />
-
-                <div class="form-group">
-                <?=$form->field($model2, 'fullname')->label('NAMA / NAME.:')->textInput(['class' => 'form-control input-lg'])?>
-                </div>
-
-
-                <div class="form-group">
-                <?=$form->field($model2, 'username')->label('NRIC/PASSPORT NO.:')->textInput(['class' => 'form-control input-lg'])?>
-                </div>
-                    <?=Html::submitButton('REGISTER', ['class' => 'btn btn-primary','name' => 'submit','value' => '2'])?>
-                <?php
-                    }
-                    ?>
-
-
-
-
-
-                </div>
-                </div>
+       
 
 				 <?php
                 } else {
@@ -113,6 +95,17 @@ $form = ActiveForm::begin([
 
             ActiveForm::end();
             ?>
+
+
+
+                </div>
+</div>
+</div>
+            </div>
+
+
+
+
 
 <br /><br />
           
