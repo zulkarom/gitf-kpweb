@@ -5,7 +5,7 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 
 $user =Yii::$app->user->identity;
-$dirAssets = Yii::$app->assetManager->getPublishedUrl('@tu2i/assets/tu2iAssets');
+$dirAssets = Yii::$app->assetManager->getPublishedUrl('@tu2i/assets/Tu2iAssets');
 $this->title = 'UJIAN PSIKOMETRIK / PSYCHOMETRIC TEST';
 ?>
 
