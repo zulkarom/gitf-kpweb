@@ -5,7 +5,7 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 
 $user =Yii::$app->user->identity;
-$dirAssets = Yii::$app->assetManager->getPublishedUrl('@tu2i/assets/tu2iAssets');
+$dirAssets = Yii::$app->assetManager->getPublishedUrl('@tu2i/assets/Tu2iAssets');
 $this->title = 'SOALAN ESEI / ESSAY QUESTION';
 ?>
 
@@ -331,7 +331,7 @@ function checkNetConnection(action){
  re="";
  r=Math.round(Math.random() * 10000);
  $.ajax({
-        url: "<?=$dirAssets?>/images/dot.png",
+        url: "<?=$dirAssets?>/images/T",
 		data:{subins:r},
         success: function(d){
 		  re=true;
