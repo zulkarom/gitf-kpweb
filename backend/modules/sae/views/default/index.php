@@ -1,12 +1,11 @@
+<?php
+
+use yii\helpers\Html;
+use yii\helpers\Url;
+?>
 <div class="sae-default-index">
-    <h1><?= $this->context->action->uniqueId ?></h1>
+    <h1>ONLINE 2U2I INTERVIEW</h1>
     <p>
-        This is the view content for action "<?= $this->context->action->id ?>".
-        The action belongs to the controller "<?= get_class($this->context) ?>"
-        in the "<?= $this->context->module->id ?>" module.
-    </p>
-    <p>
-        You may customize this page by editing the following file:<br>
-        <code><?= __FILE__ ?></code>
+        The interview page at : <a href="https://fkp-portal.umk.edu.my/2u2i" target="_blank">https://fkp-portal.umk.edu.my/2u2i</a>
     </p>
 </div>

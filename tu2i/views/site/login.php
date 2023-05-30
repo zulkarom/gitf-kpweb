@@ -3,7 +3,7 @@
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap4\ActiveForm */
 /* @var $model \common\models\LoginForm */
-use tu2i\assets\tu2iAsset;
+use tu2i\assets\Tu2iAsset;
 use yii\bootstrap4\ActiveForm;
 use yii\bootstrap4\Html;
 
