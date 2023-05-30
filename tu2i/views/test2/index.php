@@ -6,13 +6,13 @@ use yii\helpers\Html;
 
 $user =Yii::$app->user->identity;
 $dirAssets = Yii::$app->assetManager->getPublishedUrl('@tu2i/assets/tu2iAssets');
-$this->title = 'IDEA PERNIAGAAN / BUSINESS IDEA';
+$this->title = 'SOALAN ESEI / ESSAY QUESTION';
 ?>
 
 <div class="container">
 	<div class="row">
 	<div class="col-md-8">
-	<div class="ptitle">IDEA PERNIAGAAN / BUSINESS IDEA<br/>
+	<div class="ptitle">SOALAN ESEI / ESSAY QUESTION<br/>
 	</div>
 	<br />
 	<div class="form-group"><strong>NAMA/<i>Name</i>:</strong> <?php echo $user->can_name ;?><br />
@@ -31,7 +31,7 @@ $this->title = 'IDEA PERNIAGAAN / BUSINESS IDEA';
 
     <div class="box">
 	<?php 
-	if($answer->status <> 3){
+	if($answer->answer_status2 <> 3){
 		
 		?>
 		<div class="instruction" id="ginstruction2"><b>CALON BOLEH MENJAWAB DALAM BAHASA MELAYU ATAU BAHASA INGGERIS</b> /<br /> <i>THE CANDIDATE CAN ANSWER IN BAHASA OR ENGLISH</i></div>
@@ -43,21 +43,26 @@ $this->title = 'IDEA PERNIAGAAN / BUSINESS IDEA';
 	
 
 		<?php 
-		if($answer->status == 1){ ?>
-        <div id="ginstruction" class="instruction"><b>ANDA MEMPUNYAI MASA BAKI <span id="masa"></span> UNTUK MENJAWAB UJIAN IDEA PERNIAGAAN INI. SEKIRANYA MASA TELAH TAMAT, JAWAPAN AKAN DIHANTAR SECARA AUTOMATIK.</b>
+		if($answer->answer_status2 == 1){ ?>
+        <div id="ginstruction" class="instruction"><b>ANDA MEMPUNYAI MASA BAKI <span id="masa"></span> UNTUK MENJAWAB UJIAN INI. SEKIRANYA MASA TELAH TAMAT, JAWAPAN AKAN DIHANTAR SECARA AUTOMATIK.</b>
 		<br /><br />
-		<i>YOU HAVE BALANCE TIME <span id="masa-en"></span> TO ANSWER THIS BUSINESS IDEA TEST. IF THE TIME ENDS, THE ANSWER WILL BE SUBMITTED AUTOMATICALLY.</i>
+		<i>YOU HAVE BALANCE TIME <span id="masa-en"></span> TO ANSWER THIS TEST. IF THE TIME ENDS, THE ANSWER WILL BE SUBMITTED AUTOMATICALLY.</i>
 		
 		
 		</div>
-		<button class="btn btn-success center-block" id="start-btn">SAMBUNG MENJAWAB / CONTINUE ANSWERING<</button>
+
+		<div align="center">
+		<a href="<?=Url::to(['option/index'])?>" class="btn btn-warning " id="kembali-btn">KEMBALI / BACK</a>
+		<button class="btn btn-success" id="start-btn">SAMBUNG MENJAWAB / CONTINUE ANSWERING</button>
+		</div>
+
 		<?php
-		$qstart = $this->user->question_last_saved;
-		}else if($answer->status == 3){ ?>
+		$qstart = $answer->question_last_saved;
+		}else if($answer->answer_status2 == 3){ ?>
 		<div id="ginstruction" class="instruction"><b>ANDA TELAH MENJAWAB UJIAN INI </b>/ <i>YOU HAVE ANSWERED THE TEST</i></div>
 		
 		<div style="text-align:center">
-<a href="<?=Url::to(['option'])?>" class="btn btn-warning " id="kembali-btn">KEMBALI / BACK</a>
+<a href="<?=Url::to(['option/index'])?>" class="btn btn-warning " id="kembali-btn">KEMBALI / BACK</a>
 		
 		</div>
 
@@ -65,10 +70,10 @@ $this->title = 'IDEA PERNIAGAAN / BUSINESS IDEA';
 		$qstart = 999;
 		}else { ?>
 		
-		<div id="ginstruction" class="instruction"><b>ANDA MEMPUNYAI MASA <span id="masa"></span> UNTUK MENJAWAB UJIAN IDEA PERNIAGAAN INI. SEKIRANYA MASA TELAH TAMAT, JAWAPAN AKAN DIHANTAR SECARA AUTOMATIK.</b>
+		<div id="ginstruction" class="instruction"><b>ANDA MEMPUNYAI MASA <span id="masa"></span> UNTUK MENJAWAB UJIAN INI. SEKIRANYA MASA TELAH TAMAT, JAWAPAN AKAN DIHANTAR SECARA AUTOMATIK.</b>
 		
 		<br /><br />
-		<i>YOU HAVE <span id="masa-en"></span> TO ANSWER THIS BUSINESS IDEA TEST. IF THE TIME ENDS, THE ANSWER WILL BE SUBMITTED AUTOMATICALLY.</i>
+		<i>YOU HAVE <span id="masa-en"></span> TO ANSWER THIS TEST. IF THE TIME ENDS, THE ANSWER WILL BE SUBMITTED AUTOMATICALLY.</i>
 		
 		
 		</div>
@@ -118,7 +123,11 @@ $this->title = 'IDEA PERNIAGAAN / BUSINESS IDEA';
 	<div id="counter" class="hidden"></div>
 	<div id="counterMsg"></div>
 	<div id="timerMsg"></div>
-	<div style="text-align:center;" id="conxls" class="hidden"><br /><a href="#" id="dwnxls" >Save as Excel</a></div>
+
+
+	<div align="center">
+		<br /><a href="<?=Url::to(['option/index'])?>" class="btn btn-warning hidden" id="kembali-btn-final">KEMBALI / BACK</a>  </div>
+
 </div>
 
 <?php JSRegister::begin(['position' => static::POS_END]); ?>
@@ -265,7 +274,7 @@ $("#start-btn").click(function(){
 	//con-quest 
 	$("#q"+curr).removeClass("hidden");
 	$('#con-quest').text(curr+'/'+totalQuestion);
-	$.post("<?php echo Url::to(['test2/change-status/1'])?>");
+	$.post("<?=Url::to(['/test2/change-status', 'status' => ''])?>"+1);
 	$("#submit-btn").removeClass("hidden");
 	
 });
@@ -291,7 +300,7 @@ $("#submit-btn").click(function(){
 		$("#submit-btn").addClass("hidden");
 		$("#question-form").addClass("hidden");
 		submitForm(0,0);
-		$('#ginstruction').html("Ujian Idea Perniagaan Tamat / Business Idea Test Ends"+linklogout); 
+		$('#ginstruction').html("Ujian Soalan Esei Tamat / Essay Question Test Has Ended"); 
 		$('#ginstruction').removeClass("hidden");
 		stopTimer();
 		$('#shortly').countdown('toggle');
@@ -374,7 +383,8 @@ function ajaxSubmit(action,curtime){
 			if(action==0){
 				if(result ==1){
 					$("#errmsg").html("");
-					$("#goodmsg").html("<strong>Jawapan Anda Telah Berjaya Dihantar.<br />Terima Kasih Kerana Menjalani Ujian Ini. </strong><br /> <i>Your Answers Has Been Successfully Submitted. Thanks for Answering The Test.</i>");
+					$("#goodmsg").html("<strong>Jawapan Anda Telah Berjaya Dihantar. Terima Kasih Kerana Menjalani Ujian Ini. </strong><br /> <i>Your Answers Has Been Successfully Submitted. Thanks for Answering The Test.</i>");
+					$("#kembali-btn-final").removeClass("hidden");
 					$("#conxls").removeClass("hidden");
 				}else{
 					$("#errmsg").html("Server Problem!");

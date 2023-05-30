@@ -32,7 +32,7 @@ $this->title = 'UJIAN PSIKOMETRIK / PSYCHOMETRIC TEST';
 
 <div class="col-md-9">
 
-<div class="row">
+<div class="row"> 
 				<div class="col-md-1"></div>
 				<div class="col-md-10" align="center">
                 <h4>TEMUDUGA ATAS TALIAN <br />
@@ -73,7 +73,7 @@ $form = ActiveForm::begin([
 
                 <div class="form-group">
 
-                <?=$form->field($model, 'username')->label('NRIC/PASSPORT NO.:')->textInput(['class' => 'form-control input-lg'])?>
+                <?=$form->field($model, 'username')->label('NRIC/PASSPORT NO.:')->textInput(['class' => 'form-control input-lg', 'style' => 'text-align:center'])?>
                 </div>
                 <?=Html::submitButton('LOG IN', ['class' => 'btn btn-primary','name' => 'submit','value' => '1'])?>
                 <br /><br />

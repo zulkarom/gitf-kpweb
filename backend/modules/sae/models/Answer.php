@@ -336,6 +336,26 @@ class Answer extends \yii\db\ActiveRecord
     public function statusArray(){
         return [0 => 'Not Started', 1 => 'Started', 3 => 'Submitted'];
     }
+
+    public function statusLabelArray(){
+        return [0 => 'Belum Mula / Not Started', 1 => 'Dalam Proses / In Progress', 3 => 'Telah Hantar / Submitted'];
+    }
+
+    public function getStatus1Text(){
+		$list = $this->statusLabelArray();
+        if(array_key_exists($this->answer_status, $list)){
+            return $list[$this->answer_status];
+        }
+        
+    }
+
+    public function getStatus2Text(){
+		$list = $this->statusLabelArray();
+        if(array_key_exists($this->answer_status2, $list)){
+            return $list[$this->answer_status2];
+        }
+        
+    }
 	
 	public function getStatusText(){
 		$list = $this->statusArray();
@@ -392,7 +412,7 @@ class Answer extends \yii\db\ActiveRecord
         return $this->save();
     }
 
-    public function processOverallStatusx($status, $which, $user_id, $batch){
+/*     public function processOverallStatusx($status, $which, $user_id, $batch){
         //if 1 cari yg satu lg  - klu 0 set 1
         //if 3 cari yg satu lg - klu 3 set 3
         
@@ -407,7 +427,7 @@ class Answer extends \yii\db\ActiveRecord
             self::setOverallStatus(3,$user_id,$batch);
             self::setFinishTime($user_id,$batch);
         }
-    }
+    } */
 
     public static function setOverallStatus($status,$user,$batch)
     {
@@ -416,12 +436,6 @@ class Answer extends \yii\db\ActiveRecord
 
     public static function updateLastSaved($user,$batch,$time,$qlast){
         Answer::updateAll(['answer_last_saved' => $time, 'question_last_saved' => $qlast, 'updated_at' => time()], ['can_id' => $user, 'bat_id' => $batch]);
-    }
-
-    public static function setStatus($status,$user,$batch)
-    {
-        Answer::updateAll(['answer_status' => $status], ['can_id' => $user, 'bat_id' => $batch]);
-        self::processOverallStatus($status, 1, $user, $batch);
     }
 
     public static function setFinishTime2($user,$batch)

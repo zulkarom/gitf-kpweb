@@ -94,14 +94,20 @@ class Test2Controller extends Controller
         $batch = $session->get('batch');
         $user_id = Yii::$app->user->identity->id;
 
-        // Answer::setStatus($status, $user->id);
-        if($status == 1){
-            Answer::updateAll(['answer_status2' => $status, 'created_at' => time()], ['can_id' => $user_id, 'bat_id' => $batch]);
-        }else{
-            Answer::updateAll(['answer_status2' => $status, 'updated_at' => time()], ['can_id' => $user_id, 'bat_id' => $batch]);
+        $answer = Answer::findOne(['can_id' => $user_id, 'bat_id' => $batch]);
+        if($answer){
+            
+            if($answer->answer_status == 0 && $answer->answer_status2 == 0){
+                $answer->created_at = time();
+            }
+            if($status == 1){
+                $answer->answer_start2 = time();
+            }
+
+            $answer->answer_status2 = $status;
+            $answer->updated_at = time();
         }
-        
-        Answer::processOverallStatus($status, 1, $user_id, $batch);
+        $answer->processOverallStatus();
     }
 
     public function actionSubmit()
@@ -113,26 +119,26 @@ class Test2Controller extends Controller
         $time = Yii::$app->request->post('time');
         $karangan = Yii::$app->request->post('karangan');
         $action = Yii::$app->request->post('aksi');
-        $model = Answer::find()
+        $answer = Answer::find()
         ->where(['can_id' => $user])
         ->andWhere(['bat_id' => $batch])
         ->one();
 
-        $model->biz_idea = $karangan;
-        $model->answer_last_saved2 = $time;
-        if($action == 0){
-
+        if($answer){
+            $answer->biz_idea = $karangan;
+            $answer->answer_last_saved2 = $time;
+            
+            if(!$answer->save()){
+                echo 0;                      
+            }else{
+                if ($action ==0){
+                    $answer->answer_status2 = 3;
+                    $answer->processOverallStatus();
+                }
+                echo 1;
+            }
         }
         
-        if(!$model->save()){
-            echo 0;                      
-        }else{
-            
-            if ($action ==0){
-                Answer::setStatus(3, $user, $batch);
-            }
-            echo 1;
-        }
         exit;
     }
 }
