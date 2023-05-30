@@ -11,7 +11,7 @@ use yii\web\AssetBundle;
 
 class Tu2iAsset extends AssetBundle
 {
-    public $sourcePath = '@tu2i/assets/tu2iAssets';
+    public $sourcePath = '@tu2i/assets/Tu2iAssets';
     public $css = [
         'css/style2.css',
         'bootstrap/css/bootstrap.css',
