@@ -62,6 +62,7 @@ backend/web/
 backend/web/
 frontend/web/
 confsite/web/
+tu2i/web/
 student/web/
 
 #uploaded
