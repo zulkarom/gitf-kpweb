@@ -103,14 +103,16 @@ $col6[] = array();
                 'model' => $searchModel,
             ]) ?>
         </div>
-		
-		<div class="col-md-2">
+		<?php
+        /* <div class="col-md-2">
 		<div class="form-group"><?= Html::a('ANALYSE', ['/result/analysis', "id" => $searchModel->bat_id], ['class' => 'btn btn-info btn-block']) ?></div>
 		</div>
 		
 		<div class="col-md-1">
 		<div class="form-group"><?= Html::a('RESET', ['/result/analysis', "id" => $searchModel->bat_id, 'reset' => 1, 'redirect' => 1], ['class' => 'btn btn-warning btn-block']) ?></div>
-		</div>
+		</div> */
+        ?>
+		
 
         <div class="col-md-2">
 <div style="display:none">

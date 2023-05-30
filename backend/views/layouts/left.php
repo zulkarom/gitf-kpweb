@@ -166,6 +166,8 @@ $menuItems = [
 					
                 ['label' => 'User Manual', 'icon' => 'book', 'visible' => Yii::$app->user->can('manual-manager'), 'url' => ['/manual/module']],
 
+				['label' => 'SAE Interview', 'icon' => 'book', 'visible' => Yii::$app->user->can('manage-sae'), 'url' => ['/sae']],
+
 				[
 					'label' => 'Web',
 					'icon' => 'tv',

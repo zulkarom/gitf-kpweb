@@ -43,7 +43,7 @@ class AnswerSearch extends Answer
     {
         $query = Answer::find()
         ->alias('a')
-        ->joinWith(['candidate c', 'batch b'])->orderBy('answer_status ASC');
+        ->joinWith(['candidate c', 'batch b'])->orderBy('overall_status DESC');
 
         // add conditions that should always apply here
 

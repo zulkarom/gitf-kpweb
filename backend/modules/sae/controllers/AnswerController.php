@@ -39,7 +39,7 @@ class AnswerController extends Controller
      */
     public function actionIndex()
     {
-
+        date_default_timezone_set("Asia/Kuala_Lumpur");
         if(Yii::$app->getRequest()->getQueryParam('AnswerSearch')){
             $bat = Yii::$app->getRequest()->getQueryParam('AnswerSearch');
             $bat_id = $bat['bat_id'];

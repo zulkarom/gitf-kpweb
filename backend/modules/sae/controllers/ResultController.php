@@ -110,9 +110,11 @@ class ResultController extends Controller
     public function actionIndividualPdf($id){
 
         $model = $this->findModel($id);
+        $answer = $this->findAnswer($id);
         $pdf = new pdf_individual;
         $pdf->gcat = GradeCategory::allDomains();
         $pdf->user = $model;
+        $pdf->answer = $answer;
         $pdf->generatePdf();
     }
 
@@ -194,6 +196,15 @@ class ResultController extends Controller
     protected function findModel($id)
     {
         if (($model = Candidate::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    protected function findAnswer($id)
+    {
+        if (($model = Answer::findOne($id)) !== null) {
             return $model;
         }
 

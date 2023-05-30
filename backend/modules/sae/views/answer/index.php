@@ -124,10 +124,6 @@ $columns = [
             <div class="table-responsive">
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
-                // 'filterModel' => $searchModel,
-                'pager' => [
-                    'class' => 'yii\bootstrap4\LinkPager',
-                ],
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
                     [
@@ -160,8 +156,9 @@ $columns = [
                     ],
                     [
                         'attribute' => 'status',
+                        'format' => 'html',
                         'value' => function($model){
-                            return $model->statusText;
+                            return $model->statusLabel;
                         }
                     ],
 					 [
@@ -177,12 +174,18 @@ $columns = [
                     ],
 
                     ['class' => 'yii\grid\ActionColumn',
-                        'contentOptions' => ['style' => 'width: 10%'],
-                        'template' => '{view}',
+          
+                        'template' => '{view} {pdf}',
                         //'visible' => false,
                         'buttons'=>[
                             'view'=>function ($url, $model) use ($batch){
                                 return Html::a('<span class="fa fa-eye"></span> VIEW',['result/individual-result', 'id' => $model->can_id, 'batch_id' => $batch->id],['class'=>'btn btn-info btn-sm']);
+                            },
+                            'pdf'=>function ($url, $model) use ($batch){
+                                if($model->overall_status == 3){
+                                    return Html::a('<span class="fa fa-download"></span> PDF',['/sae/result/individual-pdf', 'id' => $model->id],['class'=>'btn btn-danger btn-sm', 'target' => '_blank']);
+                                }
+                                
                             }
                         ],
                     

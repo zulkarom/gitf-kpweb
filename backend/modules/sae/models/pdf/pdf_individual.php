@@ -8,9 +8,14 @@ use backend\modules\sae\models\pdf\MYPDF_individual;
 use backend\modules\sae\models\Answer;
 
 class pdf_individual{
+
 	public $gcat;
 	public $user;
+	public $answer;
+
+
 	public function generatePdf(){
+		date_default_timezone_set("Asia/Kuala_Lumpur");
 		$pdf = new MYPDF_individual(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 		// set document information
 		$pdf->SetCreator(PDF_CREATOR);
@@ -68,9 +73,15 @@ $html = '
 
 <tr><td><strong>NO. KAD PENGENALAN: </strong>'. strtoupper($this->user->username) .'</td></tr>
 
+<tr><td><strong>MASA MULA: </strong>'. date('d/m/Y h:i:s', $this->answer->answer_start1) .'</td></tr>
+
+<tr><td><strong>MASA HANTAR: </strong>'. date('d/m/Y h:i:s', $this->answer->answer_end1) .'</td></tr>
+
 
 </table>
-<br /><br /><br />';
+<br />
+<div align="center"><h3><strong>PSYCHOMETRIC TEST RESULT</strong></h3></div>
+<br />';
 
 $tbl = <<<EOD
 $html
@@ -87,7 +98,7 @@ $html ='<table cellpadding="3">
 $rowstring="";
 foreach($this->gcat as $grow){
 	$html .= "<th><strong>".strtoupper($grow->gcat_text) ."</strong></th>";
-	$result_cat = Answer::getAnswersByCat($this->user->id,$grow->id);
+	$result_cat = Answer::getAnswersByCat($this->answer->id,$grow->id);
 	$stringdata ='<table border="0" cellpadding="5">
 	<tr><td><strong>Q</strong></td>
 	<td><strong>A</strong></td>
@@ -128,6 +139,38 @@ $tbl = <<<EOD
 $html
 EOD;
 $pdf->writeHTML($tbl, true, false, false, false, '');
+
+//bis idea pulk
+
+$pdf->AddPage("P");
+
+$html = '
+
+<br />
+
+<table cellpadding="3">
+<tr><td><strong>NAMA: </strong> '. strtoupper($this->user->can_name) . ' </td></tr>
+
+<tr><td><strong>NO. KAD PENGENALAN: </strong>'. strtoupper($this->user->username) .'</td></tr>
+
+<tr><td><strong>MASA MULA: </strong>'. date('d/m/Y h:i:s', $this->answer->answer_start2) .'</td></tr>
+
+<tr><td><strong>MASA HANTAR: </strong>'. date('d/m/Y h:i:s', $this->answer->answer_end2) .'</td></tr>
+
+
+</table>
+<br />
+<div align="center"><h3><strong>BUSINESS IDEA</strong></h3></div>
+<br />';
+
+$html .= '<div style="font-size:12pt;text-align:justify">'. $this->answer->biz_idea . '</div>';
+
+$tbl = <<<EOD
+$html
+EOD;
+$pdf->writeHTML($tbl, true, false, false, false, '');
+
+
 
 
 $pdf->Output($this->user->username.'.pdf', 'I');

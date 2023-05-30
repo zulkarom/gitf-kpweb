@@ -94,6 +94,7 @@ class TestController extends Controller
     }
 
     public function actionChangeStatus($status=0){
+        date_default_timezone_set("Asia/Kuala_Lumpur");
         $session = Yii::$app->session;
         $batch = $session->get('batch');
         $user_id = Yii::$app->user->identity->id;
@@ -115,6 +116,7 @@ class TestController extends Controller
 
     public function actionSubmit($last=1)
     {
+        date_default_timezone_set("Asia/Kuala_Lumpur");
         $session = Yii::$app->session;
         $batch = $session->get('batch');
         $user = Yii::$app->user->identity->id;
@@ -153,6 +155,7 @@ class TestController extends Controller
                 $action = Yii::$app->request->post('aksi');
                 if ($action ==0){
                     $answer->answer_status = 3;
+                    $answer->answer_end1 = time();
                     $answer->processOverallStatus();
                 }
                 echo 1;

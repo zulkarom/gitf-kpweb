@@ -73,7 +73,7 @@ $form = ActiveForm::begin([
 
                 <div class="form-group">
 
-                <?=$form->field($model, 'username')->label('NRIC/PASSPORT NO.:')->textInput(['class' => 'form-control input-lg', 'style' => 'text-align:center'])?>
+                <?=$form->field($model, 'username')->label('No. Kad Pengenalan/Passport No.')->textInput(['class' => 'form-control input-lg', 'style' => 'text-align:center'])?>
                 </div>
                 <?=Html::submitButton('LOG IN', ['class' => 'btn btn-primary','name' => 'submit','value' => '1'])?>
                 <br /><br />

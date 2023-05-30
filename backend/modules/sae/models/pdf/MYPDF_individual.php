@@ -24,7 +24,7 @@ class MYPDF_individual extends \TCPDF {
 		//$this->SetY($savedY);
 		//$this->SetX($savedX);
         // Title
-       $this->Cell(0, 10, 'UJIAN PSIKOMETRIK / PSYCHOMETRIC TEST', 0, 1, 'R', 0, '', 0, false, 'M', 'M');
+       $this->Cell(0, 10, 'SAE - ONLINE INTERVIEW', 0, 1, 'R', 0, '', 0, false, 'M', 'M');
 
 	    $this->SetTopMargin($this->GetY() + 2);
     }

@@ -1,3 +1,8 @@
 ALTER TABLE `psy_answers` CHANGE `answer_status2` `answer_status2` TINYINT(2) NULL DEFAULT '0';
 UPDATE `psy_answers` SET `answer_status2` = '0';
 ALTER TABLE `psy_answers` ADD `answer_start1` INT NULL DEFAULT NULL AFTER `answer_last_saved2`, ADD `answer_start2` INT NULL DEFAULT NULL AFTER `answer_start1`;
+
+ALTER TABLE `psy_answers` ADD `answer_end1` INT NULL DEFAULT NULL AFTER `answer_start2`, ADD `answer_end2` INT NULL DEFAULT NULL AFTER `answer_end1`;
+
+UPDATE `psy_answers` SET `overall_status` = '0';
+ALTER TABLE `psy_answers` CHANGE `overall_status` `overall_status` TINYINT(1) NULL DEFAULT '0';

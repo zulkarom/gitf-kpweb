@@ -337,6 +337,10 @@ class Answer extends \yii\db\ActiveRecord
         return [0 => 'Not Started', 1 => 'Started', 3 => 'Submitted'];
     }
 
+    public function colorArray(){
+        return [0 => 'default', 1 => 'warning', 3 => 'success'];
+    }
+
     public function statusLabelArray(){
         return [0 => 'Belum Mula / Not Started', 1 => 'Dalam Proses / In Progress', 3 => 'Telah Hantar / Submitted'];
     }
@@ -362,7 +366,16 @@ class Answer extends \yii\db\ActiveRecord
         if(array_key_exists($this->overall_status, $list)){
             return $list[$this->overall_status];
         }
-        
+    }
+
+    public function getStatusLabel(){
+		$list = $this->colorArray();
+        $color = '';
+        if(array_key_exists($this->overall_status, $list)){
+            $color = $list[$this->overall_status];
+        }
+
+        return '<span class="label label-'.$color.'">'.strtoupper($this->statusText).'</span>';
     }
 	
 	public static function statusByUserBatch($user, $batch){
@@ -374,7 +387,7 @@ class Answer extends \yii\db\ActiveRecord
 		}
 	}
 
-    public static function getAnswersByCat($can,$cat)
+    public static function getAnswersByCat($id,$cat)
     {
         $listQuestion = Question::find()
         ->select('que_id')
@@ -385,16 +398,16 @@ class Answer extends \yii\db\ActiveRecord
         foreach($listQuestion as $q){
             $obj = new \stdClass();
             $obj->quest = $q->que_id;
-            $obj->answer = self::getOneAnswer($can,$q->que_id);
+            $obj->answer = self::getOneAnswer($id,$q->que_id);
             $array[] = $obj;
         }
         
         return $array;
     }   
 
-    public static function getOneAnswer($can,$quest){
+    public static function getOneAnswer($id,$quest){
         $colum = "q".$quest;
-        $result = self::find()->select($colum)->where(['can_id' => $can])->one();
+        $result = self::find()->select($colum)->where(['id' => $id])->one();
         return $result->$colum;
     }
 
