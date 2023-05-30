@@ -47,9 +47,9 @@ $this->title = 'UJIAN PSIKOMETRIK / PSYCHOMETRIC TEST';
 		
 		
 		</div>
-
-		<div align="center">
-		<a href="<?=Url::to(['option/index'])?>" class="btn btn-warning " id="kembali-btn">KEMBALI / BACK</a> 
+		<div align="center"><a href="<?=Url::to(['option/index'])?>" class="btn btn-warning " id="kembali-btn">KEMBALI / BACK</a>
+	
+		
 		<button class="btn btn-success" id="start-btn">SAMBUNG MENJAWAB / CONTINUE ANSWERING</button>
 		</div>
 
@@ -119,6 +119,9 @@ $this->title = 'UJIAN PSIKOMETRIK / PSYCHOMETRIC TEST';
 	<div id="counter" class="hidden"></div>
 	<div id="counterMsg"></div>
 	<div class="form-group" align="center">
+	<div align="center">
+		<br /><a href="<?=Url::to(['option/index'])?>" class="btn btn-warning hidden" id="kembali-btn-final">KEMBALI / BACK</a>  
+		
 	<br />
 <div id="timerMsg"></div>
 </div>
@@ -209,7 +212,8 @@ $("#submit-btn").click(function(){
 		$("#q"+curr).addClass("hidden");
 		$("#submit-btn").addClass("hidden");
 		submitForm(0,0);
-		$('#ginstruction').html("Ujian Tamat / The Test Ends"); 
+		$('#ginstruction').html("UJIAN PSIKOMETRIK TAMAT / PSYCHOMETRIC TEST HAS ENDED"); 
+		
 		$('#ginstruction').removeClass("hidden");
 		stopTimer();
 		$('#shortly').countdown('toggle');
@@ -363,7 +367,8 @@ function ajaxSubmit(action,curtime){
 			if(action==0){
 				if(result ==1){
 					$("#errmsg").html("");
-					$("#goodmsg").html("<strong>Jawapan Anda Telah Berjaya Dihantar.<br />Terima Kasih Kerana Menjalani Ujian Ini. </strong><br /> <i>Your Answers Has Been Successfully Submitted. Thanks for Answering The Test.</i>");
+					$("#goodmsg").html("<strong>Jawapan Anda Telah Berjaya Dihantar. Terima Kasih Kerana Menjalani Ujian Ini. </strong><br /><i>Your Answers Has Been Successfully Submitted. Thanks for Answering The Test.</i>");
+					$("#kembali-btn-final").removeClass("hidden");
 					$("#conxls").removeClass("hidden");
 				}else{
 					$("#errmsg").html("Server Problem!");
