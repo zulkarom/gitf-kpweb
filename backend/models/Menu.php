@@ -380,7 +380,7 @@ class Menu
         return [
             'label' => 'SAE',
             'icon' => 'cube',
-            'visible' => Yii::$app->user->can('postgrad-manager'),
+            'visible' => Yii::$app->user->can('manage-sae'),
             'url' => '#',
             'items' => [
 
