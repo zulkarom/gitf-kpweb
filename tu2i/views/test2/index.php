@@ -383,7 +383,7 @@ function ajaxSubmit(action,curtime){
 			if(action==0){
 				if(result ==1){
 					$("#errmsg").html("");
-					$("#goodmsg").html("<strong>Jawapan Anda Telah Berjaya Dihantar. Terima Kasih Kerana Menjalani Ujian Ini. </strong><br /> <i>Your Answers Has Been Successfully Submitted. Thanks for Answering The Test.</i>");
+					$("#goodmsg").html("<strong>Jawapan Anda Untuk Soalan ini Telah Berjaya Dihantar. </strong><br /> <i>Your Answers For this Question Has Been Successfully Submitted.</i>");
 					$("#kembali-btn-final").removeClass("hidden");
 					$("#conxls").removeClass("hidden");
 				}else{
