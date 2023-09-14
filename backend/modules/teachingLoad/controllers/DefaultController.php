@@ -223,6 +223,7 @@ class DefaultController extends Controller
         $pdf = new AppointmentLetterFile;
         $pdf->model = $model;
         $pdf->generatePdf();
+        exit;
     }
     
     public function actionAppointmentLetterManual($id){
