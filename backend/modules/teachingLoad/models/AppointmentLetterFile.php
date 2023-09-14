@@ -1,14 +1,10 @@
 <?php
-
 namespace backend\modules\teachingLoad\models;
-
 use Yii;
 use common\models\Common;
 use yii\helpers\Url;
 use backend\modules\teachingLoad\models\AppointmentLetter;
 use backend\modules\staff\models\LetterDesignation;
-
-
 
 class AppointmentLetterFile
 {
