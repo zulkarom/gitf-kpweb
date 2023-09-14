@@ -305,7 +305,7 @@ EOD;
 		$all = 700;
 		$w1 = 50;
 		$w2 = 30;
-		$w3 = 120;
+		$w3 = 145;
 		$w4 = 20;
 		$w5 = $all - $w1 - $w2 - $w3 - $w4;
 		$course = $this->model->courseOffered->course;

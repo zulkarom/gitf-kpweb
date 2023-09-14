@@ -97,8 +97,7 @@ class Tcpdf extends \TCPDF {
 			$this->writeHTMLCell($w = 0, $h = 0, $x = '', $y = '', $html, $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = 'top', $autopadding = true);
 		}
 			
-			
-		 
+
         // Set font
         //$this->SetFont('helvetica', 'I', 8);
         // Page number
