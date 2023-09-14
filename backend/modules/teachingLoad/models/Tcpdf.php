@@ -14,7 +14,7 @@ class Tcpdf extends \TCPDF {
 	
 	public $top_margin_first_page = -37;
 	
-	public $font_header = 'times';
+	public $font_header = 'arial';
 	
 	public $font_header_size = 10;
 	
@@ -47,7 +47,7 @@ class Tcpdf extends \TCPDF {
 		}
 		
 		
-        $this->SetFont('times', '', 10);
+        $this->SetFont('arial', '', 10);
 		$html = $this->header_html;
 		if($html and $proceed){
 			$this->writeHTMLCell($w = 0, $h = 0, $x = '', $y = '', $html, $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = 'top', $autopadding = true);

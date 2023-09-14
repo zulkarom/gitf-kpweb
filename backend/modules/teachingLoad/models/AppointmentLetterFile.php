@@ -216,7 +216,7 @@ class AppointmentLetterFile
 		
 		$this->pdf->SetMargins($this->margin_left, 10, 35);
 		
-		$this->pdf->SetFont('arialnarrow','', $this->fontSize);
+		$this->pdf->SetFont('arial','', $this->fontSize);
 		$tbl = <<<EOD
 		$html
 EOD;
@@ -292,7 +292,7 @@ EOD;
 		
 		
 		$this->pdf->SetMargins($this->margin_left, 10, 25);
-		$this->pdf->SetFont( 'arialnarrow','', $this->fontSize);
+		$this->pdf->SetFont( 'arial','', $this->fontSize);
 		$tbl = <<<EOD
 		$html
 EOD;
@@ -380,7 +380,7 @@ EOD;
 		
 		$html .= '</table>
 		';
-		$this->pdf->SetFont('arialnarrow','B', $this->fontSize);
+		$this->pdf->SetFont('arial','B', $this->fontSize);
 		$tbl = <<<EOD
 		$html
 EOD;
@@ -426,7 +426,7 @@ EOD;
 		}
 		
 		
-		$this->pdf->SetFont('arialnarrow','', $this->fontSize);
+		$this->pdf->SetFont('arial','', $this->fontSize);
 		$tbl = <<<EOD
 		$html
 EOD;
@@ -515,7 +515,7 @@ EOD;
 		    
 		    $html .= '</i></div><br />';
 		}
-		$this->pdf->SetFont('arialnarrow','', $this->fontSize);
+		$this->pdf->SetFont('arial','', $this->fontSize);
 		$tbl = <<<EOD
 		$html
 EOD;
