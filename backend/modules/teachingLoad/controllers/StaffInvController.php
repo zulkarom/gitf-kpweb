@@ -167,6 +167,7 @@ class StaffInvController extends Controller
                         $pdf->store = true;
                         $file_name = $pdf->generatePdf();
                         $zip->addFile($file_path.$file_name,$file_name);
+                        exit;
                     }
                     
                 }

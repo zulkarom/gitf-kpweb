@@ -636,6 +636,7 @@ class CourseOfferedController extends Controller
                 $pdf = new BulkSessionExcel;
                 $pdf->model = $model;
                 $pdf->generateExcel();
+                exit;
     }     
 
     private function insertLecture($offered_id,$max_lecture,$prefix,$i,$max_tutorial,$prefix_tutorial)

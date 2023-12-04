@@ -156,6 +156,7 @@ class ResultController extends Controller
         $pdf->gcat = GradeCategory::allDomains();
         $pdf->user = $model;
         $pdf->generatePdf();
+        exit;
     }
 
     public function actionIndividualResult($id,$batch_id){

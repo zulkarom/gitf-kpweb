@@ -490,6 +490,7 @@ class PaperController extends Controller
 		$pdf->generatePdf();
 		
 		unlink($to);
+        exit;
 	}
 	
 	public function actionInvoicePdf($id){
@@ -507,7 +508,7 @@ class PaperController extends Controller
 		$pdf->generatePdf();
 		
 		unlink($to);
-		
+		exit;
 	}
 
     /**

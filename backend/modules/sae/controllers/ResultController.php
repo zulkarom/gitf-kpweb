@@ -116,6 +116,7 @@ class ResultController extends Controller
         $pdf->user = $model;
         $pdf->answer = $answer;
         $pdf->generatePdf();
+        exit;
     }
 
     public function actionIndividualResult($id,$batch_id){

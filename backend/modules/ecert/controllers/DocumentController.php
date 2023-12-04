@@ -180,6 +180,7 @@ class DocumentController extends Controller
         $pdf = new ExcelData();
         $pdf->model = $certType;
         $pdf->generateExcel();
+        exit;
     }
 
     public function actionImportData($type)

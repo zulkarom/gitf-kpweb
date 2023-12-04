@@ -1720,6 +1720,7 @@ class CourseController extends Controller
 			$pdf = new Fk1;
 			$pdf->model = $this->decideVersion($course, $dev, $version);
 			$pdf->generatePdf();
+			exit;
 	}
 	
 	public function actionFk2($course, $dev = false, $version = false, $offer=false){
@@ -1729,6 +1730,7 @@ class CourseController extends Controller
 			    $pdf->offer = $this->findOffer($offer);
 			}
 			$pdf->generatePdf();
+			exit;
 	}
 	
 	private function decideVersion($course, $dev, $version){
@@ -1760,6 +1762,7 @@ class CourseController extends Controller
 			    $pdf->offer = $this->findOffer($team);
 			}
 			$pdf->generatePdf();
+			exit;
 	}
 	
 	//version 1.0 excel
@@ -1767,6 +1770,7 @@ class CourseController extends Controller
 	    $pdf = new Tbl4Excel;
 	    $pdf->model = $this->decideVersion($course, $dev, $version);
 	    $pdf->generateExcel();
+		exit;
 	}
 	
 	//version 2.0 pdf
@@ -1777,6 +1781,7 @@ class CourseController extends Controller
 			    $pdf->offer = $this->findOffer($team);
 			}
 			$pdf->generatePdf();
+			exit;
 	}
 	
 	//version 2.0 excel
@@ -1784,6 +1789,7 @@ class CourseController extends Controller
 			$pdf = new Tbl4Excel2;
 			$pdf->model = $this->decideVersion($course, $dev, $version);
 			$pdf->generateExcel();
+			exit;
 	}
 	
 	//---------TABLE 4 end--------------------
@@ -1807,6 +1813,7 @@ class CourseController extends Controller
 			}
 		}
 		$pdf->generatePdf();
+		exit;
 			
 	}
 

@@ -1143,6 +1143,7 @@ class CourseAdminController extends Controller
 				$pdf->multiple = true;
 				$pdf->courses = Yii::$app->request->post('selection');
 				$pdf->generateExcel();
+				exit;
 			}else{
 				Yii::$app->session->addFlash('error', "Please select some courses first.");
 				return $this->redirect('index');

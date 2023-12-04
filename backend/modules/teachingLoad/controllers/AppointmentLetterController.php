@@ -36,6 +36,7 @@ class AppointmentLetterController extends Controller
         $pdf = new AppointmentLetterFile;
         $pdf->model = $model;
         $pdf->generatePdf();
+        exit;
     }
     
     public function actionUpload($id){

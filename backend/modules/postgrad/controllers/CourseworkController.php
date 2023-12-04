@@ -159,6 +159,7 @@ class CourseworkController extends Controller
         $pdf->students = $students;
 		
 		$pdf->generatePdf();
+        exit;
     }
 
     private function processAddingStudentLecturePg($pg, $matric, $name){

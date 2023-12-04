@@ -426,7 +426,7 @@ class DefaultController extends Controller
 		$pdf->group =  $model->lec_name;
 		
 		$pdf->generatePdf();
-		
+		exit;
     }
 	
 	public function actionCloAnalysisPdf($id, $group = false){
@@ -448,6 +448,7 @@ class DefaultController extends Controller
 		}
 		
 		$pdf->generatePdf();
+		exit;
 	}
 	
 
@@ -465,6 +466,7 @@ class DefaultController extends Controller
 		    $pdf->group = 2;
 		}
 		$pdf->generatePdf();
+		exit;
 	}
 	
 	public function actionSaveClos($id){
@@ -625,6 +627,7 @@ class DefaultController extends Controller
         $pdf = new StudentExcel();
         $pdf->model = $lecture;
         $pdf->generateExcel();
+		exit;
     }
 	
 	public function actionResyncStudent($id){
@@ -990,6 +993,7 @@ class DefaultController extends Controller
 		$pdf->semester = $model->courseOffered->semester;
 		$pdf->group =  $model->lec_name;
 		$pdf->generatePdf();
+		exit;
 	}
 	
 	public function actionAttendanceSummaryTutorialPdf($id){
@@ -1003,6 +1007,7 @@ class DefaultController extends Controller
 		$pdf->semester = $model->lecture->courseOffered->semester;
 		$pdf->group =  $model->tutorialGroup;
 		$pdf->generatePdf();
+		exit;
 	}
 
     public function actionAttendanceSync($id){
