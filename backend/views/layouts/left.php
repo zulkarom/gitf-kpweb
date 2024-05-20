@@ -91,6 +91,10 @@ use backend\models\Menu;
 			case 'sae':
 				$admin_focus = Menu::adminSae();
 				break;
+
+			case 'protege':
+				$admin_focus = Menu::protege();
+				break;
 			
 			case 'aduan':
 			$admin_focus = Menu::adminAduan();
@@ -167,6 +171,8 @@ $menuItems = [
                 ['label' => 'User Manual', 'icon' => 'book', 'visible' => Yii::$app->user->can('manual-manager'), 'url' => ['/manual/module']],
 
 				['label' => 'SAE Interview', 'icon' => 'book', 'visible' => Yii::$app->user->can('manage-sae'), 'url' => ['/sae']],
+
+				['label' => 'Protege', 'icon' => 'book', 'visible' => Yii::$app->user->can('protege'), 'url' => ['/protege/session']],
 
 				[
 					'label' => 'Web',

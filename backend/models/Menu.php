@@ -419,6 +419,49 @@ class Menu
         ];
     }
 
+    public static function protege()
+    {
+        return [
+            'label' => 'Protege',
+            'icon' => 'cube',
+            'visible' => Yii::$app->user->can('protege'),
+            'url' => '#',
+            'items' => [
+                [
+                    'label' => 'Registration',
+                    'icon' => 'check-square-o',
+                    'url' => [
+                        '/protege/student-registration'
+                    ]
+                ],
+                [
+                    'label' => 'Company Offer',
+                    'icon' => 'gift',
+                    'url' => [
+                        '/protege/company-offer'
+                    ]
+                ],
+                [
+                    'label' => 'Sessions',
+                    'icon' => 'calendar-o',
+                    'url' => [
+                        '/protege/session'
+                    ]
+                ],
+                [
+                    'label' => 'Companies',
+                    'icon' => 'bank',
+                    'url' => [
+                        '/protege/company'
+                    ]
+                ],
+
+
+                
+            ]
+        ];
+    }
+
     public static function adminCourseFiles()
     {
         // kena allow auditors jgk

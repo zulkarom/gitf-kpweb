@@ -33,8 +33,8 @@ echo ChartJs::widget([
     'type' => 'horizontalBar',
     'options' => [
        
-        'width' => 400,
-		'height' => 400
+        'width' => 300,
+		'height' => 300
     ],
     'data' => [
         'labels' => $position,
