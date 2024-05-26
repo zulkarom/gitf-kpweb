@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use backend\modules\postgrad\models\Student;
 use backend\modules\protege\models\Company;
 use backend\modules\protege\models\CompanyOffer;
 use backend\modules\protege\models\Session;
@@ -34,6 +35,7 @@ class ProtegeController extends Controller
 
     public function actionView($id){
         $model = $this->findModel($id);
+        $session = $model->session_id;
         $register = new StudentRegistration();
         $register->company_offer_id = $model->id;
         $register->status = 10;//default active
@@ -41,16 +43,26 @@ class ProtegeController extends Controller
         if ($register->load(Yii::$app->request->post())) {
             //validate ada available ke tak?
             if($model->getBalance() > 1){
-                $register->student_name = strtoupper($register->student_name);
-                $register->student_matric = strtoupper($register->student_matric);
-                $register->email = strtolower($register->email);
-                $register->register_at = new Expression('NOW()');
-                if($register->save()){
-                    Yii::$app->session->addFlash('success', "Registration Successful");
-                    return $this->redirect(['view', 'id' => $model->id]);
+                //tgk dia ada register dengan company lain tak
+                $ada = StudentRegistration::find()->alias('a')
+                ->joinWith(['companyOffer f'])
+                ->where(['a.student_matric' =>  $register->student_matric , 'f.session_id' => $session])
+                ->one();
+
+                if($ada){
+                    Yii::$app->session->addFlash('error', "The student with matric number " . $register->student_matric . " has been registered to other company (". $ada->companyOffer->company->company_name .")");
+                }else{
+                    $register->student_name = strtoupper($register->student_name);
+                    $register->student_matric = strtoupper($register->student_matric);
+                    $register->email = strtolower($register->email);
+                    $register->register_at = new Expression('NOW()');
+                    if($register->save()){
+                        Yii::$app->session->addFlash('success', "Registration Successful");
+                        return $this->redirect(['view', 'id' => $model->id]);
+                    }
                 }
             }else{
-                Yii::$app->session->addFlash('error', "Sorry, the slot no longer available");
+                Yii::$app->session->addFlash('error', "Sorry, the slot is no longer available");
             }
             
             
