@@ -50,7 +50,7 @@ class ProtegeController extends Controller
                 ->one();
 
                 if($ada){
-                    Yii::$app->session->addFlash('error', "The student with matric number " . $register->student_matric . " has been registered to other company (". $ada->companyOffer->company->company_name .")");
+                    Yii::$app->session->addFlash('error', "The student with matric number " . $register->student_matric . " has already been registered to company (". $ada->companyOffer->company->company_name .")");
                 }else{
                     $register->student_name = strtoupper($register->student_name);
                     $register->student_matric = strtoupper($register->student_matric);
