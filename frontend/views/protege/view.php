@@ -40,6 +40,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 echo '<tr><td>'.$i.'. </td><td>'.$r->student_name.'</td></tr>';
                 $i++;
             }
+        }else{
+            echo '<tr><td></td><td>--No Registration yet--</td></tr>';
         }
         ?>
         
