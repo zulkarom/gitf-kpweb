@@ -183,7 +183,7 @@ $columns = [
                             },
                             'pdf'=>function ($url, $model) use ($batch){
                                 if($model->overall_status == 3){
-                                    return Html::a('<span class="fa fa-download"></span> PDF',['/sae/result/individual-pdf', 'id' => $model->id],['class'=>'btn btn-danger btn-sm', 'target' => '_blank']);
+                                    return Html::a('<span class="fa fa-download"></span> PDF',['/sae/result/individual-pdf', 'id' => $model->can_id, 'batch_id' => $batch->id],['class'=>'btn btn-danger btn-sm', 'target' => '_blank']);
                                 }
                                 
                             }

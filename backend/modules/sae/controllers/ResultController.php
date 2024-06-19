@@ -107,10 +107,11 @@ class ResultController extends Controller
         ]);
     }
 
-    public function actionIndividualPdf($id){
+    public function actionIndividualPdf($id, $batch_id){
 
         $model = $this->findModel($id);
-        $answer = $this->findAnswer($id);
+        //$answer = $this->findAnswer($id);
+        $answer = Answer::find()->where(['can_id' => $id, 'bat_id' =>$batch_id])->one();
         $pdf = new pdf_individual;
         $pdf->gcat = GradeCategory::allDomains();
         $pdf->user = $model;
