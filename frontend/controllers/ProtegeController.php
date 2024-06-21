@@ -42,7 +42,7 @@ class ProtegeController extends Controller
 
         if ($register->load(Yii::$app->request->post())) {
             //validate ada available ke tak?
-            if($model->getBalance() > 1){
+            if($model->getBalance() > 0){
                 //tgk dia ada register dengan company lain tak
                 $ada = StudentRegistration::find()->alias('a')
                 ->joinWith(['companyOffer f'])

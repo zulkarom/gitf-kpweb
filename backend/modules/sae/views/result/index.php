@@ -225,21 +225,20 @@ $grid_columns = [
                         ];
                     }
                 }
-   
-                    $grid_columns[] = ['class' => 'yii\grid\ActionColumn',
-                        'contentOptions' => ['style' => 'width: 15%'],
-                        'template' => '{view} {pdf}',
-                        //'visible' => false,
-                        'buttons'=>[
-                            'view'=>function ($url, $model) use ($batch) {
-                                return Html::a('<span class="fa fa-eye"></span> VIEW',['individual-result', 'id' => $model->id, 'batch_id' => $batch->id],['class'=>'btn btn-info btn-sm']);
-                            },
-                            'pdf'=>function ($url, $model) use ($batch){
-                                return Html::a('<span class="fa fa-download"></span> PDF',['individual-pdf', 'id' => $model->id,  'batch_id' => $batch->id],['class'=>'btn btn-danger btn-sm', 'target' => '_blank']);
-                            }
-                        ],
-                    
-                    ];
+                $grid_columns[] = ['class' => 'yii\grid\ActionColumn',
+                    'contentOptions' => ['style' => 'width: 15%'],
+                    'template' => '{view} {pdf}',
+                    //'visible' => false,
+                    'buttons'=>[
+                        'view'=>function ($url, $model) use ($batch) {
+                            return Html::a('<span class="fa fa-eye"></span> VIEW',['individual-result', 'id' => $model->id, 'batch_id' => $batch->id],['class'=>'btn btn-info btn-sm']);
+                        },
+                        'pdf'=>function ($url, $model) use ($batch){
+                            return Html::a('<span class="fa fa-download"></span> PDF',['individual-pdf', 'id' => $model->id,  'batch_id' => $batch->id],['class'=>'btn btn-danger btn-sm', 'target' => '_blank']);
+                        }
+                    ],
+                
+                ];
                 
                 
 ?>

@@ -110,12 +110,12 @@ class CompanyOffer extends \yii\db\ActiveRecord
         $kira = StudentRegistration::find()
         ->where(['company_offer_id' => $this->id])
         ->count();
-        return $kira;
+        return $kira ? $kira : 0;
     }
 
     public function getBalance(){
         $baki = $this->available_slot - $this->sumRegistered();
-        return $baki;
+        return $baki = $baki > 0 ? $baki : 0;
     }
 
     public function availableText(){
