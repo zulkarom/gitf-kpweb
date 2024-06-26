@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel backend\modules\proceedings\models\ProceedingSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Protege';
+$this->title = 'Protege@UMK';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="proceeding-index">
@@ -21,7 +21,14 @@ $this->params['breadcrumbs'][] = $this->title;
  <br />
  <?php if($session){?>
  <b>Session:</b> <?=$session->session_name?>
+ <?php 
+ if($session->instruction){
+    ?>
  <br/> <b>Note:</b> <?=$session->instruction?>
+    <?php
+ }
+ ?>
+
  </p>
  <div class="table-responsive">
      

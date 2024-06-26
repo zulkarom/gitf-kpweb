@@ -20,8 +20,15 @@ $this->params['breadcrumbs'][] = $this->title;
 		<?=Html::a('<i class="fa fa-arrow-left"></i> BACK',['/protege'])?>
 		<p>
  <h3 style="font-size: 30px;margin-bottom: 0px;"><?= Html::encode($model->company->company_name) ?></h3>
+
+
  
 <i><?=$model->company->address?></i> 
+<?php
+ if($model->company->description){
+    echo '<p><i>'. $model->company->description .'</i></p>';
+ }
+ ?>
  </p>
    <br />
  <div class="row">
