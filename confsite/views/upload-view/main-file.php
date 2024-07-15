@@ -146,7 +146,7 @@ $('#remove_$unique ').click(function(e, data){
   var req = $.ajax({
     dataType: 'json',
     url: link.data('url'),
-    type: 'DELETE',
+    type: 'POST',
 	success: function(result){
 		if(result.good == 1){
 			$('#file_$unique ').hide();
