@@ -49,7 +49,7 @@ class SiteController extends Controller
            return true;
        } 
    
-       }
+    }
 	
 	
 
@@ -148,11 +148,6 @@ class SiteController extends Controller
 
         return $this->goHome();
     }
-	
-	public function actionMyError(){
-		
-		$this->layout = 'error';
-	}
 	
 	
 }

@@ -20,29 +20,9 @@ use yii\web\BadRequestHttpException;
  */
 class FirewallController extends Controller
 {
-	public $layout = 'main-member';
-	
-    /**
-     * {@inheritdoc}
-     */
-	public function behaviors()
-    {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-        ];
-    }
-
 	public function actionUpload(){
 		$post = Yii::$app->request->post();
-        if($post){
+        if(!Yii::$app->user->isGuest && $post){
             $type= $post['type'];
             $attr= $post['attr'];
             $controller= $post['controller'];
@@ -78,6 +58,9 @@ class FirewallController extends Controller
 
     public function actionEditor(){
         $post = Yii::$app->request->post();
+        if(!Yii::$app->user->isGuest && $post){
+
+        }
         throw new BadRequestHttpException('Make sure you supply enough parameters');
     }
 

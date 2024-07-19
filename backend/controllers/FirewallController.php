@@ -14,27 +14,10 @@ use yii\web\BadRequestHttpException;
  */
 class FirewallController extends Controller
 {
-    /**
-     * {@inheritdoc}
-     */
-	public function behaviors()
-    {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-        ];
-    }
 
 	public function actionUpload(){
 		$post = Yii::$app->request->post();
-        if($post){
+        if(!Yii::$app->user->isGuest && $post){
             $id= $post['id'];
             $class = urldecode($post['class']);
             $controller = $post['controller'];
@@ -52,7 +35,7 @@ class FirewallController extends Controller
     public function actionEditor()
     {
         $post = Yii::$app->request->post();
-        if($post){
+        if(!Yii::$app->user->isGuest && $post){
             $class = urldecode($post['editor_class']);
             $id = $post['editor_class_id'];
             $method = urldecode($post['editor_method']);
