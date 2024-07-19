@@ -42,6 +42,14 @@ class SiteController extends Controller
             ],
         ];
     }
+
+    public function beforeAction($action) {
+        if (parent::beforeAction($action)) {
+           if ($action->id=='error') $this->layout ='error';
+           return true;
+       } 
+   
+       }
 	
 	
 

@@ -13,6 +13,7 @@ use confsite\models\UploadReviewerFile;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
 use yii\helpers\Json;
+use yii\web\BadRequestHttpException;
 
 /**
  * PaperController implements the CRUD actions for ConfPaper model.
@@ -39,34 +40,45 @@ class FirewallController extends Controller
         ];
     }
 
-	public function actionUploadFile(){
+	public function actionUpload(){
 		$post = Yii::$app->request->post();
-		$type= $post['type'];
-        $attr= $post['attr'];
-        $controller= $post['controller'];
-		$id= $post['id'];
-        $confurl = $post['confurl'];
-		//submit paper 1
-		//submit review
-		//submit correction
-		//payment
+        if($post){
+            $type= $post['type'];
+            $attr= $post['attr'];
+            $controller= $post['controller'];
+            $id= $post['id'];
+            $confurl = $post['confurl'];
+            //submit paper 1
+            //submit review
+            //submit correction
+            //payment
+    
+            if($type && $id && $attr && $controller){
+                if($type == "paper"){ //attr paper/repaper
+                    /* return Yii::$app->runAction('member/upload-file', ['attr' => 'paper', 'id' => $id, 'confurl' => $confurl]); */
+                    $model = $this->findPaper($id);
+                    $model->file_controller = $controller;
+                    return UploadPaperFile::upload($model, $attr, 'updated_at');
+                }
+                if($type == "review"){
+                    $model = $this->findReviewer($id);
+                    $model->file_controller = $controller;
+                    return UploadReviewerFile::upload($model, $attr);
+                }
+                if($type == "payment"){ 
+                    $model = $this->findRegistration($id);
+                    $model->file_controller = $controller;
+                    return UploadPaymentFile::upload($model, $attr, 'updated_at');
+                }
+            }
+        }
+	
+        throw new BadRequestHttpException('Make sure you supply enough parameters');
+    }
 
-		if($type == "paper"){ //attr paper/repaper
-            /* return Yii::$app->runAction('member/upload-file', ['attr' => 'paper', 'id' => $id, 'confurl' => $confurl]); */
-			$model = $this->findPaper($id);
-        	$model->file_controller = $controller;
-        	return UploadPaperFile::upload($model, $attr, 'updated_at');
-		}
-        if($type == "review"){
-            $model = $this->findReviewer($id);
-            $model->file_controller = $controller;
-            return UploadReviewerFile::upload($model, $attr);
-		}
-        if($type == "payment"){ 
-			$model = $this->findRegistration($id);
-        	$model->file_controller = $controller;
-        	return UploadPaymentFile::upload($model, $attr, 'updated_at');
-		}
+    public function actionEditor(){
+        $post = Yii::$app->request->post();
+        throw new BadRequestHttpException('Make sure you supply enough parameters');
     }
 
 	protected function findPaper($id)

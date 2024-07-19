@@ -64,14 +64,23 @@ class SiteController extends Controller
         ];
     }
 
-    public function actionTest(){
-        echo 'jutawan';
+    public function beforeAction($action) {
+        if (parent::beforeAction($action)) {
+           if ($action->id=='error') $this->layout ='error';
+           return true;
+       } 
+   
     }
 
-    public function actionError(){
-        
-        
+    public function actions()
+    {
+        return [
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+            ]
+        ];
     }
+
 
 
     /**

@@ -55,7 +55,7 @@ class UploadPaymentFile
 		$result =  JQueryFileUpload::widget([
 		'model' => $model,
         'attribute' => $attr . '_instance',
-		'url' => ['firewall/upload-file'],
+		'url' => ['firewall/upload'],
         'appearance'=>'basic', // available values: 'ui','plus' or 'basic'
 		'mainView'=> $view, 
         'name' => 'file',
