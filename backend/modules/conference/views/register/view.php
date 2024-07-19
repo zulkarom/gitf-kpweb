@@ -5,6 +5,8 @@ use yii\helpers\Url;
 use yii\widgets\DetailView;
 use kartik\form\ActiveForm;
 use common\models\UploadFile;
+use common\models\UploadFileFirewall;
+
 /* @var $this yii\web\View */
 /* @var $model backend\modules\conference\models\ConfRegistration */
 
@@ -115,7 +117,10 @@ table.detail-view th {
             [
                 'label' => 'Category',
                 'value' => function($model){
-                    return $model->package->fee_name;
+                    if($model->package){
+                        return $model->package->fee_name;
+                    }
+                    
                 }
             ], 
             [
@@ -203,7 +208,7 @@ table.detail-view th {
 <br />
 
 
-<?=UploadFile::fileInput($model, 'fee', $model->conference->conf_url)?>
+<?=UploadFileFirewall::fileInput($model, 'fee')?>
 
 
 

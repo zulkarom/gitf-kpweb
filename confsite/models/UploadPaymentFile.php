@@ -9,7 +9,7 @@ use yii\web\UploadedFile;
 use yii\helpers\Json;
 use yii\db\Expression;
 
-class UploadPaperFile
+class UploadPaymentFile
 {
    
 	public static function fileInput($model, $attr, $confurl, $image = false, $multiple = false, $redirect = false){
@@ -70,7 +70,7 @@ class UploadPaperFile
         ],
         'clientEvents' => [
 			'add' => "function (e, data){
-				data.formData =  {confurl: '" .$confurl."', attr: '".$attr."',type:'paper', controller: '".$model->file_controller."', id: '".$model->id."'};
+				data.formData =  {confurl: '" .$confurl."', attr: '".$attr."',type:'payment', controller: '".$model->file_controller."', id: '".$model->id."'};
 				$('#errors_".$attr."_".$model->id ."').text('');
 				var client_valid = true;
 				

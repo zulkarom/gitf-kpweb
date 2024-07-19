@@ -33,9 +33,12 @@ $model->file_controller = 'conference';
 			
 
 
-    <?php $form = ActiveForm::begin(); ?>
-	
-	
+    <?php $form = ActiveForm::begin(['action' => ['/firewall/editor']]); ?>
+    <input type="hidden" name="editor_class" value="<?=urlencode(get_class($model))?>" />
+    <input type="hidden" name="editor_class_id" value="<?=$model->id?>" />
+    <input type="hidden" name="editor_method" value="conferenceUpdate" />
+    <input type="hidden" name="editor_redirect" value="<?=Yii::$app->request->url?>" />
+
 	<!-- for image -->
 <?=UploadFile::fileInput($model, 'banner', true)?>
 <i>Dimensions (px) : 1349 x 316 </i>

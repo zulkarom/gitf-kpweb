@@ -7,9 +7,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
 use yii\jui\JuiAsset;
 use kartik\date\DatePicker;
 use backend\modules\conference\models\UploadFile;
-
-
-
+use common\models\UploadFileFirewall;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\conference\models\Conference */
@@ -59,7 +57,7 @@ $this->params['breadcrumbs'][] = 'Download';
 				
 					<?php $d->file_controller = 'download';?>
           
-                    <?=UploadFile::fileInput($d, 'download', false, true)?>
+                    <?=UploadFileFirewall::fileInput($d, 'download', false, true)?>
   
 
                 </td>

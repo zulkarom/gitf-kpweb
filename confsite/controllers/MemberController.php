@@ -63,7 +63,7 @@ class MemberController extends Controller
 			        return true;
 			    }
 			}else{
-			    throw new NotFoundHttpException('Invalid url - no conference url provided');
+			    throw new NotFoundHttpException('Invalid url ('.$url.') - no conference url provided');
 			}
 			
 			
@@ -874,7 +874,6 @@ class MemberController extends Controller
         if (($model = ConfPaper::findOne($id)) !== null) {
             return $model;
         }
-
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 	
@@ -888,7 +887,7 @@ class MemberController extends Controller
     }
 	
 
-	public function actionUploadFile($attr, $id){
+	public function actionUploadFilexxx($attr, $id){
         $attr = $this->clean($attr);
         $model = $this->findModel($id);
         $model->file_controller = 'member';

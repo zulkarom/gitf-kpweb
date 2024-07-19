@@ -1,5 +1,5 @@
 <?php
-namespace confsite\models;
+namespace common\models;
 
 use Yii;
 use yii\helpers\Url;
@@ -9,20 +9,23 @@ use yii\web\UploadedFile;
 use yii\helpers\Json;
 use yii\db\Expression;
 
-class UploadPaperFile
+class UploadFileFirewall
 {
-   
-	public static function fileInput($model, $attr, $confurl, $image = false, $multiple = false, $redirect = false){
+	public static function fileInput($model, $attr, $image = false, $multiple = false, $customView = false){
 		$accept = '/*';
 		if($image){
 			$accept = 'image/*';
 		}
-		if($multiple){
-			//$view = '@frontend/views/upload/main-multiple';
-		}else{
-			$view = '@confsite/views/upload-view/main-file-paper';
-		}
 		
+		if($customView){
+			$view = '@backend/views/upload-tmpl/' . $customView;
+		}else{
+			if($multiple){
+				$view = '@backend/views/upload-tmpl/main-multiple';
+			}else{
+				$view = '@backend/views/upload-tmpl/main-file';
+			}
+		}
 		
 		$max = 0;
 		$ext = array();
@@ -55,7 +58,7 @@ class UploadPaperFile
 		$result =  JQueryFileUpload::widget([
 		'model' => $model,
         'attribute' => $attr . '_instance',
-		'url' => ['firewall/upload-file'],
+        'url' => ['/firewall/upload'],
         'appearance'=>'basic', // available values: 'ui','plus' or 'basic'
 		'mainView'=> $view, 
         'name' => 'file',
@@ -70,7 +73,8 @@ class UploadPaperFile
         ],
         'clientEvents' => [
 			'add' => "function (e, data){
-				data.formData =  {confurl: '" .$confurl."', attr: '".$attr."',type:'paper', controller: '".$model->file_controller."', id: '".$model->id."'};
+				data.formData =  {attr: '".$attr."', class:'". urlencode(get_class($model)) ."', controller: '".$model->file_controller."', id: '".$model->id."'};
+
 				$('#errors_".$attr."_".$model->id ."').text('');
 				var client_valid = true;
 				
@@ -141,8 +145,8 @@ class UploadPaperFile
 
 	}
 	
-	public static function upload($model, $attr, $ts = false){
-		$confurl = $model->conference->conf_url;
+	public static function upload($model, $attr, $ts = false, $path = false){
+		
 		$model->scenario = $attr . '_upload';
 
 		$instance = $attr . '_instance';
@@ -152,21 +156,21 @@ class UploadPaperFile
 		
 		$model->{$instance} = $upFile;
 		$uid = uniqid(time(), true);
-		
+
 		$ext = $upFile->extension;
-		
-		
 		$fileName = $attr . '_' . $uid . '.' . $ext;
 		
-		$path = 'conference/'.$confurl . '/papers/' . Yii::$app->user->identity->id .  '/' ;
-		
-	
-		
+		if(!$path){
+			$year = date('Y') + 0 ;
+			$path = $year . '/' . Yii::$app->user->identity->username ;
+		}
+
 		$directory = Yii::getAlias('@upload/' . $path . '/');
+
 		$filePath = $directory . $fileName;
 		
 		
-		$model->{$attr_db} = $path . $fileName;
+		$model->{$attr_db} = $path . '/' . $fileName;
 		if($ts){
 			$model->{$ts} = new Expression('NOW()');
 		}
@@ -176,16 +180,15 @@ class UploadPaperFile
 		}
 		
 		//$model->save();
-		/* return Json::encode([
-						'errors' => $model->getErrors(),
-					]); */
+		
+		
 		if($model->save()){
 			
 			if ($upFile) {
 			
 			if ($upFile->saveAs($filePath)) {
 				
-				$path = Url::to([ $model->file_controller . '/download-file', 'confurl' => $confurl, 'attr' => $attr, 'id' => $model->id]);
+				$path = Url::to([$model->file_controller . '/download-file', 'attr' => $attr, 'id' => $model->id]);
 				$path_delete = Url::to([$model->file_controller . '/delete-file', 'attr' => $attr, 'id' => $model->id]);
 				//saving in database
 				

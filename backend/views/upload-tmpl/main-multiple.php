@@ -80,10 +80,10 @@ if($model->{$db_file}){
 	if($ext == 'pdf'){
 		$link = Url::to('@web/images/') . 'pdf.png';
 	}else{
-		$link = Url::to([$model->file_controller . '/download', 'attr' => $attr_name, 'id' => $model->id]);
+		$link = Url::to([$model->file_controller . '/download-file', 'attr' => $attr_name, 'id' => $model->id]);
 	}
 	?>
-	<a href="<?=Url::to([$model->file_controller . '/download', 'attr' => $attr_name, 'id' => $model->id])?>" target="_blank">
+	<a href="<?=Url::to([$model->file_controller . '/download-file', 'attr' => $attr_name, 'id' => $model->id])?>" target="_blank">
 			<img src="<?=$link?>" width="60" /></a>
 	<?php
 	
@@ -106,9 +106,9 @@ if($model->{$db_file}){
 <div class="col-md-4">
 <div class="form-group" id="action_<?=$unique?>" <?=$style_file?>>
 
-<a href="<?=Url::to([$model->file_controller . '/download', 'attr' => $attr_name, 'id' => $model->id])?>" id="download_<?=$attr?>" target="_blank" class="btn btn-success"><span class="glyphicon glyphicon-download-alt"></span></a> 
+<a href="<?=Url::to([$model->file_controller . '/download-file', 'attr' => $attr_name, 'id' => $model->id])?>" id="download_<?=$attr?>" target="_blank" class="btn btn-success"><span class="glyphicon glyphicon-download-alt"></span></a> 
 
-<a href="#" id="remove_<?=$unique?>" class="btn btn-danger" data-type="POST" data-url="<?=Url::to([$model->file_controller . '/delete', 'attr' => $attr_name, 'id' => $model->id])?>" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
+<a href="#" id="remove_<?=$unique?>" class="btn btn-danger" data-type="POST" data-url="<?=Url::to([$model->file_controller . '/delete-file', 'attr' => $attr_name, 'id' => $model->id])?>" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
 
 
 

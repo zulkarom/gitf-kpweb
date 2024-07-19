@@ -1,8 +1,8 @@
 <?php
 
+use confsite\models\UploadPaymentFile;
 use yii\helpers\Html;
 use kartik\widgets\ActiveForm;
-use confsite\models\UploadPaperFile as UploadFile;
 use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
@@ -91,7 +91,7 @@ echo $form->field($model, 'paper_number')->hiddenInput(['value' => $model->count
 <br />
 
 
-<?=UploadFile::fileInput($model, 'fee', $model->conference->conf_url)?>
+<?=UploadPaymentFile::fileInput($model, 'fee', $model->conference->conf_url)?>
 
 
 

@@ -999,6 +999,15 @@ class Menu
             if ($conf) {
 
                 $paper_menu[] = [
+                    'label' => 'Overview',
+                    'icon' => 'table',
+                    'url' => [
+                        '/conference/paper/overview',
+                        'conf' => $confurl
+                    ]
+                ];
+
+                $paper_menu[] = [
                     'label' => 'Abstract',
                     'icon' => 'file-o',
                     'url' => [
@@ -1053,14 +1062,7 @@ class Menu
                     ]
                 ];
 
-                $paper_menu[] = [
-                    'label' => 'Overview',
-                    'icon' => 'table',
-                    'url' => [
-                        '/conference/paper/overview',
-                        'conf' => $confurl
-                    ]
-                ];
+                
 
                 $menus = [
 

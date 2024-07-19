@@ -123,7 +123,8 @@ class ConferenceController extends Controller
     {
         $model = $this->findModel($conf);
 		
-        if ($model->load(Yii::$app->request->post())) {
+        //not using this due to editor
+        /* if ($model->load(Yii::$app->request->post())) {
 			$model->page_menu = json_encode(Yii::$app->request->post('page-menu'));
 			$model->page_featured = json_encode(Yii::$app->request->post('page-featured'));
 			if($model->save()){
@@ -131,7 +132,7 @@ class ConferenceController extends Controller
 				return $this->redirect(['update', 'conf' => $conf]);
 			}
 			
-        }
+        } */
 
         return $this->render('update', [
             'model' => $model,

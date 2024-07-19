@@ -71,7 +71,11 @@ class RegisterController extends Controller
      */
     public function actionView($id)
     {
+
         $model = $this->findModel($id);
+        /* $param = urlencode(get_class($model));
+        echo $param;
+        echo urldecode($param);die(); */
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->addFlash('success', "Data Updated");
             return $this->redirect(['view', 'id' => $model->id]);

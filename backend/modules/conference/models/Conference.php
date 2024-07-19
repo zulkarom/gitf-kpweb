@@ -92,6 +92,18 @@ class Conference extends \yii\db\ActiveRecord
 			
         ];
     }
+
+	/**
+	 * using editor firewall
+	 */
+	public function conferenceUpdate(){
+		$this->page_menu = json_encode(Yii::$app->request->post('page-menu'));
+		$this->page_featured = json_encode(Yii::$app->request->post('page-featured'));
+		if($this->save()){
+			return true;
+		}
+		return false;
+	}
 	
 	public function getUser(){
         return $this->hasOne(User::className(), ['id' => 'user_id']);
