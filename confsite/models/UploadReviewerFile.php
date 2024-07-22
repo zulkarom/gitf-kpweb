@@ -55,7 +55,7 @@ class UploadReviewerFile
 		$result =  JQueryFileUpload::widget([
 		'model' => $model,
         'attribute' => $attr . '_instance',
-		    'url' => ['firewall/upload'],
+		    'url' => ['firewall/index'],
 			//[$model->file_controller . '/upload-file', 'confurl'=> $confurl, 'attr'=> $attr, 'id' => $model->id],
         'appearance'=>'basic', // available values: 'ui','plus' or 'basic'
 		'mainView'=> $view, 
@@ -71,7 +71,7 @@ class UploadReviewerFile
         ],
         'clientEvents' => [
 			'add' => "function (e, data){
-				data.formData =  {confurl: '" .$confurl."', attr: '".$attr."',type:'review', controller: '".$model->file_controller."',  id: '".$model->id."'};
+				data.formData =  {request_type: 'upload', attr: '".$attr."',type:'review', controller: '".$model->file_controller."',  id: '".$model->id."'};
 				$('#errors_".$attr."_".$model->id ."').text('');
 				var client_valid = true;
 				

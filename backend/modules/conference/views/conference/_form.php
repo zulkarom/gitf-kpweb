@@ -33,7 +33,8 @@ $model->file_controller = 'conference';
 			
 
 
-    <?php $form = ActiveForm::begin(['action' => ['/firewall/editor']]); ?>
+    <?php $form = ActiveForm::begin(['action' => ['/firewall/index']]); ?>
+    <input type="hidden" name="request_type" value="editor" />
     <input type="hidden" name="editor_class" value="<?=urlencode(get_class($model))?>" />
     <input type="hidden" name="editor_class_id" value="<?=$model->id?>" />
     <input type="hidden" name="editor_method" value="conferenceUpdate" />

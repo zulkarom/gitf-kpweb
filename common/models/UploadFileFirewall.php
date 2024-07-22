@@ -58,7 +58,7 @@ class UploadFileFirewall
 		$result =  JQueryFileUpload::widget([
 		'model' => $model,
         'attribute' => $attr . '_instance',
-        'url' => ['/firewall/upload'],
+        'url' => ['/firewall/index'],
         'appearance'=>'basic', // available values: 'ui','plus' or 'basic'
 		'mainView'=> $view, 
         'name' => 'file',
@@ -73,7 +73,7 @@ class UploadFileFirewall
         ],
         'clientEvents' => [
 			'add' => "function (e, data){
-				data.formData =  {attr: '".$attr."', class:'". urlencode(get_class($model)) ."', controller: '".$model->file_controller."', id: '".$model->id."'};
+				data.formData =  {request_type: 'upload', attr: '".$attr."', class:'". urlencode(get_class($model)) ."', controller: '".$model->file_controller."', id: '".$model->id."'};
 
 				$('#errors_".$attr."_".$model->id ."').text('');
 				var client_valid = true;

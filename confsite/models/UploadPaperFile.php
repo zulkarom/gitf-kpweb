@@ -55,7 +55,7 @@ class UploadPaperFile
 		$result =  JQueryFileUpload::widget([
 		'model' => $model,
         'attribute' => $attr . '_instance',
-		'url' => ['firewall/upload'],
+		'url' => ['firewall/index'],
         'appearance'=>'basic', // available values: 'ui','plus' or 'basic'
 		'mainView'=> $view, 
         'name' => 'file',
@@ -70,7 +70,7 @@ class UploadPaperFile
         ],
         'clientEvents' => [
 			'add' => "function (e, data){
-				data.formData =  {confurl: '" .$confurl."', attr: '".$attr."',type:'paper', controller: '".$model->file_controller."', id: '".$model->id."'};
+				data.formData =  {request_type: 'upload', attr: '".$attr."',type:'paper', controller: '".$model->file_controller."', id: '".$model->id."'};
 				$('#errors_".$attr."_".$model->id ."').text('');
 				var client_valid = true;
 				

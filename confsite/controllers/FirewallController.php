@@ -20,19 +20,26 @@ use yii\web\BadRequestHttpException;
  */
 class FirewallController extends Controller
 {
-	public function actionUpload(){
-		$post = Yii::$app->request->post();
+    public function actionIndex(){
+        $post = Yii::$app->request->post();
         if(!Yii::$app->user->isGuest && $post){
+            $request_type = $post['request_type'];
+            if($request_type == 'upload'){
+                return $this->upload($post);
+            }
+            if($request_type == 'editor'){
+                return $this->editor($post);
+            }
+        }
+        throw new BadRequestHttpException('Make sure you supply enough parameters');
+    }
+
+	private function upload($post){
             $type= $post['type'];
             $attr= $post['attr'];
             $controller= $post['controller'];
             $id= $post['id'];
-            $confurl = $post['confurl'];
-            //submit paper 1
-            //submit review
-            //submit correction
-            //payment
-    
+
             if($type && $id && $attr && $controller){
                 if($type == "paper"){ //attr paper/repaper
                     /* return Yii::$app->runAction('member/upload-file', ['attr' => 'paper', 'id' => $id, 'confurl' => $confurl]); */
@@ -51,12 +58,10 @@ class FirewallController extends Controller
                     return UploadPaymentFile::upload($model, $attr, 'updated_at');
                 }
             }
-        }
-	
         throw new BadRequestHttpException('Make sure you supply enough parameters');
     }
 
-    public function actionEditor(){
+    private function editor($post){
         $post = Yii::$app->request->post();
         if(!Yii::$app->user->isGuest && $post){
 
