@@ -14,8 +14,21 @@ use yii\web\BadRequestHttpException;
  */
 class FirewallController extends Controller
 {
+    public function actionIndex(){
+        $post = Yii::$app->request->post();
+        if(!Yii::$app->user->isGuest && $post){
+            $request_type = $post['request_type'];
+            if($request_type == 'upload'){
+                return $this->upload($post);
+            }
+            if($request_type == 'editor'){
+                return $this->editor($post);
+            }
+        }
+        throw new BadRequestHttpException('Make sure you supply enough parameters');
+    }
 
-	public function actionUpload(){
+	private function upload(){
 		$post = Yii::$app->request->post();
         if(!Yii::$app->user->isGuest && $post){
             $id= $post['id'];
@@ -32,7 +45,7 @@ class FirewallController extends Controller
 		throw new BadRequestHttpException('Make sure you supply enough parameters');
     }
 
-    public function actionEditor()
+    private function editor()
     {
         $post = Yii::$app->request->post();
         if(!Yii::$app->user->isGuest && $post){
