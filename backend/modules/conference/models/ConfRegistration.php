@@ -79,15 +79,34 @@ class ConfRegistration extends \yii\db\ActiveRecord
         return [0 => 'None', 1 => 'Submitted', 10 => 'Verified'];
     }
 
+    
+
     public function getStatusFeeLabel(){
         if(array_key_exists($this->fee_status, $this->listFeeStatus())){
             return $this->listFeeStatus()[$this->fee_status];
         }
     }
 
+    public function getFees(){
+        return ConfFee::find()->where(['conf_id' => $this->conf_id])->all();
+    }
+
     public function getListPackages(){
-        $list = ConfFee::find()->where(['conf_id' => $this->conf_id])->all();
+        $list = $this->fees;
         return ArrayHelper::map($list, 'id', 'feeText');
+    }
+
+    public function getListPackagesShort(){
+        $list = $this->fees;
+        return ArrayHelper::map($list, 'id', 'fee_name');
+    }
+
+    public function getFeePackageText(){
+        $list = $this->getListPackagesShort();
+        $val = $this->fee_package;
+        if(array_key_exists($val, $list)){
+            return $list[$val];
+        }
     }
 
     public function getListPackagesJson(){

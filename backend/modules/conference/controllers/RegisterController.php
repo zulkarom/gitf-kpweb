@@ -51,6 +51,7 @@ class RegisterController extends Controller
      */
     public function actionIndex($conf)
     {
+        date_default_timezone_set("Asia/Kuala_Lumpur");
         $searchModel = new ConfRegistrationSearch();
 		$searchModel->conf_id = $conf;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);

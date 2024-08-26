@@ -20,6 +20,7 @@ class NewUserForm extends Model
     public $country_id;
     public $password;
     public $password_repeat;
+    public $fee_package;
 
     /**
      * @inheritdoc
@@ -41,7 +42,7 @@ class NewUserForm extends Model
             
             [['fullname', 'institution', 'title'], 'string', 'min' => 2, 'max' => 100],
 
-            [['country_id'], 'integer'],
+            [['country_id', 'fee_package'], 'integer'],
             
             
             ['password_repeat', 'compare', 'compareAttribute'=>'password', 'message'=>"Passwords don't match" ],
@@ -60,6 +61,7 @@ class NewUserForm extends Model
 
         $label['fullname'] = 'Name';
         $label['institution'] = 'Institution';
+        $label['fee_package'] = 'Category';
         return $label;
     } 
     
@@ -103,6 +105,7 @@ class NewUserForm extends Model
             $reg->conf_id = $conf->id;
             $reg->reg_at = new Expression('NOW()');
             $reg->confly_number = $reg->nextConflyNumber();
+            $reg->fee_package = $this->fee_package;
             $flag = $reg->save();
 
 

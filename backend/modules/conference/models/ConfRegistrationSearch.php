@@ -20,7 +20,7 @@ class ConfRegistrationSearch extends ConfRegistration
     public function rules()
     {
         return [
-            [['id', 'conf_id', 'user_id', 'is_author', 'is_reviewer', 'fee_status'], 'integer'],
+            [['id', 'conf_id', 'user_id', 'is_author', 'is_reviewer', 'fee_status', 'fee_package'], 'integer'],
 			[['email', 'fullname'], 'string'],
         ];
     }
@@ -51,6 +51,7 @@ class ConfRegistrationSearch extends ConfRegistration
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort'=> ['defaultOrder' => ['reg_at'=>SORT_DESC]],
 			'pagination' => [
                 'pageSize' => 100,
             ],
@@ -69,6 +70,7 @@ class ConfRegistrationSearch extends ConfRegistration
             'is_author' => $this->is_author,
             'is_reviewer' => $this->is_reviewer,
             'fee_status' => $this->fee_status,
+            'fee_package' => $this->fee_package,
         ]);
 
         $query->andFilterWhere(['like', 'user.fullname', $this->fullname]);

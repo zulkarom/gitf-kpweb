@@ -62,20 +62,30 @@ $this->title = $conf->conf_name;
       <?php if(true){?>
  
         <?= $form->field($model, 'email')->textInput(['class' => 'form-control form-control-lg'])?>
-        <?= $form->field($model, 'fullname')->textInput(['class' => 'form-control form-control-lg'])
-            ?>
+
         <?php  
 if($conf->is_pg == 0){
     echo $form->field($model, 'title')->textInput(['class' => 'form-control form-control-lg']) ;
 }
 ?>
 
+        <?= $form->field($model, 'fullname')->textInput(['class' => 'form-control form-control-lg'])->label('Full Name')
+            ?>
+       
+
         <?= $form->field($model, 'password')->passwordInput(['class' => 'form-control form-control-lg'])
             ?>
             <?= $form->field($model, 'password_repeat')->passwordInput(['class' => 'form-control form-control-lg'])
             ?>
 
-            
+                
+    <?php  
+if($conf->commercial == 1 && $conf->fee_package == 2){
+  $fees = ArrayHelper::map($conf->confFees, 'id', 'fee_name');
+  echo $form->field($model, 'fee_package')->dropDownList($fees, ['prompt' => 'Select', 'class' => 'form-control form-control-lg']);
+}
+
+?>
 
 <?php  
 if($conf->is_pg == 1){
@@ -133,14 +143,14 @@ echo $form->field($model, 'country_id')->widget(Select2::classname(), [
 
 ?>
 
-    <?php } ?>   
+    <?php } ?>
+    
 
-          <div class="form-group">
-            <?= Html::submitButton('Register', ['value' => '2', 'class' => 'btn btn-primary']) ?>
-          </div>
+
+  <div class="form-group">
+    <?= Html::submitButton('Register', ['value' => '2', 'class' => 'btn btn-primary']) ?>
+  </div>
         
-        
-     
          <?php }else{
 			 
 			 echo '<p>Kindly be informed that the new registration has been closed </p>';

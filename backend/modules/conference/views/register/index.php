@@ -1,5 +1,6 @@
 <?php
 
+use kartik\export\ExportMenu;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\GridView;
@@ -11,6 +12,98 @@ use yii\grid\GridView;
 $this->title = 'Participants';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
+<?php 
+
+$columns = [
+	['class' => 'yii\grid\SerialColumn'],
+	[
+		'attribute' => 'reg_at',
+		'label' => 'Register At',
+		'value' => function($model){
+			return  date('d M Y h:i a', strtotime($model->reg_at));
+		}
+		
+	],
+	[
+		'attribute' => 'fullname',
+		'label' => 'Name',
+		'value' => function($model){
+			return $model->user->fullname;
+		}
+		
+	],
+	[
+		'attribute' => 'email',
+		'label' => 'Email',
+		'value' => function($model){
+			return $model->user->email;
+		}
+		
+	],
+	[
+		'attribute' => 'fee_package',
+		'label' => 'Category',
+		
+		'value' => function($model){
+			return $model->feePackageText;
+		}
+	],
+	[
+		'attribute' => 'is_author',
+		'label' => 'Author',
+		
+		'value' => function($model){
+			return $model->is_author == 1 ? 'Yes' : 'No';
+		}
+		
+	],
+
+	[
+		'attribute' => 'is_reviewer',
+		'label' => 'Reviewer',
+		'value' => function($model){
+			return $model->is_reviewer == 1 ? 'Yes' : 'No';
+		}
+		
+	],
+
+	[
+		'attribute' => 'fee_status',
+		'label' => 'Payment',
+		'value' => function($model){
+			return $model->statusFeeLabel;
+		}
+		
+	],
+
+	[
+		'label' => 'Count Paper',
+		'format' => 'html',
+		'value' => function($model){
+			return $model->countPapers;
+		}
+		
+	]];
+
+
+?>
+
+
+<?=ExportMenu::widget([
+    'dataProvider' => $dataProvider,
+    'columns' => $columns,
+	'filename' => 'PARTICIPANTS_' . date('Y-m-d'),
+	'onRenderSheet'=>function($sheet, $grid){
+		$sheet->getStyle('A2:'.$sheet->getHighestColumn().$sheet->getHighestRow())
+		->getAlignment()->setWrapText(true);
+	},
+	'exportConfig' => [
+        ExportMenu::FORMAT_PDF => false,
+		ExportMenu::FORMAT_EXCEL_X => false,
+    ],
+]);?>
+<br /><br />
 <div class="panel panel-headline">
 					
 						<div class="panel-body">
@@ -28,20 +121,20 @@ $this->params['breadcrumbs'][] = $this->title;
 			[
 				'attribute' => 'fullname',
 				'label' => 'Name',
+				'format' => 'html',
 				'value' => function($model){
-					return $model->user->fullname;
+					return Html::a($model->user->fullname . '<br /><i style="font-size:12px">'. date('d M Y h:i a', strtotime($model->reg_at)) . '</i>', ['view', 'id' => $model->id]);
 				}
 				
 			],
 			[
-				'attribute' => 'email',
-				'label' => 'Email',
+				'attribute' => 'fee_package',
+				'label' => 'Category',
+				'filter' => Html::activeDropDownList($searchModel, 'fee_package', $searchModel->listPackagesShort,['class'=> 'form-control','prompt' => 'Choose']),
 				'value' => function($model){
-					return $model->user->email;
+					return $model->feePackageText;
 				}
-				
 			],
-
             [
 				'attribute' => 'is_author',
 				'label' => 'Author',

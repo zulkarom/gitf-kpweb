@@ -87,11 +87,18 @@ echo $form->field($model, 'currency_int')->widget(Select2::classname(), [
 
 
 </div>
+<div class="row">
+    <div class="col-md-6">
+<?= $form->field($model, 'fee_package')->dropDownList( $model->feePackageOptions() ) ?>
+
+</div>
+    <div class="col-md-6"></div>
+</div>
 <br />
 
 
 
-<?=UploadFile::fileInput($model, 'logo', true)?>
+
 
 
 <?= $form->field($model, 'payment_info_inv')->widget(TinyMce::className(), [
@@ -108,7 +115,7 @@ echo $form->field($model, 'currency_int')->widget(Select2::classname(), [
     ]
 ]);?>
 
-
+<?=UploadFile::fileInput($model, 'logo', true)?>
 
     <div class="form-group">
         <?= Html::submitButton('Save Payment Setting', ['class' => 'btn btn-success']) ?>

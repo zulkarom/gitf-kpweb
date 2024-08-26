@@ -1,0 +1,1 @@
+ALTER TABLE `conference`  ADD `fee_package` TINYINT NULL DEFAULT '1' COMMENT '1=by paper, 2 = fixed package'  AFTER `is_pg`;

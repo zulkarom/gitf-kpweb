@@ -29,6 +29,8 @@ class NewUserFormPg extends Model
 	public $sv_co1;
 	public $sv_co2;
 	public $sv_co3;
+
+    public $fee_package;
 	
 
     /**
@@ -53,6 +55,8 @@ class NewUserFormPg extends Model
             
             
             ['password_repeat', 'compare', 'compareAttribute'=>'password', 'message'=>"Passwords don't match" ],
+
+            [['fee_package'], 'integer'],
             
         ];
 
@@ -75,6 +79,7 @@ class NewUserFormPg extends Model
         $label['sv_co1'] = 'Co-Supervisor I';
         $label['sv_co2'] = 'Co-Supervisor II';
         $label['sv_co3'] = 'Co-Supervisor III';
+        $label['fee_package'] = 'Category';
         
         return $label;
     } 
@@ -126,6 +131,7 @@ class NewUserFormPg extends Model
             $reg->conf_id = $conf->id;
             $reg->reg_at = new Expression('NOW()');
             $reg->confly_number = $reg->nextConflyNumber();
+            $reg->fee_package = $this->fee_package;
             $flag = $reg->save();
 
 
