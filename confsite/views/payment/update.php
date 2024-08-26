@@ -63,8 +63,14 @@ foreach($model->papers as $paper){
 <div class="col-md-5">
 <div class="form-group highlight-addon field-confregistration-paper_number required">
 <label class="has-star" for="confregistration-fee_amount">Number of Paper</label>
-
-<input type="text" class="form-control disabled" value="<?=$model->countNotRejectPapers?>"  disabled>
+<?php 
+if($conf->fee_package == 2){ //fixed
+    $style = 'style="display:none"';
+}else{
+    $style='';
+}
+?>
+<div id="con-count" <?=$style?>><input type="text" class="form-control disabled" value="<?=$model->countNotRejectPapers?>"  disabled></div>
 
 </div>
     
@@ -75,7 +81,11 @@ for($i=1;$i<=10;$i++){
     $arr[$i] = $i;
 }
 //echo '<input type="text" id="show_number" class="form-control disabled" value="'.$model->paper_number.'">';
-echo $form->field($model, 'paper_number')->hiddenInput(['value' => $model->countNotRejectPapers])->label(false)?>
+//echo $conf->fee_package;
+
+echo $form->field($model, 'paper_number')->hiddenInput(['value' => $model->countNotRejectPapers])->label(false);
+
+?>
 
 </div>
 </div>
@@ -130,7 +140,7 @@ function setPaper(){
 }
 
 function calc(){
-    
+    var fee_package = '. $conf->fee_package.';
     var val = $("#confregistration-fee_package").val();
     var pac = setPackage();
     var item;
@@ -143,6 +153,12 @@ function calc(){
         if(item.id == val){
             fee = parseFloat(item.fee_amount);
             qty = parseInt($("#confregistration-paper_number").val());
+
+            if(fee_package == 2){
+            qty = 1;
+            }
+            
+
             fee = fee * qty;
 
             cur = item.fee_currency;
