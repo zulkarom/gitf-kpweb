@@ -59,10 +59,6 @@ foreach($model->papers as $paper){
 
 <?=$form->field($model, 'fee_package') ->dropDownList($model->listPackages, ['prompt' => 'Select a Category'])?>
 
-<div class="row">
-<div class="col-md-5">
-<div class="form-group highlight-addon field-confregistration-paper_number required">
-<label class="has-star" for="confregistration-fee_amount">Number of Paper</label>
 <?php 
 if($conf->fee_package == 2){ //fixed
     $style = 'style="display:none"';
@@ -70,7 +66,15 @@ if($conf->fee_package == 2){ //fixed
     $style='';
 }
 ?>
-<div id="con-count" <?=$style?>><input type="text" class="form-control disabled" value="<?=$model->countNotRejectPapers?>"  disabled></div>
+
+<div class="row">
+<div class="col-md-5">
+<div id="con-count" >
+
+<div <?=$style?> class="form-group highlight-addon field-confregistration-paper_number required">
+<label class="has-star" for="confregistration-fee_amount">Number of Paper</label>
+
+<input type="text" class="form-control disabled" value="<?=$model->countNotRejectPapers?>"  disabled>
 
 </div>
     
@@ -87,6 +91,7 @@ echo $form->field($model, 'paper_number')->hiddenInput(['value' => $model->count
 
 ?>
 
+</div>
 </div>
 </div>
 
