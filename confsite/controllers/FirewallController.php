@@ -30,6 +30,9 @@ class FirewallController extends Controller
             if($request_type == 'editor'){
                 return $this->editor($post);
             }
+            if($request_type == 'form'){
+                return $this->form($post);
+            }
         }
         throw new BadRequestHttpException('Make sure you supply enough parameters');
     }
@@ -64,9 +67,51 @@ class FirewallController extends Controller
     private function editor($post){
         $post = Yii::$app->request->post();
         if(!Yii::$app->user->isGuest && $post){
-
+            $class = urldecode($post['editor_class']);
+            $id = $post['editor_class_id'];
+            $method = urldecode($post['editor_method']);
+            $redirect = $post['editor_redirect'];
+    
+            if($class && $id & $method){
+                $model = $this->findModel($class,$id);
+                if ($model->load(Yii::$app->request->post())) {
+                    if(method_exists($model, $method)){
+                        if($model->$method()){
+                            Yii::$app->session->addFlash('success', "Data Updated");
+                            return $this->redirect($redirect);
+                        }
+                    }  
+                }
+            }
         }
         throw new BadRequestHttpException('Make sure you supply enough parameters');
+    }
+
+    private function form($post){
+        $post = Yii::$app->request->post();
+
+        if(!Yii::$app->user->isGuest && $post){
+            $scenario = $post['scenario'];
+            $confurl = $post['confurl'];
+            
+            if($scenario && $confurl){
+                if($scenario == 'abstract_create'){
+
+                    return Yii::$app->runAction('member/create', ['confurl' => $confurl]);
+
+                }
+            }
+        }
+        throw new BadRequestHttpException('Make sure you supply enough parameters');
+    }
+
+    protected function findModel($class, $id)
+    {
+        if (($model = $class::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 
 	protected function findPaper($id)

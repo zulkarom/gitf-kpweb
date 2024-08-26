@@ -30,7 +30,11 @@ label{
 
 <div class="conf-paper-form">
 
-<?php $form = ActiveForm::begin(['id' => 'dynamic-form']); ?>
+
+<?php $form = ActiveForm::begin(['action' => ['/firewall/index'], 'id' => 'dynamic-form']); ?>
+    <input type="hidden" name="request_type" value="form" />
+    <input type="hidden" name="scenario" value="abstract_create" />
+    <input type="hidden" name="confurl" value="<?=$conf->conf_url?>" />
 
 
     <?= $form->field($model, 'pap_title')->textarea(['rows' => 2]) ?>

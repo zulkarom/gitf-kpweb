@@ -63,6 +63,19 @@ class MemberController extends Controller
 			        return true;
 			    }
 			}else{
+				$post = Yii::$app->request->post();
+				if($post && $post['confurl']){
+					$url = $post['confurl'];
+					if($url){
+						$conf = $this->findConferenceByUrl($url);
+						if(!Conference::userIsRegistered($conf->id)){
+							return $this->redirect(['site/member', 'confurl' => $url])->send();
+						}else{
+							return true;
+						}
+					}
+
+				}
 			    throw new NotFoundHttpException('Invalid url ('.$url.') - no conference url provided');
 			}
 			
@@ -377,13 +390,15 @@ class MemberController extends Controller
      */
 	public function actionCreate($confurl=null)
     {
+		//return Yii::$app->runAction('project/index', ['id' => $project_id, 'preview' => $preview]);
+	
 		$conf = $this->findConferenceByUrl($confurl);
 		if($conf->system_only == 1){
 			$this->layout = 'system-member';
 		}else{
 			$this->layout = 'main-member';
 		}
-
+		
 
 		if($confurl){
 		$model = new ConfPaper();
@@ -477,7 +492,7 @@ class MemberController extends Controller
      return $this->render('abstract', [
             'model' => $model,
             'authors' => (empty($authors)) ? [new ConfAuthor] : $authors,
-         'conf' => $conf
+         	'conf' => $conf
         ]);
    
 	} 
