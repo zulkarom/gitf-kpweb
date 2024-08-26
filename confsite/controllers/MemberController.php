@@ -322,6 +322,7 @@ class MemberController extends Controller
 		if($confurl){
 			$user = User::findOne(Yii::$app->user->identity->id);
 			$associate = $user->associate;
+			$reg = ConfRegistration::findOne(['conf_id' => $conf->id,'user_id' => $user->id]);
 			
 			if(!$associate){
 			    $new = new Associate();
@@ -342,8 +343,12 @@ class MemberController extends Controller
 			$user->scenario = 'conf_profile';
 		
 			if ($user->load(Yii::$app->request->post()) && $associate->load(Yii::$app->request->post())) {
-			  //  print_r(Yii::$app->request->post());die();
-				if($user->save() && $associate->save()){
+			   // print_r(Yii::$app->request->post());die();
+				if($reg){
+					$reg->fee_package = $associate->fee_package;
+				}
+				
+				if($user->save() && $associate->save() && $reg->save()){
 					Yii::$app->session->addFlash('success', "Profile Updated");
 					return $this->redirect(['member/profile', 'confurl' => $confurl]);
 				}else{
@@ -356,12 +361,16 @@ class MemberController extends Controller
 			if($conf->is_pg == 1){
 				return $this->render('profile_pg', [
 					'user' => $user,
-					'associate' => $associate
+					'associate' => $associate,
+					'conf' => $conf,
+					'reg' => $reg
 				]);
 			}else{
 				return $this->render('profile', [
 					'user' => $user,
-					'associate' => $associate
+					'associate' => $associate,
+					'conf' => $conf,
+					'reg' => $reg
 				]);
 			}
 			

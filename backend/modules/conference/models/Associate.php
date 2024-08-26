@@ -14,6 +14,7 @@ use common\models\Country;
  */
 class Associate extends \yii\db\ActiveRecord
 {
+	public $fee_package;
     /**
      * @inheritdoc
      */
@@ -34,7 +35,7 @@ class Associate extends \yii\db\ActiveRecord
 			
 			[['institution', 'country_id', 'title'], 'required', 'on' => 'update_external'],
 			
-            [['user_id', 'country_id'], 'integer'],
+            [['user_id', 'country_id', 'fee_package'], 'integer'],
 			
 			[['title'], 'string', 'max' => 100],
 			
@@ -61,7 +62,8 @@ class Associate extends \yii\db\ActiveRecord
 			'sv_co2' => 'Co-Supervisor II',
 			'sv_co3' => 'Co-Supervisor III',
 			'cumm_sem' => 'Cumulative Semester',
-			'assoc_address' => 'Address'
+			'assoc_address' => 'Address',
+			'fee_package' => 'Category'
         ];
     }
 	

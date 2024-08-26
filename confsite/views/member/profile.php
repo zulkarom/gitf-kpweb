@@ -60,6 +60,18 @@ $model = $associate;
 
 </div>	
 
+<div class="row">
+	<div class="col-md-6">    <?php  
+if($conf->commercial == 1 && $conf->fee_package == 2){
+	$model->fee_package = $reg->fee_package;
+  $fees = ArrayHelper::map($conf->confFees, 'id', 'fee_name');
+  echo $form->field($model, 'fee_package')->dropDownList($fees, ['prompt' => 'Select']);
+}
+
+?></div>
+	<div class="col-md-6"></div>
+</div>
+
 
 <div class="row">
 

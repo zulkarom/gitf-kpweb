@@ -129,7 +129,7 @@ echo $form->field($model, 'paper_number')->hiddenInput(['value' => $model->count
 <?php
 $this->registerJs('
 //setPaper();
-
+calc();
 $("#confregistration-fee_package").change(function(){
     calc();
 });
