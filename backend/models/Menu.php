@@ -1042,7 +1042,10 @@ class Menu
                     ]
                 ];
 
-                // $paper_menu[] = ['label' => 'Payment', 'icon' => 'dollar', 'url' => ['/conference/paper/payment', 'conf' => $confurl]];
+                if($conf->commercial){
+                    $paper_menu[] = ['label' => 'Payment', 'icon' => 'dollar', 'url' => ['/conference/paper/payment', 'conf' => $confurl]];
+                }
+                
 
                 $paper_menu[] = [
                     'label' => 'Complete',

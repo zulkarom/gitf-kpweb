@@ -150,6 +150,8 @@ $columns = [
 			
 			<div class="conf-registration-index">
 
+<div class="table-responsive">
+	
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -212,7 +214,7 @@ $columns = [
 				
 			],
 
-            
+			
 			
            // 'reg_at:datetime',
 
@@ -243,5 +245,6 @@ $columns = [
 
         ],
     ]); ?>
+	</div>
 </div></div>
 </div>
