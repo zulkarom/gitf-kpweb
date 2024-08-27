@@ -76,7 +76,7 @@ table.detail-view th {
                 'value' => function($model){
                     if($model->user->associate){
                         if($model->user->associate->country){
-                            $model->user->associate->country->country_name;
+                            return $model->user->associate->country->country_name;
                         }
                     } 
                 }

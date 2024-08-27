@@ -123,7 +123,9 @@ echo $form->field($model, 'phone');
 	<div class="col-md-6">
 <?php 
 
-$model->country_id = 158;
+if(!$model->country_id){
+	$model->country_id = 158;
+}
 echo $form->field($model, 'country_id')->widget(Select2::classname(), [
     'data' => ArrayHelper::map(Country::find()->all(),'id', 'country_name'),
     'language' => 'en',

@@ -26,6 +26,12 @@ $columns = [
 		
 	],
 	[
+		'label' =>'Title',
+		'value' => function($model){
+			return $model->user->associate ? $model->user->associate->title : '';
+		}
+	],
+	[
 		'attribute' => 'fullname',
 		'label' => 'Name',
 		'value' => function($model){
@@ -84,7 +90,39 @@ $columns = [
 			return $model->countPapers;
 		}
 		
-	]];
+	],
+
+	
+	[
+		'label' =>'Institution',
+		'value' => function($model){
+			return $model->user->associate ? $model->user->associate->institution : '';
+		}
+	],
+	[
+		'label' =>'Phone',
+		'value' => function($model){
+			return $model->user->associate ? $model->user->associate->phone : '';
+		}
+	],
+	[
+		'label' =>'Address',
+		'value' => function($model){
+			return $model->user->associate ? $model->user->associate->assoc_address : '';
+		}
+	],
+	[
+		'label' =>'Country',
+		'value' => function($model){
+			if($model->user->associate){
+				if($model->user->associate->country){
+					return $model->user->associate->country->country_name;
+				}
+			} 
+		}
+	]
+
+];
 
 
 ?>

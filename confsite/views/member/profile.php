@@ -115,8 +115,10 @@ echo $form->field($associate, 'institution');
 
 	<div class="col-md-6">
 <?php 
+if(!$model->country_id){
+	$model->country_id = 158;
+}
 
-$model->country_id = 158;
 echo $form->field($model, 'country_id')->widget(Select2::classname(), [
     'data' => ArrayHelper::map(Country::find()->all(),'id', 'country_name'),
     'language' => 'en',

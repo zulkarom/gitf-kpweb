@@ -322,6 +322,7 @@ class MemberController extends Controller
 		if($confurl){
 			$user = User::findOne(Yii::$app->user->identity->id);
 			$associate = $user->associate;
+			
 			$reg = ConfRegistration::findOne(['conf_id' => $conf->id,'user_id' => $user->id]);
 			
 			if(!$associate){
