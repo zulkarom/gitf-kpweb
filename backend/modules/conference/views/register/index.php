@@ -99,7 +99,7 @@ $columns = [
 			return $model->user->associate ? $model->user->associate->institution : '';
 		}
 	],
-	[
+	/* [
 		'label' =>'Phone',
 		'value' => function($model){
 			return $model->user->associate ? $model->user->associate->phone : '';
@@ -110,7 +110,7 @@ $columns = [
 		'value' => function($model){
 			return $model->user->associate ? $model->user->associate->assoc_address : '';
 		}
-	],
+	], */
 	[
 		'label' =>'Country',
 		'value' => function($model){
