@@ -4,7 +4,7 @@
     <thead>
       <tr>
         <th>Categories</th>
-        <th>Early Bird</th>
+
         <th>Normal</th>
       </tr>
     </thead>
@@ -16,7 +16,6 @@
 		foreach($fees as $fee){
 			echo '<tr>
         <td>'.$fee->fee_name .'</td>
-        <td>'.$fee->fee_currency .' '.$fee->fee_early .'</td>
         <td>'.$fee->fee_currency .' '.$fee->fee_amount .'</td>
       </tr>';
 		}

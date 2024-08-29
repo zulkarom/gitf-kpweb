@@ -103,7 +103,7 @@ class PaymentController extends Controller
 
 		
         if(!User::checkProfile($confurl)){
-            Yii::$app->session->addFlash('info', "<i class='fa fa-info'></i> You need to complete your ". Html::a('profile ', ['profile', 'confurl' => $confurl]) ." to include your information regarding institution, phone and address.");
+            Yii::$app->session->addFlash('info', "<i class='fa fa-info'></i> You need to complete your ". Html::a('profile ', ['/member/profile', 'confurl' => $confurl]) ." to include your information regarding institution, phone and address.");
         }
         
 
