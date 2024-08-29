@@ -5,7 +5,7 @@
       <tr>
         <th>Categories</th>
 
-        <th>Normal</th>
+        <th>Amount</th>
       </tr>
     </thead>
     <tbody>
