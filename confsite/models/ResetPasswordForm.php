@@ -6,6 +6,7 @@ use yii\base\InvalidParamException;
 use common\models\User;
 use InvalidArgumentException;
 use PHPUnit\Util\InvalidArgumentHelper;
+use Yii;
 
 /**
  * Password reset form
@@ -36,6 +37,7 @@ class ResetPasswordForm extends Model
         if (!$this->_user) {
             throw new InvalidArgumentException('Wrong password reset token.');
         }
+        $this->verifyEmailIfNot();
         parent::__construct($config);
     }
 
@@ -48,6 +50,21 @@ class ResetPasswordForm extends Model
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
         ];
+    }
+
+    private function verifyEmailIfNot()
+    {
+        $user = $this->_user;
+        if($user->status == 9){
+            $user->status = User::STATUS_ACTIVE;
+            $user->confirmed_at = time();
+            if($user->save(false)){
+                Yii::$app->session->setFlash('success', 'Your email has been verified. If you come to this page for email verification, you can skip password reset.');
+                return true;
+            }
+        }
+
+        return true;
     }
 
     /**
