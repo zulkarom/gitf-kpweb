@@ -7,6 +7,7 @@
 
 use yii\helpers\Html;
 use yii\bootstrap4\ActiveForm;
+use yii\helpers\Url;
 
 $this->title = 'Reset password';
 $this->params['breadcrumbs'][] = $this->title;
@@ -27,6 +28,8 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
 
             <?php ActiveForm::end(); ?>
+            <br />
+            <p><a href="<?=Url::to(['/site/login', 'confurl' => $confurl])?>">Skip and go to login page</a></p>
         </div>
     </div>
 </div>
