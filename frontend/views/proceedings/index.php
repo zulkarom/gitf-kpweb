@@ -21,14 +21,12 @@ $this->params['breadcrumbs'][] = $this->title;
  </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-              'columns' => [
+        'pager' => [
+            'class' => 'yii\bootstrap4\LinkPager',
+        ],
+        'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            
             'proc_name',
-            
-            
-
             ['class' => 'yii\grid\ActionColumn',
                  'contentOptions' => ['style' => 'width: 13%'],
                 'template' => '{view}',
