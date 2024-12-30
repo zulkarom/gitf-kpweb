@@ -38,13 +38,14 @@ class ProceedingsController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new ProceedingSearch();
+        return $this->redirect(['publications/index']);
+        /* $searchModel = new ProceedingSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-        ]);
+        ]); */
     }
 	
 	 public function actionPaper($purl)
