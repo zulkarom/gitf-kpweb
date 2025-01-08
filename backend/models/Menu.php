@@ -695,7 +695,7 @@ class Menu
                 ],
 
                 [
-                    'label' => 'I/E Auditors',
+                    'label' => 'I/E Auditors/ Examiners',
                     'icon' => 'check-square-o',
                     'url' => [
                         '/course-files/auditor/index'
