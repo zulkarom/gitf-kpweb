@@ -237,7 +237,7 @@ class Menu
                     'visible' => Yii::$app->user->can('students-manager')
                 ],
 
-                [
+                /* [
                     'label' => 'Internship',
                     'icon' => 'book',
                     'url' => [
@@ -262,7 +262,7 @@ class Menu
                         '/students/deanlist'
                     ],
                     'visible' => Yii::$app->user->can('students-manager')
-                ]
+                ] */
             ]
         ];
     }

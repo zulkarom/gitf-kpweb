@@ -11,261 +11,160 @@ $dirAsset = Yii::$app->assetManager->getPublishedUrl('@backend/views/myasset');
 $this->title = 'Modules';
 
 ?>
-        <div class="row">
-        <div class="col-md-3 col-sm-6 col-xs-12">
-         
-		 <a href="<?=Url::to(['/staff/profile'])?>">
-          <div class="info-box bg-aqua">
-            <span class="info-box-icon"><i class="fa fa fa-user"></i></span>
+<style>
+  .dashboard-intro{margin:2px 0 12px;color:#7b7b7b}
+  .module-grid .small-box{border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.06);transition:transform .15s ease,box-shadow .15s ease}
+  .module-grid .small-box .inner{min-height:120px}
+  .module-grid .small-box .inner h3{font-size:20px;margin:0 0 8px;font-weight:600}
+  .module-grid .small-box .inner p{margin:0;color:rgba(255,255,255,.95)}
+  .module-grid .small-box .icon{top:10px;right:15px;opacity:.25}
+  .module-grid .small-box .small-box-footer{background:transparent;color:#fff;text-decoration:none}
+  .module-grid .small-box:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(0,0,0,.12)}
+  @media (max-width: 767px){.module-grid .small-box .inner{min-height:100px}}
+</style>
 
-            <div class="info-box-content">
-              <span class="info-box-text">&nbsp;</span>
-              <span class="info-box-number">My Profile</span>
-
-              
-                  <span class="progress-description">
-                    <font color="white">More info </font><i class="fa fa-arrow-circle-right" style="color:white;"></i>
-                  </span>
+<div class="box box-solid">
+  <div class="box-header with-border">
+    <h3 class="box-title">Active Modules</h3>
+    <div class="dashboard-intro">Quick access to the key areas of the system</div>
+  </div>
+  <div class="box-body">
+    <div class="row module-grid">
+      <div class="col-md-3 col-sm-6 col-xs-12">
+        <a href="<?= Url::to(['/staff']) ?>">
+          <div class="small-box bg-aqua">
+            <div class="inner">
+              <h3>Staff Information</h3>
+              <p>Profiles, positions, departments and contacts.</p>
             </div>
-            <!-- /.info-box-content -->
+            <div class="icon"><i class="fa fa-id-badge"></i></div>
+            <span class="small-box-footer">Open <i class="fa fa-arrow-circle-right"></i></span>
           </div>
-          <!-- /.info-box -->
-          </a>
-        </div>
-        <!-- /.col -->
-        <div class="col-md-3 col-sm-6 col-xs-12">
-          <a href="<?=Url::to(['/staff'])?>">
-          <div class="info-box">
-            <span class="info-box-icon bg-green"><i class="fa fa-users"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text">&nbsp;</span>
-              <span class="info-box-number"><font color="Black">Staff Data</font></span>
-
-              <span class="progress-description">
-                    More info <i class="fa fa-arrow-circle-right"></i>
-                  </span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-          </a>
-        </div>
-        <!-- /.col -->
-        <div class="col-md-3 col-sm-6 col-xs-12">
-		<a href="<?=Url::to(['/teaching-load/default/index'])?>">
-          <div class="info-box bg-yellow">
-            <span class="info-box-icon"><i class="fa fa-book"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text">&nbsp;</span>
-              <span class="info-box-number">Teaching Loads</span>
-
-              
-                  <span class="progress-description">
-                    <font color="white">More info </font><i class="fa fa-arrow-circle-right" style="color:white;"></i>
-                  </span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-          </a>
-          
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-        <div class="col-md-3 col-sm-6 col-xs-12">
-          <a href="<?=Url::to(['/course-files/default/teaching-assignment'])?>">
-          <div class="info-box">
-            <span class="info-box-icon bg-red"><i class="fa fa-files-o"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text">&nbsp;</span>
-              <span class="info-box-number"><font color="Black">Course Files</font></span>
-
-              <span class="progress-description">
-                    More info <i class="fa fa-arrow-circle-right"></i>
-                  </span>
-            </div>
-			</a>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-        </div>
-        <!-- ./col -->
-
-        <div class="row">
-        <div class="col-md-3 col-sm-6 col-xs-12">
-		
-		<a href="<?=Url::to(['/esiap'])?>">
-          <div class="info-box">
-            <span class="info-box-icon bg-aqua"><i class="fa fa-mortar-board"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text">&nbsp;</span>
-              <span class="info-box-number"><font color="Black">Course Management</font></span>
-
-              <span class="progress-description">
-                    More info <i class="fa fa-arrow-circle-right"></i>
-                  </span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-          </a>
-		
-        </div>
-        <!-- /.col -->
-        <div class="col-md-3 col-sm-6 col-xs-12">
-          <a href="<?=Url::to([''])?>">
-          <div class="info-box bg-green">
-            <span class="info-box-icon"><i class="fa fa-sticky-note"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text">&nbsp;</span>
-              <span class="info-box-number">Program Management</span>
-
-            
-                  <span class="progress-description">
-                    <font color="white">More info </font><i class="fa fa-arrow-circle-right" style="color:white;"></i>
-                  </span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-          </a>
-        </div>
-        <!-- /.col -->
-        <div class="col-md-3 col-sm-6 col-xs-12">
-		
-		<a href="<?=Url::to(['/students/default'])?>">
-		
-          <div class="info-box">
-            <span class="info-box-icon bg-yellow"><i class="fa fa-users"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text">&nbsp;</span>
-              <span class="info-box-number"><font color="Black">Student Data</font></span>
-
-              <span class="progress-description">
-                    More info <i class="fa fa-arrow-circle-right"></i>
-                  </span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-          </a>
-		  
-          
-        </div>
-        <!-- /.col -->
-        <div class="col-md-3 col-sm-6 col-xs-12">
-          <a href="<?=Url::to(['/erpd'])?>">
-          <div class="info-box bg-red">
-            <span class="info-box-icon"><i class="fa fa-flask"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text">&nbsp;</span>
-              <span class="info-box-number">e-RPD</span>
-
-                  <span class="progress-description">
-                    <font color="white">More info </font><i class="fa fa-arrow-circle-right" style="color:white;"></i>
-                  </span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-          </a>
-        </div>
-        <!-- /.col -->
+        </a>
       </div>
-
-      <div class="row">
-        <div class="col-md-3 col-sm-6 col-xs-12">
-		 <a href="<?=Url::to(['/site/jeb-web'])?>" target="_blank">
-          <div class="info-box bg-aqua">
-            <span class="info-box-icon"><i class="fa fa fa-book"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text">&nbsp;</span>
-              <span class="info-box-number">JEB Journal</span>
-
-              
-                  <span class="progress-description">
-                    <font color="white">More info </font><i class="fa fa-arrow-circle-right" style="color:white;"></i>
-                  </span>
+     
+      <div class="col-md-3 col-sm-6 col-xs-12">
+        <a href="<?= Url::to(['/postgrad/student']) ?>">
+          <div class="small-box bg-yellow">
+            <div class="inner">
+              <h3>Postgraduate</h3>
+              <p>Students, supervisors, progress tracking and stages.</p>
             </div>
-            <!-- /.info-box-content -->
+            <div class="icon"><i class="fa fa-graduation-cap"></i></div>
+            <span class="small-box-footer">Open <i class="fa fa-arrow-circle-right"></i></span>
           </div>
-          <!-- /.info-box -->
-          </a>
-          
-        </div>
-        <!-- /.col -->
-        <div class="col-md-3 col-sm-6 col-xs-12">
-          <a href="<?=Url::to([''])?>">
-          <div class="info-box">
-            <span class="info-box-icon bg-green"><i class="fa fa-tv"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text">&nbsp;</span>
-              <span class="info-box-number"><font color="Black">Website</font></span>
-
-              <span class="progress-description">
-                    More info <i class="fa fa-arrow-circle-right"></i>
-                  </span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-          </a>
-        </div>
-        <!-- /.col -->
-        <div class="col-md-3 col-sm-6 col-xs-12">
-		
-		  <a href="<?=Url::to(['/aduan'])?>">
-          <div class="info-box bg-yellow">
-            <span class="info-box-icon"><i class="fa fa-comments"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text">&nbsp;</span>
-              <span class="info-box-number">eAduan</span>
-
-              
-                  <span class="progress-description">
-                    <font color="white">More info </font><i class="fa fa-arrow-circle-right" style="color:white;"></i>
-                  </span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-          </a>
-		
-         
-        </div>
-        <!-- /.col -->
-        <div class="col-md-3 col-sm-6 col-xs-12">
-          <a href="<?=Url::to([''])?>">
-          <div class="info-box">
-            <span class="info-box-icon bg-red"><i class="fa fa-download"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text">&nbsp;</span>
-              <span class="info-box-number"><font color="Black">My Download</font></span>
-
-              <span class="progress-description">
-                    More info <i class="fa fa-arrow-circle-right"></i>
-                  </span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-          </a>
-        </div>
-        <!-- /.col -->
+        </a>
       </div>
+      <div class="col-md-3 col-sm-6 col-xs-12">
+        <a href="<?= Url::to(['/students/default']) ?>">
+          <div class="small-box bg-red">
+            <div class="inner">
+              <h3>Students</h3>
+              <p>View and manage undergraduate student data.</p>
+            </div>
+            <div class="icon"><i class="fa fa-users"></i></div>
+            <span class="small-box-footer">Open <i class="fa fa-arrow-circle-right"></i></span>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-3 col-sm-6 col-xs-12">
+        <a href="<?= Url::to(['/esiap']) ?>">
+          <div class="small-box bg-green">
+            <div class="inner">
+              <h3>Course Management</h3>
+              <p>Create and update courses, CLOs and mappings.</p>
+            </div>
+            <div class="icon"><i class="fa fa-mortar-board"></i></div>
+            <span class="small-box-footer">Open <i class="fa fa-arrow-circle-right"></i></span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Distinct style for Additional Modules */
+  .module-cards .module-card{background:#fff;border-radius:10px;border:1px solid #e7e9ee;box-shadow:0 2px 6px rgba(0,0,0,.05);transition:transform .15s ease,box-shadow .15s ease;position:relative;overflow:hidden}
+  .module-cards .module-card .bar{height:4px;width:100%;position:absolute;top:0;left:0}
+  .module-cards .module-card .inner{padding:18px 16px 18px 16px;min-height:110px}
+  .module-cards .module-card h4{margin:0 0 6px;font-size:18px;font-weight:700;color:#1d2430}
+  .module-cards .module-card p{margin:0;color:#5a6577}
+  .module-cards .module-card .icon{position:absolute;right:14px;bottom:12px;color:#b9c2d0;font-size:28px;opacity:.6}
+  .module-cards .module-card .footer{display:block;padding:10px 16px;border-top:1px solid #eef1f5;color:#274c77;background:#f9fbfd;font-weight:600;text-decoration:none}
+  .module-cards .module-card:hover{transform:translateY(-2px);box-shadow:0 10px 20px rgba(0,0,0,.10)}
+  .theme-purple .bar{background:#7e57c2}
+  .theme-orange .bar{background:#fb8c00}
+  .theme-teal .bar{background:#26a69a}
+  .theme-blue .bar{background:#1e88e5}
+</style>
+
+<div class="box box-solid">
+  <div class="box-header with-border">
+    <h3 class="box-title">Additional Modules</h3>
+    <div class="dashboard-intro">Quick access to additional key areas of the system</div>
+  </div>
+  <div class="box-body">
+    <div class="row module-cards">
+      <div class="col-md-3 col-sm-6 col-xs-12">
+        <a href="<?= Url::to(['/conference/conference/index']) ?>">
+          <div class="module-card theme-purple">
+            <span class="bar"></span>
+            <div class="inner">
+              <h4>Conference</h4>
+              <p>Manage conferences and schedules.</p>
+              <i class="fa fa-microphone icon"></i>
+            </div>
+            <span class="footer">Open <i class="fa fa-arrow-circle-right"></i></span>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-3 col-sm-6 col-xs-12">
+        <a href="<?= Url::to(['/sae']) ?>">
+          <div class="module-card theme-orange">
+            <span class="bar"></span>
+            <div class="inner">
+              <h4>SAE Interview</h4>
+              <p>Interview setup, sessions and results.</p>
+              <i class="fa fa-video-camera icon"></i>
+            </div>
+            <span class="footer">Open <i class="fa fa-arrow-circle-right"></i></span>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-3 col-sm-6 col-xs-12">
+        <a href="<?= Url::to(['/protege/session']) ?>">
+          <div class="module-card theme-blue">
+            <span class="bar"></span>
+            <div class="inner">
+              <h4>Protege</h4>
+              <p>Programs, sessions and participants.</p>
+              <i class="fa fa-user-plus icon"></i>
+            </div>
+            <span class="footer">Open <i class="fa fa-arrow-circle-right"></i></span>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-3 col-sm-6 col-xs-12">
+        <a href="<?= Url::to(['/proceedings']) ?>">
+          <div class="module-card theme-teal">
+            <span class="bar"></span>
+            <div class="inner">
+              <h4>Proceedings</h4>
+              <p>Proceedings management and publishing.</p>
+              <i class="fa fa-book icon"></i>
+            </div>
+            <span class="footer">Open <i class="fa fa-arrow-circle-right"></i></span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
       
 
 <?php /* if($user->staff->is_academic == 1) {?>

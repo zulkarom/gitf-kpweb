@@ -140,9 +140,9 @@ $menuItems = [
 					
 					['label' => 'MODULES', 'options' => ['class' => 'header']],
 					
-					['label' => 'Teaching Loads', 'icon' => 'book', 'visible' => $teaching_load, 'url' => ['/teaching-load/default/index']],
+					//['label' => 'Teaching Loads', 'icon' => 'book', 'visible' => $teaching_load, 'url' => ['/teaching-load/default/index']],
 					
-					['label' => 'Course Files', 'icon' => 'files-o', 'url' => ['/course-files/default/teaching-assignment']],
+					//['label' => 'Course Files', 'icon' => 'files-o', 'url' => ['/course-files/default/teaching-assignment']],
 					
 					['label' => 'Staff Info', 'icon' => 'user', 'url' => ['/staff']],
 					
@@ -152,43 +152,30 @@ $menuItems = [
     
                    // ['label' => 'Program Management', 'icon' => 'mortar-board', 'url' => ['/esiap/program'],],
 					
-					['label' => 'e-RPD', 'icon' => 'flask', 'url' => ['/erpd'],],	
+					//['label' => 'e-RPD', 'icon' => 'flask', 'url' => ['/erpd'],],	
     
-                    ['label' => 'Workshop', 'icon' => 'cube', 'url' => ['/workshop/kursus-anjur'], 'visible' => Yii::$app->user->can('workshop-manager')],
+                  //  ['label' => 'Workshop', 'icon' => 'cube', 'url' => ['/workshop/kursus-anjur'], 'visible' => Yii::$app->user->can('workshop-manager')],
     
                     ['label' => 'Students', 'icon' => 'users', 'url' => ['/students/student'], 'visible' => Yii::$app->user->can('students-manager')],
 					
-					['label' => 'eAduan', 'icon' => 'comments', 'url' => ['/aduan'],],
+					//['label' => 'eAduan', 'icon' => 'comments', 'url' => ['/aduan'],],
 					
-					['label' => 'JEB Journal', 'visible' => false, 'icon' => 'book', 'url' => ['/site/jeb-web'], 'template'=>'<a href="{url}" target="_blank">{icon} {label}</a>'],
+					//['label' => 'JEB Journal', 'visible' => false, 'icon' => 'book', 'url' => ['/site/jeb-web'], 'template'=>'<a href="{url}" target="_blank">{icon} {label}</a>'],
 					
 					['label' => 'Conference', 'icon' => 'microphone', 'visible' => Yii::$app->user->can('conference-manager'), 'url' => ['/conference/conference/index']],
 					
-					['label' => 'Downloads', 'icon' => 'download', 'visible' => Yii::$app->user->can('download-manager'), 'url' => ['/downloads/download/index']],
+					//['label' => 'Downloads', 'icon' => 'download', 'visible' => Yii::$app->user->can('download-manager'), 'url' => ['/downloads/download/index']],
 					
-					['label' => 'e-Certificate', 'icon' => 'file', 'url' => ['/ecert']],
+					//['label' => 'e-Certificate', 'icon' => 'file', 'url' => ['/ecert']],
 					
-                ['label' => 'User Manual', 'icon' => 'book', 'visible' => Yii::$app->user->can('manual-manager'), 'url' => ['/manual/module']],
+               // ['label' => 'User Manual', 'icon' => 'book', 'visible' => Yii::$app->user->can('manual-manager'), 'url' => ['/manual/module']],
 
-				['label' => 'SAE Interview', 'icon' => 'book', 'visible' => Yii::$app->user->can('manage-sae'), 'url' => ['/sae']],
+				['label' => 'SAE Interview', 'icon' => 'book', 'url' => ['/sae']],
 
-				['label' => 'Protege', 'icon' => 'book', 'visible' => Yii::$app->user->can('protege'), 'url' => ['/protege/session']],
+				['label' => 'Protege', 'icon' => 'book', 'url' => ['/protege/session']],
 
-				[
-					'label' => 'Web',
-					'icon' => 'tv',
-					'visible' => true,
-					'url' => '#',
-					'items' => [
-					
-						['label' => 'Proceedings', 'icon' => 'microphone', 'url' => ['/proceedings'], 'visible' => Yii::$app->user->can('proceedings-manager')],
-					
-					   /*  ['label' => 'Chapter in Book', 'icon' => 'book', 'url' => ['/chapterinbook'], 'visible' => Yii::$app->user->can('chapterinbook-manager')],
-						
-						['label' => 'Caknawan', 'icon' => 'book', 'url' => ['/website/caknawan'], 'visible' => Yii::$app->user->can('internship-manager')], */
+				['label' => 'Proceedings', 'icon' => 'microphone', 'url' => ['/proceedings']],
 
-					],
-				],
 
 					
 					
