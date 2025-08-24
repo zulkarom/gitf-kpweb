@@ -15,7 +15,7 @@ use common\models\UploadFile;
 /**
  * ProceedingController implements the CRUD actions for Proceeding model.
  */
-class ProceedingsController extends Controller
+class PublicationsController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -38,14 +38,13 @@ class ProceedingsController extends Controller
      */
     public function actionIndex()
     {
-        return $this->redirect(['publications/index']);
-        /* $searchModel = new ProceedingSearch();
+        $searchModel = new ProceedingSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-        ]); */
+        ]);
     }
 	
 	 public function actionPaper($purl)

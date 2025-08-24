@@ -74,7 +74,7 @@ class DownloadCategory extends \yii\db\ActiveRecord
 	}
 	
 	public static function activeCategories(){
-		return ArrayHelper::map(self::find()->where(['is_active' => 1])->all(), 'id', 'category_name');
+		return ArrayHelper::map(self::find()->where(['is_active' => 1])->orderBy('created_at DESC')->all(), 'id', 'category_name');
 	}
 	
 	public static function getDefaultCategory(){

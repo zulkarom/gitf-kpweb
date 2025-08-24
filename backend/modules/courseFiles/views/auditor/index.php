@@ -17,7 +17,7 @@ if($dates){
 }
 
 
-$this->title = 'Internal / External Auditors';
+$this->title = 'Internal / External Auditors / Examiners';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
