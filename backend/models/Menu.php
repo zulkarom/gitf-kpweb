@@ -275,7 +275,13 @@ class Menu
             'visible' => Yii::$app->user->can('postgrad-manager'),
             'url' => '#',
             'items' => [
-
+                [
+                    'label' => 'Stats',
+                    'icon' => 'pie-chart',
+                    'url' => [
+                        '/postgrad/student/stats'
+                    ]
+                ],
                 [
                     'label' => 'Students',
                     'icon' => 'user',
@@ -283,13 +289,7 @@ class Menu
                         '/postgrad/student'
                     ]
                 ],
-                [
-                    'label' => 'Coursework',
-                    'icon' => 'cube',
-                    'url' => [
-                        '/postgrad/coursework'
-                    ]
-                ],
+               
                 [
                     'label' => 'Supervisors/Examiners',
                     'icon' => 'hand-o-right',
@@ -305,7 +305,13 @@ class Menu
                     ]
                 ],
 
-
+                [
+                    'label' => 'Coursework',
+                    'icon' => 'cube',
+                    'url' => [
+                        '/postgrad/coursework'
+                    ]
+                ],
                 [
                     'label' => 'Setting',
                     'icon' => 'cog',

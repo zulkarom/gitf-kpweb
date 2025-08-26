@@ -71,7 +71,12 @@ use yii\helpers\Html;
             .sidebar-menu>li.header { color:#98a1b3; font-weight:700; font-size:12px; letter-spacing:.7px; }
             .sidebar-menu>li>a { padding:13px 16px; font-size:15px; }
             .sidebar-menu>li>a>.fa, .sidebar-menu>li>a>.glyphicon, .sidebar-menu>li>a>.ion { width:22px; font-size:18px; }
-            .sidebar-menu .treeview-menu>li>a { padding:11px 16px 11px 40px; font-size:15px; }
+            /* Align child (tree) items with parent items */
+            .sidebar-menu .treeview-menu { padding-left: 0; }
+            .sidebar-menu .treeview-menu>li>a { padding:11px 16px; font-size:15px; }
+            .sidebar-menu .treeview-menu>li>a>.fa,
+            .sidebar-menu .treeview-menu>li>a>.glyphicon,
+            .sidebar-menu .treeview-menu>li>a>.ion { width:22px; font-size:18px; }
             .sidebar-menu>li.active>a, .sidebar-menu>li:hover>a { background:#f4f6f9; color:#111; }
 
             /* Slightly softer shadows for dropdowns */

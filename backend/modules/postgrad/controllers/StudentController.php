@@ -12,6 +12,9 @@ use yii\filters\AccessControl;
 use common\models\User;
 use backend\modules\postgrad\models\StudentData2;
 use backend\modules\postgrad\models\StudentData4;
+use backend\modules\esiap\models\Program;
+use common\models\Country;
+use backend\modules\postgrad\models\Field;
 
 /**
  * StudentPostGradController implements the CRUD actions for StudentPostGrad model.
@@ -51,6 +54,86 @@ class StudentController extends Controller
         ]);
     }
 
+    public function actionStats()
+    {
+        // Overall active count
+        $activeCount = (int) Student::find()->where(['status' => Student::STATUS_ACTIVE])->count();
+
+        // Study mode breakdown (1: Full-time, 2: Part-time)
+        $modeRows = (new \yii\db\Query())
+            ->select(['study_mode', 'cnt' => 'COUNT(*)'])
+            ->from(Student::tableName())
+            ->groupBy(['study_mode'])
+            ->all();
+        $studyMode = [1 => 0, 2 => 0];
+        foreach ($modeRows as $r) {
+            if (!empty($r['study_mode'])) {
+                $studyMode[(int)$r['study_mode']] = (int)$r['cnt'];
+            }
+        }
+
+        // Program level breakdown: Master (pro_level=3), PhD (pro_level=4)
+        $programLevel = ['master' => 0, 'phd' => 0];
+        $levelRows = (new \yii\db\Query())
+            ->select(['p.pro_level', 'cnt' => 'COUNT(*)'])
+            ->from(['s' => Student::tableName()])
+            ->leftJoin(['p' => Program::tableName()], 'p.id = s.program_id')
+            ->where(['p.pro_level' => [3, 4]])
+            ->groupBy(['p.pro_level'])
+            ->all();
+        foreach ($levelRows as $r) {
+            if ((int)$r['pro_level'] === 3) { $programLevel['master'] = (int)$r['cnt']; }
+            if ((int)$r['pro_level'] === 4) { $programLevel['phd'] = (int)$r['cnt']; }
+        }
+
+        // Last 5 admission years (descending)
+        $years = (new \yii\db\Query())
+            ->select(['admission_year', 'cnt' => 'COUNT(*)'])
+            ->from(Student::tableName())
+            ->where(['not', ['admission_year' => null]])
+            ->groupBy(['admission_year'])
+            ->orderBy(['admission_year' => SORT_DESC])
+            ->limit(5)
+            ->all();
+
+        // By country (nationality)
+        $byCountryRows = (new \yii\db\Query())
+            ->select(['nationality', 'cnt' => 'COUNT(*)'])
+            ->from(Student::tableName())
+            ->groupBy(['nationality'])
+            ->all();
+        $countryIds = [];
+        foreach ($byCountryRows as $r) { if (!empty($r['nationality'])) { $countryIds[] = (int)$r['nationality']; } }
+        $countries = [];
+        if ($countryIds) {
+            $countries = Country::find()->where(['id' => $countryIds])->indexBy('id')->all();
+        }
+
+        // By field of study
+        $byFieldRows = (new \yii\db\Query())
+            ->select(['field_id', 'cnt' => 'COUNT(*)'])
+            ->from(Student::tableName())
+            ->groupBy(['field_id'])
+            ->all();
+        $fieldIds = [];
+        foreach ($byFieldRows as $r) { if (!empty($r['field_id'])) { $fieldIds[] = (int)$r['field_id']; } }
+        $fields = [];
+        if ($fieldIds) {
+            $fields = Field::find()->where(['id' => $fieldIds])->indexBy('id')->all();
+        }
+
+        return $this->render('stats', [
+            'activeCount' => $activeCount,
+            'studyMode' => $studyMode,
+            'programLevel' => $programLevel,
+            'years' => $years,
+            'byCountryRows' => $byCountryRows,
+            'countries' => $countries,
+            'byFieldRows' => $byFieldRows,
+            'fields' => $fields,
+        ]);
+    }
+
    public function actionPutProgram(){
         $list = Student::find()->all();
         foreach($list as $s){
@@ -65,6 +148,7 @@ class StudentController extends Controller
     }
     
     public function actionImport(){
+        die();
         $list = StudentData::find()->all();
         foreach($list as $stud){
             //lets create user first 

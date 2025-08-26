@@ -139,12 +139,7 @@ Profile
                     return $model->raceText;
                 }
             ],
-            'bachelor_name',
-            'bachelor_university',
-            'bachelor_cgpa',
-            'bachelor_year',
-            'relatedUniversity.uni_name',
-            'outstanding_fee',
+         
             'remark:ntext'
 
             

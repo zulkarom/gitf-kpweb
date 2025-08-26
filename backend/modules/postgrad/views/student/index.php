@@ -15,6 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Add Student', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Statistics', ['stats'], ['class' => 'btn btn-info']) ?>
     </p>
 
 <div class="box">
@@ -43,6 +44,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => Html::activeDropDownList($searchModel, 'program_id', $searchModel->listProgram(),['class'=> 'form-control','prompt' => 'Choose']),
                 'value' => function($model){
                    return $model->programCode;
+                }
+            ],
+            [
+                'attribute' => 'status',
+                'label' => 'Status',
+                'format' => 'raw',
+                'filter' => Html::activeDropDownList($searchModel, 'status', $searchModel->statusList(),['class'=> 'form-control','prompt' => 'Choose']),
+                'value' => function($model){
+                   return $model->statusLabel;
                 }
             ],
             

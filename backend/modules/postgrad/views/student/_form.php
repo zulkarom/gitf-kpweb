@@ -159,37 +159,8 @@ use backend\models\University;
     </div>
     
 
-    <div class="row">
-        
-        <div class="col-md-3">
-            <?= $form->field($model, 'bachelor_name')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="col-md-3">
-            <?= $form->field($model, 'bachelor_university')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="col-md-2">
-            <?= $form->field($model, 'bachelor_cgpa')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="col-md-3">
-            <?= $form->field($model, 'bachelor_year')->textInput(['maxlength' => true]) ?>
-        </div>
-    </div>
 
-    <div class="row">
-        
-        <div class="col-md-3">
-            <?= $form->field($model, 'master_name')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="col-md-3">
-            <?= $form->field($model, 'master_university')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="col-md-2">
-            <?= $form->field($model, 'master_cgpa')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="col-md-3">
-            <?= $form->field($model, 'master_year')->textInput(['maxlength' => true]) ?>
-        </div>
-    </div>
+
 
     <div class="row">
         
@@ -221,18 +192,7 @@ use backend\models\University;
         </div>
         <div class="col-md-6">
 
-            <?php 
 
-
-echo $form->field($model, 'related_university_id')->widget(Select2::classname(), [
-    'data' => University::listUniversityArray(),
-    'options' => ['placeholder' => 'Select ...'],
-    'pluginOptions' => [
-        'allowClear' => true
-    ],
-]);
-
-?>
             
             
         </div>

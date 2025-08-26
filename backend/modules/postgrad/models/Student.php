@@ -159,23 +159,34 @@ class Student extends \yii\db\ActiveRecord
     
     public function statusList(){
         return [
-            0 => 'Not Active',
-            10 => 'Aktif',
-            20 => 'Tangguh',
-            30 => 'Tarik Diri',
-            80 => 'Digantung',
-            90 => 'Lanjut semester',
-            100 => 'Graduasi'
+            self::STATUS_NOT_ACTIVE => 'Not Active',
+            self::STATUS_ACTIVE => 'Aktif',
+            self::STATUS_DEFERRED => 'Tangguh',
+            self::STATUS_WITHDRAWN => 'Tarik Diri',
+            self::STATUS_TERMINATED => 'Digantung',
+            self::STATUS_GRADUATED => 'Graduasi'
         ];
     }
 
+    public static function getStatusColor(){
+	    return [self::STATUS_NOT_ACTIVE => 'danger', self::STATUS_ACTIVE => 'primary', self::STATUS_DEFERRED => 'warning', self::STATUS_WITHDRAWN => 'info', self::STATUS_TERMINATED => 'warning', self::STATUS_GRADUATED => 'success'];
+	}
+
     
     public function getStatusText(){
-        if($this->status > 0){
+        if($this->status >= 0){
             return $this->statusList()[$this->status];
         }else{
             return '';
         }
+    }
+
+    public function getStatusLabel(){
+        $color = "";
+        if(array_key_exists($this->status, $this->statusColor)){
+            $color = $this->statusColor[$this->status];
+        }
+        return '<span class="label label-'.$color.'">'. $this->statusText .'</span>';
     }
 
     public function getUser(){

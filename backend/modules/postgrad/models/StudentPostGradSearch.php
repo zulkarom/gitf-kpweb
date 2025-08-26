@@ -40,8 +40,8 @@ class StudentPostGradSearch extends Student
      */
     public function search($params)
     {
-        $query = Student::find()
-        ->joinWith('user');
+        $query = Student::find()->alias('a')
+        ->joinWith('user')->orderBy('a.id DESC');
 
         // add conditions that should always apply here
 
@@ -63,7 +63,7 @@ class StudentPostGradSearch extends Student
         // grid filtering conditions
         $query->andFilterWhere([
             'program_id' => $this->program_id,
-            'status' => $this->status,
+            'a.status' => $this->status,
         ]);
 
         $query->andFilterWhere(['like', 'matric_no', $this->matric_no])
