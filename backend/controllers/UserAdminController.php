@@ -43,6 +43,10 @@ class UserAdminController extends Controller
         ]);
 	}
 	
+	/**
+	 * Log in as user.
+	 * @param integer $id User id
+	 */
 	public function actionLoginAsUser($id){
 		$user = User::findIdentity($id);
 		$original = Yii::$app->user->identity->id;

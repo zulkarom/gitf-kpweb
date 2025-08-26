@@ -13,14 +13,21 @@ $this->title = 'Modules';
 ?>
 <style>
   .dashboard-intro{margin:2px 0 12px;color:#7b7b7b}
-  .module-grid .small-box{border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.06);transition:transform .15s ease,box-shadow .15s ease}
-  .module-grid .small-box .inner{min-height:120px}
-  .module-grid .small-box .inner h3{font-size:20px;margin:0 0 8px;font-weight:600}
-  .module-grid .small-box .inner p{margin:0;color:rgba(255,255,255,.95)}
-  .module-grid .small-box .icon{top:10px;right:15px;opacity:.25}
-  .module-grid .small-box .small-box-footer{background:transparent;color:#fff;text-decoration:none}
-  .module-grid .small-box:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(0,0,0,.12)}
-  @media (max-width: 767px){.module-grid .small-box .inner{min-height:100px}}
+  /* Calmer Active Modules cards (distinct from Additional Modules) */
+  .active-grid .tile{background:#fff;border:1px solid #e9edf3;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.05);transition:transform .15s ease, box-shadow .15s ease;position:relative;overflow:hidden}
+  .active-grid .tile .inner{padding:18px 16px 18px 16px;min-height:110px}
+  .active-grid .tile h4{margin:0 0 6px;font-size:19px;font-weight:700;color:#1f2937}
+  .active-grid .tile p{margin:0;color:#5b6575}
+  .active-grid .tile .icon-bubble{position:absolute;right:14px;top:14px;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;background:linear-gradient(135deg,#24406f 0%,#2a5d9a 60%,#2f73c4 100%);box-shadow:0 6px 14px rgba(36,64,111,.25)}
+  .active-grid .tile .footer{display:block;padding:10px 16px;border-top:1px solid #eef1f5;color:#24406f;text-decoration:none;font-weight:600}
+  .active-grid .tile:hover{transform:translateY(-2px);box-shadow:0 10px 18px rgba(0,0,0,.10)}
+  @media (max-width: 767px){.active-grid .tile .inner{min-height:100px}}
+
+  /* Light, colorful tile themes */
+  .active-grid .tile.theme-soft-blue{background: linear-gradient(180deg, rgba(36,64,111,0.06), rgba(47,115,196,0.06)), #f5f9ff; border-color:#e2eaf7}
+  .active-grid .tile.theme-soft-amber{background: linear-gradient(180deg, rgba(253,184,64,0.10), rgba(255,214,102,0.08)), #fffaf1; border-color:#f2e6cc}
+  .active-grid .tile.theme-soft-rose{background: linear-gradient(180deg, rgba(220,53,69,0.08), rgba(255,99,132,0.06)), #fff5f6; border-color:#f3d9de}
+  .active-grid .tile.theme-soft-green{background: linear-gradient(180deg, rgba(25,135,84,0.08), rgba(40,167,69,0.06)), #f3fbf7; border-color:#d9efe4}
 </style>
 
 <div class="box box-solid">
@@ -29,53 +36,55 @@ $this->title = 'Modules';
     <div class="dashboard-intro">Quick access to the key areas of the system</div>
   </div>
   <div class="box-body">
-    <div class="row module-grid">
+    <div class="row active-grid">
       <div class="col-md-3 col-sm-6 col-xs-12">
         <a href="<?= Url::to(['/staff']) ?>">
-          <div class="small-box bg-aqua">
+          <div class="tile theme-soft-blue">
             <div class="inner">
-              <h3>Staff Information</h3>
+              <h4>Staff Information</h4>
               <p>Profiles, positions, departments and contacts.</p>
+              <div class="icon-bubble"><i class="fa fa-id-badge"></i></div>
             </div>
-            <div class="icon"><i class="fa fa-id-badge"></i></div>
-            <span class="small-box-footer">Open <i class="fa fa-arrow-circle-right"></i></span>
+            <span class="footer">Open <i class="fa fa-arrow-circle-right"></i></span>
           </div>
         </a>
       </div>
-     
+
       <div class="col-md-3 col-sm-6 col-xs-12">
         <a href="<?= Url::to(['/postgrad/student']) ?>">
-          <div class="small-box bg-yellow">
+          <div class="tile theme-soft-amber">
             <div class="inner">
-              <h3>Postgraduate</h3>
+              <h4>Postgraduate</h4>
               <p>Students, supervisors, progress tracking and stages.</p>
+              <div class="icon-bubble"><i class="fa fa-graduation-cap"></i></div>
             </div>
-            <div class="icon"><i class="fa fa-graduation-cap"></i></div>
-            <span class="small-box-footer">Open <i class="fa fa-arrow-circle-right"></i></span>
+            <span class="footer">Open <i class="fa fa-arrow-circle-right"></i></span>
           </div>
         </a>
       </div>
+
       <div class="col-md-3 col-sm-6 col-xs-12">
         <a href="<?= Url::to(['/students/default']) ?>">
-          <div class="small-box bg-red">
+          <div class="tile theme-soft-rose">
             <div class="inner">
-              <h3>Students</h3>
+              <h4>Students</h4>
               <p>View and manage undergraduate student data.</p>
+              <div class="icon-bubble"><i class="fa fa-users"></i></div>
             </div>
-            <div class="icon"><i class="fa fa-users"></i></div>
-            <span class="small-box-footer">Open <i class="fa fa-arrow-circle-right"></i></span>
+            <span class="footer">Open <i class="fa fa-arrow-circle-right"></i></span>
           </div>
         </a>
       </div>
+
       <div class="col-md-3 col-sm-6 col-xs-12">
         <a href="<?= Url::to(['/esiap']) ?>">
-          <div class="small-box bg-green">
+          <div class="tile theme-soft-green">
             <div class="inner">
-              <h3>Course Management</h3>
+              <h4>Course Management</h4>
               <p>Create and update courses, CLOs and mappings.</p>
+              <div class="icon-bubble"><i class="fa fa-mortar-board"></i></div>
             </div>
-            <div class="icon"><i class="fa fa-mortar-board"></i></div>
-            <span class="small-box-footer">Open <i class="fa fa-arrow-circle-right"></i></span>
+            <span class="footer">Open <i class="fa fa-arrow-circle-right"></i></span>
           </div>
         </a>
       </div>

@@ -120,7 +120,14 @@ class Common {
 	}
 	
 	public static function marital2(){
-	    return [1 => 'Berkahwin', 2 => 'Bujang'];
+	    return [
+			1 => 'Berkahwin', 
+			2 => 'Bujang', 
+			3 => 'Janda', 
+			4 => 'Duda', 
+			5 => 'Bercerai', 
+			9 => 'Tidak Dinyatakan'
+		];
 	}
 	
 	public static function citizen(){
@@ -141,16 +148,17 @@ class Common {
 
 	
 	public static function race(){
-		return [1 => 'Malay', 2 => 'Chinese', 3 => 'Indian' , 4 => 'Others'];
+		return [1 => 'Malay', 2 => 'Chinese', 3 => 'Indian', 5=> 'Siam', 99 => 'Others'];
 	}
 
 	public static function religion(){
-		return [1 => 'Islam', 2 => 'Buddhist', 3 => 'Cristian' , 4 => 'Hindu', 5 => 'Others'];
+		return [1 => 'Islam', 2 => 'Buddhist', 3 => 'Cristian' , 4 => 'Hindu', 99 => 'Others'];
 	}
 
 	public static function studentStatus(){
 		return [1 => 'Active', 0 => 'Not Active'];
 	}
+	
 
 	public static function arrayPgCoursework(){
 		return [81,82];

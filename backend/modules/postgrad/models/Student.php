@@ -48,6 +48,17 @@ class Student extends \yii\db\ActiveRecord
     public $stage_name;
     public $fullname;
     public $stage_status;
+
+    const STATUS_NOT_ACTIVE = 0;
+    const STATUS_ACTIVE = 10;
+    const STATUS_DEFERRED = 20;
+    const STATUS_WITHDRAWN = 30;
+    const STATUS_TERMINATED = 40;
+    const STATUS_GRADUATED = 100;
+
+
+
+
     /**
      * {@inheritdoc}
      */
@@ -148,6 +159,7 @@ class Student extends \yii\db\ActiveRecord
     
     public function statusList(){
         return [
+            0 => 'Not Active',
             10 => 'Aktif',
             20 => 'Tangguh',
             30 => 'Tarik Diri',
@@ -156,6 +168,7 @@ class Student extends \yii\db\ActiveRecord
             100 => 'Graduasi'
         ];
     }
+
     
     public function getStatusText(){
         if($this->status > 0){
@@ -242,9 +255,20 @@ class Student extends \yii\db\ActiveRecord
         }
     }
     
+    //MOD PENGAJIAN sepenuh / separuh masa
     public function getStudyModeText(){
         if($this->study_mode > 0){
             return Common::studyMode()[$this->study_mode];
+        }else{
+            return '';
+        }
+    }
+
+    // TARAF PENGAJIAN - KERJA KURSUS ATAU PENYELIDIKAN
+    public function getStudyModeRcText(){
+        $arr = ['research' => 'Penyelidikan', 'coursework' => 'Kerja Kursus'];
+        if($this->study_mode_rc){
+            return $arr[$this->study_mode_rc];
         }else{
             return '';
         }

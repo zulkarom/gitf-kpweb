@@ -31,7 +31,6 @@ $this->params['breadcrumbs'][] = $this->title;
 $fieldOptions1 = [
     'options' => [
 	'class' => 'form-group has-feedback',
-	'autofocus' => 'autofocus',
 	'tabindex' => '1'
 	
 	],
@@ -48,12 +47,15 @@ $fieldOptions2 = [
 
 <?= $this->render('/_alert', ['module' => Yii::$app->getModule('user')]) ?>
 
+<style>
+/* Slightly bigger fonts for better readability on login */
+.login-box-msg { font-size: 16px; }
+#login-form .form-control { font-size: 16px; height: 42px; }
+#login-form .checkbox label { font-size: 14px; }
+#login-form .btn { font-size: 16px; padding: 10px 16px; }
+</style>
 
-                
-	
-        <p class="login-box-msg">Log in to start your session</p>
-										
-														
+            			
 														
 														
 							<?php $form = ActiveForm::begin([
@@ -69,13 +71,13 @@ $fieldOptions2 = [
 
                <?= $form
             ->field($model, 'login', $fieldOptions1)
-            ->label(false)
+            //->label(false)
             ->textInput(['placeholder' => 'Staff No.']) ;?>
                     
 
 			<?= $form
             ->field($model, 'password', $fieldOptions2)
-            ->label(false)
+            //->label(false)
             ->passwordInput(['placeholder' => $model->getAttributeLabel('password')]) ?>
 			
 			
@@ -102,9 +104,7 @@ $fieldOptions2 = [
 		
 		<br>
 		
-		<?= Html::a('User Manual',
-                           ['/user-manual'],['target' => '_blank']
-                                ) ?>
+		<?php // Html::a('User Manual',['/user-manual'],['target' => '_blank']) ?>
 		
 		
 		<br>

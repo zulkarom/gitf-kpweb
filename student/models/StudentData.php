@@ -32,7 +32,6 @@ use Yii;
  * @property string $SESI MASUK
  * @property string $TAHUN KEMASUKAN
  * @property string $TARIKH KEMASUKAN
-SEMESTER 1
  * @property string $PEMBIAYAAN SENDIRI / TAJAAN
  * @property string $SEMESTER SEMASA PELAJAR
  * @property string $KAMPUS KOTA
@@ -45,7 +44,7 @@ class StudentData extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'pg_student_data';
+        return 'pg_student_data3';
     }
 
     /**

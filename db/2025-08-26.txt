@@ -1,0 +1,49 @@
+CREATE TABLE pg_program_field (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    level VARCHAR(20) NOT NULL,          -- master / phd
+    bidang_malay VARCHAR(100) NOT NULL,  -- Field name in Malay
+    bidang_eng VARCHAR(150) NOT NULL,    -- Field name in English
+    study_mode VARCHAR(20) NOT NULL,     -- research / coursework
+    code VARCHAR(20) NOT NULL,           -- Programme code
+    program_id INT NOT NULL              -- Program group ID
+);
+
+INSERT INTO pg_program_field (level, bidang_malay, bidang_eng, study_mode, code, program_id) VALUES
+('master', 'Pengurusan', 'Management', 'research', 'MAM', 84),
+('phd', 'Pengurusan', 'Management', 'research', 'PAM', 85),
+
+('master', 'Kewangan', 'Finance', 'research', 'MAF', 84),
+('phd', 'Kewangan', 'Finance', 'research', 'PAF', 85),
+
+('master', 'Perakaunan', 'Accounting', 'research', 'MAA', 84),
+('phd', 'Perakaunan', 'Accounting', 'research', 'PAA', 85),
+
+('master', 'Peruncitan', 'Retail', 'research', 'MAR', 84),
+('phd', 'Peruncitan', 'Retail', 'research', 'PAR', 85),
+
+('master', 'Perdagangan', 'Commerce', 'research', 'MAK', 84),
+('phd', 'Perdagangan', 'Commerce', 'research', 'PAK', 85),
+
+('master', 'Keusahawanan', 'Entrepreneurship', 'coursework', 'MAE', 81),
+('phd', 'Keusahawanan', 'Entrepreneurship', 'research', 'PAU', 85),
+
+('master', 'Perbankan dan Kewangan Islam', 'Islamic Banking and Finance', 'research', 'MAB', 84),
+('phd', 'Perbankan dan Kewangan Islam', 'Islamic Banking and Finance', 'research', 'PAB', 85),
+
+('master', 'Pengurusan Logistik dan Operasi', 'Logistic Management and Operation', 'research', 'MAL', 84),
+('phd', 'Pengurusan Logistik dan Operasi', 'Logistic Management and Operation', 'research', 'PAL', 85),
+
+('master', 'Pengurusan Sumber Manusia', 'Human Resource Management', 'research', 'MAS', 84),
+('phd', 'Pengurusan Sumber Manusia', 'Human Resource Management', 'research', 'PAS', 85),
+
+('master', 'Pemasaran', 'Marketing', 'research', 'MAT', 84),
+('phd', 'Pemasaran', 'Marketing', 'research', 'PAT', 85),
+
+('master', 'Kewangan Islam', 'Islamic Finance', 'coursework', 'MAI', 82);
+
+ALTER TABLE `pg_student` ADD `study_mode_rc` ENUM('research','coursework') NULL DEFAULT NULL AFTER `program_code`;
+INSERT INTO `campus` (`id`, `campus_name`, `campus_short`) VALUES (NULL, 'UMK Kuala Lumpur', 'KL');
+ALTER TABLE `pg_student` ADD `field_code` VARCHAR(10) NULL DEFAULT NULL AFTER `study_mode_rc`;
+
+ALTER TABLE `pg_student` ADD `cgpa_admission` VARCHAR(255) NULL DEFAULT NULL AFTER `field_code`, ADD `spm_result` VARCHAR(255) NULL DEFAULT NULL AFTER `cgpa_admission`, ADD `english_test` VARCHAR(255) NULL DEFAULT NULL AFTER `spm_result`;
+ALTER TABLE `pg_student` ADD `study_offer_condition` VARCHAR(255) NULL DEFAULT NULL AFTER `english_test`;

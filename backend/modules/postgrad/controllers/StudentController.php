@@ -4,6 +4,7 @@ namespace backend\modules\postgrad\controllers;
 
 use Yii;
 use backend\modules\postgrad\models\Student;
+use backend\modules\postgrad\models\StudentData;
 use backend\modules\postgrad\models\StudentPostGradSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -50,7 +51,7 @@ class StudentController extends Controller
         ]);
     }
 
-   /*  public function actionPutProgram(){
+   public function actionPutProgram(){
         $list = Student::find()->all();
         foreach($list as $s){
             if($s->program_code == 'DOK'){
@@ -61,9 +62,9 @@ class StudentController extends Controller
                 $s->save();
             }
         }
-    } */
+    }
     
-    /* public function actionImport41rh23dfgpqjh4uy32(){
+    public function actionImport(){
         $list = StudentData::find()->all();
         foreach($list as $stud){
             //lets create user first 
@@ -71,8 +72,8 @@ class StudentController extends Controller
             //check whether email  exist
             $student = new Student();
             
-            $email = $stud->EMEL_PELAJAR;
-            $exist = User::findOne(['email' => $email]);
+            $username = $stud->NO_MATRIK;
+            $exist = User::findOne(['username' => $username]);
             if($exist){
                 $user = $exist;
                
@@ -82,7 +83,7 @@ class StudentController extends Controller
                 $random = rand(30,30000);
                 $user->password_hash = \Yii::$app->security->generatePasswordHash($random);
 
-                $user->email = $email;
+                $user->email = $stud->EMEL_PELAJAR;
                 
             }
             $user->fullname = $stud->NAMA_PELAJAR;
@@ -171,7 +172,7 @@ class StudentController extends Controller
             
         }
         
-    } */
+    } 
 	
 	
 	/* public function actionBaikiData(){
