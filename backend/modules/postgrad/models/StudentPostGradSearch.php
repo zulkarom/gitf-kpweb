@@ -11,6 +11,7 @@ use yii\data\ActiveDataProvider;
 class StudentPostGradSearch extends Student
 {
     public $name;
+    public $study_mode_rc;
     /**
      * {@inheritdoc}
      */
@@ -18,7 +19,7 @@ class StudentPostGradSearch extends Student
     {
         return [
             [['id', 'gender', 'status'], 'integer'],
-            [['matric_no', 'nric', 'program_id', 'name'], 'safe'],
+            [['matric_no', 'nric', 'program_id', 'name', 'study_mode_rc'], 'safe'],
         ];
     }
 
@@ -69,6 +70,9 @@ class StudentPostGradSearch extends Student
         $query->andFilterWhere(['like', 'matric_no', $this->matric_no])
             ->andFilterWhere(['like', 'nric', $this->nric])
             ->andFilterWhere(['like', 'user.fullname', $this->name]);
+
+        // study mode (research/coursework)
+        $query->andFilterWhere(['a.study_mode_rc' => $this->study_mode_rc]);
 
         return $dataProvider;
     }
