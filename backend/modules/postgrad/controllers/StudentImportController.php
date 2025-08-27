@@ -45,7 +45,7 @@ class StudentImportController extends Controller
     }
 
     public function actionQuerySupervisor(){
-        $srcRows = SrcStudentData::find()->all();
+        $srcRows = SrcStudentData::find()->where(['DONE' => 0])->limit(50)->all();
         foreach ($srcRows as $stud) {
             //start with penyelia utama
             $student_postgrad = Student::find()->where(['matric_no' => $stud->NO_MATRIK])->one();
