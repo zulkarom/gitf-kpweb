@@ -44,13 +44,13 @@ class StudentImportController extends Controller
         ];
     }
 
-    public function actionQuerySupervisor(){
+    public function actionQuerySupervisorBersama(){
         $srcRows = SrcStudentData::find()->where(['DONE' => 0])->limit(50)->all();
         foreach ($srcRows as $stud) {
             //start with penyelia utama
             $student_postgrad = Student::find()->where(['matric_no' => $stud->NO_MATRIK])->one();
             $err = '';
-            $supervisor = $stud->PENYELIA_UTAMA;
+            $supervisor = $stud->PENYELIA_BERSAMA;
             $err .= 'Before: ' . $supervisor . " - ";
             $strip = $this->normalizeName($supervisor);
             $err .= 'Strip: ' . $strip . " - ";
