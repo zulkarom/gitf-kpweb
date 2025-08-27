@@ -175,7 +175,11 @@ class Student extends \yii\db\ActiveRecord
     
     public function getStatusText(){
         if($this->status >= 0){
-            return $this->statusList()[$this->status];
+            if (array_key_exists($this->status, $this->statusList())) {
+                return $this->statusList()[$this->status];
+            }else{
+                return '';
+            }
         }else{
             return '';
         }

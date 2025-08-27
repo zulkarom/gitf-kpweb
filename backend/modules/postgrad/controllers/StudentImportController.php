@@ -18,6 +18,8 @@ use common\models\Country;
 use common\models\Common;
 use backend\modules\postgrad\models\StudentData2;
 use backend\modules\postgrad\models\StudentData4;
+use backend\modules\postgrad\models\StudentSupervisor;
+use backend\modules\postgrad\models\Supervisor;
 
 /**
  * StudentImportController provides import utilities for Postgrad students.
@@ -46,8 +48,71 @@ class StudentImportController extends Controller
         $srcRows = SrcStudentData::find()->all();
         foreach ($srcRows as $stud) {
             //start with penyelia utama
+            $student_postgrad = Student::find()->where(['matric_no' => $stud->NO_MATRIK])->one();
+            $err = '';
+            $supervisor = $stud->PENYELIA_UTAMA;
+            $err .= 'Before: ' . $supervisor . " - ";
+            $strip = $this->normalizeName($supervisor);
+            $err .= 'Strip: ' . $strip . " - ";
+            //find in user - staff
+            if($strip){
+                $user = User::find()->alias('a')
+                ->select('s.id as staff_id, a.id')
+                ->joinWith(['staff s'])
+                ->where(['like', 'fullname', $strip])
+                ->one();
+                if($user){
+                    echo 'Found: ' . $user->fullname . " Asal: ".$supervisor."<br />";
+                    //find in pg_supervisor
+                    $supervisor = Supervisor::find()->where(['staff_id' => $user->staff_id])->one();
+                    try{
+                        $transaction = Yii::$app->db->beginTransaction();
+                        if($supervisor){
+                            //echo 'Found: ' . $supervisor->sv_name . " Asal: ".$supervisor."<br />";
+
+                            $sv = StudentSupervisor::find()->where(['student_id' => $student_postgrad->id, 'supervisor_id' => $supervisor->id])->one();
+                            if(!$sv){
+                                $sv = new StudentSupervisor();
+                                $sv->student_id = $student_postgrad->id;
+                                $sv->supervisor_id = $supervisor->id;
+                                $sv->sv_role = 1;
+                                $sv->save(false);
+                            }
+                               $stud->DONE= 1;
+                               $stud->save(false);
+                        }else{
+                           // echo '<span style="color:red">Not Found: ' . $strip . $err ."</span><br />";
+                           $supervisor = new Supervisor();
+                           $supervisor->staff_id = $user->staff_id;
+                           $supervisor->is_internal = 1;
+                           if($supervisor->save(false)){
+                               //add to student supervisor
+                               $sv = StudentSupervisor::find()->where(['student_id' => $student_postgrad->id, 'supervisor_id' => $supervisor->id])->one();
+                               if(!$sv){
+                                   $sv = new StudentSupervisor();
+                                   $sv->student_id = $student_postgrad->id;
+                                   $sv->supervisor_id = $supervisor->id;
+                                   $sv->sv_role = 1;
+                                   $sv->save(false);
+                               }
+                               $stud->DONE= 1;
+                               $stud->save(false);
+                           }
+                        }
+                        $transaction->commit();
+                    } catch (\Exception $e) {
+                        $transaction->rollBack();
+                    }
+                }else{
+                    echo '<span style="color:red">Not Found: ' . $strip . $err ."</span><br />";
+                }
+            }else{
+                echo 'Empty: ' . $strip . $err ."<br />";
+            }
+            
             
         }
+        exit;
     }
 
     /**
@@ -484,9 +549,9 @@ private function mapStudyOfferCondition($src){
 function normalizeName($nama_input) {
     // Senarai gelaran yang nak dibuang
     $titles = [
-        "Prof.", "Prof", "Madya", "Ts.", "Ts", "Dr.", "Dr",
-        "En.", "En", "Encik",
-        "Dato'", "Assoc.", "Associate", "Professor", "Proffesor"
+       "Professor", "Proffesor", "Prof.", "Prof", "Porf", "Madya", "Ts.", "Ts", "Dr.", "Dr", "Encik",
+        "En.", "En",
+        "Dato'", "Assoc.", "Associate", 
     ];
 
     // Buang gelaran (case insensitive)
@@ -509,7 +574,7 @@ function normalizeName($nama_input) {
     $words = explode(" ", $firstPart);
 
     // Hadkan kepada 3 perkataan maksimum
-    $limited = array_slice($words, 0, 3);
+    $limited = array_slice($words, 0, 2);
 
     // Cantumkan balik
     return implode(" ", $limited);
