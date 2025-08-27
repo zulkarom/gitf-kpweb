@@ -112,7 +112,8 @@ class StudentImportController extends Controller
                                $stud->DONE= 1;
                                $stud->save(false);
                                echo 'done assign: ' . $student_postgrad->matric_no . " to ". $user->fullname ."<br />";
-                           }
+                                }
+                            }
                         }
                         $transaction->commit();
                     } catch (\Exception $e) {
