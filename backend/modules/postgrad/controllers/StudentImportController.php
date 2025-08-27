@@ -45,7 +45,9 @@ class StudentImportController extends Controller
     }
 
     public function actionQuerySupervisorBersama(){
-        $srcRows = SrcStudentData::find()->where(['DONE' => 0])->limit(50)->all();
+        $srcRows = SrcStudentData::find()->where(['DONE' => 0])
+        ->andWhere(['<>','PENYELIA_BERSAMA', ''])
+        ->limit(50)->all();
         foreach ($srcRows as $stud) {
             //start with penyelia utama
             $student_postgrad = Student::find()->where(['matric_no' => $stud->NO_MATRIK])->one();
@@ -70,50 +72,13 @@ class StudentImportController extends Controller
                         if($supervisor){
                             //echo 'Found: ' . $supervisor->sv_name . " Asal: ".$supervisor."<br />";
 
-                            $sv = StudentSupervisor::find()->where(['student_id' => $student_postgrad->id, 'supervisor_id' => $supervisor->id, 'sv_role' => 2])->one();
-                            if(!$sv){
-                                //tgk ada  tak role 1
-                                $sv = StudentSupervisor::find()->where(['student_id' => $student_postgrad->id, 'supervisor_id' => $supervisor->id, 'sv_role' => 1])->one();
-                                if($sv){
-                                    $sv->sv_role = 2;
-                                    $sv->save(false);
-                                }else{
-                                    $sv = new StudentSupervisor();
-                                    $sv->student_id = $student_postgrad->id;
-                                    $sv->supervisor_id = $supervisor->id;
-                                    $sv->sv_role = 2;
-                                    $sv->save(false);
-                                }
-                            }
+                            $this->ensureStudentSupervisorRole($student_postgrad, $supervisor, 2);
                                $stud->DONE= 1;
                                $stud->save(false);
                                echo 'done assign: ' . $student_postgrad->matric_no . " to ". $user->fullname ."<br />";
                         }else{
                            // echo '<span style="color:red">Not Found: ' . $strip . $err ."</span><br />";
-                           $supervisor = new Supervisor();
-                           $supervisor->staff_id = $user->staff_id;
-                           $supervisor->is_internal = 1;
-                           if($supervisor->save(false)){
-                               //add to student supervisor
-                               $sv = StudentSupervisor::find()->where(['student_id' => $student_postgrad->id, 'supervisor_id' => $supervisor->id, 'sv_role' => 2])->one();
-                               if(!$sv){
-                                //tgk ada  tak role 1
-                                $sv = StudentSupervisor::find()->where(['student_id' => $student_postgrad->id, 'supervisor_id' => $supervisor->id, 'sv_role' => 1])->one();
-                                if($sv){
-                                    $sv->sv_role = 2;
-                                    $sv->save(false);
-                                }else{
-                                   $sv = new StudentSupervisor();
-                                   $sv->student_id = $student_postgrad->id;
-                                   $sv->supervisor_id = $supervisor->id;
-                                   $sv->sv_role = 2;
-                                   $sv->save(false);
-                               }
-                               $stud->DONE= 1;
-                               $stud->save(false);
-                               echo 'done assign: ' . $student_postgrad->matric_no . " to ". $user->fullname ."<br />";
-                                }
-                            }
+                           $this->assignSupervisor($student_postgrad, $user, $stud, 2);
                         }
                         $transaction->commit();
                     } catch (\Exception $e) {
@@ -513,12 +478,61 @@ private function mapStudyModeRc($src){
 }
 
 
-private function mapFieldId($src) {
-    $fieldLabel = trim((string)$src->BIDANG_PENGAJIAN);
-    if ($fieldLabel === '') { return null; }
-    $field = Field::find()->where(['LOWER([[field_name]])' => mb_strtolower($fieldLabel)])->one();
-    return $field ? $field->id : null;
-}
+    private function mapFieldId($src) {
+        $fieldLabel = trim((string)$src->BIDANG_PENGAJIAN);
+        if ($fieldLabel === '') { return null; }
+        $field = Field::find()->where(['LOWER([[field_name]])' => mb_strtolower($fieldLabel)])->one();
+        return $field ? $field->id : null;
+    }
+
+    /**
+     * Ensure there is a row in pg_student_supervisor with sv_role=2 for the given student/supervisor.
+     * If an existing row exists with role 1, it will be updated to 2.
+     */
+    private function ensureStudentSupervisorRole($student_postgrad, $supervisor, $role)
+    {
+        $sv = StudentSupervisor::find()->where([
+            'student_id' => $student_postgrad->id,
+            'supervisor_id' => $supervisor->id,
+            'sv_role' => $role,
+        ])->one();
+        if (!$sv) {
+            // check existing role 1
+            $sv = StudentSupervisor::find()->where([
+                'student_id' => $student_postgrad->id,
+                'supervisor_id' => $supervisor->id,
+            ])
+            ->andWhere(['<>','sv_role', $role])
+            ->one();
+            if ($sv) {
+                $sv->sv_role = $role;
+                $sv->save(false);
+            } else {
+                $sv = new StudentSupervisor();
+                $sv->student_id = $student_postgrad->id;
+                $sv->supervisor_id = $supervisor->id;
+                $sv->sv_role = $role;
+                $sv->save(false);
+            }
+        }
+    }
+
+    /**
+     * Create internal Supervisor from a User's staff_id (if needed) and ensure role 2 linkage,
+     * then mark source row DONE and echo assignment message.
+     */
+    private function assignSupervisor($student_postgrad, $user, $stud, $role)
+    {
+        $supervisor = new Supervisor();
+        $supervisor->staff_id = $user->staff_id;
+        $supervisor->is_internal = 1;
+        if ($supervisor->save(false)) {
+            $this->ensureStudentSupervisorRole($student_postgrad, $supervisor, $role);
+            $stud->DONE = 1;
+            $stud->save(false);
+            echo 'done assign: ' . $student_postgrad->matric_no . " to ". $user->fullname ."<br />";
+        }
+    }
 
 function createSemesterId($input) {
     // Contoh input:
