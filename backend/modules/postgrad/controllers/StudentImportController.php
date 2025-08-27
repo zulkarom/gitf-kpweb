@@ -73,19 +73,47 @@ class StudentImportController extends Controller
                             //echo 'Found: ' . $supervisor->sv_name . " Asal: ".$supervisor."<br />";
 
                             $this->ensureStudentSupervisorRole($student_postgrad, $supervisor, 2);
-                               $stud->DONE= 1;
-                               $stud->save(false);
-                               echo 'done assign: ' . $student_postgrad->matric_no . " to ". $user->fullname ."<br />";
+                            $this->updateDone($stud, $student_postgrad, $user);
                         }else{
                            // echo '<span style="color:red">Not Found: ' . $strip . $err ."</span><br />";
-                           $this->assignSupervisor($student_postgrad, $user, $stud, 2);
+                           $this->assignSupervisor($student_postgrad, $user, 2);
+                           $this->updateDone($stud, $student_postgrad, $user);
                         }
                         $transaction->commit();
                     } catch (\Exception $e) {
                         $transaction->rollBack();
                     }
                 }else{
-                    echo '<span style="color:red">Not Found: ' . $strip . $err ."</span><br />";
+                    $supervisors = explode("\n", $supervisor);
+                    foreach($supervisors as $super){
+                        $super = trim($super);
+                        if($super){
+                            $strip = $this->normalizeName($super);
+                            $user = User::find()->alias('a')
+                            ->select('s.id as staff_id, a.id')
+                            ->joinWith(['staff s'])
+                            ->where(['like', 'fullname', $strip])
+                            ->one();
+                            if($user){
+                                $supervisor = Supervisor::find()->where(['staff_id' => $user->staff_id])->one();
+                                try{
+                                    $transaction = Yii::$app->db->beginTransaction();
+                                    if($supervisor){
+                                        $this->ensureStudentSupervisorRole($student_postgrad, $supervisor, 2);
+                                    }else{
+                                        $this->assignSupervisor($student_postgrad, $user, 2);
+                                    }
+                                    $transaction->commit();
+                                } catch (\Exception $e) {
+                                    $transaction->rollBack();
+                                }
+                            }
+                        }
+                    }
+                    $this->updateDone($stud, $student_postgrad, $user);
+                    
+
+                    //echo '<span style="color:red">Not Found: ' . $strip . $err ."</span><br />";
                 }
             }else{
                 echo 'Empty: ' . $strip . $err ."<br />";
@@ -94,6 +122,12 @@ class StudentImportController extends Controller
             
         }
         exit;
+    }
+
+    private function updateDone($stud, $student_postgrad, $user){
+        $stud->DONE = 1;
+        $stud->save(false);
+        echo 'done assign: ' . $student_postgrad->matric_no . " to ". $user->fullname ."<br />";
     }
 
     /**
@@ -521,16 +555,14 @@ private function mapStudyModeRc($src){
      * Create internal Supervisor from a User's staff_id (if needed) and ensure role 2 linkage,
      * then mark source row DONE and echo assignment message.
      */
-    private function assignSupervisor($student_postgrad, $user, $stud, $role)
+    private function assignSupervisor($student_postgrad, $user, $role)
     {
         $supervisor = new Supervisor();
         $supervisor->staff_id = $user->staff_id;
         $supervisor->is_internal = 1;
         if ($supervisor->save(false)) {
             $this->ensureStudentSupervisorRole($student_postgrad, $supervisor, $role);
-            $stud->DONE = 1;
-            $stud->save(false);
-            echo 'done assign: ' . $student_postgrad->matric_no . " to ". $user->fullname ."<br />";
+            
         }
     }
 
@@ -580,8 +612,7 @@ function normalizeName($nama_input) {
     // Senarai gelaran yang nak dibuang
     $titles = [
        "Professor", "Proffesor", "Prof.", "Prof", "Porf", "Madya", "Ts.", "Ts", "Dr.", "Dr", "Encik",
-        "En.", "En",
-        "Dato'", "Assoc.", "Associate", 
+        "En.", "En", "Puan", "Madam", "Dato'", "Assoc.", "Associate", "1)", "2)", "3)", "1.", "2.", "3.", "1", "2", "3", 
     ];
 
     // Buang gelaran (case insensitive)
