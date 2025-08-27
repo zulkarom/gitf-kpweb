@@ -62,7 +62,7 @@ class StudentImportController extends Controller
                 ->where(['like', 'fullname', $strip])
                 ->one();
                 if($user){
-                    echo 'Found: ' . $user->fullname . " Asal: ".$supervisor."<br />";
+                    //echo 'Found: ' . $user->fullname . " Asal: ".$supervisor."<br />";
                     //find in pg_supervisor
                     $supervisor = Supervisor::find()->where(['staff_id' => $user->staff_id])->one();
                     try{
@@ -80,6 +80,7 @@ class StudentImportController extends Controller
                             }
                                $stud->DONE= 1;
                                $stud->save(false);
+                               echo 'done assign: ' . $student_postgrad->matric_no . " to ". $user->fullname ."<br />";
                         }else{
                            // echo '<span style="color:red">Not Found: ' . $strip . $err ."</span><br />";
                            $supervisor = new Supervisor();
@@ -97,6 +98,7 @@ class StudentImportController extends Controller
                                }
                                $stud->DONE= 1;
                                $stud->save(false);
+                               echo 'done assign: ' . $student_postgrad->matric_no . " to ". $user->fullname ."<br />";
                            }
                         }
                         $transaction->commit();
