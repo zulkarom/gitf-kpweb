@@ -70,13 +70,20 @@ class StudentImportController extends Controller
                         if($supervisor){
                             //echo 'Found: ' . $supervisor->sv_name . " Asal: ".$supervisor."<br />";
 
-                            $sv = StudentSupervisor::find()->where(['student_id' => $student_postgrad->id, 'supervisor_id' => $supervisor->id])->one();
+                            $sv = StudentSupervisor::find()->where(['student_id' => $student_postgrad->id, 'supervisor_id' => $supervisor->id, 'sv_role' => 2])->one();
                             if(!$sv){
-                                $sv = new StudentSupervisor();
-                                $sv->student_id = $student_postgrad->id;
-                                $sv->supervisor_id = $supervisor->id;
-                                $sv->sv_role = 1;
-                                $sv->save(false);
+                                //tgk ada  tak role 1
+                                $sv = StudentSupervisor::find()->where(['student_id' => $student_postgrad->id, 'supervisor_id' => $supervisor->id, 'sv_role' => 1])->one();
+                                if($sv){
+                                    $sv->sv_role = 2;
+                                    $sv->save(false);
+                                }else{
+                                    $sv = new StudentSupervisor();
+                                    $sv->student_id = $student_postgrad->id;
+                                    $sv->supervisor_id = $supervisor->id;
+                                    $sv->sv_role = 2;
+                                    $sv->save(false);
+                                }
                             }
                                $stud->DONE= 1;
                                $stud->save(false);
@@ -88,12 +95,18 @@ class StudentImportController extends Controller
                            $supervisor->is_internal = 1;
                            if($supervisor->save(false)){
                                //add to student supervisor
-                               $sv = StudentSupervisor::find()->where(['student_id' => $student_postgrad->id, 'supervisor_id' => $supervisor->id])->one();
+                               $sv = StudentSupervisor::find()->where(['student_id' => $student_postgrad->id, 'supervisor_id' => $supervisor->id, 'sv_role' => 2])->one();
                                if(!$sv){
+                                //tgk ada  tak role 1
+                                $sv = StudentSupervisor::find()->where(['student_id' => $student_postgrad->id, 'supervisor_id' => $supervisor->id, 'sv_role' => 1])->one();
+                                if($sv){
+                                    $sv->sv_role = 2;
+                                    $sv->save(false);
+                                }else{
                                    $sv = new StudentSupervisor();
                                    $sv->student_id = $student_postgrad->id;
                                    $sv->supervisor_id = $supervisor->id;
-                                   $sv->sv_role = 1;
+                                   $sv->sv_role = 2;
                                    $sv->save(false);
                                }
                                $stud->DONE= 1;
