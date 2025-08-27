@@ -42,6 +42,14 @@ class StudentImportController extends Controller
         ];
     }
 
+    public function actionQuerySupervisor(){
+        $srcRows = SrcStudentData::find()->all();
+        foreach ($srcRows as $stud) {
+            //start with penyelia utama
+            
+        }
+    }
+
     /**
      * Import from pg_student_data3 (StudentData) into pg_student (Student).
      * - Creates/updates User by username = NO_MATRIK
@@ -50,7 +58,7 @@ class StudentImportController extends Controller
      */
     public function actionImport()
     {
-        //die('test');
+        die('test');
         $createdUsers = 0; $updatedUsers = 0; $createdStudents = 0; $updatedStudents = 0; $errors = [];
         $srcRows = SrcStudentData::find()->where(['DONE' => 0])->limit(50)->all();
         foreach ($srcRows as $stud) {
@@ -468,4 +476,44 @@ private function mapEnglishTest($src){
 private function mapStudyOfferCondition($src){
     return trim((string)$src->JENIS_TAWARAN_PENGAJIAN);
 }
+
+
+
+
+
+function normalizeName($nama_input) {
+    // Senarai gelaran yang nak dibuang
+    $titles = [
+        "Prof.", "Prof", "Madya", "Ts.", "Ts", "Dr.", "Dr",
+        "En.", "En", "Encik",
+        "Dato'", "Assoc.", "Associate", "Professor", "Proffesor"
+    ];
+
+    // Buang gelaran (case insensitive)
+    $nama = str_ireplace($titles, "", $nama_input);
+
+    // Senarai pemisah (bin/binti/dll.)
+    $splitters = array_map('strtolower', [" Bin ", " Binti ", " Bt. ", " Bt ", " bte ", " a/l ", " a/p "]);
+
+    // Tukar semua pemisah kepada simbol sama
+    $nama = str_ireplace($splitters, "|", strtolower($nama));
+
+    // Pecahkan ikut simbol → ambil bahagian sebelum "Bin/Binti/a/l/a/p"
+    $parts = explode("|", $nama);
+    $firstPart = trim($parts[0]);
+
+    // Kemaskan spacing
+    $firstPart = preg_replace('/\s+/', ' ', $firstPart);
+
+    // Pecahkan kepada perkataan
+    $words = explode(" ", $firstPart);
+
+    // Hadkan kepada 3 perkataan maksimum
+    $limited = array_slice($words, 0, 3);
+
+    // Cantumkan balik
+    return implode(" ", $limited);
+}
+
+
 }
