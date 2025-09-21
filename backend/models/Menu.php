@@ -283,10 +283,31 @@ class Menu
                     ]
                 ],
                 [
-                    'label' => 'Students',
+                    'label' => 'Student List',
                     'icon' => 'user',
-                    'url' => [
-                        '/postgrad/student'
+                    'url' => '#',
+                    'items' => [
+                        [
+                            'label' => 'Students (Research)',
+                            'icon' => 'user',
+                            'url' => [
+                                '/postgrad/student/research'
+                            ]
+                        ],
+                        [
+                            'label' => 'Students (Coursework)',
+                            'icon' => 'user',
+                            'url' => [
+                                '/postgrad/student/coursework'
+                            ]
+                        ],
+                        [
+                            'label' => 'Students (Not Active)',
+                            'icon' => 'user',
+                            'url' => [
+                                '/postgrad/student/inactive'
+                            ]
+                        ]
                     ]
                 ],
                

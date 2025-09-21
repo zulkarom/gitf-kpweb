@@ -54,6 +54,56 @@ class StudentController extends Controller
         ]);
     }
 
+    /**
+     * Students filtered by study_mode_rc = research
+     */
+    public function actionResearch()
+    {
+        $searchModel = new StudentPostGradSearch();
+        $params = Yii::$app->request->queryParams;
+        $params['StudentPostGradSearch']['study_mode_rc'] = 'research';
+        $dataProvider = $searchModel->search($params);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
+     * Students filtered by study_mode_rc = coursework
+     */
+    public function actionCoursework()
+    {
+        $searchModel = new StudentPostGradSearch();
+        $params = Yii::$app->request->queryParams;
+        $params['StudentPostGradSearch']['study_mode_rc'] = 'coursework';
+        $dataProvider = $searchModel->search($params);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
+     * Students filtered by status = not active
+     */
+    public function actionInactive()
+    {
+        
+        $searchModel = new StudentPostGradSearch();
+        $searchModel->status = Student::STATUS_NOT_ACTIVE;
+        $params = Yii::$app->request->queryParams;
+        $dataProvider = $searchModel->search($params);
+        
+
+        return $this->render('not-active', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
     public function actionStats()
     {
         // Overall active count

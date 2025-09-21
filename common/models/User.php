@@ -43,6 +43,7 @@ class User extends ActiveRecord implements IdentityInterface
 	
 	public $institution;
 	public $country;
+    public $staff_id;
 	
 
     /**

@@ -139,7 +139,7 @@ $menuItems = [
 					
 					['label' => 'Course Management', 'icon' => 'mortar-board', 'url' => ['/esiap'],],
     
-    ['label' => 'Postgraduate', 'icon' => 'cube', 'url' => ['/postgrad/student'], 'visible' => Yii::$app->user->can('postgrad-manager')],
+    ['label' => 'Postgraduate', 'icon' => 'cube', 'url' => ['/postgrad/student/stats'], 'visible' => Yii::$app->user->can('postgrad-manager')],
     
                    // ['label' => 'Program Management', 'icon' => 'mortar-board', 'url' => ['/esiap/program'],],
 					

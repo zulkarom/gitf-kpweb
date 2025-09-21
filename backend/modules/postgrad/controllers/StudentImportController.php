@@ -18,6 +18,8 @@ use common\models\Country;
 use common\models\Common;
 use backend\modules\postgrad\models\StudentData2;
 use backend\modules\postgrad\models\StudentData4;
+use backend\modules\postgrad\models\StudentSupervisor;
+use backend\modules\postgrad\models\Supervisor;
 
 /**
  * StudentImportController provides import utilities for Postgrad students.
@@ -42,12 +44,90 @@ class StudentImportController extends Controller
         ];
     }
 
-    public function actionQuerySupervisor(){
-        $srcRows = SrcStudentData::find()->all();
+    public function actionQuerySupervisorBersama(){
+        $srcRows = SrcStudentData::find()->where(['DONE' => 0])
+        ->andWhere(['<>','PENYELIA_BERSAMA', ''])
+        ->limit(50)->all();
         foreach ($srcRows as $stud) {
             //start with penyelia utama
+            $student_postgrad = Student::find()->where(['matric_no' => $stud->NO_MATRIK])->one();
+            $err = '';
+            $supervisor = $stud->PENYELIA_BERSAMA;
+            $err .= 'Before: ' . $supervisor . " - ";
+            $strip = $this->normalizeName($supervisor);
+            $err .= 'Strip: ' . $strip . " - ";
+            //find in user - staff
+            if($strip){
+                $user = User::find()->alias('a')
+                ->select('s.id as staff_id, a.id')
+                ->joinWith(['staff s'])
+                ->where(['like', 'fullname', $strip])
+                ->one();
+                if($user){
+                    //echo 'Found: ' . $user->fullname . " Asal: ".$supervisor."<br />";
+                    //find in pg_supervisor
+                    $supervisor = Supervisor::find()->where(['staff_id' => $user->staff_id])->one();
+                    try{
+                        $transaction = Yii::$app->db->beginTransaction();
+                        if($supervisor){
+                            //echo 'Found: ' . $supervisor->sv_name . " Asal: ".$supervisor."<br />";
+
+                            $this->ensureStudentSupervisorRole($student_postgrad, $supervisor, 2);
+                            $this->updateDone($stud, $student_postgrad, $user);
+                        }else{
+                           // echo '<span style="color:red">Not Found: ' . $strip . $err ."</span><br />";
+                           $this->assignSupervisor($student_postgrad, $user, 2);
+                           $this->updateDone($stud, $student_postgrad, $user);
+                        }
+                        $transaction->commit();
+                    } catch (\Exception $e) {
+                        $transaction->rollBack();
+                    }
+                }else{
+                    $supervisors = explode("\n", $supervisor);
+                    foreach($supervisors as $super){
+                        $super = trim($super);
+                        if($super){
+                            $strip = $this->normalizeName($super);
+                            $user = User::find()->alias('a')
+                            ->select('s.id as staff_id, a.id')
+                            ->joinWith(['staff s'])
+                            ->where(['like', 'fullname', $strip])
+                            ->one();
+                            if($user){
+                                $supervisor = Supervisor::find()->where(['staff_id' => $user->staff_id])->one();
+                                try{
+                                    $transaction = Yii::$app->db->beginTransaction();
+                                    if($supervisor){
+                                        $this->ensureStudentSupervisorRole($student_postgrad, $supervisor, 2);
+                                    }else{
+                                        $this->assignSupervisor($student_postgrad, $user, 2);
+                                    }
+                                    $transaction->commit();
+                                } catch (\Exception $e) {
+                                    $transaction->rollBack();
+                                }
+                            }
+                        }
+                    }
+                    $this->updateDone($stud, $student_postgrad, $user);
+                    
+
+                    //echo '<span style="color:red">Not Found: ' . $strip . $err ."</span><br />";
+                }
+            }else{
+                echo 'Empty: ' . $strip . $err ."<br />";
+            }
+            
             
         }
+        exit;
+    }
+
+    private function updateDone($stud, $student_postgrad, $user){
+        $stud->DONE = 1;
+        $stud->save(false);
+        echo 'done assign: ' . $student_postgrad->matric_no . " to ". $user->fullname ."<br />";
     }
 
     /**
@@ -432,12 +512,59 @@ private function mapStudyModeRc($src){
 }
 
 
-private function mapFieldId($src) {
-    $fieldLabel = trim((string)$src->BIDANG_PENGAJIAN);
-    if ($fieldLabel === '') { return null; }
-    $field = Field::find()->where(['LOWER([[field_name]])' => mb_strtolower($fieldLabel)])->one();
-    return $field ? $field->id : null;
-}
+    private function mapFieldId($src) {
+        $fieldLabel = trim((string)$src->BIDANG_PENGAJIAN);
+        if ($fieldLabel === '') { return null; }
+        $field = Field::find()->where(['LOWER([[field_name]])' => mb_strtolower($fieldLabel)])->one();
+        return $field ? $field->id : null;
+    }
+
+    /**
+     * Ensure there is a row in pg_student_supervisor with sv_role=2 for the given student/supervisor.
+     * If an existing row exists with role 1, it will be updated to 2.
+     */
+    private function ensureStudentSupervisorRole($student_postgrad, $supervisor, $role)
+    {
+        $sv = StudentSupervisor::find()->where([
+            'student_id' => $student_postgrad->id,
+            'supervisor_id' => $supervisor->id,
+            'sv_role' => $role,
+        ])->one();
+        if (!$sv) {
+            // check existing role 1
+            $sv = StudentSupervisor::find()->where([
+                'student_id' => $student_postgrad->id,
+                'supervisor_id' => $supervisor->id,
+            ])
+            ->andWhere(['<>','sv_role', $role])
+            ->one();
+            if ($sv) {
+                $sv->sv_role = $role;
+                $sv->save(false);
+            } else {
+                $sv = new StudentSupervisor();
+                $sv->student_id = $student_postgrad->id;
+                $sv->supervisor_id = $supervisor->id;
+                $sv->sv_role = $role;
+                $sv->save(false);
+            }
+        }
+    }
+
+    /**
+     * Create internal Supervisor from a User's staff_id (if needed) and ensure role 2 linkage,
+     * then mark source row DONE and echo assignment message.
+     */
+    private function assignSupervisor($student_postgrad, $user, $role)
+    {
+        $supervisor = new Supervisor();
+        $supervisor->staff_id = $user->staff_id;
+        $supervisor->is_internal = 1;
+        if ($supervisor->save(false)) {
+            $this->ensureStudentSupervisorRole($student_postgrad, $supervisor, $role);
+            
+        }
+    }
 
 function createSemesterId($input) {
     // Contoh input:
@@ -484,9 +611,8 @@ private function mapStudyOfferCondition($src){
 function normalizeName($nama_input) {
     // Senarai gelaran yang nak dibuang
     $titles = [
-        "Prof.", "Prof", "Madya", "Ts.", "Ts", "Dr.", "Dr",
-        "En.", "En", "Encik",
-        "Dato'", "Assoc.", "Associate", "Professor", "Proffesor"
+       "Professor", "Proffesor", "Prof.", "Prof", "Porf", "Madya", "Ts.", "Ts", "Dr.", "Dr", "Encik",
+        "En.", "En", "Puan", "Madam", "Dato'", "Assoc.", "Associate", "1)", "2)", "3)", "1.", "2.", "3.", "1", "2", "3", 
     ];
 
     // Buang gelaran (case insensitive)
@@ -509,7 +635,7 @@ function normalizeName($nama_input) {
     $words = explode(" ", $firstPart);
 
     // Hadkan kepada 3 perkataan maksimum
-    $limited = array_slice($words, 0, 3);
+    $limited = array_slice($words, 0, 2);
 
     // Cantumkan balik
     return implode(" ", $limited);
