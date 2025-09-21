@@ -4,143 +4,72 @@
 /* @var $content string */
 
 use yii\helpers\Html;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
-use frontend\assets\AppAsset;
 use common\widgets\Alert;
-use yii\helpers\Url;
-use frontend\models\Stats;
 
-frontend\models\MainAsset::register($this);
-$directoryAsset = Yii::$app->assetManager->getPublishedUrl('@frontend/views/myasset');
+dmstr\web\AdminLteAsset::register($this);
+backend\assets\AppAsset::register($this);
+$dirAsset = Yii::getAlias('@web');
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<?= Yii::$app->language ?>">
 <head>
-
-	<title><?= Html::encode($this->title) ?> : FAKULTI KEUSAHAWANAN DAN PERNIAGAAN</title>
-	<meta charset="UTF-8">
-	<meta name="description" content="Faculty of Entrepreneurship and Business">
-	<meta name="keywords" content="event, fkp, creative, html">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<!-- Favicon -->   
-	<link rel="icon" type="image/x-icon" href="<?=$directoryAsset?>/img/umkicon.png" />
-
-	<!-- Google Fonts -->
-	<link href="https://fonts.googleapis.com/css?family=Rubik:400,400i,500,500i,700,700i" rel="stylesheet">
-	
-	  <?php $this->head() ?>
-	  
-	   <style>@media print {#ghostery-purple-box {display:none !important}}</style>
-
-
-	<!-- Stylesheets -->
-
-
-	<!--[if lt IE 9]>
-	  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-	  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-	<![endif]-->
-	
-	<!--[if lt IE 9]>
-    <link rel="stylesheet" href="css/ie8-core.min.css">
-    <link rel="stylesheet" href="css/ie8-layout.min.css">
-    <script src="js/html5shiv.min.js"></script>
-    <![endif]-->
-
-<script src="<?=$directoryAsset?>/js/rem.min.js"></script>
-	
-
+    <meta charset="<?= Yii::$app->charset ?>"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <?= Html::csrfMetaTags() ?>
+    <title><?= Html::encode($this->title) ?></title>
+    <?php $this->head() ?>
+    <style>
+    /* Split login layout (mirrors backend) */
+    body.login-page { background: linear-gradient(135deg, #7f1d1d 0%, #b91c1c 60%, #ef4444 100%); }
+    .auth-split { display:flex; height:100vh; overflow:hidden; }
+    /* Left: form side */
+    .auth-left { flex:1 1 45%; display:flex; align-items:center; justify-content:center; padding:24px 16px; }
+    /* Right: image side */
+    .auth-right { flex:1 1 55%; padding:0; }
+    .auth-right .right-bg { height: calc(100vh - 24px); margin:12px; border-radius:12px; background-image:url('<?=$dirAsset?>/images/login.jpg'); background-size:cover; background-position:center center; }
+    .login-card { width:100%; max-width:480px; background:#fff; border-radius:16px; box-shadow: 0 20px 40px rgba(0,0,0,.08); padding:32px 28px; border: 1px solid rgba(0,0,0,.04); }
+    .login-logo { text-align:center; margin-bottom:12px; }
+    .login-card .login-box-msg { margin: 8px 0 18px; color:#495057; font-size:16px; }
+    /* Inputs */
+    .login-card .form-control { border-radius:10px; border-color:#e3e6ea; box-shadow:none; transition: all .15s ease; }
+    .login-card .form-control:focus { border-color:#fda4a4; box-shadow: 0 0 0 0.2rem rgba(239,68,68,.2); }
+    /* Primary button */
+    .login-card .btn-primary { 
+        border:0; border-bottom:0; border-radius:999px; padding:10px 18px; 
+        background: linear-gradient(135deg, #7f1d1d 0%, #b91c1c 60%, #ef4444 100%);
+        box-shadow: 0 8px 18px rgba(185,28,28,.25);
+        transition: transform .05s ease, box-shadow .2s ease, filter .2s ease;
+    }
+    .login-card .btn-primary:hover { filter: brightness(1.03); box-shadow: 0 10px 22px rgba(239,68,68,.3); }
+    .login-card .btn-primary:active { transform: translateY(1px); }
+    /* Links */
+    .login-card a { text-decoration: none; }
+    .login-card a:hover { text-decoration: underline; }
+    @media (max-width: 991px) { .auth-split { flex-direction:column; height:auto; }
+      .auth-right .right-bg { height:35vh; margin:8px; } }
+    </style>
 </head>
-<body>
+<body class="login-page">
+
 <?php $this->beginBody() ?>
-
-
-
-	
-	<header class="header-section">
-		<div class="container">
-						<div class="row">
-				<div class="col-md-3 col-sm-12">
-					
-					<a href="index.cfm" class="site-logo"><img src="http://infosys.umk.edu.my/public/logo.png" alt=""></a>
-					
-				</div>
-				<div class="col-md-7 col-sm-12">
-					<h2 style="font-family: 'Signika', sans-serif;font-size:18px;">
-					<br>FACULTY OF ENTREPRENEURSHIP AND BUSINESS<br>
-					Universiti Malaysia Kelantan
-					</h2>
-				</div>
-			</div>
-			<div class="nav-switch">
-				<i class="fa fa-bars"></i>
-			</div>
-			<div class="header-info">
-			</div>
-		</div>
-	</header>
-	
-	
-	<nav class="nav-section">
-		<div class="container">
-			<div class="nav-right">
-				<a href="http://fkp.umk.edu.my/search.cfm"><i class="fa fa-search"></i></a>
-				
-			</div>
-			
-		</div>
-	</nav>
-	<section class="hero-section">
-	<div class="row no-gutters">
-	</div>
-	</section>
-	
-		<section>
-		
-		
-		<div class="container services">
-			<div style="padding:30px;">
-			<div class="row">
-				<div class="col-md-12">
-				
-				
-
-					
-					
-					
-				</div>
-			</div>
-			</div>
-		</div>
-		<?= Alert::widget() ?>
-		<div style="min-height:50px;"></div>
-	
-	</section>
-
-	
-	
-
-	<?=$content?>
-	
-	<?= $this->render('@frontend/views/layouts/_footer') ?>
-
-
-
-<script>
-$('.nav').nav();
-jssor_1_slider_init();
-</script>
-	
+<div class="auth-split">
+  <div class="auth-left">
+    <div class="login-card">
+      <div class="login-logo" style="font-family:verdana">
+        <b>FKP PORTAL</b><br /><span style="font-size:22px">STUDENT LOGIN</span>
+      </div>
+      <?= Alert::widget() ?>
+      <?= $content ?>
+    </div>
+  </div>
+  <div class="auth-right">
+    <div class="right-bg"></div>
+  </div>
+  
+</div>
 
 <?php $this->endBody() ?>
-<script>
-$('.nav').nav();
-jssor_1_slider_init();
-</script>
-
 </body>
 </html>
 <?php $this->endPage() ?>
