@@ -9,7 +9,7 @@ use yii\bootstrap\ActiveForm;
 $this->title = 'Sign In';
 $fieldOptions1 = [
     'options' => ['class' => 'form-group has-feedback'],
-    'inputTemplate' => "{input}<span class='glyphicon glyphicon-envelope form-control-feedback'></span>"
+    'inputTemplate' => "{input}<span class='glyphicon glyphicon-user form-control-feedback'></span>"
 ];
 
 $fieldOptions2 = [
@@ -24,14 +24,40 @@ $fieldOptions2 = [
 
     <?php $form = ActiveForm::begin(['id' => 'login-form', 'enableClientValidation' => false]); ?>
 
+    <style>
+        .level-selector { margin-bottom: 15px; }
+        .level-selector .label-title { display:block; margin-bottom:8px; font-weight:600; }
+        .level-options { display:flex; gap:10px; }
+        .level-option { position: relative; }
+        .level-option input[type="radio"] { position: absolute; opacity: 0; pointer-events: none; }
+        .level-option .pill { display:inline-block; padding:8px 14px; border:1px solid #cfd8dc; border-radius: 20px; color:#37474f; background:#fff; cursor:pointer; transition: all .15s ease; user-select:none; min-width: 150px; text-align:center; }
+        .level-option .pill:hover { border-color:#90a4ae; color:#263238; }
+        .level-option input[type="radio"]:checked + .pill { background:#3c8dbc; color:#fff; border-color:#3c8dbc; box-shadow: 0 2px 6px rgba(60,141,188,.3); }
+        @media (max-width: 420px) { .level-options { gap:8px; } .level-option .pill { min-width: 120px; padding:8px 12px; } }
+    </style>
+
+    <div class="level-selector">
+        <span class="label-title">Choose Level</span>
+        <div class="level-options">
+            <label class="level-option">
+                <input type="radio" name="LoginForm[level]" value="UG" <?= $model->level === 'UG' ? 'checked' : '' ?>>
+                <span class="pill">Undergraduate</span>
+            </label>
+            <label class="level-option">
+                <input type="radio" name="LoginForm[level]" value="PG" <?= $model->level === 'PG' ? 'checked' : '' ?>>
+                <span class="pill">Postgraduate</span>
+            </label>
+        </div>
+    </div>
+
     <?= $form
         ->field($model, 'username', $fieldOptions1)
-        ->label(false)
+        ->label('Matric Number')
         ->textInput(['placeholder' => 'Matric Number']) ?>
 
     <?= $form
         ->field($model, 'password', $fieldOptions2)
-        ->label(false)
+        ->label('Password')
         ->passwordInput(['placeholder' => $model->getAttributeLabel('password')]) ?>
 
     <div class="row">
@@ -45,7 +71,7 @@ $fieldOptions2 = [
 
     <?php ActiveForm::end(); ?>
 
-    <a href="<?= \yii\helpers\Url::to(['/site/request-password-reset']) ?>">I forgot my password</a><br>
+    <a href="<?= \yii\helpers\Url::to(['/site/request-password']) ?>">I forgot my password</a><br>
 
 </div>
 <!-- /.login-box-body -->

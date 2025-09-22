@@ -13,6 +13,7 @@ class LoginForm extends Model
     public $username;
     public $password;
     public $rememberMe = true;
+    public $level = 'UG';
 
     private $_user;
 
@@ -25,6 +26,8 @@ class LoginForm extends Model
         return [
             // username and password are both required
             [['username', 'password'], 'required'],
+            // level (Undergraduate/Postgraduate) is required
+            ['level', 'required'],
 			
 			//[['username'], 'email'],
 			
@@ -40,6 +43,7 @@ class LoginForm extends Model
     {
         return [
             'username' => 'Matric Number',
+            'level' => 'Program',
         ];
     }
 

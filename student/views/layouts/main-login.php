@@ -27,7 +27,7 @@ $dirAsset = Yii::getAlias('@web');
     .auth-left { flex:1 1 45%; display:flex; align-items:center; justify-content:center; padding:24px 16px; }
     /* Right: image side */
     .auth-right { flex:1 1 55%; padding:0; }
-    .auth-right .right-bg { height: calc(100vh - 24px); margin:12px; border-radius:12px; background-image:url('<?=$dirAsset?>/images/login.jpg'); background-size:cover; background-position:center center; }
+    .auth-right .right-bg { height: calc(100vh - 24px); margin:12px; border-radius:12px; background-image:url('<?=$dirAsset?>/images/fkp_students.jpg'); background-size:cover; background-position:center center; }
     .login-card { width:100%; max-width:480px; background:#fff; border-radius:16px; box-shadow: 0 20px 40px rgba(0,0,0,.08); padding:32px 28px; border: 1px solid rgba(0,0,0,.04); }
     .login-logo { text-align:center; margin-bottom:12px; }
     .login-card .login-box-msg { margin: 8px 0 18px; color:#495057; font-size:16px; }
