@@ -88,7 +88,11 @@ class LoginForm extends Model
     
         if ($this->_user === null) {
             //echo $this->username;die();
-            $this->_user = User::findStudentByNameOrEmail($this->username);
+            if ($this->level === 'UG') {
+                $this->_user = User::findStudentUnderGradByNameOrEmail($this->username);
+            } else {
+                $this->_user = User::findStudentPostGradByNameOrEmail($this->username);
+            }
         }
 
         return $this->_user;

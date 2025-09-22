@@ -10,6 +10,7 @@ use backend\modules\staff\models\Staff;
 use backend\modules\teachingLoad\models\Staff as StaffTeaching;
 use backend\modules\conference\models\Associate;
 use backend\modules\postgrad\models\Student as StudentPostGrad;
+use backend\modules\students\models\Student;
 
 /**
  * User model
@@ -163,10 +164,24 @@ class User extends ActiveRecord implements IdentityInterface
         ->one();
     }
     
-    public static function findStudentByNameOrEmail($username)
+    public static function findStudentPostGradByNameOrEmail($username)
     {
         return static::find()->alias('u')
         ->innerJoinWith(['studentPostGrad s'])
+        ->where(['u.status' => self::STATUS_ACTIVE])
+        ->andWhere(['or',
+            ['u.email' => $username],
+            ['s.matric_no' => $username],
+            ['u.username' => $username]
+        ]
+            )
+            ->one();
+    }
+
+    public static function findStudentUnderGradByNameOrEmail($username)
+    {
+        return static::find()->alias('u')
+        ->innerJoinWith(['studentUnderGrad s'])
         ->where(['u.status' => self::STATUS_ACTIVE])
         ->andWhere(['or',
             ['u.email' => $username],
@@ -293,6 +308,10 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function getStudentPostGrad(){
         return $this->hasOne(StudentPostGrad::className(), ['user_id' => 'id']);
+    }
+
+    public function getStudentUnderGrad(){
+        return $this->hasOne(Student::className(), ['user_id' => 'id']);
     }
 	
 	public function getStaffTeaching(){
