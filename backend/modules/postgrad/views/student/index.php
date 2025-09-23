@@ -3,12 +3,15 @@
 use backend\modules\esiap\models\Program;
 use yii\helpers\Html;
 use yii\grid\GridView;
+use common\models\Country;
+use yii\helpers\ArrayHelper;
+use backend\modules\postgrad\models\Student;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\modules\postgrad\models\StudentPostGradSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Postgraduate Students';
+$this->title = $title;
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="student-post-grad-index">
@@ -21,6 +24,24 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="box">
 <div class="box-header"></div>
 <div class="box-body">  
+    <?php
+    // Build country options from distinct countries present in pg_student
+    $countryIds = (new \yii\db\Query())
+        ->select('nationality')
+        ->from(Student::tableName())
+        ->where(['not', ['nationality' => null]])
+        ->andWhere(['<>', 'nationality', 0])
+        ->groupBy('nationality')
+        ->column();
+    $countryOptions = [];
+    if ($countryIds) {
+        $countryOptions = ArrayHelper::map(
+            Country::find()->where(['id' => $countryIds])->orderBy('country_name')->all(),
+            'id',
+            'country_name'
+        );
+    }
+    ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -44,6 +65,20 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => Html::activeDropDownList($searchModel, 'program_id', $searchModel->listProgram(),['class'=> 'form-control','prompt' => 'Choose']),
                 'value' => function($model){
                    return $model->programCode;
+                }
+            ],
+            [
+                'attribute' => 'nationality',
+                'label' => 'Country',
+                'format' => 'text',
+                'filter' => Html::activeDropDownList(
+                    $searchModel,
+                    'nationality',
+                    $countryOptions,
+                    ['class'=> 'form-control','prompt' => 'Choose']
+                ),
+                'value' => function($model){
+                   return $model->country ? $model->country->country_name : '';
                 }
             ],
             [

@@ -1,25 +1,24 @@
 <?php
 
-namespace backend\modules\postgrad\models;
+namespace backend\modules\apprentice\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use backend\modules\apprentice\models\Apprentice;
 
 /**
- * StudentPostGradSearch represents the model behind the search form of `backend\modules\postgrad\models\StudentPostGrad`.
+ * ApprenticeSearch represents the model behind the search form of `backend\modules\apprentice\models\Apprentice`.
  */
-class StudentPostGradSearch extends Student
+class ApprenticeSearch extends Apprentice
 {
-    public $name;
-    public $study_mode_rc;
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id', 'gender', 'status', 'nationality'], 'integer'],
-            [['matric_no', 'nric', 'program_id', 'name', 'study_mode_rc'], 'safe'],
+            [['id', 'student_id', 'semester_id', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['program_code', 'course_code'], 'safe'],
         ];
     }
 
@@ -41,16 +40,12 @@ class StudentPostGradSearch extends Student
      */
     public function search($params)
     {
-        $query = Student::find()->alias('a')
-        ->joinWith('user')->orderBy('a.id DESC');
+        $query = Apprentice::find();
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => [
-                'pageSize' => 100,
-            ],
         ]);
 
         $this->load($params);
@@ -63,17 +58,16 @@ class StudentPostGradSearch extends Student
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'program_id' => $this->program_id,
-            'a.status' => $this->status,
-            'a.nationality' => $this->nationality,
+            'id' => $this->id,
+            'student_id' => $this->student_id,
+            'semester_id' => $this->semester_id,
+            'status' => $this->status,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ]);
 
-        $query->andFilterWhere(['like', 'matric_no', $this->matric_no])
-            ->andFilterWhere(['like', 'nric', $this->nric])
-            ->andFilterWhere(['like', 'user.fullname', $this->name]);
-
-        // study mode (research/coursework)
-        $query->andFilterWhere(['a.study_mode_rc' => $this->study_mode_rc]);
+        $query->andFilterWhere(['like', 'program_code', $this->program_code])
+            ->andFilterWhere(['like', 'course_code', $this->course_code]);
 
         return $dataProvider;
     }

@@ -32,7 +32,7 @@ $this->title = 'Modules';
 
 <div class="box box-solid">
   <div class="box-header with-border">
-    <h3 class="box-title">Active Modules</h3>
+    <h3 class="box-title">Primary Modules</h3>
     <div class="dashboard-intro">Quick access to the key areas of the system</div>
   </div>
   <div class="box-body">
@@ -88,13 +88,19 @@ $this->title = 'Modules';
           </div>
         </a>
       </div>
+
+      
+   
+
     </div>
   </div>
 </div>
 
 <style>
   /* Distinct style for Additional Modules */
-  .module-cards .module-card{background:#fff;border-radius:10px;border:1px solid #e7e9ee;box-shadow:0 2px 6px rgba(0,0,0,.05);transition:transform .15s ease,box-shadow .15s ease;position:relative;overflow:hidden}
+  .module-cards{margin-top:15px}
+  .module-cards > [class*="col-"]{margin-bottom:15px}
+  .module-cards .module-card{background:#fff;border-radius:10px;border:1px solid #e7e9ee;box-shadow:0 2px 6px rgba(0,0,0,.05);transition:transform .15s ease,box-shadow .15s ease;position:relative;overflow:hidden;margin-bottom:15px}
   .module-cards .module-card .bar{height:4px;width:100%;position:absolute;top:0;left:0}
   .module-cards .module-card .inner{padding:18px 16px 18px 16px;min-height:110px}
   .module-cards .module-card h4{margin:0 0 6px;font-size:18px;font-weight:700;color:#1d2430}
@@ -110,24 +116,12 @@ $this->title = 'Modules';
 
 <div class="box box-solid">
   <div class="box-header with-border">
-    <h3 class="box-title">Additional Modules</h3>
+    <h3 class="box-title">Programs Related Modules</h3>
     <div class="dashboard-intro">Quick access to additional key areas of the system</div>
   </div>
   <div class="box-body">
     <div class="row module-cards">
-      <div class="col-md-3 col-sm-6 col-xs-12">
-        <a href="<?= Url::to(['/conference/conference/index']) ?>">
-          <div class="module-card theme-purple">
-            <span class="bar"></span>
-            <div class="inner">
-              <h4>Conference</h4>
-              <p>Manage conferences and schedules.</p>
-              <i class="fa fa-microphone icon"></i>
-            </div>
-            <span class="footer">Open <i class="fa fa-arrow-circle-right"></i></span>
-          </div>
-        </a>
-      </div>
+
       <div class="col-md-3 col-sm-6 col-xs-12">
         <a href="<?= Url::to(['/sae']) ?>">
           <div class="module-card theme-orange">
@@ -154,6 +148,48 @@ $this->title = 'Modules';
           </div>
         </a>
       </div>
+
+
+      <div class="col-md-3 col-sm-6 col-xs-12">
+        <a href="<?= Url::to(['/apprentice']) ?>">
+          <div class="module-card theme-teal">
+            <span class="bar"></span>
+            <div class="inner">
+              <h4>SAA Apprentice</h4>
+              <p>Apprenticeship and internship management for SAA Program.</p>
+              <i class="fa fa-users icon"></i>
+            </div>
+            <span class="footer">Open <i class="fa fa-arrow-circle-right"></i></span>
+          </div>
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+
+
+<div class="box box-solid">
+  <div class="box-header with-border">
+    <h3 class="box-title">Other Modules</h3>
+    <div class="dashboard-intro">Quick access to additional key areas of the system</div>
+  </div>
+  <div class="box-body">
+    <div class="row module-cards">
+      <div class="col-md-3 col-sm-6 col-xs-12">
+        <a href="<?= Url::to(['/conference/conference/index']) ?>">
+          <div class="module-card theme-purple">
+            <span class="bar"></span>
+            <div class="inner">
+              <h4>Conference</h4>
+              <p>Manage conferences and schedules.</p>
+              <i class="fa fa-microphone icon"></i>
+            </div>
+            <span class="footer">Open <i class="fa fa-arrow-circle-right"></i></span>
+          </div>
+        </a>
+      </div>
       <div class="col-md-3 col-sm-6 col-xs-12">
         <a href="<?= Url::to(['/proceedings']) ?>">
           <div class="module-card theme-teal">
@@ -167,6 +203,7 @@ $this->title = 'Modules';
           </div>
         </a>
       </div>
+      
     </div>
   </div>
 </div>

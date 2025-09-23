@@ -76,7 +76,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         <thead>
                             <tr>
                                 <th>Negara</th>
-                                <th>Bilangan</th>
+                                <th>Research</th>
+                                <th>Coursework</th>
+                                <th>Jumlah</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -84,10 +86,15 @@ $this->params['breadcrumbs'][] = $this->title;
                             $id = (int)($r['nationality'] ?? 0);
                             if (!$id) { continue; }
                             $name = isset($countries[$id]) ? $countries[$id]->country_name : ('ID ' . $id);
+                            $research = isset($r['research_cnt']) ? (int)$r['research_cnt'] : 0;
+                            $coursework = isset($r['coursework_cnt']) ? (int)$r['coursework_cnt'] : 0;
+                            $total = isset($r['cnt']) ? (int)$r['cnt'] : ($research + $coursework);
                         ?>
                             <tr>
                                 <td><?= Html::encode($name) ?></td>
-                                <td><?= (int)$r['cnt'] ?></td>
+                                <td><?= Html::a((string)$research, ['research', 'StudentPostGradSearch[nationality]' => $id]) ?></td>
+                                <td><?= Html::a((string)$coursework, ['coursework', 'StudentPostGradSearch[nationality]' => $id]) ?></td>
+                                <td><?= $total ?></td>
                             </tr>
                         <?php } ?>
                         </tbody>

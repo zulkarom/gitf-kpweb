@@ -67,6 +67,7 @@ class StudentController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'title' => 'Research Students'
         ]);
     }
 
@@ -83,6 +84,7 @@ class StudentController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'title' => 'Coursework Students'
         ]);
     }
 
@@ -146,10 +148,17 @@ class StudentController extends Controller
             ->limit(5)
             ->all();
 
-        // By country (nationality)
+        // By country (nationality) with study mode RC breakdown
         $byCountryRows = (new \yii\db\Query())
-            ->select(['nationality', 'cnt' => 'COUNT(*)'])
+            ->select([
+                'nationality',
+                // Ensure total equals research + coursework and only count active students
+                'cnt' => "SUM(CASE WHEN study_mode_rc IN ('research','coursework') THEN 1 ELSE 0 END)",
+                'research_cnt' => "SUM(CASE WHEN study_mode_rc = 'research' THEN 1 ELSE 0 END)",
+                'coursework_cnt' => "SUM(CASE WHEN study_mode_rc = 'coursework' THEN 1 ELSE 0 END)",
+            ])
             ->from(Student::tableName())
+            ->where(['status' => Student::STATUS_ACTIVE])
             ->groupBy(['nationality'])
             ->all();
         $countryIds = [];

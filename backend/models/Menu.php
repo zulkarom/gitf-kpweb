@@ -302,7 +302,7 @@ class Menu
                             ]
                         ],
                         [
-                            'label' => 'Students (Not Active)',
+                            'label' => 'Not Active',
                             'icon' => 'user',
                             'url' => [
                                 '/postgrad/student/inactive'
