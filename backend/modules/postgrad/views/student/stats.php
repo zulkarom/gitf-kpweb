@@ -12,60 +12,73 @@ use yii\grid\GridView;
 /* @var $byFieldRows array */
 /* @var $fields array */
 
-$this->title = 'Postgrad Statistics';
+$this->title = 'Sistem Pemantauan Akademik Pascasiswazah';
 $this->params['breadcrumbs'][] = ['label' => 'Postgraduate Students', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="postgrad-stats">
 
-    <p>
-        <?= Html::a('Back to List', ['index'], ['class' => 'btn btn-default']) ?>
-    </p>
-
     <div class="row">
+        <div class="col-md-3">
+            <div class="small-box bg-aqua">
+                <div class="inner">
+                    <h3><?= (int)$activeCount ?></h3>
+                    <p>Jumlah Pelajar Pascasiswazah</p>
+                    <p style="margin:8px 0 0; font-size:14px;">
+                        Research: <strong><?= (int)($overallRc['research'] ?? 0) ?></strong> |
+                        Coursework: <strong><?= (int)($overallRc['coursework'] ?? 0) ?></strong>
+                    </p>
+                </div>
+                <div class="icon"><i class="fa fa-graduation-cap"></i></div>
+            </div>
+        </div>
+
         <div class="col-md-3">
             <div class="small-box bg-green">
                 <div class="inner">
                     <h3><?= (int)$activeCount ?></h3>
-                    <p>Bilangan Aktif</p>
+                    <p>Jumlah Pelajar Pascasiswazah</p>
+                    <p style="margin:8px 0 0; font-size:14px;">
+                        Local: <strong><?= (int)($localCount ?? 0) ?></strong> |
+                        International: <strong><?= (int)($internationalCount ?? 0) ?></strong>
+                    </p>
                 </div>
-                <div class="icon"><i class="fa fa-user"></i></div>
+                <div class="icon"><i class="fa fa-globe"></i></div>
             </div>
         </div>
 
         <div class="col-md-3">
-            <div class="box box-primary">
-                <div class="box-header with-border"><h3 class="box-title">Taraf Pengajian</h3></div>
-                <div class="box-body">
-                    <p><strong>Sepenuh Masa:</strong> <?= (int)($studyMode[1] ?? 0) ?></p>
-                    <p><strong>Separuh Masa:</strong> <?= (int)($studyMode[2] ?? 0) ?></p>
+            <div class="small-box bg-yellow">
+                <div class="inner">
+                    <?php $masterTotal = (int)($masterRc['research'] ?? 0) + (int)($masterRc['coursework'] ?? 0); ?>
+                    <h3><?= $masterTotal ?></h3>
+                    <p>Jumlah Pelajar Sarjana (Master)</p>
+                    <p style="margin:8px 0 0; font-size:14px;">
+                        Research: <strong><?= (int)($masterRc['research'] ?? 0) ?></strong> |
+                        Coursework: <strong><?= (int)($masterRc['coursework'] ?? 0) ?></strong>
+                    </p>
                 </div>
+                <div class="icon"><i class="fa fa-book"></i></div>
             </div>
         </div>
 
         <div class="col-md-3">
-            <div class="box box-info">
-                <div class="box-header with-border"><h3 class="box-title">Program</h3></div>
-                <div class="box-body">
-                    <p><strong>Sarjana (Master):</strong> <?= (int)($programLevel['master'] ?? 0) ?></p>
-                    <p><strong>Doktor Falsafah (PhD):</strong> <?= (int)($programLevel['phd'] ?? 0) ?></p>
+            <div class="small-box bg-red">
+                <div class="inner">
+                    <?php $phdTotal = (int)($phdModes[1] ?? 0) + (int)($phdModes[2] ?? 0); ?>
+                    <h3><?= $phdTotal ?></h3>
+                    <p>Jumlah Pelajar PhD</p>
+                    <p style="margin:8px 0 0; font-size:14px;">
+                        Sepenuh Masa: <strong><?= (int)($phdModes[1] ?? 0) ?></strong> |
+                        Separuh Masa: <strong><?= (int)($phdModes[2] ?? 0) ?></strong>
+                    </p>
                 </div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="box box-warning">
-                <div class="box-header with-border"><h3 class="box-title">5 Tahun Kemasukan Terkini</h3></div>
-                <div class="box-body">
-                    <?php if ($years) { foreach ($years as $y) { ?>
-                        <p><strong><?= Html::encode($y['admission_year']) ?>:</strong> <?= (int)$y['cnt'] ?></p>
-                    <?php } } else { ?>
-                        <p>Tiada data</p>
-                    <?php } ?>
-                </div>
+                <div class="icon"><i class="fa fa-flask"></i></div>
             </div>
         </div>
     </div>
+
+   
 
     <div class="row">
         <div class="col-md-6">
@@ -82,13 +95,18 @@ $this->params['breadcrumbs'][] = $this->title;
                             </tr>
                         </thead>
                         <tbody>
-                        <?php foreach ($byCountryRows as $r) {
+                        <?php
+                        $sumResearch = 0; $sumCoursework = 0; $sumTotal = 0;
+                        foreach ($byCountryRows as $r) {
                             $id = (int)($r['nationality'] ?? 0);
                             if (!$id) { continue; }
                             $name = isset($countries[$id]) ? $countries[$id]->country_name : ('ID ' . $id);
                             $research = isset($r['research_cnt']) ? (int)$r['research_cnt'] : 0;
                             $coursework = isset($r['coursework_cnt']) ? (int)$r['coursework_cnt'] : 0;
                             $total = isset($r['cnt']) ? (int)$r['cnt'] : ($research + $coursework);
+                            $sumResearch += $research;
+                            $sumCoursework += $coursework;
+                            $sumTotal += $total;
                         ?>
                             <tr>
                                 <td><?= Html::encode($name) ?></td>
@@ -97,6 +115,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <td><?= $total ?></td>
                             </tr>
                         <?php } ?>
+                        <tr>
+                            <th>Grand Total</th>
+                            <th><?= (int)$sumResearch ?></th>
+                            <th><?= (int)$sumCoursework ?></th>
+                            <th><?= (int)$sumTotal ?></th>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -131,5 +155,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
     </div>
+
+    
 
 </div>

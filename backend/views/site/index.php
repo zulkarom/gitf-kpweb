@@ -55,7 +55,7 @@ $this->title = 'Modules';
           <div class="tile theme-soft-amber">
             <div class="inner">
               <h4>Postgraduate</h4>
-              <p>Students, supervisors, progress tracking and stages.</p>
+              <p>Sistem Pemantauan Akademik Pascasiswazah.</p>
               <div class="icon-bubble"><i class="fa fa-graduation-cap"></i></div>
             </div>
             <span class="footer">Open <i class="fa fa-arrow-circle-right"></i></span>

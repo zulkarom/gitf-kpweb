@@ -181,6 +181,60 @@ class StudentController extends Controller
             $fields = Field::find()->where(['id' => $fieldIds])->indexBy('id')->all();
         }
 
+        // Additional stats for top cards
+        // 1) Overall Research vs Coursework (active only)
+        $rcRows = (new \yii\db\Query())
+            ->select(['study_mode_rc', 'cnt' => 'COUNT(*)'])
+            ->from(Student::tableName())
+            ->where(['status' => Student::STATUS_ACTIVE])
+            ->andWhere(['study_mode_rc' => ['research', 'coursework']])
+            ->groupBy(['study_mode_rc'])
+            ->all();
+        $overallRc = ['research' => 0, 'coursework' => 0];
+        foreach ($rcRows as $r) {
+            $key = (string)$r['study_mode_rc'];
+            if (isset($overallRc[$key])) { $overallRc[$key] = (int)$r['cnt']; }
+        }
+
+        // 2) Local (Malaysia id=158) vs International (active only)
+        $localCount = (int) (new \yii\db\Query())
+            ->from(Student::tableName())
+            ->where(['status' => Student::STATUS_ACTIVE, 'nationality' => 158])
+            ->count('*');
+        $internationalCount = max(0, $activeCount - $localCount);
+
+        // 3) Master's (pro_level=3) Research vs Coursework (active only)
+        $masterRcRows = (new \yii\db\Query())
+            ->select(['s.study_mode_rc', 'cnt' => 'COUNT(*)'])
+            ->from(['s' => Student::tableName()])
+            ->leftJoin(['p' => Program::tableName()], 'p.id = s.program_id')
+            ->where(['s.status' => Student::STATUS_ACTIVE])
+            ->andWhere(['p.pro_level' => 3])
+            ->andWhere(['s.study_mode_rc' => ['research', 'coursework']])
+            ->groupBy(['s.study_mode_rc'])
+            ->all();
+        $masterRc = ['research' => 0, 'coursework' => 0];
+        foreach ($masterRcRows as $r) {
+            $key = (string)$r['study_mode_rc'];
+            if (isset($masterRc[$key])) { $masterRc[$key] = (int)$r['cnt']; }
+        }
+
+        // 4) PhD (pro_level=4) Full-time vs Part-time (active only) study_mode: 1=full,2=part
+        $phdModeRows = (new \yii\db\Query())
+            ->select(['s.study_mode', 'cnt' => 'COUNT(*)'])
+            ->from(['s' => Student::tableName()])
+            ->leftJoin(['p' => Program::tableName()], 'p.id = s.program_id')
+            ->where(['s.status' => Student::STATUS_ACTIVE])
+            ->andWhere(['p.pro_level' => 4])
+            ->groupBy(['s.study_mode'])
+            ->all();
+        $phdModes = [1 => 0, 2 => 0];
+        foreach ($phdModeRows as $r) {
+            if (!empty($r['study_mode'])) {
+                $phdModes[(int)$r['study_mode']] = (int)$r['cnt'];
+            }
+        }
+
         return $this->render('stats', [
             'activeCount' => $activeCount,
             'studyMode' => $studyMode,
@@ -190,6 +244,12 @@ class StudentController extends Controller
             'countries' => $countries,
             'byFieldRows' => $byFieldRows,
             'fields' => $fields,
+            // new stats for top cards
+            'overallRc' => $overallRc,
+            'localCount' => $localCount,
+            'internationalCount' => $internationalCount,
+            'masterRc' => $masterRc,
+            'phdModes' => $phdModes,
         ]);
     }
 
