@@ -312,7 +312,7 @@ class Menu
                 ],
                
                 [
-                    'label' => 'Supervisors/Examiners',
+                    'label' => 'Supervisors',
                     'icon' => 'hand-o-right',
                     'url' => [
                         '/postgrad/supervisor'
