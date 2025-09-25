@@ -82,6 +82,22 @@ class Supervisor extends \yii\db\ActiveRecord
             $staff = $this->staff;
             if($staff){
                 
+                return $staff->staff_title .' ' . $staff->user->fullname;
+            }
+        }else{
+            $external = $this->external;
+            if($external){
+                return $external->ex_name;
+            }
+        }
+    }
+
+    public function getSvNamePlain(){
+        
+        if($this->is_internal == 1){
+            $staff = $this->staff;
+            if($staff){
+                
                 return $staff->user->fullname;
             }
         }else{
@@ -108,6 +124,31 @@ class Supervisor extends \yii\db\ActiveRecord
     public function getSupervisees()
     {
         return $this->hasMany(StudentSupervisor::className(), ['supervisor_id' => 'id']);
+    }
+    
+    // helpers for counting supervisees by role
+    public function getCountByRole($role)
+    {
+        return StudentSupervisor::find()
+            ->where(['supervisor_id' => $this->id, 'sv_role' => $role])
+            ->count();
+    }
+    
+    public function getCountMain()
+    {
+        return $this->getCountByRole(1);
+    }
+    
+    public function getCountSecond()
+    {
+        return $this->getCountByRole(2);
+    }
+    
+    public function getCountTotal()
+    {
+        return StudentSupervisor::find()
+            ->where(['supervisor_id' => $this->id])
+            ->count();
     }
     
     public function getExaminees(){

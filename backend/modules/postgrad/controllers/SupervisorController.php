@@ -43,9 +43,50 @@ class SupervisorController extends Controller
         $searchModel = new SupervisorSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+        // KPI 1: total staff that has at least one as penyelia utama (sv_role = 1)
+        $countStaffMain = (new \yii\db\Query())
+            ->from(['a' => Supervisor::tableName()])
+            ->innerJoin(['ss' => 'pg_student_sv'], 'ss.supervisor_id = a.id AND ss.sv_role = 1')
+            ->count('DISTINCT a.id');
+
+        // KPI 2: total staff that has at least one as penyelia bersama (sv_role = 2)
+        $countStaffSecond = (new \yii\db\Query())
+            ->from(['a' => Supervisor::tableName()])
+            ->innerJoin(['ss' => 'pg_student_sv'], 'ss.supervisor_id = a.id AND ss.sv_role = 2')
+            ->count('DISTINCT a.id');
+
+
+        // Compute color category counts based on total supervisees per supervisor
+        $rows = (new \yii\db\Query())
+            ->select(['a.id AS sid', 'COUNT(ss.id) AS total'])
+            ->from(['a' => Supervisor::tableName()])
+            ->leftJoin(['ss' => 'pg_student_sv'], 'ss.supervisor_id = a.id')
+            ->groupBy(['a.id'])
+            ->all();
+
+        $countRed = 0;    // 0-3
+        $countYellow = 0; // 4-7
+        $countGreen = 0;  // 8+
+        foreach ($rows as $r) {
+            $t = (int)$r['total'];
+            if ($t <= 3) {
+                $countRed++;
+            } elseif ($t <= 7) {
+                $countYellow++;
+            } else {
+                $countGreen++;
+            }
+        }
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'countStaffMain' => (int)$countStaffMain,
+            'countStaffSecond' => (int)$countStaffSecond,
+            // Removed student supervision KPIs by user edit
+            'countRed' => $countRed,
+            'countYellow' => $countYellow,
+            'countGreen' => $countGreen,
         ]);
     }
 
