@@ -9,13 +9,13 @@ use yii\widgets\ActiveForm;
 /* @var $searchModel backend\modules\postgrad\models\SupervisorSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Supervisors / Examiners List';
+$this->title = 'Supervisors';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="supervisor-index">
 
     <p>
-        <?= Html::a('Add Supervisor / Examiner', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Add Supervisor', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
   
             <style>
