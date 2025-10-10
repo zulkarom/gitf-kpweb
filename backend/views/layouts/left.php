@@ -133,13 +133,15 @@ $menuItems = [
 					
 					//['label' => 'Teaching Loads', 'icon' => 'book', 'visible' => $teaching_load, 'url' => ['/teaching-load/default/index']],
 					
-					//['label' => 'Course Files', 'icon' => 'files-o', 'url' => ['/course-files/default/teaching-assignment']],
+					
 					
 					['label' => 'Staff Info', 'icon' => 'user', 'url' => ['/staff']],
 					
 					['label' => 'Course Management', 'icon' => 'mortar-board', 'url' => ['/esiap'],],
     
     ['label' => 'Postgraduate', 'icon' => 'cube', 'url' => ['/postgrad/student/stats'], 'visible' => Yii::$app->user->can('postgrad-manager')],
+
+	['label' => 'Course Files', 'icon' => 'files-o', 'url' => ['/course-files/default/teaching-assignment']],
     
                    // ['label' => 'Program Management', 'icon' => 'mortar-board', 'url' => ['/esiap/program'],],
 					
