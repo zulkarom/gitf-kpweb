@@ -141,7 +141,7 @@ $menuItems = [
     
     ['label' => 'Postgraduate', 'icon' => 'cube', 'url' => ['/postgrad/student/stats'], 'visible' => Yii::$app->user->can('postgrad-manager')],
 
-	['label' => 'Course Files', 'icon' => 'files-o', 'url' => ['/course-files/default/teaching-assignment']],
+
     
                    // ['label' => 'Program Management', 'icon' => 'mortar-board', 'url' => ['/esiap/program'],],
 					
@@ -169,6 +169,8 @@ $menuItems = [
 				['label' => 'Protege', 'icon' => 'book', 'url' => ['/protege/session']],
 
 				['label' => 'Proceedings', 'icon' => 'microphone', 'url' => ['/proceedings']],
+
+					['label' => 'Course Files (old)', 'icon' => 'files-o', 'url' => ['/course-files/default/teaching-assignment']],
 
 
 					
