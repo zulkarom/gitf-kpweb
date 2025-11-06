@@ -75,7 +75,9 @@ Supervisee
   <thead>
     <tr>
       <th scope="col">#</th>
+      <th scope="col">Matric No</th>
       <th scope="col">Name</th>
+      <th scope="col">Program</th>
       <th scope="col">Role</th>
       <th scope="col">Status</th>
     </tr>
@@ -88,9 +90,14 @@ Supervisee
           ?>
            <tr>
       <th scope="row"><?=$i?></th>
-      <td><?=$s->student->user->fullname?></td>
-      <td><?=$s->roleName()?></td>
-		<td><?=$s->student->statusText?></td>
+      <td><?= Html::a($s->student->matric_no, ['/postgrad/student/view', 'id' => $s->student->id]) ?></td>
+      <td><?= Html::a(strtoupper($s->student->user->fullname), ['/postgrad/student/view', 'id' => $s->student->id]) ?></td>
+      <td><?= $s->student->program ? $s->student->program->pro_name : '' ?></td>
+      <td>
+        <?php $roleClass = ($s->sv_role == 1 ? 'primary' : ($s->sv_role == 2 ? 'warning' : 'default')); ?>
+        <span class="label label-<?=$roleClass?>"><?=$s->roleName()?></span>
+      </td>
+		<td><?=$s->student->statusLabel?></td>
     </tr>
           
           <?php 

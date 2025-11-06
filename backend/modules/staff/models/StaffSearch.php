@@ -20,7 +20,7 @@ class StaffSearch extends Staff
     public function rules()
     {
         return [
-            [['id','is_academic', 'position_id', 'position_status', 'working_status', 'staff_department'], 'integer'],
+            [['id','is_academic', 'position_id', 'position_status', 'working_status', 'staff_department', 'faculty_id', 'staff_active'], 'integer'],
 			
 			[['staff_name', 'staff_title', 'staff_no'], 'string']
 			
@@ -46,7 +46,7 @@ class StaffSearch extends Staff
      */
     public function search($params)
     {
-        $query = Staff::find()->where(['staff_active' => 1, 'faculty_id' => Yii::$app->params['faculty_id']])->orderBy('user.fullname ASC');
+        $query = Staff::find()->orderBy('user.fullname ASC');
 		$query->joinWith(['user']);
 
         // add conditions that should always apply here
@@ -61,6 +61,15 @@ class StaffSearch extends Staff
 
         $this->load($params);
 
+        // Default filters when not explicitly provided
+        $filters = $params['StaffSearch'] ?? null;
+        if (!isset($filters['faculty_id'])) {
+            $this->faculty_id = 1;
+        }
+        if (!isset($filters['staff_active'])) {
+            $this->staff_active = 1;
+        }
+
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
@@ -74,6 +83,8 @@ class StaffSearch extends Staff
 			'is_academic' => $this->is_academic,
 			'position_status' => $this->position_status,
 			'working_status' => $this->working_status,
+            'faculty_id' => $this->faculty_id,
+            'staff_active' => $this->staff_active,
         ]);
 
         $query->andFilterWhere(['like', 'staff_no', $this->staff_no]);

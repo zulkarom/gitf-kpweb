@@ -299,7 +299,8 @@ class Student extends \yii\db\ActiveRecord
 
     public function getRaceText(){
         if($this->race > 0){
-            return Common::race()[$this->race];
+            $raceList = Common::race();
+            return array_key_exists($this->race, $raceList) ? $raceList[$this->race] : '';
         }else{
             return '';
         }

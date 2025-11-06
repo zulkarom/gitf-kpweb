@@ -5,6 +5,7 @@ use yii\widgets\ActiveForm;
 use backend\modules\staff\models\StaffPosition;
 use backend\modules\staff\models\StaffPositionStatus;
 use backend\modules\staff\models\StaffWorkingStatus;
+use backend\models\Faculty;
 use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
@@ -60,6 +61,21 @@ Search Staff
 </div>
 
 </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <?= $form->field($model, 'faculty_id')->dropDownList(
+                ArrayHelper::map(Faculty::find()->all(), 'id', 'faculty_name'),
+                ['prompt' => 'All']
+            ) ?>
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'staff_active')->dropDownList([
+                1 => 'Active',
+                0 => 'Inactive',
+            ], ['prompt' => 'All']) ?>
+        </div>
+    </div>
 
     
 
