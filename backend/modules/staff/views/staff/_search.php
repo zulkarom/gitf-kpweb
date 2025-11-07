@@ -67,7 +67,7 @@ Search Staff
             <?= $form->field($model, 'faculty_id')->dropDownList(
                 ArrayHelper::map(Faculty::find()->all(), 'id', 'faculty_name'),
                 ['prompt' => 'All']
-            ) ?>
+            )->label('Faculty') ?>
         </div>
         <div class="col-md-3">
             <?= $form->field($model, 'staff_active')->dropDownList([
