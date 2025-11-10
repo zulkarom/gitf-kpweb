@@ -56,9 +56,6 @@ class Student extends \yii\db\ActiveRecord
     const STATUS_TERMINATED = 40;
     const STATUS_GRADUATED = 100;
 
-
-
-
     /**
      * {@inheritdoc}
      */
@@ -213,6 +210,10 @@ class Student extends \yii\db\ActiveRecord
         return $this->hasOne(Field::className(), ['id' => 'field_id']);
     }
     
+    /**
+     * 84 = sarjana
+     * 85 = doktor falsafah
+     */
     public function getProgram(){
         return $this->hasOne(Program::className(), ['id' => 'program_id']);
     }
@@ -264,11 +265,22 @@ class Student extends \yii\db\ActiveRecord
 
     public function getMaritalText(){
         if($this->marital_status > 0){
-            return Common::marital2()[$this->marital_status];
+            return self::marital()[$this->marital_status];
         }else{
             return '';
         }
     }
+
+    public static function marital(){
+	    return [
+			1 => 'Berkahwin', 
+			2 => 'Bujang', 
+			3 => 'Janda', 
+			4 => 'Duda', 
+			5 => 'Bercerai', 
+			9 => 'Tidak Dinyatakan'
+		];
+	}
     
     //MOD PENGAJIAN sepenuh / separuh masa
     public function getStudyModeText(){

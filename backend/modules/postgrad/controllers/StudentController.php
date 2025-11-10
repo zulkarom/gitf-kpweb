@@ -750,4 +750,317 @@ class StudentController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    public function actionUpdateStudentDataFromCsv(){
+        $webroot = \Yii::getAlias('@webroot');
+        $path = $webroot . DIRECTORY_SEPARATOR . 'student_data.csv';
+
+        echo '<pre style="white-space: pre-wrap">';
+
+        if (!file_exists($path)) {
+            echo 'CSV not found at: ' . $path;
+            echo '</pre>';
+            return;
+        }
+
+        $fh = fopen($path, 'r');
+        if (!$fh) {
+            echo 'Unable to open CSV: ' . $path;
+            echo '</pre>';
+            return;
+        }
+
+        set_time_limit(0);
+
+        $row = 0;
+        $header = [];
+        $cols = [];
+        $updated = 0;
+        $skipped = 0;
+        $notFound = 0;
+        $failed = 0;
+
+        // Allowed columns to update => type
+        // type: i=int, f=float, s=string, d=date (Y-m-d)
+        $allowed = [
+            'program_id' => 'i',
+            'study_mode' => 'i',
+            'study_mode_rc' => 's',
+            'sponsor' => 's',
+            'current_sem' => 'i',
+            'admission_year' => 's',
+            'admission_date' => 'd',
+            'status' => 'i',
+            'phone_no' => 's',
+            'personal_email' => 's',
+            'address' => 's',
+            'city' => 's',
+            'nationality' => 'i',
+            'citizenship' => 'i',
+            'gender' => 'i',
+            'marital_status' => 'i',
+            'race' => 'i',
+            'religion' => 'i',
+            'field_id' => 'i',
+            'related_university_id' => 'i',
+            'outstanding_fee' => 'f',
+            // optional extras commonly present
+            'name' => 's',
+            'nric' => 's',
+            'date_birth' => 'd',
+        ];
+
+        while (($data = fgetcsv($fh)) !== false) {
+            $row++;
+            if ($row === 1) {
+                // detect header and column positions
+                $header = array_map('strtolower', $data);
+                $cols = array_flip($header);
+                $matricKey = null;
+                if (isset($cols['matric_no'])) { $matricKey = 'matric_no'; }
+                elseif (isset($cols['student_id'])) { $matricKey = 'student_id'; }
+
+                if ($matricKey === null) {
+                    echo "Header must include 'matric_no' or 'student_id' on first row." . "\n";
+                    echo '</pre>';
+                    fclose($fh);
+                    return;
+                }
+                echo 'Detected columns: ' . implode(', ', $header) . "\n\n";
+                // proceed to next row
+                continue;
+            }
+
+            // Ensure header was read
+            if (!$header) { $skipped++; continue; }
+
+            $matric = '';
+            if (isset($cols['matric_no']) && isset($data[$cols['matric_no']])) {
+                $matric = trim((string)$data[$cols['matric_no']]);
+            } elseif (isset($cols['student_id']) && isset($data[$cols['student_id']])) {
+                $matric = trim((string)$data[$cols['student_id']]);
+            }
+
+            if ($matric === '') {
+                echo 'Row ' . $row . ': SKIP (empty matric_no)' . "\n";
+                $skipped++;
+                continue;
+            }
+
+            $student = Student::find()->where(['matric_no' => $matric])->one();
+            if (!$student) {
+                // attempt to create new user + student
+                $email = '';
+                if (isset($cols['email']) && isset($data[$cols['email']])) {
+                    $email = trim((string)$data[$cols['email']]);
+                } elseif (isset($cols['personal_email']) && isset($data[$cols['personal_email']])) {
+                    $email = trim((string)$data[$cols['personal_email']]);
+                }
+
+                $fullname = '';
+                if (isset($cols['name']) && isset($data[$cols['name']])) {
+                    $fullname = trim((string)$data[$cols['name']]);
+                }
+
+                $user = new User();
+                $user->username = $matric;
+                $user->email = $email ?: ($matric . '@example.com');
+                $user->fullname = $fullname ?: $matric;
+                $random = rand(30,30000);
+                $user->password_hash = \Yii::$app->security->generatePasswordHash($random);
+                $user->status = 10;
+
+                if (!$user->save()) {
+                    echo htmlspecialchars($matric) . ' : USER_CREATE_FAILED ' . json_encode($user->getErrors()) . "\n";
+                    $failed++;
+                    continue;
+                }
+
+                $student = new Student();
+                $student->scenario = 'create';
+                $student->user_id = $user->id;
+                $student->matric_no = $matric;
+
+                // program_id is required for create
+                $progVal = null;
+                if (isset($cols['program_id']) && isset($data[$cols['program_id']]) && trim((string)$data[$cols['program_id']]) !== '') {
+                    $progVal = (int) trim((string)$data[$cols['program_id']]);
+                }
+                if ($progVal === null) {
+                    echo htmlspecialchars($matric) . ' : SKIP_CREATE (missing program_id)' . "\n";
+                    $skipped++;
+                    continue;
+                }
+                $student->program_id = $progVal;
+
+                // default status to active if missing
+                $statusVal = null;
+                if (isset($cols['status']) && isset($data[$cols['status']]) && trim((string)$data[$cols['status']]) !== '') {
+                    $statusVal = (int) trim((string)$data[$cols['status']]);
+                }
+                $student->status = $statusVal !== null ? $statusVal : Student::STATUS_ACTIVE;
+
+                // fill other allowed fields if present
+                foreach ($allowed as $col => $type) {
+                    if (in_array($col, ['program_id','status'], true)) { continue; }
+                    if (!isset($cols[$col])) { continue; }
+                    $idx = $cols[$col];
+                    if (!isset($data[$idx])) { continue; }
+                    $raw = trim((string)$data[$idx]);
+                    if ($raw === '') { continue; }
+                    switch ($type) {
+                        case 'i': $val = (int)$raw; break;
+                        case 'f': $val = (float)$raw; break;
+                        case 'd':
+                            $ts = strtotime($raw);
+                            $val = $ts ? date('Y-m-d', $ts) : null;
+                            if ($val === null) { continue 3; }
+                            break;
+                        default: $val = $raw;
+                    }
+                    $student->$col = $val;
+                }
+
+                if ($student->save()) {
+                    echo htmlspecialchars($matric) . ' : CREATED' . "\n";
+                    $updated++;
+                } else {
+                    echo htmlspecialchars($matric) . ' : CREATE_FAILED ' . json_encode($student->getErrors()) . "\n";
+                    $failed++;
+                }
+                @ob_flush();
+                flush();
+                continue;
+            }
+
+            // set scenario to ensure validation applies appropriately
+            $student->scenario = 'student_update';
+
+            $changes = [];
+            foreach ($allowed as $col => $type) {
+                if (!isset($cols[$col])) { continue; }
+                $idx = $cols[$col];
+                if (!isset($data[$idx])) { continue; }
+                $raw = trim((string)$data[$idx]);
+                // allow empty to clear? Skip empty to avoid unintended clears
+                if ($raw === '') { continue; }
+                switch ($type) {
+                    case 'i':
+                        $val = (int)$raw;
+                        break;
+                    case 'f':
+                        $val = (float)$raw;
+                        break;
+                    case 'd':
+                        $ts = strtotime($raw);
+                        $val = $ts ? date('Y-m-d', $ts) : null;
+                        if ($val === null) { continue 2; }
+                        break;
+                    default:
+                        $val = $raw;
+                }
+                $student->$col = $val;
+                $changes[] = $col;
+            }
+
+            if (empty($changes)) {
+                echo htmlspecialchars($matric) . ' : NO CHANGES' . "\n";
+                $skipped++;
+                continue;
+            }
+
+            if ($student->save()) {
+                echo htmlspecialchars($matric) . ' : UPDATED [' . implode(', ', $changes) . ']' . "\n";
+                $updated++;
+            } else {
+                echo htmlspecialchars($matric) . ' : FAILED ' . json_encode($student->getErrors()) . "\n";
+                $failed++;
+            }
+
+            @ob_flush();
+            flush();
+        }
+
+        fclose($fh);
+
+        echo "\nSummary:" . "\n";
+        echo 'Updated: ' . $updated . "\n";
+        echo 'Skipped: ' . $skipped . "\n";
+        echo 'Not Found: ' . $notFound . "\n";
+        echo 'Failed: ' . $failed . "\n";
+        echo '</pre>';
+        return;
+    }
+
+    public function actionStudentExistFromCsv(){
+        $webroot = \Yii::getAlias('@webroot');
+        $path = $webroot . DIRECTORY_SEPARATOR . 'data.csv';
+
+        // simple HTML output
+        echo '<pre style="white-space: pre-wrap">';
+
+        if (!file_exists($path)) {
+            echo 'CSV not found at: ' . $path;
+            echo '</pre>';
+            return;
+        }
+
+        $fh = fopen($path, 'r');
+        if (!$fh) {
+            echo 'Unable to open CSV: ' . $path;
+            echo '</pre>';
+            return;
+        }
+
+        set_time_limit(0);
+
+        $row = 0;
+        $hasHeader = null; // null=unknown, true=header present
+        $idCol = 0; // default to first column
+
+        while (($data = fgetcsv($fh)) !== false) {
+            $row++;
+            // Detect header on first row
+            if ($row === 1) {
+                $lower = array_map('strtolower', $data);
+                $posStudent = array_search('student_id', $lower, true);
+                $posMatric = array_search('matric_no', $lower, true);
+                if ($posStudent !== false) {
+                    $hasHeader = true;
+                    $idCol = (int)$posStudent;
+                    // skip header row
+                    continue;
+                } elseif ($posMatric !== false) {
+                    $hasHeader = true;
+                    $idCol = (int)$posMatric;
+                    // skip header row
+                    continue;
+                } else {
+                    $hasHeader = false;
+                    $idCol = 0;
+                }
+            }
+
+            $studentId = '';
+            if (isset($data[$idCol])) {
+                $studentId = trim((string)$data[$idCol]);
+            }
+
+            if ($studentId === '') {
+                echo 'Row ' . $row . ': EMPTY<br />';
+                continue;
+            }
+
+            $exists = Student::find()->where(['matric_no' => $studentId])->exists();
+            echo htmlspecialchars($studentId) . ' : ' . ($exists ? 'EXIST' : 'NOT FOUND') . '<br />';
+            @ob_flush();
+            flush();
+        }
+
+        fclose($fh);
+        echo '</pre>';
+        return;
+    }
+
+    
 }
