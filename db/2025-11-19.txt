@@ -1,0 +1,134 @@
+
+CREATE TABLE `ticket` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` text DEFAULT NULL,
+  `category_id` int(10) UNSIGNED DEFAULT NULL,
+  `priority` tinyint(3) UNSIGNED NOT NULL DEFAULT 2 COMMENT '1=Low,2=Normal,3=High,4=Urgent',
+  `status` tinyint(3) UNSIGNED NOT NULL DEFAULT 0 COMMENT '0=New,1=Open,2=In Progress,3=Awaiting User,4=Resolved,5=Closed',
+  `created_by` int(11) NOT NULL,
+  `assigned_to` int(11) DEFAULT NULL,
+  `created_at` int(10) UNSIGNED NOT NULL,
+  `updated_at` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ticket`
+--
+
+INSERT INTO `ticket` (`id`, `title`, `description`, `category_id`, `priority`, `status`, `created_by`, `assigned_to`, `created_at`, `updated_at`) VALUES
+(1, 'aasdf', 'asdf', NULL, 4, 0, 80, NULL, 1763537897, 1763537897),
+(2, 'THis is new titlte', 'I have been unable to log into my university email since this morning. It keeps showing an “incorrect password” error even though I am sure the password is correct. I also tried resetting the password but did not receive any reset email. Please assist.', 4, 2, 0, 80, NULL, 1763539169, 1763539169),
+(3, 'Cannot access my email account', 'I have been unable to log into my university email since this morning. It keeps showing an “incorrect password” error even though I am sure the password is correct. I also tried resetting the password but did not receive any reset email. Please assist.', 7, 3, 0, 47, NULL, 1763540085, 1763540085);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ticket_category`
+--
+
+CREATE TABLE `ticket_category` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `code` varchar(50) DEFAULT NULL,
+  `sort_order` int(11) DEFAULT 0,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ticket_category`
+--
+
+INSERT INTO `ticket_category` (`id`, `name`, `code`, `sort_order`, `is_active`) VALUES
+(1, 'Postgraduate', 'postgrad', 10, 1),
+(2, 'Staff Information', 'staff_info', 20, 1),
+(3, 'Student Information', 'student_info', 30, 1),
+(4, 'Course Management', 'course_mgmt', 40, 1),
+(5, 'Program Management', 'program_mgmt', 50, 1),
+(6, 'Internship / Protege', 'internship_protege', 60, 1),
+(7, 'System / Technical Issue', 'system_tech', 70, 1),
+(8, 'Other', 'other', 99, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ticket_message`
+--
+
+CREATE TABLE `ticket_message` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `ticket_id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `message` text NOT NULL,
+  `is_internal` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0=visible to user,1=internal note',
+  `created_at` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `ticket`
+--
+ALTER TABLE `ticket`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_ticket_category_id` (`category_id`),
+  ADD KEY `idx_ticket_created_by` (`created_by`),
+  ADD KEY `idx_ticket_assigned_to` (`assigned_to`);
+
+--
+-- Indexes for table `ticket_category`
+--
+ALTER TABLE `ticket_category`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uq_ticket_category_code` (`code`);
+
+--
+-- Indexes for table `ticket_message`
+--
+ALTER TABLE `ticket_message`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_ticket_message_ticket_id` (`ticket_id`),
+  ADD KEY `idx_ticket_message_user_id` (`user_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `ticket`
+--
+ALTER TABLE `ticket`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `ticket_category`
+--
+ALTER TABLE `ticket_category`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `ticket_message`
+--
+ALTER TABLE `ticket_message`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `ticket`
+--
+ALTER TABLE `ticket`
+  ADD CONSTRAINT `fk_ticket_assigned_to` FOREIGN KEY (`assigned_to`) REFERENCES `user` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_ticket_category` FOREIGN KEY (`category_id`) REFERENCES `ticket_category` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_ticket_created_by` FOREIGN KEY (`created_by`) REFERENCES `user` (`id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `ticket_message`
+--
+ALTER TABLE `ticket_message`
+  ADD CONSTRAINT `fk_ticket_message_ticket` FOREIGN KEY (`ticket_id`) REFERENCES `ticket` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_ticket_message_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON UPDATE CASCADE;
