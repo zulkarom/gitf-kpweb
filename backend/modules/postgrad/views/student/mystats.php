@@ -36,14 +36,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <td><?= (int)$activeCount ?></td>
                                 </tr>
                                 <tr>
-                                    <th>Research / Coursework</th>
-                                    <td>
-                                        Research: <strong><?= (int)($overallRc['research'] ?? 0) ?></strong>
-                                        &nbsp;|
-                                        Coursework: <strong><?= (int)($overallRc['coursework'] ?? 0) ?></strong>
-                                    </td>
-                                </tr>
-                                <tr>
                                     <th>Tempatan / Antarabangsa</th>
                                     <td>
                                         Local: <strong><?= (int)($localCount ?? 0) ?></strong>
@@ -91,7 +83,6 @@ $this->params['breadcrumbs'][] = $this->title;
                             <tr>
                                 <th>Negara</th>
                                 <th>Research</th>
-                                <th>Coursework</th>
                                 <th>Jumlah</th>
                             </tr>
                         </thead>
@@ -112,14 +103,12 @@ $this->params['breadcrumbs'][] = $this->title;
                             <tr>
                                 <td><?= Html::encode($name) ?></td>
                                 <td><?= (string)$research ?></td>
-                                <td><?= (string)$coursework ?></td>
                                 <td><?= $total ?></td>
                             </tr>
                         <?php } ?>
                         <tr>
                             <th>Grand Total</th>
                             <th><?= (int)$sumResearch ?></th>
-                            <th><?= (int)$sumCoursework ?></th>
                             <th><?= (int)$sumTotal ?></th>
                         </tr>
                         </tbody>
