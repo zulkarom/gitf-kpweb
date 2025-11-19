@@ -267,10 +267,37 @@ class Menu
         ];
     }
 
+    public static function postgrad()
+    {
+        return [
+            'label' => 'Postgraduate',
+            'icon' => 'cube',
+            'url' => '#',
+            'items' => [
+
+                [
+                    'label' => 'My Students',
+                    'icon' => 'user',
+                    'url' => [
+                        '/postgrad/student/mystudents'
+                    ]
+                ],
+
+                [
+                    'label' => 'My Stats',
+                    'icon' => 'pie-chart',
+                    'url' => [
+                        '/postgrad/student/mystats'
+                    ]
+                ],
+            ]
+        ];
+    }
+
     public static function adminPostGradStudents()
     {
         return [
-            'label' => 'Postgraduate Menu',
+            'label' => 'Postgraduate Admin',
             'icon' => 'cube',
             'visible' => Yii::$app->user->can('postgrad-manager'),
             'url' => '#',

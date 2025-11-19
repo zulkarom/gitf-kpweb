@@ -3,18 +3,20 @@
 namespace backend\modules\postgrad\controllers;
 
 use Yii;
-use backend\modules\postgrad\models\Student;
-use backend\modules\postgrad\models\StudentData;
-use backend\modules\postgrad\models\StudentPostGradSearch;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
 use common\models\User;
+use common\models\Country;
+use backend\modules\esiap\models\Program;
+use backend\modules\postgrad\models\Field;
+use backend\modules\postgrad\models\Student;
+use backend\modules\postgrad\models\StudentData;
 use backend\modules\postgrad\models\StudentData2;
 use backend\modules\postgrad\models\StudentData4;
-use backend\modules\esiap\models\Program;
-use common\models\Country;
-use backend\modules\postgrad\models\Field;
+use backend\modules\postgrad\models\StudentPostGradSearch;
+use backend\modules\postgrad\models\Supervisor;
 
 /**
  * StudentPostGradController implements the CRUD actions for StudentPostGrad model.
@@ -49,6 +51,46 @@ class StudentController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
+     * Entry point for the "My Students" menu.
+     * Shows only students under the logged-in staff's supervision.
+     * Route: /postgrad/student/mystudents
+     */
+    public function actionMystudents()
+    {
+        $user = Yii::$app->user->identity;
+        $staff = $user && isset($user->staff) ? $user->staff : null;
+
+        $searchModel = new StudentPostGradSearch();
+
+        $query = Student::find()->alias('s')
+            ->joinWith(['supervisors sv'])
+            ->where(['s.status' => Student::STATUS_ACTIVE]);
+
+        if ($staff) {
+            $supervisor = Supervisor::find()
+                ->where(['staff_id' => $staff->id])
+                ->one();
+
+            if ($supervisor) {
+                $query->andWhere(['sv.supervisor_id' => $supervisor->id]);
+            } else {
+                $query->andWhere('0=1');
+            }
+        } else {
+            $query->andWhere('0=1');
+        }
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        return $this->render('mystudents', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -251,6 +293,16 @@ class StudentController extends Controller
             'masterRc' => $masterRc,
             'phdModes' => $phdModes,
         ]);
+    }
+
+    /**
+     * Entry point for the "My Stats" menu.
+     * Reuses the existing stats page via redirect to keep logic in one place.
+     * Route: /postgrad/student/mystats
+     */
+    public function actionMystats()
+    {
+        return $this->redirect(['stats']);
     }
 
    public function actionPutProgram(){

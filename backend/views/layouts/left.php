@@ -76,6 +76,7 @@ use backend\models\Menu;
 			break;
 
 			case 'postgrad':
+			$focus = Menu::postgrad();
 			$admin_focus = Menu::adminPostGradStudents();
 			break;
 
