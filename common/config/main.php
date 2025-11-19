@@ -7,6 +7,7 @@ return [
 		'@img' => '@upload/images',
     ],
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
+    'timeZone' => 'Asia/Kuala_Lumpur',
     'components' => [
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -17,6 +18,8 @@ return [
 			'decimalSeparator' => '.',
 			'thousandSeparator' => ', ',
 			'currencyCode' => 'RM',
+            'timeZone' => 'Asia/Kuala_Lumpur',
+            'defaultTimeZone' => 'UTC', // if you store in UTC (optional)
 		],
 		
 		'workflowSource' => [

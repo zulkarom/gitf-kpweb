@@ -203,6 +203,19 @@ $this->title = 'Modules';
           </div>
         </a>
       </div>
+      <div class="col-md-3 col-sm-6 col-xs-12">
+        <a href="<?= Url::to(['/ticket/default/index']) ?>">
+          <div class="module-card theme-blue">
+            <span class="bar"></span>
+            <div class="inner">
+              <h4>Ticket System</h4>
+              <p>Submit and track support tickets.</p>
+              <i class="fa fa-life-ring icon"></i>
+            </div>
+            <span class="footer">Open <i class="fa fa-arrow-circle-right"></i></span>
+          </div>
+        </a>
+      </div>
       
     </div>
   </div>

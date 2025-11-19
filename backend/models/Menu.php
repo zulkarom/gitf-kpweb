@@ -834,6 +834,28 @@ class Menu
         return $website;
     }
 
+    public static function adminTicket()
+    {
+        $menu = [
+            'label' => 'Ticket System Admin',
+            'icon' => 'life-ring',
+            'visible' => Yii::$app->user->can('manage-ticket'),
+            'url' => '#',
+            'items' => [
+
+                [
+                    'label' => 'All Tickets',
+                    'icon' => 'list',
+                    'url' => [
+                        '/ticket/manage/index'
+                    ]
+                ],
+
+            ]
+        ];
+        return $menu;
+    }
+
     public static function adminAduan()
     {
         $website = [
@@ -1254,5 +1276,30 @@ class Menu
                 return $menus;
             }
         }
+    }
+
+    public static function ticket()
+    {
+        return [
+            'label' => 'Support Tickets',
+            'icon' => 'life-ring',
+            'url' => '#',
+            'items' => [
+                [
+                    'label' => 'My Tickets',
+                    'icon' => 'list',
+                    'url' => [
+                        '/ticket/default/index'
+                    ]
+                ],
+                [
+                    'label' => 'Submit New Ticket',
+                    'icon' => 'plus',
+                    'url' => [
+                        '/ticket/default/create'
+                    ]
+                ],
+            ]
+        ];
     }
 }

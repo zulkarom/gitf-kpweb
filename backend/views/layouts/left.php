@@ -131,6 +131,8 @@ $menuItems = [
 					//$modules,
 					
 					['label' => 'MODULES', 'options' => ['class' => 'header']],
+					['label' => 'My Tickets', 'icon' => 'book', 'url' => ['/ticket/default/index']],
+
 					
 					//['label' => 'Teaching Loads', 'icon' => 'book', 'visible' => $teaching_load, 'url' => ['/teaching-load/default/index']],
 					
