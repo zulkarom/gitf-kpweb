@@ -274,23 +274,21 @@ class Menu
             'icon' => 'cube',
             'url' => '#',
             'items' => [
-
+                [
+                    'label' => 'Summary',
+                    'icon' => 'pie-chart',
+                    'url' => [
+                        '/postgrad/mystudent/stats'
+                    ]
+                ],
                 [
                     'label' => 'My Students',
                     'icon' => 'user',
                     'url' => [
-                        '/postgrad/student/mystudents'
+                        '/postgrad/mystudent'
                     ]
                 ],
-
-                [
-                    'label' => 'My Stats',
-                    'icon' => 'pie-chart',
-                    'url' => [
-                        '/postgrad/student/mystats'
-                    ]
-                ],
-            ]
+            ],
         ];
     }
 
