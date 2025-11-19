@@ -1,6 +1,5 @@
 <?php
 use yii\helpers\Html;
-use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $activeCount integer */
@@ -11,74 +10,76 @@ use yii\grid\GridView;
 /* @var $countries array */
 /* @var $byFieldRows array */
 /* @var $fields array */
+/* @var $overallRc array */
+/* @var $localCount integer */
+/* @var $internationalCount integer */
+/* @var $masterRc array */
+/* @var $phdModes array */
 
-$this->title = 'Sistem Pemantauan Akademik Pascasiswazah';
+$this->title = 'Statistik Pelajar Di Bawah Seliaan Saya';
 $this->params['breadcrumbs'][] = ['label' => 'Postgraduate Students', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="postgrad-stats">
-
     <div class="row">
-        <div class="col-md-3">
-            <div class="small-box bg-aqua">
-                <div class="inner">
-                    <h3><?= (int)$activeCount ?></h3>
-                    <p>Jumlah Pelajar Pascasiswazah</p>
-                    <p style="margin:8px 0 0; font-size:14px;">
-                        Research: <strong><?= (int)($overallRc['research'] ?? 0) ?></strong> |
-                        Coursework: <strong><?= (int)($overallRc['coursework'] ?? 0) ?></strong>
-                    </p>
+        <div class="col-md-12">
+            <div class="box box-default">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Ringkasan Pelajar Di Bawah Seliaan</h3>
                 </div>
-                <div class="icon"><i class="fa fa-graduation-cap"></i></div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="small-box bg-green">
-                <div class="inner">
-                    <h3><?= (int)$activeCount ?></h3>
-                    <p>Jumlah Pelajar Pascasiswazah</p>
-                    <p style="margin:8px 0 0; font-size:14px;">
-                        Local: <strong><?= (int)($localCount ?? 0) ?></strong> |
-                        International: <strong><?= (int)($internationalCount ?? 0) ?></strong>
-                    </p>
+                <div class="box-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <tbody>
+                                <tr>
+                                    <th style="width: 35%;">Jumlah Pelajar Aktif</th>
+                                    <td><?= (int)$activeCount ?></td>
+                                </tr>
+                                <tr>
+                                    <th>Research / Coursework</th>
+                                    <td>
+                                        Research: <strong><?= (int)($overallRc['research'] ?? 0) ?></strong>
+                                        &nbsp;|
+                                        Coursework: <strong><?= (int)($overallRc['coursework'] ?? 0) ?></strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Tempatan / Antarabangsa</th>
+                                    <td>
+                                        Local: <strong><?= (int)($localCount ?? 0) ?></strong>
+                                        &nbsp;|
+                                        International: <strong><?= (int)($internationalCount ?? 0) ?></strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Pelajar Sarjana (Master)</th>
+                                    <td>
+                                        <?php $masterTotal = (int)($masterRc['research'] ?? 0) + (int)($masterRc['coursework'] ?? 0); ?>
+                                        Jumlah: <strong><?= $masterTotal ?></strong>
+                                        &nbsp;|
+                                        Research: <strong><?= (int)($masterRc['research'] ?? 0) ?></strong>
+                                        &nbsp;|
+                                        Coursework: <strong><?= (int)($masterRc['coursework'] ?? 0) ?></strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Pelajar PhD</th>
+                                    <td>
+                                        <?php $phdTotal = (int)($phdModes[1] ?? 0) + (int)($phdModes[2] ?? 0); ?>
+                                        Jumlah: <strong><?= $phdTotal ?></strong>
+                                        &nbsp;|
+                                        Sepenuh Masa: <strong><?= (int)($phdModes[1] ?? 0) ?></strong>
+                                        &nbsp;|
+                                        Separuh Masa: <strong><?= (int)($phdModes[2] ?? 0) ?></strong>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <div class="icon"><i class="fa fa-globe"></i></div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="small-box bg-yellow">
-                <div class="inner">
-                    <?php $masterTotal = (int)($masterRc['research'] ?? 0) + (int)($masterRc['coursework'] ?? 0); ?>
-                    <h3><?= $masterTotal ?></h3>
-                    <p>Jumlah Pelajar Sarjana (Master)</p>
-                    <p style="margin:8px 0 0; font-size:14px;">
-                        Research: <strong><?= (int)($masterRc['research'] ?? 0) ?></strong> |
-                        Coursework: <strong><?= (int)($masterRc['coursework'] ?? 0) ?></strong>
-                    </p>
-                </div>
-                <div class="icon"><i class="fa fa-book"></i></div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="small-box bg-red">
-                <div class="inner">
-                    <?php $phdTotal = (int)($phdModes[1] ?? 0) + (int)($phdModes[2] ?? 0); ?>
-                    <h3><?= $phdTotal ?></h3>
-                    <p>Jumlah Pelajar PhD</p>
-                    <p style="margin:8px 0 0; font-size:14px;">
-                        Sepenuh Masa: <strong><?= (int)($phdModes[1] ?? 0) ?></strong> |
-                        Separuh Masa: <strong><?= (int)($phdModes[2] ?? 0) ?></strong>
-                    </p>
-                </div>
-                <div class="icon"><i class="fa fa-flask"></i></div>
             </div>
         </div>
     </div>
-
-   
 
     <div class="row">
         <div class="col-md-6">
@@ -110,8 +111,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         ?>
                             <tr>
                                 <td><?= Html::encode($name) ?></td>
-                                <td><?= Html::a((string)$research, ['research', 'StudentPostGradSearch[nationality]' => $id]) ?></td>
-                                <td><?= Html::a((string)$coursework, ['coursework', 'StudentPostGradSearch[nationality]' => $id]) ?></td>
+                                <td><?= (string)$research ?></td>
+                                <td><?= (string)$coursework ?></td>
                                 <td><?= $total ?></td>
                             </tr>
                         <?php } ?>
@@ -155,7 +156,5 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
     </div>
-
-    
 
 </div>

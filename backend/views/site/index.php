@@ -51,7 +51,7 @@ $this->title = 'Modules';
       </div>
 
       <div class="col-md-3 col-sm-6 col-xs-12">
-        <a href="<?= Url::to(['/postgrad/student/stats']) ?>">
+        <a href="<?= Url::to(['/postgrad/student/mystudents']) ?>">
           <div class="tile theme-soft-amber">
             <div class="inner">
               <h4>Postgraduate</h4>
