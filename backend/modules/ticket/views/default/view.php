@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\widgets\ActiveForm;
+use backend\modules\ticket\models\Ticket;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\ticket\models\Ticket */
@@ -83,14 +84,22 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php endforeach; ?>
     </div>
 
-    <h3>Add Reply</h3>
+    <div class="box box-solid">
+        <div class="box-header">
+            <h3 class="box-title">Add Reply</h3>
+        </div>
+        <div class="box-body">
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($message, 'message')->textarea(['rows' => 4]) ?>
+
+    <?= $form->field($model, 'status')->dropDownList(Ticket::getUserStatusList()) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Send', ['class' => 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
+    </div>
+    </div>
 </div>

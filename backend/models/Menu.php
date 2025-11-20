@@ -850,6 +850,13 @@ class Menu
                         '/ticket/manage/index'
                     ]
                 ],
+                [
+                    'label' => 'My Assigned Tickets',
+                    'icon' => 'list',
+                    'url' => [
+                        '/ticket/manage/myassigned'
+                    ]
+                ],
 
             ]
         ];

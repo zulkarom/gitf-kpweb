@@ -95,9 +95,14 @@ use backend\models\Menu;
 			case 'conference':
 			$focus = Menu::conference();
 			break;
+
 			case 'ecert':
 			$admin_focus = Menu::adminEcert();
 		    break;
+
+			case 'ticket':
+			$admin_focus = Menu::adminTicket();
+			break;
 
 			
 
@@ -131,6 +136,7 @@ $menuItems = [
 					//$modules,
 					
 					['label' => 'MODULES', 'options' => ['class' => 'header']],
+
 					['label' => 'My Tickets', 'icon' => 'book', 'url' => ['/ticket/default/index']],
 
 					

@@ -209,7 +209,7 @@ $this->title = 'Modules';
             <span class="bar"></span>
             <div class="inner">
               <h4>Ticket System</h4>
-              <p>Submit and track support tickets.</p>
+              <p>Get help quickly by submitting tickets and following their updates in a structured support system.</p>
               <i class="fa fa-life-ring icon"></i>
             </div>
             <span class="footer">Open <i class="fa fa-arrow-circle-right"></i></span>

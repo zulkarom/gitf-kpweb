@@ -86,6 +86,14 @@ class Ticket extends ActiveRecord
         ];
     }
 
+    public static function getUserStatusList()
+    {
+        return [
+            1 => 'Open',
+            4 => 'Resolved',
+        ];
+    }
+
     public static function getPriorityList()
     {
         return [

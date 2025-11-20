@@ -8,15 +8,14 @@ use backend\modules\ticket\models\Ticket;
 /* @var $searchModel backend\modules\ticket\models\TicketSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'All Tickets';
+$this->title = 'My Assigned Tickets';
+$this->params['breadcrumbs'][] = ['label' => 'All Tickets', 'url' => ['/ticket/manage/index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ticket-manage-index">
 
     <div class="box box-solid">
-        <div class="box-header with-border">
-            <h3 class="box-title">All Tickets</h3>
-        </div>
+
         <div class="box-body">
             <div class="table-responsive">
 
@@ -45,15 +44,6 @@ $this->params['breadcrumbs'][] = $this->title;
                             },
                         ],
                         [
-                            'attribute' => 'assigned_to',
-                            'label' => 'Assigned To',
-                            'value' => function ($data) {
-                                return $data->assignee && $data->assignee->fullname
-                                    ? $data->assignee->fullname
-                                    : ($data->assignee ? $data->assignee->username : '-');
-                            },
-                        ],
-                        [
                             'attribute' => 'status',
                             'format' => 'raw',
                             'filter' => Ticket::getStatusList(),
@@ -69,8 +59,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                 return $model->getPriorityLabel();
                             },
                         ],
-                    
-                        
                         'created_at:datetime',
                         [
                             'class' => 'yii\\grid\\ActionColumn',

@@ -10,8 +10,8 @@ class TicketSearch extends Ticket
     public function rules()
     {
         return [
-            [['id', 'category_id', 'priority', 'status', 'created_by', 'assigned_to'], 'integer'],
-            [['title'], 'safe'],
+            [['id', 'category_id', 'priority', 'status'], 'integer'],
+            [['title', 'created_by', 'assigned_to'], 'safe'],
         ];
     }
 
@@ -22,7 +22,7 @@ class TicketSearch extends Ticket
 
     public function search($params, $createdBy = null, $assignedTo = null)
     {
-        $query = static::find();
+        $query = static::find()->joinWith(['creator c', 'assignee a']);
 
         if ($createdBy !== null) {
             $query->andWhere(['created_by' => $createdBy]);
@@ -50,11 +50,13 @@ class TicketSearch extends Ticket
             'category_id' => $this->category_id,
             'priority' => $this->priority,
             'status' => $this->status,
-            'created_by' => $this->created_by,
-            'assigned_to' => $this->assigned_to,
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title]);
+
+        // Filter by creator / assignee fullname using the string entered in created_by / assigned_to filters
+        $query->andFilterWhere(['like', 'c.fullname', $this->created_by]);
+        $query->andFilterWhere(['like', 'a.fullname', $this->assigned_to]);
 
         return $dataProvider;
     }

@@ -55,7 +55,18 @@ class DefaultController extends Controller
         $message->ticket_id = $model->id;
         $message->user_id = Yii::$app->user->id;
 
-        if ($message->load(Yii::$app->request->post()) && $message->save()) {
+        $post = Yii::$app->request->post();
+
+        // Reply form: save message (and status if provided)
+        if ($message->load($post) && $message->save()) {
+            if ($model->load($post)) {
+                $model->save(false);
+            }
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        // Fallback: ticket-only updates (if ever added)
+        if ($model->load($post) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
