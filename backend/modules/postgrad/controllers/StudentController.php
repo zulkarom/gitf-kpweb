@@ -1378,6 +1378,7 @@ class StudentController extends Controller
         fclose($fh);
         echo '</pre>';
         return;
+        exit;
     }
 
     
