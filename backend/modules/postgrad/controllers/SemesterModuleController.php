@@ -74,7 +74,7 @@ class SemesterModuleController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $model->student_sem_id = $studentSemester->id;
             if($model->save()){
-                return $this->redirect(['student-semester/view', 'id' => $semester]);
+                return $this->redirect(['student-register/view', 'id' => $semester]);
             }
             
         }
@@ -97,7 +97,7 @@ class SemesterModuleController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['student-semester/view', 'id' => $model->student_sem_id]);
+            return $this->redirect(['student-register/view', 'id' => $model->student_sem_id]);
         }
 
         return $this->render('update', [
@@ -126,7 +126,7 @@ class SemesterModuleController extends Controller
         }
         
 
-        return $this->redirect(['student-semester/view', 'id' => $sem]);
+        return $this->redirect(['student-register/view', 'id' => $sem]);
         
     }
 

@@ -16,6 +16,7 @@ use backend\models\Semester;
 use backend\modules\postgrad\models\Field;
 use common\models\Country;
 use common\models\Common;
+use backend\modules\postgrad\models\StudentData;
 use backend\modules\postgrad\models\StudentData2;
 use backend\modules\postgrad\models\StudentData4;
 use backend\modules\postgrad\models\StudentSupervisor;
@@ -647,6 +648,17 @@ public function actionUpdateStatusDaftar()
     $updated = 0;
     $errors = [];
 
+    $semesterId = 0;
+    $currentSem = \backend\models\Semester::getCurrentSemester();
+    if ($currentSem) {
+        $semesterId = (int)$currentSem->id;
+    }
+
+    if (!$semesterId) {
+        Yii::$app->session->setFlash('error', 'No current semester found. Cannot update status_daftar.');
+        return $this->redirect(['index']);
+    }
+
     foreach ($list as $src) {
         $matric = trim((string)$src->NO_MATRIK);
         if ($matric === '') {
@@ -660,8 +672,21 @@ public function actionUpdateStatusDaftar()
 
         $statusDaftar = $this->mapStatusDaftar($src);
         if ($statusDaftar !== null) {
-            $student->status_daftar = $statusDaftar;
-            if ($student->save(false)) {
+            $reg = \backend\modules\postgrad\models\StudentRegister::find()->where([
+                'student_id' => (int)$student->id,
+                'semester_id' => (int)$semesterId,
+            ])->one();
+
+            if (!$reg) {
+                $reg = new \backend\modules\postgrad\models\StudentRegister();
+                $reg->student_id = (int)$student->id;
+                $reg->semester_id = (int)$semesterId;
+            }
+
+            $reg->status_daftar = (int)$statusDaftar;
+            $reg->scenario = 'csv_status';
+
+            if ($reg->save()) {
                 $updated++;
             } else {
                 $errors[] = "Failed to update status_daftar for matric: {$matric}";

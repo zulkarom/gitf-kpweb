@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use backend\modules\postgrad\models\Field;
+use backend\models\Semester;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -17,6 +18,20 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Add Supervisor', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
+
+    <?php $semForm = ActiveForm::begin([
+        'method' => 'get',
+        'action' => ['index'],
+    ]); ?>
+    <div class="row" style="margin-bottom:10px;">
+        <div class="col-md-4">
+            <?= $semForm->field($searchModel, 'semester_id')->dropDownList(
+                Semester::listSemesterArray(),
+                ['name' => 'semester_id', 'value' => $semesterId, 'prompt' => 'Semester', 'onchange' => 'this.form.submit();']
+            )->label(false) ?>
+        </div>
+    </div>
+    <?php ActiveForm::end(); ?>
   
             <style>
     .kpi-row { display:flex; gap:14px; align-items:stretch; flex-wrap:nowrap; }
@@ -51,7 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="kpi-row">
         <div class="kpi-card kpi-wide kpi-aqua">
             <div class="kpi-text">
-                <p class="kpi-title">Staff with Main Role</p>
+                <p class="kpi-title">Staff with Main Supervisor Role</p>
                 <p class="kpi-value"><?= (int)$countStaffMain ?></p>
             </div>
             <div class="kpi-icon"><span class="fa fa-user"></span></div>
@@ -98,6 +113,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="col-md-3">
                     <?= $form->field($searchModel, 'field_id')->dropDownList(Field::listFieldArray(), ['prompt' => 'Semua Bidang Kepakaran', 'onchange' => 'this.form.submit();'])->label(false) ?>
                 </div>
+                <?= Html::hiddenInput('semester_id', $semesterId) ?>
                 <div class="col-md-2">
                     <?= $form->field($searchModel, 'color')->dropDownList([
                         '' => 'Semua Warna',
@@ -125,7 +141,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
                 'value' => function($model){
                     $name = $model->svName;
-                    return Html::a($name, ['view', 'id' => $model->id], [
+                    return Html::a($name, ['view', 'id' => $model->id, 'semester_id' => Yii::$app->request->get('semester_id')], [
                         'title' => $model->svName
                     ]);
                 }
@@ -185,7 +201,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 //'visible' => false,
                 'buttons'=>[
                     'view'=>function ($url, $model) {
-                    return Html::a('View',['view', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
+                    return Html::a('View',['view', 'id' => $model->id, 'semester_id' => Yii::$app->request->get('semester_id')],['class'=>'btn btn-warning btn-sm']);
                     },
                     'delete'=>function ($url, $model) {
                     return Html::a('<span class="fa fa-trash"></span>', ['delete', 'id' => $model->id], [

@@ -4,13 +4,13 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel backend\modules\postgrad\models\StudentSemesterSearch */
+/* @var $searchModel backend\modules\postgrad\models\StudentRegisterSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Student Semesters';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="student-semester-index">
+<div class="student-register-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>

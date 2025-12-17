@@ -4,12 +4,14 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\DetailView;
 use backend\modules\postgrad\models\StudentStage;
+use backend\models\Semester;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\postgrad\models\Supervisor */
 
 $this->title = 'View Supervisor / Examiner';
-$this->params['breadcrumbs'][] = ['label' => 'Supervisors', 'url' => ['index']];
+$semesterId = Yii::$app->request->get('semester_id');
+$this->params['breadcrumbs'][] = ['label' => 'Supervisors', 'url' => ['index', 'semester_id' => $semesterId]];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -23,7 +25,7 @@ table.detail-view th {
 
 
 <div class="row">
-	<div class="col-md-6">
+	<div class="col-md-4">
 	
 	     <div class="box">
 <div class="box-header"></div>
@@ -33,8 +35,6 @@ table.detail-view th {
     $data = ['typeName'];
         $data[] = 'svName';
         $data[] = 'svFieldsString';
-    $data[] = 'created_at';
-    $data[] = 'updated_at';
     
     echo DetailView::widget([
         'model' => $model,
@@ -60,16 +60,28 @@ table.detail-view th {
 
 	
 	</div>
-	<div class="col-md-6">
+	<div class="col-md-8">
 	
 	
 	<div class="box">
 <div class="box-header">
 <h3 class="box-title">
-Supervisee
+Senarai Pelajar
 </h3>
 </div>
 <div class="box-body">
+
+<?php $form = \yii\widgets\ActiveForm::begin([
+    'method' => 'get',
+    'action' => ['view', 'id' => $model->id],
+]); ?>
+<div class="row" style="margin-bottom:10px;">
+    <div class="col-md-4">
+        <?= Html::hiddenInput('semester_id', $semesterId) ?>
+        <?= $form->field($model, 'id')->dropDownList(Semester::listSemesterArray(), ['name' => 'semester_id', 'value' => $semesterId, 'prompt' => 'Semester', 'onchange' => 'this.form.submit();'])->label(false) ?>
+    </div>
+</div>
+<?php \yii\widgets\ActiveForm::end(); ?>
 
 <table class="table">
   <thead>
@@ -90,14 +102,22 @@ Supervisee
           ?>
            <tr>
       <th scope="row"><?=$i?></th>
-      <td><?= Html::a($s->student->matric_no, ['/postgrad/student/view', 'id' => $s->student->id]) ?></td>
-      <td><?= Html::a(strtoupper($s->student->user->fullname), ['/postgrad/student/view', 'id' => $s->student->id]) ?></td>
+      <td><?= Html::a($s->student->matric_no, ['/postgrad/student/view', 'id' => $s->student->id, 'semester_id' => $semesterId]) ?></td>
+      <td><?= Html::a(strtoupper($s->student->user->fullname), ['/postgrad/student/view', 'id' => $s->student->id, 'semester_id' => $semesterId]) ?></td>
       <td><?= $s->student->program ? $s->student->program->pro_name : '' ?></td>
       <td>
         <?php $roleClass = ($s->sv_role == 1 ? 'primary' : ($s->sv_role == 2 ? 'warning' : 'default')); ?>
         <span class="label label-<?=$roleClass?>"><?=$s->roleName()?></span>
       </td>
-		<td><?=$s->student->statusLabel?></td>
+		<td>
+		    <?php
+		    if (isset($superviseeRegs[$s->student_id])) {
+		        echo $superviseeRegs[$s->student_id]->statusDaftarLabel;
+		    } else {
+		        echo '<span class="label label-default">N/A</span>';
+		    }
+		    ?>
+		</td>
     </tr>
           
           <?php 
@@ -120,7 +140,7 @@ Supervisee
 	<div class="box">
 <div class="box-header">
 <h3 class="box-title">
-Examinees <?php count($examinees)?>
+Jawatankuasa Pemeriksa <?php count($examinees)?>
 </h3>
 </div>
 <div class="box-body">
@@ -151,10 +171,7 @@ Examinees <?php count($examinees)?>
           $i++;
       }
   }
-  
   ?>
-   
-
   </tbody>
 </table>
 

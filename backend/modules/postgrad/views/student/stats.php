@@ -1,6 +1,10 @@
 <?php
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\widgets\ActiveForm;
+use backend\models\Semester;
+use yii\helpers\ArrayHelper;
+use backend\modules\postgrad\models\StudentRegister;
 
 /* @var $this yii\web\View */
 /* @var $activeCount integer */
@@ -17,6 +21,30 @@ $this->params['breadcrumbs'][] = ['label' => 'Postgraduate Students', 'url' => [
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="postgrad-stats">
+
+    <?php
+        $semesterOptions = ArrayHelper::map(
+            Semester::find()->orderBy(['id' => SORT_DESC])->all(),
+            'id',
+            function($s){ return $s->longFormat(); }
+        );
+    ?>
+
+    <div class="box box-default">
+        <div class="box-body">
+            <?php $form = ActiveForm::begin(['method' => 'get', 'action' => ['stats']]); ?>
+            <div class="row">
+                <div class="col-md-6">
+                    <?= Html::label('Semester', 'semester_id', ['class' => 'control-label']) ?>
+                    <?= Html::dropDownList('semester_id', $semester_id ?? null, $semesterOptions, ['class' => 'form-control', 'prompt' => 'Choose', 'id' => 'semester_id']) ?>
+                </div>
+                <div class="col-md-6" style="padding-top:25px">
+                    <?= Html::submitButton('Filter', ['class' => 'btn btn-primary']) ?>
+                </div>
+            </div>
+            <?php ActiveForm::end(); ?>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-md-3">
@@ -98,12 +126,11 @@ $this->params['breadcrumbs'][] = $this->title;
                             $code = array_key_exists('status_daftar', $r) ? $r['status_daftar'] : null;
                             $cnt = isset($r['cnt']) ? (int)$r['cnt'] : 0;
                             $sum += $cnt;
-                            $tmp = new \backend\modules\postgrad\models\Student();
-                            $tmp->status_daftar = ($code === null || $code === '') ? null : (int)$code;
+                            $val = ($code === null || $code === '') ? null : (int)$code;
                         ?>
                             <tr>
-                                <td><?= $tmp->statusDaftarLabel ?></td>
-                                <td><?= Html::a((string)$cnt, ['index', 'StudentPostGradSearch[status_daftar]' => $tmp->status_daftar, 'StudentPostGradSearch[status_aktif]' => \backend\modules\postgrad\models\Student::STATUS_AKTIF_AKTIF]) ?></td>
+                                <td><?= StudentRegister::statusDaftarLabel($val) ?></td>
+                                <td><?= Html::a((string)$cnt, ['index', 'semester_id' => $semester_id ?? null, 'StudentPostGradSearch[status_daftar]' => $val, 'StudentPostGradSearch[status_aktif]' => StudentRegister::STATUS_AKTIF_AKTIF]) ?></td>
                             </tr>
                         <?php } ?>
                             <tr>
@@ -133,12 +160,11 @@ $this->params['breadcrumbs'][] = $this->title;
                             $code2 = array_key_exists('status_aktif', $r) ? $r['status_aktif'] : null;
                             $cnt2 = isset($r['cnt']) ? (int)$r['cnt'] : 0;
                             $sum2 += $cnt2;
-                            $tmp2 = new \backend\modules\postgrad\models\Student();
-                            $tmp2->status_aktif = ($code2 === null || $code2 === '') ? null : (int)$code2;
+                            $val2 = ($code2 === null || $code2 === '') ? null : (int)$code2;
                         ?>
                             <tr>
-                                <td><?= $tmp2->statusAktifLabel ?></td>
-                                <td><?= Html::a((string)$cnt2, ['index', 'StudentPostGradSearch[status_aktif]' => $tmp2->status_aktif]) ?></td>
+                                <td><?= StudentRegister::statusAktifLabel($val2) ?></td>
+                                <td><?= Html::a((string)$cnt2, ['index', 'semester_id' => $semester_id ?? null, 'StudentPostGradSearch[status_aktif]' => $val2]) ?></td>
                             </tr>
                         <?php } ?>
                             <tr>
@@ -193,10 +219,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         ?>
                             <tr>
                                 <td><?= Html::encode($name) ?></td>
-                                <td><?= Html::a((string)$researchPhd, ['research', 'StudentPostGradSearch[nationality]' => $id, 'StudentPostGradSearch[pro_level]' => 4]) ?></td>
-                                <td><?= Html::a((string)$researchMaster, ['research', 'StudentPostGradSearch[nationality]' => $id, 'StudentPostGradSearch[pro_level]' => 3]) ?></td>
-                                <td><?= Html::a((string)$courseworkPhd, ['coursework', 'StudentPostGradSearch[nationality]' => $id, 'StudentPostGradSearch[pro_level]' => 4]) ?></td>
-                                <td><?= Html::a((string)$courseworkMaster, ['coursework', 'StudentPostGradSearch[nationality]' => $id, 'StudentPostGradSearch[pro_level]' => 3]) ?></td>
+                                <td><?= Html::a((string)$researchPhd, ['research', 'semester_id' => $semester_id ?? null, 'StudentPostGradSearch[nationality]' => $id, 'StudentPostGradSearch[pro_level]' => 4]) ?></td>
+                                <td><?= Html::a((string)$researchMaster, ['research', 'semester_id' => $semester_id ?? null, 'StudentPostGradSearch[nationality]' => $id, 'StudentPostGradSearch[pro_level]' => 3]) ?></td>
+                                <td><?= Html::a((string)$courseworkPhd, ['coursework', 'semester_id' => $semester_id ?? null, 'StudentPostGradSearch[nationality]' => $id, 'StudentPostGradSearch[pro_level]' => 4]) ?></td>
+                                <td><?= Html::a((string)$courseworkMaster, ['coursework', 'semester_id' => $semester_id ?? null, 'StudentPostGradSearch[nationality]' => $id, 'StudentPostGradSearch[pro_level]' => 3]) ?></td>
                                 <td><?= $total ?></td>
                             </tr>
                         <?php } ?>
@@ -241,8 +267,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         ?>
                             <tr>
                                 <td><?= Html::encode($name) ?></td>
-                                <td><?= Html::a((string)$phd, ['research', 'StudentPostGradSearch[field_id]' => $id, 'StudentPostGradSearch[pro_level]' => 4, 'StudentPostGradSearch[status_aktif]' => \backend\modules\postgrad\models\Student::STATUS_AKTIF_AKTIF]) ?></td>
-                                <td><?= Html::a((string)$master, ['research', 'StudentPostGradSearch[field_id]' => $id, 'StudentPostGradSearch[pro_level]' => 3, 'StudentPostGradSearch[status_aktif]' => \backend\modules\postgrad\models\Student::STATUS_AKTIF_AKTIF]) ?></td>
+                                <td><?= Html::a((string)$phd, ['research', 'semester_id' => $semester_id ?? null, 'StudentPostGradSearch[field_id]' => $id, 'StudentPostGradSearch[pro_level]' => 4, 'StudentPostGradSearch[status_aktif]' => StudentRegister::STATUS_AKTIF_AKTIF]) ?></td>
+                                <td><?= Html::a((string)$master, ['research', 'semester_id' => $semester_id ?? null, 'StudentPostGradSearch[field_id]' => $id, 'StudentPostGradSearch[pro_level]' => 3, 'StudentPostGradSearch[status_aktif]' => StudentRegister::STATUS_AKTIF_AKTIF]) ?></td>
                                 <td><?= $total ?></td>
                             </tr>
                         <?php } ?>

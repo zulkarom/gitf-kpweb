@@ -16,6 +16,7 @@ class SupervisorSearch extends Supervisor
     public $svFieldsString;
     public $field_id; // for dropdown filter on fields
     public $color; // red, yellow, green
+    public $semester_id;
     
     /**
      * {@inheritdoc}
@@ -23,7 +24,7 @@ class SupervisorSearch extends Supervisor
     public function rules()
     {
         return [
-            [['is_internal', 'field_id'], 'integer'],
+            [['is_internal', 'field_id', 'semester_id'], 'integer'],
             [['svName', 'svFieldsString', 'color'], 'string'],
         ];
     }
@@ -46,16 +47,21 @@ class SupervisorSearch extends Supervisor
      */
     public function search($params)
     {
+        $this->load($params);
+
+        $semesterId = $this->semester_id;
+
         $query = Supervisor::find()->alias('a')
         ->select([
             'a.*',
-            'total_count' => 'COUNT(ss.id)',
-            'main_count' => 'SUM(CASE WHEN ss.sv_role = 1 THEN 1 ELSE 0 END)',
-            'second_count' => 'SUM(CASE WHEN ss.sv_role = 2 THEN 1 ELSE 0 END)'
+            'total_count' => 'COUNT(sr.id)',
+            'main_count' => 'SUM(CASE WHEN ss.sv_role = 1 AND sr.id IS NOT NULL THEN 1 ELSE 0 END)',
+            'second_count' => 'SUM(CASE WHEN ss.sv_role = 2 AND sr.id IS NOT NULL THEN 1 ELSE 0 END)'
         ])
         ->joinWith(['staff.user u', 'external x', 'svFields.field f'])
         ->leftJoin('pg_student_sv ss', 'ss.supervisor_id = a.id')
-        ->leftJoin('pg_student st', 'st.id = ss.student_id');
+        ->leftJoin('pg_student st', 'st.id = ss.student_id')
+        ->leftJoin('pg_student_reg sr', 'sr.student_id = ss.student_id' . (!empty($semesterId) ? ' AND sr.semester_id = ' . (int)$semesterId : ''));
 
         // add conditions that should always apply here
 
@@ -98,8 +104,6 @@ class SupervisorSearch extends Supervisor
             ],
         ]);
 
-        $this->load($params);
-
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
@@ -134,15 +138,15 @@ class SupervisorSearch extends Supervisor
             switch (strtolower($this->color)) {
                 case 'red':
                     // 0 - 3
-                    $query->having('COUNT(ss.id) BETWEEN 0 AND 3');
+                    $query->having('COUNT(sr.id) BETWEEN 0 AND 3');
                     break;
                 case 'yellow':
                     // 4 - 7
-                    $query->having('COUNT(ss.id) BETWEEN 4 AND 7');
+                    $query->having('COUNT(sr.id) BETWEEN 4 AND 7');
                     break;
                 case 'green':
                     // 8 and above
-                    $query->having('COUNT(ss.id) >= 8');
+                    $query->having('COUNT(sr.id) >= 8');
                     break;
             }
         }

@@ -39,20 +39,6 @@ Profile
                     return $model->user->fullname;
                 }
             ],
-            [
-                'label' => 'Status Pelajar',
-                'value' => function($model){
-                return $model->statusDaftarLabel;
-                },
-                'format' => 'raw'
-                ],
-            [
-                'label' => 'Status Aktif',
-                'value' => function($model){
-                return $model->statusAktifLabel;
-                },
-                'format' => 'raw'
-                ],
             'matric_no',
             'nric',
             [
@@ -183,7 +169,7 @@ Semester
     <tr>
       <th scope="col">#</th>
       <th scope="col">Semester</th>
-      <th scope="col">Status</th>
+      <th scope="col">Status Daftar</th>
       <th scope="col"></th>
     </tr>
   </thead>
@@ -196,9 +182,9 @@ Semester
            <tr>
       <th scope="row"><?=$i?></th>
       <td><?=$s->semester->longFormat()?></td>
-      <td><?=$s->statusText?></td>
-      <td><a href="<?=Url::to(['student-semester/view', 'id' => $s->id])?>" class="btn btn-warning btn-sm">View</a> 
-       <a href="<?=Url::to(['student-semester/delete', 'id' => $s->id])?>" class="btn btn-danger btn-sm" data-confirm="Are you sure to delete this semester?"><i class="fa fa-trash"></i></a>
+      <td><?= \backend\modules\postgrad\models\StudentRegister::statusDaftarLabel($s->status_daftar) ?></td>
+      <td><a href="<?=Url::to(['student-register/view', 'id' => $s->id])?>" class="btn btn-warning btn-sm">View</a> 
+       <a href="<?=Url::to(['student-register/delete', 'id' => $s->id])?>" class="btn btn-danger btn-sm" data-confirm="Are you sure to delete this semester?"><i class="fa fa-trash"></i></a>
       </td>
     </tr>
           
@@ -216,7 +202,7 @@ Semester
 
 <br />
 <div class="form-group">
-<a href="<?=Url::to(['student-semester/create', 's' => $model->id])?>" class="btn btn-primary btn-sm">Add Semester</a>
+<a href="<?=Url::to(['student-register/create', 's' => $model->id])?>" class="btn btn-primary btn-sm">Add Semester</a>
 </div>
 
 

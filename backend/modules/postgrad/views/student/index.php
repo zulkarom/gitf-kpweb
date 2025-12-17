@@ -3,9 +3,12 @@
 use backend\modules\esiap\models\Program;
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\widgets\ActiveForm;
 use common\models\Country;
 use yii\helpers\ArrayHelper;
 use backend\modules\postgrad\models\Student;
+use backend\modules\postgrad\models\StudentRegister;
+use backend\models\Semester;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\modules\postgrad\models\StudentPostGradSearch */
@@ -18,8 +21,32 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Add Student', ['create'], ['class' => 'btn btn-success']) ?>
-        <?= Html::a('Statistics', ['stats'], ['class' => 'btn btn-info']) ?>
+        <?= Html::a('Statistics', ['stats', 'semester_id' => $searchModel->semester_id], ['class' => 'btn btn-info']) ?>
     </p>
+
+    <?php
+        $semesterOptions = ArrayHelper::map(
+            Semester::find()->orderBy(['id' => SORT_DESC])->all(),
+            'id',
+            function($s){ return $s->longFormat(); }
+        );
+    ?>
+
+    <div class="box box-default">
+        <div class="box-body">
+            <?php $form = ActiveForm::begin(['method' => 'get', 'action' => ['index']]); ?>
+            <div class="row">
+                <div class="col-md-6">
+                    <?= Html::label('Semester', 'semester_id', ['class' => 'control-label']) ?>
+                    <?= Html::dropDownList('semester_id', $searchModel->semester_id, $semesterOptions, ['class' => 'form-control', 'prompt' => 'Choose', 'id' => 'semester_id']) ?>
+                </div>
+                <div class="col-md-6" style="padding-top:25px">
+                    <?= Html::submitButton('Filter', ['class' => 'btn btn-primary']) ?>
+                </div>
+            </div>
+            <?php ActiveForm::end(); ?>
+        </div>
+    </div>
 
 <div class="box">
 <div class="box-header"></div>
@@ -57,7 +84,7 @@ $this->params['breadcrumbs'][] = $this->title;
                    $matric = $model->matric_no;
                    $nric = $model->nric;
                    $line2 = trim($matric . ' | ' . $nric, " | ");
-                   return Html::a($name, ['view', 'id' => $model->id]) . '<br />' . Html::encode($line2);
+                   return Html::a($name, ['view', 'id' => $model->id, 'semester_id' => $this->context->request->get('semester_id')]) . '<br />' . Html::encode($line2);
                 }
             ],
             [
@@ -105,11 +132,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => Html::activeDropDownList(
                     $searchModel,
                     'status_daftar',
-                    $searchModel->statusDaftarList(),
+                    StudentRegister::statusDaftarList(),
                     ['class'=> 'form-control','prompt' => 'Choose']
                 ),
                 'value' => function($model){
-                   return $model->statusDaftarLabel;
+                   return StudentRegister::statusDaftarLabel($model->status_daftar);
                 }
             ],
 
@@ -120,11 +147,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => Html::activeDropDownList(
                     $searchModel,
                     'status_aktif',
-                    $searchModel->statusAktifList(),
+                    StudentRegister::statusAktifList(),
                     ['class'=> 'form-control','prompt' => 'Choose']
                 ),
                 'value' => function($model){
-                   return $model->statusAktifLabel;
+                   return StudentRegister::statusAktifLabel($model->status_aktif);
                 }
             ],
             

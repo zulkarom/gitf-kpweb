@@ -46,16 +46,6 @@ use backend\models\University;
     
     <div class="row">
     
-    <div class="col-md-3">
-            <?= $form->field($model, 'status_daftar')->dropDownList(
-                $model->statusDaftarList(), ['prompt' => 'Pilih Status Daftar',  'class' => 'form-control select-choice']) ?>
-        </div>
-
-     <div class="col-md-3">
-            <?= $form->field($model, 'status_aktif')->dropDownList(
-                $model->statusAktifList(), ['prompt' => 'Pilih Status Aktif',  'class' => 'form-control select-choice']) ?>
-        </div>
-    
      <div class="col-md-3">
             <?= $form->field($modelUser, 'email')->textInput(['maxlength' => true])->label('Emel Pelajar') ?>
         </div>

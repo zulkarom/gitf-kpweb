@@ -10,11 +10,13 @@ class StudentCsvUploadForm extends Model
     /** @var UploadedFile */
     public $file;
 
+    public $semester_id;
+
     public function rules()
     {
         return [
-            [['file'], 'required'],
-            [['file'], 'file', 'skipOnEmpty' => false, 'extensions' => ['csv'], 'checkExtensionByMimeType' => false, 'maxSize' => 10 * 1024 * 1024],
+            [['file'], 'file', 'skipOnEmpty' => true, 'extensions' => ['csv'], 'checkExtensionByMimeType' => false, 'maxSize' => 10 * 1024 * 1024],
+            [['semester_id'], 'integer'],
         ];
     }
 }

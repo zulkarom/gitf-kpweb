@@ -5,7 +5,7 @@ use yii\helpers\Url;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model backend\modules\postgrad\models\StudentSemester */
+/* @var $model backend\modules\postgrad\models\StudentRegister */
 
 $name = $model->student->user->fullname;
 $this->title = 'View Semester: ' . $name;
@@ -13,13 +13,13 @@ $this->params['breadcrumbs'][] = ['label' => 'Students', 'url' => ['student/inde
 $this->params['breadcrumbs'][] = ['label' => $name, 'url' => ['student/view', 'id' => $model->student_id]];
 $this->params['breadcrumbs'][] = 'View';
 ?>
-<div class="student-semester-view">
+<div class="student-register-view">
 
 
 <div class="row">
 	<div class="col-md-6">
-	
-	
+
+
 	 <div class="box">
 <div class="box-header"></div>
 <div class="box-body">
@@ -45,18 +45,18 @@ $this->params['breadcrumbs'][] = 'View';
             ],
         ]) ?>
     </p>
-    
+
 
 </div>
 </div>
-	
-	
-	
+
+
+
 	</div>
 	<div class="col-md-6">
-	
-	
-	
+
+
+
 	<div class="box">
 <div class="box-header">
 <h3 class="box-title">
@@ -75,7 +75,7 @@ Modules
     </tr>
   </thead>
   <tbody>
-  <?php  
+  <?php
   if($modules){
       $i = 1;
       foreach($modules as $m){
@@ -84,20 +84,20 @@ Modules
        <th scope="row"><?=$i?></th>
       <td><?=$m->moduleName?></td>
       <td><?=$m->resultName?></td>
-      <td><a href="<?=Url::to(['semester-module/update', 'id' => $m->id])?>" class="btn btn-warning btn-sm">View</a>  
-      
+      <td><a href="<?=Url::to(['semester-module/update', 'id' => $m->id])?>" class="btn btn-warning btn-sm">View</a>
+
        <a href="<?=Url::to(['semester-module/delete', 'id' => $m->id])?>" class="btn btn-danger btn-sm" data-confirm="Are you sure to delete this module?"><i class="fa fa-trash"></i></a>
-       
+
        </td>
     </tr>
-          
-          <?php 
+
+          <?php
           $i++;
       }
   }
-  
+
   ?>
-   
+
 
   </tbody>
 </table>
@@ -112,11 +112,14 @@ Modules
 
 </div>
 </div>
-	
-	
-	
+
+
+
 	</div>
 </div>
+
+
+
 
 
 

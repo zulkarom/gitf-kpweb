@@ -3,8 +3,11 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use backend\modules\postgrad\models\Student;
+use backend\modules\postgrad\models\StudentRegister;
+use backend\models\Semester;
 use yii\helpers\Url;
 use yii\helpers\Json;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\postgrad\models\StudentStatusUploadForm */
@@ -25,18 +28,29 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
+            <?php
+                $semesterOptions = ArrayHelper::map(
+                    Semester::find()->orderBy(['id' => SORT_DESC])->all(),
+                    'id',
+                    function($s){ return $s->longFormat(); }
+                );
+            ?>
+
+            <?= $form->field($model, 'semester_id')->dropDownList($semesterOptions, ['prompt' => 'Choose']) ?>
+
             <?= $form->field($model, 'file')->fileInput(['accept' => '.csv', 'id' => 'pg-status-csv-file']) ?>
 
             <?= Html::hiddenInput('csv_token', Yii::$app->request->post('csv_token', ''), ['id' => 'pg-status-csv-token']) ?>
 
             <div class="form-group">
-                <?= Html::button('Upload CSV', ['class' => 'btn btn-default', 'id' => 'pg-status-upload-btn']) ?>
+                <?= Html::button('Upload CSV', ['class' => 'btn btn-default', 'id' => 'pg-status-upload-btn', 'style' => 'display:none']) ?>
                 <span id="pg-status-upload-msg" style="margin-left:10px"></span>
             </div>
 
             <div class="form-group">
-                <?= Html::submitButton('Preview', ['class' => 'btn btn-info', 'name' => 'preview', 'value' => '1']) ?>
-                <?= Html::submitButton('Apply Updates', ['class' => 'btn btn-danger', 'name' => 'apply', 'value' => '1', 'data-confirm' => 'Apply updates from this CSV?']) ?>
+                <?php if (is_array($summary) && !isset($summary['error']) && (int)($summary['applied'] ?? 0) === 0): ?>
+                    <?= Html::submitButton('Apply Updates', ['class' => 'btn btn-danger', 'name' => 'apply', 'value' => '1', 'data-confirm' => 'Apply updates from this CSV?']) ?>
+                <?php endif; ?>
             </div>
 
             <?php ActiveForm::end(); ?>
@@ -52,14 +66,20 @@ $this->params['breadcrumbs'][] = $this->title;
                     var fileInput = $('#pg-status-csv-file');
                     var tokenInput = $('#pg-status-csv-token');
                     var msg = $('#pg-status-upload-msg');
+                    var form = fileInput.closest('form');
+                    var applyBtn = form.find('button[name="apply"], input[name="apply"]');
+
+                    var isUploading = false;
 
                     function setMsg(text, isError){
                         msg.text(text);
                         msg.css('color', isError ? '#a94442' : '#3c763d');
                     }
 
-                    uploadBtn.on('click', function(e){
-                        e.preventDefault();
+                    function uploadCsv(done){
+                        if(isUploading){
+                            return;
+                        }
 
                         var file = fileInput[0] && fileInput[0].files ? fileInput[0].files[0] : null;
                         if(!file){
@@ -72,7 +92,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         fd.append('request_type', 'postgrad_status_csv');
                         fd.append('file', file);
 
-                        uploadBtn.prop('disabled', true);
+                        isUploading = true;
+                        if(uploadBtn.length){ uploadBtn.prop('disabled', true); }
+                        if(applyBtn.length){ applyBtn.prop('disabled', true); }
                         setMsg('Uploading...', false);
 
                         $.ajax({
@@ -86,6 +108,9 @@ $this->params['breadcrumbs'][] = $this->title;
                             if(res && res.token){
                                 tokenInput.val(res.token);
                                 setMsg('Uploaded: ' + (res.name || 'CSV') , false);
+                                if(typeof done === 'function'){
+                                    done(res);
+                                }
                             }else if(res && res.error){
                                 setMsg(res.error, true);
                             }else{
@@ -105,7 +130,40 @@ $this->params['breadcrumbs'][] = $this->title;
                                 setMsg('Upload failed (' + (xhr ? xhr.status : '') + ')', true);
                             }
                         }).always(function(){
-                            uploadBtn.prop('disabled', false);
+                            isUploading = false;
+                            if(uploadBtn.length){ uploadBtn.prop('disabled', false); }
+                            if(applyBtn.length){ applyBtn.prop('disabled', false); }
+                        });
+                    }
+
+                    uploadBtn.on('click', function(e){
+                        e.preventDefault();
+
+                        uploadCsv();
+                    });
+
+                    fileInput.on('change', function(){
+                        tokenInput.val('');
+                        uploadCsv(function(){
+                            form.find('input[name="preview"]').remove();
+                            form.append('<input type="hidden" name="preview" value="1" />');
+                            form.trigger('submit');
+                        });
+                    });
+
+                    applyBtn.on('click', function(e){
+                        if($.trim(tokenInput.val() || '') !== ''){
+                            return;
+                        }
+
+                        var file = fileInput[0] && fileInput[0].files ? fileInput[0].files[0] : null;
+                        if(!file){
+                            return;
+                        }
+
+                        e.preventDefault();
+                        uploadCsv(function(){
+                            form.trigger('submit');
                         });
                     });
                 })();
@@ -175,7 +233,7 @@ JS);
                                     if ($mappedDaftarInt === null || $mappedDaftarInt === '') {
                                         $mappedDaftarDisp = 'N/A';
                                     } else {
-                                        $list = (new Student())->statusDaftarList();
+                                        $list = StudentRegister::statusDaftarList();
                                         $txt = array_key_exists((int)$mappedDaftarInt, $list) ? $list[(int)$mappedDaftarInt] : '';
                                         $mappedDaftarDisp = trim($txt) !== '' ? ($txt . ' (' . (int)$mappedDaftarInt . ')') : (string)$mappedDaftarInt;
                                     }
@@ -186,7 +244,7 @@ JS);
                                     if ($mappedAktifInt === null || $mappedAktifInt === '') {
                                         $mappedAktifDisp = 'N/A';
                                     } else {
-                                        $list2 = (new Student())->statusAktifList();
+                                        $list2 = StudentRegister::statusAktifList();
                                         $txt2 = array_key_exists((int)$mappedAktifInt, $list2) ? $list2[(int)$mappedAktifInt] : '';
                                         $mappedAktifDisp = trim($txt2) !== '' ? ($txt2 . ' (' . (int)$mappedAktifInt . ')') : (string)$mappedAktifInt;
                                     }

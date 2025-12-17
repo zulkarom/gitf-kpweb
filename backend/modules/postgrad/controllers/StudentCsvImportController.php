@@ -7,11 +7,13 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use backend\modules\postgrad\models\Student;
 use backend\modules\postgrad\models\StudentCsvUploadForm;
+use backend\modules\postgrad\models\StudentRegister;
 use common\models\User;
 use common\models\Common;
 use common\models\Country;
 use backend\modules\esiap\models\Program;
 use backend\models\Campus;
+use backend\models\Semester;
 use yii\helpers\StringHelper;
 
 class StudentCsvImportController extends Controller
@@ -35,10 +37,18 @@ class StudentCsvImportController extends Controller
     {
         $model = new StudentCsvUploadForm();
 
+        $currentSem = Semester::getCurrentSemester();
+        if ($currentSem) {
+            $model->semester_id = $currentSem->id;
+        }
+
         $preview = null;
         $summary = null;
 
         if (Yii::$app->request->isPost) {
+            $post = Yii::$app->request->post();
+            $model->load($post);
+
             $token = (string)Yii::$app->request->post('csv_token', '');
             $token = trim($token);
 
@@ -51,10 +61,10 @@ class StudentCsvImportController extends Controller
                 if (!$path || !is_string($path) || !is_file($path)) {
                     $summary = ['error' => 'Uploaded CSV file not found. Please upload again.'];
                 } else {
-                    [$preview, $summary] = $this->processCsv($path, false);
+                    [$preview, $summary] = $this->processCsv($path, false, (int)$model->semester_id);
 
                     if (Yii::$app->request->post('apply') === '1') {
-                        [$preview, $summary] = $this->processCsv($path, true);
+                        [$preview, $summary] = $this->processCsv($path, true, (int)$model->semester_id);
                     }
                 }
             }
@@ -67,9 +77,18 @@ class StudentCsvImportController extends Controller
         ]);
     }
 
-    private function processCsv($path, $apply)
+    private function processCsv($path, $apply, $semesterId)
     {
         set_time_limit(0);
+
+        $semesterId = (int)$semesterId;
+        if (!$semesterId) {
+            $currentSem = Semester::getCurrentSemester();
+            if (!$currentSem) {
+                return [[], ['error' => 'Current semester not found']];
+            }
+            $semesterId = (int)$currentSem->id;
+        }
 
         $handle = $this->openCsvHandle($path);
         if (!$handle) {
@@ -79,33 +98,26 @@ class StudentCsvImportController extends Controller
         $row = 0;
         $header = [];
         $cols = [];
-        $matricKey = null;
-        $nameKey = null;
-        $emailKey = null;
-        $nricKey = null;
-        $dobKey = null;
-        $genderKey = null;
-        $maritalKey = null;
-        $nationalityKey = null;
-        $citizenshipKey = null;
-        $studyModeKey = null;
-        $campusKey = null;
-        $programCodeKey = null;
+        $studentIdKey = null;
+        $statusDaftarKey = null;
 
         $stats = [
             'processed' => 0,
-            'created' => 0,
-            'skipped_exists' => 0,
-            'skipped_invalid' => 0,
+            'updated' => 0,
+            'no_changes' => 0,
+            'not_found' => 0,
+            'invalid' => 0,
             'errors' => 0,
             'applied' => $apply ? 1 : 0,
+            'semester_id' => $semesterId,
         ];
 
         $resultCounts = [
             'READY' => 0,
-            'EXISTS' => 0,
+            'NO_CHANGES' => 0,
+            'NOT_FOUND' => 0,
             'INVALID' => 0,
-            'CREATED' => 0,
+            'UPDATED' => 0,
             'FAILED' => 0,
         ];
 
@@ -118,7 +130,9 @@ class StudentCsvImportController extends Controller
                 $header = array_map([$this, 'normalizeHeader'], $data);
                 $cols = array_flip($header);
 
-                $matricKey = $this->pickFirstExistingKey($cols, [
+                $studentIdKey = $this->pickFirstExistingKey($cols, [
+                    'student_id',
+                    'student id',
                     'no. matrik',
                     'no matrik',
                     'no_matrik',
@@ -127,192 +141,155 @@ class StudentCsvImportController extends Controller
                     'no.matrik',
                 ]);
 
-                $nameKey = $this->pickFirstExistingKey($cols, [
-                    'nama pelajar',
-                    'name',
-                    'nama',
+                $statusDaftarKey = $this->pickFirstExistingKey($cols, [
+                    'status_daftar',
+                    'status daftar',
                 ]);
 
-                $emailKey = $this->pickFirstExistingKey($cols, [
-                    'emel pelajar',
-                    'email pelajar',
-                    'email',
-                    'emel',
-                ]);
-
-                $nricKey = $this->pickFirstExistingKey($cols, [
-                    'no. ic / passport',
-                    'no ic / passport',
-                    'nric',
-                    'no ic',
-                ]);
-
-                $dobKey = $this->pickFirstExistingKey($cols, [
-                    'tarikh lahir',
-                    'date_birth',
-                    'date birth',
-                ]);
-
-                $genderKey = $this->pickFirstExistingKey($cols, [
-                    'jantina',
-                    'gender',
-                ]);
-
-                $maritalKey = $this->pickFirstExistingKey($cols, [
-                    'taraf perkahwinan',
-                    'marital status',
-                ]);
-
-                $nationalityKey = $this->pickFirstExistingKey($cols, [
-                    'negara asal',
-                    'negara',
-                    'nationality',
-                ]);
-
-                $citizenshipKey = $this->pickFirstExistingKey($cols, [
-                    'kewarganegaraan',
-                    'citizenship',
-                ]);
-
-                $studyModeKey = $this->pickFirstExistingKey($cols, [
-                    'mod pengajian',
-                    'study mode',
-                ]);
-
-                $campusKey = $this->pickFirstExistingKey($cols, [
-                    'kampus',
-                    'campus',
-                ]);
-
-                $programCodeKey = $this->pickFirstExistingKey($cols, [
-                    'kod program',
-                    'program code',
-                ]);
-
-                if ($matricKey === null) {
+                if ($studentIdKey === null) {
                     fclose($handle);
-                    return [[], ['error' => 'Missing required column: NO. MATRIK']];
+                    return [[], ['error' => 'Missing required column: student_id']];
+                }
+                if ($statusDaftarKey === null) {
+                    fclose($handle);
+                    return [[], ['error' => 'Missing required column: status_daftar']];
                 }
 
                 continue;
             }
 
-            $matric = $this->getValue($data, $cols, $matricKey);
-            $matric = trim((string)$matric);
+            $studentId = trim((string)$this->getValue($data, $cols, $studentIdKey));
+            $statusDaftarText = trim((string)$this->getValue($data, $cols, $statusDaftarKey));
 
-            $name = $nameKey !== null ? trim((string)$this->getValue($data, $cols, $nameKey)) : '';
-            $email = $emailKey !== null ? trim((string)$this->getValue($data, $cols, $emailKey)) : '';
-
-            $nric = $nricKey !== null ? trim((string)$this->getValue($data, $cols, $nricKey)) : '';
-            $dobText = $dobKey !== null ? trim((string)$this->getValue($data, $cols, $dobKey)) : '';
-            $genderText = $genderKey !== null ? trim((string)$this->getValue($data, $cols, $genderKey)) : '';
-            $maritalText = $maritalKey !== null ? trim((string)$this->getValue($data, $cols, $maritalKey)) : '';
-            $nationalityText = $nationalityKey !== null ? trim((string)$this->getValue($data, $cols, $nationalityKey)) : '';
-            $citizenshipText = $citizenshipKey !== null ? trim((string)$this->getValue($data, $cols, $citizenshipKey)) : '';
-            $studyModeText = $studyModeKey !== null ? trim((string)$this->getValue($data, $cols, $studyModeKey)) : '';
-            $campusText = $campusKey !== null ? trim((string)$this->getValue($data, $cols, $campusKey)) : '';
-            $programCode = $programCodeKey !== null ? trim((string)$this->getValue($data, $cols, $programCodeKey)) : '';
-
-            if ($matric === '') {
-                $stats['skipped_invalid']++;
+            if ($studentId === '' || $statusDaftarText === '') {
+                $stats['invalid']++;
                 $resultCounts['INVALID']++;
                 $preview[] = [
-                    'matric_no' => $matric,
-                    'name' => $name,
-                    'email' => $email,
+                    'student_id' => $studentId,
+                    'status_daftar_text' => $statusDaftarText,
                     'result' => 'INVALID',
-                    'message' => 'Empty matric number',
+                    'message' => 'Missing student_id or status_daftar',
                 ];
                 continue;
             }
 
-            $existing = Student::find()->where(['matric_no' => $matric])->exists();
-            if ($existing) {
-                $stats['skipped_exists']++;
-                $resultCounts['EXISTS']++;
+            $mappedDaftar = StudentRegister::mapStatusDaftarFromText($statusDaftarText);
+            if ($mappedDaftar === false || $mappedDaftar === null) {
+                $stats['invalid']++;
+                $resultCounts['INVALID']++;
                 $preview[] = [
-                    'matric_no' => $matric,
-                    'name' => $name,
-                    'email' => $email,
-                    'result' => 'EXISTS',
-                    'message' => 'Already exists',
+                    'student_id' => $studentId,
+                    'status_daftar_text' => $statusDaftarText,
+                    'status_daftar' => $mappedDaftar,
+                    'status_aktif' => null,
+                    'result' => 'INVALID',
+                    'message' => 'Invalid status_daftar',
                 ];
                 continue;
             }
+
+            $mappedAktif = in_array((int)$mappedDaftar, [StudentRegister::STATUS_DAFTAR_DAFTAR, StudentRegister::STATUS_DAFTAR_NOS], true)
+                ? StudentRegister::STATUS_AKTIF_AKTIF
+                : StudentRegister::STATUS_AKTIF_TIDAK_AKTIF;
+
+            $student = Student::find()->where(['matric_no' => $studentId])->one();
+            if (!$student) {
+                $stats['not_found']++;
+                $resultCounts['NOT_FOUND']++;
+                $preview[] = [
+                    'student_id' => $studentId,
+                    'status_daftar_text' => $statusDaftarText,
+                    'status_daftar' => (int)$mappedDaftar,
+                    'status_aktif' => (int)$mappedAktif,
+                    'result' => 'NOT_FOUND',
+                    'message' => 'Student not found',
+                ];
+                continue;
+            }
+
+            $reg = StudentRegister::find()->where([
+                'student_id' => (int)$student->id,
+                'semester_id' => $semesterId,
+            ])->one();
+
+            $beforeDaftar = $reg ? $reg->status_daftar : null;
+            $beforeAktif = $reg ? $reg->status_aktif : null;
+
+            $daftarChanged = ((int)$beforeDaftar !== (int)$mappedDaftar);
+            $aktifChanged = ((int)$beforeAktif !== (int)$mappedAktif);
+            $changed = $daftarChanged || $aktifChanged;
 
             $stats['processed']++;
 
             if (!$apply) {
-                $resultCounts['READY']++;
+                $resultCounts[$changed ? 'READY' : 'NO_CHANGES']++;
                 $preview[] = [
-                    'matric_no' => $matric,
-                    'name' => $name,
-                    'email' => $email,
-                    'result' => 'READY',
-                    'message' => 'Will be created',
+                    'student_id' => $studentId,
+                    'status_daftar_text' => $statusDaftarText,
+                    'status_daftar' => (int)$mappedDaftar,
+                    'status_aktif' => (int)$mappedAktif,
+                    'current_status_daftar' => $beforeDaftar,
+                    'current_status_aktif' => $beforeAktif,
+                    'result' => $changed ? 'READY' : 'NO_CHANGES',
+                    'message' => $changed ? 'Will be updated' : 'No changes',
+                ];
+                continue;
+            }
+
+            if (!$changed) {
+                $stats['no_changes']++;
+                $resultCounts['NO_CHANGES']++;
+                $preview[] = [
+                    'student_id' => $studentId,
+                    'status_daftar_text' => $statusDaftarText,
+                    'status_daftar' => (int)$mappedDaftar,
+                    'status_aktif' => (int)$mappedAktif,
+                    'current_status_daftar' => $beforeDaftar,
+                    'current_status_aktif' => $beforeAktif,
+                    'result' => 'NO_CHANGES',
+                    'message' => 'No changes',
                 ];
                 continue;
             }
 
             $tx = Yii::$app->db->beginTransaction();
             try {
-                $user = $this->ensureUser($matric, $name, $email);
-
-                $student = new Student();
-                $student->scenario = 'create';
-                $student->user_id = $user->id;
-                $student->matric_no = $matric;
-
-                $student->program_id = $this->inferProgramId($data, $cols, $programCode);
-                if (!$student->program_id) {
-                    $stats['skipped_invalid']++;
-                    $resultCounts['INVALID']++;
-                    $preview[] = [
-                        'matric_no' => $matric,
-                        'name' => $name,
-                        'email' => $email,
-                        'result' => 'INVALID',
-                        'message' => 'Missing/unknown program id',
-                    ];
-                    $tx->rollBack();
-                    continue;
+                if (!$reg) {
+                    $reg = new StudentRegister();
+                    $reg->student_id = (int)$student->id;
+                    $reg->semester_id = $semesterId;
                 }
 
-                $student->name = $name !== '' ? $name : $matric;
-                $student->personal_email = $email !== '' ? $email : null;
-                $student->nric = $nric !== '' ? $nric : null;
+                $reg->scenario = 'csv_status';
+                $reg->status_daftar = (int)$mappedDaftar;
+                $reg->status_aktif = (int)$mappedAktif;
 
-                $student->date_birth = $this->parseDate($dobText);
-                $student->gender = $this->mapGender($genderText);
-                $student->marital_status = $this->mapMaritalStatus($maritalText);
-                $student->nationality = $this->mapNationality($nationalityText);
-                $student->citizenship = $this->mapCitizenship($citizenshipText);
-                $student->study_mode = $this->mapStudyMode($studyModeText);
-                $student->campus_id = $this->mapCampus($campusText);
-
-                if (!$student->save(false)) {
-                    throw new \RuntimeException('Failed to save student');
+                if (!$reg->save(false)) {
+                    throw new \RuntimeException('Failed to save student register');
                 }
 
                 $tx->commit();
-
-                $stats['created']++;
-                $resultCounts['CREATED']++;
+                $stats['updated']++;
+                $resultCounts['UPDATED']++;
                 $preview[] = [
-                    'matric_no' => $matric,
-                    'name' => $name,
-                    'email' => $email,
-                    'result' => 'CREATED',
-                    'message' => 'Created',
+                    'student_id' => $studentId,
+                    'status_daftar_text' => $statusDaftarText,
+                    'status_daftar' => (int)$mappedDaftar,
+                    'status_aktif' => (int)$mappedAktif,
+                    'current_status_daftar' => $beforeDaftar,
+                    'current_status_aktif' => $beforeAktif,
+                    'result' => 'UPDATED',
+                    'message' => 'Updated',
                 ];
             } catch (\Throwable $e) {
                 $tx->rollBack();
                 $stats['errors']++;
                 $resultCounts['FAILED']++;
                 $preview[] = [
-                    'matric_no' => $matric,
-                    'name' => $name,
-                    'email' => $email,
+                    'student_id' => $studentId,
+                    'status_daftar_text' => $statusDaftarText,
+                    'status_daftar' => (int)$mappedDaftar,
+                    'status_aktif' => (int)$mappedAktif,
                     'result' => 'FAILED',
                     'message' => StringHelper::truncate((string)$e->getMessage(), 180),
                 ];

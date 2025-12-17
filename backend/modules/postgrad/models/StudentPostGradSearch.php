@@ -4,6 +4,8 @@ namespace backend\modules\postgrad\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use backend\models\Semester;
+use backend\modules\postgrad\models\StudentRegister;
 
 /**
  * StudentPostGradSearch represents the model behind the search form of `backend\modules\postgrad\models\StudentPostGrad`.
@@ -13,13 +15,14 @@ class StudentPostGradSearch extends Student
     public $name;
     public $study_mode_rc;
     public $pro_level;
+    public $semester_id;
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id', 'gender', 'status', 'nationality', 'field_id', 'pro_level', 'status_daftar', 'status_aktif'], 'integer'],
+            [['id', 'gender', 'status', 'nationality', 'field_id', 'pro_level', 'status_daftar', 'status_aktif', 'semester_id'], 'integer'],
             [['matric_no', 'nric', 'program_id', 'name', 'study_mode_rc'], 'safe'],
         ];
     }
@@ -42,7 +45,26 @@ class StudentPostGradSearch extends Student
      */
     public function search($params)
     {
+        $semesterId = isset($params['semester_id']) ? (int)$params['semester_id'] : 0;
+        if (!$semesterId) {
+            $currentSem = Semester::getCurrentSemester();
+            if ($currentSem) {
+                $semesterId = (int)$currentSem->id;
+            }
+        }
+        $this->semester_id = $semesterId;
+
         $query = Student::find()->alias('a')
+        ->select([
+            'a.*',
+            'status_daftar' => 'r.status_daftar',
+            'status_aktif' => 'r.status_aktif',
+        ])
+        ->innerJoin(
+            ['r' => StudentRegister::tableName()],
+            'r.student_id = a.id AND r.semester_id = :semesterId',
+            [':semesterId' => (int)$semesterId]
+        )
         ->joinWith([
             'user',
             'program' => function($q) {
@@ -73,8 +95,8 @@ class StudentPostGradSearch extends Student
             'a.status' => $this->status,
             'a.nationality' => $this->nationality,
             'a.field_id' => $this->field_id,
-            'a.status_daftar' => $this->status_daftar,
-            'a.status_aktif' => $this->status_aktif,
+            'r.status_daftar' => $this->status_daftar,
+            'r.status_aktif' => $this->status_aktif,
         ]);
 
         $query->andFilterWhere([
@@ -96,5 +118,13 @@ class StudentPostGradSearch extends Student
         $query->andFilterWhere(['a.study_mode_rc' => $this->study_mode_rc]);
 
         return $dataProvider;
+    }
+
+    public function statusDaftarList(){
+        return StudentRegister::statusDaftarList();
+    }
+
+    public function statusAktifList(){
+        return StudentRegister::statusAktifList();
     }
 }

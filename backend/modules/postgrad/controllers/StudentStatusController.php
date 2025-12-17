@@ -6,7 +6,9 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use backend\modules\postgrad\models\Student;
+use backend\modules\postgrad\models\StudentRegister;
 use backend\modules\postgrad\models\StudentStatusUploadForm;
+use backend\models\Semester;
 
 class StudentStatusController extends Controller
 {
@@ -29,10 +31,18 @@ class StudentStatusController extends Controller
     {
         $model = new StudentStatusUploadForm();
 
+        $currentSem = Semester::getCurrentSemester();
+        if ($currentSem) {
+            $model->semester_id = $currentSem->id;
+        }
+
         $preview = null;
         $summary = null;
 
         if (Yii::$app->request->isPost) {
+            $post = Yii::$app->request->post();
+            $model->load($post);
+
             $token = (string)Yii::$app->request->post('csv_token', '');
             $token = trim($token);
 
@@ -45,10 +55,10 @@ class StudentStatusController extends Controller
                 if (!$path || !is_string($path) || !is_file($path)) {
                     $summary = ['error' => 'Uploaded CSV file not found. Please upload again.'];
                 } else {
-                    [$preview, $summary] = $this->processCsv($path, false);
+                    [$preview, $summary] = $this->processCsv($path, false, (int)$model->semester_id);
 
                     if (Yii::$app->request->post('apply') === '1') {
-                        [$preview, $summary] = $this->processCsv($path, true);
+                        [$preview, $summary] = $this->processCsv($path, true, (int)$model->semester_id);
                     }
                 }
             }
@@ -61,7 +71,7 @@ class StudentStatusController extends Controller
         ]);
     }
 
-    private function processCsv($path, $apply)
+    private function processCsv($path, $apply, $semesterId)
     {
         $fh = fopen($path, 'r');
         if (!$fh) {
@@ -161,6 +171,7 @@ class StudentStatusController extends Controller
             'invalid_status' => 0,
             'errors' => 0,
             'applied' => $apply ? 1 : 0,
+            'semester_id' => (int)$semesterId,
         ];
 
         $resultCounts = [
@@ -198,8 +209,8 @@ class StudentStatusController extends Controller
                 continue;
             }
 
-            $mappedDaftar = Student::mapStatusDaftarFromText($statusDaftarText);
-            $mappedAktif = Student::mapStatusAktifFromText($statusAktifText);
+            $mappedDaftar = StudentRegister::mapStatusDaftarFromText($statusDaftarText);
+            $mappedAktif = StudentRegister::mapStatusAktifFromText($statusAktifText);
 
             if ($mappedDaftar === false || $mappedAktif === false) {
                 $stats['invalid_status']++;
@@ -236,22 +247,28 @@ class StudentStatusController extends Controller
                 continue;
             }
 
-            $beforeDaftar = $student->status_daftar;
-            $beforeAktif = $student->status_aktif;
+            $reg = StudentRegister::find()->where([
+                'student_id' => (int)$student->id,
+                'semester_id' => (int)$semesterId,
+            ])->one();
 
-            $currentDaftarText = $student->statusDaftarText;
-            $currentAktifText = $student->statusAktifText;
+            $beforeDaftar = $reg ? $reg->status_daftar : null;
+            $beforeAktif = $reg ? $reg->status_aktif : null;
+
+            $tmpCur = new StudentRegister();
+            $tmpCur->status_daftar = $beforeDaftar;
+            $tmpCur->status_aktif = $beforeAktif;
+            $currentDaftarText = $tmpCur->statusDaftarText;
+            $currentAktifText = $tmpCur->statusAktifText;
 
             $daftarChanged = ($mappedDaftar !== null) && ((int)$beforeDaftar !== (int)$mappedDaftar);
             $aktifChanged = ($mappedAktif !== null) && ((int)$beforeAktif !== (int)$mappedAktif);
 
             $changed = false;
             if ($daftarChanged) {
-                $student->status_daftar = $mappedDaftar;
                 $changed = true;
             }
             if ($aktifChanged) {
-                $student->status_aktif = $mappedAktif;
                 $changed = true;
             }
 
@@ -278,8 +295,21 @@ class StudentStatusController extends Controller
             $stats['processed']++;
 
             if ($apply) {
-                $student->scenario = 'student_update';
-                if ($student->save(false)) {
+                if (!$reg) {
+                    $reg = new StudentRegister();
+                    $reg->student_id = (int)$student->id;
+                    $reg->semester_id = (int)$semesterId;
+                }
+
+                if ($daftarChanged) {
+                    $reg->status_daftar = $mappedDaftar;
+                }
+                if ($aktifChanged) {
+                    $reg->status_aktif = $mappedAktif;
+                }
+
+                $reg->scenario = 'csv_status';
+                if ($reg->save()) {
                     $stats['updated']++;
                     $resultCounts['UPDATED']++;
                     $preview[] = [

@@ -4,11 +4,13 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use yii\helpers\Json;
+use backend\models\Semester;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\postgrad\models\StudentCsvUploadForm */
 
-$this->title = 'Import Students (CSV)';
+$this->title = 'Update Student Status Daftar (CSV)';
 $this->params['breadcrumbs'][] = ['label' => 'Postgraduate Admin', 'url' => ['/postgrad/student/index']];
 $this->params['breadcrumbs'][] = $this->title;
 
@@ -24,18 +26,29 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
+            <?php
+                $semesterOptions = ArrayHelper::map(
+                    Semester::find()->orderBy(['id' => SORT_DESC])->all(),
+                    'id',
+                    function($s){ return $s->longFormat(); }
+                );
+            ?>
+
+            <?= $form->field($model, 'semester_id')->dropDownList($semesterOptions, ['prompt' => 'Choose']) ?>
+
             <?= $form->field($model, 'file')->fileInput(['accept' => '.csv', 'id' => 'pg-student-csv-file']) ?>
 
             <?= Html::hiddenInput('csv_token', Yii::$app->request->post('csv_token', ''), ['id' => 'pg-student-csv-token']) ?>
 
             <div class="form-group">
-                <?= Html::button('Upload CSV', ['class' => 'btn btn-default', 'id' => 'pg-student-upload-btn']) ?>
+                <?= Html::button('Upload CSV', ['class' => 'btn btn-default', 'id' => 'pg-student-upload-btn', 'style' => 'display:none']) ?>
                 <span id="pg-student-upload-msg" style="margin-left:10px"></span>
             </div>
 
             <div class="form-group">
-                <?= Html::submitButton('Preview', ['class' => 'btn btn-info', 'name' => 'preview', 'value' => '1']) ?>
-                <?= Html::submitButton('Import New Students', ['class' => 'btn btn-danger', 'name' => 'apply', 'value' => '1', 'data-confirm' => 'Import new students from this CSV? Existing matric numbers will be skipped.']) ?>
+                <?php if (is_array($summary) && !isset($summary['error']) && (int)($summary['applied'] ?? 0) === 0): ?>
+                    <?= Html::submitButton('Apply Updates', ['class' => 'btn btn-danger', 'name' => 'apply', 'value' => '1', 'data-confirm' => 'Apply status updates from this CSV?']) ?>
+                <?php endif; ?>
             </div>
 
             <?php ActiveForm::end(); ?>
@@ -51,14 +64,20 @@ $this->params['breadcrumbs'][] = $this->title;
                     var fileInput = $('#pg-student-csv-file');
                     var tokenInput = $('#pg-student-csv-token');
                     var msg = $('#pg-student-upload-msg');
+                    var form = fileInput.closest('form');
+                    var applyBtn = form.find('button[name="apply"], input[name="apply"]');
+
+                    var isUploading = false;
 
                     function setMsg(text, isError){
                         msg.text(text);
                         msg.css('color', isError ? '#a94442' : '#3c763d');
                     }
 
-                    uploadBtn.on('click', function(e){
-                        e.preventDefault();
+                    function uploadCsv(done){
+                        if(isUploading){
+                            return;
+                        }
 
                         var file = fileInput[0] && fileInput[0].files ? fileInput[0].files[0] : null;
                         if(!file){
@@ -71,7 +90,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         fd.append('request_type', 'postgrad_student_csv');
                         fd.append('file', file);
 
-                        uploadBtn.prop('disabled', true);
+                        isUploading = true;
+                        if(uploadBtn.length){ uploadBtn.prop('disabled', true); }
+                        if(applyBtn.length){ applyBtn.prop('disabled', true); }
                         setMsg('Uploading...', false);
 
                         $.ajax({
@@ -85,6 +106,9 @@ $this->params['breadcrumbs'][] = $this->title;
                             if(res && res.token){
                                 tokenInput.val(res.token);
                                 setMsg('Uploaded: ' + (res.name || 'CSV') , false);
+                                if(typeof done === 'function'){
+                                    done(res);
+                                }
                             }else if(res && res.error){
                                 setMsg(res.error, true);
                             }else{
@@ -104,7 +128,40 @@ $this->params['breadcrumbs'][] = $this->title;
                                 setMsg('Upload failed (' + (xhr ? xhr.status : '') + ')', true);
                             }
                         }).always(function(){
-                            uploadBtn.prop('disabled', false);
+                            isUploading = false;
+                            if(uploadBtn.length){ uploadBtn.prop('disabled', false); }
+                            if(applyBtn.length){ applyBtn.prop('disabled', false); }
+                        });
+                    }
+
+                    uploadBtn.on('click', function(e){
+                        e.preventDefault();
+
+                        uploadCsv();
+                    });
+
+                    fileInput.on('change', function(){
+                        tokenInput.val('');
+                        uploadCsv(function(){
+                            form.find('input[name="preview"]').remove();
+                            form.append('<input type="hidden" name="preview" value="1" />');
+                            form.trigger('submit');
+                        });
+                    });
+
+                    applyBtn.on('click', function(e){
+                        if($.trim(tokenInput.val() || '') !== ''){
+                            return;
+                        }
+
+                        var file = fileInput[0] && fileInput[0].files ? fileInput[0].files[0] : null;
+                        if(!file){
+                            return;
+                        }
+
+                        e.preventDefault();
+                        uploadCsv(function(){
+                            form.trigger('submit');
                         });
                     });
                 })();
@@ -121,10 +178,12 @@ JS);
                 <div class="alert alert-info">
                     <strong>Summary</strong><br />
                     Applied: <?= (int)$summary['applied'] ?><br />
+                    Semester ID: <?= (int)($summary['semester_id'] ?? 0) ?><br />
                     Processed: <?= (int)$summary['processed'] ?><br />
-                    Created: <?= (int)$summary['created'] ?><br />
-                    Skipped (Exists): <?= (int)$summary['skipped_exists'] ?><br />
-                    Skipped (Invalid): <?= (int)$summary['skipped_invalid'] ?><br />
+                    Updated: <?= (int)($summary['updated'] ?? 0) ?><br />
+                    No Changes: <?= (int)($summary['no_changes'] ?? 0) ?><br />
+                    Not Found: <?= (int)($summary['not_found'] ?? 0) ?><br />
+                    Invalid: <?= (int)($summary['invalid'] ?? 0) ?><br />
                     Errors: <?= (int)$summary['errors'] ?><br />
                 </div>
 
@@ -152,9 +211,12 @@ JS);
                         <thead>
                         <tr>
                             <th style="width:50px">#</th>
-                            <th>Matric No</th>
-                            <th>Name</th>
-                            <th>Email</th>
+                            <th>Student ID</th>
+                            <th>Status Daftar (CSV)</th>
+                            <th>Status Daftar</th>
+                            <th>Status Aktif (Auto)</th>
+                            <th>Current Status Daftar</th>
+                            <th>Current Status Aktif</th>
                             <th>Result</th>
                             <th>Message</th>
                         </tr>
@@ -168,15 +230,18 @@ JS);
                                     $resultStyle = 'background:#fff3cd;';
                                 } elseif ($result === 'FAILED' || $result === 'INVALID') {
                                     $resultStyle = 'background:#f8d7da;';
-                                } elseif ($result === 'CREATED') {
+                                } elseif ($result === 'UPDATED') {
                                     $resultStyle = 'background:#d1e7dd;';
                                 }
                             ?>
                             <tr data-result="<?= Html::encode($result) ?>">
                                 <td><?= (int)$i ?></td>
-                                <td><?= Html::encode((string)($row['matric_no'] ?? '')) ?></td>
-                                <td><?= Html::encode((string)($row['name'] ?? '')) ?></td>
-                                <td><?= Html::encode((string)($row['email'] ?? '')) ?></td>
+                                <td><?= Html::encode((string)($row['student_id'] ?? '')) ?></td>
+                                <td><?= Html::encode((string)($row['status_daftar_text'] ?? '')) ?></td>
+                                <td><?= Html::encode((string)($row['status_daftar'] ?? '')) ?></td>
+                                <td><?= Html::encode((string)($row['status_aktif'] ?? '')) ?></td>
+                                <td><?= Html::encode((string)($row['current_status_daftar'] ?? '')) ?></td>
+                                <td><?= Html::encode((string)($row['current_status_aktif'] ?? '')) ?></td>
                                 <td style="<?= $resultStyle ?>"><?= Html::encode($result) ?></td>
                                 <td><?= Html::encode((string)($row['message'] ?? '')) ?></td>
                             </tr>

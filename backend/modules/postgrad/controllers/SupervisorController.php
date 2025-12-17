@@ -5,6 +5,8 @@ namespace backend\modules\postgrad\controllers;
 use Yii;
 use backend\modules\postgrad\models\Supervisor;
 use backend\modules\postgrad\models\SupervisorSearch;
+use backend\models\Semester;
+use backend\modules\postgrad\models\StudentRegister;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
@@ -40,27 +42,38 @@ class SupervisorController extends Controller
      */
     public function actionIndex()
     {
+        $semesterId = Yii::$app->request->get('semester_id');
+        if (empty($semesterId)) {
+            $currentSem = Semester::getCurrentSemester();
+            $semesterId = $currentSem ? $currentSem->id : null;
+        }
+
         $searchModel = new SupervisorSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $params = Yii::$app->request->queryParams;
+        $params[$searchModel->formName()]['semester_id'] = $semesterId;
+        $dataProvider = $searchModel->search($params);
 
         // KPI 1: total staff that has at least one as penyelia utama (sv_role = 1)
         $countStaffMain = (new \yii\db\Query())
             ->from(['a' => Supervisor::tableName()])
             ->innerJoin(['ss' => 'pg_student_sv'], 'ss.supervisor_id = a.id AND ss.sv_role = 1')
+            ->innerJoin(['sr' => StudentRegister::tableName()], 'sr.student_id = ss.student_id AND sr.semester_id = :sem', [':sem' => (int)$semesterId])
             ->count('DISTINCT a.id');
 
         // KPI 2: total staff that has at least one as penyelia bersama (sv_role = 2)
         $countStaffSecond = (new \yii\db\Query())
             ->from(['a' => Supervisor::tableName()])
             ->innerJoin(['ss' => 'pg_student_sv'], 'ss.supervisor_id = a.id AND ss.sv_role = 2')
+            ->innerJoin(['sr' => StudentRegister::tableName()], 'sr.student_id = ss.student_id AND sr.semester_id = :sem', [':sem' => (int)$semesterId])
             ->count('DISTINCT a.id');
 
 
         // Compute color category counts based on total supervisees per supervisor
         $rows = (new \yii\db\Query())
-            ->select(['a.id AS sid', 'COUNT(ss.id) AS total'])
+            ->select(['a.id AS sid', 'COUNT(sr.id) AS total'])
             ->from(['a' => Supervisor::tableName()])
             ->leftJoin(['ss' => 'pg_student_sv'], 'ss.supervisor_id = a.id')
+            ->leftJoin(['sr' => StudentRegister::tableName()], 'sr.student_id = ss.student_id AND sr.semester_id = :sem', [':sem' => (int)$semesterId])
             ->groupBy(['a.id'])
             ->all();
 
@@ -87,6 +100,7 @@ class SupervisorController extends Controller
             'countRed' => $countRed,
             'countYellow' => $countYellow,
             'countGreen' => $countGreen,
+            'semesterId' => $semesterId,
         ]);
     }
 
@@ -98,13 +112,45 @@ class SupervisorController extends Controller
      */
     public function actionView($id)
     {
+        $semesterId = Yii::$app->request->get('semester_id');
+        if (empty($semesterId)) {
+            $currentSem = Semester::getCurrentSemester();
+            $semesterId = $currentSem ? $currentSem->id : null;
+        }
+
         $model = $this->findModel($id);
-        $supervisees = $model->supervisees;
+        $supervisees = $model->getSupervisees()
+        ->joinWith(['student' => function($q){
+            $q->alias('st');
+        }])
+        ->innerJoin(['sr' => StudentRegister::tableName()], 'sr.student_id = st.id AND sr.semester_id = :sem', [':sem' => (int)$semesterId])
+        ->all();
+
+        $superviseeRegs = [];
+        if ($supervisees) {
+            $studentIds = [];
+            foreach ($supervisees as $sv) {
+                $studentIds[] = $sv->student_id;
+            }
+            if (!empty($studentIds)) {
+                $regs = StudentRegister::find()
+                ->where(['semester_id' => (int)$semesterId])
+                ->andWhere(['student_id' => $studentIds])
+                ->all();
+                if ($regs) {
+                    foreach ($regs as $r) {
+                        $superviseeRegs[$r->student_id] = $r;
+                    }
+                }
+            }
+        }
+
         $examinees = $model->examinees;
         
         return $this->render('view', [
             'model' => $model,
             'supervisees' => $supervisees,
+            'superviseeRegs' => $superviseeRegs,
             'examinees' => $examinees
         ]);
     }
