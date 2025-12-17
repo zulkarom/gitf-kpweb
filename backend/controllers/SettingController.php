@@ -79,62 +79,18 @@ class SettingController extends Controller
         $csrfToken = Yii::$app->request->getCsrfToken();
 
         $html = '<div class="box">'
-            . '<div class="box-header"><h3 class="box-title">Firewall Upload Test</h3></div>'
+            . '<div class="box-header"><h3 class="box-title">Firewall Upload Test (Simple Form)</h3></div>'
             . '<div class="box-body">'
-            . '<div class="form-group"><label>Select file</label><input type="file" id="fw-test-file" class="form-control" /></div>'
-            . '<div class="form-group"><label>request_type</label><input type="text" id="fw-test-request-type" class="form-control" value="postgrad_status_csv" /></div>'
-            . '<div class="form-group"><button type="button" class="btn btn-primary" id="fw-test-upload-btn">Upload to /firewall/index</button></div>'
-            . '<pre id="fw-test-result" style="white-space:pre-wrap; word-break:break-word; background:#f7f7f7; padding:10px;"></pre>'
+            . '<form method="post" enctype="multipart/form-data" action="' . htmlspecialchars($uploadUrl, ENT_QUOTES, 'UTF-8') . '">' 
+            . '<input type="hidden" name="' . htmlspecialchars($csrfParam, ENT_QUOTES, 'UTF-8') . '" value="' . htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') . '">'
+            . '<input type="hidden" name="request_type" value="upload">'
+            . '<input type="hidden" name="mode" value="test">'
+            . '<div class="form-group"><label>Select file</label><input type="file" name="file" class="form-control" /></div>'
+            . '<div class="form-group"><button type="submit" class="btn btn-primary">Upload (via /firewall/index)</button></div>'
+            . '</form>'
+            . '<div class="help-block">This posts to <code>/firewall/index</code> with <code>request_type=upload</code> and <code>mode=test</code>. The file is saved into <code>@upload/test/&lt;username&gt;/</code>.</div>'
             . '</div></div>';
 
-        $js = <<<JS
-(function(){
-  var btn = $('#fw-test-upload-btn');
-  var fileInput = $('#fw-test-file');
-  var requestTypeInput = $('#fw-test-request-type');
-  var out = $('#fw-test-result');
-
-  function setOut(text){
-    out.text(text);
-  }
-
-  btn.on('click', function(e){
-    e.preventDefault();
-    var file = fileInput[0] && fileInput[0].files ? fileInput[0].files[0] : null;
-    if(!file){
-      setOut('No file selected');
-      return;
-    }
-
-    var fd = new FormData();
-    fd.append('{$csrfParam}', '{$csrfToken}');
-    fd.append('request_type', requestTypeInput.val() || 'postgrad_status_csv');
-    fd.append('file', file);
-
-    btn.prop('disabled', true);
-    setOut('Uploading...');
-
-    $.ajax({
-      url: '{$uploadUrl}',
-      type: 'POST',
-      data: fd,
-      processData: false,
-      contentType: false,
-      dataType: 'text'
-    }).done(function(res){
-      setOut(res);
-    }).fail(function(xhr, textStatus, errorThrown){
-      var detail = '';
-      try { detail = (xhr && xhr.responseText) ? String(xhr.responseText) : ''; } catch(e) { detail = ''; }
-      setOut('FAILED (' + (xhr ? xhr.status : '') + ') ' + textStatus + '\n' + detail);
-    }).always(function(){
-      btn.prop('disabled', false);
-    });
-  });
-})();
-JS;
-
-        $this->view->registerJs($js);
         return $this->renderContent($html);
     }
 }

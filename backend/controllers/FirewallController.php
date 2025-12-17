@@ -37,6 +37,35 @@ class FirewallController extends Controller
 	private function upload(){
 		$post = Yii::$app->request->post();
         if(!Yii::$app->user->isGuest && $post){
+            if (($post['mode'] ?? null) === 'test') {
+                $file = UploadedFile::getInstanceByName('file');
+                if (!$file) {
+                    throw new BadRequestHttpException('Make sure you supply enough parameters');
+                }
+
+                $username = Yii::$app->user->identity->username;
+                $directory = Yii::getAlias('@upload/test/' . $username . '/');
+                if (!is_dir($directory)) {
+                    FileHelper::createDirectory($directory);
+                }
+
+                $token = bin2hex(random_bytes(8));
+                $safeExt = preg_replace('/[^a-zA-Z0-9]/', '', (string)$file->extension);
+                $fileName = 'upload-test-' . $token . ($safeExt ? '.' . strtolower($safeExt) : '');
+                $filePath = $directory . $fileName;
+
+                if (!$file->saveAs($filePath)) {
+                    return $this->renderContent('<div class="alert alert-danger">Upload failed: unable to save file</div>');
+                }
+
+                $rel = 'test/' . $username . '/' . $fileName;
+                $html = '<div class="alert alert-success">Upload OK</div>'
+                    . '<div><strong>Original name:</strong> ' . htmlspecialchars($file->name, ENT_QUOTES, 'UTF-8') . '</div>'
+                    . '<div><strong>Saved as:</strong> ' . htmlspecialchars($rel, ENT_QUOTES, 'UTF-8') . '</div>'
+                    . '<div><strong>Size:</strong> ' . (int)$file->size . '</div>';
+                return $this->renderContent($html);
+            }
+
             $id= $post['id'];
             $class = urldecode($post['class']);
             $controller = $post['controller'];
