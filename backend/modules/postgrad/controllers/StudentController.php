@@ -193,10 +193,10 @@ class StudentController extends Controller
                 // Total active students by nationality
                 'cnt' => 'COUNT(*)',
                 // Split by (Research/Coursework) x (PhD/Master) (case-insensitive)
-                'research_phd_cnt' => "SUM(CASE WHEN LOWER(TRIM(s.study_mode_rc)) LIKE '%research%' AND p.pro_level = 4 THEN 1 ELSE 0 END)",
-                'research_master_cnt' => "SUM(CASE WHEN LOWER(TRIM(s.study_mode_rc)) LIKE '%research%' AND p.pro_level = 3 THEN 1 ELSE 0 END)",
-                'coursework_phd_cnt' => "SUM(CASE WHEN LOWER(TRIM(s.study_mode_rc)) LIKE '%course%' AND p.pro_level = 4 THEN 1 ELSE 0 END)",
-                'coursework_master_cnt' => "SUM(CASE WHEN LOWER(TRIM(s.study_mode_rc)) LIKE '%course%' AND p.pro_level = 3 THEN 1 ELSE 0 END)",
+                'research_phd_cnt' => "SUM(CASE WHEN s.study_mode_rc = 'research' AND p.pro_level = 4 THEN 1 ELSE 0 END)",
+                'research_master_cnt' => "SUM(CASE WHEN s.study_mode_rc = 'research' AND p.pro_level = 3 THEN 1 ELSE 0 END)",
+                'coursework_phd_cnt' => "SUM(CASE WHEN s.study_mode_rc = 'coursework' AND p.pro_level = 4 THEN 1 ELSE 0 END)",
+                'coursework_master_cnt' => "SUM(CASE WHEN s.study_mode_rc = 'coursework' AND p.pro_level = 3 THEN 1 ELSE 0 END)",
             ])
             ->from(['s' => Student::tableName()])
             ->leftJoin(['p' => Program::tableName()], 'p.id = s.program_id')
