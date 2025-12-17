@@ -11,7 +11,7 @@ use backend\modules\postgrad\models\Student;
 /* @var $searchModel backend\modules\postgrad\models\StudentPostGradSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = $title;
+$this->title = isset($title) ? $title : 'Postgraduate Students';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="student-post-grad-index">
@@ -50,14 +50,16 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                 'attribute' => 'name',
-                'label' => 'Name',
+                'label' => 'Student',
                 'format' => 'html',
                 'value' => function($model){
-                   return Html::a(strtoupper($model->user->fullname),['view', 'id' => $model->id]);
+                   $name = strtoupper($model->user->fullname);
+                   $matric = $model->matric_no;
+                   $nric = $model->nric;
+                   $line2 = trim($matric . ' | ' . $nric, " | ");
+                   return Html::a($name, ['view', 'id' => $model->id]) . '<br />' . Html::encode($line2);
                 }
             ],
-            'matric_no',
-            'nric',
             [
                 'attribute' => 'program_id',
                 'label' => 'Program',
@@ -82,17 +84,52 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
-                'attribute' => 'status',
-                'label' => 'Status',
-                'format' => 'raw',
-                'filter' => Html::activeDropDownList($searchModel, 'status', $searchModel->statusList(),['class'=> 'form-control','prompt' => 'Choose']),
+                'attribute' => 'study_mode_rc',
+                'label' => 'Mode',
+                'format' => 'text',
+                'filter' => Html::activeDropDownList(
+                    $searchModel,
+                    'study_mode_rc',
+                    ['research' => 'Research', 'coursework' => 'Coursework'],
+                    ['class'=> 'form-control','prompt' => 'Choose']
+                ),
                 'value' => function($model){
-                   return $model->statusLabel;
+                   return $model->studyModeRcText;
+                }
+            ],
+
+            [
+                'attribute' => 'status_daftar',
+                'label' => 'Status Daftar',
+                'format' => 'text',
+                'filter' => Html::activeDropDownList(
+                    $searchModel,
+                    'status_daftar',
+                    $searchModel->statusDaftarList(),
+                    ['class'=> 'form-control','prompt' => 'Choose']
+                ),
+                'value' => function($model){
+                   return $model->statusDaftarText;
+                }
+            ],
+
+            [
+                'attribute' => 'status_aktif',
+                'label' => 'Status Aktif',
+                'format' => 'text',
+                'filter' => Html::activeDropDownList(
+                    $searchModel,
+                    'status_aktif',
+                    $searchModel->statusAktifList(),
+                    ['class'=> 'form-control','prompt' => 'Choose']
+                ),
+                'value' => function($model){
+                   return $model->statusAktifText;
                 }
             ],
             
             ['class' => 'yii\grid\ActionColumn',
-                'template' => '{view} {update}',
+                'template' => '{view}',
                 //'visible' => false,
                 'buttons'=>[
                     'update'=>function ($url, $model) {

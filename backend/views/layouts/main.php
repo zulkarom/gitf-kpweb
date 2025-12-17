@@ -18,6 +18,7 @@ use yii\helpers\Html;
         <meta charset="<?= Yii::$app->charset ?>"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <?= Html::csrfMetaTags() ?>
+        <link rel="icon" type="image/png" href="<?= Yii::getAlias('@web/images/favicon.png') ?>">
         <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
         <style>
@@ -47,11 +48,11 @@ use yii\helpers\Html;
             /* Professional header + sidebar refinements */
             /* Header color customization with gradient */
             .skin-blue .main-header .logo {
-                background: linear-gradient(135deg, #1f3a64 0%, #2d64a8 50%, #2e6fbf 100%);
+                background: linear-gradient(135deg, #0b1220 0%, #111f3a 50%, #17355d 100%);
                 color:#fff;
             }
             .skin-blue .main-header .logo:hover {
-                background: linear-gradient(135deg, #24406f 0%, #2f6db2 60%, #3a82d1 100%);
+                background: linear-gradient(135deg, #0f172a 0%, #14284a 60%, #1b416f 100%);
             }
             .skin-blue .main-header .navbar {
                 background: linear-gradient(135deg, #24406f 0%, #2a5d9a 60%, #2f73c4 100%);

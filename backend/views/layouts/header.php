@@ -8,7 +8,11 @@ use yii\helpers\Url;
 
 <header class="main-header">
 
-    <?= Html::a('<span class="logo-lg"><b>FKP</b> PORTAL</span>', Yii::$app->homeUrl, ['class' => 'logo']) ?>
+    <?= Html::a(
+        Html::img(Url::to('@web/images/logo-fkp-portal-horizontal.png'), ['alt' => 'FKP PORTAL', 'style' => 'max-height:35px;width:auto;']),
+        Yii::$app->homeUrl,
+        ['class' => 'logo']
+    ) ?>
 
     <nav class="navbar navbar-static-top" role="navigation">
 

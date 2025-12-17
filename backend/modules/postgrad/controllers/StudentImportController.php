@@ -641,5 +641,42 @@ function normalizeName($nama_input) {
     return implode(" ", $limited);
 }
 
+public function actionUpdateStatusDaftar()
+{
+    $list = StudentData::find()->all();
+    $updated = 0;
+    $errors = [];
+
+    foreach ($list as $src) {
+        $matric = trim((string)$src->NO_MATRIK);
+        if ($matric === '') {
+            continue;
+        }
+
+        $student = Student::find()->where(['matric_no' => $matric])->one();
+        if (!$student) {
+            continue;
+        }
+
+        $statusDaftar = $this->mapStatusDaftar($src);
+        if ($statusDaftar !== null) {
+            $student->status_daftar = $statusDaftar;
+            if ($student->save(false)) {
+                $updated++;
+            } else {
+                $errors[] = "Failed to update status_daftar for matric: {$matric}";
+            }
+        }
+    }
+
+    Yii::$app->session->setFlash('success', "Updated status_daftar for {$updated} students.");
+    if (!empty($errors)) {
+        Yii::$app->session->setFlash('error', implode('<br>', $errors));
+    }
+
+    return $this->redirect(['index']);
+}
+
+
 
 }

@@ -88,37 +88,53 @@ $this->params['breadcrumbs'][] = $this->title;
                     <table class="table table-striped table-bordered">
                         <thead>
                             <tr>
-                                <th>Negara</th>
-                                <th>Research</th>
-                                <th>Coursework</th>
-                                <th>Jumlah</th>
+                                <th rowspan="2">Negara</th>
+                                <th colspan="2">Research</th>
+                                <th colspan="2">Coursework</th>
+                                <th rowspan="2">Jumlah</th>
+                            </tr>
+                            <tr>
+                                <th>PhD</th>
+                                <th>Master</th>
+                                <th>PhD</th>
+                                <th>Master</th>
                             </tr>
                         </thead>
                         <tbody>
                         <?php
-                        $sumResearch = 0; $sumCoursework = 0; $sumTotal = 0;
+                        $sumResearchPhd = 0; $sumResearchMaster = 0;
+                        $sumCourseworkPhd = 0; $sumCourseworkMaster = 0;
+                        $sumTotal = 0;
                         foreach ($byCountryRows as $r) {
                             $id = (int)($r['nationality'] ?? 0);
                             if (!$id) { continue; }
                             $name = isset($countries[$id]) ? $countries[$id]->country_name : ('ID ' . $id);
-                            $research = isset($r['research_cnt']) ? (int)$r['research_cnt'] : 0;
-                            $coursework = isset($r['coursework_cnt']) ? (int)$r['coursework_cnt'] : 0;
-                            $total = isset($r['cnt']) ? (int)$r['cnt'] : ($research + $coursework);
-                            $sumResearch += $research;
-                            $sumCoursework += $coursework;
+                            $researchPhd = isset($r['research_phd_cnt']) ? (int)$r['research_phd_cnt'] : 0;
+                            $researchMaster = isset($r['research_master_cnt']) ? (int)$r['research_master_cnt'] : 0;
+                            $courseworkPhd = isset($r['coursework_phd_cnt']) ? (int)$r['coursework_phd_cnt'] : 0;
+                            $courseworkMaster = isset($r['coursework_master_cnt']) ? (int)$r['coursework_master_cnt'] : 0;
+                            $total = isset($r['cnt']) ? (int)$r['cnt'] : ($researchPhd + $researchMaster + $courseworkPhd + $courseworkMaster);
+                            $sumResearchPhd += $researchPhd;
+                            $sumResearchMaster += $researchMaster;
+                            $sumCourseworkPhd += $courseworkPhd;
+                            $sumCourseworkMaster += $courseworkMaster;
                             $sumTotal += $total;
                         ?>
                             <tr>
                                 <td><?= Html::encode($name) ?></td>
-                                <td><?= Html::a((string)$research, ['research', 'StudentPostGradSearch[nationality]' => $id]) ?></td>
-                                <td><?= Html::a((string)$coursework, ['coursework', 'StudentPostGradSearch[nationality]' => $id]) ?></td>
+                                <td><?= Html::a((string)$researchPhd, ['research', 'StudentPostGradSearch[nationality]' => $id, 'StudentPostGradSearch[pro_level]' => 4]) ?></td>
+                                <td><?= Html::a((string)$researchMaster, ['research', 'StudentPostGradSearch[nationality]' => $id, 'StudentPostGradSearch[pro_level]' => 3]) ?></td>
+                                <td><?= Html::a((string)$courseworkPhd, ['coursework', 'StudentPostGradSearch[nationality]' => $id, 'StudentPostGradSearch[pro_level]' => 4]) ?></td>
+                                <td><?= Html::a((string)$courseworkMaster, ['coursework', 'StudentPostGradSearch[nationality]' => $id, 'StudentPostGradSearch[pro_level]' => 3]) ?></td>
                                 <td><?= $total ?></td>
                             </tr>
                         <?php } ?>
                         <tr>
                             <th>Grand Total</th>
-                            <th><?= (int)$sumResearch ?></th>
-                            <th><?= (int)$sumCoursework ?></th>
+                            <th><?= (int)$sumResearchPhd ?></th>
+                            <th><?= (int)$sumResearchMaster ?></th>
+                            <th><?= (int)$sumCourseworkPhd ?></th>
+                            <th><?= (int)$sumCourseworkMaster ?></th>
                             <th><?= (int)$sumTotal ?></th>
                         </tr>
                         </tbody>
@@ -129,26 +145,44 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <div class="col-md-6">
             <div class="box box-default">
-                <div class="box-header with-border"><h3 class="box-title">Pecahan Pelajar Mengikut Bidang Pengajian</h3></div>
+                <div class="box-header with-border"><h3 class="box-title">Pecahan Pelajar Mengikut Bidang Pengajian (Research)</h3></div>
                 <div class="box-body">
                     <table class="table table-striped table-bordered">
                         <thead>
                             <tr>
                                 <th>Bidang Pengajian</th>
-                                <th>Bilangan</th>
+                                <th>PhD</th>
+                                <th>Master</th>
+                                <th>Jumlah</th>
                             </tr>
                         </thead>
                         <tbody>
-                        <?php foreach ($byFieldRows as $r) {
+                        <?php
+                        $sumPhd = 0; $sumMaster = 0; $sumTotal = 0;
+                        foreach ($byFieldRows as $r) {
                             $id = (int)($r['field_id'] ?? 0);
                             if (!$id) { continue; }
                             $name = isset($fields[$id]) ? $fields[$id]->field_name : ('ID ' . $id);
+                            $phd = isset($r['phd_cnt']) ? (int)$r['phd_cnt'] : 0;
+                            $master = isset($r['master_cnt']) ? (int)$r['master_cnt'] : 0;
+                            $total = isset($r['cnt']) ? (int)$r['cnt'] : ($phd + $master);
+                            $sumPhd += $phd;
+                            $sumMaster += $master;
+                            $sumTotal += $total;
                         ?>
                             <tr>
                                 <td><?= Html::encode($name) ?></td>
-                                <td><?= (int)$r['cnt'] ?></td>
+                                <td><?= Html::a((string)$phd, ['research', 'StudentPostGradSearch[field_id]' => $id, 'StudentPostGradSearch[pro_level]' => 4, 'StudentPostGradSearch[status_aktif]' => \backend\modules\postgrad\models\Student::STATUS_AKTIF_AKTIF]) ?></td>
+                                <td><?= Html::a((string)$master, ['research', 'StudentPostGradSearch[field_id]' => $id, 'StudentPostGradSearch[pro_level]' => 3, 'StudentPostGradSearch[status_aktif]' => \backend\modules\postgrad\models\Student::STATUS_AKTIF_AKTIF]) ?></td>
+                                <td><?= $total ?></td>
                             </tr>
                         <?php } ?>
+                        <tr>
+                            <th>Grand Total</th>
+                            <th><?= (int)$sumPhd ?></th>
+                            <th><?= (int)$sumMaster ?></th>
+                            <th><?= (int)$sumTotal ?></th>
+                        </tr>
                         </tbody>
                     </table>
                 </div>

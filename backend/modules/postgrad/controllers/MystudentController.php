@@ -144,7 +144,7 @@ class MystudentController extends Controller
             ->innerJoin(['ss' => $svTable], 'ss.student_id = s.id')
             ->where([
                 'ss.supervisor_id' => $supervisor->id,
-                's.status' => Student::STATUS_ACTIVE,
+                's.status_aktif' => Student::STATUS_AKTIF_AKTIF,
             ])
             ->count('*');
 
@@ -154,7 +154,7 @@ class MystudentController extends Controller
             ->innerJoin(['ss' => $svTable], 'ss.student_id = s.id')
             ->where([
                 'ss.supervisor_id' => $supervisor->id,
-                's.status' => Student::STATUS_ACTIVE,
+                's.status_aktif' => Student::STATUS_AKTIF_AKTIF,
             ])
             ->groupBy(['s.study_mode'])
             ->all();
@@ -173,7 +173,7 @@ class MystudentController extends Controller
             ->leftJoin(['p' => Program::tableName()], 'p.id = s.program_id')
             ->where([
                 'ss.supervisor_id' => $supervisor->id,
-                's.status' => Student::STATUS_ACTIVE,
+                's.status_aktif' => Student::STATUS_AKTIF_AKTIF,
                 'p.pro_level' => [3, 4],
             ])
             ->groupBy(['p.pro_level'])
@@ -189,7 +189,7 @@ class MystudentController extends Controller
             ->innerJoin(['ss' => $svTable], 'ss.student_id = s.id')
             ->where([
                 'ss.supervisor_id' => $supervisor->id,
-                's.status' => Student::STATUS_ACTIVE,
+                's.status_aktif' => Student::STATUS_AKTIF_AKTIF,
             ])
             ->andWhere(['not', ['s.admission_year' => null]])
             ->groupBy(['s.admission_year'])
@@ -208,7 +208,7 @@ class MystudentController extends Controller
             ->innerJoin(['ss' => $svTable], 'ss.student_id = s.id')
             ->where([
                 'ss.supervisor_id' => $supervisor->id,
-                's.status' => Student::STATUS_ACTIVE,
+                's.status_aktif' => Student::STATUS_AKTIF_AKTIF,
             ])
             ->groupBy(['s.nationality'])
             ->all();
@@ -220,12 +220,15 @@ class MystudentController extends Controller
         }
 
         $byFieldRows = (new \yii\db\Query())
-            ->select(['s.field_id', 'cnt' => 'COUNT(*)'])
+            ->select([
+                's.field_id',
+                'cnt' => 'COUNT(*)',
+            ])
             ->from(['s' => $studentTable])
             ->innerJoin(['ss' => $svTable], 'ss.student_id = s.id')
             ->where([
                 'ss.supervisor_id' => $supervisor->id,
-                's.status' => Student::STATUS_ACTIVE,
+                's.status_aktif' => Student::STATUS_AKTIF_AKTIF,
             ])
             ->groupBy(['s.field_id'])
             ->all();
@@ -242,7 +245,7 @@ class MystudentController extends Controller
             ->innerJoin(['ss' => $svTable], 'ss.student_id = s.id')
             ->where([
                 'ss.supervisor_id' => $supervisor->id,
-                's.status' => Student::STATUS_ACTIVE,
+                's.status_aktif' => Student::STATUS_AKTIF_AKTIF,
             ])
             ->andWhere(['s.study_mode_rc' => ['research', 'coursework']])
             ->groupBy(['s.study_mode_rc'])
@@ -258,7 +261,7 @@ class MystudentController extends Controller
             ->innerJoin(['ss' => $svTable], 'ss.student_id = s.id')
             ->where([
                 'ss.supervisor_id' => $supervisor->id,
-                's.status' => Student::STATUS_ACTIVE,
+                's.status_aktif' => Student::STATUS_AKTIF_AKTIF,
                 's.nationality' => 158,
             ])
             ->count('*');
@@ -271,7 +274,7 @@ class MystudentController extends Controller
             ->leftJoin(['p' => Program::tableName()], 'p.id = s.program_id')
             ->where([
                 'ss.supervisor_id' => $supervisor->id,
-                's.status' => Student::STATUS_ACTIVE,
+                's.status_aktif' => Student::STATUS_AKTIF_AKTIF,
                 'p.pro_level' => 3,
             ])
             ->andWhere(['s.study_mode_rc' => ['research', 'coursework']])
@@ -290,7 +293,7 @@ class MystudentController extends Controller
             ->leftJoin(['p' => Program::tableName()], 'p.id = s.program_id')
             ->where([
                 'ss.supervisor_id' => $supervisor->id,
-                's.status' => Student::STATUS_ACTIVE,
+                's.status_aktif' => Student::STATUS_AKTIF_AKTIF,
                 'p.pro_level' => 4,
             ])
             ->groupBy(['s.study_mode'])

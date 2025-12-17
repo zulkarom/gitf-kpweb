@@ -42,6 +42,8 @@ use yii\helpers\ArrayHelper;
  * @property int $current_sem
  * @property int $campus_id
  * @property int $status
+ * @property int $status_daftar
+ * @property int $status_aktif
  */
 class Student extends \yii\db\ActiveRecord
 {
@@ -55,6 +57,27 @@ class Student extends \yii\db\ActiveRecord
     const STATUS_WITHDRAWN = 30;
     const STATUS_TERMINATED = 40;
     const STATUS_GRADUATED = 100;
+
+    //---STATUS DAFTAR----\\
+    const STATUS_DAFTAR_DAFTAR = 10;
+    const STATUS_DAFTAR_TANGGUH = 11;
+    
+    const STATUS_DAFTAR_TESIS = 90;
+    const STATUS_DAFTAR_LAYAK_BERGRADUAT = 99;
+    const STATUS_DAFTAR_GRADUAT = 100;
+
+    const STATUS_DAFTAR_DITAWARKAN = 1;
+    const STATUS_DAFTAR_TIDAK_DAFTAR = 3;
+    const STATUS_DAFTAR_TARIK_DIRI = 4;
+    const STATUS_DAFTAR_DIBERHENTIKAN = 6;
+    const STATUS_DAFTAR_MENINGGAL_DUNIA = 8;
+    const STATUS_DAFTAR_NOS = 9;
+    const STATUS_DAFTAR_NA = null;
+
+    //---STATUS AKTIF----\\
+    const STATUS_AKTIF_TIDAK_AKTIF = 0;
+    const STATUS_AKTIF_AKTIF = 1;
+    const STATUS_AKTIF_NA = null;
 
     /**
      * {@inheritdoc}
@@ -103,6 +126,7 @@ class Student extends \yii\db\ActiveRecord
             [['phone_no'], 'string', 'max' => 50],
             
             [['bachelor_year', 'admission_year', 'master_year'], 'string', 'max' => 4],
+            [['status_daftar', 'status_aktif'], 'integer'],
         ];
     }
 
@@ -150,7 +174,9 @@ class Student extends \yii\db\ActiveRecord
             'field.field_name' => 'Bidang Pengajian',
             'related_university_id' => 'Institusi Berkaitan',
             'relatedUniversity.uni_name' => 'Institusi Berkaitan',
-            'outstanding_fee' => 'Hutang Tertunggak'
+            'outstanding_fee' => 'Hutang Tertunggak',
+            'status_daftar' => 'Status Daftar',
+            'status_aktif' => 'Status Aktif'
          ];
     }
     
@@ -165,11 +191,123 @@ class Student extends \yii\db\ActiveRecord
         ];
     }
 
+    public function statusDaftarList(){
+        return [
+            '' => 'N/A',
+            self::STATUS_DAFTAR_DITAWARKAN => 'Ditawarkan',
+            self::STATUS_DAFTAR_DAFTAR => 'Daftar',
+            self::STATUS_DAFTAR_TIDAK_DAFTAR => 'Tidak daftar',
+            self::STATUS_DAFTAR_TANGGUH => 'Tangguh',
+            self::STATUS_DAFTAR_TARIK_DIRI => 'Tarik Diri',
+            self::STATUS_DAFTAR_TESIS => 'Tesis',
+            self::STATUS_DAFTAR_LAYAK_BERGRADUAT => 'Layak Bergraduat',
+            self::STATUS_DAFTAR_GRADUAT => 'Graduat',
+            self::STATUS_DAFTAR_DIBERHENTIKAN => 'Diberhentikan',
+            self::STATUS_DAFTAR_MENINGGAL_DUNIA => 'Meninggal Dunia',
+            self::STATUS_DAFTAR_NOS => 'NOS',
+        ];
+    }
+
+    public function getStatusDaftarText(){
+        if($this->status_daftar === null){
+            return 'N/A';
+        }
+        $list = $this->statusDaftarList();
+        return array_key_exists($this->status_daftar, $list) ? $list[$this->status_daftar] : '';
+    }
+
+    public function statusAktifList(){
+        return [
+            '' => 'N/A',
+            self::STATUS_AKTIF_AKTIF => 'Aktif',
+            self::STATUS_AKTIF_TIDAK_AKTIF => 'Tidak Aktif',
+        ];
+    }
+
+    public function getStatusAktifText(){
+        if($this->status_aktif === null){
+            return 'N/A';
+        }
+        $list = $this->statusAktifList();
+        return array_key_exists($this->status_aktif, $list) ? $list[$this->status_aktif] : '';
+    }
+
+    public static function mapStatusDaftarFromText($text)
+    {
+        $t = trim((string)$text);
+        if ($t === '') {
+            return null;
+        }
+        $t = mb_strtolower($t);
+        $t = preg_replace('/\s+/', ' ', $t);
+        $t = str_replace(['_', '-'], ' ', $t);
+        $t = trim($t);
+        if ($t === 'n/a' || $t === 'na') {
+            return null;
+        }
+
+        $map = [
+            'ditawarkan' => self::STATUS_DAFTAR_DITAWARKAN,
+            'daftar' => self::STATUS_DAFTAR_DAFTAR,
+            'tidak daftar' => self::STATUS_DAFTAR_TIDAK_DAFTAR,
+            'tangguh' => self::STATUS_DAFTAR_TANGGUH,
+            'tarik diri' => self::STATUS_DAFTAR_TARIK_DIRI,
+            'tesis' => self::STATUS_DAFTAR_TESIS,
+            'layak bergraduat' => self::STATUS_DAFTAR_LAYAK_BERGRADUAT,
+            'graduat' => self::STATUS_DAFTAR_GRADUAT,
+            'diberhentikan' => self::STATUS_DAFTAR_DIBERHENTIKAN,
+            'meninggal dunia' => self::STATUS_DAFTAR_MENINGGAL_DUNIA,
+            'nos' => self::STATUS_DAFTAR_NOS,
+        ];
+
+        if (array_key_exists($t, $map)) {
+            return $map[$t];
+        }
+
+        if (is_numeric($t)) {
+            return (int)$t;
+        }
+
+        return false;
+    }
+
+    public static function mapStatusAktifFromText($text)
+    {
+        $t = trim((string)$text);
+        if ($t === '') {
+            return null;
+        }
+        $t = mb_strtolower($t);
+        $t = preg_replace('/\s+/', ' ', $t);
+        $t = str_replace(['_', '-'], ' ', $t);
+        $t = trim($t);
+        if ($t === 'n/a' || $t === 'na') {
+            return null;
+        }
+
+        $map = [
+            'aktif' => self::STATUS_AKTIF_AKTIF,
+            'tidak aktif' => self::STATUS_AKTIF_TIDAK_AKTIF,
+            'tak aktif' => self::STATUS_AKTIF_TIDAK_AKTIF,
+            'inactive' => self::STATUS_AKTIF_TIDAK_AKTIF,
+            'active' => self::STATUS_AKTIF_AKTIF,
+        ];
+
+        if (array_key_exists($t, $map)) {
+            return $map[$t];
+        }
+
+        if (is_numeric($t)) {
+            return (int)$t;
+        }
+
+        return false;
+    }
+
     public static function getStatusColor(){
 	    return [self::STATUS_NOT_ACTIVE => 'danger', self::STATUS_ACTIVE => 'primary', self::STATUS_DEFERRED => 'warning', self::STATUS_WITHDRAWN => 'info', self::STATUS_TERMINATED => 'warning', self::STATUS_GRADUATED => 'success'];
 	}
 
-    
     public function getStatusText(){
         if($this->status >= 0){
             if (array_key_exists($this->status, $this->statusList())) {

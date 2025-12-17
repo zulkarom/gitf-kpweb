@@ -308,33 +308,41 @@ class Menu
                     ]
                 ],
                 [
-                    'label' => 'Student List',
+                    'label' => 'Students List',
                     'icon' => 'user',
-                    'url' => '#',
-                    'items' => [
-                        [
-                            'label' => 'Students (Research)',
-                            'icon' => 'user',
-                            'url' => [
-                                '/postgrad/student/research'
-                            ]
-                        ],
-                        [
-                            'label' => 'Students (Coursework)',
-                            'icon' => 'user',
-                            'url' => [
-                                '/postgrad/student/coursework'
-                            ]
-                        ],
-                        [
-                            'label' => 'Not Active',
-                            'icon' => 'user',
-                            'url' => [
-                                '/postgrad/student/inactive'
-                            ]
-                        ]
+                    'url' => [
+                        '/postgrad/student/index'
                     ]
                 ],
+               
+                // [
+                //     'label' => 'Student List',
+                //     'icon' => 'user',
+                //     'url' => '#',
+                //     'items' => [
+                //         [
+                //             'label' => 'Students (Research)',
+                //             'icon' => 'user',
+                //             'url' => [
+                //                 '/postgrad/student/research'
+                //             ]
+                //         ],
+                //         [
+                //             'label' => 'Students (Coursework)',
+                //             'icon' => 'user',
+                //             'url' => [
+                //                 '/postgrad/student/coursework'
+                //             ]
+                //         ],
+                //         [
+                //             'label' => 'Not Active',
+                //             'icon' => 'user',
+                //             'url' => [
+                //                 '/postgrad/student/inactive'
+                //             ]
+                //         ]
+                //     ]
+                // ],
                
                 [
                     'label' => 'Supervisors',
@@ -363,6 +371,13 @@ class Menu
                     'icon' => 'cog',
                     'url' => '#',
                     'items' => [
+                         [
+                            'label' => 'Update Student Status',
+                            'icon' => 'upload',
+                            'url' => [
+                                '/postgrad/student-status/index'
+                            ]
+                        ],
                         [
                             'label' => 'Mark Entry Deadline',
                             'icon' => 'calendar',

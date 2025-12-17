@@ -16,6 +16,7 @@ $dirAsset = Yii::getAlias('@web');
     <meta charset="<?= Yii::$app->charset ?>"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
+    <link rel="icon" type="image/png" href="<?= Yii::getAlias('@web/images/favicon.png') ?>">
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 
@@ -58,7 +59,8 @@ $dirAsset = Yii::getAlias('@web');
   <div class="auth-left">
     <div class="login-card">
       <div class="login-logo" style="font-family:verdana">
-        <b>FKP PORTAL</b><br /><span style="font-size:22px">STAFF LOGIN</span>
+        <?= Html::img($dirAsset . '/images/logo-fkp-portal.png', ['alt' => 'FKP Portal', 'style' => 'max-width:160px;height:auto;margin-bottom:6px;']) ?><br />
+        <span style="font-size:22px"><b>STAFF LOGIN</b></span>
       </div>
       <?= Alert::widget() ?>
       <?= $content ?>

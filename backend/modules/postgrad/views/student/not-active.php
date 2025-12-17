@@ -47,6 +47,20 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
+                'attribute' => 'study_mode_rc',
+                'label' => 'Mode',
+                'format' => 'text',
+                'filter' => Html::activeDropDownList(
+                    $searchModel,
+                    'study_mode_rc',
+                    ['research' => 'Research', 'coursework' => 'Coursework'],
+                    ['class'=> 'form-control','prompt' => 'Choose']
+                ),
+                'value' => function($model){
+                   return $model->studyModeRcText;
+                }
+            ],
+            [
                 'attribute' => 'status',
                 'label' => 'Status',
                 'format' => 'raw',

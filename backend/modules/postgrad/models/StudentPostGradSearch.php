@@ -12,13 +12,14 @@ class StudentPostGradSearch extends Student
 {
     public $name;
     public $study_mode_rc;
+    public $pro_level;
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id', 'gender', 'status', 'nationality'], 'integer'],
+            [['id', 'gender', 'status', 'nationality', 'field_id', 'pro_level', 'status_daftar', 'status_aktif'], 'integer'],
             [['matric_no', 'nric', 'program_id', 'name', 'study_mode_rc'], 'safe'],
         ];
     }
@@ -42,7 +43,12 @@ class StudentPostGradSearch extends Student
     public function search($params)
     {
         $query = Student::find()->alias('a')
-        ->joinWith('user')->orderBy('a.id DESC');
+        ->joinWith([
+            'user',
+            'program' => function($q) {
+                $q->alias('program');
+            }
+        ])->orderBy('a.id DESC');
 
         // add conditions that should always apply here
 
@@ -66,11 +72,25 @@ class StudentPostGradSearch extends Student
             'program_id' => $this->program_id,
             'a.status' => $this->status,
             'a.nationality' => $this->nationality,
+            'a.field_id' => $this->field_id,
+            'a.status_daftar' => $this->status_daftar,
+            'a.status_aktif' => $this->status_aktif,
+        ]);
+
+        $query->andFilterWhere([
+            'program.pro_level' => $this->pro_level,
         ]);
 
         $query->andFilterWhere(['like', 'matric_no', $this->matric_no])
-            ->andFilterWhere(['like', 'nric', $this->nric])
-            ->andFilterWhere(['like', 'user.fullname', $this->name]);
+            ->andFilterWhere(['like', 'nric', $this->nric]);
+
+        if ($this->name) {
+            $query->andFilterWhere(['or',
+                ['like', 'user.fullname', $this->name],
+                ['like', 'a.matric_no', $this->name],
+                ['like', 'a.nric', $this->name],
+            ]);
+        }
 
         // study mode (research/coursework)
         $query->andFilterWhere(['a.study_mode_rc' => $this->study_mode_rc]);
