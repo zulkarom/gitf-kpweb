@@ -146,6 +146,23 @@ class StudentController extends Controller
         // Overall active count
         $activeCount = (int) Student::find()->where(['status_aktif' => Student::STATUS_AKTIF_AKTIF])->count();
 
+        // Breakdown by status_daftar (active only)
+        $statusDaftarRows = (new \yii\db\Query())
+            ->select(['status_daftar', 'cnt' => 'COUNT(*)'])
+            ->from(Student::tableName())
+            ->where(['status_aktif' => Student::STATUS_AKTIF_AKTIF])
+            ->groupBy(['status_daftar'])
+            ->orderBy(['cnt' => SORT_DESC])
+            ->all();
+
+        // Breakdown by status_aktif (overall)
+        $statusAktifRows = (new \yii\db\Query())
+            ->select(['status_aktif', 'cnt' => 'COUNT(*)'])
+            ->from(Student::tableName())
+            ->groupBy(['status_aktif'])
+            ->orderBy(['cnt' => SORT_DESC])
+            ->all();
+
         // Study mode breakdown (1: Full-time, 2: Part-time)
         $modeRows = (new \yii\db\Query())
             ->select(['study_mode', 'cnt' => 'COUNT(*)'])
@@ -299,6 +316,8 @@ class StudentController extends Controller
             'internationalCount' => $internationalCount,
             'masterRc' => $masterRc,
             'phdModes' => $phdModes,
+            'statusDaftarRows' => $statusDaftarRows,
+            'statusAktifRows' => $statusAktifRows,
         ]);
     }
 

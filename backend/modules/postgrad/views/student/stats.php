@@ -78,11 +78,82 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 
-   
-
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="box box-default">
+                <div class="box-header with-border"><h3 class="box-title">Pecahan Pelajar Mengikut Status Daftar (Aktif)</h3></div>
+                <div class="box-body">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Status Daftar</th>
+                                <th style="width:120px;">Bilangan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                        $rows = isset($statusDaftarRows) ? $statusDaftarRows : [];
+                        $sum = 0;
+                        foreach ($rows as $r) {
+                            $code = array_key_exists('status_daftar', $r) ? $r['status_daftar'] : null;
+                            $cnt = isset($r['cnt']) ? (int)$r['cnt'] : 0;
+                            $sum += $cnt;
+                            $tmp = new \backend\modules\postgrad\models\Student();
+                            $tmp->status_daftar = ($code === null || $code === '') ? null : (int)$code;
+                        ?>
+                            <tr>
+                                <td><?= $tmp->statusDaftarLabel ?></td>
+                                <td><?= Html::a((string)$cnt, ['index', 'StudentPostGradSearch[status_daftar]' => $tmp->status_daftar, 'StudentPostGradSearch[status_aktif]' => \backend\modules\postgrad\models\Student::STATUS_AKTIF_AKTIF]) ?></td>
+                            </tr>
+                        <?php } ?>
+                            <tr>
+                                <th>Grand Total</th>
+                                <th><?= (int)$sum ?></th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="box box-default">
+                <div class="box-header with-border"><h3 class="box-title">Pecahan Pelajar Mengikut Status Aktif</h3></div>
+                <div class="box-body">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Status Aktif</th>
+                                <th style="width:120px;">Bilangan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                        $rows2 = isset($statusAktifRows) ? $statusAktifRows : [];
+                        $sum2 = 0;
+                        foreach ($rows2 as $r) {
+                            $code2 = array_key_exists('status_aktif', $r) ? $r['status_aktif'] : null;
+                            $cnt2 = isset($r['cnt']) ? (int)$r['cnt'] : 0;
+                            $sum2 += $cnt2;
+                            $tmp2 = new \backend\modules\postgrad\models\Student();
+                            $tmp2->status_aktif = ($code2 === null || $code2 === '') ? null : (int)$code2;
+                        ?>
+                            <tr>
+                                <td><?= $tmp2->statusAktifLabel ?></td>
+                                <td><?= Html::a((string)$cnt2, ['index', 'StudentPostGradSearch[status_aktif]' => $tmp2->status_aktif]) ?></td>
+                            </tr>
+                        <?php } ?>
+                            <tr>
+                                <th>Grand Total</th>
+                                <th><?= (int)$sum2 ?></th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+
+         <div class="box box-default">
                 <div class="box-header with-border"><h3 class="box-title">Pecahan Pelajar Mengikut Negara</h3></div>
                 <div class="box-body">
                     <table class="table table-striped table-bordered">
@@ -141,10 +212,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     </table>
                 </div>
             </div>
-        </div>
 
-        <div class="col-md-6">
-            <div class="box box-default">
+             <div class="box box-default">
                 <div class="box-header with-border"><h3 class="box-title">Pecahan Pelajar Mengikut Bidang Pengajian (Research)</h3></div>
                 <div class="box-body">
                     <table class="table table-striped table-bordered">
@@ -187,6 +256,17 @@ $this->params['breadcrumbs'][] = $this->title;
                     </table>
                 </div>
             </div>
+            
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+           
+        </div>
+
+        <div class="col-md-6">
+           
         </div>
     </div>
 

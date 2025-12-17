@@ -101,7 +101,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'status_daftar',
                 'label' => 'Status Daftar',
-                'format' => 'text',
+                'format' => 'raw',
                 'filter' => Html::activeDropDownList(
                     $searchModel,
                     'status_daftar',
@@ -109,14 +109,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     ['class'=> 'form-control','prompt' => 'Choose']
                 ),
                 'value' => function($model){
-                   return $model->statusDaftarText;
+                   return $model->statusDaftarLabel;
                 }
             ],
 
             [
                 'attribute' => 'status_aktif',
                 'label' => 'Status Aktif',
-                'format' => 'text',
+                'format' => 'raw',
                 'filter' => Html::activeDropDownList(
                     $searchModel,
                     'status_aktif',
@@ -124,7 +124,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ['class'=> 'form-control','prompt' => 'Choose']
                 ),
                 'value' => function($model){
-                   return $model->statusAktifText;
+                   return $model->statusAktifLabel;
                 }
             ],
             

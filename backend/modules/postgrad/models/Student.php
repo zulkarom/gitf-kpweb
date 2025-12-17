@@ -11,6 +11,7 @@ use backend\models\Semester;
 use backend\modules\esiap\models\Program;
 use backend\models\University;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
 /**
  * This is the model class for table "student_pg".
  *
@@ -93,9 +94,9 @@ class Student extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'matric_no', 'program_id', 'status'], 'required' , 'on' => 'create'],
+            [['user_id', 'matric_no', 'program_id'], 'required' , 'on' => 'create'],
             
-            [['user_id', 'matric_no', 'program_id', 'status'], 'required' , 'on' => 'student_update'],
+            [['user_id', 'matric_no', 'program_id'], 'required' , 'on' => 'student_update'],
 
            // [['date_birth', 'gender', 'marital_status', 'nationality', 'citizenship', 'program_id', 'study_mode', 'address', 'city', 'phone_no', 'personal_email', 'religion', 'race', 'bachelor_name', 'bachelor_university', 'bachelor_cgpa', 'bachelor_year', 'admission_semester', 'admission_year', 'admission_date', 'sponsor', 'current_sem', 'campus_id', 'status'], 'required' , 'on' => 'student_update'],
 
@@ -121,7 +122,7 @@ class Student extends \yii\db\ActiveRecord
             
             [['outstanding_fee', 'bachelor_cgpa', 'master_cgpa'], 'number'],
             
-            [['program_id'], 'integer'],
+            [['program_id', 'status_daftar', 'status_aktif'], 'integer'],
             
             [['phone_no'], 'string', 'max' => 50],
             
@@ -230,6 +231,57 @@ class Student extends \yii\db\ActiveRecord
         }
         $list = $this->statusAktifList();
         return array_key_exists($this->status_aktif, $list) ? $list[$this->status_aktif] : '';
+    }
+
+    public function statusDaftarColorMap()
+    {
+        return [
+            self::STATUS_DAFTAR_DITAWARKAN => 'info',
+            self::STATUS_DAFTAR_DAFTAR => 'success',
+            self::STATUS_DAFTAR_TIDAK_DAFTAR => 'danger',
+            self::STATUS_DAFTAR_TANGGUH => 'warning',
+            self::STATUS_DAFTAR_TARIK_DIRI => 'danger',
+            self::STATUS_DAFTAR_TESIS => 'primary',
+            self::STATUS_DAFTAR_LAYAK_BERGRADUAT => 'primary',
+            self::STATUS_DAFTAR_GRADUAT => 'success',
+            self::STATUS_DAFTAR_DIBERHENTIKAN => 'danger',
+            self::STATUS_DAFTAR_MENINGGAL_DUNIA => 'danger',
+            self::STATUS_DAFTAR_NOS => 'default',
+        ];
+    }
+
+    public function statusAktifColorMap()
+    {
+        return [
+            self::STATUS_AKTIF_AKTIF => 'success',
+            self::STATUS_AKTIF_TIDAK_AKTIF => 'danger',
+        ];
+    }
+
+    public function getStatusDaftarLabel()
+    {
+        if ($this->status_daftar === null) {
+            return Html::tag('span', 'N/A', ['class' => 'label label-default']);
+        }
+
+        $text = $this->getStatusDaftarText();
+        $map = $this->statusDaftarColorMap();
+        $color = array_key_exists((int)$this->status_daftar, $map) ? $map[(int)$this->status_daftar] : 'default';
+
+        return Html::tag('span', $text !== '' ? $text : (string)$this->status_daftar, ['class' => 'label label-' . $color]);
+    }
+
+    public function getStatusAktifLabel()
+    {
+        if ($this->status_aktif === null) {
+            return Html::tag('span', 'N/A', ['class' => 'label label-default']);
+        }
+
+        $text = $this->getStatusAktifText();
+        $map = $this->statusAktifColorMap();
+        $color = array_key_exists((int)$this->status_aktif, $map) ? $map[(int)$this->status_aktif] : 'default';
+
+        return Html::tag('span', $text !== '' ? $text : (string)$this->status_aktif, ['class' => 'label label-' . $color]);
     }
 
     public static function mapStatusDaftarFromText($text)

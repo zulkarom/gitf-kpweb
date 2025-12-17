@@ -42,8 +42,16 @@ Profile
             [
                 'label' => 'Status Pelajar',
                 'value' => function($model){
-                return $model->statusText;
-                }
+                return $model->statusDaftarLabel;
+                },
+                'format' => 'raw'
+                ],
+            [
+                'label' => 'Status Aktif',
+                'value' => function($model){
+                return $model->statusAktifLabel;
+                },
+                'format' => 'raw'
                 ],
             'matric_no',
             'nric',
@@ -149,16 +157,10 @@ Profile
 	 </div>
 </div>
 
-    <p>
+    <div class="clearfix">
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
+
+    </div>
   
   
 </div>
@@ -349,4 +351,18 @@ Research Stage
 
 
 </div>
+
+
+
+    <div class="clearfix">
+        <div class="pull-right">
+            <?= Html::a('<i class="fa fa-trash"></i>', ['delete', 'id' => $model->id], [
+                'class' => 'btn btn-danger',
+                'data' => [
+                    'confirm' => 'Are you sure you want to delete this student?',
+                    'method' => 'post',
+                ],
+            ]) ?>
+        </div>
+    </div>
 </div>
