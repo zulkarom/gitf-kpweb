@@ -5,7 +5,6 @@ namespace backend\modules\postgrad\controllers;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
-use yii\web\UploadedFile;
 use backend\modules\postgrad\models\Student;
 use backend\modules\postgrad\models\StudentStatusUploadForm;
 
@@ -34,13 +33,23 @@ class StudentStatusController extends Controller
         $summary = null;
 
         if (Yii::$app->request->isPost) {
-            $model->file = UploadedFile::getInstance($model, 'file');
-            if ($model->validate()) {
-                $tmpPath = $model->file->tempName;
-                [$preview, $summary] = $this->processCsv($tmpPath, false);
+            $token = (string)Yii::$app->request->post('csv_token', '');
+            $token = trim($token);
 
-                if (Yii::$app->request->post('apply') === '1') {
-                    [$preview, $summary] = $this->processCsv($tmpPath, true);
+            if ($token === '') {
+                $summary = ['error' => 'Please upload a CSV file first'];
+            } else {
+                $map = Yii::$app->session->get('postgrad_status_csv_tokens', []);
+                $path = isset($map[$token]) ? $map[$token] : null;
+
+                if (!$path || !is_string($path) || !is_file($path)) {
+                    $summary = ['error' => 'Uploaded CSV file not found. Please upload again.'];
+                } else {
+                    [$preview, $summary] = $this->processCsv($path, false);
+
+                    if (Yii::$app->request->post('apply') === '1') {
+                        [$preview, $summary] = $this->processCsv($path, true);
+                    }
                 }
             }
         }

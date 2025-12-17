@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use backend\modules\postgrad\models\Student;
+use yii\helpers\Url;
+use yii\helpers\Json;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\postgrad\models\StudentStatusUploadForm */
@@ -23,7 +25,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
-            <?= $form->field($model, 'file')->fileInput(['accept' => '.csv']) ?>
+            <?= $form->field($model, 'file')->fileInput(['accept' => '.csv', 'id' => 'pg-status-csv-file']) ?>
+
+            <?= Html::hiddenInput('csv_token', Yii::$app->request->post('csv_token', ''), ['id' => 'pg-status-csv-token']) ?>
+
+            <div class="form-group">
+                <?= Html::button('Upload CSV', ['class' => 'btn btn-default', 'id' => 'pg-status-upload-btn']) ?>
+                <span id="pg-status-upload-msg" style="margin-left:10px"></span>
+            </div>
 
             <div class="form-group">
                 <?= Html::submitButton('Preview', ['class' => 'btn btn-info', 'name' => 'preview', 'value' => '1']) ?>
@@ -31,6 +40,66 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
 
             <?php ActiveForm::end(); ?>
+
+            <?php
+                $uploadUrl = Url::to(['/firewall/index']);
+                $uploadUrlJson = Json::encode($uploadUrl);
+                $csrfParamJson = Json::encode(Yii::$app->request->csrfParam);
+                $csrfTokenJson = Json::encode(Yii::$app->request->getCsrfToken());
+                $this->registerJs(<<<JS
+                (function(){
+                    var uploadBtn = $('#pg-status-upload-btn');
+                    var fileInput = $('#pg-status-csv-file');
+                    var tokenInput = $('#pg-status-csv-token');
+                    var msg = $('#pg-status-upload-msg');
+
+                    function setMsg(text, isError){
+                        msg.text(text);
+                        msg.css('color', isError ? '#a94442' : '#3c763d');
+                    }
+
+                    uploadBtn.on('click', function(e){
+                        e.preventDefault();
+
+                        var file = fileInput[0] && fileInput[0].files ? fileInput[0].files[0] : null;
+                        if(!file){
+                            setMsg('Please choose a CSV file first', true);
+                            return;
+                        }
+
+                        var fd = new FormData();
+                        fd.append({$csrfParamJson}, {$csrfTokenJson});
+                        fd.append('request_type', 'postgrad_status_csv');
+                        fd.append('file', file);
+
+                        uploadBtn.prop('disabled', true);
+                        setMsg('Uploading...', false);
+
+                        $.ajax({
+                            url: {$uploadUrlJson},
+                            type: 'POST',
+                            data: fd,
+                            processData: false,
+                            contentType: false,
+                            dataType: 'json'
+                        }).done(function(res){
+                            if(res && res.token){
+                                tokenInput.val(res.token);
+                                setMsg('Uploaded: ' + (res.name || 'CSV') , false);
+                            }else if(res && res.error){
+                                setMsg(res.error, true);
+                            }else{
+                                setMsg('Upload failed', true);
+                            }
+                        }).fail(function(){
+                            setMsg('Upload failed', true);
+                        }).always(function(){
+                            uploadBtn.prop('disabled', false);
+                        });
+                    });
+                })();
+JS);
+            ?>
 
             <?php if (is_array($summary) && isset($summary['error'])): ?>
                 <div class="alert alert-danger">

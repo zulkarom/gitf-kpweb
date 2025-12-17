@@ -8,6 +8,9 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
 use yii\web\BadRequestHttpException;
+use yii\helpers\FileHelper;
+use yii\helpers\Json;
+use yii\web\UploadedFile;
 
 /**
  * PaperController implements the CRUD actions for ConfPaper model.
@@ -23,6 +26,9 @@ class FirewallController extends Controller
             }
             if($request_type == 'editor'){
                 return $this->editor($post);
+            }
+            if($request_type == 'postgrad_status_csv'){
+                return $this->postgradStatusCsv();
             }
         }
         throw new BadRequestHttpException('Make sure you supply enough parameters');
@@ -43,6 +49,48 @@ class FirewallController extends Controller
         }
 		
 		throw new BadRequestHttpException('Make sure you supply enough parameters');
+    }
+
+    private function postgradStatusCsv()
+    {
+        $file = UploadedFile::getInstanceByName('file');
+        if (!$file) {
+            throw new BadRequestHttpException('Make sure you supply enough parameters');
+        }
+
+        $ext = strtolower((string)$file->extension);
+        if ($ext !== 'csv') {
+            return Json::encode(['error' => 'Invalid file type, allowed only csv']);
+        }
+
+        $maxSize = 10 * 1024 * 1024;
+        if ($file->size > $maxSize) {
+            return Json::encode(['error' => 'The file size (' . $file->size . ') exceed allowed maximum size of (' . $maxSize . ')']);
+        }
+
+        $token = bin2hex(random_bytes(16));
+
+        $directory = Yii::getAlias('@runtime/postgrad-status-upload/');
+        if (!is_dir($directory)) {
+            FileHelper::createDirectory($directory);
+        }
+
+        $fileName = 'student-status-' . $token . '.csv';
+        $filePath = $directory . $fileName;
+        if (!$file->saveAs($filePath)) {
+            return Json::encode(['error' => 'Unable to save uploaded CSV file']);
+        }
+
+        $session = Yii::$app->session;
+        $map = $session->get('postgrad_status_csv_tokens', []);
+        $map[$token] = $filePath;
+        $session->set('postgrad_status_csv_tokens', $map);
+
+        return Json::encode([
+            'token' => $token,
+            'name' => $file->name,
+            'size' => $file->size,
+        ]);
     }
 
     private function editor()
