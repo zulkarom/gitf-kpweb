@@ -379,6 +379,13 @@ class Menu
                             ]
                         ],
                         [
+                            'label' => 'Import Students (CSV)',
+                            'icon' => 'upload',
+                            'url' => [
+                                '/postgrad/student-csv-import/index'
+                            ]
+                        ],
+                        [
                             'label' => 'Mark Entry Deadline',
                             'icon' => 'calendar',
                             'url' => [
