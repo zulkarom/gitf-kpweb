@@ -91,8 +91,19 @@ $this->params['breadcrumbs'][] = $this->title;
                             }else{
                                 setMsg('Upload failed', true);
                             }
-                        }).fail(function(){
-                            setMsg('Upload failed', true);
+                        }).fail(function(xhr, textStatus, errorThrown){
+                            var detail = '';
+                            try {
+                                detail = (xhr && xhr.responseText) ? String(xhr.responseText) : '';
+                            } catch(e) {
+                                detail = '';
+                            }
+                            console.log('Upload failed', {textStatus: textStatus, errorThrown: errorThrown, status: xhr ? xhr.status : null, responseText: detail});
+                            if(detail){
+                                setMsg('Upload failed (' + (xhr ? xhr.status : '') + '): ' + detail, true);
+                            }else{
+                                setMsg('Upload failed (' + (xhr ? xhr.status : '') + ')', true);
+                            }
                         }).always(function(){
                             uploadBtn.prop('disabled', false);
                         });

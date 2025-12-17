@@ -9,8 +9,8 @@ use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
 use yii\web\BadRequestHttpException;
 use yii\helpers\FileHelper;
-use yii\helpers\Json;
 use yii\web\UploadedFile;
+use yii\web\Response;
 
 /**
  * PaperController implements the CRUD actions for ConfPaper model.
@@ -20,7 +20,7 @@ class FirewallController extends Controller
     public function actionIndex(){
         $post = Yii::$app->request->post();
         if(!Yii::$app->user->isGuest && $post){
-            $request_type = $post['request_type'];
+            $request_type = $post['request_type'] ?? null;
             if($request_type == 'upload'){
                 return $this->upload($post);
             }
@@ -53,6 +53,8 @@ class FirewallController extends Controller
 
     private function postgradStatusCsv()
     {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
         $file = UploadedFile::getInstanceByName('file');
         if (!$file) {
             throw new BadRequestHttpException('Make sure you supply enough parameters');
@@ -60,12 +62,12 @@ class FirewallController extends Controller
 
         $ext = strtolower((string)$file->extension);
         if ($ext !== 'csv') {
-            return Json::encode(['error' => 'Invalid file type, allowed only csv']);
+            return ['error' => 'Invalid file type, allowed only csv'];
         }
 
         $maxSize = 10 * 1024 * 1024;
         if ($file->size > $maxSize) {
-            return Json::encode(['error' => 'The file size (' . $file->size . ') exceed allowed maximum size of (' . $maxSize . ')']);
+            return ['error' => 'The file size (' . $file->size . ') exceed allowed maximum size of (' . $maxSize . ')'];
         }
 
         $token = bin2hex(random_bytes(16));
@@ -78,7 +80,7 @@ class FirewallController extends Controller
         $fileName = 'student-status-' . $token . '.csv';
         $filePath = $directory . $fileName;
         if (!$file->saveAs($filePath)) {
-            return Json::encode(['error' => 'Unable to save uploaded CSV file']);
+            return ['error' => 'Unable to save uploaded CSV file'];
         }
 
         $session = Yii::$app->session;
@@ -86,11 +88,11 @@ class FirewallController extends Controller
         $map[$token] = $filePath;
         $session->set('postgrad_status_csv_tokens', $map);
 
-        return Json::encode([
+        return [
             'token' => $token,
             'name' => $file->name,
             'size' => $file->size,
-        ]);
+        ];
     }
 
     private function editor()
