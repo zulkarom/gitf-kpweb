@@ -49,35 +49,62 @@ class StaffController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new StaffSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+		$tab = 'staff';
+		$searchModel = new StaffSearch();
+		$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+		$tabCounts = [
+			'staff' => (int)Staff::find()->where(['staff_active' => 1, 'faculty_id' => 1])->count(),
+			'other' => (int)Staff::find()->where(['staff_active' => 1])->andWhere(['<>', 'faculty_id', 1])->count(),
+			'inactive' => (int)Staff::find()->where(['staff_active' => 0])->count(),
+		];
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'tab' => $tab,
+            'tabCounts' => $tabCounts,
         ]);
     }
 	
 	public function actionInactive()
     {
-        $searchModel = new StaffInactiveSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+		$tab = 'inactive';
+		$searchModel = new StaffInactiveSearch();
+		$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('inactive', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+		$tabCounts = [
+			'staff' => (int)Staff::find()->where(['staff_active' => 1, 'faculty_id' => 1])->count(),
+			'other' => (int)Staff::find()->where(['staff_active' => 1])->andWhere(['<>', 'faculty_id', 1])->count(),
+			'inactive' => (int)Staff::find()->where(['staff_active' => 0])->count(),
+		];
+
+		return $this->render('inactive', [
+			'searchModel' => $searchModel,
+			'dataProvider' => $dataProvider,
+			'tab' => $tab,
+			'tabCounts' => $tabCounts,
+		]);
     }
 	
 	public function actionExternal()
     {
-        $searchModel = new ExternalSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+		$tab = 'other';
+		$searchModel = new ExternalSearch();
+		$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('external', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+		$tabCounts = [
+			'staff' => (int)Staff::find()->where(['staff_active' => 1, 'faculty_id' => 1])->count(),
+			'other' => (int)Staff::find()->where(['staff_active' => 1])->andWhere(['<>', 'faculty_id', 1])->count(),
+			'inactive' => (int)Staff::find()->where(['staff_active' => 0])->count(),
+		];
+
+		return $this->render('external', [
+			'searchModel' => $searchModel,
+			'dataProvider' => $dataProvider,
+			'tab' => $tab,
+			'tabCounts' => $tabCounts,
+		]);
     }
 	
 	/* public function actionReset(){
@@ -181,7 +208,7 @@ class StaffController extends Controller
 				
 				
 			}
-			catch (Exception $e) 
+			catch (\Exception $e) 
 			{
 				$transaction->rollBack();
 				Yii::$app->session->addFlash('error', $e->getMessage());

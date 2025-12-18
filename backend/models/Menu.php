@@ -1018,13 +1018,7 @@ class Menu
                         ]
                     ],
 
-                    [
-                        'label' => 'Related External',
-                        'icon' => 'user',
-                        'url' => [
-                            '/staff/staff/external'
-                        ]
-                    ],
+                   
 
                     [
                         'label' => 'Main Position',
@@ -1034,13 +1028,7 @@ class Menu
                         ]
                     ],
 
-                    [
-                        'label' => 'Transfered/Quit',
-                        'icon' => 'remove',
-                        'url' => [
-                            '/staff/staff/inactive'
-                        ]
-                    ]
+       
                 ]
             ];
         }

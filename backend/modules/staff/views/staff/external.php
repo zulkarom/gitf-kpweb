@@ -15,6 +15,29 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="staff-index">
 
+    <?php
+        $currentTab = $tab ?? 'other';
+        $countStaffTab = (int)($tabCounts['staff'] ?? 0);
+        $countOtherTab = (int)($tabCounts['other'] ?? 0);
+        $countInactiveTab = (int)($tabCounts['inactive'] ?? 0);
+    ?>
+
+    <div class="box">
+<div class="box-header with-border">
+    <ul class="nav nav-tabs">
+        <li class="<?= $currentTab === 'staff' ? 'active' : '' ?>">
+            <a href="<?= Yii::$app->urlManager->createUrl(['/staff/staff/index']) ?>">Staff <span class="label label-primary"><?= $countStaffTab ?></span></a>
+        </li>
+        <li class="<?= $currentTab === 'other' ? 'active' : '' ?>">
+            <a href="<?= Yii::$app->urlManager->createUrl(['/staff/staff/external']) ?>">Other Faculty <span class="label label-primary"><?= $countOtherTab ?></span></a>
+        </li>
+        <li class="<?= $currentTab === 'inactive' ? 'active' : '' ?>">
+            <a href="<?= Yii::$app->urlManager->createUrl(['/staff/staff/inactive']) ?>">Transfered/Quit <span class="label label-primary"><?= $countInactiveTab ?></span></a>
+        </li>
+    </ul>
+</div>
+<div class="box-body">
+
 
     <div class="box">
 <div class="box-header"></div>
@@ -62,5 +85,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
         ],
     ]); ?></div>
+</div>
+</div>
+
 </div>
 </div>

@@ -42,6 +42,8 @@ class SupervisorController extends Controller
      */
     public function actionIndex()
     {
+        $tab = Yii::$app->request->get('tab', 'academic');
+
         $semesterId = Yii::$app->request->get('semester_id');
         if (empty($semesterId)) {
             $currentSem = Semester::getCurrentSemester();
@@ -51,43 +53,85 @@ class SupervisorController extends Controller
         $searchModel = new SupervisorSearch();
         $params = Yii::$app->request->queryParams;
         $params[$searchModel->formName()]['semester_id'] = $semesterId;
+
+        switch (strtolower((string)$tab)) {
+            case 'external':
+                $params[$searchModel->formName()]['is_internal'] = 0;
+                $tab = 'external';
+                break;
+            case 'other':
+                $params[$searchModel->formName()]['is_internal'] = 1;
+                $params[$searchModel->formName()]['faculty_scope'] = 'other';
+                $tab = 'other';
+                break;
+            case 'academic':
+            default:
+                $params[$searchModel->formName()]['is_internal'] = 1;
+                $params[$searchModel->formName()]['faculty_scope'] = 'academic';
+                $tab = 'academic';
+                break;
+        }
+
         $dataProvider = $searchModel->search($params);
 
-        // KPI 1: total staff that has at least one as penyelia utama (sv_role = 1)
-        $countStaffMain = (new \yii\db\Query())
-            ->from(['a' => Supervisor::tableName()])
-            ->innerJoin(['ss' => 'pg_student_sv'], 'ss.supervisor_id = a.id AND ss.sv_role = 1')
-            ->innerJoin(['sr' => StudentRegister::tableName()], 'sr.student_id = ss.student_id AND sr.semester_id = :sem', [':sem' => (int)$semesterId])
-            ->count('DISTINCT a.id');
+        $countStaffMain = 0;
+        $countStaffSecond = 0;
+        $countRed = 0;
+        $countYellow = 0;
+        $countGreen = 0;
 
-        // KPI 2: total staff that has at least one as penyelia bersama (sv_role = 2)
-        $countStaffSecond = (new \yii\db\Query())
-            ->from(['a' => Supervisor::tableName()])
-            ->innerJoin(['ss' => 'pg_student_sv'], 'ss.supervisor_id = a.id AND ss.sv_role = 2')
-            ->innerJoin(['sr' => StudentRegister::tableName()], 'sr.student_id = ss.student_id AND sr.semester_id = :sem', [':sem' => (int)$semesterId])
-            ->count('DISTINCT a.id');
+        $tabCounts = [
+            'academic' => (int)Supervisor::find()->alias('a')
+                ->innerJoin(['stf' => 'staff'], 'stf.id = a.staff_id')
+                ->where(['a.is_internal' => 1, 'stf.faculty_id' => 1])
+                ->count('a.id'),
+            'other' => (int)Supervisor::find()->alias('a')
+                ->innerJoin(['stf' => 'staff'], 'stf.id = a.staff_id')
+                ->where(['a.is_internal' => 1])
+                ->andWhere(['<>', 'stf.faculty_id', 1])
+                ->count('a.id'),
+            'external' => (int)Supervisor::find()->alias('a')
+                ->where(['a.is_internal' => 0])
+                ->andWhere(['>', 'a.external_id', 0])
+                ->count('a.id'),
+        ];
 
+        if ($tab === 'academic') {
+            // KPI 1: total staff that has at least one as penyelia utama (sv_role = 1)
+            $countStaffMain = (new \yii\db\Query())
+                ->from(['a' => Supervisor::tableName()])
+                ->innerJoin(['stf' => 'staff'], 'stf.id = a.staff_id AND stf.faculty_id = 1')
+                ->innerJoin(['ss' => 'pg_student_sv'], 'ss.supervisor_id = a.id AND ss.sv_role = 1')
+                ->innerJoin(['sr' => StudentRegister::tableName()], 'sr.student_id = ss.student_id AND sr.semester_id = :sem', [':sem' => (int)$semesterId])
+                ->count('DISTINCT a.id');
 
-        // Compute color category counts based on total supervisees per supervisor
-        $rows = (new \yii\db\Query())
-            ->select(['a.id AS sid', 'COUNT(sr.id) AS total'])
-            ->from(['a' => Supervisor::tableName()])
-            ->leftJoin(['ss' => 'pg_student_sv'], 'ss.supervisor_id = a.id')
-            ->leftJoin(['sr' => StudentRegister::tableName()], 'sr.student_id = ss.student_id AND sr.semester_id = :sem', [':sem' => (int)$semesterId])
-            ->groupBy(['a.id'])
-            ->all();
+            // KPI 2: total staff that has at least one as penyelia bersama (sv_role = 2)
+            $countStaffSecond = (new \yii\db\Query())
+                ->from(['a' => Supervisor::tableName()])
+                ->innerJoin(['stf' => 'staff'], 'stf.id = a.staff_id AND stf.faculty_id = 1')
+                ->innerJoin(['ss' => 'pg_student_sv'], 'ss.supervisor_id = a.id AND ss.sv_role = 2')
+                ->innerJoin(['sr' => StudentRegister::tableName()], 'sr.student_id = ss.student_id AND sr.semester_id = :sem', [':sem' => (int)$semesterId])
+                ->count('DISTINCT a.id');
 
-        $countRed = 0;    // 0-3
-        $countYellow = 0; // 4-7
-        $countGreen = 0;  // 8+
-        foreach ($rows as $r) {
-            $t = (int)$r['total'];
-            if ($t <= 3) {
-                $countRed++;
-            } elseif ($t <= 7) {
-                $countYellow++;
-            } else {
-                $countGreen++;
+            // Compute color category counts based on total supervisees per supervisor
+            $rows = (new \yii\db\Query())
+                ->select(['a.id AS sid', 'COUNT(sr.id) AS total'])
+                ->from(['a' => Supervisor::tableName()])
+                ->innerJoin(['stf' => 'staff'], 'stf.id = a.staff_id AND stf.faculty_id = 1')
+                ->leftJoin(['ss' => 'pg_student_sv'], 'ss.supervisor_id = a.id')
+                ->leftJoin(['sr' => StudentRegister::tableName()], 'sr.student_id = ss.student_id AND sr.semester_id = :sem', [':sem' => (int)$semesterId])
+                ->groupBy(['a.id'])
+                ->all();
+
+            foreach ($rows as $r) {
+                $t = (int)$r['total'];
+                if ($t <= 3) {
+                    $countGreen++;
+                } elseif ($t <= 7) {
+                    $countYellow++;
+                } else {
+                    $countRed++;
+                }
             }
         }
 
@@ -101,6 +145,8 @@ class SupervisorController extends Controller
             'countYellow' => $countYellow,
             'countGreen' => $countGreen,
             'semesterId' => $semesterId,
+            'tab' => $tab,
+            'tabCounts' => $tabCounts,
         ]);
     }
 

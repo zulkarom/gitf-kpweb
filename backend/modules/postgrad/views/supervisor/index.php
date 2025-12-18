@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\grid\GridView;
 use backend\modules\postgrad\models\Field;
 use backend\models\Semester;
@@ -19,19 +20,36 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Add Supervisor', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php $semForm = ActiveForm::begin([
+    <?php $form = ActiveForm::begin([
         'method' => 'get',
         'action' => ['index'],
     ]); ?>
+    <?= Html::hiddenInput('tab', $tab ?? 'academic') ?>
     <div class="row" style="margin-bottom:10px;">
-        <div class="col-md-4">
-            <?= $semForm->field($searchModel, 'semester_id')->dropDownList(
+        <div class="col-md-3">
+            <?= $form->field($searchModel, 'semester_id')->dropDownList(
                 Semester::listSemesterArray(),
                 ['name' => 'semester_id', 'value' => $semesterId, 'prompt' => 'Semester', 'onchange' => 'this.form.submit();']
             )->label(false) ?>
         </div>
-    </div>
-    <?php ActiveForm::end(); ?>
+
+                <div class="col-md-4">
+                    <?= $form->field($searchModel, 'svNameSearch')->textInput(['placeholder' => 'Cari Nama', 'onchange' => 'this.form.submit();'])->label(false) ?>
+                </div>
+                <div class="col-md-3">
+                    <?= $form->field($searchModel, 'field_id')->dropDownList(Field::listFieldArray(), ['prompt' => 'Semua Bidang Kepakaran', 'onchange' => 'this.form.submit();'])->label(false) ?>
+                </div>
+                <div class="col-md-2">
+                    <?= $form->field($searchModel, 'color')->dropDownList([
+                        '' => 'Semua Warna',
+                        'green' => 'Green (0-3)',
+                        'yellow' => 'Yellow (4-7)',
+                        'red' => 'Red (8+)',
+                    ], ['onchange' => 'this.form.submit();'])->label(false) ?>
+                </div>
+              
+            </div>
+            <?php ActiveForm::end(); ?>
   
             <style>
     .kpi-row { display:flex; gap:14px; align-items:stretch; flex-wrap:nowrap; }
@@ -63,73 +81,110 @@ $this->params['breadcrumbs'][] = $this->title;
     @media (max-width: 768px){ .kpi-wide, .kpi-narrow { flex-basis: 100%; } }
     </style>
 
-    <div class="kpi-row">
-        <div class="kpi-card kpi-wide kpi-aqua">
-            <div class="kpi-text">
-                <p class="kpi-title">Staff with Main Supervisor Role</p>
-                <p class="kpi-value"><?= (int)$countStaffMain ?></p>
-            </div>
-            <div class="kpi-icon"><span class="fa fa-user"></span></div>
-        </div>
-        <div class="kpi-card kpi-wide kpi-yellow">
-            <div class="kpi-text">
-                <p class="kpi-title">Staff with Co-supervisor Role</p>
-                <p class="kpi-value"><?= (int)$countStaffSecond ?></p>
-            </div>
-            <div class="kpi-icon"><span class="fa fa-users"></span></div>
-        </div>
-        <div class="kpi-card kpi-narrow kpi-red">
-            <div class="kpi-text">
-                <p class="kpi-title">Red (0–3)</p>
-                <p class="kpi-value"><?= (int)$countRed ?></p>
-            </div>
-            <div class="kpi-icon"><span class="fa fa-circle"></span></div>
-        </div>
-        <div class="kpi-card kpi-narrow kpi-yellow">
-            <div class="kpi-text">
-                <p class="kpi-title">Yellow (4–7)</p>
-                <p class="kpi-value"><?= (int)$countYellow ?></p>
-            </div>
-            <div class="kpi-icon"><span class="fa fa-circle"></span></div>
-        </div>
-        <div class="kpi-card kpi-narrow kpi-green">
-            <div class="kpi-text">
-                <p class="kpi-title">Green (8+)</p>
-                <p class="kpi-value"><?= (int)$countGreen ?></p>
-            </div>
-            <div class="kpi-icon"><span class="fa fa-circle"></span></div>
-        </div>
-    </div>
-   <br />
+
     
-            <?php $form = ActiveForm::begin([
-                'method' => 'get',
-                'action' => ['index'],
-            ]); ?>
-            <div class="row">
-                <div class="col-md-5">
-                    <?= $form->field($searchModel, 'svName')->textInput(['placeholder' => 'Cari Nama', 'onchange' => 'this.form.submit();'])->label(false) ?>
-                </div>
-                <div class="col-md-3">
-                    <?= $form->field($searchModel, 'field_id')->dropDownList(Field::listFieldArray(), ['prompt' => 'Semua Bidang Kepakaran', 'onchange' => 'this.form.submit();'])->label(false) ?>
-                </div>
-                <?= Html::hiddenInput('semester_id', $semesterId) ?>
-                <div class="col-md-2">
-                    <?= $form->field($searchModel, 'color')->dropDownList([
-                        '' => 'Semua Warna',
-                        'red' => 'Red (0–3)',
-                        'yellow' => 'Yellow (4–7)',
-                        'green' => 'Green (8+)',
-                    ], ['onchange' => 'this.form.submit();'])->label(false) ?>
-                </div>
-              
-            </div>
-            <?php ActiveForm::end(); ?>
+        
    
 
  <div class="box">
-<div class="box-header"></div>
+<div class="box-header with-border">
+    <?php
+        $currentTab = $tab ?? 'academic';
+        $semesterIdParam = Yii::$app->request->get('semester_id');
+
+        $countAcademic = (int)($tabCounts['academic'] ?? 0);
+        $countOther = (int)($tabCounts['other'] ?? 0);
+        $countExternal = (int)($tabCounts['external'] ?? 0);
+
+        $tabBase = ['index'];
+        if (!empty($semesterIdParam)) {
+            $tabBase['semester_id'] = $semesterIdParam;
+        }
+    ?>
+    <ul class="nav nav-tabs">
+        <li class="<?= $currentTab === 'academic' ? 'active' : '' ?>">
+            <a href="<?= Url::to(array_merge($tabBase, ['tab' => 'academic'])) ?>">FKP Staff <span class="label label-primary"><?= $countAcademic ?></span></a>
+        </li>
+        <li class="<?= $currentTab === 'other' ? 'active' : '' ?>">
+            <a href="<?= Url::to(array_merge($tabBase, ['tab' => 'other'])) ?>">Other Faculty <span class="label label-primary"><?= $countOther ?></span></a>
+        </li>
+        <li class="<?= $currentTab === 'external' ? 'active' : '' ?>">
+            <a href="<?= Url::to(array_merge($tabBase, ['tab' => 'external'])) ?>">External <span class="label label-primary"><?= $countExternal ?></span></a>
+        </li>
+    </ul>
+</div>
 <div class="box-body">
+
+    <?php if (($tab ?? 'academic') === 'academic') : ?>
+
+    <?php
+        $formName = $searchModel->formName();
+        $semesterIdParam = Yii::$app->request->get('semester_id');
+
+        $kpiBaseParams = ['index'];
+        if (!empty($semesterIdParam)) {
+            $kpiBaseParams['semester_id'] = $semesterIdParam;
+        }
+
+        $urlMain = Url::to(array_merge($kpiBaseParams, [$formName => ['sv_role' => 1]]));
+        $urlCo = Url::to(array_merge($kpiBaseParams, [$formName => ['sv_role' => 2]]));
+
+        $urlGreen = Url::to(array_merge($kpiBaseParams, [$formName => ['color' => 'green']]));
+        $urlYellow = Url::to(array_merge($kpiBaseParams, [$formName => ['color' => 'yellow']]));
+        $urlRed = Url::to(array_merge($kpiBaseParams, [$formName => ['color' => 'red']]));
+    ?>
+
+    <div class="kpi-row">
+        <a href="<?= $urlMain ?>" style="display:block; color:inherit; text-decoration:none; flex: 1 1 0;">
+            <div class="kpi-card kpi-wide kpi-aqua">
+                <div class="kpi-text">
+                    <p class="kpi-title">Staff with Main Supervisor Role</p>
+                    <p class="kpi-value"><?= (int)$countStaffMain ?></p>
+                </div>
+                <div class="kpi-icon"><span class="fa fa-user"></span></div>
+            </div>
+        </a>
+        <a href="<?= $urlCo ?>" style="display:block; color:inherit; text-decoration:none; flex: 1 1 0;">
+            <div class="kpi-card kpi-wide kpi-yellow">
+                <div class="kpi-text">
+                    <p class="kpi-title">Staff with Co-supervisor Role</p>
+                    <p class="kpi-value"><?= (int)$countStaffSecond ?></p>
+                </div>
+                <div class="kpi-icon"><span class="fa fa-users"></span></div>
+            </div>
+        </a>
+        <a href="<?= $urlGreen ?>" style="display:block; color:inherit; text-decoration:none; flex: 1 1 0;">
+            <div class="kpi-card kpi-narrow kpi-green">
+                <div class="kpi-text">
+                    <p class="kpi-title">Green (0–3)</p>
+                    <p class="kpi-value"><?= (int)$countGreen ?></p>
+                </div>
+                <div class="kpi-icon"><span class="fa fa-circle"></span></div>
+            </div>
+        </a>
+        <a href="<?= $urlYellow ?>" style="display:block; color:inherit; text-decoration:none; flex: 1 1 0;">
+            <div class="kpi-card kpi-narrow kpi-yellow">
+                <div class="kpi-text">
+                    <p class="kpi-title">Yellow (4–7)</p>
+                    <p class="kpi-value"><?= (int)$countYellow ?></p>
+                </div>
+                <div class="kpi-icon"><span class="fa fa-circle"></span></div>
+            </div>
+        </a>
+        <a href="<?= $urlRed ?>" style="display:block; color:inherit; text-decoration:none; flex: 1 1 0;">
+            <div class="kpi-card kpi-narrow kpi-red">
+                <div class="kpi-text">
+                    <p class="kpi-title">Red (8+)</p>
+                    <p class="kpi-value"><?= (int)$countRed ?></p>
+                </div>
+                <div class="kpi-icon"><span class="fa fa-circle"></span></div>
+            </div>
+        </a>
+    </div>
+   <br />
+
+    <?php endif; ?>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => null,
@@ -157,21 +212,21 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Penyelia Utama',
                 'attribute' => 'main_count',
                 'value' => function($model){
-                    return isset($model->main_count) ? (int)$model->main_count : (int)$model->countMain;
+                    return (int)($model->getAttribute('main_count') ?? 0);
                 }
             ],
             [
                 'label' => 'Penyelia Bersama',
                 'attribute' => 'second_count',
                 'value' => function($model){
-                    return isset($model->second_count) ? (int)$model->second_count : (int)$model->countSecond;
+                    return (int)($model->getAttribute('second_count') ?? 0);
                 }
             ],
             [
                 'label' => 'Jumlah Penyeliaan',
                 'attribute' => 'total_count',
                 'value' => function($model){
-                    return isset($model->total_count) ? (int)$model->total_count : (int)$model->countTotal;
+                    return (int)($model->getAttribute('total_count') ?? 0);
                 }
             ],
             [
@@ -180,13 +235,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
                 'contentOptions' => ['style' => 'text-align:center; width:80px;'],
                 'value' => function($model){
-                    $total = isset($model->total_count) ? (int)$model->total_count : (int)$model->countTotal;
+                    $total = (int)($model->getAttribute('total_count') ?? 0);
                     if ($total <= 3) {
-                        $color = '#d9534f'; // red
+                        $color = '#5cb85c'; // green
                     } elseif ($total <= 7) {
                         $color = '#f0ad4e'; // yellow
                     } else {
-                        $color = '#5cb85c'; // green
+                        $color = '#d9534f'; // red
                     }
                     $outer = 'display:inline-block;width:24px;height:24px;border-radius:8px;background-color:#e5e7eb;position:relative;';
                     $inner = 'display:block;width:12px;height:12px;border-radius:50%;background-color:'.$color.';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);';
@@ -219,8 +274,4 @@ $this->params['breadcrumbs'][] = $this->title;
                     
         ],
     ]); ?>
-
-</div>
-</div>
-
 </div>

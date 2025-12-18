@@ -16,6 +16,7 @@ use backend\modules\teachingLoad\models\OutCourse;
 use backend\modules\teachingLoad\models\PastExperience;
 use backend\modules\teachingLoad\models\Course;
 use common\models\Country;
+use yii\helpers\Html;
 
 /**
  * This is the model class for table "staff".
@@ -189,6 +190,49 @@ class Staff extends \yii\db\ActiveRecord
 	
 	public function getNiceName(){
 		return $this->staff_title . ' ' . $this->user->fullname;
+	}
+	
+	public function getTypeLabel(){
+		$isAcademic = (int)$this->is_academic === 1;
+		$text = $isAcademic ? 'Academic' : 'Administrative';
+		$class = $isAcademic ? 'label label-primary' : 'label label-warning';
+		return Html::tag('span', Html::encode($text), ['class' => $class]);
+	}
+	
+	protected function outlineVariantById($id){
+		$variants = ['blue', 'green', 'yellow', 'aqua', 'red', 'purple', 'gray'];
+		$intId = (int)$id;
+		if ($intId <= 0) {
+			return 'gray';
+		}
+		return $variants[$intId % count($variants)];
+	}
+	
+	public function getPositionLabel(){
+		$name = $this->staffPosition ? $this->staffPosition->position_name . ' (' . $this->staffPosition->position_gred . ')' : '(Not Set)';
+		$variant = $this->outlineVariantById($this->position_id);
+		return Html::tag('span', Html::encode($name), ['class' => 'label-outline label-outline--' . $variant]);
+	}
+	
+	public function getPositionStatusLabel(){
+		$name = $this->staffPositionStatus ? $this->staffPositionStatus->status_name : '(Not Set)';
+		$statusId = $this->staffPositionStatus ? $this->staffPositionStatus->id : null;
+		$variant = $this->outlineVariantById($statusId);
+		return Html::tag('span', Html::encode($name), ['class' => 'label-outline label-outline--' . $variant]);
+	}
+	
+	public function getWorkingStatusLabel(){
+		$name = $this->workingStatus ? $this->workingStatus->work_name : '(Not Set)';
+		$key = strtolower(trim((string)$name));
+		$class = 'label label-default';
+		if (strpos($key, 'active') !== false || strpos($key, 'aktif') !== false) {
+			$class = 'label label-success';
+		} elseif (strpos($key, 'study') !== false || strpos($key, 'cuti') !== false || strpos($key, 'sabbatical') !== false) {
+			$class = 'label label-info';
+		} elseif (strpos($key, 'second') !== false || strpos($key, 'pinjam') !== false) {
+			$class = 'label label-warning';
+		}
+		return Html::tag('span', Html::encode($name), ['class' => $class]);
 	}
 	
 	public function getNameAndEmail(){

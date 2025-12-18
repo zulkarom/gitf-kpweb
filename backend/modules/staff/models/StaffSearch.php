@@ -48,6 +48,7 @@ class StaffSearch extends Staff
     {
         $query = Staff::find()->orderBy('user.fullname ASC');
 		$query->joinWith(['user']);
+		$query->with(['workingStatus', 'staffPositionStatus']);
 
         // add conditions that should always apply here
 

@@ -28,6 +28,8 @@ Search Staff
         'method' => 'get',
     ]); ?>
 
+    <?= Html::hiddenInput('tab', $tab ?? Yii::$app->request->get('tab', 'staff')) ?>
+
 <div class="row">
 <div class="col-md-4"><?= $form->field($model, 'staff_no') ?></div>
 <div class="col-md-4"><?php  echo $form->field($model, 'staff_name') ?>

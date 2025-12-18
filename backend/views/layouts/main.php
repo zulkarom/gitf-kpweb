@@ -83,6 +83,24 @@ use yii\helpers\Html;
             /* Slightly softer shadows for dropdowns */
             .navbar-nav>.user-menu .dropdown-menu { box-shadow:0 6px 18px rgba(0,0,0,.15); }
 
+            .label-outline {
+                display: inline-block;
+                padding: 3px 9px;
+                border-radius: 12px;
+                border: 1px solid transparent;
+                font-size: 12px;
+                font-weight: 600;
+                background: transparent;
+                line-height: 1.4;
+            }
+            .label-outline--blue { color: #337ab7; border-color: #337ab7; }
+            .label-outline--green { color: #00a65a; border-color: #00a65a; }
+            .label-outline--yellow { color: #f39c12; border-color: #f39c12; }
+            .label-outline--aqua { color: #00c0ef; border-color: #00c0ef; }
+            .label-outline--red { color: #dd4b39; border-color: #dd4b39; }
+            .label-outline--purple { color: #605ca8; border-color: #605ca8; }
+            .label-outline--gray { color: #777; border-color: #bbb; }
+
             @media (max-width: 767px){
                 .main-header .logo .logo-lg { font-size:20px; }
                 .main-header .navbar { min-height:50px; }
