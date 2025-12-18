@@ -48,6 +48,13 @@ use yii\helpers\Html;
  */
 class Student extends \yii\db\ActiveRecord
 {
+	const STATUS_NOT_ACTIVE = 0;
+	const STATUS_ACTIVE = 1;
+	const STATUS_DEFERRED = 2;
+	const STATUS_WITHDRAWN = 3;
+	const STATUS_TERMINATED = 4;
+	const STATUS_GRADUATED = 5;
+
     public $stage_name;
     public $fullname;
     public $stage_status;

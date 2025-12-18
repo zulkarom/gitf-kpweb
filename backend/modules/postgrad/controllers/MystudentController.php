@@ -120,7 +120,7 @@ class MystudentController extends Controller
             $masterRc = ['research' => 0, 'coursework' => 0];
             $phdModes = [1 => 0, 2 => 0];
 
-            return $this->render('mystats', [
+            return $this->render('/student/mystats', [
                 'activeCount' => $activeCount,
                 'studyMode' => $studyMode,
                 'programLevel' => $programLevel,
