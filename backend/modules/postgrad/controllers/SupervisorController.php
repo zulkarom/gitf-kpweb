@@ -55,6 +55,15 @@ class SupervisorController extends Controller
         $params[$searchModel->formName()]['semester_id'] = $semesterId;
 
         switch (strtolower((string)$tab)) {
+            case 'transferred':
+            case 'transfer':
+            case 'quit':
+            case 'transferred-quit':
+                $params[$searchModel->formName()]['is_internal'] = 1;
+                $params[$searchModel->formName()]['faculty_scope'] = 'academic';
+                $params[$searchModel->formName()]['staff_active'] = 0;
+                $tab = 'transferred';
+                break;
             case 'external':
                 $params[$searchModel->formName()]['is_internal'] = 0;
                 $tab = 'external';
@@ -83,16 +92,21 @@ class SupervisorController extends Controller
         $tabCounts = [
             'academic' => (int)Supervisor::find()->alias('a')
                 ->innerJoin(['stf' => 'staff'], 'stf.id = a.staff_id')
-                ->where(['a.is_internal' => 1, 'stf.faculty_id' => 1])
+                ->where(['a.is_internal' => 1, 'stf.faculty_id' => 1, 'stf.staff_active' => 1])
                 ->count('a.id'),
             'other' => (int)Supervisor::find()->alias('a')
                 ->innerJoin(['stf' => 'staff'], 'stf.id = a.staff_id')
                 ->where(['a.is_internal' => 1])
                 ->andWhere(['<>', 'stf.faculty_id', 1])
+                ->andWhere(['stf.staff_active' => 1])
                 ->count('a.id'),
             'external' => (int)Supervisor::find()->alias('a')
                 ->where(['a.is_internal' => 0])
                 ->andWhere(['>', 'a.external_id', 0])
+                ->count('a.id'),
+            'transferred' => (int)Supervisor::find()->alias('a')
+                ->innerJoin(['stf' => 'staff'], 'stf.id = a.staff_id')
+                ->where(['a.is_internal' => 1, 'stf.faculty_id' => 1, 'stf.staff_active' => 0])
                 ->count('a.id'),
         ];
 

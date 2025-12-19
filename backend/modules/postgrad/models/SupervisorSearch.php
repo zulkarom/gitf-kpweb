@@ -19,6 +19,7 @@ class SupervisorSearch extends Supervisor
     public $semester_id;
     public $sv_role; // 1 = main, 2 = co-supervisor
     public $faculty_scope; // academic | other
+    public $staff_active; // filter by staff.staff_active for internal supervisors
 
     public function attributes()
     {
@@ -31,7 +32,7 @@ class SupervisorSearch extends Supervisor
     public function rules()
     {
         return [
-            [['is_internal', 'field_id', 'semester_id', 'sv_role'], 'integer'],
+            [['is_internal', 'field_id', 'semester_id', 'sv_role', 'staff_active'], 'integer'],
             [['svNameSearch', 'svFieldsSearch', 'color', 'faculty_scope'], 'string'],
         ];
     }
@@ -142,6 +143,10 @@ class SupervisorSearch extends Supervisor
                     $query->andWhere(['<>', 'staff.faculty_id', 1]);
                     break;
             }
+        }
+
+        if ($this->staff_active !== null && (int)$this->is_internal === 1) {
+            $query->andWhere(['staff.staff_active' => (int)$this->staff_active]);
         }
         
         $query->andFilterWhere(['or',

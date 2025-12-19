@@ -20,11 +20,17 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Add Supervisor', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
+    <?php
+        $currentTab = $tab ?? 'academic';
+        $isSupervisorTab = true;
+    ?>
+
+    <?php if ($isSupervisorTab) : ?>
     <?php $form = ActiveForm::begin([
         'method' => 'get',
         'action' => ['index'],
     ]); ?>
-    <?= Html::hiddenInput('tab', $tab ?? 'academic') ?>
+    <?= Html::hiddenInput('tab', $currentTab) ?>
     <div class="row" style="margin-bottom:10px;">
         <div class="col-md-3">
             <?= $form->field($searchModel, 'semester_id')->dropDownList(
@@ -50,6 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
               
             </div>
             <?php ActiveForm::end(); ?>
+    <?php endif; ?>
   
             <style>
     .kpi-row { display:flex; gap:14px; align-items:stretch; flex-wrap:nowrap; }
@@ -89,12 +96,12 @@ $this->params['breadcrumbs'][] = $this->title;
  <div class="box">
 <div class="box-header with-border">
     <?php
-        $currentTab = $tab ?? 'academic';
         $semesterIdParam = Yii::$app->request->get('semester_id');
 
         $countAcademic = (int)($tabCounts['academic'] ?? 0);
         $countOther = (int)($tabCounts['other'] ?? 0);
         $countExternal = (int)($tabCounts['external'] ?? 0);
+        $countTransferred = (int)($tabCounts['transferred'] ?? 0);
 
         $tabBase = ['index'];
         if (!empty($semesterIdParam)) {
@@ -110,6 +117,9 @@ $this->params['breadcrumbs'][] = $this->title;
         </li>
         <li class="<?= $currentTab === 'external' ? 'active' : '' ?>">
             <a href="<?= Url::to(array_merge($tabBase, ['tab' => 'external'])) ?>">External <span class="label label-primary"><?= $countExternal ?></span></a>
+        </li>
+        <li class="<?= $currentTab === 'transferred' ? 'active' : '' ?>">
+            <a href="<?= Url::to(array_merge($tabBase, ['tab' => 'transferred'])) ?>">Transferred/Quit <span class="label label-primary"><?= $countTransferred ?></span></a>
         </li>
     </ul>
 </div>
