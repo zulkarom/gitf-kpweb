@@ -26,6 +26,19 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <div class="box-body">
 
+            <div class="alert alert-default">
+                <strong>Panduan Muat Naik (CSV)</strong><br />
+                1) Pilih <strong>Semester</strong>.<br />
+                2) Sediakan fail <strong>.csv</strong> (maksimum 10MB) dan baris pertama mestilah <strong>header</strong>.<br />
+                3) Kolum wajib: <strong>student_id</strong> (atau <strong>student id</strong>), <strong>status_daftar</strong>.<br />
+                3a) Kolum <strong>student_name</strong> (jika ada) akan <strong>diabaikan</strong> semasa muat naik.<br />
+                4) <strong>Status Aktif</strong> akan ditetapkan secara automatik: <strong>Daftar / NOS</strong> = Aktif, selain itu = Tidak Aktif.<br />
+                5) Pastikan tiada <strong>student_id</strong> berulang dalam CSV.<br />
+                6) Pilih fail CSV. Sistem akan <strong>muat naik secara automatik</strong> dan papar <strong>preview</strong>.
+                7) Semak keputusan preview (contoh: READY / NOT_FOUND / INVALID_STATUS / NO_CHANGES).<br />
+                8) Jika betul, klik <strong>Apply Updates</strong> untuk kemaskini.
+            </div>
+
             <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
             <?php
@@ -39,6 +52,11 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= $form->field($model, 'semester_id')->dropDownList($semesterOptions, ['prompt' => 'Choose']) ?>
 
             <?= $form->field($model, 'file')->fileInput(['accept' => '.csv', 'id' => 'pg-status-csv-file']) ?>
+
+            <div class="form-group">
+                <?= Html::button('Download Current CSV', ['class' => 'btn btn-primary', 'id' => 'pg-status-download-btn']) ?>
+                <span id="pg-status-download-msg" style="margin-left:10px"></span>
+            </div>
 
             <?= Html::hiddenInput('csv_token', Yii::$app->request->post('csv_token', ''), ['id' => 'pg-status-csv-token']) ?>
 
@@ -60,6 +78,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 $uploadUrlJson = Json::encode($uploadUrl);
                 $csrfParamJson = Json::encode(Yii::$app->request->csrfParam);
                 $csrfTokenJson = Json::encode(Yii::$app->request->getCsrfToken());
+                $downloadUrlBase = Url::to(['/postgrad/student-status/download-csv']);
+                $downloadUrlBaseJson = Json::encode($downloadUrlBase);
                 $this->registerJs(<<<JS
                 (function(){
                     var uploadBtn = $('#pg-status-upload-btn');
@@ -69,11 +89,20 @@ $this->params['breadcrumbs'][] = $this->title;
                     var form = fileInput.closest('form');
                     var applyBtn = form.find('button[name="apply"], input[name="apply"]');
 
+                    var downloadBtn = $('#pg-status-download-btn');
+                    var downloadMsg = $('#pg-status-download-msg');
+                    var semesterSelect = $('#studentstatusuploadform-semester_id');
+
                     var isUploading = false;
 
                     function setMsg(text, isError){
                         msg.text(text);
                         msg.css('color', isError ? '#a94442' : '#3c763d');
+                    }
+
+                    function setDownloadMsg(text, isError){
+                        downloadMsg.text(text);
+                        downloadMsg.css('color', isError ? '#a94442' : '#3c763d');
                     }
 
                     function uploadCsv(done){
@@ -166,6 +195,21 @@ $this->params['breadcrumbs'][] = $this->title;
                             form.trigger('submit');
                         });
                     });
+
+                    downloadBtn.on('click', function(e){
+                        e.preventDefault();
+                        setDownloadMsg('', false);
+
+                        var semesterId = $.trim(semesterSelect.val() || '');
+                        if(semesterId === ''){
+                            setDownloadMsg('Sila pilih Semester dahulu', true);
+                            return;
+                        }
+
+                        var base = {$downloadUrlBaseJson};
+                        var url = base + (base.indexOf('?') >= 0 ? '&' : '?') + 'semester_id=' + encodeURIComponent(semesterId);
+                        window.location.href = url;
+                    });
                 })();
 JS);
             ?>
@@ -216,7 +260,7 @@ JS);
                             <th>Status Daftar (CURRENT)</th>
                             <th>Status Aktif (CURRENT)</th>
                             <th>Status Daftar (NEW)</th>
-                            <th>Status Aktif (NEW)</th>
+                            <th>Status Aktif (AUTO)</th>
                             <th>Status Daftar (TO BE MAPPED)</th>
                             <th>Status Aktif (TO BE MAPPED)</th>
                             <th>Result</th>

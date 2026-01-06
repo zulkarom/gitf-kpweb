@@ -12,6 +12,15 @@ use backend\modules\postgrad\models\Student;
 
 class StudentRegisterController extends Controller
 {
+    private function computeStatusAktifFromDaftar($statusDaftar)
+    {
+        $sd = $statusDaftar === null ? null : (int)$statusDaftar;
+        if ($sd === StudentRegister::STATUS_DAFTAR_DAFTAR || $sd === StudentRegister::STATUS_DAFTAR_NOS) {
+            return StudentRegister::STATUS_AKTIF_AKTIF;
+        }
+        return StudentRegister::STATUS_AKTIF_TIDAK_AKTIF;
+    }
+
     public function behaviors()
     {
         return [
@@ -56,6 +65,7 @@ class StudentRegisterController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             $model->student_id = $s;
+            $model->status_aktif = $this->computeStatusAktifFromDaftar($model->status_daftar);
             if($model->save()){
                 return $this->redirect(['student/view', 'id' => $s]);
             }
@@ -72,8 +82,11 @@ class StudentRegisterController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['student/view', 'id' => $model->student_id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->status_aktif = $this->computeStatusAktifFromDaftar($model->status_daftar);
+            if ($model->save()) {
+                return $this->redirect(['student/view', 'id' => $model->student_id]);
+            }
         }
 
         return $this->render('update', [

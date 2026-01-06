@@ -5,6 +5,7 @@ namespace backend\modules\postgrad\controllers;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
+use yii\web\Response;
 use backend\modules\postgrad\models\Student;
 use backend\modules\postgrad\models\StudentRegister;
 use backend\modules\postgrad\models\StudentStatusUploadForm;
@@ -71,6 +72,66 @@ class StudentStatusController extends Controller
         ]);
     }
 
+    public function actionDownloadCsv($semester_id)
+    {
+        $semesterId = (int)$semester_id;
+        if ($semesterId <= 0) {
+            Yii::$app->session->addFlash('error', 'Please select Semester');
+            return $this->redirect(['index']);
+        }
+
+        $semester = Semester::findOne($semesterId);
+        if (!$semester) {
+            Yii::$app->session->addFlash('error', 'Semester not found');
+            return $this->redirect(['index']);
+        }
+
+        $safeSem = preg_replace('/[^A-Za-z0-9_\-]+/', '_', (string)$semester->longFormat());
+        $filename = 'student_status_' . $safeSem . '.csv';
+
+        $fp = fopen('php://temp', 'w+');
+        if ($fp === false) {
+            throw new \yii\web\ServerErrorHttpException('Unable to create CSV stream');
+        }
+
+        fwrite($fp, "\xEF\xBB\xBF");
+        fputcsv($fp, ['student_id', 'student_name', 'status_daftar']);
+
+        $query = Student::find()
+            ->alias('s')
+            ->select([
+                's.matric_no AS matric_no',
+                'u.fullname AS student_name',
+                'r.status_daftar AS status_daftar',
+                'r.status_aktif AS status_aktif',
+            ])
+            ->innerJoin(
+                ['r' => StudentRegister::tableName()],
+                'r.student_id = s.id AND r.semester_id = :sid',
+                [':sid' => $semesterId]
+            )
+            ->leftJoin(['u' => \common\models\User::tableName()], 'u.id = s.user_id')
+            ->orderBy(['s.matric_no' => SORT_ASC]);
+
+        foreach ($query->asArray()->each(500) as $row) {
+            $matric = isset($row['matric_no']) ? (string)$row['matric_no'] : '';
+            if (trim($matric) === '') {
+                continue;
+            }
+
+            $studentName = isset($row['student_name']) ? trim((string)$row['student_name']) : '';
+            $statusDaftarText = StudentRegister::statusDaftarText($row['status_daftar'] ?? null);
+
+            fputcsv($fp, [$matric, $studentName, $statusDaftarText]);
+        }
+
+        rewind($fp);
+        return Yii::$app->response->sendStreamAsFile($fp, $filename, [
+            'mimeType' => 'text/csv',
+            'inline' => false,
+        ]);
+    }
+
     private function processCsv($path, $apply, $semesterId)
     {
         $fh = fopen($path, 'r');
@@ -92,6 +153,9 @@ class StudentStatusController extends Controller
             $row++;
             if ($row === 1) {
                 $header = array_map('strtolower', $data);
+                if (!empty($header) && is_string($header[0])) {
+                    $header[0] = preg_replace('/^\xEF\xBB\xBF/', '', $header[0]);
+                }
                 $cols = array_flip($header);
 
                 // Accept both student_id (preferred) and legacy "student id"
@@ -101,7 +165,7 @@ class StudentStatusController extends Controller
                     $studentIdKey = 'student id';
                 }
 
-                $required = ['status_daftar', 'status_aktif'];
+                $required = ['status_daftar'];
                 $missing = [];
                 if ($studentIdKey === null) {
                     $missing[] = 'student_id';
@@ -189,6 +253,9 @@ class StudentStatusController extends Controller
             $row++;
             if ($row === 1) {
                 $header = array_map('strtolower', $data);
+                if (!empty($header) && is_string($header[0])) {
+                    $header[0] = preg_replace('/^\xEF\xBB\xBF/', '', $header[0]);
+                }
                 $cols = array_flip($header);
 
                 if (isset($cols['student_id'])) {
@@ -202,7 +269,7 @@ class StudentStatusController extends Controller
 
             $studentId = ($studentIdKey !== null && isset($data[$cols[$studentIdKey]])) ? trim((string)$data[$cols[$studentIdKey]]) : '';
             $statusDaftarText = isset($data[$cols['status_daftar']]) ? trim((string)$data[$cols['status_daftar']]) : '';
-            $statusAktifText = isset($data[$cols['status_aktif']]) ? trim((string)$data[$cols['status_aktif']]) : '';
+            $statusAktifText = '';
 
             if ($studentId === '') {
                 $stats['skipped']++;
@@ -210,15 +277,21 @@ class StudentStatusController extends Controller
             }
 
             $mappedDaftar = StudentRegister::mapStatusDaftarFromText($statusDaftarText);
-            $mappedAktif = StudentRegister::mapStatusAktifFromText($statusAktifText);
 
-            if ($mappedDaftar === false || $mappedAktif === false) {
+            // status_aktif is auto-derived from status_daftar (never N/A)
+            // Daftar / NOS => Aktif, otherwise => Tidak Aktif
+            $mappedAktif = StudentRegister::STATUS_AKTIF_TIDAK_AKTIF;
+            if ($mappedDaftar === StudentRegister::STATUS_DAFTAR_DAFTAR || $mappedDaftar === StudentRegister::STATUS_DAFTAR_NOS) {
+                $mappedAktif = StudentRegister::STATUS_AKTIF_AKTIF;
+            }
+
+            if ($mappedDaftar === false) {
                 $stats['invalid_status']++;
                 $resultCounts['INVALID_STATUS']++;
                 $preview[] = [
                     'student_id' => $studentId,
                     'status_daftar_text' => $statusDaftarText,
-                    'status_aktif_text' => $statusAktifText,
+                    'status_aktif_text' => StudentRegister::statusAktifText($mappedAktif),
                     'status_daftar' => $mappedDaftar,
                     'status_aktif' => $mappedAktif,
                     'result' => 'INVALID_STATUS',
@@ -233,7 +306,7 @@ class StudentStatusController extends Controller
                 $preview[] = [
                     'student_id' => $studentId,
                     'status_daftar_text' => $statusDaftarText,
-                    'status_aktif_text' => $statusAktifText,
+                    'status_aktif_text' => StudentRegister::statusAktifText($mappedAktif),
                     'status_daftar' => $mappedDaftar,
                     'status_aktif' => $mappedAktif,
                     'current_status_daftar' => null,
@@ -262,7 +335,12 @@ class StudentStatusController extends Controller
             $currentAktifText = $tmpCur->statusAktifText;
 
             $daftarChanged = ($mappedDaftar !== null) && ((int)$beforeDaftar !== (int)$mappedDaftar);
-            $aktifChanged = ($mappedAktif !== null) && ((int)$beforeAktif !== (int)$mappedAktif);
+            // Important: (int)null === 0, so we must treat NULL as different from 0
+            if ($beforeAktif === null) {
+                $aktifChanged = true;
+            } else {
+                $aktifChanged = ((int)$beforeAktif !== (int)$mappedAktif);
+            }
 
             $changed = false;
             if ($daftarChanged) {
@@ -278,7 +356,7 @@ class StudentStatusController extends Controller
                 $preview[] = [
                     'student_id' => $studentId,
                     'status_daftar_text' => $statusDaftarText,
-                    'status_aktif_text' => $statusAktifText,
+                    'status_aktif_text' => StudentRegister::statusAktifText($mappedAktif),
                     'status_daftar' => $mappedDaftar,
                     'status_aktif' => $mappedAktif,
                     'current_status_daftar' => $beforeDaftar,
@@ -315,7 +393,7 @@ class StudentStatusController extends Controller
                     $preview[] = [
                         'student_id' => $studentId,
                         'status_daftar_text' => $statusDaftarText,
-                        'status_aktif_text' => $statusAktifText,
+                        'status_aktif_text' => StudentRegister::statusAktifText($mappedAktif),
                         'status_daftar' => $mappedDaftar,
                         'status_aktif' => $mappedAktif,
                         'current_status_daftar' => $beforeDaftar,
@@ -332,7 +410,7 @@ class StudentStatusController extends Controller
                     $preview[] = [
                         'student_id' => $studentId,
                         'status_daftar_text' => $statusDaftarText,
-                        'status_aktif_text' => $statusAktifText,
+                        'status_aktif_text' => StudentRegister::statusAktifText($mappedAktif),
                         'status_daftar' => $mappedDaftar,
                         'status_aktif' => $mappedAktif,
                         'current_status_daftar' => $beforeDaftar,
@@ -349,7 +427,7 @@ class StudentStatusController extends Controller
                 $preview[] = [
                     'student_id' => $studentId,
                     'status_daftar_text' => $statusDaftarText,
-                    'status_aktif_text' => $statusAktifText,
+                    'status_aktif_text' => StudentRegister::statusAktifText($mappedAktif),
                     'status_daftar' => $mappedDaftar,
                     'status_aktif' => $mappedAktif,
                     'current_status_daftar' => $beforeDaftar,
