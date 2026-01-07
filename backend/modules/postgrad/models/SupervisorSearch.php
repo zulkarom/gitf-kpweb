@@ -20,6 +20,7 @@ class SupervisorSearch extends Supervisor
     public $sv_role; // 1 = main, 2 = co-supervisor
     public $faculty_scope; // academic | other
     public $staff_active; // filter by staff.staff_active for internal supervisors
+    public $require_students; // if set, only show supervisors with supervisees in selected semester
 
     public function attributes()
     {
@@ -32,7 +33,7 @@ class SupervisorSearch extends Supervisor
     public function rules()
     {
         return [
-            [['is_internal', 'field_id', 'semester_id', 'sv_role', 'staff_active'], 'integer'],
+            [['is_internal', 'field_id', 'semester_id', 'sv_role', 'staff_active', 'require_students'], 'integer'],
             [['svNameSearch', 'svFieldsSearch', 'color', 'faculty_scope'], 'string'],
         ];
     }
@@ -174,6 +175,10 @@ class SupervisorSearch extends Supervisor
                     $query->andHaving('COUNT(DISTINCT CASE WHEN ss.sv_role = 2 AND sr.id IS NOT NULL THEN ss.student_id END) > 0');
                     break;
             }
+        }
+
+        if (!empty($this->require_students)) {
+            $query->andHaving('COUNT(DISTINCT sr.student_id) > 0');
         }
 
         // color filter mapped to total supervisee count

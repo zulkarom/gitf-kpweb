@@ -58,6 +58,8 @@ class Student extends \yii\db\ActiveRecord
     public $stage_name;
     public $fullname;
     public $stage_status;
+    public $committee_role;
+    public $committee_role_label;
 
     public function attributes()
     {

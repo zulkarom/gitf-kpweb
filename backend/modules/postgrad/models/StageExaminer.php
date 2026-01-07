@@ -40,10 +40,10 @@ class StageExaminer extends \yii\db\ActiveRecord
     public static function committeeRoleList()
     {
         return [
-            1 => 'Pengerusi',
-            2 => 'Penolong Pengerusi',
-            3 => 'Pemeriksa 1',
-            4 => 'Pemeriksa 2',
+            1 => 'Chairman',
+            2 => 'Deputy Chairman',
+            3 => 'Examiner 1',
+            4 => 'Examiner 2',
         ];
     }
 

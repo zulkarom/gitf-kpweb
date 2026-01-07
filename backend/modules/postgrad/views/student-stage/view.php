@@ -69,7 +69,7 @@ $this->params['breadcrumbs'][] = 'View Stage';
 <div class="box">
 <div class="box-header">
 <h3 class="box-title">
-Examiner Committees
+Examination Committees
 </h3>
 </div>
 <div class="box-body">
@@ -78,9 +78,10 @@ Examiner Committees
   <thead>
     <tr>
       <th scope="col">#</th>
-      <th scope="col">Examiners</th>
-      <th scope="col">Type</th>
+      <th scope="col">Examiners/Chairman</th>
       <th scope="col">Committee Role</th>
+      <th scope="col">Type</th>
+      
       <th scope="col"></th>
     </tr>
   </thead>
@@ -93,9 +94,10 @@ Examiner Committees
            <tr>
        <th scope="row"><?=$i?></th>
       <td><?=$s->examiner->svName?></td>
-      <td><?=$s->examiner->typeName?></td>
       <td><?=$s->committeeRoleLabel?></td>
-      <td><a href="<?=Url::to(['stage-examiner/update', 'id' => $s->id])?>" class="btn btn-warning btn-sm">View</a>  
+      <td><?=$s->examiner->typeName?></td>
+      
+      <td><a href="<?=Url::to(['stage-examiner/update', 'id' => $s->id])?>" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i></a>  
       
         <a href="<?=Url::to(['stage-examiner/delete', 'id' => $s->id])?>" class="btn btn-danger btn-sm" data-confirm="Are you sure to delete this examiner?"><i class="fa fa-trash"></i></a>
       </td>
@@ -115,7 +117,7 @@ Examiner Committees
 
 <br />
 <div class="form-group">
-<a href="<?=Url::to(['stage-examiner/create', 'stage' => $model->id])?>" class="btn btn-primary btn-sm">Add Examiner</a> 
+<a href="<?=Url::to(['stage-examiner/create', 'stage' => $model->id])?>" class="btn btn-primary btn-sm">Add Examiner/Chairman</a> 
 
   
 </div>

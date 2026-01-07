@@ -63,21 +63,26 @@ class SupervisorController extends Controller
                 $params[$searchModel->formName()]['is_internal'] = 1;
                 $params[$searchModel->formName()]['faculty_scope'] = 'academic';
                 $params[$searchModel->formName()]['staff_active'] = 0;
+                $params[$searchModel->formName()]['require_students'] = 1;
                 $tab = 'transferred';
                 break;
             case 'external':
                 $params[$searchModel->formName()]['is_internal'] = 0;
+                $params[$searchModel->formName()]['require_students'] = 1;
                 $tab = 'external';
                 break;
             case 'other':
                 $params[$searchModel->formName()]['is_internal'] = 1;
                 $params[$searchModel->formName()]['faculty_scope'] = 'other';
+                $params[$searchModel->formName()]['staff_active'] = 1;
+                $params[$searchModel->formName()]['require_students'] = 1;
                 $tab = 'other';
                 break;
             case 'academic':
             default:
                 $params[$searchModel->formName()]['is_internal'] = 1;
                 $params[$searchModel->formName()]['faculty_scope'] = 'academic';
+                $params[$searchModel->formName()]['staff_active'] = 1;
                 $tab = 'academic';
                 break;
         }
@@ -100,12 +105,28 @@ class SupervisorController extends Controller
 
         $tabCounts = [
             'academic' => (int)Staff::find()->where(['staff_active' => 1, 'faculty_id' => 1])->count(),
-            'other' => (int)Staff::find()->where(['staff_active' => 1])->andWhere(['<>', 'faculty_id', 1])->count(),
-            'external' => (int)Supervisor::find()->alias('a')
+            // match list behavior: only show if they have students in selected semester
+            'other' => (int)(new \yii\db\Query())
+                ->from(['a' => Supervisor::tableName()])
+                ->innerJoin(['stf' => 'staff'], 'stf.id = a.staff_id AND stf.staff_active = 1 AND stf.faculty_id <> 1')
+                ->leftJoin(['ss' => 'pg_student_sv'], 'ss.supervisor_id = a.id')
+                ->innerJoin(['sr' => StudentRegister::tableName()], 'sr.student_id = ss.student_id AND sr.semester_id = :sem', [':sem' => (int)$semesterId])
+                ->where(['a.is_internal' => 1])
+                ->count('DISTINCT a.id'),
+            'external' => (int)(new \yii\db\Query())
+                ->from(['a' => Supervisor::tableName()])
+                ->leftJoin(['ss' => 'pg_student_sv'], 'ss.supervisor_id = a.id')
+                ->innerJoin(['sr' => StudentRegister::tableName()], 'sr.student_id = ss.student_id AND sr.semester_id = :sem', [':sem' => (int)$semesterId])
                 ->where(['a.is_internal' => 0])
                 ->andWhere(['>', 'a.external_id', 0])
-                ->count('a.id'),
-            'transferred' => (int)Staff::find()->where(['staff_active' => 0, 'faculty_id' => 1])->count(),
+                ->count('DISTINCT a.id'),
+            'transferred' => (int)(new \yii\db\Query())
+                ->from(['a' => Supervisor::tableName()])
+                ->innerJoin(['stf' => 'staff'], 'stf.id = a.staff_id AND stf.staff_active = 0 AND stf.faculty_id = 1')
+                ->leftJoin(['ss' => 'pg_student_sv'], 'ss.supervisor_id = a.id')
+                ->innerJoin(['sr' => StudentRegister::tableName()], 'sr.student_id = ss.student_id AND sr.semester_id = :sem', [':sem' => (int)$semesterId])
+                ->where(['a.is_internal' => 1])
+                ->count('DISTINCT a.id'),
         ];
 
         if ($tab === 'academic') {
@@ -239,7 +260,7 @@ class SupervisorController extends Controller
             }
         }
 
-        $examinees = $model->examinees;
+        $examinees = $model->getExamineesBySemester($semesterId);
         
         return $this->render('view', [
             'model' => $model,

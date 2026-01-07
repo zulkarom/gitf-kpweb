@@ -144,7 +144,7 @@ $menuItems = [
 					
 					
 					
-					['label' => 'Staff Info', 'icon' => 'user', 'url' => ['/staff']],
+					['label' => 'Staff Management', 'icon' => 'user', 'url' => ['/staff']],
 					
 					['label' => 'Course Management', 'icon' => 'mortar-board', 'url' => ['/esiap'],],
     

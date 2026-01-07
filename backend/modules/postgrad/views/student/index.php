@@ -13,8 +13,9 @@ use backend\models\Semester;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\modules\postgrad\models\StudentPostGradSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $statusDaftarSummary array */
 
-$this->title = isset($title) ? $title : 'Postgraduate Students';
+$this->title = 'Students List (Research)';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="student-post-grad-index">
@@ -48,6 +49,8 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 
+
+
 <div class="box">
 <div class="box-header"></div>
 <div class="box-body">  
@@ -69,6 +72,51 @@ $this->params['breadcrumbs'][] = $this->title;
         );
     }
     ?>
+
+
+
+
+    <?php
+        $filters = Yii::$app->request->get('StudentPostGradSearch', []);
+        if (isset($filters['status_daftar'])) {
+            unset($filters['status_daftar']);
+        }
+    ?>
+
+    <?php if (!empty($statusDaftarSummary)) : ?>
+        <?php
+            $allTotal = 0;
+            foreach ($statusDaftarSummary as $r) {
+                $allTotal += (int)($r['total'] ?? 0);
+            }
+            $urlAll = ['index', 'semester_id' => $searchModel->semester_id, 'StudentPostGradSearch' => $filters];
+        ?>
+        <?= Html::a(
+            Html::tag('span', Html::encode('All (' . (int)$allTotal . ')'), ['class' => 'label-outline label-outline--gray']),
+            $urlAll,
+            ['style' => 'display:inline-block; margin:2px 4px 2px 0;']
+        ) ?>
+
+        <?php foreach ($statusDaftarSummary as $row) : ?>
+            <?php
+                $code = $row['status_daftar'];
+                $total = (int)($row['total'] ?? 0);
+                if ($total <= 0) {
+                    continue;
+                }
+
+                $filters2 = $filters;
+                $filters2['status_daftar'] = $code;
+                $url = ['index', 'semester_id' => $searchModel->semester_id, 'StudentPostGradSearch' => $filters2];
+            ?>
+            <?= Html::a(
+                StudentRegister::statusDaftarOutlineLabel($code, $total),
+                $url,
+                ['style' => 'display:inline-block; margin:2px 4px 2px 0;']
+            ) ?>
+        <?php endforeach; ?>
+        <br /><br />
+    <?php endif; ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -91,9 +139,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'program_id',
                 'label' => 'Program',
                 'format' => 'html',
-                'filter' => Html::activeDropDownList($searchModel, 'program_id', $searchModel->listProgram(),['class'=> 'form-control','prompt' => 'Choose']),
+                'filter' => Html::activeDropDownList($searchModel, 'program_id', ['84' => 'PhD', '85' => 'Master'],['class'=> 'form-control','prompt' => 'Choose']),
                 'value' => function($model){
-                   return $model->programCode;
+                   if ((int)$model->program_id === 84) {
+                       return 'PhD';
+                   }
+                   if ((int)$model->program_id === 85) {
+                       return 'Master';
+                   }
+                   return $model->program ? $model->program->program_code : '';
                 }
             ],
             [
@@ -111,17 +165,23 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
-                'attribute' => 'study_mode_rc',
-                'label' => 'Mode',
+                'attribute' => 'study_mode',
+                'label' => 'Taraf Pengajian',
                 'format' => 'text',
                 'filter' => Html::activeDropDownList(
                     $searchModel,
-                    'study_mode_rc',
-                    ['research' => 'Research', 'coursework' => 'Coursework'],
+                    'study_mode',
+                    [1 => 'Sepenuh Masa', 2 => 'Separuh Masa'],
                     ['class'=> 'form-control','prompt' => 'Choose']
                 ),
                 'value' => function($model){
-                   return $model->studyModeRcText;
+                   if ((int)$model->study_mode === 1) {
+                       return 'Sepenuh Masa';
+                   }
+                   if ((int)$model->study_mode === 2) {
+                       return 'Separuh Masa';
+                   }
+                   return '';
                 }
             ],
 
@@ -136,7 +196,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ['class'=> 'form-control','prompt' => 'Choose']
                 ),
                 'value' => function($model){
-                   return StudentRegister::statusDaftarLabel($model->status_daftar);
+                   return StudentRegister::statusDaftarOutlineLabel($model->status_daftar);
                 }
             ],
 

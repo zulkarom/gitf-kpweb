@@ -75,7 +75,8 @@ class StudentStageController extends Controller
         
         if ($model->load(Yii::$app->request->post())) {
             $model->student_id = $s;
-            if($model->save()){
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
                 $reg = StudentRegister::findOne([
                     'student_id' => (int)$model->student_id,
                     'semester_id' => (int)$model->semester_id,
@@ -91,7 +92,15 @@ class StudentStageController extends Controller
                     $reg->save(false);
                 }
 
-                return $this->redirect(['view', 'id' => $model->id]);
+                if ($model->save()) {
+                    $transaction->commit();
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+
+                $transaction->rollBack();
+            } catch (\Throwable $e) {
+                $transaction->rollBack();
+                throw $e;
             }
             
         }

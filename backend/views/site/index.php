@@ -41,7 +41,7 @@ $this->title = 'Modules';
         <a href="<?= Url::to(['/staff']) ?>">
           <div class="tile theme-soft-blue">
             <div class="inner">
-              <h4>Staff Information</h4>
+              <h4>Staff Management</h4>
               <p>Profiles, positions, departments and contacts.</p>
               <div class="icon-bubble"><i class="fa fa-id-badge"></i></div>
             </div>

@@ -23,7 +23,7 @@ class StudentPostGradSearch extends Student
     public function rules()
     {
         return [
-            [['id', 'gender', 'status', 'nationality', 'field_id', 'pro_level', 'status_daftar', 'status_aktif', 'semester_id'], 'integer'],
+            [['id', 'gender', 'status', 'nationality', 'field_id', 'pro_level', 'status_daftar', 'status_aktif', 'semester_id', 'study_mode'], 'integer'],
             [['matric_no', 'nric', 'program_id', 'name', 'study_mode_rc'], 'safe'],
         ];
     }
@@ -97,6 +97,7 @@ class StudentPostGradSearch extends Student
             'r.status_aktif' => $this->status,
             'a.nationality' => $this->nationality,
             'a.field_id' => $this->field_id,
+            'a.study_mode' => $this->study_mode,
             'r.status_daftar' => $this->status_daftar,
             'r.status_aktif' => $this->status_aktif,
         ]);

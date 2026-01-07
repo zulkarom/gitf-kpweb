@@ -20,6 +20,7 @@ use backend\modules\postgrad\models\StudentPostGradSearch;
 use backend\modules\postgrad\models\Supervisor;
 use backend\modules\postgrad\models\StudentSupervisor;
 use backend\models\Semester;
+use yii\db\Query;
 
 /**
  * StudentPostGradController implements the CRUD actions for StudentPostGrad model.
@@ -50,16 +51,41 @@ class StudentController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new StudentPostGradSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
         $params = Yii::$app->request->queryParams;
+        if (!isset($params['StudentPostGradSearch'])) {
+            $params['StudentPostGradSearch'] = [];
+        }
+        if (!array_key_exists('study_mode_rc', $params['StudentPostGradSearch'])) {
+            $params['StudentPostGradSearch']['study_mode_rc'] = 'research';
+        }
+
+        $searchModel = new StudentPostGradSearch();
+        $dataProvider = $searchModel->search($params);
+
         $dataProvider->pagination->params = $params;
         $dataProvider->sort->params = $params;
+
+        $semesterId = (int)$searchModel->semester_id;
+        $statusDaftarSummary = [];
+        if ($semesterId) {
+            $statusDaftarSummary = (new Query())
+                ->select([
+                    'status_daftar' => 'r.status_daftar',
+                    'total' => 'COUNT(DISTINCT r.student_id)',
+                ])
+                ->from(['r' => StudentRegister::tableName()])
+                ->innerJoin(['s' => Student::tableName()], 's.id = r.student_id')
+                ->where(['r.semester_id' => $semesterId])
+                ->andWhere("LOWER(s.study_mode_rc) = 'research'")
+                ->groupBy(['r.status_daftar'])
+                ->orderBy(['total' => SORT_DESC])
+                ->all();
+        }
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'statusDaftarSummary' => $statusDaftarSummary,
         ]);
     }
 
@@ -163,48 +189,43 @@ class StudentController extends Controller
             }
         }
 
-        // Overall active count (selected semester)
+        // Overall research count (selected semester, includes Aktif + Tidak Aktif)
         $activeCount = (int) (new \yii\db\Query())
             ->from(['r' => StudentRegister::tableName()])
             ->innerJoin(['s' => Student::tableName()], 's.id = r.student_id')
-            ->where([
-                'r.semester_id' => (int)$semesterId,
-                'r.status_aktif' => StudentRegister::STATUS_AKTIF_AKTIF,
-            ])
+            ->where(['r.semester_id' => (int)$semesterId])
+            ->andWhere("LOWER(s.study_mode_rc) = 'research'")
             ->count('*');
 
-        // Breakdown by status_daftar (active only)
+        // Breakdown by status_daftar (research only, includes Aktif + Tidak Aktif)
         $statusDaftarRows = (new \yii\db\Query())
             ->select(['r.status_daftar', 'cnt' => 'COUNT(*)'])
             ->from(['r' => StudentRegister::tableName()])
             ->innerJoin(['s' => Student::tableName()], 's.id = r.student_id')
-            ->where([
-                'r.semester_id' => (int)$semesterId,
-                'r.status_aktif' => StudentRegister::STATUS_AKTIF_AKTIF,
-            ])
+            ->where(['r.semester_id' => (int)$semesterId])
+            ->andWhere("LOWER(s.study_mode_rc) = 'research'")
             ->groupBy(['r.status_daftar'])
             ->orderBy(['cnt' => SORT_DESC])
             ->all();
 
-        // Breakdown by status_aktif (overall)
+        // Breakdown by status_aktif (research only)
         $statusAktifRows = (new \yii\db\Query())
             ->select(['r.status_aktif', 'cnt' => 'COUNT(*)'])
             ->from(['r' => StudentRegister::tableName()])
             ->innerJoin(['s' => Student::tableName()], 's.id = r.student_id')
             ->where(['r.semester_id' => (int)$semesterId])
+            ->andWhere("LOWER(s.study_mode_rc) = 'research'")
             ->groupBy(['r.status_aktif'])
             ->orderBy(['cnt' => SORT_DESC])
             ->all();
 
-        // Study mode breakdown (1: Full-time, 2: Part-time)
+        // Study mode breakdown (1: Full-time, 2: Part-time) (research only)
         $modeRows = (new \yii\db\Query())
             ->select(['s.study_mode', 'cnt' => 'COUNT(*)'])
             ->from(['r' => StudentRegister::tableName()])
             ->innerJoin(['s' => Student::tableName()], 's.id = r.student_id')
-            ->where([
-                'r.semester_id' => (int)$semesterId,
-                'r.status_aktif' => StudentRegister::STATUS_AKTIF_AKTIF,
-            ])
+            ->where(['r.semester_id' => (int)$semesterId])
+            ->andWhere("LOWER(s.study_mode_rc) = 'research'")
             ->groupBy(['s.study_mode'])
             ->all();
         $studyMode = [1 => 0, 2 => 0];
@@ -214,7 +235,7 @@ class StudentController extends Controller
             }
         }
 
-        // Program level breakdown: Master (pro_level=3), PhD (pro_level=4)
+        // Program level breakdown: Master (pro_level=3), PhD (pro_level=4) (research only)
         $programLevel = ['master' => 0, 'phd' => 0];
         $levelRows = (new \yii\db\Query())
             ->select(['p.pro_level', 'cnt' => 'COUNT(*)'])
@@ -223,9 +244,9 @@ class StudentController extends Controller
             ->leftJoin(['p' => Program::tableName()], 'p.id = s.program_id')
             ->where([
                 'r.semester_id' => (int)$semesterId,
-                'r.status_aktif' => StudentRegister::STATUS_AKTIF_AKTIF,
                 'p.pro_level' => [3, 4],
             ])
+            ->andWhere("LOWER(s.study_mode_rc) = 'research'")
             ->groupBy(['p.pro_level'])
             ->all();
         foreach ($levelRows as $r) {
@@ -233,39 +254,33 @@ class StudentController extends Controller
             if ((int)$r['pro_level'] === 4) { $programLevel['phd'] = (int)$r['cnt']; }
         }
 
-        // Last 5 admission years (descending)
+        // Last 5 admission years (descending) (research only)
         $years = (new \yii\db\Query())
             ->select(['s.admission_year', 'cnt' => 'COUNT(*)'])
             ->from(['r' => StudentRegister::tableName()])
             ->innerJoin(['s' => Student::tableName()], 's.id = r.student_id')
-            ->where([
-                'r.semester_id' => (int)$semesterId,
-                'r.status_aktif' => StudentRegister::STATUS_AKTIF_AKTIF,
-            ])
+            ->where(['r.semester_id' => (int)$semesterId])
+            ->andWhere("LOWER(s.study_mode_rc) = 'research'")
             ->andWhere(['not', ['s.admission_year' => null]])
             ->groupBy(['s.admission_year'])
             ->orderBy(['s.admission_year' => SORT_DESC])
             ->limit(5)
             ->all();
 
-        // By country (nationality) with study mode RC breakdown
+        // By country (nationality) (research only)
         $byCountryRows = (new \yii\db\Query())
             ->select([
                 'nationality' => 's.nationality',
-                // Total active students by nationality
-                'cnt' => 'COUNT(*)',
-                // Split by (Research/Coursework) x (PhD/Master) (case-insensitive)
-                'research_phd_cnt' => "SUM(CASE WHEN s.study_mode_rc = 'research' AND p.pro_level = 4 THEN 1 ELSE 0 END)",
-                'research_master_cnt' => "SUM(CASE WHEN s.study_mode_rc = 'research' AND p.pro_level = 3 THEN 1 ELSE 0 END)",
-                'coursework_phd_cnt' => "SUM(CASE WHEN s.study_mode_rc = 'coursework' AND p.pro_level = 4 THEN 1 ELSE 0 END)",
-                'coursework_master_cnt' => "SUM(CASE WHEN s.study_mode_rc = 'coursework' AND p.pro_level = 3 THEN 1 ELSE 0 END)",
+                // Research-only totals by nationality
+                'cnt' => "SUM(CASE WHEN LOWER(s.study_mode_rc) = 'research' THEN 1 ELSE 0 END)",
+                'research_phd_cnt' => "SUM(CASE WHEN LOWER(s.study_mode_rc) = 'research' AND p.pro_level = 4 THEN 1 ELSE 0 END)",
+                'research_master_cnt' => "SUM(CASE WHEN LOWER(s.study_mode_rc) = 'research' AND p.pro_level = 3 THEN 1 ELSE 0 END)",
             ])
             ->from(['r' => StudentRegister::tableName()])
             ->innerJoin(['s' => Student::tableName()], 's.id = r.student_id')
             ->leftJoin(['p' => Program::tableName()], 'p.id = s.program_id')
             ->where([
                 'r.semester_id' => (int)$semesterId,
-                'r.status_aktif' => StudentRegister::STATUS_AKTIF_AKTIF,
             ])
             ->andWhere(['not', ['s.nationality' => null]])
             ->groupBy(['s.nationality'])
@@ -277,7 +292,7 @@ class StudentController extends Controller
             $countries = Country::find()->where(['id' => $countryIds])->indexBy('id')->all();
         }
 
-        // By field of study
+        // By field of study (research only)
         $byFieldRows = (new \yii\db\Query())
             ->select([
                 's.field_id',
@@ -288,10 +303,8 @@ class StudentController extends Controller
             ->from(['r' => StudentRegister::tableName()])
             ->innerJoin(['s' => Student::tableName()], 's.id = r.student_id')
             ->leftJoin(['p' => Program::tableName()], 'p.id = s.program_id')
-            ->where([
-                'r.semester_id' => (int)$semesterId,
-                'r.status_aktif' => StudentRegister::STATUS_AKTIF_AKTIF,
-            ])
+            ->where(['r.semester_id' => (int)$semesterId])
+            ->andWhere("LOWER(s.study_mode_rc) = 'research'")
             ->groupBy(['s.field_id'])
             ->all();
         $fieldIds = [];
@@ -302,37 +315,22 @@ class StudentController extends Controller
         }
 
         // Additional stats for top cards
-        // 1) Overall Research vs Coursework (active only)
-        $rcRows = (new \yii\db\Query())
-            ->select(['s.study_mode_rc', 'cnt' => 'COUNT(*)'])
-            ->from(['r' => StudentRegister::tableName()])
-            ->innerJoin(['s' => Student::tableName()], 's.id = r.student_id')
-            ->where([
-                'r.semester_id' => (int)$semesterId,
-                'r.status_aktif' => StudentRegister::STATUS_AKTIF_AKTIF,
-            ])
-            ->andWhere(['s.study_mode_rc' => ['research', 'coursework']])
-            ->groupBy(['s.study_mode_rc'])
-            ->all();
-        $overallRc = ['research' => 0, 'coursework' => 0];
-        foreach ($rcRows as $r) {
-            $key = (string)$r['study_mode_rc'];
-            if (isset($overallRc[$key])) { $overallRc[$key] = (int)$r['cnt']; }
-        }
+        // 1) Overall Research vs Coursework (research only - for display consistency)
+        $overallRc = ['research' => $activeCount, 'coursework' => 0];
 
-        // 2) Local (Malaysia id=158) vs International (active only)
+        // 2) Local (Malaysia id=158) vs International (research only, includes Aktif + Tidak Aktif)
         $localCount = (int) (new \yii\db\Query())
             ->from(['r' => StudentRegister::tableName()])
             ->innerJoin(['s' => Student::tableName()], 's.id = r.student_id')
             ->where([
                 'r.semester_id' => (int)$semesterId,
-                'r.status_aktif' => StudentRegister::STATUS_AKTIF_AKTIF,
                 's.nationality' => 158,
             ])
+            ->andWhere("LOWER(s.study_mode_rc) = 'research'")
             ->count('*');
-        $internationalCount = max(0, $activeCount - $localCount);
+        $internationalCount = max(0, (int)($overallRc['research'] ?? 0) - $localCount);
 
-        // 3) Master's (pro_level=3) Research vs Coursework (active only)
+        // 3) Master's (pro_level=3) Research vs Coursework (research only)
         $masterRcRows = (new \yii\db\Query())
             ->select(['s.study_mode_rc', 'cnt' => 'COUNT(*)'])
             ->from(['r' => StudentRegister::tableName()])
@@ -340,10 +338,9 @@ class StudentController extends Controller
             ->leftJoin(['p' => Program::tableName()], 'p.id = s.program_id')
             ->where([
                 'r.semester_id' => (int)$semesterId,
-                'r.status_aktif' => StudentRegister::STATUS_AKTIF_AKTIF,
                 'p.pro_level' => 3,
             ])
-            ->andWhere(['s.study_mode_rc' => ['research', 'coursework']])
+            ->andWhere("LOWER(s.study_mode_rc) = 'research'")
             ->groupBy(['s.study_mode_rc'])
             ->all();
         $masterRc = ['research' => 0, 'coursework' => 0];
@@ -352,7 +349,27 @@ class StudentController extends Controller
             if (isset($masterRc[$key])) { $masterRc[$key] = (int)$r['cnt']; }
         }
 
-        // 4) PhD (pro_level=4) Full-time vs Part-time (active only) study_mode: 1=full,2=part
+        // 3b) Master's (pro_level=3) Full-time vs Part-time (research only)
+        $masterModeRows = (new \yii\db\Query())
+            ->select(['s.study_mode', 'cnt' => 'COUNT(*)'])
+            ->from(['r' => StudentRegister::tableName()])
+            ->innerJoin(['s' => Student::tableName()], 's.id = r.student_id')
+            ->leftJoin(['p' => Program::tableName()], 'p.id = s.program_id')
+            ->where([
+                'r.semester_id' => (int)$semesterId,
+                'p.pro_level' => 3,
+            ])
+            ->andWhere("LOWER(s.study_mode_rc) = 'research'")
+            ->groupBy(['s.study_mode'])
+            ->all();
+        $masterModes = [1 => 0, 2 => 0];
+        foreach ($masterModeRows as $r) {
+            if (!empty($r['study_mode'])) {
+                $masterModes[(int)$r['study_mode']] = (int)$r['cnt'];
+            }
+        }
+
+        // 4) PhD (pro_level=4) Full-time vs Part-time (research only)
         $phdModeRows = (new \yii\db\Query())
             ->select(['s.study_mode', 'cnt' => 'COUNT(*)'])
             ->from(['r' => StudentRegister::tableName()])
@@ -360,9 +377,9 @@ class StudentController extends Controller
             ->leftJoin(['p' => Program::tableName()], 'p.id = s.program_id')
             ->where([
                 'r.semester_id' => (int)$semesterId,
-                'r.status_aktif' => StudentRegister::STATUS_AKTIF_AKTIF,
                 'p.pro_level' => 4,
             ])
+            ->andWhere("LOWER(s.study_mode_rc) = 'research'")
             ->groupBy(['s.study_mode'])
             ->all();
         $phdModes = [1 => 0, 2 => 0];
@@ -387,6 +404,7 @@ class StudentController extends Controller
             'localCount' => $localCount,
             'internationalCount' => $internationalCount,
             'masterRc' => $masterRc,
+            'masterModes' => $masterModes,
             'phdModes' => $phdModes,
             'statusDaftarRows' => $statusDaftarRows,
             'statusAktifRows' => $statusAktifRows,

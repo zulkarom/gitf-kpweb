@@ -153,12 +153,52 @@ class Supervisor extends \yii\db\ActiveRecord
     
     public function getExaminees(){
         return Student::find()->alias('a')
-        ->select('u.fullname, r.stage_name, s.status as stage_status')
+        ->select([
+            'fullname' => 'u.fullname',
+            'stage_name' => 'r.stage_name',
+            'stage_status' => 's.status',
+            'committee_role' => 'e.committee_role',
+            'committee_role_label' => new \yii\db\Expression(
+                "CASE e.committee_role "
+                . "WHEN 1 THEN 'Chairman' "
+                . "WHEN 2 THEN 'Deputy Chairman' "
+                . "WHEN 3 THEN 'Examiner 1' "
+                . "WHEN 4 THEN 'Examiner 2' "
+                . "ELSE '' END"
+            ),
+        ])
         ->joinWith(['user u'])
         ->leftJoin('pg_student_stage s', 's.student_id = a.id')
-        ->leftJoin('pg_stage_examiner e', 'e.stage_id = s.id')
+        ->innerJoin('pg_stage_examiner e', 'e.stage_id = s.id AND e.examiner_id = :examinerId', [':examinerId' => (int)$this->id])
         ->leftJoin('pg_res_stage r', 'r.id = s.stage_id')
-        ->where(['e.examiner_id' => $this->id])
+        ->all();
+    }
+
+    public function getExamineesBySemester($semesterId)
+    {
+        if (empty($semesterId)) {
+            return $this->examinees;
+        }
+
+        return Student::find()->alias('a')
+        ->select([
+            'fullname' => 'u.fullname',
+            'stage_name' => 'r.stage_name',
+            'stage_status' => 's.status',
+            'committee_role' => 'e.committee_role',
+            'committee_role_label' => new \yii\db\Expression(
+                "CASE e.committee_role "
+                . "WHEN 1 THEN 'Chairman' "
+                . "WHEN 2 THEN 'Deputy Chairman' "
+                . "WHEN 3 THEN 'Examiner 1' "
+                . "WHEN 4 THEN 'Examiner 2' "
+                . "ELSE '' END"
+            ),
+        ])
+        ->joinWith(['user u'])
+        ->leftJoin('pg_student_stage s', 's.student_id = a.id AND s.semester_id = :sem', [':sem' => (int)$semesterId])
+        ->innerJoin('pg_stage_examiner e', 'e.stage_id = s.id AND e.examiner_id = :examinerId', [':examinerId' => (int)$this->id])
+        ->leftJoin('pg_res_stage r', 'r.id = s.stage_id')
         ->all();
     }
     

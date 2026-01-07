@@ -99,7 +99,7 @@ class StageExaminerController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['student-stage/view', 'id' => $model->stage_id]);
         }
 
         return $this->render('update', [

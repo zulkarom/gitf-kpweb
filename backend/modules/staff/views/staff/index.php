@@ -10,7 +10,7 @@ use backend\modules\staff\models\Staff;
 /* @var $searchModel backend\modules\staff\models\StaffSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Staff';
+$this->title = 'Staff Management';
 $this->params['breadcrumbs'][] = $this->title;
 
 $exportColumns = [
@@ -135,7 +135,7 @@ $exportColumns = [
         <div class="box-header with-border">
             <ul class="nav nav-tabs">
                 <li class="<?= $currentTab === 'staff' ? 'active' : '' ?>">
-                    <a href="<?= Yii::$app->urlManager->createUrl(['/staff/staff/index']) ?>">Staff <span class="label label-primary"><?= $countStaffTab ?></span></a>
+                    <a href="<?= Yii::$app->urlManager->createUrl(['/staff/staff/index']) ?>">FKP Staff <span class="label label-primary"><?= $countStaffTab ?></span></a>
                 </li>
                 <li class="<?= $currentTab === 'other' ? 'active' : '' ?>">
                     <a href="<?= Yii::$app->urlManager->createUrl(['/staff/staff/external']) ?>">Other Faculty <span class="label label-primary"><?= $countOtherTab ?></span></a>

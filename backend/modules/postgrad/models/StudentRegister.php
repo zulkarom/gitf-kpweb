@@ -152,6 +152,88 @@ class StudentRegister extends \yii\db\ActiveRecord
         return Html::tag('span', $text !== '' ? $text : (string)$code, ['class' => 'label label-' . $color]);
     }
 
+    public static function statusDaftarOutlineLabel($code, $count = null)
+    {
+        $text = self::statusDaftarText($code);
+        if ($text === '') {
+            $text = $code === null || $code === '' ? 'N/A' : (string)$code;
+        }
+
+        if ($count !== null) {
+            $text .= ' (' . (int)$count . ')';
+        }
+
+        $variant = self::statusDaftarOutlineVariant($code);
+
+        return Html::tag('span', $text, ['class' => 'label-outline label-outline--' . $variant]);
+    }
+
+    public static function statusDaftarOutlineVariant($code)
+    {
+        $int = ($code === null || $code === '') ? null : (int)$code;
+        if ($int === null) {
+            return 'gray';
+        }
+
+        if ($int === self::STATUS_DAFTAR_DAFTAR) {
+            return 'blue';
+        }
+        if ($int === self::STATUS_DAFTAR_NOS) {
+            return 'purple';
+        }
+        if ($int === self::STATUS_DAFTAR_MENINGGAL_DUNIA) {
+            return 'gray';
+        }
+
+        $map = self::statusDaftarColorMap();
+        $color = array_key_exists($int, $map) ? $map[$int] : 'default';
+        switch ($color) {
+            case 'success':
+                return 'green';
+            case 'warning':
+                return 'yellow';
+            case 'danger':
+                return 'red';
+            case 'info':
+                return 'blue';
+            case 'default':
+            default:
+                return 'gray';
+        }
+    }
+
+    public static function statusDaftarChartColor($code)
+    {
+        $variant = self::statusDaftarOutlineVariant($code);
+        switch ($variant) {
+            case 'blue':
+                return '#3c8dbc';
+            case 'purple':
+                return '#605ca8';
+            case 'green':
+                return '#00a65a';
+            case 'yellow':
+                return '#f39c12';
+            case 'red':
+                return '#dd4b39';
+            case 'gray':
+            default:
+                return '#d2d6de';
+        }
+    }
+
+    public static function statusAktifChartColor($code)
+    {
+        $int = ($code === null || $code === '') ? null : (int)$code;
+        if ($int === self::STATUS_AKTIF_AKTIF) {
+            return '#00a65a';
+        }
+        if ($int === self::STATUS_AKTIF_TIDAK_AKTIF) {
+            return '#dd4b39';
+        }
+        return '#d2d6de';
+    }
+
     public static function statusAktifLabel($code)
     {
         if ($code === null || $code === '') {

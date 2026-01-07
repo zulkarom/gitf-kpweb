@@ -24,16 +24,21 @@ table.detail-view th {
 <div class="supervisor-view">
 
 
+<h3><i class="fa fa-user"></i> <?= $model->svName ?></h3>
+
+
 <div class="row">
 	<div class="col-md-4">
+
+
 	
 	     <div class="box">
 <div class="box-header"></div>
 <div class="box-body">
     <?php 
-    
-    $data = ['typeName'];
-        $data[] = 'svName';
+    $data[] = 'svName';
+    $data[] = 'typeName';
+        
         $data[] = 'svFieldsString';
     
     echo DetailView::widget([
@@ -43,7 +48,10 @@ table.detail-view th {
     
     	<br />
 	    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+<?= Html::a('Supervisors', ['index', 'semester_id' => $semesterId], ['class' => 'btn btn-default']) ?> 
+<?= Html::a('Examination Committees', ['stage-examiner/index', 'supervisor_id' => $model->id], ['class' => 'btn btn-default']) ?>
+
+        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?> 
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -61,6 +69,18 @@ table.detail-view th {
 	
 	</div>
 	<div class="col-md-8">
+
+    <?php $form = \yii\widgets\ActiveForm::begin([
+    'method' => 'get',
+    'action' => ['view', 'id' => $model->id],
+]); ?>
+<div class="row" style="margin-bottom:10px;">
+    <div class="col-md-4">
+        <?= Html::hiddenInput('id', $model->id) ?>
+        <?= $form->field($model, 'id')->dropDownList(Semester::listSemesterArray(), ['name' => 'semester_id', 'value' => $semesterId, 'prompt' => 'Semester', 'onchange' => 'this.form.submit();'])->label(false) ?>
+    </div>
+</div>
+<?php \yii\widgets\ActiveForm::end(); ?>
 	
 	
 	<div class="box">
@@ -70,18 +90,6 @@ Senarai Pelajar
 </h3>
 </div>
 <div class="box-body">
-
-<?php $form = \yii\widgets\ActiveForm::begin([
-    'method' => 'get',
-    'action' => ['view', 'id' => $model->id],
-]); ?>
-<div class="row" style="margin-bottom:10px;">
-    <div class="col-md-4">
-        <?= Html::hiddenInput('semester_id', $semesterId) ?>
-        <?= $form->field($model, 'id')->dropDownList(Semester::listSemesterArray(), ['name' => 'semester_id', 'value' => $semesterId, 'prompt' => 'Semester', 'onchange' => 'this.form.submit();'])->label(false) ?>
-    </div>
-</div>
-<?php \yii\widgets\ActiveForm::end(); ?>
 
 <table class="table">
   <thead>
@@ -151,6 +159,7 @@ Jawatankuasa Pemeriksa <?php count($examinees)?>
       <th scope="col">#</th>
       <th scope="col">Name</th>
       <th scope="col">Stage</th>
+      <th scope="col">Committee Role</th>
       <th scope="col">Status</th>
     </tr>
   </thead>
@@ -164,6 +173,7 @@ Jawatankuasa Pemeriksa <?php count($examinees)?>
       <th scope="row"><?=$i?></th>
       <td><?=$x->fullname?></td>
       <td><?=$x->stage_name?></td>
+	  <td><?= isset($x->committee_role_label) ? Html::encode($x->committee_role_label) : '' ?></td>
 		<td><?=StudentStage::statusText($x->stage_status)?></td>
     </tr>
           

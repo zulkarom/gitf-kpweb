@@ -199,44 +199,47 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                 'attribute' => 'svName',
+                'label' => 'Supervisor Name',
                 'format' => 'raw',
                 'value' => function($model){
-                    $name = $model->svName;
-                    return Html::a($name, ['view', 'id' => $model->id, 'semester_id' => Yii::$app->request->get('semester_id')], [
+                    $staffNo = $model->staff ? $model->staff->staff_no : '';
+                    $name = strtoupper($model->svName);
+                    $text = $staffNo ? $staffNo . ' - ' . $name : $name;
+                    return Html::a($text, ['view', 'id' => $model->id, 'semester_id' => Yii::$app->request->get('semester_id')], [
                         'title' => $model->svName
                     ]);
                 }
             ],
             [
-                'label' => 'Bidang Kepakaran',
+                'label' => 'Field of Expertise',
                 'attribute' => 'svFieldsString',
                 'value' => function($model){
                     return $model->svFieldsString;
                 }
             ],
             [
-                'label' => 'Penyelia Utama',
+                'label' => 'Main Supervisor',
                 'attribute' => 'main_count',
                 'value' => function($model){
                     return (int)($model->getAttribute('main_count') ?? 0);
                 }
             ],
             [
-                'label' => 'Penyelia Bersama',
+                'label' => 'Co-Supervisor',
                 'attribute' => 'second_count',
                 'value' => function($model){
                     return (int)($model->getAttribute('second_count') ?? 0);
                 }
             ],
             [
-                'label' => 'Jumlah Penyeliaan',
+                'label' => 'Total',
                 'attribute' => 'total_count',
                 'value' => function($model){
                     return (int)($model->getAttribute('total_count') ?? 0);
                 }
             ],
             [
-                'label' => 'Warna',
+                'label' => 'Color',
                 'attribute' => 'total_count',
                 'format' => 'raw',
                 'contentOptions' => ['style' => 'text-align:center; width:80px;'],
