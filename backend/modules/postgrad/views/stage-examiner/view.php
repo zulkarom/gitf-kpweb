@@ -32,6 +32,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'examiner_id',
             'stage_id',
+            [
+                'attribute' => 'committee_role',
+                'value' => $model->committeeRoleLabel,
+            ],
             'appoint_date',
         ],
     ]) ?>

@@ -68,8 +68,6 @@ use kartik\widgets\ActiveForm;
 
     <?= $form->field($model, 'status_daftar')->dropDownList(StudentRegister::statusDaftarList(), ['prompt' => 'Select..']) ?>
 
-    <?= $form->field($model, 'status_aktif')->dropDownList(StudentRegister::statusAktifList(), ['prompt' => 'Select..']) ?>
-
     </div>
 </div>
 

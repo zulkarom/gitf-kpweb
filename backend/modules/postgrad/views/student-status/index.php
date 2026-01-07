@@ -26,6 +26,38 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <div class="box-body">
 
+            <div class="alert alert-info">
+                <p>Halaman ini digunakan untuk mengemaskini status pelajar pascasiswazah. Status pelajar perlu dikemaskini pada setiap semester/awal semester untuk memastikan rekod adalah terkini.</p>
+            </div>
+
+            <div class="alert alert-default">
+                <strong>Panduan Muat Naik (CSV)</strong><br />
+                
+
+
+                1) Pilih <strong>Semester</strong>.<br />
+                2) Sediakan fail <strong>.csv</strong> (maksimum 10MB) dan baris pertama mestilah <strong>header</strong>.<br />
+                3) Kolum wajib: <strong>student_id</strong> (atau <strong>student id</strong>), <strong>status_daftar</strong>. Kolum <strong>student_name</strong> (jika ada) akan <strong>diabaikan</strong> semasa muat naik.<br />
+                <em>Nota status_daftar:</em> nilai teks yang diterima (tidak sensitif huruf besar/kecil) ialah:
+                <ul>
+                    <li>Ditawarkan</li>
+                    <li>Daftar</li>
+                    <li>Tidak daftar</li>
+                    <li>Tangguh</li>
+                    <li>Tarik Diri</li>
+                    <li>Graduat</li>
+                    <li>Diberhentikan</li>
+                    <li>Meninggal Dunia</li>
+                    <li>NOS</li>
+                </ul>
+             <br />
+                4) <strong>Status Aktif</strong> akan ditetapkan secara automatik: <strong>Daftar / NOS</strong> = Aktif, selain itu = Tidak Aktif.<br />
+                5) Pastikan tiada <strong>student_id</strong> berulang dalam CSV.<br />
+                6) Pilih fail CSV. Sistem akan <strong>muat naik secara automatik</strong> dan papar <strong>preview</strong>.<br />
+                7) Semak keputusan preview (contoh: READY / NOT_FOUND / INVALID_STATUS / NO_CHANGES).<br />
+                8) Jika betul, klik <strong>Apply Updates</strong> untuk kemaskini.
+            </div>
+
             <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
             <?php
@@ -36,9 +68,26 @@ $this->params['breadcrumbs'][] = $this->title;
                 );
             ?>
 
-            <?= $form->field($model, 'semester_id')->dropDownList($semesterOptions, ['prompt' => 'Choose']) ?>
+<div class="row">
+                <div class="col-md-6">
+                    <?= $form->field($model, 'semester_id')->dropDownList($semesterOptions, ['prompt' => 'Choose'])->label('Semester') ?>
+                </div>
+                <div class="col-md-12">
+                         <div class="form-group">
+                <?= Html::a('Download Sample CSV of selected Semester', '#', ['id' => 'pg-status-download-btn']) ?>
+                <span id="pg-status-download-msg" style="margin-left:10px"></span>
+            </div>
+                </div>
+            </div>
 
-            <?= $form->field($model, 'file')->fileInput(['accept' => '.csv', 'id' => 'pg-status-csv-file']) ?>
+
+      
+
+            
+
+            <?= $form->field($model, 'file')->fileInput(['accept' => '.csv', 'id' => 'pg-status-csv-file'])->label('Upload CSV File') ?>
+
+       
 
             <?= Html::hiddenInput('csv_token', Yii::$app->request->post('csv_token', ''), ['id' => 'pg-status-csv-token']) ?>
 
@@ -60,6 +109,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 $uploadUrlJson = Json::encode($uploadUrl);
                 $csrfParamJson = Json::encode(Yii::$app->request->csrfParam);
                 $csrfTokenJson = Json::encode(Yii::$app->request->getCsrfToken());
+                $downloadUrlBase = Url::to(['/postgrad/student-status/download-csv']);
+                $downloadUrlBaseJson = Json::encode($downloadUrlBase);
                 $this->registerJs(<<<JS
                 (function(){
                     var uploadBtn = $('#pg-status-upload-btn');
@@ -69,11 +120,20 @@ $this->params['breadcrumbs'][] = $this->title;
                     var form = fileInput.closest('form');
                     var applyBtn = form.find('button[name="apply"], input[name="apply"]');
 
+                    var downloadBtn = $('#pg-status-download-btn');
+                    var downloadMsg = $('#pg-status-download-msg');
+                    var semesterSelect = $('#studentstatusuploadform-semester_id');
+
                     var isUploading = false;
 
                     function setMsg(text, isError){
                         msg.text(text);
                         msg.css('color', isError ? '#a94442' : '#3c763d');
+                    }
+
+                    function setDownloadMsg(text, isError){
+                        downloadMsg.text(text);
+                        downloadMsg.css('color', isError ? '#a94442' : '#3c763d');
                     }
 
                     function uploadCsv(done){
@@ -166,6 +226,21 @@ $this->params['breadcrumbs'][] = $this->title;
                             form.trigger('submit');
                         });
                     });
+
+                    downloadBtn.on('click', function(e){
+                        e.preventDefault();
+                        setDownloadMsg('', false);
+
+                        var semesterId = $.trim(semesterSelect.val() || '');
+                        if(semesterId === ''){
+                            setDownloadMsg('Sila pilih Semester dahulu', true);
+                            return;
+                        }
+
+                        var base = {$downloadUrlBaseJson};
+                        var url = base + (base.indexOf('?') >= 0 ? '&' : '?') + 'semester_id=' + encodeURIComponent(semesterId);
+                        window.location.href = url;
+                    });
                 })();
 JS);
             ?>
@@ -216,7 +291,7 @@ JS);
                             <th>Status Daftar (CURRENT)</th>
                             <th>Status Aktif (CURRENT)</th>
                             <th>Status Daftar (NEW)</th>
-                            <th>Status Aktif (NEW)</th>
+                            <th>Status Aktif (AUTO)</th>
                             <th>Status Daftar (TO BE MAPPED)</th>
                             <th>Status Aktif (TO BE MAPPED)</th>
                             <th>Result</th>

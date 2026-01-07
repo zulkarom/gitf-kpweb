@@ -10,7 +10,7 @@ use yii\helpers\ArrayHelper;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\postgrad\models\StudentCsvUploadForm */
 
-$this->title = 'Update Student Status Daftar (CSV)';
+$this->title = 'Update Student Data (CSV)';
 $this->params['breadcrumbs'][] = ['label' => 'Postgraduate Admin', 'url' => ['/postgrad/student/index']];
 $this->params['breadcrumbs'][] = $this->title;
 

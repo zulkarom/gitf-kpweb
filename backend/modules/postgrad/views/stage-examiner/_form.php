@@ -4,6 +4,7 @@ use kartik\date\DatePicker;
 use kartik\select2\Select2;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use backend\modules\postgrad\models\StageExaminer;
 use backend\modules\postgrad\models\StudentSupervisor;
 
 /* @var $this yii\web\View */
@@ -37,6 +38,16 @@ echo $form->field($model, 'examiner_id')->widget(Select2::classname(), [
     ],
 ]);
 
+?>
+
+<?php
+echo $form->field($model, 'committee_role')->widget(Select2::classname(), [
+    'data' => StageExaminer::committeeRoleList(),
+    'options' => ['placeholder' => 'Select ...'],
+    'pluginOptions' => [
+        'allowClear' => true
+    ],
+]);
 ?>
 
     <?=$form->field($model, 'appoint_date')->widget(DatePicker::classname(), [
