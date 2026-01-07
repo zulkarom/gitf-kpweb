@@ -225,6 +225,7 @@ Supervisor
       <th scope="col">Name</th>
       <th scope="col">Role</th>
       <th scope="col">In/External</th>
+      <th scope="col">Active</th>
       <th scope="col"></th>
     </tr>
   </thead>
@@ -239,7 +240,8 @@ Supervisor
       <td><?= Html::a($s->supervisor->svName, ['/postgrad/supervisor/view', 'id' => $s->supervisor->id]) ?></td>
       <td><?=$s->roleName()?></td>
       <td><?=$s->supervisor->typeName?></td>
-      <td><a href="<?=Url::to(['student-supervisor/update', 'id' => $s->id])?>" class="btn btn-warning btn-sm">View</a>  
+      <td><?= $s->isActiveLabel ?></td>
+      <td><a href="<?=Url::to(['student-supervisor/update', 'id' => $s->id])?>" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i></a>  
       
        <a href="<?=Url::to(['student-supervisor/delete', 'id' => $s->id])?>" class="btn btn-danger btn-sm" data-confirm="Are you sure to delete this supervisor?"><i class="fa fa-trash"></i></a>
       </td>
@@ -282,7 +284,7 @@ Research Stage
       <th scope="col">#</th>
       <th scope="col">Stage</th>
       <th scope="col">Status</th>
-      <th scope="col">Date</th>
+      <th scope="col">Semester</th>
       <th scope="col"></th>
     </tr>
   </thead>
@@ -296,7 +298,7 @@ Research Stage
       <th scope="row"><?=$i?></th>
       <td><?=$s->stage->stage_name?></td>
       <td><?=$s->statusName?></td>
-      <td><?=date('d/m/Y', strtotime($s->stage_date))?></td>
+      <td><?= $s->semester ? $s->semester->shortFormat() : '' ?></td>
       <td><a href="<?=Url::to(['student-stage/view', 'id' => $s->id])?>" class="btn btn-warning btn-sm">View</a> 
       
         <a href="<?=Url::to(['student-stage/delete', 'id' => $s->id])?>" class="btn btn-danger btn-sm" data-confirm="Are you sure to delete this stage?"><i class="fa fa-trash"></i></a>

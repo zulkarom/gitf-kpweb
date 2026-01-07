@@ -11,6 +11,7 @@ use backend\modules\postgrad\models\External;
  */
 class ExternalSearch extends External
 {
+    public $svFieldsString;
     /**
      * {@inheritdoc}
      */
@@ -18,7 +19,7 @@ class ExternalSearch extends External
     {
         return [
             [['id', 'created_at', 'updated_at'], 'integer'],
-            [['ex_name', 'university_id'], 'safe'],
+            [['ex_name', 'university_id', 'svFieldsString'], 'safe'],
         ];
     }
 
@@ -40,13 +41,19 @@ class ExternalSearch extends External
      */
     public function search($params)
     {
-        $query = External::find();
+        $query = External::find()->alias('e')->joinWith(['svFields.field f']);
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+
+        // enable sorting by field name string
+        $dataProvider->sort->attributes['svFieldsString'] = [
+            'asc' => ['f.field_name' => SORT_ASC],
+            'desc' => ['f.field_name' => SORT_DESC],
+        ];
 
         $this->load($params);
 
@@ -58,13 +65,20 @@ class ExternalSearch extends External
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'e.id' => $this->id,
+            'e.created_at' => $this->created_at,
+            'e.updated_at' => $this->updated_at,
         ]);
 
-        $query->andFilterWhere(['like', 'ex_name', $this->ex_name])
-            ->andFilterWhere(['like', 'university_id', $this->university_id]);
+        $query->andFilterWhere(['like', 'e.ex_name', $this->ex_name]);
+
+        if (!empty($this->university_id)) {
+            $query->andFilterWhere(['e.university_id' => $this->university_id]);
+        }
+
+        if (!empty($this->svFieldsString)) {
+            $query->andFilterWhere(['like', 'f.field_name', $this->svFieldsString]);
+        }
 
         return $dataProvider;
     }

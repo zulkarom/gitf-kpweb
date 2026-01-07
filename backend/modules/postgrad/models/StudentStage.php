@@ -4,7 +4,6 @@ namespace backend\modules\postgrad\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
-use backend\modules\staff\models\Staff;
 use backend\models\Semester;
 
 /**
@@ -32,11 +31,38 @@ class StudentStage extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['student_id', 'stage_id', 'semester_id', 'stage_date'], 'required'],
-            [['student_id', 'stage_id', 'status', 'chairman_id', 'semester_id'], 'integer'],
+            [['student_id', 'stage_id', 'semester_id'], 'required'],
+            [['student_id', 'stage_id', 'status', 'semester_id'], 'integer'],
             [['remark'], 'string'],
             [['stage_date'], 'safe'],
         ];
+    }
+
+    public function beforeValidate()
+    {
+        if (parent::beforeValidate()) {
+            if (empty($this->stage_date) && !empty($this->semester_id)) {
+                $semester = Semester::findOne((int)$this->semester_id);
+                if ($semester) {
+                    $id = (string)$semester->id;
+                    $year1 = substr($id, 0, 4);
+                    $year2 = substr($id, 4, 4);
+                    $session = substr($id, 8, 1);
+
+                    if ($session == '1') {
+                        // September of year1
+                        $this->stage_date = $year1 . '-09-01';
+                    } elseif ($session == '2') {
+                        // February of year2
+                        $this->stage_date = $year2 . '-02-01';
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -47,10 +73,8 @@ class StudentStage extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'student_id' => 'Student',
-            'chairman_id' => 'Chairman',
             'semester_id' => 'Semester',
             'semesterName' => 'Semester',
-            'chairmanName' => 'Chairman',
             'stage_id' => 'Stage',
             'stage_date' => 'Stage Date',
             'status' => 'Status',
@@ -58,16 +82,11 @@ class StudentStage extends \yii\db\ActiveRecord
     }
     
     public function regSemesters($student){
-        $list = StudentSemester::find()
-        ->where(['student_id' => $student])
-        ->all();
-        $array = array();
-        if($list){
-            foreach($list as $s){
-                $array[$s->semester_id] = $s->semester->longFormat();
-            }
+        $array = [];
+        $list = Semester::listSemesterArray();
+        if ($list) {
+            $array = $list;
         }
-        
         return $array;
     }
     
@@ -89,14 +108,6 @@ class StudentStage extends \yii\db\ActiveRecord
     
     public function getStudent(){
         return $this->hasOne(Student::className(), ['id' => 'student_id']);
-    }
-    
-    public function getChairman(){
-        return $this->hasOne(Staff::className(), ['id' => 'chairman_id']);
-    }
-    
-    public function getChairmanName(){
-        return $this->chairman->user->fullname;
     }
     
     public function getStageListArray(){

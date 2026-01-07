@@ -352,7 +352,14 @@ class Menu
                     ]
                 ],
                 [
-                    'label' => 'Externals',
+                    'label' => 'Examination Committee',
+                    'icon' => 'users',
+                    'url' => [
+                        '/postgrad/exam-committee/index'
+                    ]
+                ],
+                [
+                    'label' => 'Externals Data',
                     'icon' => 'external-link',
                     'url' => [
                         '/postgrad/external'

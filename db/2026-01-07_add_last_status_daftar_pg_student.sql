@@ -2,4 +2,4 @@
 -- Generated: 2026-01-07
 
 ALTER TABLE `pg_student`
-  ADD COLUMN `last_status_daftar` INT NULL AFTER `status`;
+  ADD COLUMN `last_status_daftar` INT NULL AFTER `user_id`;

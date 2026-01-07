@@ -93,4 +93,12 @@ class SettingController extends Controller
 
         return $this->renderContent($html);
     }
+
+    public function actionClearRbacCache()
+{
+    Yii::$app->cache->flush();
+
+    return 'RBAC cache cleared';
+}
+
 }

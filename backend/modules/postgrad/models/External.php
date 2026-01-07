@@ -5,6 +5,9 @@ namespace backend\modules\postgrad\models;
 use Yii;
 use backend\models\University;
 use yii\helpers\ArrayHelper;
+use backend\modules\postgrad\models\Supervisor;
+use backend\modules\postgrad\models\SupervisorField;
+use common\models\Common;
 
 /**
  * This is the model class for table "pg_external".
@@ -17,6 +20,7 @@ use yii\helpers\ArrayHelper;
  */
 class External extends \yii\db\ActiveRecord
 {
+    public $fields;
     /**
      * {@inheritdoc}
      */
@@ -34,6 +38,7 @@ class External extends \yii\db\ActiveRecord
             [['ex_name', 'created_at', 'updated_at'], 'required'],
             [['created_at', 'updated_at', 'university_id'], 'integer'],
             [['ex_name'], 'string', 'max' => 200],
+            ['fields', 'each', 'rule' => ['integer']],
         ];
     }
 
@@ -70,6 +75,27 @@ class External extends \yii\db\ActiveRecord
     public static function listExternalArray(){
         $list = self::find()->all();
         return ArrayHelper::map($list, 'id', 'ex_name');
+    }
+
+    public function getSupervisor()
+    {
+        return $this->hasOne(Supervisor::className(), ['external_id' => 'id']);
+    }
+
+    public function getSvFields()
+    {
+        return $this->hasMany(SupervisorField::className(), ['sv_id' => 'id'])
+            ->via('supervisor');
+    }
+
+    public function getSvFieldNameArray()
+    {
+        return ArrayHelper::map($this->svFields, 'id', 'fieldName');
+    }
+
+    public function getSvFieldsString()
+    {
+        return Common::array2Str($this->getSvFieldNameArray());
     }
 
 }

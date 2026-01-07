@@ -31,6 +31,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'supervisor_id',
+            [
+                'attribute' => 'is_active',
+                'format' => 'raw',
+                'value' => $model->isActiveLabel,
+            ],
             'appoint_at',
         ],
     ]) ?>

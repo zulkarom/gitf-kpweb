@@ -260,8 +260,7 @@ class StudentRegister extends \yii\db\ActiveRecord
         if ($current && (int)$this->semester_id === (int)$current->id) {
             Student::updateAll(
                 [
-                    'status_daftar' => $this->status_daftar,
-                    'status_aktif' => $this->status_aktif,
+                    'last_status_daftar' => $this->status_daftar,
                 ],
                 ['id' => $this->student_id]
             );

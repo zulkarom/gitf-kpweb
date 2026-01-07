@@ -52,6 +52,13 @@ echo $form->field($model, 'supervisor_id')->widget(Select2::classname(), [
     
 ]);
 ?>
+
+<?= $form->field($model, 'is_active')->dropDownList([
+    1 => 'Active',
+    0 => 'Inactive',
+], ['prompt' => 'Select status ...']) ?>
+
+
     
 	
 	

@@ -5,6 +5,7 @@ namespace backend\modules\postgrad\controllers;
 use Yii;
 use backend\modules\postgrad\models\Student;
 use backend\modules\postgrad\models\StudentStage;
+use backend\modules\postgrad\models\StudentRegister;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -75,7 +76,22 @@ class StudentStageController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $model->student_id = $s;
             if($model->save()){
-                return $this->redirect(['view', 'id' => $s]);
+                $reg = StudentRegister::findOne([
+                    'student_id' => (int)$model->student_id,
+                    'semester_id' => (int)$model->semester_id,
+                ]);
+
+                if (!$reg) {
+                    $reg = new StudentRegister();
+                    $reg->student_id = (int)$model->student_id;
+                    $reg->semester_id = (int)$model->semester_id;
+                    $reg->status_daftar = StudentRegister::STATUS_DAFTAR_DAFTAR;
+                    $reg->status_aktif = StudentRegister::STATUS_AKTIF_AKTIF;
+                    $reg->scenario = 'csv_status';
+                    $reg->save(false);
+                }
+
+                return $this->redirect(['view', 'id' => $model->id]);
             }
             
         }

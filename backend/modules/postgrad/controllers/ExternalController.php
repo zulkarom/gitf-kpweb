@@ -5,6 +5,8 @@ namespace backend\modules\postgrad\controllers;
 use Yii;
 use backend\modules\postgrad\models\External;
 use backend\modules\postgrad\models\ExternalSearch;
+use backend\modules\postgrad\models\Supervisor;
+use backend\modules\postgrad\models\SupervisorField;
 use yii\web\Controller;
 use yii\filters\AccessControl;
 
@@ -73,8 +75,38 @@ class ExternalController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $model->created_at = time();
             $model->updated_at = time();
-            if($model->save()){
-                return $this->redirect(['view', 'id' => $model->id]);
+
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                if ($model->save()) {
+                    // ensure there is a corresponding external Supervisor record
+                    $supervisor = new Supervisor();
+                    $supervisor->is_internal = 0;
+                    $supervisor->external_id = $model->id;
+                    $supervisor->staff_id = null;
+                    $supervisor->created_at = time();
+                    $supervisor->updated_at = time();
+
+                    if ($supervisor->save(false)) {
+                        // attach selected fields, if any
+                        if (!empty($model->fields) && is_array($model->fields)) {
+                            foreach ($model->fields as $fieldId) {
+                                $sf = new SupervisorField();
+                                $sf->sv_id = $supervisor->id;
+                                $sf->field_id = (int)$fieldId;
+                                $sf->save(false);
+                            }
+                        }
+
+                        $transaction->commit();
+                        return $this->redirect(['view', 'id' => $model->id]);
+                    }
+                }
+
+                $transaction->rollBack();
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+                Yii::$app->session->addFlash('error', $e->getMessage());
             }
         }
 

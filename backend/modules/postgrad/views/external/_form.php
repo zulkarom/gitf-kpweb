@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\select2\Select2;
+use backend\modules\postgrad\models\Field;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\postgrad\models\External */
@@ -34,6 +35,17 @@ echo $form->field($model, 'university_id')->widget(Select2::classname(), [
     ],
 ]);
 
+?>
+
+<?php
+// allow selecting expertise fields similar to supervisor create
+echo $form->field($model, 'fields')->widget(Select2::classname(), [
+    'data' => Field::listFieldArray(),
+    'options' => ['multiple' => true, 'placeholder' => 'Select ..'],
+    'pluginOptions' => [
+        'allowClear' => true
+    ],
+]);
 ?>
     
 	

@@ -3,7 +3,6 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use backend\models\Semester;
-use backend\modules\staff\models\Staff;
 use kartik\date\DatePicker;
 use kartik\select2\Select2;
 
@@ -42,18 +41,6 @@ use kartik\select2\Select2;
     
     
 ]);
-?>
-
-<?php 
-
-echo $form->field($model, 'chairman_id')->widget(Select2::classname(), [
-    'data' => Staff::listAcademicStaffArray(),
-    'options' => ['placeholder' => 'Select ..'],
-    'pluginOptions' => [
-        'allowClear' => true
-    ],
-]);
-
 ?>
 
     

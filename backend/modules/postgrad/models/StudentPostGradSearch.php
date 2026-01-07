@@ -16,6 +16,7 @@ class StudentPostGradSearch extends Student
     public $study_mode_rc;
     public $pro_level;
     public $semester_id;
+    public $status;
     /**
      * {@inheritdoc}
      */
@@ -92,7 +93,8 @@ class StudentPostGradSearch extends Student
         // grid filtering conditions
         $query->andFilterWhere([
             'program_id' => $this->program_id,
-            'a.status' => $this->status,
+            // use registration status from pg_student_reg instead of dropped a.status
+            'r.status_aktif' => $this->status,
             'a.nationality' => $this->nationality,
             'a.field_id' => $this->field_id,
             'r.status_daftar' => $this->status_daftar,

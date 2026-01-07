@@ -37,7 +37,6 @@ $this->params['breadcrumbs'][] = 'View Stage';
             'stageName',
             'semesterName',
             'stage_date',
-            'chairmanName',
             'statusName',
             'remark'
         ],
@@ -46,6 +45,7 @@ $this->params['breadcrumbs'][] = 'View Stage';
 <br />
 
     <p>
+        <?= Html::a('Back to Student', ['student/view', 'id' => $model->student_id], ['class' => 'btn btn-default']) ?>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
@@ -69,7 +69,7 @@ $this->params['breadcrumbs'][] = 'View Stage';
 <div class="box">
 <div class="box-header">
 <h3 class="box-title">
-Examiners
+Examiner Committees
 </h3>
 </div>
 <div class="box-body">
@@ -80,6 +80,7 @@ Examiners
       <th scope="col">#</th>
       <th scope="col">Examiners</th>
       <th scope="col">Type</th>
+      <th scope="col">Committee Role</th>
       <th scope="col"></th>
     </tr>
   </thead>
@@ -93,6 +94,7 @@ Examiners
        <th scope="row"><?=$i?></th>
       <td><?=$s->examiner->svName?></td>
       <td><?=$s->examiner->typeName?></td>
+      <td><?=$s->committeeRoleLabel?></td>
       <td><a href="<?=Url::to(['stage-examiner/update', 'id' => $s->id])?>" class="btn btn-warning btn-sm">View</a>  
       
         <a href="<?=Url::to(['stage-examiner/delete', 'id' => $s->id])?>" class="btn btn-danger btn-sm" data-confirm="Are you sure to delete this examiner?"><i class="fa fa-trash"></i></a>

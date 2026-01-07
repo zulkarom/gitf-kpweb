@@ -3,6 +3,7 @@
 namespace backend\modules\postgrad\models;
 
 use Yii;
+use yii\helpers\Html;
 
 /**
  * This is the model class for table "pg_student_sv".
@@ -10,6 +11,7 @@ use Yii;
  * @property int $id
  * @property int $supervisor_id
  * @property string $appoint_at
+ * @property int $is_active
  */
 class StudentSupervisor extends \yii\db\ActiveRecord
 {
@@ -28,7 +30,7 @@ class StudentSupervisor extends \yii\db\ActiveRecord
     {
         return [
             [['supervisor_id', 'student_id'], 'required'],
-            [['supervisor_id', 'sv_role', 'student_id'], 'integer'],
+            [['supervisor_id', 'sv_role', 'student_id', 'is_active'], 'integer'],
             [['appoint_at'], 'safe'],
         ];
     }
@@ -42,6 +44,7 @@ class StudentSupervisor extends \yii\db\ActiveRecord
             'id' => 'ID',
             'supervisor_id' => 'Supervisor',
             'sv_role' => 'Role',
+            'is_active' => 'Active',
             'appoint_at' => 'Appoint At',
         ];
     }
@@ -71,11 +74,40 @@ class StudentSupervisor extends \yii\db\ActiveRecord
         }
     }
     
+    public static function isActiveColorMap()
+    {
+        return [
+            1 => 'success',  // Active
+            0 => 'default',  // Inactive
+        ];
+    }
+
+    public static function isActiveText($code)
+    {
+        return ((int)$code === 1) ? 'Active' : 'Inactive';
+    }
+
+    public static function isActiveLabel($code)
+    {
+        $int = (int)$code;
+        $text = self::isActiveText($int);
+        $map = self::isActiveColorMap();
+        $color = array_key_exists($int, $map) ? $map[$int] : 'default';
+        return Html::tag('span', $text, ['class' => 'label label-' . $color]);
+    }
+
+    public function getIsActiveLabel()
+    {
+        return self::isActiveLabel($this->is_active);
+    }
+    
     public static function supervisorListArray(){
-        $list =Supervisor::find()->alias('a')
-        ->select('a.id, u.fullname, x.ex_name, a.is_internal')
-        ->joinWith(['staff.user u', 'external x'])
-        ->all();
+        $list = Supervisor::find()->alias('a')
+            ->select('a.id, u.fullname, x.ex_name, a.is_internal')
+            // use LEFT JOIN for staff/user so external supervisors (no staff) are kept
+            ->joinWith(['staff.user u'], false, 'LEFT JOIN')
+            ->joinWith(['external x'])
+            ->all();
         $array = array();
         if($list){
             foreach($list as $s){

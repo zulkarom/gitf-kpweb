@@ -16,10 +16,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="supervisor-index">
 
-    <p>
-        <?= Html::a('Add Supervisor', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
     <?php
         $currentTab = $tab ?? 'academic';
         $isSupervisorTab = true;
