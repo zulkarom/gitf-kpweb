@@ -1,1 +1,0 @@
-ALTER TABLE `conf_scope`  ADD `scope_order` TINYINT(4) NOT NULL DEFAULT '0'  AFTER `scope_name`;

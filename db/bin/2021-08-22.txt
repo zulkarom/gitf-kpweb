@@ -1,8 +1,0 @@
-ALTER TABLE `sp_course` ADD `study_level` VARCHAR(10) NOT NULL DEFAULT 'UG' AFTER `credit_hour`;
-
-ALTER TABLE `st_student` ADD `study_level` VARCHAR(10) NOT NULL DEFAULT 'UG' AFTER `faculty_id`;
-
----
-
-ALTER TABLE `tld_course_lec` ADD `attendance_file` TEXT NULL DEFAULT NULL AFTER `attendance_header`;
-

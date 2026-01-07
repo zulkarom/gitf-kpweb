@@ -1,2 +1,0 @@
-
-https://hr4u.umk.edu.my/HRA/StaffDirectory?action=getStafDirectoryListByPTj&ptjCode=A01

@@ -1,8 +1,0 @@
-ALTER TABLE `cert_doc` ADD `data_check` TINYINT(1) NULL DEFAULT '0' AFTER `downloaded`;
-ALTER TABLE `cert_event_type` ADD `name_mt` DOUBLE NULL DEFAULT '10' AFTER `type_name`, ADD `name_size` DOUBLE NULL DEFAULT '10' AFTER `name_mt`;
-ALTER TABLE `cert_event_type` ADD `template_file` TEXT NULL DEFAULT NULL AFTER `custom_html`;
-ALTER TABLE `cert_event_type` ADD `updated_at` DATETIME NULL DEFAULT NULL AFTER `template_file`;
-ALTER TABLE `cert_event_type` ADD `published` TINYINT(1) NULL DEFAULT '0' AFTER `updated_at`;
-ALTER TABLE `cert_event_type` ADD `is_portrait` TINYINT(1) NULL DEFAULT '1' AFTER `published`;
-ALTER TABLE `cert_event_type` ADD `published_at` DATETIME NULL DEFAULT NULL AFTER `is_portrait`;
-

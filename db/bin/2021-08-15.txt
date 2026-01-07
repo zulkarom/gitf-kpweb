@@ -1,8 +1,0 @@
-ALTER TABLE `tld_appoint_letter` ADD `manual_file` TEXT NULL DEFAULT NULL AFTER `appoint_check`, ADD `tutorial_only` TINYINT(1) NOT NULL DEFAULT '0' AFTER `manual_file`;
-
-ALTER TABLE `sp_course_version` ADD `justification` TEXT NULL DEFAULT NULL AFTER `verified_note`, ADD `what_change` TEXT NULL DEFAULT NULL AFTER `justification`;
-
-
-ALTER TABLE `sp_course_version` ADD `duplicated_from` INT NOT NULL DEFAULT '0' AFTER `what_change`;
-
-UPDATE `sp_assessment_cat` SET `cat_name` = 'Pentaksiran Berterusan', `cat_name_bi` = 'Continuous Assessment' WHERE `sp_assessment_cat`.`id` = 8; UPDATE `sp_assessment_cat` SET `cat_name` = 'Pentaksiran Akhir', `cat_name_bi` = 'Final Exam/Assessment' WHERE `sp_assessment_cat`.`id` = 9;

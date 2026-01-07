@@ -1,1 +1,0 @@
-ALTER TABLE `conf_paper_reviewer` ADD `paper_rate` TINYINT(2) NULL DEFAULT NULL AFTER `review_at`;
