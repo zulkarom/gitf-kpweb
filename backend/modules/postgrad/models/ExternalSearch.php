@@ -12,6 +12,7 @@ use backend\modules\postgrad\models\External;
 class ExternalSearch extends External
 {
     public $svFieldsString;
+    public $universityName;
     /**
      * {@inheritdoc}
      */
@@ -19,7 +20,7 @@ class ExternalSearch extends External
     {
         return [
             [['id', 'created_at', 'updated_at'], 'integer'],
-            [['ex_name', 'university_id', 'svFieldsString'], 'safe'],
+            [['ex_name', 'university_id', 'svFieldsString', 'universityName'], 'safe'],
         ];
     }
 
@@ -41,7 +42,9 @@ class ExternalSearch extends External
      */
     public function search($params)
     {
-        $query = External::find()->alias('e')->joinWith(['svFields.field f']);
+        $query = External::find()->alias('e')
+            ->joinWith(['svFields.field f'])
+            ->joinWith(['university uni']);
 
         // add conditions that should always apply here
 
@@ -53,6 +56,11 @@ class ExternalSearch extends External
         $dataProvider->sort->attributes['svFieldsString'] = [
             'asc' => ['f.field_name' => SORT_ASC],
             'desc' => ['f.field_name' => SORT_DESC],
+        ];
+
+        $dataProvider->sort->attributes['universityName'] = [
+            'asc' => ['uni.uni_name' => SORT_ASC],
+            'desc' => ['uni.uni_name' => SORT_DESC],
         ];
 
         $this->load($params);
@@ -78,6 +86,10 @@ class ExternalSearch extends External
 
         if (!empty($this->svFieldsString)) {
             $query->andFilterWhere(['like', 'f.field_name', $this->svFieldsString]);
+        }
+
+        if (!empty($this->universityName)) {
+            $query->andFilterWhere(['like', 'uni.uni_name', $this->universityName]);
         }
 
         return $dataProvider;

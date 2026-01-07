@@ -7,7 +7,9 @@ use backend\modules\postgrad\models\External;
 use backend\modules\postgrad\models\ExternalSearch;
 use backend\modules\postgrad\models\Supervisor;
 use backend\modules\postgrad\models\SupervisorField;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
 
 /**
@@ -126,10 +128,47 @@ class ExternalController extends Controller
     {
         $model = $this->findModel($id);
 
+        // preload existing expertise fields
+        if (Yii::$app->request->isGet) {
+            $model->fields = ArrayHelper::getColumn($model->svFields, 'field_id');
+        }
+
         if ($model->load(Yii::$app->request->post())) {
             $model->updated_at = time();
-            if($model->save()){
-                return $this->redirect(['view', 'id' => $model->id]);
+
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                if ($model->save()) {
+                    // ensure there is a corresponding external Supervisor record
+                    $supervisor = $model->supervisor;
+                    if (!$supervisor) {
+                        $supervisor = new Supervisor();
+                        $supervisor->is_internal = 0;
+                        $supervisor->external_id = $model->id;
+                        $supervisor->staff_id = null;
+                        $supervisor->created_at = time();
+                        $supervisor->updated_at = time();
+                        $supervisor->save(false);
+                    }
+
+                    // sync selected expertise fields
+                    SupervisorField::deleteAll(['sv_id' => (int)$supervisor->id]);
+                    if (!empty($model->fields) && is_array($model->fields)) {
+                        foreach ($model->fields as $fieldId) {
+                            $sf = new SupervisorField();
+                            $sf->sv_id = (int)$supervisor->id;
+                            $sf->field_id = (int)$fieldId;
+                            $sf->save(false);
+                        }
+                    }
+
+                    $transaction->commit();
+                    return $this->redirect(['index']);
+                }
+                $transaction->rollBack();
+            } catch (\Throwable $e) {
+                $transaction->rollBack();
+                throw $e;
             }
         }
 

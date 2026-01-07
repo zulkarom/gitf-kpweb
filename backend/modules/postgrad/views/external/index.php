@@ -28,9 +28,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
             'ex_name',
-            'universityName',
+            [
+                'attribute' => 'universityName',
+                'label' => 'Institution',
+                'value' => function($model){
+                    return $model->universityName;
+                },
+            ],
             [
                 'attribute' => 'svFieldsString',
                 'label' => 'Field',
