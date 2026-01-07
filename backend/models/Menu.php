@@ -379,7 +379,7 @@ class Menu
                             ]
                         ],
                         [
-                            'label' => 'Import Students (CSV)',
+                            'label' => 'Update Student Data',
                             'icon' => 'upload',
                             'url' => [
                                 '/postgrad/student-csv-import/index'
