@@ -7,6 +7,7 @@ use backend\modules\postgrad\models\Supervisor;
 use backend\modules\postgrad\models\SupervisorSearch;
 use backend\models\Semester;
 use backend\modules\postgrad\models\StudentRegister;
+use backend\modules\staff\models\Staff;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
@@ -81,6 +82,14 @@ class SupervisorController extends Controller
                 break;
         }
 
+        // Sync pg_supervisor with Staff module on page load so counts/list match.
+        // (Only internal supervisors are synced; external supervisors remain manual.)
+        if ($tab === 'academic') {
+            $this->syncInternalSupervisorsFromStaff(1, 1);
+        } elseif ($tab === 'other') {
+            $this->syncInternalSupervisorsFromStaff(null, 1);
+        }
+
         $dataProvider = $searchModel->search($params);
 
         $countStaffMain = 0;
@@ -90,24 +99,13 @@ class SupervisorController extends Controller
         $countGreen = 0;
 
         $tabCounts = [
-            'academic' => (int)Supervisor::find()->alias('a')
-                ->innerJoin(['stf' => 'staff'], 'stf.id = a.staff_id')
-                ->where(['a.is_internal' => 1, 'stf.faculty_id' => 1, 'stf.staff_active' => 1])
-                ->count('a.id'),
-            'other' => (int)Supervisor::find()->alias('a')
-                ->innerJoin(['stf' => 'staff'], 'stf.id = a.staff_id')
-                ->where(['a.is_internal' => 1])
-                ->andWhere(['<>', 'stf.faculty_id', 1])
-                ->andWhere(['stf.staff_active' => 1])
-                ->count('a.id'),
+            'academic' => (int)Staff::find()->where(['staff_active' => 1, 'faculty_id' => 1])->count(),
+            'other' => (int)Staff::find()->where(['staff_active' => 1])->andWhere(['<>', 'faculty_id', 1])->count(),
             'external' => (int)Supervisor::find()->alias('a')
                 ->where(['a.is_internal' => 0])
                 ->andWhere(['>', 'a.external_id', 0])
                 ->count('a.id'),
-            'transferred' => (int)Supervisor::find()->alias('a')
-                ->innerJoin(['stf' => 'staff'], 'stf.id = a.staff_id')
-                ->where(['a.is_internal' => 1, 'stf.faculty_id' => 1, 'stf.staff_active' => 0])
-                ->count('a.id'),
+            'transferred' => (int)Staff::find()->where(['staff_active' => 0, 'faculty_id' => 1])->count(),
         ];
 
         if ($tab === 'academic') {
@@ -162,6 +160,42 @@ class SupervisorController extends Controller
             'tab' => $tab,
             'tabCounts' => $tabCounts,
         ]);
+    }
+
+    private function syncInternalSupervisorsFromStaff($facultyId = null, $staffActive = 1)
+    {
+        $q = Staff::find()->select(['id'])
+            ->andWhere(['staff_active' => (int)$staffActive]);
+
+        if ($facultyId !== null) {
+            $q->andWhere(['faculty_id' => (int)$facultyId]);
+        }
+
+        $staffIds = $q->column();
+        if (empty($staffIds)) {
+            return;
+        }
+
+        $existing = Supervisor::find()
+            ->select(['staff_id'])
+            ->where(['is_internal' => 1])
+            ->andWhere(['staff_id' => $staffIds])
+            ->indexBy('staff_id')
+            ->column();
+
+        foreach ($staffIds as $sid) {
+            if (isset($existing[$sid])) {
+                continue;
+            }
+
+            $sv = new Supervisor();
+            $sv->is_internal = 1;
+            $sv->staff_id = (int)$sid;
+            $sv->external_id = null;
+            $sv->created_at = time();
+            $sv->updated_at = time();
+            $sv->save(false);
+        }
     }
 
     /**

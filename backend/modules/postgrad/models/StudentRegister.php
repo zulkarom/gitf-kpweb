@@ -251,4 +251,20 @@ class StudentRegister extends \yii\db\ActiveRecord
 
         return false;
     }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        $current = Semester::getCurrentSemester();
+        if ($current && (int)$this->semester_id === (int)$current->id) {
+            Student::updateAll(
+                [
+                    'status_daftar' => $this->status_daftar,
+                    'status_aktif' => $this->status_aktif,
+                ],
+                ['id' => $this->student_id]
+            );
+        }
+    }
 }

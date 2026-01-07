@@ -172,12 +172,12 @@ $menuItems = [
 					
                // ['label' => 'User Manual', 'icon' => 'book', 'visible' => Yii::$app->user->can('manual-manager'), 'url' => ['/manual/module']],
 
-				['label' => 'SAE Interview', 'icon' => 'book', 'url' => ['/sae']],
-				['label' => 'SAA Apprentice', 'icon' => 'book', 'url' => ['/apprentice']],
+				['label' => 'SAE Interview', 'icon' => 'book', 'url' => ['/sae'], 'visible' => Yii::$app->user->can('manage-sae')],
+				['label' => 'SAA Apprentice', 'icon' => 'book', 'url' => ['/apprentice'], 'visible' => Yii::$app->user->can('manage-apprentice')],
 
-				['label' => 'Protege', 'icon' => 'book', 'url' => ['/protege/session']],
+				['label' => 'Protege', 'icon' => 'book', 'url' => ['/protege/session'], 'visible' => Yii::$app->user->can('protege')],
 
-				['label' => 'Proceedings', 'icon' => 'microphone', 'url' => ['/proceedings']],
+				['label' => 'Proceedings', 'icon' => 'microphone', 'url' => ['/proceedings'], 'visible' => Yii::$app->user->can('proceedings-manager')],
 
 					['label' => 'Course Files (old)', 'icon' => 'files-o', 'url' => ['/course-files/default/teaching-assignment']],
 
