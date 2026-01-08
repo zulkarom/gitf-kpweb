@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use yii\grid\GridView;
+use backend\modules\postgrad\models\PgSetting;
 
 /* @var $this yii\web\View */
 /* @var $semester_id integer|null */
@@ -100,6 +101,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <div class="kpi-row">
 
+                <?php
+                    $greenLabel = PgSetting::trafficLightLabel('exam_committee', 'green');
+                    $yellowLabel = PgSetting::trafficLightLabel('exam_committee', 'yellow');
+                    $redLabel = PgSetting::trafficLightLabel('exam_committee', 'red');
+                ?>
+
                 <a href="<?= Url::to(array_merge($kpiBase, ['kpi' => 'chairman'])) ?>" style="display:block; color:inherit; text-decoration:none; flex: 1 1 0;">
                     <div class="kpi-card kpi-wide kpi-aqua">
                         <div class="kpi-text">
@@ -143,7 +150,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <a href="<?= Url::to(array_merge($kpiBase, ['kpi' => 'green'])) ?>" style="display:block; color:inherit; text-decoration:none; flex: 1 1 0;">
                     <div class="kpi-card kpi-narrow kpi-green">
                         <div class="kpi-text">
-                            <p class="kpi-title">Green (0–3)</p>
+                            <p class="kpi-title"><?= Html::encode($greenLabel) ?></p>
                             <p class="kpi-value"><?= (int)$countGreen ?></p>
                         </div>
                         <div class="kpi-icon"><span class="fa fa-circle"></span></div>
@@ -153,7 +160,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <a href="<?= Url::to(array_merge($kpiBase, ['kpi' => 'yellow'])) ?>" style="display:block; color:inherit; text-decoration:none; flex: 1 1 0;">
                     <div class="kpi-card kpi-narrow kpi-yellow">
                         <div class="kpi-text">
-                            <p class="kpi-title">Yellow (4–7)</p>
+                            <p class="kpi-title"><?= Html::encode($yellowLabel) ?></p>
                             <p class="kpi-value"><?= (int)$countYellow ?></p>
                         </div>
                         <div class="kpi-icon"><span class="fa fa-circle"></span></div>
@@ -163,7 +170,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <a href="<?= Url::to(array_merge($kpiBase, ['kpi' => 'red'])) ?>" style="display:block; color:inherit; text-decoration:none; flex: 1 1 0;">
                     <div class="kpi-card kpi-narrow kpi-red">
                         <div class="kpi-text">
-                            <p class="kpi-title">Red (8+)</p>
+                            <p class="kpi-title"><?= Html::encode($redLabel) ?></p>
                             <p class="kpi-value"><?= (int)$countRed ?></p>
                         </div>
                         <div class="kpi-icon"><span class="fa fa-circle"></span></div>

@@ -19,8 +19,12 @@ use backend\modules\postgrad\models\StudentData4;
 use backend\modules\postgrad\models\StudentPostGradSearch;
 use backend\modules\postgrad\models\Supervisor;
 use backend\modules\postgrad\models\StudentSupervisor;
+use backend\modules\postgrad\models\StageExaminer;
+use backend\modules\postgrad\models\StudentStage;
+use backend\modules\postgrad\models\PgSetting;
 use backend\models\Semester;
 use yii\db\Query;
+use backend\modules\staff\models\Staff;
 
 /**
  * StudentPostGradController implements the CRUD actions for StudentPostGrad model.
@@ -389,6 +393,59 @@ class StudentController extends Controller
             }
         }
 
+        $supervisorTraffic = ['green' => 0, 'yellow' => 0, 'red' => 0];
+        $supervisorRanges = PgSetting::trafficLightRanges('supervisor');
+        $supervisorRows = (new Query())
+            ->select(['a.id AS sid', 'COUNT(sr.id) AS total'])
+            ->from(['a' => Supervisor::tableName()])
+            ->innerJoin(['stf' => Staff::tableName()], 'stf.id = a.staff_id AND stf.faculty_id = 1 AND stf.staff_active = 1')
+            ->leftJoin(['ss' => 'pg_student_sv'], 'ss.supervisor_id = a.id')
+            ->leftJoin(['sr' => StudentRegister::tableName()], 'sr.student_id = ss.student_id AND sr.semester_id = :sem', [':sem' => (int)$semesterId])
+            ->groupBy(['a.id'])
+            ->all();
+        foreach ($supervisorRows as $r) {
+            $t = (int)($r['total'] ?? 0);
+            $color = PgSetting::classifyTrafficLight('supervisor', $t);
+            if (isset($supervisorTraffic[$color])) {
+                $supervisorTraffic[$color]++;
+            }
+        }
+
+        $committeeTraffic = ['green' => 0, 'yellow' => 0, 'red' => 0];
+        $committeeRanges = PgSetting::trafficLightRanges('exam_committee');
+        $committeeSupervisors = Supervisor::find()->alias('sv')
+            ->innerJoin(['stf' => Staff::tableName()], 'stf.id = sv.staff_id')
+            ->where(['sv.is_internal' => 1, 'stf.faculty_id' => 1, 'stf.staff_active' => 1])
+            ->indexBy('id')
+            ->all();
+        $committeeTotalsBySv = [];
+        if (!empty($committeeSupervisors)) {
+            $ids = array_keys($committeeSupervisors);
+            $committeeRows = (new Query())
+                ->select([
+                    'supervisor_id' => 'se.examiner_id',
+                    'total' => "SUM(CASE WHEN se.committee_role IN (1,2,3,4) THEN 1 ELSE 0 END)",
+                ])
+                ->from(['se' => StageExaminer::tableName()])
+                ->innerJoin(['st' => StudentStage::tableName()], 'st.id = se.stage_id')
+                ->where([
+                    'st.semester_id' => (int)$semesterId,
+                    'se.examiner_id' => $ids,
+                ])
+                ->groupBy(['se.examiner_id'])
+                ->all();
+            foreach ($committeeRows as $r) {
+                $committeeTotalsBySv[(int)$r['supervisor_id']] = (int)($r['total'] ?? 0);
+            }
+        }
+        foreach ($committeeSupervisors as $sid => $sv) {
+            $t = (int)($committeeTotalsBySv[(int)$sid] ?? 0);
+            $color = PgSetting::classifyTrafficLight('exam_committee', $t);
+            if (isset($committeeTraffic[$color])) {
+                $committeeTraffic[$color]++;
+            }
+        }
+
         return $this->render('stats', [
             'semester_id' => $semesterId,
             'activeCount' => $activeCount,
@@ -408,6 +465,10 @@ class StudentController extends Controller
             'phdModes' => $phdModes,
             'statusDaftarRows' => $statusDaftarRows,
             'statusAktifRows' => $statusAktifRows,
+            'supervisorTraffic' => $supervisorTraffic,
+            'committeeTraffic' => $committeeTraffic,
+            'supervisorRanges' => $supervisorRanges,
+            'committeeRanges' => $committeeRanges,
         ]);
     }
 

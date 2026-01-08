@@ -5,6 +5,7 @@ use yii\widgets\ActiveForm;
 use backend\models\Semester;
 use yii\helpers\ArrayHelper;
 use backend\modules\postgrad\models\StudentRegister;
+use backend\modules\postgrad\models\PgSetting;
 
 /* @var $this yii\web\View */
 /* @var $activeCount integer */
@@ -248,6 +249,104 @@ JS, \yii\web\View::POS_END);
         <div class="col-md-8">
 
         <div class="row">
+
+        <style>
+    .kpi-row { display:flex; gap:14px; align-items:stretch; flex-wrap:nowrap; }
+    .kpi-card { flex: 1 1 0; background:#fff; border:1px solid #e5e7eb; border-radius:10px; padding:16px 18px; box-shadow:0 1px 2px rgba(0,0,0,.06); display:flex; align-items:center; justify-content:space-between; min-height:84px; }
+    .kpi-card .kpi-text { line-height:1.1; }
+    .kpi-card .kpi-title { margin:0; font-size:13px; color:#6b7280; font-weight:600; letter-spacing:.3px; }
+    .kpi-card .kpi-value { margin:6px 0 0; font-size:28px; color:#111827; font-weight:700; }
+    .kpi-icon { width:36px; height:36px; border-radius:8px; display:flex; align-items:center; justify-content:center; position:relative; background:#e5e7eb; }
+    .kpi-narrow.kpi-red .kpi-icon > span,
+    .kpi-narrow.kpi-yellow .kpi-icon > span,
+    .kpi-narrow.kpi-green  .kpi-icon > span { display:none; }
+    .kpi-narrow.kpi-red .kpi-icon::after,
+    .kpi-narrow.kpi-yellow .kpi-icon::after,
+    .kpi-narrow.kpi-green  .kpi-icon::after { content:""; width:18px; height:18px; border-radius:50%; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); }
+    .kpi-narrow.kpi-red .kpi-icon::after { background:#d9534f; }
+    .kpi-narrow.kpi-yellow .kpi-icon::after { background:#f0ad4e; }
+    .kpi-narrow.kpi-green .kpi-icon::after { background:#5cb85c; }
+    .kpi-narrow { flex-basis: 33.333%; }
+    @media (max-width: 1400px){ .kpi-row { flex-wrap:wrap; } .kpi-narrow { flex-basis: calc(33.333% - 14px); } }
+    @media (max-width: 992px){ .kpi-narrow { flex-basis: calc(50% - 14px); } }
+    @media (max-width: 768px){ .kpi-narrow { flex-basis: 100%; } }
+        </style>
+
+        <div class="col-md-6">
+            <div class="box box-default">
+                <div class="box-header with-border"><h3 class="box-title">Supervisors (Traffic Light)</h3></div>
+                <div class="box-body">
+                    <?php
+                        $supGreen = PgSetting::trafficLightLabel('supervisor', 'green');
+                        $supYellow = PgSetting::trafficLightLabel('supervisor', 'yellow');
+                        $supRed = PgSetting::trafficLightLabel('supervisor', 'red');
+                    ?>
+                    <div class="kpi-row">
+                        <div class="kpi-card kpi-narrow kpi-green">
+                            <div class="kpi-text">
+                                <p class="kpi-title"><?= Html::encode($supGreen) ?></p>
+                                <p class="kpi-value"><?= (int)(($supervisorTraffic['green'] ?? 0)) ?></p>
+                            </div>
+                            <div class="kpi-icon"><span class="fa fa-circle"></span></div>
+                        </div>
+                        <div class="kpi-card kpi-narrow kpi-yellow">
+                            <div class="kpi-text">
+                                <p class="kpi-title"><?= Html::encode($supYellow) ?></p>
+                                <p class="kpi-value"><?= (int)(($supervisorTraffic['yellow'] ?? 0)) ?></p>
+                            </div>
+                            <div class="kpi-icon"><span class="fa fa-circle"></span></div>
+                        </div>
+                        <div class="kpi-card kpi-narrow kpi-red">
+                            <div class="kpi-text">
+                                <p class="kpi-title"><?= Html::encode($supRed) ?></p>
+                                <p class="kpi-value"><?= (int)(($supervisorTraffic['red'] ?? 0)) ?></p>
+                            </div>
+                            <div class="kpi-icon"><span class="fa fa-circle"></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="box box-default">
+                <div class="box-header with-border"><h3 class="box-title">Examination Committee (Traffic Light)</h3></div>
+                <div class="box-body">
+                    <?php
+                        $cmGreen = PgSetting::trafficLightLabel('exam_committee', 'green');
+                        $cmYellow = PgSetting::trafficLightLabel('exam_committee', 'yellow');
+                        $cmRed = PgSetting::trafficLightLabel('exam_committee', 'red');
+                    ?>
+                    <div class="kpi-row">
+                        <div class="kpi-card kpi-narrow kpi-green">
+                            <div class="kpi-text">
+                                <p class="kpi-title"><?= Html::encode($cmGreen) ?></p>
+                                <p class="kpi-value"><?= (int)(($committeeTraffic['green'] ?? 0)) ?></p>
+                            </div>
+                            <div class="kpi-icon"><span class="fa fa-circle"></span></div>
+                        </div>
+                        <div class="kpi-card kpi-narrow kpi-yellow">
+                            <div class="kpi-text">
+                                <p class="kpi-title"><?= Html::encode($cmYellow) ?></p>
+                                <p class="kpi-value"><?= (int)(($committeeTraffic['yellow'] ?? 0)) ?></p>
+                            </div>
+                            <div class="kpi-icon"><span class="fa fa-circle"></span></div>
+                        </div>
+                        <div class="kpi-card kpi-narrow kpi-red">
+                            <div class="kpi-text">
+                                <p class="kpi-title"><?= Html::encode($cmRed) ?></p>
+                                <p class="kpi-value"><?= (int)(($committeeTraffic['red'] ?? 0)) ?></p>
+                            </div>
+                            <div class="kpi-icon"><span class="fa fa-circle"></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
 
 
         <div class="col-md-4">

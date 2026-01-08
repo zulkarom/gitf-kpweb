@@ -5,6 +5,7 @@ namespace backend\modules\postgrad\models;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use backend\modules\postgrad\models\Supervisor;
+use backend\modules\postgrad\models\PgSetting;
 
 /**
  * SupervisorSearch represents the model behind the search form of `backend\modules\postgrad\models\Supervisor`.
@@ -183,18 +184,34 @@ class SupervisorSearch extends Supervisor
 
         // color filter mapped to total supervisee count
         if (!empty($this->color)) {
+            $ranges = PgSetting::trafficLightRanges('supervisor');
             switch (strtolower($this->color)) {
                 case 'green':
-                    // 0 - 3
-                    $query->andHaving('COUNT(DISTINCT sr.student_id) BETWEEN 0 AND 3');
+                    $min = (int)($ranges['green']['min'] ?? 0);
+                    $max = $ranges['green']['max'] ?? null;
+                    if ($max === null) {
+                        $query->andHaving('COUNT(DISTINCT sr.student_id) >= ' . (int)$min);
+                    } else {
+                        $query->andHaving('COUNT(DISTINCT sr.student_id) BETWEEN ' . (int)$min . ' AND ' . (int)$max);
+                    }
                     break;
                 case 'yellow':
-                    // 4 - 7
-                    $query->andHaving('COUNT(DISTINCT sr.student_id) BETWEEN 4 AND 7');
+                    $min = (int)($ranges['yellow']['min'] ?? 0);
+                    $max = $ranges['yellow']['max'] ?? null;
+                    if ($max === null) {
+                        $query->andHaving('COUNT(DISTINCT sr.student_id) >= ' . (int)$min);
+                    } else {
+                        $query->andHaving('COUNT(DISTINCT sr.student_id) BETWEEN ' . (int)$min . ' AND ' . (int)$max);
+                    }
                     break;
                 case 'red':
-                    // 8 and above
-                    $query->andHaving('COUNT(DISTINCT sr.student_id) >= 8');
+                    $min = (int)($ranges['red']['min'] ?? 0);
+                    $max = $ranges['red']['max'] ?? null;
+                    if ($max === null) {
+                        $query->andHaving('COUNT(DISTINCT sr.student_id) >= ' . (int)$min);
+                    } else {
+                        $query->andHaving('COUNT(DISTINCT sr.student_id) BETWEEN ' . (int)$min . ' AND ' . (int)$max);
+                    }
                     break;
             }
         }

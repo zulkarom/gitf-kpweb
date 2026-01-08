@@ -11,6 +11,7 @@ use backend\models\Semester;
 use backend\modules\postgrad\models\StageExaminer;
 use backend\modules\postgrad\models\StudentStage;
 use backend\modules\postgrad\models\Supervisor;
+use backend\modules\postgrad\models\PgSetting;
 use backend\modules\staff\models\Staff;
 
 class ExamCommitteeController extends Controller
@@ -233,9 +234,10 @@ class ExamCommitteeController extends Controller
 
             foreach ($baseData as $r) {
                 $t = (int)($r['total'] ?? 0);
-                if ($t <= 3) {
+                $color = PgSetting::classifyTrafficLight('exam_committee', $t);
+                if ($color === 'green') {
                     $countGreen++;
-                } elseif ($t <= 7) {
+                } elseif ($color === 'yellow') {
                     $countYellow++;
                 } else {
                     $countRed++;
@@ -244,6 +246,7 @@ class ExamCommitteeController extends Controller
 
             $data = $baseData;
             if (!empty($kpi)) {
+                $ranges = PgSetting::trafficLightRanges('exam_committee');
                 $data = array_values(array_filter($data, function ($r) use ($kpi) {
                     switch ((string)$kpi) {
                         case 'chairman':
@@ -255,11 +258,23 @@ class ExamCommitteeController extends Controller
                         case 'examiner2':
                             return (int)$r['pemeriksa2'] > 0;
                         case 'green':
-                            return (int)$r['total'] >= 0 && (int)$r['total'] <= 3;
+                            $ranges = PgSetting::trafficLightRanges('exam_committee');
+                            $min = (int)($ranges['green']['min'] ?? 0);
+                            $max = $ranges['green']['max'] ?? null;
+                            if ($max === null) { return (int)$r['total'] >= $min; }
+                            return (int)$r['total'] >= $min && (int)$r['total'] <= (int)$max;
                         case 'yellow':
-                            return (int)$r['total'] >= 4 && (int)$r['total'] <= 7;
+                            $ranges = PgSetting::trafficLightRanges('exam_committee');
+                            $min = (int)($ranges['yellow']['min'] ?? 0);
+                            $max = $ranges['yellow']['max'] ?? null;
+                            if ($max === null) { return (int)$r['total'] >= $min; }
+                            return (int)$r['total'] >= $min && (int)$r['total'] <= (int)$max;
                         case 'red':
-                            return (int)$r['total'] >= 8;
+                            $ranges = PgSetting::trafficLightRanges('exam_committee');
+                            $min = (int)($ranges['red']['min'] ?? 0);
+                            $max = $ranges['red']['max'] ?? null;
+                            if ($max === null) { return (int)$r['total'] >= $min; }
+                            return (int)$r['total'] >= $min && (int)$r['total'] <= (int)$max;
                         default:
                             return true;
                     }

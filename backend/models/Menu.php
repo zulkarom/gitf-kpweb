@@ -414,6 +414,14 @@ class Menu
                             'url' => [
                                 '/postgrad/field'
                             ]
+                        ],
+
+                        [
+                            'label' => 'Traffic Light',
+                            'icon' => 'gear',
+                            'url' => [
+                                '/postgrad/traffic-light/index'
+                            ]
                         ]
                     ]
                             ],

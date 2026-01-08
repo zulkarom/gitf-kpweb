@@ -6,6 +6,7 @@ use yii\grid\GridView;
 use backend\modules\postgrad\models\Field;
 use backend\models\Semester;
 use yii\widgets\ActiveForm;
+use backend\modules\postgrad\models\PgSetting;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\modules\postgrad\models\SupervisorSearch */
@@ -42,11 +43,16 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= $form->field($searchModel, 'field_id')->dropDownList(Field::listFieldArray(), ['prompt' => 'Semua Bidang Kepakaran', 'onchange' => 'this.form.submit();'])->label(false) ?>
                 </div>
                 <div class="col-md-2">
+                    <?php
+                        $greenLabel = PgSetting::trafficLightLabel('supervisor', 'green');
+                        $yellowLabel = PgSetting::trafficLightLabel('supervisor', 'yellow');
+                        $redLabel = PgSetting::trafficLightLabel('supervisor', 'red');
+                    ?>
                     <?= $form->field($searchModel, 'color')->dropDownList([
                         '' => 'Semua Warna',
-                        'green' => 'Green (0-3)',
-                        'yellow' => 'Yellow (4-7)',
-                        'red' => 'Red (8+)',
+                        'green' => $greenLabel,
+                        'yellow' => $yellowLabel,
+                        'red' => $redLabel,
                     ], ['onchange' => 'this.form.submit();'])->label(false) ?>
                 </div>
               
@@ -162,7 +168,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <a href="<?= $urlGreen ?>" style="display:block; color:inherit; text-decoration:none; flex: 1 1 0;">
             <div class="kpi-card kpi-narrow kpi-green">
                 <div class="kpi-text">
-                    <p class="kpi-title">Green (0–3)</p>
+                    <p class="kpi-title"><?= Html::encode(PgSetting::trafficLightLabel('supervisor', 'green')) ?></p>
                     <p class="kpi-value"><?= (int)$countGreen ?></p>
                 </div>
                 <div class="kpi-icon"><span class="fa fa-circle"></span></div>
@@ -171,7 +177,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <a href="<?= $urlYellow ?>" style="display:block; color:inherit; text-decoration:none; flex: 1 1 0;">
             <div class="kpi-card kpi-narrow kpi-yellow">
                 <div class="kpi-text">
-                    <p class="kpi-title">Yellow (4–7)</p>
+                    <p class="kpi-title"><?= Html::encode(PgSetting::trafficLightLabel('supervisor', 'yellow')) ?></p>
                     <p class="kpi-value"><?= (int)$countYellow ?></p>
                 </div>
                 <div class="kpi-icon"><span class="fa fa-circle"></span></div>
@@ -180,7 +186,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <a href="<?= $urlRed ?>" style="display:block; color:inherit; text-decoration:none; flex: 1 1 0;">
             <div class="kpi-card kpi-narrow kpi-red">
                 <div class="kpi-text">
-                    <p class="kpi-title">Red (8+)</p>
+                    <p class="kpi-title"><?= Html::encode(PgSetting::trafficLightLabel('supervisor', 'red')) ?></p>
                     <p class="kpi-value"><?= (int)$countRed ?></p>
                 </div>
                 <div class="kpi-icon"><span class="fa fa-circle"></span></div>

@@ -8,6 +8,7 @@ use backend\modules\postgrad\models\SupervisorSearch;
 use backend\models\Semester;
 use backend\modules\postgrad\models\StudentRegister;
 use backend\modules\staff\models\Staff;
+use backend\modules\postgrad\models\PgSetting;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
@@ -158,9 +159,10 @@ class SupervisorController extends Controller
 
             foreach ($rows as $r) {
                 $t = (int)$r['total'];
-                if ($t <= 3) {
+                $color = PgSetting::classifyTrafficLight('supervisor', $t);
+                if ($color === 'green') {
                     $countGreen++;
-                } elseif ($t <= 7) {
+                } elseif ($color === 'yellow') {
                     $countYellow++;
                 } else {
                     $countRed++;
