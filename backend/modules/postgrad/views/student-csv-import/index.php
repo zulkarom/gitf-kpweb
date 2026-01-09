@@ -24,6 +24,38 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <div class="box-body">
 
+            <div>
+                <strong>Panduan Import CSV</strong><br />
+
+                <div style="margin-top:10px">
+                    <strong>Kolum wajib (mesti wujud dalam tajuk)</strong><br />
+                    - <strong>MATRIK</strong> (cth. NO. MATRIK / MATRIK / MATRIC)<br />
+                    - <strong>NAMA PELAJAR</strong><br />
+                    - <strong>NO. IC</strong> / PASSPORT<br />
+                    - <strong>KEWARGANEGARAAN</strong> (Tempatan / Antarabangsa)<br />
+                    - <strong>PROGRAM</strong> (Sarjana / Doktor Falsafah)<br />
+                    - <strong>TARAF PENGAJIAN</strong> (Sepenuh Masa / Separuh Masa)<br />
+                    - <strong>EMEL PELAJAR</strong>
+                </div>
+                <div style="margin-top:10px">
+                    <strong>Lajur pilihan (dikemas kini hanya jika nilai tidak kosong)</strong><br />
+                    ALAMAT, DAERAH, NO. TELEFON, EMEL PERSONAL, NEGARA ASAL, JANTINA, TARAF PERKAHWINAN, TARIKH LAHIR, KAMPUS, PEMBIAYAAN / TAJAAN
+                </div>
+                <div style="margin-top:10px">
+                    <strong>Aliran kerja</strong><br />
+                    1) Pilih semester (untuk paparan/laporan sahaja).<br />
+                    2) Pilih fail CSV. Sistem akan memuat naik dan memaparkan <strong>Preview</strong>.<br />
+                    3) Semak keputusan: READY / NO_CHANGES / NOT_FOUND / INVALID.<br />
+                    4) Klik <strong>Apply Updates</strong> untuk menyimpan perubahan ke pangkalan data.
+                </div>
+                <div style="margin-top:10px">
+                    <strong>Nota & penyelesaian masalah</strong><br />
+                    - Jika keluar <em>Missing required column(s)</em>: kata kunci tajuk kolum tidak berjaya dipadankan. Semak ejaan/typo atau pastikan kolum wajib wujud.<br />
+                    - Jika keluar <em>NOT_FOUND</em>: nombor matrik tiada dalam jadual pg_student.<br />
+                    - Lajur pilihan tidak akan menimpa data sedia ada jika sel CSV kosong.
+                </div>
+            </div>
+
             <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
             <?php
@@ -34,9 +66,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 );
             ?>
 
-            <?= $form->field($model, 'semester_id')->dropDownList($semesterOptions, ['prompt' => 'Choose']) ?>
+            <?= $form->field($model, 'semester_id')->dropDownList($semesterOptions, ['prompt' => 'Choose'])->label('Semester') ?>
 
-            <?= $form->field($model, 'file')->fileInput(['accept' => '.csv', 'id' => 'pg-student-csv-file']) ?>
+            <?= $form->field($model, 'file')->fileInput(['accept' => '.csv', 'id' => 'pg-student-csv-file'])->label('Upload CSV File Student Data') ?>
 
             <?= Html::hiddenInput('csv_token', Yii::$app->request->post('csv_token', ''), ['id' => 'pg-student-csv-token']) ?>
 
@@ -181,6 +213,7 @@ JS);
                     Semester ID: <?= (int)($summary['semester_id'] ?? 0) ?><br />
                     Processed: <?= (int)$summary['processed'] ?><br />
                     Updated: <?= (int)($summary['updated'] ?? 0) ?><br />
+                    Created: <?= (int)($summary['created'] ?? 0) ?><br />
                     No Changes: <?= (int)($summary['no_changes'] ?? 0) ?><br />
                     Not Found: <?= (int)($summary['not_found'] ?? 0) ?><br />
                     Invalid: <?= (int)($summary['invalid'] ?? 0) ?><br />
@@ -207,18 +240,16 @@ JS);
 
             <?php if (!empty($preview)): ?>
                 <div class="table-responsive">
-                    <table class="table table-bordered table-striped">
+                    <table class="table table-bordered table-striped" id="pg-student-preview-table">
                         <thead>
                         <tr>
-                            <th style="width:50px">#</th>
-                            <th>Student ID</th>
-                            <th>Status Daftar (CSV)</th>
-                            <th>Status Daftar</th>
-                            <th>Status Aktif (Auto)</th>
-                            <th>Current Status Daftar</th>
-                            <th>Current Status Aktif</th>
-                            <th>Result</th>
-                            <th>Message</th>
+                            <th style="width:50px" data-sort="number">#</th>
+                            <th data-sort="text">Matric No</th>
+                            <th data-sort="text">Name</th>
+                            <th data-sort="text">Email</th>
+                            <th data-sort="text">Changes</th>
+                            <th data-sort="text">Result</th>
+                            <th data-sort="text">Message</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -230,18 +261,27 @@ JS);
                                     $resultStyle = 'background:#fff3cd;';
                                 } elseif ($result === 'FAILED' || $result === 'INVALID') {
                                     $resultStyle = 'background:#f8d7da;';
-                                } elseif ($result === 'UPDATED') {
+                                } elseif ($result === 'UPDATED' || $result === 'CREATED') {
                                     $resultStyle = 'background:#d1e7dd;';
                                 }
                             ?>
                             <tr data-result="<?= Html::encode($result) ?>">
                                 <td><?= (int)$i ?></td>
-                                <td><?= Html::encode((string)($row['student_id'] ?? '')) ?></td>
-                                <td><?= Html::encode((string)($row['status_daftar_text'] ?? '')) ?></td>
-                                <td><?= Html::encode((string)($row['status_daftar'] ?? '')) ?></td>
-                                <td><?= Html::encode((string)($row['status_aktif'] ?? '')) ?></td>
-                                <td><?= Html::encode((string)($row['current_status_daftar'] ?? '')) ?></td>
-                                <td><?= Html::encode((string)($row['current_status_aktif'] ?? '')) ?></td>
+                                <td><?= Html::encode((string)($row['matric_no'] ?? '')) ?></td>
+                                <td><?= Html::encode((string)($row['name'] ?? '')) ?></td>
+                                <td><?= Html::encode((string)($row['email'] ?? '')) ?></td>
+                                <td>
+                                    <?php if (!empty($row['changes']) && is_array($row['changes'])): ?>
+                                        <?php foreach ($row['changes'] as $k => $c): ?>
+                                            <div>
+                                                <strong><?= Html::encode((string)$k) ?></strong>:
+                                                <?= Html::encode((string)($c['from'] ?? '')) ?>
+                                                &rarr;
+                                                <?= Html::encode((string)($c['to'] ?? '')) ?>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                </td>
                                 <td style="<?= $resultStyle ?>"><?= Html::encode($result) ?></td>
                                 <td><?= Html::encode((string)($row['message'] ?? '')) ?></td>
                             </tr>
@@ -270,6 +310,63 @@ JS);
                             e.preventDefault();
                             applyFilter(this.getAttribute('data-result'));
                         });
+                    }
+                })();
+                </script>
+
+                <script>
+                (function(){
+                    var table = document.getElementById('pg-student-preview-table');
+                    if(!table){ return; }
+                    var thead = table.querySelector('thead');
+                    var tbody = table.querySelector('tbody');
+                    if(!thead || !tbody){ return; }
+
+                    var headers = thead.querySelectorAll('th[data-sort]');
+                    if(!headers || !headers.length){ return; }
+
+                    function cellText(row, idx){
+                        var cells = row.children;
+                        if(!cells || !cells.length || idx >= cells.length){ return ''; }
+                        return (cells[idx].innerText || cells[idx].textContent || '').trim();
+                    }
+
+                    function parseSortable(val, mode){
+                        if(mode === 'number'){
+                            var n = parseFloat((val || '').replace(/[^0-9.+-]/g, ''));
+                            return isNaN(n) ? 0 : n;
+                        }
+                        return (val || '').toLowerCase();
+                    }
+
+                    function sortByColumn(idx, mode, asc){
+                        var rows = Array.prototype.slice.call(tbody.querySelectorAll('tr'));
+                        rows.sort(function(a,b){
+                            var av = parseSortable(cellText(a, idx), mode);
+                            var bv = parseSortable(cellText(b, idx), mode);
+                            if(av < bv){ return asc ? -1 : 1; }
+                            if(av > bv){ return asc ? 1 : -1; }
+                            return 0;
+                        });
+                        for(var i=0;i<rows.length;i++){
+                            tbody.appendChild(rows[i]);
+                        }
+                    }
+
+                    for(var i=0;i<headers.length;i++){
+                        (function(th, idx){
+                            th.style.cursor = 'pointer';
+                            th.addEventListener('click', function(){
+                                var mode = th.getAttribute('data-sort') || 'text';
+                                var current = th.getAttribute('data-sort-dir') || 'none';
+                                for(var j=0;j<headers.length;j++){
+                                    headers[j].setAttribute('data-sort-dir', 'none');
+                                }
+                                var asc = (current !== 'asc');
+                                th.setAttribute('data-sort-dir', asc ? 'asc' : 'desc');
+                                sortByColumn(idx, mode, asc);
+                            });
+                        })(headers[i], i);
                     }
                 })();
                 </script>

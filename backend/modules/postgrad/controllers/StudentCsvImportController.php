@@ -97,13 +97,12 @@ class StudentCsvImportController extends Controller
 
         $row = 0;
         $header = [];
-        $cols = [];
-        $studentIdKey = null;
-        $statusDaftarKey = null;
+        $headerMap = [];
 
         $stats = [
             'processed' => 0,
             'updated' => 0,
+            'created' => 0,
             'no_changes' => 0,
             'not_found' => 0,
             'invalid' => 0,
@@ -118,6 +117,7 @@ class StudentCsvImportController extends Controller
             'NOT_FOUND' => 0,
             'INVALID' => 0,
             'UPDATED' => 0,
+            'CREATED' => 0,
             'FAILED' => 0,
         ];
 
@@ -127,111 +127,299 @@ class StudentCsvImportController extends Controller
             $row++;
 
             if ($row === 1) {
-                $header = array_map([$this, 'normalizeHeader'], $data);
-                $cols = array_flip($header);
+                $header = array_map([$this, 'normalizeHeaderForMatch'], $data);
+                $headerMap = $this->mapHeadersByKeywords($header);
 
-                $studentIdKey = $this->pickFirstExistingKey($cols, [
-                    'student_id',
-                    'student id',
-                    'no. matrik',
-                    'no matrik',
-                    'no_matrik',
-                    'matric no',
-                    'matric_no',
-                    'no.matrik',
-                ]);
-
-                $statusDaftarKey = $this->pickFirstExistingKey($cols, [
-                    'status_daftar',
-                    'status daftar',
-                ]);
-
-                if ($studentIdKey === null) {
-                    fclose($handle);
-                    return [[], ['error' => 'Missing required column: student_id']];
+                $missing = [];
+                foreach ($this->getRequiredTargets() as $req) {
+                    if (!isset($headerMap[$req]) || $headerMap[$req] === null) {
+                        $missing[] = $req;
+                    }
                 }
-                if ($statusDaftarKey === null) {
+                if (!empty($missing)) {
                     fclose($handle);
-                    return [[], ['error' => 'Missing required column: status_daftar']];
+                    return [[], ['error' => 'Missing required column(s): ' . implode(', ', $missing)]];
                 }
 
                 continue;
             }
 
-            $studentId = trim((string)$this->getValue($data, $cols, $studentIdKey));
-            $statusDaftarText = trim((string)$this->getValue($data, $cols, $statusDaftarKey));
+            $matric = trim((string)$this->getMappedValue($data, $headerMap, 'matric_no'));
+            $name = trim((string)$this->getMappedValue($data, $headerMap, 'name'));
+            $emailStudent = trim((string)$this->getMappedValue($data, $headerMap, 'email_student'));
+            $nricRaw = trim((string)$this->getMappedValue($data, $headerMap, 'nric'));
+            $citizenshipRaw = trim((string)$this->getMappedValue($data, $headerMap, 'citizenship'));
+            $programRaw = trim((string)$this->getMappedValue($data, $headerMap, 'program'));
+            $studyModeRaw = trim((string)$this->getMappedValue($data, $headerMap, 'study_mode'));
 
-            if ($studentId === '' || $statusDaftarText === '') {
+            $addressRaw = trim((string)$this->getMappedValue($data, $headerMap, 'address'));
+            $cityRaw = trim((string)$this->getMappedValue($data, $headerMap, 'city'));
+            $phoneRaw = trim((string)$this->getMappedValue($data, $headerMap, 'phone_no'));
+            $personalEmailRaw = trim((string)$this->getMappedValue($data, $headerMap, 'personal_email'));
+            $nationalityRaw = trim((string)$this->getMappedValue($data, $headerMap, 'nationality'));
+            $genderRaw = trim((string)$this->getMappedValue($data, $headerMap, 'gender'));
+            $maritalRaw = trim((string)$this->getMappedValue($data, $headerMap, 'marital_status'));
+            $dobRaw = trim((string)$this->getMappedValue($data, $headerMap, 'date_birth'));
+            $campusRaw = trim((string)$this->getMappedValue($data, $headerMap, 'campus'));
+            $sponsorRaw = trim((string)$this->getMappedValue($data, $headerMap, 'sponsor'));
+
+            $missingFields = [];
+            if ($matric === '') { $missingFields[] = 'MATRIK'; }
+            if ($name === '') { $missingFields[] = 'NAMA PELAJAR'; }
+            if ($nricRaw === '') { $missingFields[] = 'NO. IC'; }
+            if ($citizenshipRaw === '') { $missingFields[] = 'KEWARGANEGARAAN'; }
+            if ($programRaw === '') { $missingFields[] = 'PROGRAM'; }
+            if ($studyModeRaw === '') { $missingFields[] = 'TARAF PENGAJIAN'; }
+            if ($emailStudent === '') { $missingFields[] = 'EMEL PELAJAR'; }
+
+            if (!empty($missingFields)) {
                 $stats['invalid']++;
                 $resultCounts['INVALID']++;
                 $preview[] = [
-                    'student_id' => $studentId,
-                    'status_daftar_text' => $statusDaftarText,
+                    'matric_no' => $matric,
+                    'name' => $name,
+                    'email' => $emailStudent,
                     'result' => 'INVALID',
-                    'message' => 'Missing student_id or status_daftar',
+                    'message' => 'Missing required field(s): ' . implode(', ', $missingFields),
                 ];
                 continue;
             }
 
-            $mappedDaftar = StudentRegister::mapStatusDaftarFromText($statusDaftarText);
-            if ($mappedDaftar === false || $mappedDaftar === null) {
-                $stats['invalid']++;
-                $resultCounts['INVALID']++;
-                $preview[] = [
-                    'student_id' => $studentId,
-                    'status_daftar_text' => $statusDaftarText,
-                    'status_daftar' => $mappedDaftar,
-                    'status_aktif' => null,
-                    'result' => 'INVALID',
-                    'message' => 'Invalid status_daftar',
-                ];
-                continue;
-            }
-
-            $mappedAktif = in_array((int)$mappedDaftar, [StudentRegister::STATUS_DAFTAR_DAFTAR, StudentRegister::STATUS_DAFTAR_NOS], true)
-                ? StudentRegister::STATUS_AKTIF_AKTIF
-                : StudentRegister::STATUS_AKTIF_TIDAK_AKTIF;
-
-            $student = Student::find()->where(['matric_no' => $studentId])->one();
+            $student = Student::find()->where(['matric_no' => $matric])->one();
             if (!$student) {
-                $stats['not_found']++;
-                $resultCounts['NOT_FOUND']++;
+                if (!$apply) {
+                    $stats['not_found']++;
+                    $resultCounts['NOT_FOUND']++;
+                    $preview[] = [
+                        'matric_no' => $matric,
+                        'name' => $name,
+                        'email' => $emailStudent,
+                        'result' => 'NOT_FOUND',
+                        'message' => 'NEW STUDENT TO BE CREATED',
+                    ];
+                    continue;
+                }
+
+                $tx = Yii::$app->db->beginTransaction();
+                try {
+                    $user = $this->ensureUser($matric, $name, $emailStudent);
+
+                    $student = new Student();
+                    $student->user_id = (int)$user->id;
+                    $student->matric_no = $matric;
+                    $student->nric = $nric;
+                    $student->citizenship = (int)$mappedCitizenship;
+                    $student->program_id = (int)$programId;
+                    $student->study_mode = (int)$mappedStudyMode;
+
+                    if ($addressRaw !== '') {
+                        $student->address = $addressRaw;
+                    }
+                    if ($cityRaw !== '') {
+                        $student->city = $cityRaw;
+                    }
+                    if ($phoneRaw !== '') {
+                        $student->phone_no = $phoneRaw;
+                    }
+                    if ($personalEmailRaw !== '') {
+                        $student->personal_email = $personalEmailRaw;
+                    }
+                    if ($mappedNationality !== null) {
+                        $student->nationality = (int)$mappedNationality;
+                    }
+                    if ($mappedGender !== null) {
+                        $student->gender = (int)$mappedGender;
+                    }
+                    if ($mappedMarital !== null) {
+                        $student->marital_status = (int)$mappedMarital;
+                    }
+                    if ($mappedDob !== null) {
+                        $student->date_birth = (string)$mappedDob;
+                    }
+                    if ($mappedCampusId !== null) {
+                        $student->campus_id = (int)$mappedCampusId;
+                    }
+                    if ($sponsorRaw !== '') {
+                        $student->sponsor = $sponsorRaw;
+                    }
+
+                    $now = time();
+                    if ($student->hasAttribute('created_at')) {
+                        $student->created_at = $now;
+                    }
+                    if ($student->hasAttribute('updated_at')) {
+                        $student->updated_at = $now;
+                    }
+
+                    if (!$student->save(false)) {
+                        throw new \RuntimeException('Failed to create student');
+                    }
+
+                    $tx->commit();
+                    $stats['processed']++;
+                    $stats['created']++;
+                    $resultCounts['CREATED']++;
+                    $preview[] = [
+                        'matric_no' => $matric,
+                        'name' => $name,
+                        'email' => $emailStudent,
+                        'result' => 'CREATED',
+                        'message' => 'Created',
+                        'changes' => $this->diffAssoc([], [
+                            'student_nric' => $nric,
+                            'student_citizenship' => (int)$mappedCitizenship,
+                            'student_program_id' => (int)$programId,
+                            'student_study_mode' => (int)$mappedStudyMode,
+                            'student_address' => $addressRaw !== '' ? $addressRaw : null,
+                            'student_city' => $cityRaw !== '' ? $cityRaw : null,
+                            'student_phone_no' => $phoneRaw !== '' ? $phoneRaw : null,
+                            'student_personal_email' => $personalEmailRaw !== '' ? $personalEmailRaw : null,
+                            'student_nationality' => $mappedNationality !== null ? (int)$mappedNationality : null,
+                            'student_gender' => $mappedGender !== null ? (int)$mappedGender : null,
+                            'student_marital_status' => $mappedMarital !== null ? (int)$mappedMarital : null,
+                            'student_date_birth' => $mappedDob !== null ? (string)$mappedDob : null,
+                            'student_campus_id' => $mappedCampusId !== null ? (int)$mappedCampusId : null,
+                            'student_sponsor' => $sponsorRaw !== '' ? $sponsorRaw : null,
+                            'user_fullname' => $name,
+                            'user_email' => $emailStudent,
+                        ]),
+                    ];
+                } catch (\Throwable $e) {
+                    $tx->rollBack();
+                    $stats['errors']++;
+                    $resultCounts['FAILED']++;
+                    $preview[] = [
+                        'matric_no' => $matric,
+                        'name' => $name,
+                        'email' => $emailStudent,
+                        'result' => 'FAILED',
+                        'message' => StringHelper::truncate((string)$e->getMessage(), 180),
+                    ];
+                }
+
+                continue;
+            }
+
+            $mappedCitizenship = $this->mapCitizenship($citizenshipRaw);
+            $mappedStudyMode = $this->mapStudyMode($studyModeRaw);
+            $nric = str_replace('-', '', (string)$nricRaw);
+            $programId = $this->mapProgramIdFromText($programRaw);
+
+            $mappedNationality = null;
+            if ($nationalityRaw !== '') {
+                $mappedNationality = $this->mapNationality($nationalityRaw);
+            }
+
+            $mappedGender = null;
+            if ($genderRaw !== '') {
+                $mappedGender = $this->mapGender($genderRaw);
+            }
+
+            $mappedMarital = null;
+            if ($maritalRaw !== '') {
+                $mappedMarital = $this->mapMaritalStatus($maritalRaw);
+            }
+
+            $mappedDob = null;
+            if ($dobRaw !== '') {
+                $mappedDob = $this->parseDate($dobRaw);
+            }
+
+            $mappedCampusId = null;
+            if ($campusRaw !== '') {
+                $mappedCampusId = $this->mapCampus($campusRaw);
+            }
+
+            if ($mappedCitizenship === null || $mappedStudyMode === null || !$programId) {
+                $stats['invalid']++;
+                $resultCounts['INVALID']++;
                 $preview[] = [
-                    'student_id' => $studentId,
-                    'status_daftar_text' => $statusDaftarText,
-                    'status_daftar' => (int)$mappedDaftar,
-                    'status_aktif' => (int)$mappedAktif,
-                    'result' => 'NOT_FOUND',
-                    'message' => 'Student not found',
+                    'matric_no' => $matric,
+                    'name' => $name,
+                    'email' => $emailStudent,
+                    'result' => 'INVALID',
+                    'message' => 'Invalid required value(s) (citizenship/program/study mode)',
                 ];
                 continue;
             }
 
-            $reg = StudentRegister::find()->where([
-                'student_id' => (int)$student->id,
-                'semester_id' => $semesterId,
-            ])->one();
+            $user = $student->user;
+            if (!$user) {
+                $user = User::find()->where(['username' => $matric])->one();
+            }
 
-            $beforeDaftar = $reg ? $reg->status_daftar : null;
-            $beforeAktif = $reg ? $reg->status_aktif : null;
+            $before = [
+                'student_nric' => (string)$student->nric,
+                'student_citizenship' => (int)$student->citizenship,
+                'student_program_id' => (int)$student->program_id,
+                'student_study_mode' => (int)$student->study_mode,
+                'student_address' => (string)$student->address,
+                'student_city' => (string)$student->city,
+                'student_phone_no' => (string)$student->phone_no,
+                'student_personal_email' => (string)$student->personal_email,
+                'student_nationality' => (int)$student->nationality,
+                'student_gender' => (int)$student->gender,
+                'student_marital_status' => (int)$student->marital_status,
+                'student_date_birth' => (string)$student->date_birth,
+                'student_campus_id' => (int)$student->campus_id,
+                'student_sponsor' => (string)$student->sponsor,
+                'user_fullname' => $user ? (string)$user->fullname : '',
+                'user_email' => $user ? (string)$user->email : '',
+            ];
 
-            $daftarChanged = ((int)$beforeDaftar !== (int)$mappedDaftar);
-            $aktifChanged = ((int)$beforeAktif !== (int)$mappedAktif);
-            $changed = $daftarChanged || $aktifChanged;
+            $after = $before;
+            $after['student_nric'] = $nric;
+            $after['student_citizenship'] = (int)$mappedCitizenship;
+            $after['student_program_id'] = (int)$programId;
+            $after['student_study_mode'] = (int)$mappedStudyMode;
 
+            if ($addressRaw !== '') {
+                $after['student_address'] = $addressRaw;
+            }
+            if ($cityRaw !== '') {
+                $after['student_city'] = $cityRaw;
+            }
+            if ($phoneRaw !== '') {
+                $after['student_phone_no'] = $phoneRaw;
+            }
+            if ($personalEmailRaw !== '') {
+                $after['student_personal_email'] = $personalEmailRaw;
+            }
+            if ($mappedNationality !== null) {
+                $after['student_nationality'] = (int)$mappedNationality;
+            }
+            if ($mappedGender !== null) {
+                $after['student_gender'] = (int)$mappedGender;
+            }
+            if ($mappedMarital !== null) {
+                $after['student_marital_status'] = (int)$mappedMarital;
+            }
+            if ($mappedDob !== null) {
+                $after['student_date_birth'] = (string)$mappedDob;
+            }
+            if ($mappedCampusId !== null) {
+                $after['student_campus_id'] = (int)$mappedCampusId;
+            }
+            if ($sponsorRaw !== '') {
+                $after['student_sponsor'] = $sponsorRaw;
+            }
+
+            $after['user_fullname'] = $name;
+            $after['user_email'] = $emailStudent;
+
+            $changed = ($before != $after);
+            $diff = $this->diffAssoc($before, $after);
             $stats['processed']++;
 
             if (!$apply) {
                 $resultCounts[$changed ? 'READY' : 'NO_CHANGES']++;
                 $preview[] = [
-                    'student_id' => $studentId,
-                    'status_daftar_text' => $statusDaftarText,
-                    'status_daftar' => (int)$mappedDaftar,
-                    'status_aktif' => (int)$mappedAktif,
-                    'current_status_daftar' => $beforeDaftar,
-                    'current_status_aktif' => $beforeAktif,
+                    'matric_no' => $matric,
+                    'name' => $name,
+                    'email' => $emailStudent,
                     'result' => $changed ? 'READY' : 'NO_CHANGES',
                     'message' => $changed ? 'Will be updated' : 'No changes',
+                    'changes' => $diff,
                 ];
                 continue;
             }
@@ -240,58 +428,94 @@ class StudentCsvImportController extends Controller
                 $stats['no_changes']++;
                 $resultCounts['NO_CHANGES']++;
                 $preview[] = [
-                    'student_id' => $studentId,
-                    'status_daftar_text' => $statusDaftarText,
-                    'status_daftar' => (int)$mappedDaftar,
-                    'status_aktif' => (int)$mappedAktif,
-                    'current_status_daftar' => $beforeDaftar,
-                    'current_status_aktif' => $beforeAktif,
+                    'matric_no' => $matric,
+                    'name' => $name,
+                    'email' => $emailStudent,
                     'result' => 'NO_CHANGES',
                     'message' => 'No changes',
+                    'changes' => $diff,
                 ];
                 continue;
             }
 
             $tx = Yii::$app->db->beginTransaction();
             try {
-                if (!$reg) {
-                    $reg = new StudentRegister();
-                    $reg->student_id = (int)$student->id;
-                    $reg->semester_id = $semesterId;
+                if (!$user) {
+                    $user = $this->ensureUser($matric, $name, $emailStudent);
+                    $student->user_id = (int)$user->id;
+                } else {
+                    $user->fullname = $name;
+                    $user->email = $emailStudent;
+                    $user->status = 10;
+                    if (!$user->save(false)) {
+                        throw new \RuntimeException('Failed to save user');
+                    }
                 }
 
-                $reg->scenario = 'csv_status';
-                $reg->status_daftar = (int)$mappedDaftar;
-                $reg->status_aktif = (int)$mappedAktif;
+                $student->nric = $nric;
+                $student->citizenship = (int)$mappedCitizenship;
+                $student->program_id = (int)$programId;
+                $student->study_mode = (int)$mappedStudyMode;
 
-                if (!$reg->save(false)) {
-                    throw new \RuntimeException('Failed to save student register');
+                if ($addressRaw !== '') {
+                    $student->address = $addressRaw;
+                }
+                if ($cityRaw !== '') {
+                    $student->city = $cityRaw;
+                }
+                if ($phoneRaw !== '') {
+                    $student->phone_no = $phoneRaw;
+                }
+                if ($personalEmailRaw !== '') {
+                    $student->personal_email = $personalEmailRaw;
+                }
+                if ($mappedNationality !== null) {
+                    $student->nationality = (int)$mappedNationality;
+                }
+                if ($mappedGender !== null) {
+                    $student->gender = (int)$mappedGender;
+                }
+                if ($mappedMarital !== null) {
+                    $student->marital_status = (int)$mappedMarital;
+                }
+                if ($mappedDob !== null) {
+                    $student->date_birth = (string)$mappedDob;
+                }
+                if ($mappedCampusId !== null) {
+                    $student->campus_id = (int)$mappedCampusId;
+                }
+                if ($sponsorRaw !== '') {
+                    $student->sponsor = $sponsorRaw;
+                }
+
+                $student->updated_at = time();
+
+                if (!$student->save(false)) {
+                    throw new \RuntimeException('Failed to save student');
                 }
 
                 $tx->commit();
                 $stats['updated']++;
                 $resultCounts['UPDATED']++;
                 $preview[] = [
-                    'student_id' => $studentId,
-                    'status_daftar_text' => $statusDaftarText,
-                    'status_daftar' => (int)$mappedDaftar,
-                    'status_aktif' => (int)$mappedAktif,
-                    'current_status_daftar' => $beforeDaftar,
-                    'current_status_aktif' => $beforeAktif,
+                    'matric_no' => $matric,
+                    'name' => $name,
+                    'email' => $emailStudent,
                     'result' => 'UPDATED',
                     'message' => 'Updated',
+                    'changes' => $diff,
                 ];
             } catch (\Throwable $e) {
                 $tx->rollBack();
                 $stats['errors']++;
                 $resultCounts['FAILED']++;
                 $preview[] = [
-                    'student_id' => $studentId,
-                    'status_daftar_text' => $statusDaftarText,
-                    'status_daftar' => (int)$mappedDaftar,
-                    'status_aktif' => (int)$mappedAktif,
+                    'matric_no' => $matric,
+                    'name' => $name,
+                    'email' => $emailStudent,
                     'result' => 'FAILED',
                     'message' => StringHelper::truncate((string)$e->getMessage(), 180),
+                    'changes' => $diff,
                 ];
             }
         }
@@ -386,6 +610,149 @@ class StudentCsvImportController extends Controller
         return trim($v);
     }
 
+    private function normalizeHeaderForMatch($val)
+    {
+        $v = $this->normalizeHeader($val);
+        $v = preg_replace('/[^\p{L}\p{N}]+/u', ' ', (string)$v);
+        $v = preg_replace('/\s+/', ' ', (string)$v);
+        return trim((string)$v);
+    }
+
+    private function getRequiredTargets()
+    {
+        return [
+            'matric_no',
+            'name',
+            'nric',
+            'citizenship',
+            'program',
+            'study_mode',
+            'email_student',
+        ];
+    }
+
+    private function headerKeywordMap()
+    {
+        return [
+            'matric_no' => ['matrik', 'matric', 'no matrik', 'no. matrik'],
+            'name' => ['nama pelajar', 'nama', 'name'],
+            'nric' => ['no ic', 'no. ic', 'ic', 'passport'],
+            'citizenship' => ['kewarganegaraan', 'citizenship'],
+            'program' => ['program'],
+            'study_mode' => ['taraf pengajian', 'mod pengajian', 'mode pengajian'],
+            'email_student' => ['emel pelajar', 'student email', 'email pelajar'],
+
+            'personal_email' => ['emel personal', 'personal email'],
+            'phone_no' => ['no telefon', 'telefon', 'phone'],
+            'address' => ['alamat', 'address'],
+            'city' => ['daerah', 'city'],
+            'nationality' => ['negara asal', 'negara', 'nationality'],
+            'gender' => ['jantina', 'gender'],
+            'marital_status' => ['taraf perkahwinan', 'kahwin', 'marital'],
+            'date_birth' => ['tarikh lahir', 'date of birth', 'dob'],
+            'campus' => ['kampus', 'campus'],
+            'sponsor' => ['pembiayaan', 'tajaan', 'pembiayaan sendiri'],
+            'program_code' => ['kod program', 'program code'],
+        ];
+    }
+
+    private function mapHeadersByKeywords(array $normalizedHeaders)
+    {
+        $map = [];
+        $kwMap = $this->headerKeywordMap();
+
+        foreach ($kwMap as $target => $keywords) {
+            $bestIdx = null;
+            $bestScore = -1;
+            $ambiguous = false;
+
+            foreach ($normalizedHeaders as $idx => $headerText) {
+                foreach ($keywords as $kw) {
+                    $nkw = $this->normalizeHeaderForMatch($kw);
+                    if ($nkw === '') {
+                        continue;
+                    }
+                    if (mb_strpos((string)$headerText, (string)$nkw) !== false) {
+                        $score = mb_strlen((string)$nkw);
+                        if ((string)$headerText === (string)$nkw) {
+                            $score += 10000;
+                        }
+                        if ($score > $bestScore) {
+                            $bestScore = $score;
+                            $bestIdx = $idx;
+                            $ambiguous = false;
+                        } elseif ($score === $bestScore && $bestIdx !== null && $bestIdx !== $idx) {
+                            $ambiguous = true;
+                        }
+                    }
+                }
+            }
+
+            if ($ambiguous) {
+                $map[$target] = null;
+            } else {
+                $map[$target] = $bestIdx;
+            }
+        }
+
+        return $map;
+    }
+
+    private function getMappedValue(array $data, array $headerMap, $target)
+    {
+        if (!isset($headerMap[$target]) || $headerMap[$target] === null) {
+            return null;
+        }
+        $idx = (int)$headerMap[$target];
+        return isset($data[$idx]) ? $data[$idx] : null;
+    }
+
+    private function diffAssoc(array $before, array $after)
+    {
+        $diff = [];
+        $keys = array_unique(array_merge(array_keys($before), array_keys($after)));
+        foreach ($keys as $k) {
+            $b = $before[$k] ?? null;
+            $a = $after[$k] ?? null;
+            if ((string)$b !== (string)$a) {
+                $diff[$k] = ['from' => $b, 'to' => $a];
+            }
+        }
+        return $diff;
+    }
+
+    private function mapProgramIdFromText($text)
+    {
+        $t = trim((string)$text);
+        if ($t === '') {
+            return null;
+        }
+
+        $lower = mb_strtolower($t, 'UTF-8');
+        if (strpos($lower, 'sarjana') !== false && strpos($lower, 'doktor') === false) {
+            return 84;
+        }
+        if (strpos($lower, 'doktor') !== false || strpos($lower, 'phd') !== false) {
+            return 85;
+        }
+
+        if (is_numeric($t)) {
+            return (int)$t;
+        }
+
+        $program = Program::find()->where(['pro_name' => $t])->one();
+        if ($program) {
+            return (int)$program->id;
+        }
+
+        $program = Program::find()->where(['like', 'pro_name', $t])->one();
+        if ($program) {
+            return (int)$program->id;
+        }
+
+        return null;
+    }
+
     private function parseDate($val)
     {
         $v = trim((string)$val);
@@ -455,12 +822,12 @@ class StudentCsvImportController extends Controller
             return null;
         }
 
-        $country = Country::find()->where(['name' => $t])->one();
+        $country = Country::find()->where(['country_name' => $t])->one();
         if ($country) {
             return (int)$country->id;
         }
 
-        $country = Country::find()->where(['like', 'name', $t])->one();
+        $country = Country::find()->where(['like', 'country_name', $t])->one();
         if ($country) {
             return (int)$country->id;
         }
