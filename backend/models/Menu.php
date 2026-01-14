@@ -508,6 +508,45 @@ class Menu
         ];
     }
 
+    public static function adminGrant()
+    {
+        return [
+            'label' => 'Grant Management',
+            'icon' => 'money',
+            'url' => '#',
+            'items' => [
+                [
+                    'label' => 'Grants',
+                    'icon' => 'list',
+                    'url' => [
+                        '/grant/grant/index'
+                    ]
+                ],
+                [
+                    'label' => 'Categories',
+                    'icon' => 'tags',
+                    'url' => [
+                        '/grant/category/index'
+                    ]
+                ],
+                [
+                    'label' => 'Types',
+                    'icon' => 'th-list',
+                    'url' => [
+                        '/grant/type/index'
+                    ]
+                ],
+                [
+                    'label' => 'Backfill Head Researcher',
+                    'icon' => 'refresh',
+                    'url' => [
+                        '/grant/backfill/head-researcher'
+                    ]
+                ],
+            ]
+        ];
+    }
+
     public static function protege()
     {
         return [

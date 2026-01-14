@@ -104,6 +104,10 @@ use backend\models\Menu;
 			$admin_focus = Menu::adminTicket();
 			break;
 
+			case 'grant':
+			$admin_focus = Menu::adminGrant();
+			break;
+
 			
 
 		}
@@ -159,6 +163,8 @@ $menuItems = [
                   //  ['label' => 'Workshop', 'icon' => 'cube', 'url' => ['/workshop/kursus-anjur'], 'visible' => Yii::$app->user->can('workshop-manager')],
     
                     ['label' => 'Students', 'icon' => 'users', 'url' => ['/students/student'], 'visible' => Yii::$app->user->can('students-manager')],
+					
+					['label' => 'Grant Management', 'icon' => 'money', 'url' => ['/grant']],
 					
 					//['label' => 'eAduan', 'icon' => 'comments', 'url' => ['/aduan'],],
 					

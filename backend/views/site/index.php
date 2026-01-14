@@ -216,6 +216,19 @@ $this->title = 'Modules';
           </div>
         </a>
       </div>
+      <div class="col-md-3 col-sm-6 col-xs-12">
+        <a href="<?= Url::to(['/grant']) ?>">
+          <div class="module-card theme-orange">
+            <span class="bar"></span>
+            <div class="inner">
+              <h4>Grant Management</h4>
+              <p>Manage grants, categories and types.</p>
+              <i class="fa fa-money icon"></i>
+            </div>
+            <span class="footer">Open <i class="fa fa-arrow-circle-right"></i></span>
+          </div>
+        </a>
+      </div>
       
     </div>
   </div>
