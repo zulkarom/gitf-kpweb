@@ -4,6 +4,10 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $summary array */
+/* @var $totalActiveAcademicStaff int */
+/* @var $distinctHeadResearcherStaff int */
+/* @var $overallPercentage float */
+/* @var $byYear array */
 /* @var $byCategory array */
 /* @var $byType array */
 
@@ -14,6 +18,16 @@ $this->params['breadcrumbs'][] = $this->title;
 $grantCount = isset($summary['grant_count']) ? (int) $summary['grant_count'] : 0;
 $sumAmount = isset($summary['sum_amount']) ? (float) $summary['sum_amount'] : 0;
 $extendedCount = isset($summary['extended_count']) ? (int) $summary['extended_count'] : 0;
+
+$safeByYear = [];
+foreach ($byYear as $r) {
+    $safeByYear[] = [
+        'year' => (int) ($r['year'] ?? 0),
+        'distinct_staff' => (int) ($r['distinct_staff'] ?? 0),
+        'total_staff' => (int) ($r['total_staff'] ?? 0),
+        'percentage' => (float) ($r['percentage'] ?? 0),
+    ];
+}
 ?>
 
 <div class="grant-stats">
@@ -48,6 +62,90 @@ $extendedCount = isset($summary['extended_count']) ? (int) $summary['extended_co
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header"><b>Head Researcher Coverage (Internal Staff)</b></div>
+                <div class="box-body">
+
+            
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Year</th>
+                                            <th style="width:180px">Distinct Staff</th>
+                                            <th style="width:180px">Total Staff</th>
+                                            <th style="width:160px">Percentage</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php foreach ($safeByYear as $row) { ?>
+                                        <tr>
+                                            <td><?= (int) $row['year'] ?></td>
+                                            <td><?= (int) $row['distinct_staff'] ?></td>
+                                            <td><?= (int) $row['total_staff'] ?></td>
+                                            <td><?= Yii::$app->formatter->asDecimal((float) $row['percentage'], 2) ?>%</td>
+                                        </tr>
+                                    <?php } ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div id="grantCoverageByYearChart" style="height:260px;"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <?php
+    $chartLabels = [];
+    $chartValues = [];
+    foreach ($safeByYear as $row) {
+        $chartLabels[] = (string) $row['year'];
+        $chartValues[] = round((float) $row['percentage'], 2);
+    }
+
+    $chartLabelsJson = json_encode($chartLabels);
+    $chartValuesJson = json_encode($chartValues);
+
+    $this->registerJsFile('https://www.gstatic.com/charts/loader.js', ['position' => \yii\web\View::POS_HEAD]);
+    $this->registerJs(<<<JS
+google.charts.load('current', {packages: ['corechart']});
+google.charts.setOnLoadCallback(drawGrantCoverageByYear);
+
+function drawGrantCoverageByYear() {
+    var labels = {$chartLabelsJson};
+    var values = {$chartValuesJson};
+    var rows = [['Year', 'Coverage (%)']];
+    for (var i = 0; i < labels.length; i++) {
+        rows.push([String(labels[i] || ''), Number(values[i] || 0)]);
+    }
+
+    var data = google.visualization.arrayToDataTable(rows);
+    var options = {
+        height: 260,
+        legend: { position: 'none' },
+        colors: ['#3c8dbc'],
+        vAxis: { viewWindow: { min: 0, max: 100 }, format: '0\'%\'' },
+        chartArea: {width: '80%', height: '70%'}
+    };
+
+    var el = document.getElementById('grantCoverageByYearChart');
+    if (!el) { return; }
+    var chart = new google.visualization.ColumnChart(el);
+    chart.draw(data, options);
+}
+JS, \yii\web\View::POS_END);
+    ?>
 
     <div class="row">
         <div class="col-md-6">

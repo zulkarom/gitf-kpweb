@@ -20,6 +20,7 @@ $types = ArrayHelper::map(Type::find()->orderBy(['type_name' => SORT_ASC])->all(
 
     <p>
         <?= Html::a('Create Grant', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Export Excel', array_merge(['export-excel'], Yii::$app->request->queryParams), ['class' => 'btn btn-default']) ?>
     
     </p>
 
