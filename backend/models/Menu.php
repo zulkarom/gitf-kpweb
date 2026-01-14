@@ -517,7 +517,7 @@ class Menu
             'items' => [
                 [
                     'label' => 'Stats',
-                    'icon' => 'list',
+                    'icon' => 'pie-chart',
                     'url' => [
                         '/grant/grant/stats'
                     ]

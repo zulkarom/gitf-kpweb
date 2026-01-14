@@ -117,10 +117,20 @@ foreach ($byYear as $r) {
     $chartLabelsJson = json_encode($chartLabels);
     $chartValuesJson = json_encode($chartValues);
 
+    $catLabels = [];
+    $catCounts = [];
+    foreach (($byCategory ?? []) as $r) {
+        $catLabels[] = (string) ($r['category'] ?? 'N/A');
+        $catCounts[] = (int) ($r['grant_count'] ?? 0);
+    }
+    $catLabelsJson = json_encode($catLabels);
+    $catCountsJson = json_encode($catCounts);
+
     $this->registerJsFile('https://www.gstatic.com/charts/loader.js', ['position' => \yii\web\View::POS_HEAD]);
     $this->registerJs(<<<JS
 google.charts.load('current', {packages: ['corechart']});
 google.charts.setOnLoadCallback(drawGrantCoverageByYear);
+google.charts.setOnLoadCallback(drawGrantByCategoryPie);
 
 function drawGrantCoverageByYear() {
     var labels = {$chartLabelsJson};
@@ -144,6 +154,32 @@ function drawGrantCoverageByYear() {
     var chart = new google.visualization.ColumnChart(el);
     chart.draw(data, options);
 }
+
+function drawGrantByCategoryPie() {
+    var labels = {$catLabelsJson};
+    var counts = {$catCountsJson};
+    var rows = [['Category', 'Total']];
+    for (var i = 0; i < labels.length; i++) {
+        rows.push([labels[i] || 'N/A', Number(counts[i] || 0)]);
+    }
+
+    var data = google.visualization.arrayToDataTable(rows);
+
+    var options = {
+        is3D: true,
+        height: 260,
+        legend: {
+            position: 'bottom',
+            textStyle: {fontSize: 10, color: '#425062'}
+        },
+        chartArea: {width: '95%', height: '70%'}
+    };
+
+    var el = document.getElementById('grantByCategoryPie');
+    if (!el) { return; }
+    var chart = new google.visualization.PieChart(el);
+    chart.draw(data, options);
+}
 JS, \yii\web\View::POS_END);
     ?>
 
@@ -152,6 +188,7 @@ JS, \yii\web\View::POS_END);
             <div class="box">
                 <div class="box-header"><b>By Category</b></div>
                 <div class="box-body">
+                    <div id="grantByCategoryPie"></div>
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>

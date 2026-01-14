@@ -5,6 +5,7 @@ use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
 use backend\modules\grant\models\Category;
 use backend\modules\grant\models\Type;
+use backend\modules\grant\models\GrantSearch;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\modules\grant\models\GrantSearch */
@@ -15,6 +16,30 @@ $this->params['breadcrumbs'][] = $this->title;
 
 $categories = ArrayHelper::map(Category::find()->orderBy(['category_name' => SORT_ASC])->all(), 'id', 'category_name');
 $types = ArrayHelper::map(Type::find()->orderBy(['type_name' => SORT_ASC])->all(), 'id', 'type_name');
+
+$summaryParams = Yii::$app->request->queryParams;
+if (isset($summaryParams['GrantSearch']['year'])) {
+    unset($summaryParams['GrantSearch']['year']);
+}
+
+$summarySearchModel = new GrantSearch();
+$summaryProvider = $summarySearchModel->search($summaryParams);
+$qYear = clone $summaryProvider->query;
+
+$currentYear = (int) date('Y');
+$yearSummary = [];
+for ($y = $currentYear; $y >= $currentYear - 5; $y--) {
+    $yearStart = $y . '-01-01';
+    $yearEnd = $y . '-12-31';
+    $qy = clone $qYear;
+    $qy->andWhere('g.date_start IS NOT NULL');
+    $qy->andWhere('g.date_start <= :yearEnd', [':yearEnd' => $yearEnd]);
+    $qy->andWhere('(g.date_end IS NULL OR g.date_end >= :yearStart)', [':yearStart' => $yearStart]);
+    $yearSummary[] = [
+        'year' => $y,
+        'total' => (int) $qy->count('g.id'),
+    ];
+}
 ?>
 <div class="grant-index">
 
@@ -27,6 +52,32 @@ $types = ArrayHelper::map(Type::find()->orderBy(['type_name' => SORT_ASC])->all(
     <div class="box">
         <div class="box-header"></div>
         <div class="box-body">
+
+            <?php
+            $activeYear = (int) ($searchModel->year ?? 0);
+            $variants = ['blue', 'green', 'yellow', 'aqua', 'red', 'purple', 'gray'];
+            foreach ($yearSummary as $i => $row) {
+                $year = (int) ($row['year'] ?? 0);
+                $total = (int) ($row['total'] ?? 0);
+                $variant = $variants[$i % count($variants)];
+                if ($activeYear === $year) {
+                    $variant = 'red';
+                }
+
+                $filters = Yii::$app->request->get('GrantSearch', []);
+                $filters['year'] = $year;
+                $url = ['/grant/grant/index', 'GrantSearch' => $filters];
+
+                echo Html::a(
+                    Html::tag('span', Html::encode($year . ' (' . $total . ')'), ['class' => 'label-outline label-outline--' . $variant]),
+                    $url,
+                    ['style' => 'display:inline-block; margin:2px 4px 2px 0;']
+                );
+            }
+            ?>
+
+            <br /><br />
+
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
