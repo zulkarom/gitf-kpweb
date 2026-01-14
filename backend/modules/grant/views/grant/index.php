@@ -14,8 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Create Grant', ['create'], ['class' => 'btn btn-success']) ?>
-        <?= Html::a('Categories', ['//grant/category/index'], ['class' => 'btn btn-default']) ?>
-        <?= Html::a('Types', ['//grant/type/index'], ['class' => 'btn btn-default']) ?>
+    
     </p>
 
     <div class="box">
@@ -42,7 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     [
                         'attribute' => 'researcher_linked',
-                        'label' => 'Researcher (Linked)',
+                        'label' => 'Head Researcher',
                         'value' => function ($model) {
                             if ($model->headResearcher) {
                                 $sv = $model->headResearcher;

@@ -516,33 +516,33 @@ class Menu
             'url' => '#',
             'items' => [
                 [
-                    'label' => 'Grants',
+                    'label' => 'Grants Data',
                     'icon' => 'list',
                     'url' => [
                         '/grant/grant/index'
                     ]
                 ],
                 [
-                    'label' => 'Categories',
+                    'label' => 'Grant Categories',
                     'icon' => 'tags',
                     'url' => [
                         '/grant/category/index'
                     ]
                 ],
                 [
-                    'label' => 'Types',
+                    'label' => 'Grant Types',
                     'icon' => 'th-list',
                     'url' => [
                         '/grant/type/index'
                     ]
                 ],
-                [
-                    'label' => 'Backfill Head Researcher',
-                    'icon' => 'refresh',
-                    'url' => [
-                        '/grant/backfill/head-researcher'
-                    ]
-                ],
+                // [
+                //     'label' => 'Backfill Head Researcher',
+                //     'icon' => 'refresh',
+                //     'url' => [
+                //         '/grant/backfill/head-researcher'
+                //     ]
+                // ],
             ]
         ];
     }
