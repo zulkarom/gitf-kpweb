@@ -92,11 +92,11 @@ class m20260114_create_table_grn_grant
 
                     $row = array_combine($header, $data);
 
-                    $grantTitle = trim((string) ($row['grant_title'] ?? ''));
-                    $projectCode = trim((string) ($row['project_code'] ?? ''));
-                    $categoryName = trim((string) ($row['grant_category'] ?? ''));
-                    $typeName = trim((string) ($row['grant_type'] ?? ''));
-                    $headResearcherName = trim((string) ($row['head_researcher'] ?? ''));
+                    $grantTitle = $this->toUtf8(trim((string) ($row['grant_title'] ?? '')));
+                    $projectCode = $this->toUtf8(trim((string) ($row['project_code'] ?? '')));
+                    $categoryName = $this->toUtf8(trim((string) ($row['grant_category'] ?? '')));
+                    $typeName = $this->toUtf8(trim((string) ($row['grant_type'] ?? '')));
+                    $headResearcherName = $this->toUtf8(trim((string) ($row['head_researcher'] ?? '')));
 
                     $amountRaw = $row['amount'] ?? 0;
                     $amount = is_numeric($amountRaw) ? (float) $amountRaw : (float) preg_replace('/[^0-9.\-]/', '', (string) $amountRaw);
@@ -183,7 +183,7 @@ class m20260114_create_table_grn_grant
                 continue;
             }
 
-            $val = trim((string) $data[0]);
+            $val = $this->toUtf8(trim((string) $data[0]));
             if ($val === '') {
                 continue;
             }
@@ -198,5 +198,33 @@ class m20260114_create_table_grn_grant
         }
 
         $db->createCommand()->batchInsert($table, [$column], array_values($values))->execute();
+    }
+
+    private function toUtf8($value)
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        $value = (string) $value;
+        if ($value === '') {
+            return $value;
+        }
+
+        if (@preg_match('//u', $value)) {
+            return $value;
+        }
+
+        $converted = @iconv('Windows-1252', 'UTF-8//IGNORE', $value);
+        if ($converted !== false && $converted !== '') {
+            return $converted;
+        }
+
+        $converted = @iconv('ISO-8859-1', 'UTF-8//IGNORE', $value);
+        if ($converted !== false && $converted !== '') {
+            return $converted;
+        }
+
+        return preg_replace('/[^\x00-\x7F]/', '', $value);
     }
 }
