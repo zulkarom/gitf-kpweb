@@ -12,6 +12,22 @@ class Grant extends ActiveRecord
         return 'grn_grant';
     }
 
+    public function beforeValidate()
+    {
+        if (!parent::beforeValidate()) {
+            return false;
+        }
+
+        if ($this->head_researcher_id) {
+            $sv = $this->headResearcher;
+            if ($sv) {
+                $this->head_researcher_name = (string) $sv->svNamePlain;
+            }
+        }
+
+        return true;
+    }
+
     public function rules()
     {
         return [

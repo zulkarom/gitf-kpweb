@@ -516,6 +516,13 @@ class Menu
             'url' => '#',
             'items' => [
                 [
+                    'label' => 'Stats',
+                    'icon' => 'list',
+                    'url' => [
+                        '/grant/grant/stats'
+                    ]
+                ],
+                [
                     'label' => 'Grants Data',
                     'icon' => 'list',
                     'url' => [
