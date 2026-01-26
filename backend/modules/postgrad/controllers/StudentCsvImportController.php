@@ -37,11 +37,6 @@ class StudentCsvImportController extends Controller
     {
         $model = new StudentCsvUploadForm();
 
-        $currentSem = Semester::getCurrentSemester();
-        if ($currentSem) {
-            $model->semester_id = $currentSem->id;
-        }
-
         $preview = null;
         $summary = null;
 
@@ -61,10 +56,13 @@ class StudentCsvImportController extends Controller
                 if (!$path || !is_string($path) || !is_file($path)) {
                     $summary = ['error' => 'Uploaded CSV file not found. Please upload again.'];
                 } else {
-                    [$preview, $summary] = $this->processCsv($path, false, (int)$model->semester_id);
+                    [$preview, $summary] = $this->processCsv($path, false);
 
-                    if (Yii::$app->request->post('apply') === '1') {
-                        [$preview, $summary] = $this->processCsv($path, true, (int)$model->semester_id);
+                    $applyIntent = (string)Yii::$app->request->post('apply_intent', '0');
+                    $applyIntent = trim($applyIntent);
+
+                    if ($applyIntent === '1') {
+                        [$preview, $summary] = $this->processCsv($path, true);
                     }
                 }
             }
@@ -77,18 +75,9 @@ class StudentCsvImportController extends Controller
         ]);
     }
 
-    private function processCsv($path, $apply, $semesterId)
+    private function processCsv($path, $apply)
     {
         set_time_limit(0);
-
-        $semesterId = (int)$semesterId;
-        if (!$semesterId) {
-            $currentSem = Semester::getCurrentSemester();
-            if (!$currentSem) {
-                return [[], ['error' => 'Current semester not found']];
-            }
-            $semesterId = (int)$currentSem->id;
-        }
 
         $handle = $this->openCsvHandle($path);
         if (!$handle) {
@@ -108,7 +97,6 @@ class StudentCsvImportController extends Controller
             'invalid' => 0,
             'errors' => 0,
             'applied' => $apply ? 1 : 0,
-            'semester_id' => $semesterId,
         ];
 
         $resultCounts = [
@@ -144,24 +132,24 @@ class StudentCsvImportController extends Controller
                 continue;
             }
 
-            $matric = trim((string)$this->getMappedValue($data, $headerMap, 'matric_no'));
-            $name = trim((string)$this->getMappedValue($data, $headerMap, 'name'));
-            $emailStudent = trim((string)$this->getMappedValue($data, $headerMap, 'email_student'));
-            $nricRaw = trim((string)$this->getMappedValue($data, $headerMap, 'nric'));
-            $citizenshipRaw = trim((string)$this->getMappedValue($data, $headerMap, 'citizenship'));
-            $programRaw = trim((string)$this->getMappedValue($data, $headerMap, 'program'));
-            $studyModeRaw = trim((string)$this->getMappedValue($data, $headerMap, 'study_mode'));
+            $matric = $this->normalizeCellValue($this->getMappedValue($data, $headerMap, 'matric_no'));
+            $name = $this->normalizeCellValue($this->getMappedValue($data, $headerMap, 'name'));
+            $emailStudent = $this->normalizeCellValue($this->getMappedValue($data, $headerMap, 'email_student'));
+            $nricRaw = $this->normalizeCellValue($this->getMappedValue($data, $headerMap, 'nric'));
+            $citizenshipRaw = $this->normalizeCellValue($this->getMappedValue($data, $headerMap, 'citizenship'));
+            $programRaw = $this->normalizeCellValue($this->getMappedValue($data, $headerMap, 'program'));
+            $studyModeRaw = $this->normalizeCellValue($this->getMappedValue($data, $headerMap, 'study_mode'));
 
-            $addressRaw = trim((string)$this->getMappedValue($data, $headerMap, 'address'));
-            $cityRaw = trim((string)$this->getMappedValue($data, $headerMap, 'city'));
-            $phoneRaw = trim((string)$this->getMappedValue($data, $headerMap, 'phone_no'));
-            $personalEmailRaw = trim((string)$this->getMappedValue($data, $headerMap, 'personal_email'));
-            $nationalityRaw = trim((string)$this->getMappedValue($data, $headerMap, 'nationality'));
-            $genderRaw = trim((string)$this->getMappedValue($data, $headerMap, 'gender'));
-            $maritalRaw = trim((string)$this->getMappedValue($data, $headerMap, 'marital_status'));
-            $dobRaw = trim((string)$this->getMappedValue($data, $headerMap, 'date_birth'));
-            $campusRaw = trim((string)$this->getMappedValue($data, $headerMap, 'campus'));
-            $sponsorRaw = trim((string)$this->getMappedValue($data, $headerMap, 'sponsor'));
+            $addressRaw = $this->normalizeCellValue($this->getMappedValue($data, $headerMap, 'address'));
+            $cityRaw = $this->normalizeCellValue($this->getMappedValue($data, $headerMap, 'city'));
+            $phoneRaw = $this->normalizeCellValue($this->getMappedValue($data, $headerMap, 'phone_no'));
+            $personalEmailRaw = $this->normalizeCellValue($this->getMappedValue($data, $headerMap, 'personal_email'));
+            $nationalityRaw = $this->normalizeCellValue($this->getMappedValue($data, $headerMap, 'nationality'));
+            $genderRaw = $this->normalizeCellValue($this->getMappedValue($data, $headerMap, 'gender'));
+            $maritalRaw = $this->normalizeCellValue($this->getMappedValue($data, $headerMap, 'marital_status'));
+            $dobRaw = $this->normalizeCellValue($this->getMappedValue($data, $headerMap, 'date_birth'));
+            $campusRaw = $this->normalizeCellValue($this->getMappedValue($data, $headerMap, 'campus'));
+            $sponsorRaw = $this->normalizeCellValue($this->getMappedValue($data, $headerMap, 'sponsor'));
 
             $missingFields = [];
             if ($matric === '') { $missingFields[] = 'MATRIK'; }
@@ -349,22 +337,22 @@ class StudentCsvImportController extends Controller
             }
 
             $before = [
-                'student_nric' => (string)$student->nric,
+                'student_nric' => $this->normalizeCellValue((string)$student->nric),
                 'student_citizenship' => (int)$student->citizenship,
                 'student_program_id' => (int)$student->program_id,
                 'student_study_mode' => (int)$student->study_mode,
-                'student_address' => (string)$student->address,
-                'student_city' => (string)$student->city,
-                'student_phone_no' => (string)$student->phone_no,
-                'student_personal_email' => (string)$student->personal_email,
+                'student_address' => $this->normalizeCellValue((string)$student->address),
+                'student_city' => $this->normalizeCellValue((string)$student->city),
+                'student_phone_no' => $this->normalizeCellValue((string)$student->phone_no),
+                'student_personal_email' => $this->normalizeCellValue((string)$student->personal_email),
                 'student_nationality' => (int)$student->nationality,
                 'student_gender' => (int)$student->gender,
                 'student_marital_status' => (int)$student->marital_status,
-                'student_date_birth' => (string)$student->date_birth,
+                'student_date_birth' => $this->normalizeCellValue((string)$student->date_birth),
                 'student_campus_id' => (int)$student->campus_id,
-                'student_sponsor' => (string)$student->sponsor,
-                'user_fullname' => $user ? (string)$user->fullname : '',
-                'user_email' => $user ? (string)$user->email : '',
+                'student_sponsor' => $this->normalizeCellValue((string)$student->sponsor),
+                'user_fullname' => $this->normalizeCellValue($user ? (string)$user->fullname : ''),
+                'user_email' => $this->normalizeCellValue($user ? (string)$user->email : ''),
             ];
 
             $after = $before;
@@ -565,6 +553,35 @@ class StudentCsvImportController extends Controller
         }
 
         return null;
+    }
+
+    private function normalizeCellValue($val)
+    {
+        if ($val === null) {
+            return '';
+        }
+
+        $v = (string)$val;
+
+        $v = ltrim($v, "\xEF\xBB\xBF");
+        $v = str_replace(["\x00", "\x1A", "\u{200B}", "\u{FEFF}", "\u{00A0}"], '', $v);
+
+        if ($v !== '' && function_exists('mb_check_encoding') && !mb_check_encoding($v, 'UTF-8')) {
+            $fixed = false;
+            if (function_exists('iconv')) {
+                $tmp = @iconv('UTF-8', 'UTF-8//IGNORE', $v);
+                if (is_string($tmp)) {
+                    $v = $tmp;
+                    $fixed = true;
+                }
+            }
+            if (!$fixed) {
+                $v = mb_convert_encoding($v, 'UTF-8', 'UTF-8');
+            }
+        }
+
+        $v = trim($v);
+        return $v;
     }
 
     private function openCsvHandle($path)

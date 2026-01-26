@@ -4,8 +4,6 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use yii\helpers\Json;
-use backend\models\Semester;
-use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\postgrad\models\StudentCsvUploadForm */
@@ -58,19 +56,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
-            <?php
-                $semesterOptions = ArrayHelper::map(
-                    Semester::find()->orderBy(['id' => SORT_DESC])->all(),
-                    'id',
-                    function($s){ return $s->longFormat(); }
-                );
-            ?>
-
-            <?= $form->field($model, 'semester_id')->dropDownList($semesterOptions, ['prompt' => 'Choose'])->label('Semester') ?>
-
             <?= $form->field($model, 'file')->fileInput(['accept' => '.csv', 'id' => 'pg-student-csv-file'])->label('Upload CSV File Student Data') ?>
 
             <?= Html::hiddenInput('csv_token', Yii::$app->request->post('csv_token', ''), ['id' => 'pg-student-csv-token']) ?>
+
+            <?= Html::hiddenInput('apply_intent', '0', ['id' => 'pg-student-apply-intent']) ?>
 
             <div class="form-group">
                 <?= Html::button('Upload CSV', ['class' => 'btn btn-default', 'id' => 'pg-student-upload-btn', 'style' => 'display:none']) ?>
@@ -95,6 +85,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     var uploadBtn = $('#pg-student-upload-btn');
                     var fileInput = $('#pg-student-csv-file');
                     var tokenInput = $('#pg-student-csv-token');
+                    var applyIntent = $('#pg-student-apply-intent');
                     var msg = $('#pg-student-upload-msg');
                     var form = fileInput.closest('form');
                     var applyBtn = form.find('button[name="apply"], input[name="apply"]');
@@ -116,6 +107,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             setMsg('Please choose a CSV file first', true);
                             return;
                         }
+
 
                         var fd = new FormData();
                         fd.append({$csrfParamJson}, {$csrfTokenJson});
@@ -163,6 +155,11 @@ $this->params['breadcrumbs'][] = $this->title;
                             isUploading = false;
                             if(uploadBtn.length){ uploadBtn.prop('disabled', false); }
                             if(applyBtn.length){ applyBtn.prop('disabled', false); }
+                            try {
+                                fileInput.val('');
+                            } catch(e) {
+                                // ignore
+                            }
                         });
                     }
 
@@ -172,8 +169,25 @@ $this->params['breadcrumbs'][] = $this->title;
                         uploadCsv();
                     });
 
+                    fileInput.on('mousedown', function(){
+                        tokenInput.val('');
+                        if(applyIntent.length){ applyIntent.val('0'); }
+                        try {
+                            this.value = '';
+                        } catch(e) {}
+                    });
+
+                    fileInput.on('click', function(){
+                        tokenInput.val('');
+                        if(applyIntent.length){ applyIntent.val('0'); }
+                        try {
+                            this.value = '';
+                        } catch(e) {}
+                    });
+
                     fileInput.on('change', function(){
                         tokenInput.val('');
+                        if(applyIntent.length){ applyIntent.val('0'); }
                         uploadCsv(function(){
                             form.find('input[name="preview"]').remove();
                             form.append('<input type="hidden" name="preview" value="1" />');
@@ -182,6 +196,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     });
 
                     applyBtn.on('click', function(e){
+                        if(applyIntent.length){ applyIntent.val('1'); }
                         if($.trim(tokenInput.val() || '') !== ''){
                             return;
                         }
@@ -210,7 +225,6 @@ JS);
                 <div class="alert alert-info">
                     <strong>Summary</strong><br />
                     Applied: <?= (int)$summary['applied'] ?><br />
-                    Semester ID: <?= (int)($summary['semester_id'] ?? 0) ?><br />
                     Processed: <?= (int)$summary['processed'] ?><br />
                     Updated: <?= (int)($summary['updated'] ?? 0) ?><br />
                     Created: <?= (int)($summary['created'] ?? 0) ?><br />
