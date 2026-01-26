@@ -39,6 +39,8 @@ class StudentRegister extends \yii\db\ActiveRecord
             ['fee_amount', 'number'],
             [['date_register', 'fee_paid_at'], 'safe'],
 
+            [['student_id', 'semester_id'], 'unique', 'targetAttribute' => ['student_id', 'semester_id'], 'message' => 'Student already registered for this semester.'],
+
             [['student_id', 'semester_id'], 'required', 'on' => 'csv_status'],
             [['student_id', 'semester_id', 'status_daftar', 'status_aktif'], 'integer', 'on' => 'csv_status'],
         ];

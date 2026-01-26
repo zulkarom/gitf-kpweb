@@ -1140,6 +1140,21 @@ class StudentController extends Controller
         ]);
     }
 
+    public function actionUpdateSemesterInfo($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->save()) {
+                Yii::$app->session->addFlash('success', 'Maklumat pendaftaran semester dikemaskini.');
+            } else {
+                $model->flashError();
+            }
+        }
+
+        return $this->redirect(['view', 'id' => $model->id]);
+    }
+
     /**
      * Creates a new StudentPostGrad model.
      * If creation is successful, the browser will be redirected to the 'view' page.

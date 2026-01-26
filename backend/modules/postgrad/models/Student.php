@@ -98,7 +98,7 @@ class Student extends \yii\db\ActiveRecord
 
             [['date_birth', 'admission_date'], 'safe'],
             
-            [['gender', 'marital_status', 'nationality', 'citizenship', 'study_mode', 'religion', 'race', 'admission_semester', 'current_sem', 'campus_id', 'status', 'field_id', 'related_university_id'], 'integer'],
+            [['gender', 'marital_status', 'nationality', 'citizenship', 'study_mode', 'religion', 'race', 'admission_semester', 'current_sem', 'campus_id', 'field_id', 'related_university_id'], 'integer'],
             
             [['matric_no', 'nric'], 'string', 'max' => 20],
             

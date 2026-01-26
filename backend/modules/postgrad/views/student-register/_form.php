@@ -27,6 +27,8 @@ use kartik\widgets\ActiveForm;
 
     <?= $form->field($model, 'semester_id')->dropDownList(Semester::listSemesterArray(), ['prompt' => 'Select..']) ?>
 
+    <?= $form->field($model, 'status_daftar')->dropDownList(StudentRegister::statusDaftarList(), ['prompt' => 'Select..']) ?>
+
  <?=$form->field($model, 'date_register')->widget(DatePicker::classname(), [
     'removeButton' => false,
     'pluginOptions' => [
@@ -65,9 +67,7 @@ use kartik\widgets\ActiveForm;
 
     </div>
     <div class="col-md-6">
-
-    <?= $form->field($model, 'status_daftar')->dropDownList(StudentRegister::statusDaftarList(), ['prompt' => 'Select..']) ?>
-
+ 
     </div>
 </div>
 
