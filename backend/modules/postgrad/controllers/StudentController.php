@@ -7,6 +7,7 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
+use yii\db\IntegrityException;
 use common\models\User;
 use common\models\Country;
 use backend\modules\esiap\models\Program;
@@ -1169,33 +1170,61 @@ class StudentController extends Controller
 
         if ($model->load(Yii::$app->request->post()) 
             && $modelUser->load(Yii::$app->request->post())) {
-            //check email exist  
-            $email = $modelUser->email;
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                //check email exist
+                $email = $modelUser->email;
                 $user = User::find()
-                ->where(['or',
-                    ['email' => $email],
-                    ['username' => $email]
-                ])->one();
-                if($user){
+                    ->where(['or',
+                        ['email' => $email],
+                        ['username' => $email]
+                    ])->one();
+
+                if ($user) {
                     $modelUser = $user;
-                }else{
+                    $modelUser->scenario = 'studPost';
+                } else {
                     $random = rand(30,30000);
                     $modelUser->username = $model->matric_no;
                     $modelUser->password_hash = \Yii::$app->security->generatePasswordHash($random);
                 }
                 $modelUser->status = 10;
-            
-            if($modelUser->save()){
+
+                if (!$modelUser->save()) {
+                    $transaction->rollBack();
+                    Yii::$app->session->addFlash('error', 'Gagal simpan rekod pengguna: ' . json_encode($modelUser->getErrors()));
+                    return $this->render('create', [
+                        'model' => $model,
+                        'modelUser' => $modelUser,
+                    ]);
+                }
 
                 $model->user_id = $modelUser->id;
-
-                if($model->save()){
-                    return $this->redirect(['view', 'id' => $model->id]);
-                }else{
-                    $model->flashError();
+                if (!$model->save()) {
+                    $transaction->rollBack();
+                    Yii::$app->session->addFlash('error', 'Gagal simpan rekod pelajar: ' . json_encode($model->getErrors()));
+                    return $this->render('create', [
+                        'model' => $model,
+                        'modelUser' => $modelUser,
+                    ]);
                 }
-            }else{
-                $modelUser->flashError();
+
+                $transaction->commit();
+                Yii::$app->session->addFlash('success', 'Pelajar berjaya didaftarkan.');
+                return $this->redirect(['view', 'id' => $model->id]);
+
+            } catch (IntegrityException $e) {
+                if ($transaction->isActive) {
+                    $transaction->rollBack();
+                }
+                Yii::error($e->getMessage(), __METHOD__);
+                Yii::$app->session->addFlash('error', 'Gagal simpan (database integrity): ' . $e->getMessage());
+            } catch (\Throwable $e) {
+                if ($transaction->isActive) {
+                    $transaction->rollBack();
+                }
+                Yii::error($e->getMessage(), __METHOD__);
+                Yii::$app->session->addFlash('error', 'Ralat sistem semasa simpan: ' . $e->getMessage());
             }
         }
 

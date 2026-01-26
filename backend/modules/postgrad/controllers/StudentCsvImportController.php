@@ -173,6 +173,49 @@ class StudentCsvImportController extends Controller
                 continue;
             }
 
+            $mappedCitizenship = $this->mapCitizenship($citizenshipRaw);
+            $mappedStudyMode = $this->mapStudyMode($studyModeRaw);
+            $nric = str_replace('-', '', (string)$nricRaw);
+            $programId = $this->mapProgramIdFromText($programRaw);
+
+            $mappedNationality = null;
+            if ($nationalityRaw !== '') {
+                $mappedNationality = $this->mapNationality($nationalityRaw);
+            }
+
+            $mappedGender = null;
+            if ($genderRaw !== '') {
+                $mappedGender = $this->mapGender($genderRaw);
+            }
+
+            $mappedMarital = null;
+            if ($maritalRaw !== '') {
+                $mappedMarital = $this->mapMaritalStatus($maritalRaw);
+            }
+
+            $mappedDob = null;
+            if ($dobRaw !== '') {
+                $mappedDob = $this->parseDate($dobRaw);
+            }
+
+            $mappedCampusId = null;
+            if ($campusRaw !== '') {
+                $mappedCampusId = $this->mapCampus($campusRaw);
+            }
+
+            if ($mappedCitizenship === null || $mappedStudyMode === null || !$programId) {
+                $stats['invalid']++;
+                $resultCounts['INVALID']++;
+                $preview[] = [
+                    'matric_no' => $matric,
+                    'name' => $name,
+                    'email' => $emailStudent,
+                    'result' => 'INVALID',
+                    'message' => 'Invalid required value(s) (citizenship/program/study mode)',
+                ];
+                continue;
+            }
+
             $student = Student::find()->where(['matric_no' => $matric])->one();
             if (!$student) {
                 if (!$apply) {
@@ -285,49 +328,6 @@ class StudentCsvImportController extends Controller
                     ];
                 }
 
-                continue;
-            }
-
-            $mappedCitizenship = $this->mapCitizenship($citizenshipRaw);
-            $mappedStudyMode = $this->mapStudyMode($studyModeRaw);
-            $nric = str_replace('-', '', (string)$nricRaw);
-            $programId = $this->mapProgramIdFromText($programRaw);
-
-            $mappedNationality = null;
-            if ($nationalityRaw !== '') {
-                $mappedNationality = $this->mapNationality($nationalityRaw);
-            }
-
-            $mappedGender = null;
-            if ($genderRaw !== '') {
-                $mappedGender = $this->mapGender($genderRaw);
-            }
-
-            $mappedMarital = null;
-            if ($maritalRaw !== '') {
-                $mappedMarital = $this->mapMaritalStatus($maritalRaw);
-            }
-
-            $mappedDob = null;
-            if ($dobRaw !== '') {
-                $mappedDob = $this->parseDate($dobRaw);
-            }
-
-            $mappedCampusId = null;
-            if ($campusRaw !== '') {
-                $mappedCampusId = $this->mapCampus($campusRaw);
-            }
-
-            if ($mappedCitizenship === null || $mappedStudyMode === null || !$programId) {
-                $stats['invalid']++;
-                $resultCounts['INVALID']++;
-                $preview[] = [
-                    'matric_no' => $matric,
-                    'name' => $name,
-                    'email' => $emailStudent,
-                    'result' => 'INVALID',
-                    'message' => 'Invalid required value(s) (citizenship/program/study mode)',
-                ];
                 continue;
             }
 
