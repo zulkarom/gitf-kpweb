@@ -2,7 +2,11 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\helpers\ArrayHelper;
 use yii\widgets\DetailView;
+use yii\widgets\ActiveForm;
+use backend\models\Semester;
+use kartik\date\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\postgrad\models\Student */
@@ -13,9 +17,6 @@ $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="student-post-grad-view">
-
-
-
 
   <div class="row">
 	<div class="col-md-6">
@@ -47,7 +48,7 @@ Profile
                 return $model->user->email;
                 }
             ],
-            'current_sem',
+            
             'campus.campus_name',
             'program.pro_name',
             'field.field_name',
@@ -57,28 +58,14 @@ Profile
                 return $model->studyModeText;
                 }
             ],
-            'admission_year',
-            [
-                'label' => 'Tarikh Kemasukan ',
-                'value' => function($model){
-                return date('d F Y', strtotime($model->admission_date));
-                }
-                ],
+            
             [
                 'label' => 'Pembiayaan',
                 'value' => function($model){
                 return $model->sponsor;
                 }
             ],
-            [
-                'label' => 'Sesi Masuk',
-                'value' => function($model){
-                if($model->semester){
-                    return $model->semester->longFormat();
-                }
-                
-                }
-            ],
+            
             
             
             [
@@ -159,7 +146,7 @@ Profile
 <div class="box">
 <div class="box-header">
 <h3 class="box-title">
-Semester
+Research Stage
 </h3>
 </div>
 <div class="box-body">
@@ -168,23 +155,26 @@ Semester
   <thead>
     <tr>
       <th scope="col">#</th>
+      <th scope="col">Stage</th>
+      <th scope="col">Status</th>
       <th scope="col">Semester</th>
-      <th scope="col">Status Daftar</th>
       <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
   <?php  
-  if($semesters){
+  if($stages){
       $i = 1;
-      foreach($semesters as $s){
+      foreach($stages as $s){
           ?>
            <tr>
       <th scope="row"><?=$i?></th>
-      <td><?=$s->semester->longFormat()?></td>
-      <td><?= \backend\modules\postgrad\models\StudentRegister::statusDaftarLabel($s->status_daftar) ?></td>
-      <td><a href="<?=Url::to(['student-register/view', 'id' => $s->id])?>" class="btn btn-warning btn-sm">View</a> 
-       <a href="<?=Url::to(['student-register/delete', 'id' => $s->id])?>" class="btn btn-danger btn-sm" data-confirm="Are you sure to delete this semester?"><i class="fa fa-trash"></i></a>
+      <td><?=$s->stage->stage_name?></td>
+      <td><?=$s->statusName?></td>
+      <td><?= $s->semester ? $s->semester->shortFormat() : '' ?></td>
+      <td><a href="<?=Url::to(['student-stage/view', 'id' => $s->id])?>" class="btn btn-warning btn-sm">View</a> 
+      
+        <a href="<?=Url::to(['student-stage/delete', 'id' => $s->id])?>" class="btn btn-danger btn-sm" data-confirm="Are you sure to delete this stage?"><i class="fa fa-trash"></i></a>
       </td>
     </tr>
           
@@ -202,7 +192,7 @@ Semester
 
 <br />
 <div class="form-group">
-<a href="<?=Url::to(['student-register/create', 's' => $model->id])?>" class="btn btn-primary btn-sm">Add Semester</a>
+<a href="<?=Url::to(['student-stage/create', 's' => $model->id])?>" class="btn btn-primary btn-sm">Add Stage</a>
 </div>
 
 
@@ -273,35 +263,102 @@ Supervisor
 <div class="box">
 <div class="box-header">
 <h3 class="box-title">
-Research Stage
+Pendaftaran Semester
 </h3>
 </div>
 <div class="box-body">
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table" style="margin-bottom: 15px;">
+            <tbody>
+                <tr>
+                    <th style="width: 220px;">Semester Semasa Pelajar</th>
+                    <td><?= Html::encode($model->current_sem) ?></td>
+                </tr>
+                <tr>
+                    <th>Tahun Kemasukan</th>
+                    <td><?= Html::encode($model->admission_year) ?></td>
+                </tr>
+                <tr>
+                    <th>Tarikh Kemasukan</th>
+                    <td><?= $model->admission_date ? Html::encode(date('d F Y', strtotime($model->admission_date))) : '' ?></td>
+                </tr>
+                <tr>
+                    <th>Sesi Masuk</th>
+                    <td><?= $model->semester ? Html::encode($model->semester->longFormat()) : '' ?></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="form-group">
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#semesterInfoModal">Update</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="semesterInfoModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Update Maklumat Pendaftaran Semester</h4>
+      </div>
+      <div class="modal-body">
+        <?php $form = ActiveForm::begin([
+            'action' => Url::to(['student/update-semester-info', 'id' => $model->id]),
+            'method' => 'post',
+        ]); ?>
+
+        <?= $form->field($model, 'current_sem')->textInput() ?>
+        <?= $form->field($model, 'admission_year')->textInput() ?>
+        <?= $form->field($model, 'admission_date')->widget(DatePicker::classname(), [
+            'removeButton' => false,
+            'pluginOptions' => [
+                'autoclose' => true,
+                'format' => 'yyyy-mm-dd',
+                'todayHighlight' => true,
+            ],
+        ]) ?>
+        <?= $form->field($model, 'admission_semester')->dropDownList(
+            ArrayHelper::map(Semester::find()->orderBy(['id' => SORT_DESC])->all(), 'id', function($m){
+                return $m->longFormat();
+            }),
+            ['prompt' => '']
+        ) ?>
+
+        <div class="form-group">
+            <?= Html::submitButton('Save', ['class' => 'btn btn-primary']) ?>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+
+        <?php ActiveForm::end(); ?>
+      </div>
+    </div>
+  </div>
+</div>
 
 <table class="table">
   <thead>
     <tr>
       <th scope="col">#</th>
-      <th scope="col">Stage</th>
-      <th scope="col">Status</th>
-      <th scope="col">Semester</th>
+      <th scope="col">Senarai Rekod Pendaftaran Semester</th>
+      <th scope="col">Status Daftar</th>
       <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
   <?php  
-  if($stages){
+  if($semesters){
       $i = 1;
-      foreach($stages as $s){
+      foreach($semesters as $s){
           ?>
            <tr>
       <th scope="row"><?=$i?></th>
-      <td><?=$s->stage->stage_name?></td>
-      <td><?=$s->statusName?></td>
-      <td><?= $s->semester ? $s->semester->shortFormat() : '' ?></td>
-      <td><a href="<?=Url::to(['student-stage/view', 'id' => $s->id])?>" class="btn btn-warning btn-sm">View</a> 
-      
-        <a href="<?=Url::to(['student-stage/delete', 'id' => $s->id])?>" class="btn btn-danger btn-sm" data-confirm="Are you sure to delete this stage?"><i class="fa fa-trash"></i></a>
+      <td><?=$s->semester->longFormat()?></td>
+      <td><?= \backend\modules\postgrad\models\StudentRegister::statusDaftarLabel($s->status_daftar) ?></td>
+      <td><a href="<?=Url::to(['student-register/update', 'id' => $s->id])?>" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i></a> 
+       <a href="<?=Url::to(['student-register/delete', 'id' => $s->id])?>" class="btn btn-danger btn-sm" data-confirm="Are you sure to delete this semester?"><i class="fa fa-trash"></i></a>
       </td>
     </tr>
           
@@ -319,7 +376,8 @@ Research Stage
 
 <br />
 <div class="form-group">
-<a href="<?=Url::to(['student-stage/create', 's' => $model->id])?>" class="btn btn-primary btn-sm">Add Stage</a>
+<a href="<?=Url::to(['student-register/create', 's' => $model->id])?>" class="btn btn-primary btn-sm">Add Semester</a>
+ <a href="<?=Url::to(['student-register/bulk-edit', 's' => $model->id])?>" class="btn btn-warning btn-sm">Bulk Add/Edit</a>
 </div>
 
 
