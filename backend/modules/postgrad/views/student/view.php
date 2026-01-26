@@ -71,7 +71,7 @@ Profile
             [
                 'label' => 'Negara Asal',
                 'value' => function($model){
-                return $model->country->country_name;
+                return $model->country ? $model->country->country_name : '-';
                 }
                 ],
 
