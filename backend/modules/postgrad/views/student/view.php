@@ -15,6 +15,8 @@ $this->title = $model->user->fullname;
 $this->params['breadcrumbs'][] = ['label' => 'Postgraduate Students', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
+
+$readOnly = Yii::$app->controller->id === 'mystudent';
 ?>
 <div class="student-post-grad-view">
 
@@ -41,6 +43,13 @@ Profile
                 }
             ],
             'matric_no',
+            [
+                'label' => 'Last Status',
+                'format' => 'raw',
+                'value' => function($model){
+                    return \backend\modules\postgrad\models\StudentRegister::statusDaftarLabel($model->last_status_daftar);
+                }
+            ],
             'nric',
             [
                 'label' => 'Emel Pelajar',
@@ -128,10 +137,12 @@ Profile
 	 </div>
 </div>
 
+    <?php if (!$readOnly) { ?>
     <div class="clearfix">
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
 
     </div>
+    <?php } ?>
   
   
 </div>
@@ -170,9 +181,10 @@ Research Stage
       <td><?=$s->stage->stage_name?></td>
       <td><?=$s->statusName?></td>
       <td><?= $s->semester ? $s->semester->shortFormat() : '' ?></td>
-      <td><a href="<?=Url::to(['student-stage/view', 'id' => $s->id])?>" class="btn btn-warning btn-sm">View</a> 
-      
+      <td>
+        <?php if (!$readOnly) { ?>
         <a href="<?=Url::to(['student-stage/delete', 'id' => $s->id])?>" class="btn btn-danger btn-sm" data-confirm="Are you sure to delete this stage?"><i class="fa fa-trash"></i></a>
+        <?php } ?>
       </td>
     </tr>
           
@@ -189,9 +201,11 @@ Research Stage
 
 
 <br />
+<?php if (!$readOnly) { ?>
 <div class="form-group">
 <a href="<?=Url::to(['student-stage/create', 's' => $model->id])?>" class="btn btn-primary btn-sm">Add Stage</a>
 </div>
+<?php } ?>
 
 
 
@@ -225,13 +239,29 @@ Supervisor
           ?>
            <tr>
       <th scope="row"><?=$i?></th>
-      <td><?= Html::a($s->supervisor->svName, ['/postgrad/supervisor/view', 'id' => $s->supervisor->id]) ?></td>
+      <td><?php
+            $sv = $s->supervisor;
+            $label = $sv ? $sv->svName : '';
+            if ($sv && (int)$sv->is_internal === 1 && $sv->staff) {
+                $staffNo = (string)$sv->staff->staff_no;
+                $staffName = (string)$sv->staff->staff_name;
+                if ($staffName === '' && $sv->staff->user) {
+                    $staffName = (string)$sv->staff->user->fullname;
+                }
+                if ($staffNo !== '' && $staffName !== '') {
+                    $label = $staffNo . ' - ' . strtoupper($staffName);
+                }
+            }
+            echo Html::encode($label);
+        ?></td>
       <td><?=$s->roleName()?></td>
       <td><?=$s->supervisor->typeName?></td>
       <td><?= $s->isActiveLabel ?></td>
-      <td><a href="<?=Url::to(['student-supervisor/update', 'id' => $s->id])?>" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i></a>  
-      
-       <a href="<?=Url::to(['student-supervisor/delete', 'id' => $s->id])?>" class="btn btn-danger btn-sm" data-confirm="Are you sure to delete this supervisor?"><i class="fa fa-trash"></i></a>
+      <td>
+        <?php if (!$readOnly) { ?>
+        <a href="<?=Url::to(['student-supervisor/update', 'id' => $s->id])?>" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i></a>  
+        <a href="<?=Url::to(['student-supervisor/delete', 'id' => $s->id])?>" class="btn btn-danger btn-sm" data-confirm="Are you sure to delete this supervisor?"><i class="fa fa-trash"></i></a>
+        <?php } ?>
       </td>
     </tr>
           
@@ -248,9 +278,11 @@ Supervisor
 
 
 <br />
+<?php if (!$readOnly) { ?>
 <div class="form-group">
 <a href="<?=Url::to(['student-supervisor/create', 's' => $model->id])?>" class="btn btn-primary btn-sm">Add Supervisor</a>
 </div>
+<?php } ?>
 
 
 
@@ -270,14 +302,7 @@ Pendaftaran Semester
     <div class="col-md-12">
         <table class="table" style="margin-bottom: 15px;">
             <tbody>
-                <tr>
-                    <th style="width: 220px;">Semester Semasa Pelajar</th>
-                    <td><?= Html::encode($model->current_sem) ?></td>
-                </tr>
-                <tr>
-                    <th>Tahun Kemasukan</th>
-                    <td><?= Html::encode($model->admission_year) ?></td>
-                </tr>
+               
                 <tr>
                     <th>Tarikh Kemasukan</th>
                     <td><?= $model->admission_date ? Html::encode(date('d F Y', strtotime($model->admission_date))) : '' ?></td>
@@ -286,15 +311,22 @@ Pendaftaran Semester
                     <th>Sesi Masuk</th>
                     <td><?= $model->semester ? Html::encode($model->semester->longFormat()) : '' ?></td>
                 </tr>
+                 <tr>
+                    <th style="width: 220px;">Semester Semasa Pelajar</th>
+                    <td><?= Html::encode($model->current_sem) ?></td>
+                </tr>
             </tbody>
         </table>
 
+        <?php if (!$readOnly) { ?>
         <div class="form-group">
             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#semesterInfoModal">Update</button>
         </div>
+        <?php } ?>
     </div>
 </div>
 
+<?php if (!$readOnly) { ?>
 <div class="modal fade" id="semesterInfoModal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -309,7 +341,6 @@ Pendaftaran Semester
         ]); ?>
 
         <?= $form->field($model, 'current_sem')->textInput() ?>
-        <?= $form->field($model, 'admission_year')->textInput() ?>
         <?= $form->field($model, 'admission_date')->widget(DatePicker::classname(), [
             'removeButton' => false,
             'pluginOptions' => [
@@ -335,6 +366,7 @@ Pendaftaran Semester
     </div>
   </div>
 </div>
+<?php } ?>
 
 <table class="table">
   <thead>
@@ -355,8 +387,11 @@ Pendaftaran Semester
       <th scope="row"><?=$i?></th>
       <td><?=$s->semester->longFormat()?></td>
       <td><?= \backend\modules\postgrad\models\StudentRegister::statusDaftarLabel($s->status_daftar) ?></td>
-      <td><a href="<?=Url::to(['student-register/update', 'id' => $s->id])?>" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i></a> 
-       <a href="<?=Url::to(['student-register/delete', 'id' => $s->id])?>" class="btn btn-danger btn-sm" data-confirm="Are you sure to delete this semester?"><i class="fa fa-trash"></i></a>
+      <td>
+        <?php if (!$readOnly) { ?>
+        <a href="<?=Url::to(['student-register/update', 'id' => $s->id])?>" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i></a> 
+        <a href="<?=Url::to(['student-register/delete', 'id' => $s->id])?>" class="btn btn-danger btn-sm" data-confirm="Are you sure to delete this semester?"><i class="fa fa-trash"></i></a>
+        <?php } ?>
       </td>
     </tr>
           
@@ -373,10 +408,12 @@ Pendaftaran Semester
 
 
 <br />
+<?php if (!$readOnly) { ?>
 <div class="form-group">
 <a href="<?=Url::to(['student-register/create', 's' => $model->id])?>" class="btn btn-primary btn-sm">Add Semester</a>
  <a href="<?=Url::to(['student-register/bulk-edit', 's' => $model->id])?>" class="btn btn-warning btn-sm">Bulk Add/Edit</a>
 </div>
+<?php } ?>
 
 
 
@@ -399,6 +436,7 @@ Pendaftaran Semester
 
 
     <div class="clearfix">
+        <?php if (!$readOnly) { ?>
         <div class="pull-right">
             <?= Html::a('<i class="fa fa-trash"></i>', ['delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',
@@ -408,5 +446,6 @@ Pendaftaran Semester
                 ],
             ]) ?>
         </div>
+        <?php } ?>
     </div>
 </div>

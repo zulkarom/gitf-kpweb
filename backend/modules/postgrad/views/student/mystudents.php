@@ -17,69 +17,11 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="student-post-grad-index">
 
-    <div class="box">
-        <div class="box-header"></div>
-        <div class="box-body">
-
-            <div class="row" style="margin-bottom:10px;">
-                <div class="col-md-3">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-aqua"><i class="fa fa-user"></i></span>
-                        <div class="info-box-content">
-                            <span class="info-box-text">Main Supervisor</span>
-                            <span class="info-box-number"><?= (int)($stats['main_supervisor'] ?? 0) ?></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-green"><i class="fa fa-user-plus"></i></span>
-                        <div class="info-box-content">
-                            <span class="info-box-text">Second Supervisor</span>
-                            <span class="info-box-number"><?= (int)($stats['second_supervisor'] ?? 0) ?></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-yellow"><i class="fa fa-flag"></i></span>
-                        <div class="info-box-content">
-                            <span class="info-box-text">Stage - Registration</span>
-                            <span class="info-box-number"><?= (int)($stats['stages']['Registration'] ?? 0) ?></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-red"><i class="fa fa-file-text-o"></i></span>
-                        <div class="info-box-content">
-                            <span class="info-box-text">Stage - Proposal Defense</span>
-                            <span class="info-box-number"><?= (int)($stats['stages']['Proposal Defense'] ?? 0) ?></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row" style="margin-bottom:10px;">
-                <div class="col-md-3">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-purple"><i class="fa fa-repeat"></i></span>
-                        <div class="info-box-content">
-                            <span class="info-box-text">Stage - Re-Proposal Defense</span>
-                            <span class="info-box-number"><?= (int)($stats['stages']['Re-Proposal Defense'] ?? 0) ?></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-navy"><i class="fa fa-graduation-cap"></i></span>
-                        <div class="info-box-content">
-                            <span class="info-box-text">Stage - Pre-Viva</span>
-                            <span class="info-box-number"><?= (int)($stats['stages']['Pre-Viva'] ?? 0) ?></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<style>
+    .info-box.stage-box{min-height:60px;}
+    .info-box.stage-box .info-box-icon{width:50px;font-size:20px;line-height:60px;height:60px;}
+    .info-box.stage-box .info-box-content{margin-left:50px;padding-top:6px;padding-bottom:6px;}
+</style>
 
             <?php $form = ActiveForm::begin(['method' => 'get', 'action' => ['index']]); ?>
             <div class="row" style="margin-bottom:10px;">
@@ -92,11 +34,89 @@ $this->params['breadcrumbs'][] = $this->title;
                         ['class' => 'form-control', 'prompt' => 'Choose', 'id' => 'semester_id']
                     ) ?>
                 </div>
-                <div class="col-md-6" style="padding-top:25px">
-                    <?= Html::submitButton('Filter', ['class' => 'btn btn-primary']) ?>
-                </div>
             </div>
             <?php ActiveForm::end(); ?>
+
+            <?php
+            $this->registerJs('jQuery(function($){$("#semester_id").on("change", function(){ $(this).closest("form").submit();});});');
+            ?>
+
+             <div class="row" style="margin-bottom:10px;">
+                <div class="col-md-3">
+                    <a href="<?= Html::encode(\yii\helpers\Url::to(['index', 'semester_id' => $semesterId, 'sv_role' => 1])) ?>" style="color:inherit;">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-aqua"><i class="fa fa-user"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Main Supervisor</span>
+                                <span class="info-box-number"><?= (int)($stats['main_supervisor'] ?? 0) ?></span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="<?= Html::encode(\yii\helpers\Url::to(['index', 'semester_id' => $semesterId, 'sv_role' => 2])) ?>" style="color:inherit;">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-green"><i class="fa fa-user-plus"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Second Supervisor</span>
+                                <span class="info-box-number"><?= (int)($stats['second_supervisor'] ?? 0) ?></span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="row" style="margin-bottom:10px;">
+                <div class="col-md-3">
+                    <a href="<?= Html::encode(\yii\helpers\Url::to(['index', 'semester_id' => $semesterId, 'stage_id' => (int)($stageNameToId['Registration'] ?? 0)])) ?>" style="color:inherit;">
+                        <div class="info-box stage-box">
+                            <span class="info-box-icon bg-yellow"><i class="fa fa-flag"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Stage - Registration</span>
+                                <span class="info-box-number"><?= (int)($stats['stages']['Registration'] ?? 0) ?></span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="<?= Html::encode(\yii\helpers\Url::to(['index', 'semester_id' => $semesterId, 'stage_id' => (int)($stageNameToId['Proposal Defense'] ?? 0)])) ?>" style="color:inherit;">
+                        <div class="info-box stage-box">
+                            <span class="info-box-icon bg-red"><i class="fa fa-file-text-o"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Stage - Proposal Defense</span>
+                                <span class="info-box-number"><?= (int)($stats['stages']['Proposal Defense'] ?? 0) ?></span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="<?= Html::encode(\yii\helpers\Url::to(['index', 'semester_id' => $semesterId, 'stage_id' => (int)($stageNameToId['Re-Proposal Defense'] ?? 0)])) ?>" style="color:inherit;">
+                        <div class="info-box stage-box">
+                            <span class="info-box-icon bg-purple"><i class="fa fa-repeat"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Stage - Re-Proposal Defense</span>
+                                <span class="info-box-number"><?= (int)($stats['stages']['Re-Proposal Defense'] ?? 0) ?></span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="<?= Html::encode(\yii\helpers\Url::to(['index', 'semester_id' => $semesterId, 'stage_id' => (int)($stageNameToId['Pre-Viva'] ?? 0)])) ?>" style="color:inherit;">
+                        <div class="info-box stage-box">
+                            <span class="info-box-icon bg-navy"><i class="fa fa-graduation-cap"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Stage - Pre-Viva</span>
+                                <span class="info-box-number"><?= (int)($stats['stages']['Pre-Viva'] ?? 0) ?></span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+    <div class="box">
+        <div class="box-header"></div>
+        <div class="box-body">
+           
 
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
@@ -109,24 +129,19 @@ $this->params['breadcrumbs'][] = $this->title;
                         'label' => 'Student Name',
                         'format' => 'raw',
                         'value' => function($model) use ($semesterId){
-                            $raw = (string)$model->getAttribute('student_name');
+                            $raw = (string)$model->student_name;
                             if ($raw === '' && $model->student && $model->student->user) {
                                 $raw = (string)$model->student->user->fullname;
                             }
 
                             $name = strtoupper($raw);
-                            return Html::a($name, ['view', 'id' => $model->student_id, 'semester_id' => $semesterId]);
-                        },
-                    ],
-                    [
-                        'attribute' => 'matric_no',
-                        'label' => 'Matric',
-                        'value' => function($model){
-                            $matric = (string)$model->getAttribute('matric_no');
+                            $matric = (string)$model->matric_no;
                             if ($matric === '' && $model->student) {
                                 $matric = (string)$model->student->matric_no;
                             }
-                            return $matric;
+
+                            $label = $matric . ' - ' . $name;
+                            return Html::a($label, ['view', 'id' => $model->student_id]);
                         },
                     ],
                     [
@@ -140,7 +155,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attribute' => 'stage_name',
                         'label' => 'Research Stage',
                         'value' => function($model){
-                            $stage = (string)$model->getAttribute('stage_name');
+                            $stage = (string)$model->stage_name;
                             return $stage !== '' ? $stage : '-';
                         },
                     ],
@@ -149,7 +164,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'label' => 'Status Daftar',
                         'format' => 'raw',
                         'value' => function($model){
-                            return StudentRegister::statusDaftarLabel($model->getAttribute('status_daftar'));
+                            return StudentRegister::statusDaftarLabel($model->status_daftar);
                         },
                     ],
                 ],

@@ -15,6 +15,11 @@ use yii\helpers\Html;
  */
 class StudentSupervisor extends \yii\db\ActiveRecord
 {
+    public $student_name;
+    public $matric_no;
+    public $stage_name;
+    public $status_daftar;
+
     /**
      * {@inheritdoc}
      */
@@ -32,6 +37,8 @@ class StudentSupervisor extends \yii\db\ActiveRecord
             [['supervisor_id', 'student_id'], 'required'],
             [['supervisor_id', 'sv_role', 'student_id', 'is_active'], 'integer'],
             [['appoint_at'], 'safe'],
+            [['student_name', 'matric_no', 'stage_name'], 'safe'],
+            [['status_daftar'], 'safe'],
         ];
     }
     

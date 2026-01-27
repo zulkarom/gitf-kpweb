@@ -44,6 +44,8 @@ class MystudentController extends Controller
         $staff = $user && isset($user->staff) ? $user->staff : null;
 
         $semesterId = (int)Yii::$app->request->get('semester_id', 0);
+        $svRole = (int)Yii::$app->request->get('sv_role', 0);
+        $stageId = (int)Yii::$app->request->get('stage_id', 0);
         if (!$semesterId) {
             $currentSem = Semester::getCurrentSemester();
             if ($currentSem) {
@@ -59,23 +61,29 @@ class MystudentController extends Controller
                 ->scalar();
         }
 
-        $query = StudentSupervisor::find()->alias('sv')
+        $baseQuery = StudentSupervisor::find()->alias('sv')
             ->innerJoin(['s' => Student::tableName()], 's.id = sv.student_id')
             ->leftJoin(['u' => 'user'], 'u.id = s.user_id')
             ->andWhere(['sv.supervisor_id' => (int)$supervisorId]);
 
-        $latestStageSub = (new Query())
-            ->select(['student_id', 'max_id' => 'MAX(id)'])
+        $latestStageSemesterSub = (new Query())
+            ->select(['student_id', 'max_semester_id' => 'MAX(semester_id)'])
             ->from(StudentStage::tableName())
-            ->where(['semester_id' => (int)$semesterId])
+            ->where(['<=', 'semester_id', (int)$semesterId])
             ->groupBy(['student_id']);
 
-        $query->leftJoin(['stmax' => $latestStageSub], 'stmax.student_id = s.id')
+        $latestStageSub = (new Query())
+            ->select(['st1.student_id', 'max_id' => 'MAX(st1.id)'])
+            ->from(['st1' => StudentStage::tableName()])
+            ->innerJoin(['stsem' => $latestStageSemesterSub], 'stsem.student_id = st1.student_id AND st1.semester_id = stsem.max_semester_id')
+            ->groupBy(['st1.student_id']);
+
+        $baseQuery->leftJoin(['stmax' => $latestStageSub], 'stmax.student_id = s.id')
             ->leftJoin(['stg' => StudentStage::tableName()], 'stg.id = stmax.max_id')
             ->leftJoin(['rs' => ResearchStage::tableName()], 'rs.id = stg.stage_id')
             ->leftJoin(['r' => StudentRegister::tableName()], 'r.student_id = s.id AND r.semester_id = :sem', [':sem' => (int)$semesterId]);
 
-        $query->select([
+        $baseQuery->select([
             'sv.*',
             'student_name' => 'u.fullname',
             'matric_no' => 's.matric_no',
@@ -94,8 +102,10 @@ class MystudentController extends Controller
             ],
         ];
 
+        $stageNameToId = [];
+
         if ($supervisorId) {
-            $roleRows = (clone $query)
+            $roleRows = (clone $baseQuery)
                 ->select([
                     'sv.sv_role',
                     'cnt' => 'COUNT(DISTINCT sv.student_id)',
@@ -122,7 +132,6 @@ class MystudentController extends Controller
                 ->asArray()
                 ->all();
 
-            $stageNameToId = [];
             foreach ($stageRows as $sRow) {
                 $name = (string)($sRow['stage_name'] ?? '');
                 if ($name !== '') {
@@ -131,7 +140,7 @@ class MystudentController extends Controller
             }
 
             if ($stageNameToId) {
-                $stageCounts = (clone $query)
+                $stageCounts = (clone $baseQuery)
                     ->select([
                         'stg.stage_id',
                         'cnt' => 'COUNT(DISTINCT sv.student_id)',
@@ -153,7 +162,17 @@ class MystudentController extends Controller
         }
 
         if (!$supervisorId) {
-            $query->andWhere('0=1');
+            $baseQuery->andWhere('0=1');
+        }
+
+        $query = clone $baseQuery;
+
+        if (in_array($svRole, [1, 2], true)) {
+            $query->andWhere(['sv.sv_role' => $svRole]);
+        }
+
+        if ($stageId > 0) {
+            $query->andWhere(['stg.stage_id' => $stageId]);
         }
 
         $dataProvider = new ActiveDataProvider([
@@ -194,6 +213,7 @@ class MystudentController extends Controller
             'dataProvider' => $dataProvider,
             'semesterId' => $semesterId,
             'stats' => $stats,
+            'stageNameToId' => $stageNameToId,
         ]);
     }
 
@@ -229,6 +249,13 @@ class MystudentController extends Controller
         if (!$model) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+
+        $latestReg = StudentRegister::find()
+            ->where(['student_id' => (int)$model->id])
+            ->andWhere(['not', ['status_daftar' => null]])
+            ->orderBy(['semester_id' => SORT_DESC, 'id' => SORT_DESC])
+            ->one();
+        $model->last_status_daftar = $latestReg ? $latestReg->status_daftar : null;
 
         $semesterId = (int)Yii::$app->request->get('semester_id', 0);
         if (!$semesterId) {
