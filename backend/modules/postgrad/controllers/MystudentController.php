@@ -16,6 +16,10 @@ use backend\modules\postgrad\models\StudentPostGradSearch;
 use backend\modules\postgrad\models\Supervisor;
 use backend\modules\postgrad\models\StudentSupervisor;
 use backend\modules\postgrad\models\StudentRegister;
+use backend\modules\postgrad\models\StudentStage;
+use backend\modules\postgrad\models\ResearchStage;
+use yii\db\Query;
+use yii\web\NotFoundHttpException;
 
 class MystudentController extends Controller
 {
@@ -39,40 +43,153 @@ class MystudentController extends Controller
         $user = Yii::$app->user->identity;
         $staff = $user && isset($user->staff) ? $user->staff : null;
 
-        $searchModel = new StudentPostGradSearch();
-
-        $currentSemester = Semester::getCurrentSemester();
-
-        $query = Student::find()->alias('s')
-            ->joinWith(['supervisors sv'])
-            ->innerJoin([
-                'sr' => StudentRegister::tableName(),
-            ], 'sr.student_id = s.id' . ($currentSemester ? ' AND sr.semester_id = ' . (int)$currentSemester->id : ''))
-            ->where([
-                'sr.status_aktif' => StudentRegister::STATUS_AKTIF_AKTIF,
-            ]);
-
-        if ($staff) {
-            $supervisor = Supervisor::find()
-                ->where(['staff_id' => $staff->id])
-                ->one();
-
-            if ($supervisor) {
-                $query->andWhere(['sv.supervisor_id' => $supervisor->id]);
-            } else {
-                $query->andWhere('0=1');
+        $semesterId = (int)Yii::$app->request->get('semester_id', 0);
+        if (!$semesterId) {
+            $currentSem = Semester::getCurrentSemester();
+            if ($currentSem) {
+                $semesterId = (int)$currentSem->id;
             }
-        } else {
+        }
+
+        $supervisorId = null;
+        if ($staff) {
+            $supervisorId = Supervisor::find()
+                ->select(['id'])
+                ->where(['staff_id' => $staff->id])
+                ->scalar();
+        }
+
+        $query = StudentSupervisor::find()->alias('sv')
+            ->innerJoin(['s' => Student::tableName()], 's.id = sv.student_id')
+            ->leftJoin(['u' => 'user'], 'u.id = s.user_id')
+            ->andWhere(['sv.supervisor_id' => (int)$supervisorId]);
+
+        $latestStageSub = (new Query())
+            ->select(['student_id', 'max_id' => 'MAX(id)'])
+            ->from(StudentStage::tableName())
+            ->where(['semester_id' => (int)$semesterId])
+            ->groupBy(['student_id']);
+
+        $query->leftJoin(['stmax' => $latestStageSub], 'stmax.student_id = s.id')
+            ->leftJoin(['stg' => StudentStage::tableName()], 'stg.id = stmax.max_id')
+            ->leftJoin(['rs' => ResearchStage::tableName()], 'rs.id = stg.stage_id')
+            ->leftJoin(['r' => StudentRegister::tableName()], 'r.student_id = s.id AND r.semester_id = :sem', [':sem' => (int)$semesterId]);
+
+        $query->select([
+            'sv.*',
+            'student_name' => 'u.fullname',
+            'matric_no' => 's.matric_no',
+            'stage_name' => 'rs.stage_name',
+            'status_daftar' => 'r.status_daftar',
+        ]);
+
+        if (!$supervisorId) {
             $query->andWhere('0=1');
         }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 100,
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'student_name' => SORT_ASC,
+                ],
+                'attributes' => [
+                    'student_name' => [
+                        'asc' => ['u.fullname' => SORT_ASC],
+                        'desc' => ['u.fullname' => SORT_DESC],
+                    ],
+                    'matric_no' => [
+                        'asc' => ['s.matric_no' => SORT_ASC],
+                        'desc' => ['s.matric_no' => SORT_DESC],
+                    ],
+                    'sv_role' => [
+                        'asc' => ['sv.sv_role' => SORT_ASC],
+                        'desc' => ['sv.sv_role' => SORT_DESC],
+                    ],
+                    'stage_name' => [
+                        'asc' => ['rs.stage_name' => SORT_ASC],
+                        'desc' => ['rs.stage_name' => SORT_DESC],
+                    ],
+                    'status_daftar' => [
+                        'asc' => ['r.status_daftar' => SORT_ASC],
+                        'desc' => ['r.status_daftar' => SORT_DESC],
+                    ],
+                ],
+            ],
         ]);
 
         return $this->render('/student/mystudents', [
-            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'semesterId' => $semesterId,
+        ]);
+    }
+
+    public function actionView($id)
+    {
+        $user = Yii::$app->user->identity;
+        $staff = $user && isset($user->staff) ? $user->staff : null;
+
+        $supervisorId = null;
+        if ($staff) {
+            $supervisorId = Supervisor::find()
+                ->select(['id'])
+                ->where(['staff_id' => $staff->id])
+                ->scalar();
+        }
+
+        if (!$supervisorId) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+
+        $isMine = StudentSupervisor::find()
+            ->where([
+                'student_id' => (int)$id,
+                'supervisor_id' => (int)$supervisorId,
+            ])
+            ->exists();
+
+        if (!$isMine) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+
+        $model = Student::findOne((int)$id);
+        if (!$model) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+
+        $semesterId = (int)Yii::$app->request->get('semester_id', 0);
+        if (!$semesterId) {
+            $currentSem = Semester::getCurrentSemester();
+            if ($currentSem) {
+                $semesterId = (int)$currentSem->id;
+            }
+        }
+
+        if ($semesterId) {
+            $reg = StudentRegister::find()->where([
+                'student_id' => (int)$model->id,
+                'semester_id' => (int)$semesterId,
+            ])->one();
+
+            $model->status_daftar = $reg ? $reg->status_daftar : null;
+            $model->status_aktif = $reg ? $reg->status_aktif : null;
+        } else {
+            $model->status_daftar = null;
+            $model->status_aktif = null;
+        }
+
+        $semesters = $model->studentSemesters;
+        $supervisors = $model->supervisors;
+        $stages = $model->stages;
+
+        return $this->render('/student/view', [
+            'model' => $model,
+            'semesters' => $semesters,
+            'supervisors' => $supervisors,
+            'stages' => $stages
         ]);
     }
 

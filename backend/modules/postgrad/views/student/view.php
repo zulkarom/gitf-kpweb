@@ -66,8 +66,6 @@ Profile
                 }
             ],
             
-            
-            
             [
                 'label' => 'Negara Asal',
                 'value' => function($model){

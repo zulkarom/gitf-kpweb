@@ -55,12 +55,18 @@ class StudentPostGradSearch extends Student
         }
         $this->semester_id = $semesterId;
 
+        $studentColumns = array_keys(static::getTableSchema()->columns);
+        $studentColumns = array_values(array_diff($studentColumns, ['status_daftar', 'status_aktif']));
+        $studentSelect = [];
+        foreach ($studentColumns as $c) {
+            $studentSelect[] = 'a.' . $c;
+        }
+
         $query = Student::find()->alias('a')
-        ->select([
-            'a.*',
+        ->select(array_merge($studentSelect, [
             'status_daftar' => 'r.status_daftar',
             'status_aktif' => 'r.status_aktif',
-        ])
+        ]))
         ->innerJoin(
             ['r' => StudentRegister::tableName()],
             'r.student_id = a.id AND r.semester_id = :semesterId',

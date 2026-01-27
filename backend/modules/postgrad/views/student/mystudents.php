@@ -1,15 +1,15 @@
 <?php
 
-use backend\modules\esiap\models\Program;
 use yii\helpers\Html;
 use yii\grid\GridView;
-use common\models\Country;
-use yii\helpers\ArrayHelper;
-use backend\modules\postgrad\models\Student;
+use yii\widgets\ActiveForm;
+use backend\models\Semester;
+use backend\modules\postgrad\models\StudentSupervisor;
+use backend\modules\postgrad\models\StudentRegister;
 
 /* @var $this yii\web\View */
-/* @var $searchModel backend\modules\postgrad\models\StudentPostGradSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $semesterId int */
 
 $this->title = 'My Students';
 $this->params['breadcrumbs'][] = $this->title;
@@ -19,84 +19,68 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="box">
         <div class="box-header"></div>
         <div class="box-body">
-            <?php
-            // Build country options from distinct countries present in pg_student
-            $countryIds = (new \yii\db\Query())
-                ->select('nationality')
-                ->from(Student::tableName())
-                ->where(['not', ['nationality' => null]])
-                ->andWhere(['<>', 'nationality', 0])
-                ->groupBy('nationality')
-                ->column();
-            $countryOptions = [];
-            if ($countryIds) {
-                $countryOptions = ArrayHelper::map(
-                    Country::find()->where(['id' => $countryIds])->orderBy('country_name')->all(),
-                    'id',
-                    'country_name'
-                );
-            }
-            ?>
+
+            <?php $form = ActiveForm::begin(['method' => 'get', 'action' => ['index']]); ?>
+            <div class="row" style="margin-bottom:10px;">
+                <div class="col-md-6">
+                    <?= Html::label('Semester', 'semester_id', ['class' => 'control-label']) ?>
+                    <?= Html::dropDownList(
+                        'semester_id',
+                        $semesterId,
+                        Semester::listSemesterArray(),
+                        ['class' => 'form-control', 'prompt' => 'Choose', 'id' => 'semester_id']
+                    ) ?>
+                </div>
+                <div class="col-md-6" style="padding-top:25px">
+                    <?= Html::submitButton('Filter', ['class' => 'btn btn-primary']) ?>
+                </div>
+            </div>
+            <?php ActiveForm::end(); ?>
+
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
-                'filterModel' => $searchModel,
+                'filterModel' => null,
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
 
                     [
-                        'attribute' => 'name',
-                        'label' => 'Name',
-                        'format' => 'html',
-                        'value' => function($model){
-                           return Html::a(strtoupper($model->user->fullname),['view', 'id' => $model->id]);
-                        }
-                    ],
-                    'matric_no',
-                    'nric',
-                    [
-                        'attribute' => 'program_id',
-                        'label' => 'Program',
-                        'format' => 'html',
-                        'filter' => Html::activeDropDownList($searchModel, 'program_id', $searchModel->listProgram(),['class'=> 'form-control','prompt' => 'Choose']),
-                        'value' => function($model){
-                           return $model->programCode;
-                        }
-                    ],
-                    [
-                        'attribute' => 'nationality',
-                        'label' => 'Country',
-                        'format' => 'text',
-                        'filter' => Html::activeDropDownList(
-                            $searchModel,
-                            'nationality',
-                            $countryOptions,
-                            ['class'=> 'form-control','prompt' => 'Choose']
-                        ),
-                        'value' => function($model){
-                           return $model->country ? $model->country->country_name : '';
-                        }
-                    ],
-                    [
-                        'attribute' => 'status',
-                        'label' => 'Status',
+                        'attribute' => 'student_name',
+                        'label' => 'Student Name',
                         'format' => 'raw',
-                        'filter' => Html::activeDropDownList($searchModel, 'status', $searchModel->statusList(),['class'=> 'form-control','prompt' => 'Choose']),
-                        'value' => function($model){
-                           return $model->statusLabel;
-                        }
+                        'value' => function($model) use ($semesterId){
+                            $name = strtoupper((string)$model->getAttribute('student_name'));
+                            return Html::a($name, ['view', 'id' => $model->student_id, 'semester_id' => $semesterId]);
+                        },
                     ],
-
-                    ['class' => 'yii\grid\ActionColumn',
-                        'template' => '{view} {update}',
-                        'buttons'=>[
-                            'update'=>function ($url, $model) {
-                                return Html::a('<span class="fa fa-edit"></span>',['update', 'id' => $model->id],['class'=>'btn btn-primary btn-sm']);
-                            },
-                            'view'=>function ($url, $model) {
-                                return Html::a('<span class="glyphicon glyphicon-search"></span> VIEW',['view', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
-                            }
-                        ],
-
+                    [
+                        'attribute' => 'matric_no',
+                        'label' => 'Matric',
+                        'value' => function($model){
+                            return (string)$model->getAttribute('matric_no');
+                        },
+                    ],
+                    [
+                        'attribute' => 'sv_role',
+                        'label' => 'Role',
+                        'value' => function($model){
+                            return $model->roleName();
+                        },
+                    ],
+                    [
+                        'attribute' => 'stage_name',
+                        'label' => 'Research Stage',
+                        'value' => function($model){
+                            $stage = (string)$model->getAttribute('stage_name');
+                            return $stage !== '' ? $stage : '-';
+                        },
+                    ],
+                    [
+                        'attribute' => 'status_daftar',
+                        'label' => 'Status Daftar',
+                        'format' => 'raw',
+                        'value' => function($model){
+                            return StudentRegister::statusDaftarLabel($model->getAttribute('status_daftar'));
+                        },
                     ],
                 ],
             ]); ?>
