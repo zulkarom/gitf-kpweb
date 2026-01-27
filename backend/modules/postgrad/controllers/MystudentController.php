@@ -83,6 +83,75 @@ class MystudentController extends Controller
             'status_daftar' => 'r.status_daftar',
         ]);
 
+        $stats = [
+            'main_supervisor' => 0,
+            'second_supervisor' => 0,
+            'stages' => [
+                'Registration' => 0,
+                'Proposal Defense' => 0,
+                'Re-Proposal Defense' => 0,
+                'Pre-Viva' => 0,
+            ],
+        ];
+
+        if ($supervisorId) {
+            $roleRows = (clone $query)
+                ->select([
+                    'sv.sv_role',
+                    'cnt' => 'COUNT(DISTINCT sv.student_id)',
+                ])
+                ->groupBy(['sv.sv_role'])
+                ->asArray()
+                ->all();
+
+            foreach ($roleRows as $rRow) {
+                $role = (int)($rRow['sv_role'] ?? 0);
+                $cnt = (int)($rRow['cnt'] ?? 0);
+                if ($role === 1) {
+                    $stats['main_supervisor'] = $cnt;
+                }
+                if ($role === 2) {
+                    $stats['second_supervisor'] = $cnt;
+                }
+            }
+
+            $wantedStages = array_keys($stats['stages']);
+            $stageRows = ResearchStage::find()
+                ->select(['id', 'stage_name'])
+                ->where(['stage_name' => $wantedStages])
+                ->asArray()
+                ->all();
+
+            $stageNameToId = [];
+            foreach ($stageRows as $sRow) {
+                $name = (string)($sRow['stage_name'] ?? '');
+                if ($name !== '') {
+                    $stageNameToId[$name] = (int)$sRow['id'];
+                }
+            }
+
+            if ($stageNameToId) {
+                $stageCounts = (clone $query)
+                    ->select([
+                        'stg.stage_id',
+                        'cnt' => 'COUNT(DISTINCT sv.student_id)',
+                    ])
+                    ->andWhere(['stg.stage_id' => array_values($stageNameToId)])
+                    ->groupBy(['stg.stage_id'])
+                    ->asArray()
+                    ->all();
+
+                $idToName = array_flip($stageNameToId);
+                foreach ($stageCounts as $cRow) {
+                    $id = (int)($cRow['stage_id'] ?? 0);
+                    $cnt = (int)($cRow['cnt'] ?? 0);
+                    if (isset($idToName[$id])) {
+                        $stats['stages'][$idToName[$id]] = $cnt;
+                    }
+                }
+            }
+        }
+
         if (!$supervisorId) {
             $query->andWhere('0=1');
         }
@@ -124,6 +193,7 @@ class MystudentController extends Controller
         return $this->render('/student/mystudents', [
             'dataProvider' => $dataProvider,
             'semesterId' => $semesterId,
+            'stats' => $stats,
         ]);
     }
 
