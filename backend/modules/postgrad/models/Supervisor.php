@@ -158,6 +158,7 @@ class Supervisor extends \yii\db\ActiveRecord
             'matric_no' => 'a.matric_no',
             'fullname' => 'u.fullname',
             'stage_name' => 'r.stage_name',
+            'stage_name_en' => 'r.stage_name_en',
             'stage_status' => 's.status',
             'committee_role' => 'e.committee_role',
             'committee_role_label' => new \yii\db\Expression(
@@ -188,6 +189,7 @@ class Supervisor extends \yii\db\ActiveRecord
             'matric_no' => 'a.matric_no',
             'fullname' => 'u.fullname',
             'stage_name' => 'r.stage_name',
+            'stage_name_en' => 'r.stage_name_en',
             'stage_status' => 's.status',
             'committee_role' => 'e.committee_role',
             'committee_role_label' => new \yii\db\Expression(

@@ -150,7 +150,7 @@ Senarai Pelajar
 	<div class="box">
 <div class="box-header">
 <h3 class="box-title">
-Jawatankuasa Pemeriksa <?php count($examinees)?>
+Examination Committee <?php count($examinees)?>
 </h3>
 </div>
 <div class="box-body">
@@ -174,7 +174,7 @@ Jawatankuasa Pemeriksa <?php count($examinees)?>
            <tr>
       <th scope="row"><?=$i?></th>
       <td><?= Html::a((($x->matric_no ? $x->matric_no . ' - ' : '') . strtoupper($x->fullname)), ['/postgrad/student/view', 'id' => $x->id, 'semester_id' => $semesterId]) ?></td>
-      <td><?=$x->stage_name?></td>
+      <td><?= Html::encode($x->stage_name_en ? $x->stage_name_en : $x->stage_name) ?></td>
 	  <td><?= isset($x->committee_role_label) ? Html::encode($x->committee_role_label) : '' ?></td>
 		<td><?=StudentStage::statusText($x->stage_status)?></td>
     </tr>

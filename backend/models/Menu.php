@@ -292,7 +292,7 @@ class Menu
                     'label' => 'Examination Committee',
                     'icon' => 'user',
                     'url' => [
-                        '/postgrad/mystudent'
+                        '/postgrad/mycommittee'
                     ]
                 ],
             ],

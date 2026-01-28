@@ -44,6 +44,9 @@ class ExamCommitteeController extends Controller
             $semester_id = (int)$semester_id;
         }
 
+        $staffNameFilter = trim((string)Yii::$app->request->get('staff_name', ''));
+        $colorFilter = trim((string)Yii::$app->request->get('color', ''));
+
         $semester = $semester_id ? Semester::findOne($semester_id) : null;
 
         // normalise tab, mirror logic from SupervisorController
@@ -287,10 +290,33 @@ class ExamCommitteeController extends Controller
 
             $rows = $data;
         }
+
+        if (!empty($rows) && ($staffNameFilter !== '' || $colorFilter !== '')) {
+            $rows = array_values(array_filter($rows, function ($r) use ($staffNameFilter, $colorFilter) {
+                if ($staffNameFilter !== '') {
+                    $hay = strtolower((string)($r['sv_name'] ?? ''));
+                    $needle = strtolower($staffNameFilter);
+                    if ($needle !== '' && strpos($hay, $needle) === false) {
+                        return false;
+                    }
+                }
+
+                if ($colorFilter !== '') {
+                    $total = (int)($r['total'] ?? 0);
+                    $c = PgSetting::classifyTrafficLight('exam_committee', $total);
+                    if (strtolower($c) !== strtolower($colorFilter)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }));
+        }
+
         $dataProvider = new ArrayDataProvider([
             'allModels' => $rows,
             'pagination' => [
-                'pageSize' => 50,
+                'pageSize' => 150,
             ],
             'sort' => [
                 'attributes' => [

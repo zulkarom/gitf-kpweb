@@ -56,6 +56,7 @@ class Student extends \yii\db\ActiveRecord
 	const STATUS_GRADUATED = 5;
 
     public $stage_name;
+    public $stage_name_en;
     public $fullname;
     public $stage_status;
     public $committee_role;

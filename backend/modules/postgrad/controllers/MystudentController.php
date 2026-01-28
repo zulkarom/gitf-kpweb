@@ -18,7 +18,10 @@ use backend\modules\postgrad\models\StudentSupervisor;
 use backend\modules\postgrad\models\StudentRegister;
 use backend\modules\postgrad\models\StudentStage;
 use backend\modules\postgrad\models\ResearchStage;
+use backend\modules\postgrad\models\PgSetting;
+use backend\modules\postgrad\models\StageExaminer;
 use yii\db\Query;
+use yii\db\Expression;
 use yii\web\NotFoundHttpException;
 
 class MystudentController extends Controller
@@ -87,13 +90,15 @@ class MystudentController extends Controller
             'sv.*',
             'student_name' => 'u.fullname',
             'matric_no' => 's.matric_no',
-            'stage_name' => 'rs.stage_name',
+            'stage_name' => new Expression("COALESCE(NULLIF(rs.stage_name_en,''), rs.stage_name)"),
             'status_daftar' => 'r.status_daftar',
         ]);
 
         $stats = [
             'main_supervisor' => 0,
             'second_supervisor' => 0,
+            'total_supervision' => 0,
+            'total_supervision_color' => 'red',
             'stages' => [
                 'Registration' => 0,
                 'Proposal Defense' => 0,
@@ -124,6 +129,9 @@ class MystudentController extends Controller
                     $stats['second_supervisor'] = $cnt;
                 }
             }
+
+            $stats['total_supervision'] = (int)$stats['main_supervisor'] + (int)$stats['second_supervisor'];
+            $stats['total_supervision_color'] = PgSetting::classifyTrafficLight('supervisor', (int)$stats['total_supervision']);
 
             $wantedStages = array_keys($stats['stages']);
             $stageRows = ResearchStage::find()
@@ -198,8 +206,8 @@ class MystudentController extends Controller
                         'desc' => ['sv.sv_role' => SORT_DESC],
                     ],
                     'stage_name' => [
-                        'asc' => ['rs.stage_name' => SORT_ASC],
-                        'desc' => ['rs.stage_name' => SORT_DESC],
+                        'asc' => ['rs.stage_name_en' => SORT_ASC, 'rs.stage_name' => SORT_ASC],
+                        'desc' => ['rs.stage_name_en' => SORT_DESC, 'rs.stage_name' => SORT_DESC],
                     ],
                     'status_daftar' => [
                         'asc' => ['r.status_daftar' => SORT_ASC],
@@ -295,8 +303,17 @@ class MystudentController extends Controller
         $user = Yii::$app->user->identity;
         $staff = $user && isset($user->staff) ? $user->staff : null;
 
+        $semesterId = (int)Yii::$app->request->get('semester_id', 0);
+        if (!$semesterId) {
+            $currentSemester = Semester::getCurrentSemester();
+            $semesterId = $currentSemester ? (int)$currentSemester->id : 0;
+        }
+
         if (!$staff) {
             $activeCount = 0;
+            $mainSupervisorCount = 0;
+            $secondSupervisorCount = 0;
+            $committeeStats = ['chairman' => 0, 'deputy' => 0, 'examiner1' => 0, 'examiner2' => 0, 'total' => 0, 'total_color' => 'red'];
             $studyMode = [1 => 0, 2 => 0];
             $programLevel = ['master' => 0, 'phd' => 0];
             $years = [];
@@ -310,7 +327,11 @@ class MystudentController extends Controller
             $phdModes = [1 => 0, 2 => 0];
 
             return $this->render('/student/mystats', [
+                'semester_id' => $semesterId,
                 'activeCount' => $activeCount,
+                'mainSupervisorCount' => $mainSupervisorCount,
+                'secondSupervisorCount' => $secondSupervisorCount,
+                'committeeStats' => $committeeStats,
                 'studyMode' => $studyMode,
                 'programLevel' => $programLevel,
                 'years' => $years,
@@ -331,6 +352,9 @@ class MystudentController extends Controller
 
         if (!$supervisor) {
             $activeCount = 0;
+            $mainSupervisorCount = 0;
+            $secondSupervisorCount = 0;
+            $committeeStats = ['chairman' => 0, 'deputy' => 0, 'examiner1' => 0, 'examiner2' => 0, 'total' => 0, 'total_color' => 'red'];
             $studyMode = [1 => 0, 2 => 0];
             $programLevel = ['master' => 0, 'phd' => 0];
             $years = [];
@@ -344,7 +368,11 @@ class MystudentController extends Controller
             $phdModes = [1 => 0, 2 => 0];
 
             return $this->render('/student/mystats', [
+                'semester_id' => $semesterId,
                 'activeCount' => $activeCount,
+                'mainSupervisorCount' => $mainSupervisorCount,
+                'secondSupervisorCount' => $secondSupervisorCount,
+                'committeeStats' => $committeeStats,
                 'studyMode' => $studyMode,
                 'programLevel' => $programLevel,
                 'years' => $years,
@@ -362,8 +390,66 @@ class MystudentController extends Controller
         $studentTable = Student::tableName();
         $svTable = StudentSupervisor::tableName();
         $regTable = StudentRegister::tableName();
-        $currentSemester = Semester::getCurrentSemester();
-        $semesterId = $currentSemester ? (int)$currentSemester->id : null;
+        $semesterId = $semesterId ?: null;
+
+        $mainSupervisorCount = 0;
+        $secondSupervisorCount = 0;
+        $roleRows = (new \yii\db\Query())
+            ->select(['ss.sv_role', 'cnt' => 'COUNT(DISTINCT s.id)'])
+            ->from(['s' => $studentTable])
+            ->innerJoin(['ss' => $svTable], 'ss.student_id = s.id')
+            ->innerJoin(['sr' => $regTable], 'sr.student_id = s.id' . ($semesterId ? ' AND sr.semester_id = ' . $semesterId : ''))
+            ->where([
+                'ss.supervisor_id' => $supervisor->id,
+                'sr.status_aktif' => StudentRegister::STATUS_AKTIF_AKTIF,
+                'ss.sv_role' => [1, 2],
+            ])
+            ->groupBy(['ss.sv_role'])
+            ->all();
+        foreach ($roleRows as $rr) {
+            $role = (int)($rr['sv_role'] ?? 0);
+            $cnt = (int)($rr['cnt'] ?? 0);
+            if ($role === 1) { $mainSupervisorCount = $cnt; }
+            if ($role === 2) { $secondSupervisorCount = $cnt; }
+        }
+
+        $committeeStats = [
+            'chairman' => 0,
+            'deputy' => 0,
+            'examiner1' => 0,
+            'examiner2' => 0,
+            'total' => 0,
+            'total_color' => 'red',
+        ];
+
+        if ($semesterId) {
+            $committeeRows = StageExaminer::find()->alias('se')
+                ->select([
+                    'se.committee_role',
+                    'cnt' => 'COUNT(*)',
+                ])
+                ->innerJoin(['stg' => StudentStage::tableName()], 'stg.id = se.stage_id')
+                ->where([
+                    'se.examiner_id' => (int)$supervisor->id,
+                    'stg.semester_id' => (int)$semesterId,
+                    'se.committee_role' => [1, 2, 3, 4],
+                ])
+                ->groupBy(['se.committee_role'])
+                ->asArray()
+                ->all();
+
+            foreach ($committeeRows as $r) {
+                $role = (int)($r['committee_role'] ?? 0);
+                $cnt = (int)($r['cnt'] ?? 0);
+                if ($role === 1) { $committeeStats['chairman'] = $cnt; }
+                if ($role === 2) { $committeeStats['deputy'] = $cnt; }
+                if ($role === 3) { $committeeStats['examiner1'] = $cnt; }
+                if ($role === 4) { $committeeStats['examiner2'] = $cnt; }
+                $committeeStats['total'] += $cnt;
+            }
+
+            $committeeStats['total_color'] = PgSetting::classifyTrafficLight('exam_committee', (int)$committeeStats['total']);
+        }
 
         $activeCount = (int) (new \yii\db\Query())
             ->from(['s' => $studentTable])
@@ -545,7 +631,11 @@ class MystudentController extends Controller
         }
 
         return $this->render('/student/mystats', [
+            'semester_id' => $semesterId,
             'activeCount' => $activeCount,
+            'mainSupervisorCount' => $mainSupervisorCount,
+            'secondSupervisorCount' => $secondSupervisorCount,
+            'committeeStats' => $committeeStats,
             'studyMode' => $studyMode,
             'programLevel' => $programLevel,
             'years' => $years,

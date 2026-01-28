@@ -179,7 +179,11 @@ Research Stage
           ?>
            <tr>
       <th scope="row"><?=$i?></th>
-      <td><?=$s->stage->stage_name?></td>
+      <td><?php
+            $bm = $s->stage ? (string)$s->stage->stage_name : '';
+            $en = $s->stage ? (string)$s->stage->stage_name_en : '';
+            echo Html::encode($en !== '' ? $en : $bm);
+        ?></td>
       <td><?=$s->statusName?></td>
       <td><?= $s->semester ? $s->semester->shortFormat() : '' ?></td>
       <td>
