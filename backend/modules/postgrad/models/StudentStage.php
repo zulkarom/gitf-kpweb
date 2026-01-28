@@ -34,7 +34,11 @@ class StudentStage extends \yii\db\ActiveRecord
             [['student_id', 'stage_id', 'semester_id'], 'required'],
             [['student_id', 'stage_id', 'status', 'semester_id'], 'integer'],
             [['remark'], 'string'],
-            [['stage_date'], 'safe'],
+            [['stage_date', 'stage_time'], 'safe'],
+            [['thesis_title'], 'string', 'max' => 500],
+            [['location'], 'string', 'max' => 255],
+            [['meeting_link'], 'string', 'max' => 500],
+            [['meeting_mode'], 'in', 'range' => array_keys(self::meetingModeList())],
         ];
     }
 
@@ -77,7 +81,20 @@ class StudentStage extends \yii\db\ActiveRecord
             'semesterName' => 'Semester',
             'stage_id' => 'Stage',
             'stage_date' => 'Stage Date',
+            'stage_time' => 'Stage Time',
+            'thesis_title' => 'Thesis Title',
+            'location' => 'Location',
+            'meeting_link' => 'Meeting Link',
+            'meeting_mode' => 'Meeting Mode',
             'status' => 'Status',
+        ];
+    }
+
+    public static function meetingModeList()
+    {
+        return [
+            'physical' => 'Physical',
+            'online' => 'Online',
         ];
     }
     
@@ -111,7 +128,18 @@ class StudentStage extends \yii\db\ActiveRecord
     }
     
     public function getStageListArray(){
-        return ArrayHelper::map(ResearchStage::find()->all(), 'id', 'stage_name');
+        $stages = ResearchStage::find()->orderBy(['id' => SORT_ASC])->all();
+        $list = [];
+        foreach ($stages as $s) {
+            $abbr = (string)$s->stage_abbr;
+            $en = (string)$s->stage_name_en;
+            $label = $abbr;
+            if ($en !== '') {
+                $label = $abbr !== '' ? ($abbr . ' - ' . $en) : $en;
+            }
+            $list[$s->id] = $label;
+        }
+        return $list;
     }
     
     public function getStageName(){

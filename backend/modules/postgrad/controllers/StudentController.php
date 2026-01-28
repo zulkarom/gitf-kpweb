@@ -18,10 +18,12 @@ use backend\modules\postgrad\models\StudentData;
 use backend\modules\postgrad\models\StudentData2;
 use backend\modules\postgrad\models\StudentData4;
 use backend\modules\postgrad\models\StudentPostGradSearch;
+use backend\modules\postgrad\models\StudentMasterSearch;
 use backend\modules\postgrad\models\Supervisor;
 use backend\modules\postgrad\models\StudentSupervisor;
 use backend\modules\postgrad\models\StageExaminer;
 use backend\modules\postgrad\models\StudentStage;
+use backend\modules\postgrad\models\PgStudentThesis;
 use backend\modules\postgrad\models\PgSetting;
 use backend\models\Semester;
 use yii\db\Query;
@@ -88,6 +90,36 @@ class StudentController extends Controller
         }
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'statusDaftarSummary' => $statusDaftarSummary,
+        ]);
+    }
+
+    public function actionMaster()
+    {
+        $params = Yii::$app->request->queryParams;
+        if (!isset($params['StudentMasterSearch'])) {
+            $params['StudentMasterSearch'] = [];
+        }
+
+        $searchModel = new StudentMasterSearch();
+        $dataProvider = $searchModel->search($params);
+
+        $dataProvider->pagination->params = $params;
+        $dataProvider->sort->params = $params;
+
+        $statusDaftarSummary = (new Query())
+            ->select([
+                'status_daftar' => 's.last_status_daftar',
+                'total' => 'COUNT(*)',
+            ])
+            ->from(['s' => Student::tableName()])
+            ->groupBy(['s.last_status_daftar'])
+            ->orderBy(['total' => SORT_DESC])
+            ->all();
+
+        return $this->render('master', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'statusDaftarSummary' => $statusDaftarSummary,
@@ -1132,13 +1164,50 @@ class StudentController extends Controller
         $semesters = $model->studentSemesters;
         $supervisors = $model->supervisors;
         $stages = $model->stages;
+
+        $thesis = PgStudentThesis::find()->where([
+            'student_id' => (int)$model->id,
+            'is_active' => 1,
+        ])->orderBy(['id' => SORT_DESC])->one();
+        if (!$thesis) {
+            $thesis = new PgStudentThesis();
+            $thesis->student_id = (int)$model->id;
+            $thesis->is_active = 1;
+        }
         
         return $this->render('view', [
             'model' => $model,
             'semesters' => $semesters,
             'supervisors' => $supervisors,
-            'stages' => $stages
+            'stages' => $stages,
+            'thesis' => $thesis,
         ]);
+    }
+
+    public function actionUpdateThesis($id)
+    {
+        $model = $this->findModel($id);
+
+        $thesis = PgStudentThesis::find()->where([
+            'student_id' => (int)$model->id,
+            'is_active' => 1,
+        ])->orderBy(['id' => SORT_DESC])->one();
+
+        if (!$thesis) {
+            $thesis = new PgStudentThesis();
+            $thesis->student_id = (int)$model->id;
+            $thesis->is_active = 1;
+        }
+
+        if ($thesis->load(Yii::$app->request->post())) {
+            if ($thesis->save()) {
+                Yii::$app->session->addFlash('success', 'Thesis information updated.');
+            } else {
+                Yii::$app->session->addFlash('error', 'Failed to update thesis information.');
+            }
+        }
+
+        return $this->redirect(['view', 'id' => $model->id]);
     }
 
     public function actionUpdateSemesterInfo($id)

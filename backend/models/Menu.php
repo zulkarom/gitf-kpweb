@@ -282,7 +282,14 @@ class Menu
                     ]
                 ],
                 [
-                    'label' => 'My Students',
+                    'label' => 'Supervision',
+                    'icon' => 'user',
+                    'url' => [
+                        '/postgrad/mystudent'
+                    ]
+                ],
+                [
+                    'label' => 'Examination Committee',
                     'icon' => 'user',
                     'url' => [
                         '/postgrad/mystudent'
@@ -313,37 +320,7 @@ class Menu
                     'url' => [
                         '/postgrad/student/index'
                     ]
-                ],
-               
-                // [
-                //     'label' => 'Student List',
-                //     'icon' => 'user',
-                //     'url' => '#',
-                //     'items' => [
-                //         [
-                //             'label' => 'Students (Research)',
-                //             'icon' => 'user',
-                //             'url' => [
-                //                 '/postgrad/student/research'
-                //             ]
-                //         ],
-                //         [
-                //             'label' => 'Students (Coursework)',
-                //             'icon' => 'user',
-                //             'url' => [
-                //                 '/postgrad/student/coursework'
-                //             ]
-                //         ],
-                //         [
-                //             'label' => 'Not Active',
-                //             'icon' => 'user',
-                //             'url' => [
-                //                 '/postgrad/student/inactive'
-                //             ]
-                //         ]
-                //     ]
-                // ],
-               
+                ], 
                 [
                     'label' => 'Supervisors',
                     'icon' => 'hand-o-right',
@@ -378,18 +355,32 @@ class Menu
                     'icon' => 'cog',
                     'url' => '#',
                     'items' => [
-                         [
-                            'label' => 'Update Student Status',
+                                                 [
+                            'label' => 'Import Data',
                             'icon' => 'upload',
-                            'url' => [
-                                '/postgrad/student-status/index'
-                            ]
-                        ],
-                        [
-                            'label' => 'Update Student Data',
-                            'icon' => 'upload',
-                            'url' => [
-                                '/postgrad/student-csv-import/index'
+                            'url' => '#',
+                            'items' => [
+                                [
+                                    'label' => 'Student Data',
+                                    'icon' => 'circle',
+                                    'url' => [
+                                        '/postgrad/student-csv-import/index'
+                                    ]
+                                ],
+                                [
+                                    'label' => 'Student Status by Sem',
+                                    'icon' => 'circle',
+                                    'url' => [
+                                        '/postgrad/student-status/index'
+                                    ]
+                                ],
+                                [
+                                    'label' => 'Examination Committee',
+                                    'icon' => 'circle',
+                                    'url' => [
+                                        '/postgrad/exam-committee/import'
+                                    ]
+                                ],
                             ]
                         ],
                         [

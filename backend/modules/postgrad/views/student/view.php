@@ -17,6 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 
 $readOnly = Yii::$app->controller->id === 'mystudent';
+$isAdminPostgrad = Yii::$app->user->can('postgrad-manager');
 ?>
 <div class="student-post-grad-view">
 
@@ -183,6 +184,7 @@ Research Stage
       <td><?= $s->semester ? $s->semester->shortFormat() : '' ?></td>
       <td>
         <?php if (!$readOnly) { ?>
+        <a href="<?=Url::to(['student-stage/update', 'id' => $s->id])?>" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i></a>
         <a href="<?=Url::to(['student-stage/delete', 'id' => $s->id])?>" class="btn btn-danger btn-sm" data-confirm="Are you sure to delete this stage?"><i class="fa fa-trash"></i></a>
         <?php } ?>
       </td>
@@ -215,10 +217,87 @@ Research Stage
 <div class="box">
 <div class="box-header">
 <h3 class="box-title">
+Thesis
+</h3>
+</div>
+<div class="box-body">
+
+<table class="table" style="margin-bottom: 15px;">
+    <tbody>
+        <tr>
+            <th style="width: 220px;">Thesis Title</th>
+            <td><?= isset($thesis) && $thesis && $thesis->thesis_title ? Html::encode($thesis->thesis_title) : '-' ?></td>
+        </tr>
+        <tr>
+            <th>Date Applied</th>
+            <td><?= isset($thesis) && $thesis && $thesis->date_applied ? Html::encode(date('d F Y', strtotime($thesis->date_applied))) : '-' ?></td>
+        </tr>
+        <tr>
+            <th>Active</th>
+            <td><?= isset($thesis) && $thesis ? ((int)$thesis->is_active === 1 ? 'Yes' : 'No') : '-' ?></td>
+        </tr>
+    </tbody>
+</table>
+
+<?php if (!$readOnly) { ?>
+<div class="form-group">
+    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#thesisModal">Update</button>
+</div>
+<?php } ?>
+
+</div>
+</div>
+
+<div class="box">
+<div class="box-header">
+<h3 class="box-title">
 Supervisor
 </h3>
 </div>
 <div class="box-body">
+
+
+
+
+<?php if (!$readOnly) { ?>
+<div class="modal fade" id="thesisModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Update Thesis</h4>
+      </div>
+      <div class="modal-body">
+        <?php $form = ActiveForm::begin([
+            'action' => Url::to(['student/update-thesis', 'id' => $model->id]),
+            'method' => 'post',
+        ]); ?>
+
+        <?= $form->field($thesis, 'thesis_title')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($thesis, 'date_applied')->widget(DatePicker::classname(), [
+            'removeButton' => false,
+            'pluginOptions' => [
+                'autoclose' => true,
+                'format' => 'yyyy-mm-dd',
+                'todayHighlight' => true,
+            ],
+        ]) ?>
+        <?= $form->field($thesis, 'is_active')->dropDownList([
+            1 => 'Yes',
+            0 => 'No',
+        ]) ?>
+
+        <div class="form-group">
+            <?= Html::submitButton('Save', ['class' => 'btn btn-primary']) ?>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+
+        <?php ActiveForm::end(); ?>
+      </div>
+    </div>
+  </div>
+</div>
+<?php } ?>
 
 <table class="table">
   <thead>
@@ -252,7 +331,12 @@ Supervisor
                     $label = $staffNo . ' - ' . strtoupper($staffName);
                 }
             }
-            echo Html::encode($label);
+
+            if ($isAdminPostgrad && $sv) {
+                echo Html::a(Html::encode($label), ['supervisor/view', 'id' => $sv->id]);
+            } else {
+                echo Html::encode($label);
+            }
         ?></td>
       <td><?=$s->roleName()?></td>
       <td><?=$s->supervisor->typeName?></td>

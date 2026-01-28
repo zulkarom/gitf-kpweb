@@ -23,6 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Add Student', ['create'], ['class' => 'btn btn-success']) ?>
         <?= Html::a('Statistics', ['stats', 'semester_id' => $searchModel->semester_id], ['class' => 'btn btn-info']) ?>
+        <?= Html::a('All Student Data', ['master'], ['class' => 'btn btn-primary']) ?>
     </p>
 
     <?php

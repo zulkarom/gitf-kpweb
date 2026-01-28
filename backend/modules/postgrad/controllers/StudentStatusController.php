@@ -58,7 +58,10 @@ class StudentStatusController extends Controller
                 } else {
                     [$preview, $summary] = $this->processCsv($path, false, (int)$model->semester_id);
 
-                    if (Yii::$app->request->post('apply') === '1') {
+                    $applyIntent = (string)Yii::$app->request->post('apply_intent', '0');
+                    $applyIntent = trim($applyIntent);
+
+                    if ($applyIntent === '1') {
                         [$preview, $summary] = $this->processCsv($path, true, (int)$model->semester_id);
                     }
                 }

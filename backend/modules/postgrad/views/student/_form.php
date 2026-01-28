@@ -37,8 +37,10 @@ use backend\models\University;
             <?= $form->field($model, 'field_id')->dropDownList(
                 Field::listMainFieldArray(), ['prompt' => 'Pilih Bidang',  'class' => 'form-control select-choice']) ?>
         </div>
+
         
        
+        
         
         
 

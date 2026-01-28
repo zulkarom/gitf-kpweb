@@ -2,23 +2,22 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use backend\modules\postgrad\models\Student;
-use backend\modules\postgrad\models\StudentRegister;
-use backend\models\Semester;
 use yii\helpers\Url;
 use yii\helpers\Json;
-use yii\helpers\ArrayHelper;
+use backend\modules\postgrad\models\StageExaminer;
 
 /* @var $this yii\web\View */
-/* @var $model backend\modules\postgrad\models\StudentStatusUploadForm */
+/* @var $model backend\modules\postgrad\models\ExamCommitteeUploadForm */
+/* @var $preview array|null */
+/* @var $summary array|null */
 
-$this->title = 'Update Student Status';
+$this->title = 'Import Examination Committee';
 $this->params['breadcrumbs'][] = ['label' => 'Postgraduate Admin', 'url' => ['/postgrad/student/index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 
-<div class="student-status-update">
+<div class="exam-committee-import">
 
     <div class="box">
         <div class="box-header">
@@ -26,81 +25,28 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <div class="box-body">
 
-            <div class="alert alert-info">
-                <p>Halaman ini digunakan untuk mengemaskini status pelajar pascasiswazah. Status pelajar perlu dikemaskini pada setiap semester/awal semester untuk memastikan rekod adalah terkini.</p>
-            </div>
-
             <div class="alert alert-default">
-                <strong>Panduan Muat Naik (CSV)</strong><br />
-                
-
-
-                1) Pilih <strong>Semester</strong>.<br />
-                2) Sediakan fail <strong>.csv</strong> (maksimum 10MB) dan baris pertama mestilah <strong>header</strong>.<br />
-                3) Kolum wajib: <strong>student_id</strong> (atau <strong>student id</strong>), <strong>status_daftar</strong>. Kolum <strong>student_name</strong> (jika ada) akan <strong>diabaikan</strong> semasa muat naik.<br />
-                <em>Nota status_daftar:</em> nilai teks yang diterima (tidak sensitif huruf besar/kecil) ialah:
-                <ul>
-                    <li>Ditawarkan</li>
-                    <li>Daftar</li>
-                    <li>Tidak daftar</li>
-                    <li>Tangguh</li>
-                    <li>Tarik Diri</li>
-                    <li>Graduat</li>
-                    <li>Diberhentikan</li>
-                    <li>Meninggal Dunia</li>
-                    <li>NOS</li>
-                </ul>
-             <br />
-                4) <strong>Status Aktif</strong> akan ditetapkan secara automatik: <strong>Daftar / NOS</strong> = Aktif, selain itu = Tidak Aktif.<br />
-                5) Pastikan tiada <strong>student_id</strong> berulang dalam CSV.<br />
-                6) Pilih fail CSV. Sistem akan <strong>muat naik secara automatik</strong> dan papar <strong>preview</strong>.<br />
-                7) Semak keputusan preview (contoh: READY / NOT_FOUND / INVALID_STATUS / NO_CHANGES).<br />
-                8) Jika betul, klik <strong>Apply Updates</strong> untuk kemaskini.
+                <strong>CSV Format</strong><br />
+                Required headers:<br />
+                <strong>date</strong>, <strong>time</strong>, <strong>student_id</strong>, <strong>stage_id</strong>, <strong>chairman</strong>, <strong>deputy_chairman</strong>, <strong>panel1</strong>, <strong>panel2</strong>, <strong>thesis_title</strong>
             </div>
 
             <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
-            <?php
-                $semesterOptions = ArrayHelper::map(
-                    Semester::find()->orderBy(['id' => SORT_DESC])->all(),
-                    'id',
-                    function($s){ return $s->longFormat(); }
-                );
-            ?>
+            <?= $form->field($model, 'file')->fileInput(['accept' => '.csv', 'id' => 'pg-exam-committee-csv-file'])->label('Upload CSV File') ?>
 
-<div class="row">
-                <div class="col-md-6">
-                    <?= $form->field($model, 'semester_id')->dropDownList($semesterOptions, ['prompt' => 'Choose'])->label('Semester') ?>
-                </div>
-                <div class="col-md-12">
-                         <div class="form-group">
-                <?= Html::a('Download Sample CSV of selected Semester', '#', ['id' => 'pg-status-download-btn']) ?>
-                <span id="pg-status-download-msg" style="margin-left:10px"></span>
-            </div>
-                </div>
-            </div>
+            <?= Html::hiddenInput('csv_token', Yii::$app->request->post('csv_token', ''), ['id' => 'pg-exam-committee-csv-token']) ?>
 
-
-      
-
-            
-
-            <?= $form->field($model, 'file')->fileInput(['accept' => '.csv', 'id' => 'pg-status-csv-file'])->label('Upload CSV File') ?>
-
-       
-
-            <?= Html::hiddenInput('csv_token', Yii::$app->request->post('csv_token', ''), ['id' => 'pg-status-csv-token']) ?>
-
-            <?= Html::hiddenInput('apply_intent', '0', ['id' => 'pg-status-apply-intent']) ?>
+            <?= Html::hiddenInput('apply_intent', '0', ['id' => 'pg-exam-committee-apply-intent']) ?>
 
             <div class="form-group">
-                <?= Html::button('Upload CSV', ['class' => 'btn btn-default', 'id' => 'pg-status-upload-btn', 'style' => 'display:none']) ?>
-                <span id="pg-status-upload-msg" style="margin-left:10px"></span>
+                <?= Html::button('Upload CSV', ['class' => 'btn btn-default', 'id' => 'pg-exam-committee-upload-btn', 'style' => 'display:none']) ?>
+                <span id="pg-exam-committee-upload-msg" style="margin-left:10px"></span>
             </div>
 
             <div class="form-group">
                 <?php if (is_array($summary) && !isset($summary['error']) && (int)($summary['applied'] ?? 0) === 0): ?>
-                    <?= Html::submitButton('Apply Updates', ['class' => 'btn btn-danger', 'name' => 'apply', 'value' => '1', 'data-confirm' => 'Apply updates from this CSV?']) ?>
+                    <?= Html::submitButton('Apply Updates', ['class' => 'btn btn-danger', 'name' => 'apply', 'value' => '1', 'data-confirm' => 'Apply examination committee updates from this CSV?']) ?>
                 <?php endif; ?>
             </div>
 
@@ -111,32 +57,21 @@ $this->params['breadcrumbs'][] = $this->title;
                 $uploadUrlJson = Json::encode($uploadUrl);
                 $csrfParamJson = Json::encode(Yii::$app->request->csrfParam);
                 $csrfTokenJson = Json::encode(Yii::$app->request->getCsrfToken());
-                $downloadUrlBase = Url::to(['/postgrad/student-status/download-csv']);
-                $downloadUrlBaseJson = Json::encode($downloadUrlBase);
                 $this->registerJs(<<<JS
                 (function(){
-                    var uploadBtn = $('#pg-status-upload-btn');
-                    var fileInput = $('#pg-status-csv-file');
-                    var tokenInput = $('#pg-status-csv-token');
-                    var applyIntent = $('#pg-status-apply-intent');
-                    var msg = $('#pg-status-upload-msg');
+                    var uploadBtn = $('#pg-exam-committee-upload-btn');
+                    var fileInput = $('#pg-exam-committee-csv-file');
+                    var tokenInput = $('#pg-exam-committee-csv-token');
+                    var applyIntent = $('#pg-exam-committee-apply-intent');
+                    var msg = $('#pg-exam-committee-upload-msg');
                     var form = fileInput.closest('form');
                     var applyBtn = form.find('button[name="apply"], input[name="apply"]');
-
-                    var downloadBtn = $('#pg-status-download-btn');
-                    var downloadMsg = $('#pg-status-download-msg');
-                    var semesterSelect = $('#studentstatusuploadform-semester_id');
 
                     var isUploading = false;
 
                     function setMsg(text, isError){
                         msg.text(text);
                         msg.css('color', isError ? '#a94442' : '#3c763d');
-                    }
-
-                    function setDownloadMsg(text, isError){
-                        downloadMsg.text(text);
-                        downloadMsg.css('color', isError ? '#a94442' : '#3c763d');
                     }
 
                     function uploadCsv(done){
@@ -152,7 +87,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         var fd = new FormData();
                         fd.append({$csrfParamJson}, {$csrfTokenJson});
-                        fd.append('request_type', 'postgrad_status_csv');
+                        fd.append('request_type', 'postgrad_exam_committee_csv');
                         fd.append('file', file);
 
                         isUploading = true;
@@ -252,21 +187,6 @@ $this->params['breadcrumbs'][] = $this->title;
                             form.trigger('submit');
                         });
                     });
-
-                    downloadBtn.on('click', function(e){
-                        e.preventDefault();
-                        setDownloadMsg('', false);
-
-                        var semesterId = $.trim(semesterSelect.val() || '');
-                        if(semesterId === ''){
-                            setDownloadMsg('Sila pilih Semester dahulu', true);
-                            return;
-                        }
-
-                        var base = {$downloadUrlBaseJson};
-                        var url = base + (base.indexOf('?') >= 0 ? '&' : '?') + 'semester_id=' + encodeURIComponent(semesterId);
-                        window.location.href = url;
-                    });
                 })();
 JS);
             ?>
@@ -282,10 +202,12 @@ JS);
                     <strong>Summary</strong><br />
                     Applied: <?= (int)$summary['applied'] ?><br />
                     Processed: <?= (int)$summary['processed'] ?><br />
+                    Created: <?= (int)$summary['created'] ?><br />
                     Updated: <?= (int)$summary['updated'] ?><br />
                     Skipped: <?= (int)$summary['skipped'] ?><br />
                     Not Found: <?= (int)$summary['not_found'] ?><br />
-                    Invalid Status: <?= (int)$summary['invalid_status'] ?><br />
+                    Semester Not Found: <?= (int)($summary['semester_not_found'] ?? 0) ?><br />
+                    Invalid: <?= (int)$summary['invalid'] ?><br />
                     Errors: <?= (int)$summary['errors'] ?><br />
                 </div>
 
@@ -309,66 +231,51 @@ JS);
 
             <?php if (!empty($preview)): ?>
                 <div class="table-responsive">
-                    <table class="table table-bordered table-striped">
+                    <table class="table table-bordered table-striped" id="pg-exam-committee-preview-table">
                         <thead>
                         <tr>
                             <th style="width:50px">#</th>
-                            <th>Student Id</th>
-                            <th>Status Daftar (CURRENT)</th>
-                            <th>Status Aktif (CURRENT)</th>
-                            <th>Status Daftar (NEW)</th>
-                            <th>Status Aktif (AUTO)</th>
-                            <th>Status Daftar (TO BE MAPPED)</th>
-                            <th>Status Aktif (TO BE MAPPED)</th>
+                            <th>Student</th>
+                            <th>Semester</th>
+                            <th>Stage</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Thesis Title</th>
+                            <th>Chairman</th>
+                            <th>Deputy</th>
+                            <th>Examiner 1</th>
+                            <th>Examiner 2</th>
                             <th>Result</th>
+                            <th>Message</th>
                         </tr>
                         </thead>
                         <tbody>
                         <?php $i = 0; foreach ($preview as $row): $i++; ?>
                             <?php
-                                $mappedDaftarInt = $row['status_daftar'];
-                                $mappedAktifInt = $row['status_aktif'];
-
-                                $mappedDaftarDisp = is_bool($mappedDaftarInt) ? 'INVALID' : (string)$mappedDaftarInt;
-                                if (!is_bool($mappedDaftarInt)) {
-                                    if ($mappedDaftarInt === null || $mappedDaftarInt === '') {
-                                        $mappedDaftarDisp = 'N/A';
-                                    } else {
-                                        $list = StudentRegister::statusDaftarList();
-                                        $txt = array_key_exists((int)$mappedDaftarInt, $list) ? $list[(int)$mappedDaftarInt] : '';
-                                        $mappedDaftarDisp = trim($txt) !== '' ? ($txt . ' (' . (int)$mappedDaftarInt . ')') : (string)$mappedDaftarInt;
-                                    }
-                                }
-
-                                $mappedAktifDisp = is_bool($mappedAktifInt) ? 'INVALID' : (string)$mappedAktifInt;
-                                if (!is_bool($mappedAktifInt)) {
-                                    if ($mappedAktifInt === null || $mappedAktifInt === '') {
-                                        $mappedAktifDisp = 'N/A';
-                                    } else {
-                                        $list2 = StudentRegister::statusAktifList();
-                                        $txt2 = array_key_exists((int)$mappedAktifInt, $list2) ? $list2[(int)$mappedAktifInt] : '';
-                                        $mappedAktifDisp = trim($txt2) !== '' ? ($txt2 . ' (' . (int)$mappedAktifInt . ')') : (string)$mappedAktifInt;
-                                    }
-                                }
-
-                                $result = (string)$row['result'];
+                                $result = (string)($row['result'] ?? '');
                                 $resultStyle = '';
                                 if ($result === 'READY') {
                                     $resultStyle = 'background:#fff3cd;';
-                                } elseif ($result === 'NOT_FOUND') {
+                                } elseif ($result === 'FAILED' || $result === 'INVALID' || $result === 'SEMESTER_NOT_FOUND') {
                                     $resultStyle = 'background:#f8d7da;';
+                                } elseif ($result === 'UPDATED' || $result === 'CREATED') {
+                                    $resultStyle = 'background:#d1e7dd;';
                                 }
                             ?>
                             <tr data-result="<?= Html::encode($result) ?>">
                                 <td><?= (int)$i ?></td>
-                                <td><?= Html::encode($row['student_id']) ?></td>
-                                <td><?= Html::encode((string)($row['current_status_daftar_text'] ?? '')) ?></td>
-                                <td><?= Html::encode((string)($row['current_status_aktif_text'] ?? '')) ?></td>
-                                <td><?= Html::encode($row['status_daftar_text']) ?></td>
-                                <td><?= Html::encode($row['status_aktif_text']) ?></td>
-                                <td style="<?= !empty($row['daftar_changed']) ? 'background:#fff3cd;' : '' ?>"><?= Html::encode($mappedDaftarDisp) ?></td>
-                                <td style="<?= !empty($row['aktif_changed']) ? 'background:#fff3cd;' : '' ?>"><?= Html::encode($mappedAktifDisp) ?></td>
+                                <td><?= Html::encode((string)($row['student_id'] ?? '')) ?></td>
+                                <td><?= Html::encode((string)($row['semester_id'] ?? '')) ?></td>
+                                <td><?= Html::encode((string)($row['stage_id'] ?? '')) ?></td>
+                                <td><?= Html::encode((string)($row['date'] ?? '')) ?></td>
+                                <td><?= Html::encode((string)($row['time'] ?? '')) ?></td>
+                                <td><?= Html::encode((string)($row['thesis_title'] ?? '')) ?></td>
+                                <td><?= Html::encode((string)($row['chairman'] ?? '')) ?></td>
+                                <td><?= Html::encode((string)($row['deputy_chairman'] ?? '')) ?></td>
+                                <td><?= Html::encode((string)($row['panel1'] ?? '')) ?></td>
+                                <td><?= Html::encode((string)($row['panel2'] ?? '')) ?></td>
                                 <td style="<?= $resultStyle ?>"><?= Html::encode($result) ?></td>
+                                <td><?= Html::encode((string)($row['message'] ?? '')) ?></td>
                             </tr>
                         <?php endforeach; ?>
                         </tbody>

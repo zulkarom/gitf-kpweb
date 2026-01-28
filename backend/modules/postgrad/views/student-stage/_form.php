@@ -5,6 +5,7 @@ use yii\widgets\ActiveForm;
 use backend\models\Semester;
 use kartik\date\DatePicker;
 use kartik\select2\Select2;
+use kartik\time\TimePicker;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\postgrad\models\StudentStage */
@@ -30,7 +31,24 @@ use kartik\select2\Select2;
     
     
 
- <?=$form->field($model, 'stage_date')->widget(DatePicker::classname(), [
+
+
+
+    
+
+    <?= $form->field($model, 'status')->dropDownList($model->statusList()) ?>
+    
+    <?= $form->field($model, 'thesis_title')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'remark')->textarea() ?>
+	
+	
+	</div>
+	<div class="col-md-6">
+
+<div class="row">
+	<div class="col-md-6">
+<?=$form->field($model, 'stage_date')->widget(DatePicker::classname(), [
     'removeButton' => false,
     'pluginOptions' => [
         'autoclose'=>true,
@@ -42,16 +60,24 @@ use kartik\select2\Select2;
     
 ]);
 ?>
-
+    </div>
+    <div class="col-md-6"> 	<?= $form->field($model, 'stage_time')->widget(TimePicker::classname(), [
+	        	    'pluginOptions' => [
+	        	        'showSeconds' => false,
+	        	        'minuteStep' => 5,
+	        	    ],
+	        	]) ?>
+ </div>
+</div>
     
+       
 
-    <?= $form->field($model, 'status')->dropDownList($model->statusList()) ?>
-    
-    <?= $form->field($model, 'remark')->textarea() ?>
-	
-	
-	</div>
-	<div class="col-md-6"></div>
+	<?= $form->field($model, 'meeting_mode')->dropDownList($model->meetingModeList(), ['prompt' => 'Select..']) ?>
+
+	<?= $form->field($model, 'location')->textInput() ?>
+
+	<?= $form->field($model, 'meeting_link')->textInput() ?>
+    </div>
 </div>
 
 
