@@ -154,6 +154,8 @@ class Supervisor extends \yii\db\ActiveRecord
     public function getExaminees(){
         return Student::find()->alias('a')
         ->select([
+            'id' => 'a.id',
+            'matric_no' => 'a.matric_no',
             'fullname' => 'u.fullname',
             'stage_name' => 'r.stage_name',
             'stage_status' => 's.status',
@@ -182,6 +184,8 @@ class Supervisor extends \yii\db\ActiveRecord
 
         return Student::find()->alias('a')
         ->select([
+            'id' => 'a.id',
+            'matric_no' => 'a.matric_no',
             'fullname' => 'u.fullname',
             'stage_name' => 'r.stage_name',
             'stage_status' => 's.status',

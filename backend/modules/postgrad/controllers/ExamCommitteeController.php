@@ -380,6 +380,7 @@ class ExamCommitteeController extends Controller
 
         $row = 0;
         $cols = [];
+        $maxColIndex = null;
 
         $stats = [
             'processed' => 0,
@@ -444,6 +445,7 @@ class ExamCommitteeController extends Controller
                     return $h;
                 }, $data);
                 $cols = array_flip($header);
+                $maxColIndex = !empty($cols) ? max($cols) : null;
 
                 $required = ['student_id', 'stage_id', 'chairman', 'deputy_chairman', 'panel1', 'panel2'];
                 $missing = [];
@@ -468,6 +470,12 @@ class ExamCommitteeController extends Controller
                 }
 
                 continue;
+            }
+
+            // Ensure row has at least as many columns as header expects.
+            // This prevents missing array offsets when there are empty cells.
+            if ($maxColIndex !== null && count($data) <= $maxColIndex) {
+                $data = array_pad($data, $maxColIndex + 1, '');
             }
 
             $studentMatric = trim((string)($data[$cols['student_id']] ?? ''));
@@ -710,8 +718,17 @@ class ExamCommitteeController extends Controller
                             }
                         }
 
+                            // Treat empty role values in CSV as "no intended update".
+                            // Only compare roles that are provided (non-empty) in the CSV row.
+                            $providedRoles = [];
+                            foreach ($roles as $rId => $rawName) {
+                                if (trim((string)$rawName) !== '') {
+                                    $providedRoles[] = (int)$rId;
+                                }
+                            }
+
                             $noChanges = true;
-                            foreach ([1, 2, 3, 4] as $rId) {
+                            foreach ($providedRoles as $rId) {
                                 $desired = (int)($roleMatches[$rId] ?? 0);
                                 $current = (int)($existingMap[$rId] ?? 0);
                                 if ($desired <= 0 || $current <= 0 || $desired !== $current) {
