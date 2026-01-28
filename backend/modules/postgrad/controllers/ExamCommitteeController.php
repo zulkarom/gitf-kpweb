@@ -15,6 +15,7 @@ use backend\modules\postgrad\models\StageExaminer;
 use backend\modules\postgrad\models\StudentStage;
 use backend\modules\postgrad\models\Supervisor;
 use backend\modules\postgrad\models\PgSetting;
+use backend\modules\postgrad\models\StudentRegister;
 use backend\modules\staff\models\Staff;
 
 class ExamCommitteeController extends Controller
@@ -396,6 +397,8 @@ class ExamCommitteeController extends Controller
             'READY' => 0,
             'NO_CHANGES' => 0,
             'NOT_FOUND' => 0,
+            'STAFF_NOT_FOUND' => 0,
+            'REG_NOT_FOUND' => 0,
             'SEMESTER_NOT_FOUND' => 0,
             'INVALID' => 0,
             'UPDATED' => 0,
@@ -405,20 +408,27 @@ class ExamCommitteeController extends Controller
 
         $preview = [];
 
-        // Preload staff map for matching (active staff only)
+        // Preload staff map for matching (active + quit/transferred staff)
         $staffRows = Staff::find()->alias('stf')
-            ->select(['stf.id AS staff_id', 'u.fullname AS fullname'])
+            ->select(['stf.id AS staff_id', 'stf.staff_no AS staff_no', 'stf.staff_active AS staff_active', 'u.fullname AS fullname'])
             ->innerJoin(['u' => \common\models\User::tableName()], 'u.id = stf.user_id')
-            ->where(['stf.staff_active' => 1])
             ->asArray()
             ->all();
 
         $staffMap = [];
         foreach ($staffRows as $sr) {
             $sid = (int)($sr['staff_id'] ?? 0);
+            $staffNo = trim((string)($sr['staff_no'] ?? ''));
+            $staffActive = (int)($sr['staff_active'] ?? 0);
             $nm = $this->normalizePersonName($sr['fullname'] ?? '');
             if ($sid > 0 && $nm !== '') {
-                $staffMap[$nm] = $sid;
+                if (!isset($staffMap[$nm]) || (int)($staffMap[$nm]['staff_active'] ?? 0) < $staffActive) {
+                    $staffMap[$nm] = [
+                        'staff_id' => $sid,
+                        'staff_no' => $staffNo,
+                        'staff_active' => $staffActive,
+                    ];
+                }
             }
         }
 
@@ -462,8 +472,8 @@ class ExamCommitteeController extends Controller
 
             $studentMatric = trim((string)($data[$cols['student_id']] ?? ''));
             $stageId = trim((string)($data[$cols['stage_id']] ?? ''));
-            $stageDate = trim((string)($data[$cols['date']] ?? ''));
-            $stageTime = trim((string)($data[$cols['time']] ?? ''));
+            $stageDate = $this->normalizeDateValue(trim((string)($data[$cols['date']] ?? '')));
+            $stageTime = $this->normalizeTimeValue(trim((string)($data[$cols['time']] ?? '')));
             $thesisTitle = trim((string)($data[$cols['thesis_title']] ?? ''));
 
             $rowSemesterId = $this->findSemesterIdByDate($stageDate);
@@ -538,6 +548,11 @@ class ExamCommitteeController extends Controller
                 continue;
             }
 
+            $reg = StudentRegister::find()->where([
+                'student_id' => (int)$student->id,
+                'semester_id' => (int)$rowSemesterId,
+            ])->one();
+
             $stage = StudentStage::find()->where([
                 'student_id' => (int)$student->id,
                 'semester_id' => (int)$rowSemesterId,
@@ -586,16 +601,19 @@ class ExamCommitteeController extends Controller
 
             $roleMatches = [];
             $roleMissing = [];
+            $roleStaffNos = [];
             foreach ($roles as $roleId => $name) {
                 $roleMatches[$roleId] = null;
+                $roleStaffNos[$roleId] = '';
                 if (trim((string)$name) === '') {
                     $roleMissing[$roleId] = 'Empty name';
                     continue;
                 }
 
-                $staffId = $this->matchStaffIdByName($name, $staffMap);
-                if ($staffId) {
-                    $svId = $this->ensureInternalSupervisorId($staffId);
+                $staff = $this->matchStaffByName($name, $staffMap);
+                if ($staff && !empty($staff['staff_id'])) {
+                    $roleStaffNos[$roleId] = trim((string)($staff['staff_no'] ?? ''));
+                    $svId = $this->ensureInternalSupervisorId((int)$staff['staff_id']);
                     if ($svId) {
                         $roleMatches[$roleId] = (int)$svId;
                     } else {
@@ -610,7 +628,86 @@ class ExamCommitteeController extends Controller
             $examChanges = [];
 
             if (!$apply) {
-                $resultCounts['READY']++;
+                if (!$reg) {
+                    $resultCounts['REG_NOT_FOUND']++;
+                    $preview[] = [
+                        'student_id' => $studentMatric,
+                        'semester_id' => (int)$rowSemesterId,
+                        'stage_id' => (int)$stageId,
+                        'date' => $stageDate,
+                        'time' => $stageTime,
+                        'thesis_title' => $thesisTitle,
+                        'chairman' => $chairmanName,
+                        'deputy_chairman' => $deputyName,
+                        'panel1' => $panel1Name,
+                        'panel2' => $panel2Name,
+                        'matched' => $roleMatches,
+                        'staff_no' => $roleStaffNos,
+                        'missing' => $roleMissing,
+                        'result' => 'REG_NOT_FOUND',
+                        'message' => 'Student semester registration (pg_student_reg) not found',
+                    ];
+                    $stats['processed']++;
+                    continue;
+                }
+
+                $hasStaffProblem = !empty($roleMissing);
+                if ($hasStaffProblem) {
+                    $resultCounts['STAFF_NOT_FOUND']++;
+                } else {
+                    $noChanges = false;
+                    if (!$isNewStage && !$isNewThesis) {
+                        $stageSame = true;
+                        if ($stageDate !== '') {
+                            $stageSame = $stageSame && ($this->normalizeDateValue((string)$stage->stage_date) === $this->normalizeDateValue((string)$stageDate));
+                        }
+                        if ($stageTime !== '') {
+                            $stageSame = $stageSame && ($this->normalizeTimeValue((string)$stage->stage_time) === $this->normalizeTimeValue((string)$stageTime));
+                        }
+                        if ($thesisTitle !== '') {
+                            $stageSame = $stageSame && (trim((string)$stage->thesis_title) === trim((string)$thesisTitle));
+                        }
+
+                        $thesisSame = true;
+                        if ($thesisTitle !== '') {
+                            $thesisSame = (trim((string)$thesis->thesis_title) === trim((string)$thesisTitle));
+                        }
+
+                        if ($stageSame && $thesisSame) {
+                        $existingExaminers = StageExaminer::find()
+                            ->where([
+                                'stage_id' => (int)$stage->id,
+                                'committee_role' => [1, 2, 3, 4],
+                            ])
+                            ->asArray()
+                            ->all();
+
+                        $existingMap = [];
+                        foreach ($existingExaminers as $exRow) {
+                            $rId = (int)($exRow['committee_role'] ?? 0);
+                            if ($rId > 0) {
+                                $existingMap[$rId] = (int)($exRow['examiner_id'] ?? 0);
+                            }
+                        }
+
+                            $noChanges = true;
+                            foreach ([1, 2, 3, 4] as $rId) {
+                                $desired = (int)($roleMatches[$rId] ?? 0);
+                                $current = (int)($existingMap[$rId] ?? 0);
+                                if ($desired <= 0 || $current <= 0 || $desired !== $current) {
+                                    $noChanges = false;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    if ($noChanges) {
+                        $resultCounts['NO_CHANGES']++;
+                    } else {
+                        $resultCounts['READY']++;
+                    }
+                }
                 $preview[] = [
                     'student_id' => $studentMatric,
                     'semester_id' => (int)$rowSemesterId,
@@ -623,9 +720,10 @@ class ExamCommitteeController extends Controller
                     'panel1' => $panel1Name,
                     'panel2' => $panel2Name,
                     'matched' => $roleMatches,
+                    'staff_no' => $roleStaffNos,
                     'missing' => $roleMissing,
-                    'result' => 'READY',
-                    'message' => '',
+                    'result' => $hasStaffProblem ? 'STAFF_NOT_FOUND' : ($noChanges ? 'NO_CHANGES' : 'READY'),
+                    'message' => $hasStaffProblem ? 'Staff not matched for one or more committee roles' : ($noChanges ? 'No changes required' : ''),
                 ];
                 $stats['processed']++;
                 continue;
@@ -636,17 +734,53 @@ class ExamCommitteeController extends Controller
             try {
                 $stageOk = true;
                 $thesisOk = true;
+                $cellStatus = [];
+                $roleCellStatus = [];
+
+                if (!$reg) {
+                    $reg = new StudentRegister();
+                    $reg->student_id = (int)$student->id;
+                    $reg->semester_id = (int)$rowSemesterId;
+                    $reg->status_daftar = StudentRegister::STATUS_DAFTAR_DAFTAR;
+                    $reg->status_aktif = StudentRegister::STATUS_AKTIF_AKTIF;
+                    $reg->date_register = $stageDate !== '' ? $stageDate : null;
+                    if (!$reg->save()) {
+                        throw new \Exception('Unable to create student registration for semester');
+                    }
+                }
 
                 if ($isNewStage) {
                     $stageOk = $stage->save();
+                    if ($stageOk) {
+                        $cellStatus['date'] = 'CREATED';
+                        $cellStatus['time'] = 'CREATED';
+                        $cellStatus['thesis_title'] = 'CREATED';
+                    }
                 } elseif ($changedStage) {
                     $stageOk = $stage->save();
+                    if ($stageOk) {
+                        if ($beforeDate !== (string)$stage->stage_date) {
+                            $cellStatus['date'] = 'UPDATED';
+                        }
+                        if ($beforeTime !== (string)$stage->stage_time) {
+                            $cellStatus['time'] = 'UPDATED';
+                        }
+                        if ($beforeTitle !== (string)$stage->thesis_title) {
+                            $cellStatus['thesis_title'] = 'UPDATED';
+                        }
+                    }
                 }
 
                 if ($isNewThesis) {
                     $thesisOk = $thesis->save();
+                    if ($thesisOk) {
+                        $cellStatus['thesis_title'] = $cellStatus['thesis_title'] ?? 'CREATED';
+                    }
                 } elseif ($changedThesis) {
                     $thesisOk = $thesis->save();
+                    if ($thesisOk) {
+                        $cellStatus['thesis_title'] = $cellStatus['thesis_title'] ?? 'UPDATED';
+                    }
                 }
 
                 if (!$stageOk || !$thesisOk) {
@@ -672,6 +806,7 @@ class ExamCommitteeController extends Controller
                                 throw new \Exception('Unable to update examiner');
                             }
                             $changedExam = true;
+                            $roleCellStatus[(int)$roleId] = 'UPDATED';
                         }
                     } else {
                         $ex = new StageExaminer();
@@ -683,6 +818,7 @@ class ExamCommitteeController extends Controller
                             throw new \Exception('Unable to create examiner');
                         }
                         $changedExam = true;
+                        $roleCellStatus[(int)$roleId] = 'CREATED';
                     }
                 }
 
@@ -714,7 +850,17 @@ class ExamCommitteeController extends Controller
                     'panel1' => $panel1Name,
                     'panel2' => $panel2Name,
                     'matched' => $roleMatches,
+                    'staff_no' => $roleStaffNos,
                     'missing' => $roleMissing,
+                    'cell_status' => [
+                        'date' => $cellStatus['date'] ?? '',
+                        'time' => $cellStatus['time'] ?? '',
+                        'thesis_title' => $cellStatus['thesis_title'] ?? '',
+                        'chairman' => $roleCellStatus[1] ?? '',
+                        'deputy' => $roleCellStatus[2] ?? '',
+                        'examiner1' => $roleCellStatus[3] ?? '',
+                        'examiner2' => $roleCellStatus[4] ?? '',
+                    ],
                     'result' => $previewResult,
                     'message' => '',
                 ];
@@ -736,6 +882,7 @@ class ExamCommitteeController extends Controller
                     'panel1' => $panel1Name,
                     'panel2' => $panel2Name,
                     'matched' => $roleMatches,
+                    'staff_no' => $roleStaffNos,
                     'missing' => $roleMissing,
                     'result' => 'FAILED',
                     'message' => $e->getMessage(),
@@ -772,7 +919,7 @@ class ExamCommitteeController extends Controller
         return trim($name);
     }
 
-    private function matchStaffIdByName($rawName, array $staffMap)
+    private function matchStaffByName($rawName, array $staffMap)
     {
         $key = $this->normalizePersonName($rawName);
         if ($key === '') {
@@ -780,17 +927,43 @@ class ExamCommitteeController extends Controller
         }
 
         if (isset($staffMap[$key])) {
-            return (int)$staffMap[$key];
+            return $staffMap[$key];
         }
 
         // best-effort contains match
-        foreach ($staffMap as $nm => $sid) {
+        foreach ($staffMap as $nm => $staff) {
             if ($nm !== '' && (strpos($key, $nm) !== false || strpos($nm, $key) !== false)) {
-                return (int)$sid;
+                return $staff;
             }
         }
 
         return null;
+    }
+
+    private function normalizeDateValue($date)
+    {
+        $date = trim((string)$date);
+        if ($date === '') {
+            return '';
+        }
+        $ts = strtotime($date);
+        if ($ts === false) {
+            return $date;
+        }
+        return date('Y-m-d', $ts);
+    }
+
+    private function normalizeTimeValue($time)
+    {
+        $time = trim((string)$time);
+        if ($time === '') {
+            return '';
+        }
+        $ts = strtotime('1970-01-01 ' . $time);
+        if ($ts === false) {
+            return $time;
+        }
+        return date('H:i', $ts);
     }
 
     private function findSemesterIdByDate($date)

@@ -33,10 +33,23 @@ $this->params['breadcrumbs'][] = 'View Stage';
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
+            'id',
+            'student_id',
             'studentName',
-            'stageName',
+            'semester_id',
             'semesterName',
+            'stage_id',
+            'stageName',
             'stage_date',
+            'stage_time',
+            'thesis_title',
+            'location',
+            [
+                'attribute' => 'meeting_link',
+                'format' => 'url',
+            ],
+            'meeting_mode',
+            'status',
             'statusName',
             'remark'
         ],

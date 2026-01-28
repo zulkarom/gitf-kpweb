@@ -184,7 +184,7 @@ Research Stage
       <td><?= $s->semester ? $s->semester->shortFormat() : '' ?></td>
       <td>
         <?php if (!$readOnly) { ?>
-        <a href="<?=Url::to(['student-stage/update', 'id' => $s->id])?>" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i></a>
+        <a href="<?=Url::to(['student-stage/view', 'id' => $s->id])?>" class="btn btn-warning btn-sm"><i class="fa fa-eye"></i></a>
         <a href="<?=Url::to(['student-stage/delete', 'id' => $s->id])?>" class="btn btn-danger btn-sm" data-confirm="Are you sure to delete this stage?"><i class="fa fa-trash"></i></a>
         <?php } ?>
       </td>

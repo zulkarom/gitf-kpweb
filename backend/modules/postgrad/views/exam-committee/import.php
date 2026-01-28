@@ -256,10 +256,69 @@ JS);
                                 $resultStyle = '';
                                 if ($result === 'READY') {
                                     $resultStyle = 'background:#fff3cd;';
-                                } elseif ($result === 'FAILED' || $result === 'INVALID' || $result === 'SEMESTER_NOT_FOUND') {
+                                } elseif ($result === 'FAILED' || $result === 'INVALID' || $result === 'SEMESTER_NOT_FOUND' || $result === 'STAFF_NOT_FOUND' || $result === 'REG_NOT_FOUND') {
                                     $resultStyle = 'background:#f8d7da;';
                                 } elseif ($result === 'UPDATED' || $result === 'CREATED') {
                                     $resultStyle = 'background:#d1e7dd;';
+                                }
+
+                                $staffNos = isset($row['staff_no']) && is_array($row['staff_no']) ? $row['staff_no'] : [];
+                                $missing = isset($row['missing']) && is_array($row['missing']) ? $row['missing'] : [];
+                                $cellStatus = isset($row['cell_status']) && is_array($row['cell_status']) ? $row['cell_status'] : [];
+
+                                $dateDisplay = (string)($row['date'] ?? '');
+                                if (!empty($cellStatus['date'])) {
+                                    $dateDisplay .= ' [' . (string)$cellStatus['date'] . ']';
+                                }
+
+                                $timeDisplay = (string)($row['time'] ?? '');
+                                if (!empty($cellStatus['time'])) {
+                                    $timeDisplay .= ' [' . (string)$cellStatus['time'] . ']';
+                                }
+
+                                $titleDisplay = (string)($row['thesis_title'] ?? '');
+                                if (!empty($cellStatus['thesis_title'])) {
+                                    $titleDisplay .= ' [' . (string)$cellStatus['thesis_title'] . ']';
+                                }
+
+                                $chairmanDisplay = (string)($row['chairman'] ?? '');
+                                if (!empty($staffNos[1])) {
+                                    $chairmanDisplay = trim((string)$staffNos[1]) . ' ' . $chairmanDisplay;
+                                } elseif (isset($missing[1])) {
+                                    $chairmanDisplay .= ' [ERROR: ' . (string)$missing[1] . ']';
+                                }
+                                if (!empty($cellStatus['chairman'])) {
+                                    $chairmanDisplay .= ' [' . (string)$cellStatus['chairman'] . ']';
+                                }
+
+                                $deputyDisplay = (string)($row['deputy_chairman'] ?? '');
+                                if (!empty($staffNos[2])) {
+                                    $deputyDisplay = trim((string)$staffNos[2]) . ' ' . $deputyDisplay;
+                                } elseif (isset($missing[2])) {
+                                    $deputyDisplay .= ' [ERROR: ' . (string)$missing[2] . ']';
+                                }
+                                if (!empty($cellStatus['deputy'])) {
+                                    $deputyDisplay .= ' [' . (string)$cellStatus['deputy'] . ']';
+                                }
+
+                                $panel1Display = (string)($row['panel1'] ?? '');
+                                if (!empty($staffNos[3])) {
+                                    $panel1Display = trim((string)$staffNos[3]) . ' ' . $panel1Display;
+                                } elseif (isset($missing[3])) {
+                                    $panel1Display .= ' [ERROR: ' . (string)$missing[3] . ']';
+                                }
+                                if (!empty($cellStatus['examiner1'])) {
+                                    $panel1Display .= ' [' . (string)$cellStatus['examiner1'] . ']';
+                                }
+
+                                $panel2Display = (string)($row['panel2'] ?? '');
+                                if (!empty($staffNos[4])) {
+                                    $panel2Display = trim((string)$staffNos[4]) . ' ' . $panel2Display;
+                                } elseif (isset($missing[4])) {
+                                    $panel2Display .= ' [ERROR: ' . (string)$missing[4] . ']';
+                                }
+                                if (!empty($cellStatus['examiner2'])) {
+                                    $panel2Display .= ' [' . (string)$cellStatus['examiner2'] . ']';
                                 }
                             ?>
                             <tr data-result="<?= Html::encode($result) ?>">
@@ -267,13 +326,13 @@ JS);
                                 <td><?= Html::encode((string)($row['student_id'] ?? '')) ?></td>
                                 <td><?= Html::encode((string)($row['semester_id'] ?? '')) ?></td>
                                 <td><?= Html::encode((string)($row['stage_id'] ?? '')) ?></td>
-                                <td><?= Html::encode((string)($row['date'] ?? '')) ?></td>
-                                <td><?= Html::encode((string)($row['time'] ?? '')) ?></td>
-                                <td><?= Html::encode((string)($row['thesis_title'] ?? '')) ?></td>
-                                <td><?= Html::encode((string)($row['chairman'] ?? '')) ?></td>
-                                <td><?= Html::encode((string)($row['deputy_chairman'] ?? '')) ?></td>
-                                <td><?= Html::encode((string)($row['panel1'] ?? '')) ?></td>
-                                <td><?= Html::encode((string)($row['panel2'] ?? '')) ?></td>
+                                <td><?= Html::encode($dateDisplay) ?></td>
+                                <td><?= Html::encode($timeDisplay) ?></td>
+                                <td><?= Html::encode($titleDisplay) ?></td>
+                                <td><?= Html::encode($chairmanDisplay) ?></td>
+                                <td><?= Html::encode($deputyDisplay) ?></td>
+                                <td><?= Html::encode($panel1Display) ?></td>
+                                <td><?= Html::encode($panel2Display) ?></td>
                                 <td style="<?= $resultStyle ?>"><?= Html::encode($result) ?></td>
                                 <td><?= Html::encode((string)($row['message'] ?? '')) ?></td>
                             </tr>
