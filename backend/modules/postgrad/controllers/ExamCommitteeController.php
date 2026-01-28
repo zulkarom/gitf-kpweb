@@ -606,7 +606,6 @@ class ExamCommitteeController extends Controller
                 $roleMatches[$roleId] = null;
                 $roleStaffNos[$roleId] = '';
                 if (trim((string)$name) === '') {
-                    $roleMissing[$roleId] = 'Empty name';
                     continue;
                 }
 
@@ -628,6 +627,9 @@ class ExamCommitteeController extends Controller
             $examChanges = [];
 
             if (!$apply) {
+                $cellStatus = [];
+                $roleCellStatus = [];
+
                 if (!$reg) {
                     $resultCounts['REG_NOT_FOUND']++;
                     $preview[] = [
@@ -649,6 +651,24 @@ class ExamCommitteeController extends Controller
                     ];
                     $stats['processed']++;
                     continue;
+                }
+
+                if (!$isNewStage) {
+                    if ($stageDate !== '' && ($this->normalizeDateValue((string)$stage->stage_date) === $this->normalizeDateValue((string)$stageDate))) {
+                        $cellStatus['date'] = 'ALREADY_UPDATE';
+                    }
+                    if ($stageTime !== '' && ($this->normalizeTimeValue((string)$stage->stage_time) === $this->normalizeTimeValue((string)$stageTime))) {
+                        $cellStatus['time'] = 'ALREADY_UPDATE';
+                    }
+                    if ($thesisTitle !== '' && (trim((string)$stage->thesis_title) === trim((string)$thesisTitle))) {
+                        $cellStatus['thesis_title'] = 'ALREADY_UPDATE';
+                    }
+                }
+
+                if (!$isNewThesis) {
+                    if ($thesisTitle !== '' && (trim((string)$thesis->thesis_title) === trim((string)$thesisTitle))) {
+                        $cellStatus['thesis_title'] = $cellStatus['thesis_title'] ?? 'ALREADY_UPDATE';
+                    }
                 }
 
                 $hasStaffProblem = !empty($roleMissing);
@@ -698,6 +718,7 @@ class ExamCommitteeController extends Controller
                                     $noChanges = false;
                                     break;
                                 }
+                                $roleCellStatus[$rId] = 'ALREADY_UPDATE';
                             }
                         }
                     }
@@ -722,6 +743,15 @@ class ExamCommitteeController extends Controller
                     'matched' => $roleMatches,
                     'staff_no' => $roleStaffNos,
                     'missing' => $roleMissing,
+                    'cell_status' => [
+                        'date' => $cellStatus['date'] ?? '',
+                        'time' => $cellStatus['time'] ?? '',
+                        'thesis_title' => $cellStatus['thesis_title'] ?? '',
+                        'chairman' => $roleCellStatus[1] ?? '',
+                        'deputy' => $roleCellStatus[2] ?? '',
+                        'examiner1' => $roleCellStatus[3] ?? '',
+                        'examiner2' => $roleCellStatus[4] ?? '',
+                    ],
                     'result' => $hasStaffProblem ? 'STAFF_NOT_FOUND' : ($noChanges ? 'NO_CHANGES' : 'READY'),
                     'message' => $hasStaffProblem ? 'Staff not matched for one or more committee roles' : ($noChanges ? 'No changes required' : ''),
                 ];
@@ -769,6 +799,16 @@ class ExamCommitteeController extends Controller
                             $cellStatus['thesis_title'] = 'UPDATED';
                         }
                     }
+                } else {
+                    if ($stageDate !== '' && ($this->normalizeDateValue((string)$stage->stage_date) === $this->normalizeDateValue((string)$stageDate))) {
+                        $cellStatus['date'] = 'ALREADY_UPDATE';
+                    }
+                    if ($stageTime !== '' && ($this->normalizeTimeValue((string)$stage->stage_time) === $this->normalizeTimeValue((string)$stageTime))) {
+                        $cellStatus['time'] = 'ALREADY_UPDATE';
+                    }
+                    if ($thesisTitle !== '' && (trim((string)$stage->thesis_title) === trim((string)$thesisTitle))) {
+                        $cellStatus['thesis_title'] = 'ALREADY_UPDATE';
+                    }
                 }
 
                 if ($isNewThesis) {
@@ -780,6 +820,10 @@ class ExamCommitteeController extends Controller
                     $thesisOk = $thesis->save();
                     if ($thesisOk) {
                         $cellStatus['thesis_title'] = $cellStatus['thesis_title'] ?? 'UPDATED';
+                    }
+                } else {
+                    if ($thesisTitle !== '' && (trim((string)$thesis->thesis_title) === trim((string)$thesisTitle))) {
+                        $cellStatus['thesis_title'] = $cellStatus['thesis_title'] ?? 'ALREADY_UPDATE';
                     }
                 }
 
@@ -807,6 +851,8 @@ class ExamCommitteeController extends Controller
                             }
                             $changedExam = true;
                             $roleCellStatus[(int)$roleId] = 'UPDATED';
+                        } else {
+                            $roleCellStatus[(int)$roleId] = 'ALREADY_UPDATE';
                         }
                     } else {
                         $ex = new StageExaminer();
@@ -946,6 +992,32 @@ class ExamCommitteeController extends Controller
         if ($date === '') {
             return '';
         }
+
+        // Excel serial date (days since 1899-12-30)
+        if (is_numeric($date)) {
+            $num = (float)$date;
+            if ($num > 0) {
+                $days = (int)floor($num);
+                // if it's too small, it's likely not an Excel serial
+                if ($days >= 20000) {
+                    $base = new \DateTime('1899-12-30');
+                    $base->modify('+' . $days . ' days');
+                    return $base->format('Y-m-d');
+                }
+            }
+        }
+
+        // Try strict known formats first (common CSV date formats)
+        foreach (['Y-m-d', 'd/m/Y', 'd-m-Y', 'd.m.Y', 'Y/m/d'] as $fmt) {
+            $dt = \DateTime::createFromFormat($fmt, $date);
+            if ($dt instanceof \DateTime) {
+                $errs = \DateTime::getLastErrors();
+                if (empty($errs['warning_count']) && empty($errs['error_count'])) {
+                    return $dt->format('Y-m-d');
+                }
+            }
+        }
+
         $ts = strtotime($date);
         if ($ts === false) {
             return $date;
@@ -973,7 +1045,9 @@ class ExamCommitteeController extends Controller
             return null;
         }
 
-        $ts = strtotime($date);
+        // Re-normalize here too, because input may come in various CSV formats
+        $normalized = $this->normalizeDateValue($date);
+        $ts = strtotime($normalized);
         if ($ts === false) {
             return null;
         }
