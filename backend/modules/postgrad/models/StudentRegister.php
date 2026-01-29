@@ -38,6 +38,7 @@ class StudentRegister extends \yii\db\ActiveRecord
             [['status_daftar', 'status_aktif'], 'integer'],
             ['fee_amount', 'number'],
             [['date_register', 'fee_paid_at'], 'safe'],
+            [['remark'], 'string'],
 
             [['student_id', 'semester_id'], 'unique', 'targetAttribute' => ['student_id', 'semester_id'], 'message' => 'Student already registered for this semester.'],
 
@@ -54,7 +55,8 @@ class StudentRegister extends \yii\db\ActiveRecord
             'semesterName' => 'Semester',
             'studentName' => 'Student',
             'date_register' => 'Semester Register',
-            'free_paid_at' => 'Payment Date'
+            'free_paid_at' => 'Payment Date',
+            'remark' => 'Remark'
         ];
     }
 

@@ -60,6 +60,15 @@ class StudentRegisterController extends Controller
         ]);
     }
 
+    public function actionModal($id)
+    {
+        $model = $this->findModel($id);
+
+        return $this->renderAjax('_modal_detail', [
+            'model' => $model,
+        ]);
+    }
+
     public function actionCreate($s)
     {
         $model = new StudentRegister();

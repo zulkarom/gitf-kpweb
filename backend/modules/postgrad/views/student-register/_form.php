@@ -68,6 +68,8 @@ use kartik\widgets\ActiveForm;
     </div>
     <div class="col-md-6">
  
+    <?= $form->field($model, 'remark')->textarea(['rows' => 6]) ?>
+
     </div>
 </div>
 

@@ -6,6 +6,8 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use backend\models\Semester;
 use backend\modules\postgrad\models\StudentRegister;
+use yii\db\Query;
+use yii\db\Expression;
 
 /**
  * StudentPostGradSearch represents the model behind the search form of `backend\modules\postgrad\models\StudentPostGrad`.
@@ -23,7 +25,7 @@ class StudentPostGradSearch extends Student
     public function rules()
     {
         return [
-            [['id', 'gender', 'status', 'nationality', 'field_id', 'pro_level', 'status_daftar', 'status_aktif', 'semester_id', 'study_mode'], 'integer'],
+            [['id', 'gender', 'status', 'nationality', 'field_id', 'pro_level', 'status_daftar', 'status_aktif', 'semester_id', 'study_mode', 'latest_stage_id'], 'integer'],
             [['matric_no', 'nric', 'program_id', 'name', 'study_mode_rc'], 'safe'],
         ];
     }
@@ -66,6 +68,28 @@ class StudentPostGradSearch extends Student
         ->select(array_merge($studentSelect, [
             'status_daftar' => 'r.status_daftar',
             'status_aktif' => 'r.status_aktif',
+            'latest_stage' => new Expression(
+                "(SELECT NULLIF(COALESCE(rs.stage_abbr, rs.stage_name), '') "
+                . "FROM pg_student_stage s "
+                . "INNER JOIN pg_res_stage rs ON rs.id = s.stage_id "
+                . "WHERE s.student_id = a.id "
+                . "ORDER BY s.semester_id DESC, s.id DESC "
+                . "LIMIT 1)"
+            ),
+            'latest_stage_semester' => new Expression(
+                "(SELECT s.semester_id "
+                . "FROM pg_student_stage s "
+                . "WHERE s.student_id = a.id "
+                . "ORDER BY s.semester_id DESC, s.id DESC "
+                . "LIMIT 1)"
+            ),
+            'latest_stage_id' => new Expression(
+                "(SELECT s.stage_id "
+                . "FROM pg_student_stage s "
+                . "WHERE s.student_id = a.id "
+                . "ORDER BY s.semester_id DESC, s.id DESC "
+                . "LIMIT 1)"
+            ),
         ]))
         ->innerJoin(
             ['r' => StudentRegister::tableName()],
@@ -125,6 +149,19 @@ class StudentPostGradSearch extends Student
 
         // study mode (research/coursework)
         $query->andFilterWhere(['a.study_mode_rc' => $this->study_mode_rc]);
+
+        if (!empty($this->latest_stage_id)) {
+            $query->andWhere(
+                new Expression(
+                    "(SELECT s.stage_id "
+                    . "FROM pg_student_stage s "
+                    . "WHERE s.student_id = a.id "
+                    . "ORDER BY s.semester_id DESC, s.id DESC "
+                    . "LIMIT 1) = :latestStageId"
+                ),
+                [':latestStageId' => (int)$this->latest_stage_id]
+            );
+        }
 
         return $dataProvider;
     }

@@ -394,19 +394,23 @@ JS, \yii\web\View::POS_END);
         </div>
     </div>
 
+
+
+
+
+
+    <div class="row">
+        <div class="col-md-6">
          <div class="box box-default">
                 <div class="box-header with-border"><h3 class="box-title">Pecahan Pelajar Mengikut Negara</h3></div>
                 <div class="box-body">
                     <table class="table table-striped table-bordered">
                         <thead>
                             <tr>
-                                <th rowspan="2">Negara</th>
-                                <th colspan="2">Research</th>
-                                <th rowspan="2">Jumlah</th>
-                            </tr>
-                            <tr>
+                                <th>Negara</th>
                                 <th>PhD</th>
                                 <th>Master</th>
+                                <th>Jumlah</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -426,8 +430,8 @@ JS, \yii\web\View::POS_END);
                         ?>
                             <tr>
                                 <td><?= Html::encode($name) ?></td>
-                                <td><?= Html::a((string)$researchPhd, ['research', 'semester_id' => $semester_id ?? null, 'StudentPostGradSearch[nationality]' => $id, 'StudentPostGradSearch[pro_level]' => 4]) ?></td>
-                                <td><?= Html::a((string)$researchMaster, ['research', 'semester_id' => $semester_id ?? null, 'StudentPostGradSearch[nationality]' => $id, 'StudentPostGradSearch[pro_level]' => 3]) ?></td>
+                                <td><?= Html::a((string)$researchPhd, ['index', 'semester_id' => $semester_id ?? null, 'StudentPostGradSearch[study_mode_rc]' => 'research', 'StudentPostGradSearch[nationality]' => $id, 'StudentPostGradSearch[pro_level]' => 4]) ?></td>
+                                <td><?= Html::a((string)$researchMaster, ['index', 'semester_id' => $semester_id ?? null, 'StudentPostGradSearch[study_mode_rc]' => 'research', 'StudentPostGradSearch[nationality]' => $id, 'StudentPostGradSearch[pro_level]' => 3]) ?></td>
                                 <td><?= $total ?></td>
                             </tr>
                         <?php } ?>
@@ -442,6 +446,8 @@ JS, \yii\web\View::POS_END);
                 </div>
             </div>
 
+        </div>
+        <div class="col-md-6">
              <div class="box box-default">
                 <div class="box-header with-border"><h3 class="box-title">Pecahan Pelajar Mengikut Bidang Pengajian (Research)</h3></div>
                 <div class="box-body">
@@ -470,8 +476,8 @@ JS, \yii\web\View::POS_END);
                         ?>
                             <tr>
                                 <td><?= Html::encode($name) ?></td>
-                                <td><?= Html::a((string)$phd, ['research', 'semester_id' => $semester_id ?? null, 'StudentPostGradSearch[field_id]' => $id, 'StudentPostGradSearch[pro_level]' => 4, 'StudentPostGradSearch[status_aktif]' => StudentRegister::STATUS_AKTIF_AKTIF]) ?></td>
-                                <td><?= Html::a((string)$master, ['research', 'semester_id' => $semester_id ?? null, 'StudentPostGradSearch[field_id]' => $id, 'StudentPostGradSearch[pro_level]' => 3, 'StudentPostGradSearch[status_aktif]' => StudentRegister::STATUS_AKTIF_AKTIF]) ?></td>
+                                <td><?= Html::a((string)$phd, ['index', 'semester_id' => $semester_id ?? null, 'StudentPostGradSearch[study_mode_rc]' => 'research', 'StudentPostGradSearch[field_id]' => $id, 'StudentPostGradSearch[pro_level]' => 4]) ?></td>
+                                <td><?= Html::a((string)$master, ['index', 'semester_id' => $semester_id ?? null, 'StudentPostGradSearch[study_mode_rc]' => 'research', 'StudentPostGradSearch[field_id]' => $id, 'StudentPostGradSearch[pro_level]' => 3]) ?></td>
                                 <td><?= $total ?></td>
                             </tr>
                         <?php } ?>
@@ -485,6 +491,9 @@ JS, \yii\web\View::POS_END);
                     </table>
                 </div>
             </div>
+
+        </div>
+    </div>
             
         </div>
     </div>

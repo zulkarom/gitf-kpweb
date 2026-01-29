@@ -64,7 +64,7 @@ class Student extends \yii\db\ActiveRecord
 
     public function attributes()
     {
-        return array_merge(parent::attributes(), ['status_daftar', 'status_aktif']);
+        return array_merge(parent::attributes(), ['status_daftar', 'status_aktif', 'latest_stage', 'latest_stage_semester', 'latest_stage_id']);
     }
 
     /**

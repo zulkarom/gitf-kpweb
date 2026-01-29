@@ -381,6 +381,20 @@ class Menu
                                         '/postgrad/exam-committee/import'
                                     ]
                                 ],
+                                [
+                                    'label' => 'Semester Registration',
+                                    'icon' => 'circle',
+                                    'url' => [
+                                        '/postgrad/student-reg-csv-import/index'
+                                    ]
+                                ],
+                                [
+                                    'label' => 'Thesis Title',
+                                    'icon' => 'circle',
+                                    'url' => [
+                                        '/postgrad/import/title'
+                                    ]
+                                ],
                             ]
                         ],
                         [

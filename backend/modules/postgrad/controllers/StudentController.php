@@ -69,6 +69,13 @@ class StudentController extends Controller
         $searchModel = new StudentPostGradSearch();
         $dataProvider = $searchModel->search($params);
 
+        if ((int)Yii::$app->request->get('debug_sql') === 1) {
+            $sql = $dataProvider->query->createCommand()->rawSql;
+            header('Content-Type: text/plain; charset=utf-8');
+            echo $sql;
+            Yii::$app->end();
+        }
+
         $dataProvider->pagination->params = $params;
         $dataProvider->sort->params = $params;
 
@@ -1165,10 +1172,14 @@ class StudentController extends Controller
         $supervisors = $model->supervisors;
         $stages = $model->stages;
 
+        $thesisList = PgStudentThesis::find()
+            ->where(['student_id' => (int)$model->id])
+            ->orderBy(['date_applied' => SORT_DESC, 'id' => SORT_DESC])
+            ->all();
+
         $thesis = PgStudentThesis::find()->where([
             'student_id' => (int)$model->id,
-            'is_active' => 1,
-        ])->orderBy(['id' => SORT_DESC])->one();
+        ])->orderBy(['date_applied' => SORT_DESC, 'id' => SORT_DESC])->one();
         if (!$thesis) {
             $thesis = new PgStudentThesis();
             $thesis->student_id = (int)$model->id;
@@ -1180,6 +1191,60 @@ class StudentController extends Controller
             'semesters' => $semesters,
             'supervisors' => $supervisors,
             'stages' => $stages,
+            'thesis' => $thesis,
+            'thesisList' => $thesisList,
+        ]);
+    }
+
+    public function actionThesisCreate($id)
+    {
+        $student = $this->findModel($id);
+        $thesis = new PgStudentThesis();
+        $thesis->student_id = (int)$student->id;
+        $thesis->is_active = 1;
+
+        if ($thesis->load(Yii::$app->request->post()) && $thesis->save()) {
+            if ((int)$thesis->is_active === 1) {
+                PgStudentThesis::updateAll(
+                    ['is_active' => 0],
+                    ['and', ['student_id' => (int)$student->id], ['<>', 'id', (int)$thesis->id]]
+                );
+            }
+            Yii::$app->session->addFlash('success', 'Thesis title added.');
+            return $this->redirect(['view', 'id' => $student->id]);
+        }
+
+        return $this->render('thesis-create', [
+            'student' => $student,
+            'thesis' => $thesis,
+        ]);
+    }
+
+    public function actionThesisUpdate($id, $thesis_id)
+    {
+        $student = $this->findModel($id);
+        $thesis = PgStudentThesis::find()->where([
+            'id' => (int)$thesis_id,
+            'student_id' => (int)$student->id,
+        ])->one();
+
+        if (!$thesis) {
+            throw new NotFoundHttpException('The requested thesis record does not exist.');
+        }
+
+        if ($thesis->load(Yii::$app->request->post()) && $thesis->save()) {
+            if ((int)$thesis->is_active === 1) {
+                PgStudentThesis::updateAll(
+                    ['is_active' => 0],
+                    ['and', ['student_id' => (int)$student->id], ['<>', 'id', (int)$thesis->id]]
+                );
+            }
+            Yii::$app->session->addFlash('success', 'Thesis title updated.');
+            return $this->redirect(['view', 'id' => $student->id]);
+        }
+
+        return $this->render('thesis-update', [
+            'student' => $student,
             'thesis' => $thesis,
         ]);
     }
@@ -1201,6 +1266,12 @@ class StudentController extends Controller
 
         if ($thesis->load(Yii::$app->request->post())) {
             if ($thesis->save()) {
+                if ((int)$thesis->is_active === 1) {
+                    PgStudentThesis::updateAll(
+                        ['is_active' => 0],
+                        ['and', ['student_id' => (int)$model->id], ['<>', 'id', (int)$thesis->id]]
+                    );
+                }
                 Yii::$app->session->addFlash('success', 'Thesis information updated.');
             } else {
                 Yii::$app->session->addFlash('error', 'Failed to update thesis information.');

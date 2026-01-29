@@ -33,8 +33,14 @@ class FirewallController extends Controller
             if($request_type == 'postgrad_student_csv'){
                 return $this->postgradStudentCsv();
             }
+            if($request_type == 'postgrad_student_reg_csv'){
+                return $this->postgradStudentRegCsv();
+            }
             if($request_type == 'postgrad_exam_committee_csv'){
                 return $this->postgradExamCommitteeCsv();
+            }
+            if($request_type == 'postgrad_thesis_title_csv'){
+                return $this->postgradThesisTitleCsv();
             }
         }
         throw new BadRequestHttpException('Make sure you supply enough parameters');
@@ -122,6 +128,94 @@ class FirewallController extends Controller
         $map = $session->get('postgrad_status_csv_tokens', []);
         $map[$token] = $filePath;
         $session->set('postgrad_status_csv_tokens', $map);
+
+        return [
+            'token' => $token,
+            'name' => $file->name,
+            'size' => $file->size,
+        ];
+    }
+
+    private function postgradThesisTitleCsv()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $file = UploadedFile::getInstanceByName('file');
+        if (!$file) {
+            throw new BadRequestHttpException('Make sure you supply enough parameters');
+        }
+
+        $ext = strtolower((string)$file->extension);
+        if ($ext !== 'csv') {
+            return ['error' => 'Invalid file type, allowed only csv'];
+        }
+
+        $maxSize = 10 * 1024 * 1024;
+        if ($file->size > $maxSize) {
+            return ['error' => 'The file size (' . $file->size . ') exceed allowed maximum size of (' . $maxSize . ')'];
+        }
+
+        $token = bin2hex(random_bytes(16));
+
+        $directory = Yii::getAlias('@runtime/postgrad-thesis-title-upload/');
+        if (!is_dir($directory)) {
+            FileHelper::createDirectory($directory);
+        }
+
+        $fileName = 'thesis-title-' . $token . '.csv';
+        $filePath = $directory . $fileName;
+        if (!$file->saveAs($filePath)) {
+            return ['error' => 'Unable to save uploaded CSV file'];
+        }
+
+        $session = Yii::$app->session;
+        $map = $session->get('postgrad_thesis_title_csv_tokens', []);
+        $map[$token] = $filePath;
+        $session->set('postgrad_thesis_title_csv_tokens', $map);
+
+        return [
+            'token' => $token,
+            'name' => $file->name,
+            'size' => $file->size,
+        ];
+    }
+
+    private function postgradStudentRegCsv()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $file = UploadedFile::getInstanceByName('file');
+        if (!$file) {
+            throw new BadRequestHttpException('Make sure you supply enough parameters');
+        }
+
+        $ext = strtolower((string)$file->extension);
+        if ($ext !== 'csv') {
+            return ['error' => 'Invalid file type, allowed only csv'];
+        }
+
+        $maxSize = 10 * 1024 * 1024;
+        if ($file->size > $maxSize) {
+            return ['error' => 'The file size (' . $file->size . ') exceed allowed maximum size of (' . $maxSize . ')'];
+        }
+
+        $token = bin2hex(random_bytes(16));
+
+        $directory = Yii::getAlias('@runtime/postgrad-student-reg-upload/');
+        if (!is_dir($directory)) {
+            FileHelper::createDirectory($directory);
+        }
+
+        $fileName = 'student-reg-import-' . $token . '.csv';
+        $filePath = $directory . $fileName;
+        if (!$file->saveAs($filePath)) {
+            return ['error' => 'Unable to save uploaded CSV file'];
+        }
+
+        $session = Yii::$app->session;
+        $map = $session->get('postgrad_student_reg_csv_tokens', []);
+        $map[$token] = $filePath;
+        $session->set('postgrad_student_reg_csv_tokens', $map);
 
         return [
             'token' => $token,

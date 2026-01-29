@@ -8,6 +8,7 @@ use common\models\Country;
 use yii\helpers\ArrayHelper;
 use backend\modules\postgrad\models\Student;
 use backend\modules\postgrad\models\StudentRegister;
+use backend\modules\postgrad\models\ResearchStage;
 use backend\models\Semester;
 
 /* @var $this yii\web\View */
@@ -183,6 +184,29 @@ $this->params['breadcrumbs'][] = $this->title;
                        return 'Separuh Masa';
                    }
                    return '';
+                }
+            ],
+
+            [
+                'attribute' => 'latest_stage',
+                'label' => 'Stage',
+                'format' => 'text',
+                'filter' => Html::activeDropDownList(
+                    $searchModel,
+                    'latest_stage_id',
+                    ArrayHelper::map(
+                        ResearchStage::find()->orderBy(['id' => SORT_ASC])->all(),
+                        'id',
+                        function($s){
+                            $abbr = (string)$s->stage_abbr;
+                            $name = (string)$s->stage_name;
+                            return $abbr !== '' ? $abbr : $name;
+                        }
+                    ),
+                    ['class'=> 'form-control','prompt' => 'Choose']
+                ),
+                'value' => function($model){
+                    return (string)$model->latest_stage;
                 }
             ],
 

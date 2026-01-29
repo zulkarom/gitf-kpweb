@@ -219,10 +219,11 @@ Research Stage
 </div>
 
 <div class="box">
-<div class="box-header">
+<div class="box-header with-border">
 <h3 class="box-title">
 Thesis
 </h3>
+
 </div>
 <div class="box-body">
 
@@ -232,22 +233,69 @@ Thesis
             <th style="width: 220px;">Thesis Title</th>
             <td><?= isset($thesis) && $thesis && $thesis->thesis_title ? Html::encode($thesis->thesis_title) : '-' ?></td>
         </tr>
-        <tr>
-            <th>Date Applied</th>
-            <td><?= isset($thesis) && $thesis && $thesis->date_applied ? Html::encode(date('d F Y', strtotime($thesis->date_applied))) : '-' ?></td>
-        </tr>
-        <tr>
-            <th>Active</th>
-            <td><?= isset($thesis) && $thesis ? ((int)$thesis->is_active === 1 ? 'Yes' : 'No') : '-' ?></td>
-        </tr>
     </tbody>
 </table>
 
+<div class="box-tools">
+    <button type="button" class="btn btn-primary btn-sm" id="thesisTitleToggleBtn">Hide</button>
+</div>
+
+<div id="thesisTitleSection" style="display:none;">
+<?php if (isset($thesisList) && $thesisList) { ?>
+<table class="table table-bordered table-striped" style="margin-bottom: 15px;">
+    <thead>
+        <tr>
+            <th style="width: 60px;">#</th>
+            <th>Thesis Title</th>
+            <th style="width: 150px;">Date Applied</th>
+            <th style="width: 90px;">Active</th>
+            <?php if (!$readOnly) { ?><th style="width: 90px;"></th><?php } ?>
+        </tr>
+    </thead>
+    <tbody>
+        <?php $i = 1; foreach ($thesisList as $t) { ?>
+        <tr>
+            <td><?= $i ?></td>
+            <td><?= $t && $t->thesis_title ? Html::encode($t->thesis_title) : '-' ?></td>
+            <td><?= $t && $t->date_applied ? Html::encode(date('d F Y', strtotime($t->date_applied))) : '-' ?></td>
+            <td><?= (int)$t->is_active === 1 ? 'Yes' : 'No' ?></td>
+            <?php if (!$readOnly) { ?>
+            <td>
+                <a class="btn btn-xs btn-primary" href="<?= Url::to(['student/thesis-update', 'id' => $model->id, 'thesis_id' => $t->id]) ?>">Edit</a>
+            </td>
+            <?php } ?>
+        </tr>
+        <?php $i++; } ?>
+    </tbody>
+</table>
+<?php } ?>
+
 <?php if (!$readOnly) { ?>
-<div class="form-group">
-    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#thesisModal">Update</button>
+<div class="form-group" style="margin-top: 0;">
+    <a href="<?= Url::to(['student/thesis-create', 'id' => $model->id]) ?>" class="btn btn-success btn-sm">Add Title</a>
 </div>
 <?php } ?>
+</div>
+
+<?php
+$thesisTitleToggleKey = 'pg_student_thesis_title_section_hidden_' . (int)$model->id;
+$this->registerJs("(function(){\n" .
+"  var btn = document.getElementById('thesisTitleToggleBtn');\n" .
+"  var section = document.getElementById('thesisTitleSection');\n" .
+"  if(!btn || !section) return;\n" .
+"  var key = " . json_encode($thesisTitleToggleKey) . ";\n" .
+"  function setState(hidden){\n" .
+"    section.style.display = hidden ? 'none' : '';\n" .
+"    btn.textContent = hidden ? 'Show Titles List' : 'Hide Titles List';\n" .
+"    try { localStorage.setItem(key, hidden ? '1' : '0'); } catch(e) {}\n" .
+"  }\n" .
+"  setState(true);\n" .
+"  btn.addEventListener('click', function(){\n" .
+"    hidden = section.style.display !== 'none';\n" .
+"    setState(hidden);\n" .
+"  });\n" .
+"})();");
+?>
 
 </div>
 </div>
@@ -262,46 +310,6 @@ Supervisor
 
 
 
-
-<?php if (!$readOnly) { ?>
-<div class="modal fade" id="thesisModal" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Update Thesis</h4>
-      </div>
-      <div class="modal-body">
-        <?php $form = ActiveForm::begin([
-            'action' => Url::to(['student/update-thesis', 'id' => $model->id]),
-            'method' => 'post',
-        ]); ?>
-
-        <?= $form->field($thesis, 'thesis_title')->textInput(['maxlength' => true]) ?>
-        <?= $form->field($thesis, 'date_applied')->widget(DatePicker::classname(), [
-            'removeButton' => false,
-            'pluginOptions' => [
-                'autoclose' => true,
-                'format' => 'yyyy-mm-dd',
-                'todayHighlight' => true,
-            ],
-        ]) ?>
-        <?= $form->field($thesis, 'is_active')->dropDownList([
-            1 => 'Yes',
-            0 => 'No',
-        ]) ?>
-
-        <div class="form-group">
-            <?= Html::submitButton('Save', ['class' => 'btn btn-primary']) ?>
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        </div>
-
-        <?php ActiveForm::end(); ?>
-      </div>
-    </div>
-  </div>
-</div>
-<?php } ?>
 
 <table class="table">
   <thead>
@@ -473,8 +481,8 @@ Pendaftaran Semester
           ?>
            <tr>
       <th scope="row"><?=$i?></th>
-      <td><?=$s->semester->longFormat()?></td>
-      <td><?= \backend\modules\postgrad\models\StudentRegister::statusDaftarLabel($s->status_daftar) ?></td>
+      <td><a href="#" class="js-student-reg-modal" data-url="<?=Url::to(['student-register/modal', 'id' => $s->id])?>"><?=$s->semester->longFormat()?></a></td>
+      <td><?= \backend\modules\postgrad\models\StudentRegister::statusDaftarOutlineLabel($s->status_daftar) ?></td>
       <td>
         <?php if (!$readOnly) { ?>
         <a href="<?=Url::to(['student-register/update', 'id' => $s->id])?>" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i></a> 
@@ -493,6 +501,53 @@ Pendaftaran Semester
 
   </tbody>
 </table>
+
+<div class="modal fade" id="studentRegDetailModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Maklumat Pendaftaran Semester</h4>
+      </div>
+      <div class="modal-body" id="studentRegDetailModalBody">
+        Loading...
+      </div>
+    </div>
+  </div>
+</div>
+
+<?php
+    $this->registerJs(<<<JS
+    (function(){
+        function setBody(html){
+            $('#studentRegDetailModalBody').html(html);
+        }
+
+        $(document).on('click', '.js-student-reg-modal', function(e){
+            e.preventDefault();
+            var url = $(this).data('url');
+            if(!url){
+                return;
+            }
+
+            setBody('Loading...');
+            $('#studentRegDetailModal').modal('show');
+
+            $.get(url).done(function(html){
+                setBody(html);
+            }).fail(function(xhr){
+                var msg = 'Failed to load details';
+                try {
+                    if(xhr && xhr.responseText){
+                        msg += ': ' + xhr.responseText;
+                    }
+                } catch(e) {}
+                setBody('<div class="alert alert-danger">'+msg+'</div>');
+            });
+        });
+    })();
+JS);
+?>
 
 
 <br />
