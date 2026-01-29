@@ -8,6 +8,7 @@ use yii\web\Controller;
 use backend\modules\postgrad\models\Student;
 use backend\modules\postgrad\models\StudentCsvUploadForm;
 use backend\modules\postgrad\models\StudentRegister;
+use backend\modules\postgrad\models\Field;
 use common\models\User;
 use common\models\Common;
 use common\models\Country;
@@ -44,6 +45,11 @@ class StudentCsvImportController extends Controller
             $post = Yii::$app->request->post();
             $model->load($post);
 
+            $selected = Yii::$app->request->post('selected', []);
+            if (!is_array($selected)) {
+                $selected = [];
+            }
+
             $token = (string)Yii::$app->request->post('csv_token', '');
             $token = trim($token);
 
@@ -56,13 +62,13 @@ class StudentCsvImportController extends Controller
                 if (!$path || !is_string($path) || !is_file($path)) {
                     $summary = ['error' => 'Uploaded CSV file not found. Please upload again.'];
                 } else {
-                    [$preview, $summary] = $this->processCsv($path, false);
+                    [$preview, $summary] = $this->processCsv($path, false, $selected);
 
                     $applyIntent = (string)Yii::$app->request->post('apply_intent', '0');
                     $applyIntent = trim($applyIntent);
 
                     if ($applyIntent === '1') {
-                        [$preview, $summary] = $this->processCsv($path, true);
+                        [$preview, $summary] = $this->processCsv($path, true, $selected);
                     }
                 }
             }
@@ -75,7 +81,7 @@ class StudentCsvImportController extends Controller
         ]);
     }
 
-    private function processCsv($path, $apply)
+    private function processCsv($path, $apply, array $selected = [])
     {
         set_time_limit(0);
 
@@ -148,6 +154,7 @@ class StudentCsvImportController extends Controller
             $genderRaw = $this->normalizeCellValue($this->getMappedValue($data, $headerMap, 'gender'));
             $maritalRaw = $this->normalizeCellValue($this->getMappedValue($data, $headerMap, 'marital_status'));
             $dobRaw = $this->normalizeCellValue($this->getMappedValue($data, $headerMap, 'date_birth'));
+            $fieldRaw = $this->normalizeCellValue($this->getMappedValue($data, $headerMap, 'field'));
             $campusRaw = $this->normalizeCellValue($this->getMappedValue($data, $headerMap, 'campus'));
             $sponsorRaw = $this->normalizeCellValue($this->getMappedValue($data, $headerMap, 'sponsor'));
 
@@ -196,6 +203,11 @@ class StudentCsvImportController extends Controller
             $mappedDob = null;
             if ($dobRaw !== '') {
                 $mappedDob = $this->parseDate($dobRaw);
+            }
+
+            $mappedFieldId = null;
+            if ($fieldRaw !== '') {
+                $mappedFieldId = $this->mapFieldIdFromText($fieldRaw);
             }
 
             $mappedCampusId = null;
@@ -267,6 +279,9 @@ class StudentCsvImportController extends Controller
                     if ($mappedDob !== null) {
                         $student->date_birth = (string)$mappedDob;
                     }
+                    if ($mappedFieldId !== null) {
+                        $student->field_id = (int)$mappedFieldId;
+                    }
                     if ($mappedCampusId !== null) {
                         $student->campus_id = (int)$mappedCampusId;
                     }
@@ -309,6 +324,7 @@ class StudentCsvImportController extends Controller
                             'student_gender' => $mappedGender !== null ? (int)$mappedGender : null,
                             'student_marital_status' => $mappedMarital !== null ? (int)$mappedMarital : null,
                             'student_date_birth' => $mappedDob !== null ? (string)$mappedDob : null,
+                            'student_field_id' => $mappedFieldId !== null ? (int)$mappedFieldId : null,
                             'student_campus_id' => $mappedCampusId !== null ? (int)$mappedCampusId : null,
                             'student_sponsor' => $sponsorRaw !== '' ? $sponsorRaw : null,
                             'user_fullname' => $name,
@@ -349,6 +365,7 @@ class StudentCsvImportController extends Controller
                 'student_gender' => (int)$student->gender,
                 'student_marital_status' => (int)$student->marital_status,
                 'student_date_birth' => $this->normalizeCellValue((string)$student->date_birth),
+                'student_field_id' => (int)$student->field_id,
                 'student_campus_id' => (int)$student->campus_id,
                 'student_sponsor' => $this->normalizeCellValue((string)$student->sponsor),
                 'user_fullname' => $this->normalizeCellValue($user ? (string)$user->fullname : ''),
@@ -356,7 +373,10 @@ class StudentCsvImportController extends Controller
             ];
 
             $after = $before;
-            $after['student_nric'] = $nric;
+
+            if (!$this->isExcelScientificNotation($nric) && !$this->isExcelScientificNotation($nricRaw)) {
+                $after['student_nric'] = $nric;
+            }
             $after['student_citizenship'] = (int)$mappedCitizenship;
             $after['student_program_id'] = (int)$programId;
             $after['student_study_mode'] = (int)$mappedStudyMode;
@@ -367,8 +387,10 @@ class StudentCsvImportController extends Controller
             if ($cityRaw !== '') {
                 $after['student_city'] = $cityRaw;
             }
-            if ($phoneRaw !== '') {
-                $after['student_phone_no'] = $phoneRaw;
+            if ($phoneRaw !== '' && !$this->isExcelScientificNotation($phoneRaw)) {
+                if (!$this->isPhoneOnlyLeadingZeroRemoved($before['student_phone_no'], $phoneRaw)) {
+                    $after['student_phone_no'] = $phoneRaw;
+                }
             }
             if ($personalEmailRaw !== '') {
                 $after['student_personal_email'] = $personalEmailRaw;
@@ -383,7 +405,14 @@ class StudentCsvImportController extends Controller
                 $after['student_marital_status'] = (int)$mappedMarital;
             }
             if ($mappedDob !== null) {
-                $after['student_date_birth'] = (string)$mappedDob;
+                $oldYear = $this->extractYear($before['student_date_birth']);
+                $newYear = $this->extractYear($mappedDob);
+                if ($oldYear === null || $newYear === null || $oldYear !== $newYear) {
+                    $after['student_date_birth'] = (string)$mappedDob;
+                }
+            }
+            if ($mappedFieldId !== null) {
+                $after['student_field_id'] = (int)$mappedFieldId;
             }
             if ($mappedCampusId !== null) {
                 $after['student_campus_id'] = (int)$mappedCampusId;
@@ -394,6 +423,17 @@ class StudentCsvImportController extends Controller
 
             $after['user_fullname'] = $name;
             $after['user_email'] = $emailStudent;
+
+            $matricKey = (string)$matric;
+            if (!empty($selected) && isset($selected[$matricKey]) && is_array($selected[$matricKey])) {
+                $sel = $selected[$matricKey];
+                foreach ($after as $k => $v) {
+                    $isChecked = isset($sel[$k]) && (string)$sel[$k] === '1';
+                    if (!$isChecked) {
+                        $after[$k] = $before[$k] ?? null;
+                    }
+                }
+            }
 
             $changed = ($before != $after);
             $diff = $this->diffAssoc($before, $after);
@@ -432,48 +472,63 @@ class StudentCsvImportController extends Controller
                     $user = $this->ensureUser($matric, $name, $emailStudent);
                     $student->user_id = (int)$user->id;
                 } else {
-                    $user->fullname = $name;
-                    $user->email = $emailStudent;
+                    if ($after['user_fullname'] !== $before['user_fullname']) {
+                        $user->fullname = (string)$after['user_fullname'];
+                    }
+                    if ($after['user_email'] !== $before['user_email']) {
+                        $user->email = (string)$after['user_email'];
+                    }
                     $user->status = 10;
                     if (!$user->save(false)) {
                         throw new \RuntimeException('Failed to save user');
                     }
                 }
 
-                $student->nric = $nric;
-                $student->citizenship = (int)$mappedCitizenship;
-                $student->program_id = (int)$programId;
-                $student->study_mode = (int)$mappedStudyMode;
+                if ($after['student_nric'] !== $before['student_nric']) {
+                    $student->nric = (string)$after['student_nric'];
+                }
+                if ($after['student_citizenship'] !== $before['student_citizenship']) {
+                    $student->citizenship = (int)$after['student_citizenship'];
+                }
+                if ($after['student_program_id'] !== $before['student_program_id']) {
+                    $student->program_id = (int)$after['student_program_id'];
+                }
+                if ($after['student_study_mode'] !== $before['student_study_mode']) {
+                    $student->study_mode = (int)$after['student_study_mode'];
+                }
 
-                if ($addressRaw !== '') {
-                    $student->address = $addressRaw;
+                if ($after['student_address'] !== $before['student_address']) {
+                    $student->address = (string)$after['student_address'];
                 }
-                if ($cityRaw !== '') {
-                    $student->city = $cityRaw;
+                if ($after['student_city'] !== $before['student_city']) {
+                    $student->city = (string)$after['student_city'];
                 }
-                if ($phoneRaw !== '') {
-                    $student->phone_no = $phoneRaw;
+                if ($after['student_phone_no'] !== $before['student_phone_no']) {
+                    $student->phone_no = (string)$after['student_phone_no'];
                 }
-                if ($personalEmailRaw !== '') {
-                    $student->personal_email = $personalEmailRaw;
+                if ($after['student_personal_email'] !== $before['student_personal_email']) {
+                    $student->personal_email = (string)$after['student_personal_email'];
                 }
-                if ($mappedNationality !== null) {
-                    $student->nationality = (int)$mappedNationality;
+                if ($after['student_nationality'] !== $before['student_nationality']) {
+                    $student->nationality = (int)$after['student_nationality'];
                 }
-                if ($mappedGender !== null) {
-                    $student->gender = (int)$mappedGender;
+                if ($after['student_gender'] !== $before['student_gender']) {
+                    $student->gender = (int)$after['student_gender'];
                 }
-                if ($mappedMarital !== null) {
-                    $student->marital_status = (int)$mappedMarital;
+                if ($after['student_marital_status'] !== $before['student_marital_status']) {
+                    $student->marital_status = (int)$after['student_marital_status'];
                 }
-                if ($mappedDob !== null) {
-                    $student->date_birth = (string)$mappedDob;
+                if ($after['student_date_birth'] !== $before['student_date_birth']) {
+                    $student->date_birth = (string)$after['student_date_birth'];
                 }
-                if ($mappedCampusId !== null) {
-                    $student->campus_id = (int)$mappedCampusId;
+                if ($after['student_field_id'] !== $before['student_field_id']) {
+                    $student->field_id = (int)$after['student_field_id'];
                 }
-                if ($sponsorRaw !== '') {
-                    $student->sponsor = $sponsorRaw;
+                if ($after['student_campus_id'] !== $before['student_campus_id']) {
+                    $student->campus_id = (int)$after['student_campus_id'];
+                }
+                if ($after['student_sponsor'] !== $before['student_sponsor']) {
+                    $student->sponsor = (string)$after['student_sponsor'];
                 }
 
                 $student->updated_at = time();
@@ -552,6 +607,72 @@ class StudentCsvImportController extends Controller
             return (int)$program->id;
         }
 
+        return null;
+    }
+
+    private function mapFieldIdFromText($text)
+    {
+        $t = trim((string)$text);
+        if ($t === '') {
+            return null;
+        }
+
+        $field = Field::find()->where(['LOWER([[field_name]])' => mb_strtolower($t, 'UTF-8')])->one();
+        if ($field) {
+            return (int)$field->id;
+        }
+
+        $field = Field::find()->where(['like', 'field_name', $t])->one();
+        if ($field) {
+            return (int)$field->id;
+        }
+
+        return null;
+    }
+
+    private function isExcelScientificNotation($val)
+    {
+        $v = trim((string)$val);
+        if ($v === '') {
+            return false;
+        }
+
+        if (preg_match('/^[+-]?(?:\d+(?:\.\d+)?|\.\d+)[eE][+-]?\d+$/', $v)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private function isPhoneOnlyLeadingZeroRemoved($old, $new)
+    {
+        $o = preg_replace('/\D+/', '', (string)$old);
+        $n = preg_replace('/\D+/', '', (string)$new);
+
+        if ($o === '' || $n === '') {
+            return false;
+        }
+
+        if ($o === $n) {
+            return false;
+        }
+
+        if (preg_match('/^0+\d+$/', $o) && ltrim($o, '0') === $n) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private function extractYear($ymd)
+    {
+        $v = trim((string)$ymd);
+        if ($v === '') {
+            return null;
+        }
+        if (preg_match('/^(\d{4})-\d{2}-\d{2}$/', $v, $m)) {
+            return (int)$m[1];
+        }
         return null;
     }
 
@@ -667,6 +788,7 @@ class StudentCsvImportController extends Controller
             'gender' => ['jantina', 'gender'],
             'marital_status' => ['taraf perkahwinan', 'kahwin', 'marital'],
             'date_birth' => ['tarikh lahir', 'date of birth', 'dob'],
+            'field' => ['bidang pengajian', 'bidang'],
             'campus' => ['kampus', 'campus'],
             'sponsor' => ['pembiayaan', 'tajaan', 'pembiayaan sendiri'],
             'program_code' => ['kod program', 'program code'],

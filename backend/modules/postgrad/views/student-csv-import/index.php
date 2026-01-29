@@ -73,7 +73,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php endif; ?>
             </div>
 
-            <?php ActiveForm::end(); ?>
+            <?php
+                $selected = Yii::$app->request->post('selected', []);
+                if (!is_array($selected)) {
+                    $selected = [];
+                }
+            ?>
 
             <?php
                 $uploadUrl = Url::to(['/firewall/index']);
@@ -253,6 +258,10 @@ JS);
             <?php endif; ?>
 
             <?php if (!empty($preview)): ?>
+                <div style="margin-bottom:10px">
+                    <a href="#" class="btn btn-default btn-xs" id="pg-student-select-all">Select All</a>
+                    <a href="#" class="btn btn-default btn-xs" id="pg-student-select-none">Select None</a>
+                </div>
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped" id="pg-student-preview-table">
                         <thead>
@@ -270,6 +279,7 @@ JS);
                         <?php $i = 0; foreach ($preview as $row): $i++; ?>
                             <?php
                                 $result = (string)($row['result'] ?? '');
+                                $matricNo = (string)($row['matric_no'] ?? '');
                                 $resultStyle = '';
                                 if ($result === 'READY') {
                                     $resultStyle = 'background:#fff3cd;';
@@ -287,8 +297,24 @@ JS);
                                 <td>
                                     <?php if (!empty($row['changes']) && is_array($row['changes'])): ?>
                                         <?php foreach ($row['changes'] as $k => $c): ?>
+                                            <?php
+                                                $isReady = ($result === 'READY');
+                                                $checked = true;
+                                                if (is_array($selected) && $matricNo !== '' && isset($selected[$matricNo]) && is_array($selected[$matricNo]) && array_key_exists($k, $selected[$matricNo])) {
+                                                    $checked = ((string)$selected[$matricNo][$k] === '1');
+                                                }
+                                                $inputName = 'selected[' . $matricNo . '][' . (string)$k . ']';
+                                            ?>
                                             <div>
+                                                <?php if ($isReady): ?>
+                                                    <input type="hidden" name="<?= Html::encode($inputName) ?>" value="0" />
+                                                    <label style="font-weight:normal; margin-right:6px">
+                                                        <input class="pg-student-change-checkbox" type="checkbox" name="<?= Html::encode($inputName) ?>" value="1" <?= $checked ? 'checked' : '' ?> />
+                                                        <strong><?= Html::encode((string)$k) ?></strong>:
+                                                    </label>
+                                                <?php else: ?>
                                                 <strong><?= Html::encode((string)$k) ?></strong>:
+                                                <?php endif; ?>
                                                 <?= Html::encode((string)($c['from'] ?? '')) ?>
                                                 &rarr;
                                                 <?= Html::encode((string)($c['to'] ?? '')) ?>
@@ -303,6 +329,31 @@ JS);
                         </tbody>
                     </table>
                 </div>
+
+                <script>
+                (function(){
+                    var allBtn = document.getElementById('pg-student-select-all');
+                    var noneBtn = document.getElementById('pg-student-select-none');
+                    function setAll(val){
+                        var boxes = document.querySelectorAll('.pg-student-change-checkbox');
+                        for(var i=0;i<boxes.length;i++){
+                            boxes[i].checked = !!val;
+                        }
+                    }
+                    if(allBtn){
+                        allBtn.addEventListener('click', function(e){
+                            e.preventDefault();
+                            setAll(true);
+                        });
+                    }
+                    if(noneBtn){
+                        noneBtn.addEventListener('click', function(e){
+                            e.preventDefault();
+                            setAll(false);
+                        });
+                    }
+                })();
+                </script>
 
                 <script>
                 (function(){
@@ -385,6 +436,8 @@ JS);
                 })();
                 </script>
             <?php endif; ?>
+
+            <?php ActiveForm::end(); ?>
 
         </div>
     </div>
