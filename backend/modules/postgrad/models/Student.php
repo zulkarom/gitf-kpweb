@@ -276,7 +276,7 @@ class Student extends \yii\db\ActiveRecord
 
     public function getGenderText(){
 
-        if($this->gender && $this->gender >= 0){
+        if($this->gender !== null && $this->gender >= 0){
             return Common::gender()[$this->gender];
         }else{
             return '';
