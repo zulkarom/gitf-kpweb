@@ -114,7 +114,29 @@ class Student extends \yii\db\ActiveRecord
             
             [['bachelor_year', 'admission_year', 'master_year'], 'string', 'max' => 4],
             [['status_daftar', 'status_aktif'], 'integer'],
+
+            [['study_mode_rc'], 'in', 'range' => ['research', 'coursework']],
+
+
+
+
         ];
+    }
+
+    public function beforeValidate()
+    {
+        if (!parent::beforeValidate()) {
+            return false;
+        }
+
+        $programId = (int)$this->program_id;
+        if (in_array($programId, [84, 85], true)) {
+            $this->study_mode_rc = 'research';
+        } elseif (in_array($programId, [81, 82], true)) {
+            $this->study_mode_rc = 'coursework';
+        }
+
+        return true;
     }
 
     /**

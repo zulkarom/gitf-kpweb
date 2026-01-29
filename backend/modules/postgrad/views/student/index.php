@@ -145,7 +145,7 @@ $this->params['breadcrumbs'][] = $this->title;
                    if ((int)$model->program_id === 84) {
                        return 'PhD';
                    }
-                   if ((int)$model->program_id === 85) {
+                   if (in_array((int)$model->program_id, [81, 82, 85], true)) {
                        return 'Master';
                    }
                    return $model->program ? $model->program->program_code : '';
