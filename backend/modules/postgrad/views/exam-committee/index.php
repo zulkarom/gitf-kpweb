@@ -25,16 +25,56 @@ $this->title = 'Examination Committee';
 $this->params['breadcrumbs'][] = ['label' => 'Postgraduate Admin', 'url' => ['//postgrad/student/stats']];
 $this->params['breadcrumbs'][] = $this->title;
 
+$currentTab = $tab ?? 'academic';
+$semesterIdParam = Yii::$app->request->get('semester_id');
+$staffNameParam = Yii::$app->request->get('staff_name', '');
+$colorParam = Yii::$app->request->get('color', '');
+
 ?>
 <div class="exam-committee-index">
+
+    <?php $formTop = ActiveForm::begin([
+        'method' => 'get',
+        'action' => Url::to(['index']),
+    ]); ?>
+
+    <?= Html::hiddenInput('tab', $currentTab) ?>
+
+    <div class="row" style="margin-bottom:10px;">
+        <div class="col-md-3">
+            <?= Html::dropDownList('semester_id', $semester_id, $semesterList, [
+                'class' => 'form-control',
+                'prompt' => 'Select Semester',
+                'onchange' => 'this.form.submit();',
+            ]) ?>
+        </div>
+        <div class="col-md-4">
+            <?= Html::textInput('staff_name', $staffNameParam, [
+                'class' => 'form-control',
+                'placeholder' => 'Filter staff name',
+            ]) ?>
+        </div>
+        <div class="col-md-3">
+            <?= Html::dropDownList('color', $colorParam, [
+                'green' => 'Green',
+                'yellow' => 'Yellow',
+                'red' => 'Red',
+            ], [
+                'class' => 'form-control',
+                'prompt' => 'Filter color',
+            ]) ?>
+        </div>
+        <div class="col-md-2">
+            <?= Html::submitButton('Filter', ['class' => 'btn btn-primary', 'style' => 'width:100%']) ?>
+        </div>
+    </div>
+
+    <?php ActiveForm::end(); ?>
 
     <div class="box">
 
         <div class="box-header with-border">
             <?php
-                $currentTab = $tab ?? 'academic';
-                $semesterIdParam = Yii::$app->request->get('semester_id');
-
                 $countAcademic = (int)($tabCounts['academic'] ?? 0);
                 $countOther = (int)($tabCounts['other'] ?? 0);
                 $countExternal = (int)($tabCounts['external'] ?? 0);
@@ -43,6 +83,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 $tabBase = ['index'];
                 if (!empty($semesterIdParam)) {
                     $tabBase['semester_id'] = $semesterIdParam;
+                }
+                if (trim((string)$staffNameParam) !== '') {
+                    $tabBase['staff_name'] = $staffNameParam;
+                }
+                if (trim((string)$colorParam) !== '') {
+                    $tabBase['color'] = $colorParam;
                 }
             ?>
             <ul class="nav nav-tabs">
@@ -67,6 +113,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 $kpiBase = ['index', 'tab' => $currentTab];
                 if (!empty($semester_id)) {
                     $kpiBase['semester_id'] = $semester_id;
+                }
+                if (trim((string)$staffNameParam) !== '') {
+                    $kpiBase['staff_name'] = $staffNameParam;
+                }
+                if (trim((string)$colorParam) !== '') {
+                    $kpiBase['color'] = $colorParam;
                 }
             ?>
 
@@ -180,27 +232,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <br />
 
-            <?php $form = ActiveForm::begin([
-                'method' => 'get',
-                'action' => Url::to(['index']),
-            ]); ?>
-
-            <?= Html::hiddenInput('tab', $currentTab) ?>
-
-            <div class="row">
-                <div class="col-md-4">
-                    <?= Html::dropDownList('semester_id', $semester_id, $semesterList, [
-                        'class' => 'form-control',
-                        'prompt' => 'Select Semester',
-                        'onchange' => 'this.form.submit();',
-                    ]) ?>
-                </div>
-            </div>
-
-            <?php ActiveForm::end(); ?>
-
-            <br />
-
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
                 'layout' => "{summary}\n{items}\n{pager}",
@@ -210,8 +241,20 @@ $this->params['breadcrumbs'][] = $this->title;
                     [
                         'attribute' => 'sv_name',
                         'label' => 'Staff',
+                        'format' => 'raw',
                         'value' => function ($row) {
-                            return $row['sv_name'];
+                            $sv = $row['supervisor'] ?? null;
+                            if (!$sv) {
+                                return Html::encode((string)($row['sv_name'] ?? ''));
+                            }
+
+                            $name = strtoupper((string)($row['sv_name'] ?? ''));
+                            $staffNo = '';
+                            if ($sv->is_internal == 1 && $sv->staff) {
+                                $staffNo = (string)$sv->staff->staff_no;
+                            }
+                            $label = ($staffNo !== '' ? $staffNo . ' - ' : '') . $name;
+                            return Html::a(Html::encode($label), ['/postgrad/supervisor/view', 'id' => $sv->id, 'semester_id' => Yii::$app->request->get('semester_id')]);
                         },
                     ],
                     [

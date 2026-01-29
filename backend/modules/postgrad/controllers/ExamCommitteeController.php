@@ -44,6 +44,9 @@ class ExamCommitteeController extends Controller
             $semester_id = (int)$semester_id;
         }
 
+        $staffNameFilter = trim((string)Yii::$app->request->get('staff_name', ''));
+        $colorFilter = trim((string)Yii::$app->request->get('color', ''));
+
         $semester = $semester_id ? Semester::findOne($semester_id) : null;
 
         // normalise tab, mirror logic from SupervisorController
@@ -287,10 +290,33 @@ class ExamCommitteeController extends Controller
 
             $rows = $data;
         }
+
+        if (!empty($rows) && ($staffNameFilter !== '' || $colorFilter !== '')) {
+            $rows = array_values(array_filter($rows, function ($r) use ($staffNameFilter, $colorFilter) {
+                if ($staffNameFilter !== '') {
+                    $hay = strtolower((string)($r['sv_name'] ?? ''));
+                    $needle = strtolower($staffNameFilter);
+                    if ($needle !== '' && strpos($hay, $needle) === false) {
+                        return false;
+                    }
+                }
+
+                if ($colorFilter !== '') {
+                    $total = (int)($r['total'] ?? 0);
+                    $c = PgSetting::classifyTrafficLight('exam_committee', $total);
+                    if (strtolower($c) !== strtolower($colorFilter)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }));
+        }
+
         $dataProvider = new ArrayDataProvider([
             'allModels' => $rows,
             'pagination' => [
-                'pageSize' => 50,
+                'pageSize' => 150,
             ],
             'sort' => [
                 'attributes' => [
@@ -380,6 +406,7 @@ class ExamCommitteeController extends Controller
 
         $row = 0;
         $cols = [];
+        $maxColIndex = null;
 
         $stats = [
             'processed' => 0,
@@ -444,6 +471,7 @@ class ExamCommitteeController extends Controller
                     return $h;
                 }, $data);
                 $cols = array_flip($header);
+                $maxColIndex = !empty($cols) ? max($cols) : null;
 
                 $required = ['student_id', 'stage_id', 'chairman', 'deputy_chairman', 'panel1', 'panel2'];
                 $missing = [];
@@ -468,6 +496,12 @@ class ExamCommitteeController extends Controller
                 }
 
                 continue;
+            }
+
+            // Ensure row has at least as many columns as header expects.
+            // This prevents missing array offsets when there are empty cells.
+            if ($maxColIndex !== null && count($data) <= $maxColIndex) {
+                $data = array_pad($data, $maxColIndex + 1, '');
             }
 
             $studentMatric = trim((string)($data[$cols['student_id']] ?? ''));
@@ -606,7 +640,6 @@ class ExamCommitteeController extends Controller
                 $roleMatches[$roleId] = null;
                 $roleStaffNos[$roleId] = '';
                 if (trim((string)$name) === '') {
-                    $roleMissing[$roleId] = 'Empty name';
                     continue;
                 }
 
@@ -628,6 +661,9 @@ class ExamCommitteeController extends Controller
             $examChanges = [];
 
             if (!$apply) {
+                $cellStatus = [];
+                $roleCellStatus = [];
+
                 if (!$reg) {
                     $resultCounts['REG_NOT_FOUND']++;
                     $preview[] = [
@@ -649,6 +685,24 @@ class ExamCommitteeController extends Controller
                     ];
                     $stats['processed']++;
                     continue;
+                }
+
+                if (!$isNewStage) {
+                    if ($stageDate !== '' && ($this->normalizeDateValue((string)$stage->stage_date) === $this->normalizeDateValue((string)$stageDate))) {
+                        $cellStatus['date'] = 'ALREADY_UPDATE';
+                    }
+                    if ($stageTime !== '' && ($this->normalizeTimeValue((string)$stage->stage_time) === $this->normalizeTimeValue((string)$stageTime))) {
+                        $cellStatus['time'] = 'ALREADY_UPDATE';
+                    }
+                    if ($thesisTitle !== '' && (trim((string)$stage->thesis_title) === trim((string)$thesisTitle))) {
+                        $cellStatus['thesis_title'] = 'ALREADY_UPDATE';
+                    }
+                }
+
+                if (!$isNewThesis) {
+                    if ($thesisTitle !== '' && (trim((string)$thesis->thesis_title) === trim((string)$thesisTitle))) {
+                        $cellStatus['thesis_title'] = $cellStatus['thesis_title'] ?? 'ALREADY_UPDATE';
+                    }
                 }
 
                 $hasStaffProblem = !empty($roleMissing);
@@ -690,14 +744,24 @@ class ExamCommitteeController extends Controller
                             }
                         }
 
+                            // Treat empty role values in CSV as "no intended update".
+                            // Only compare roles that are provided (non-empty) in the CSV row.
+                            $providedRoles = [];
+                            foreach ($roles as $rId => $rawName) {
+                                if (trim((string)$rawName) !== '') {
+                                    $providedRoles[] = (int)$rId;
+                                }
+                            }
+
                             $noChanges = true;
-                            foreach ([1, 2, 3, 4] as $rId) {
+                            foreach ($providedRoles as $rId) {
                                 $desired = (int)($roleMatches[$rId] ?? 0);
                                 $current = (int)($existingMap[$rId] ?? 0);
                                 if ($desired <= 0 || $current <= 0 || $desired !== $current) {
                                     $noChanges = false;
                                     break;
                                 }
+                                $roleCellStatus[$rId] = 'ALREADY_UPDATE';
                             }
                         }
                     }
@@ -722,6 +786,15 @@ class ExamCommitteeController extends Controller
                     'matched' => $roleMatches,
                     'staff_no' => $roleStaffNos,
                     'missing' => $roleMissing,
+                    'cell_status' => [
+                        'date' => $cellStatus['date'] ?? '',
+                        'time' => $cellStatus['time'] ?? '',
+                        'thesis_title' => $cellStatus['thesis_title'] ?? '',
+                        'chairman' => $roleCellStatus[1] ?? '',
+                        'deputy' => $roleCellStatus[2] ?? '',
+                        'examiner1' => $roleCellStatus[3] ?? '',
+                        'examiner2' => $roleCellStatus[4] ?? '',
+                    ],
                     'result' => $hasStaffProblem ? 'STAFF_NOT_FOUND' : ($noChanges ? 'NO_CHANGES' : 'READY'),
                     'message' => $hasStaffProblem ? 'Staff not matched for one or more committee roles' : ($noChanges ? 'No changes required' : ''),
                 ];
@@ -769,6 +842,16 @@ class ExamCommitteeController extends Controller
                             $cellStatus['thesis_title'] = 'UPDATED';
                         }
                     }
+                } else {
+                    if ($stageDate !== '' && ($this->normalizeDateValue((string)$stage->stage_date) === $this->normalizeDateValue((string)$stageDate))) {
+                        $cellStatus['date'] = 'ALREADY_UPDATE';
+                    }
+                    if ($stageTime !== '' && ($this->normalizeTimeValue((string)$stage->stage_time) === $this->normalizeTimeValue((string)$stageTime))) {
+                        $cellStatus['time'] = 'ALREADY_UPDATE';
+                    }
+                    if ($thesisTitle !== '' && (trim((string)$stage->thesis_title) === trim((string)$thesisTitle))) {
+                        $cellStatus['thesis_title'] = 'ALREADY_UPDATE';
+                    }
                 }
 
                 if ($isNewThesis) {
@@ -780,6 +863,10 @@ class ExamCommitteeController extends Controller
                     $thesisOk = $thesis->save();
                     if ($thesisOk) {
                         $cellStatus['thesis_title'] = $cellStatus['thesis_title'] ?? 'UPDATED';
+                    }
+                } else {
+                    if ($thesisTitle !== '' && (trim((string)$thesis->thesis_title) === trim((string)$thesisTitle))) {
+                        $cellStatus['thesis_title'] = $cellStatus['thesis_title'] ?? 'ALREADY_UPDATE';
                     }
                 }
 
@@ -807,6 +894,8 @@ class ExamCommitteeController extends Controller
                             }
                             $changedExam = true;
                             $roleCellStatus[(int)$roleId] = 'UPDATED';
+                        } else {
+                            $roleCellStatus[(int)$roleId] = 'ALREADY_UPDATE';
                         }
                     } else {
                         $ex = new StageExaminer();
@@ -946,6 +1035,32 @@ class ExamCommitteeController extends Controller
         if ($date === '') {
             return '';
         }
+
+        // Excel serial date (days since 1899-12-30)
+        if (is_numeric($date)) {
+            $num = (float)$date;
+            if ($num > 0) {
+                $days = (int)floor($num);
+                // if it's too small, it's likely not an Excel serial
+                if ($days >= 20000) {
+                    $base = new \DateTime('1899-12-30');
+                    $base->modify('+' . $days . ' days');
+                    return $base->format('Y-m-d');
+                }
+            }
+        }
+
+        // Try strict known formats first (common CSV date formats)
+        foreach (['Y-m-d', 'd/m/Y', 'd-m-Y', 'd.m.Y', 'Y/m/d'] as $fmt) {
+            $dt = \DateTime::createFromFormat($fmt, $date);
+            if ($dt instanceof \DateTime) {
+                $errs = \DateTime::getLastErrors();
+                if (empty($errs['warning_count']) && empty($errs['error_count'])) {
+                    return $dt->format('Y-m-d');
+                }
+            }
+        }
+
         $ts = strtotime($date);
         if ($ts === false) {
             return $date;
@@ -973,7 +1088,9 @@ class ExamCommitteeController extends Controller
             return null;
         }
 
-        $ts = strtotime($date);
+        // Re-normalize here too, because input may come in various CSV formats
+        $normalized = $this->normalizeDateValue($date);
+        $ts = strtotime($normalized);
         if ($ts === false) {
             return null;
         }

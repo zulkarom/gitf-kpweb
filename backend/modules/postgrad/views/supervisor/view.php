@@ -11,6 +11,10 @@ use backend\models\Semester;
 
 $this->title = 'View Supervisor / Examiner';
 $semesterId = Yii::$app->request->get('semester_id');
+$currentSem = Semester::getCurrentSemester();
+if (empty($semesterId) && $currentSem) {
+    $semesterId = $currentSem->id;
+}
 $this->params['breadcrumbs'][] = ['label' => 'Supervisors', 'url' => ['index', 'semester_id' => $semesterId]];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -95,8 +99,7 @@ Senarai Pelajar
   <thead>
     <tr>
       <th scope="col">#</th>
-      <th scope="col">Matric No</th>
-      <th scope="col">Name</th>
+      <th scope="col">Matric No / Name</th>
       <th scope="col">Program</th>
       <th scope="col">Role</th>
       <th scope="col">Status</th>
@@ -110,12 +113,11 @@ Senarai Pelajar
           ?>
            <tr>
       <th scope="row"><?=$i?></th>
-      <td><?= Html::a($s->student->matric_no, ['/postgrad/student/view', 'id' => $s->student->id, 'semester_id' => $semesterId]) ?></td>
-      <td><?= Html::a(strtoupper($s->student->user->fullname), ['/postgrad/student/view', 'id' => $s->student->id, 'semester_id' => $semesterId]) ?></td>
+      <td><?= Html::a($s->student->matric_no . ' - ' . strtoupper($s->student->user->fullname), ['/postgrad/student/view', 'id' => $s->student->id, 'semester_id' => $semesterId]) ?></td>
       <td><?= $s->student->program ? $s->student->program->pro_name : '' ?></td>
       <td>
         <?php $roleClass = ($s->sv_role == 1 ? 'primary' : ($s->sv_role == 2 ? 'warning' : 'default')); ?>
-        <span class="label label-<?=$roleClass?>"><?=$s->roleName()?></span>
+        <span class="label label-<?=$roleClass?>"><?=$s->roleName()?> </span>
       </td>
 		<td>
 		    <?php
@@ -148,7 +150,7 @@ Senarai Pelajar
 	<div class="box">
 <div class="box-header">
 <h3 class="box-title">
-Jawatankuasa Pemeriksa <?php count($examinees)?>
+Examination Committee <?php count($examinees)?>
 </h3>
 </div>
 <div class="box-body">
@@ -171,8 +173,8 @@ Jawatankuasa Pemeriksa <?php count($examinees)?>
           ?>
            <tr>
       <th scope="row"><?=$i?></th>
-      <td><?=$x->fullname?></td>
-      <td><?=$x->stage_name?></td>
+      <td><?= Html::a((($x->matric_no ? $x->matric_no . ' - ' : '') . strtoupper($x->fullname)), ['/postgrad/student/view', 'id' => $x->id, 'semester_id' => $semesterId]) ?></td>
+      <td><?= Html::encode($x->stage_name_en ? $x->stage_name_en : $x->stage_name) ?></td>
 	  <td><?= isset($x->committee_role_label) ? Html::encode($x->committee_role_label) : '' ?></td>
 		<td><?=StudentStage::statusText($x->stage_status)?></td>
     </tr>

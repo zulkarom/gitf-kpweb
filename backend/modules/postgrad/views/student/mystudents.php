@@ -64,6 +64,27 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
                     </a>
                 </div>
+				<div class="col-md-3">
+					<a href="<?= Html::encode(\yii\helpers\Url::to(['index', 'semester_id' => $semesterId])) ?>" style="color:inherit;">
+						<div class="info-box">
+							<?php
+							$traffic = (string)($stats['total_supervision_color'] ?? 'red');
+							$circleColor = '#d9534f';
+							$bg = 'bg-gray';
+							if ($traffic === 'green') {
+								$circleColor = '#5cb85c';
+							} elseif ($traffic === 'yellow') {
+								$circleColor = '#f0ad4e';
+							}
+							?>
+							<span class="info-box-icon <?= $bg ?>"><i class="fa fa-circle" style="color:<?= Html::encode($circleColor) ?>;"></i></span>
+							<div class="info-box-content">
+								<span class="info-box-text">Total Supervision</span>
+								<span class="info-box-number"><?= (int)($stats['total_supervision'] ?? 0) ?></span>
+							</div>
+						</div>
+					</a>
+				</div>
             </div>
 
             <div class="row" style="margin-bottom:10px;">
