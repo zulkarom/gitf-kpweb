@@ -143,10 +143,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => Html::activeDropDownList($searchModel, 'program_id', ['84' => 'PhD', '85' => 'Master'],['class'=> 'form-control','prompt' => 'Choose']),
                 'value' => function($model){
                    if ($model->program_id == 84) {
-                       return 'PhD';
+                       return 'PhD (' . $model->program->program_code . ')';
                    }
                    if (in_array((int)$model->program_id, [81, 82, 85], true)) {
-                       return 'Master';
+                       return 'Master (' . $model->program->program_code . ')';
                    }
                    return $model->program ? $model->program->program_code : '';
                 }
