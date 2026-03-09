@@ -67,6 +67,8 @@ $dirAsset = Yii::getAlias('@web');
       <br />
       <div align="center">
         <?= Html::a('Log In Page', ['/user/security/login']) ?>
+        <br /><br />
+        <?= Html::a('Student Login', rtrim(Yii::$app->params['studentAppUrl'], '/') . '/site/login') ?>
       </div>
     </div>
   </div>
