@@ -460,16 +460,17 @@ class SiteController extends Controller
             }
         }
 
-        return Yii::$app
-            ->mailer
-            ->compose(
-                ['html' => 'passwordResetToken-html', 'text' => 'passwordResetToken-text'],
-                ['user' => $user]
-            )
-            ->setFrom([Yii::$app->params['supportEmail'] => 'FKP PORTAL'])
-            ->setTo($user->email)
-            ->setSubject('Complete password reset on FKP PORTAL')
-            ->send();
+        $email = urlencode($user->email);
+        $code = $user->password_reset_token;
+        $secret = '3r23047dw3';
+        $key = md5($code . $secret);
+        $url = 'https://api-mailer.skyhint.com/fkpportal/recover/' . $email . '/' . $code . '/' . $key;
+
+        try {
+            return @file_get_contents($url) == 'true';
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 	
 
