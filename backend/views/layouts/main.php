@@ -42,9 +42,15 @@ use yii\helpers\Html;
                 font-display: swap;
             }
 
-            html, body, .wrapper { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; }
+            html, body, .wrapper { font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 0.95rem; }
             body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; background: #f3f4f6; }
             .content-wrapper, .right-side, .content, .wrapper { background: #f3f4f6; }
+            .main-header .logo,
+            .main-sidebar { width: 260px; }
+            .main-header .navbar,
+            .content-wrapper,
+            .right-side,
+            .main-footer { margin-left: 260px; }
 
             .skin-blue .main-header .logo {
                 background:#ffffff;
@@ -87,15 +93,15 @@ use yii\helpers\Html;
             .sidebar .user-panel { border-bottom: 1px solid rgba(255,255,255,0.06); margin: 0 12px 14px; padding: 14px 12px 16px; background: rgba(255,255,255,0.03); border-radius: 10px; }
             .sidebar .user-panel .info p,
             .sidebar .user-panel .info>a { color:#ffffff; }
-            .sidebar .user-panel .info p { font-size:14px; font-weight:600; margin-bottom:2px; }
+            .sidebar .user-panel .info p { font-size:15px; font-weight:600; margin-bottom:2px; }
             .sidebar-menu { padding: 0 10px 14px; }
             .sidebar-menu>li { margin-bottom: 4px; }
-            .sidebar-menu>li.header { color:#A5A9C3; font-weight:700; font-size:11px; letter-spacing:1px; padding: 16px 10px 8px; background: transparent !important; }
-            .sidebar-menu>li>a { padding:12px 16px; font-size:14px; color:#C2C7D0; border-radius:6px; transition: all 0.2s ease; }
+            .sidebar-menu>li.header { color:#A5A9C3; font-weight:700; font-size:12px; letter-spacing:1px; padding: 16px 10px 8px; background: transparent !important; }
+            .sidebar-menu>li>a { padding:12px 16px; font-size:15px; color:#C2C7D0; border-radius:6px; transition: all 0.2s ease; }
             .sidebar-menu>li>a>.fa, .sidebar-menu>li>a>.glyphicon, .sidebar-menu>li>a>.ion { width:22px; margin-right:10px; font-size:16px; color:#A7B1C2; transition: all 0.2s ease; }
             .sidebar-menu .treeview-menu { padding-left: 0; margin-top: 4px; background: transparent !important; }
             .sidebar-menu .treeview-menu>li { margin-bottom: 4px; }
-            .sidebar-menu .treeview-menu>li>a { padding:11px 16px 11px 20px; font-size:14px; color:#C2C7D0; border-radius:6px; transition: all 0.2s ease; }
+            .sidebar-menu .treeview-menu>li>a { padding:11px 16px 11px 20px; font-size:15px; color:#C2C7D0; border-radius:6px; transition: all 0.2s ease; }
             .sidebar-menu .treeview-menu>li>a>.fa,
             .sidebar-menu .treeview-menu>li>a>.glyphicon,
             .sidebar-menu .treeview-menu>li>a>.ion { width:22px; margin-right:10px; font-size:16px; color:#A7B1C2; transition: all 0.2s ease; }
@@ -140,6 +146,12 @@ use yii\helpers\Html;
             .label-outline--gray { color: #777; border-color: #bbb; }
 
             @media (max-width: 767px){
+                .main-header .logo,
+                .main-sidebar { width: 230px; }
+                .main-header .navbar,
+                .content-wrapper,
+                .right-side,
+                .main-footer { margin-left: 0; }
                 .main-header .logo .logo-lg { font-size:20px; }
                 .main-header .navbar { min-height:50px; }
                 .main-header .navbar .nav>li>a { padding-top:14px; padding-bottom:14px; }
