@@ -374,7 +374,7 @@ class StudentCsvImportController extends Controller
 
             $after = $before;
 
-            if (!$this->isExcelScientificNotation($nric) && !$this->isExcelScientificNotation($nricRaw)) {
+            if ($before['student_nric'] === '' && !$this->isExcelScientificNotation($nric) && !$this->isExcelScientificNotation($nricRaw)) {
                 $after['student_nric'] = $nric;
             }
             $after['student_citizenship'] = (int)$mappedCitizenship;
@@ -387,7 +387,7 @@ class StudentCsvImportController extends Controller
             if ($cityRaw !== '') {
                 $after['student_city'] = $cityRaw;
             }
-            if ($phoneRaw !== '' && !$this->isExcelScientificNotation($phoneRaw)) {
+            if ($before['student_phone_no'] === '' && $phoneRaw !== '' && !$this->isExcelScientificNotation($phoneRaw)) {
                 if (!$this->isPhoneOnlyLeadingZeroRemoved($before['student_phone_no'], $phoneRaw)) {
                     $after['student_phone_no'] = $phoneRaw;
                 }
@@ -404,7 +404,7 @@ class StudentCsvImportController extends Controller
             if ($mappedMarital !== null) {
                 $after['student_marital_status'] = (int)$mappedMarital;
             }
-            if ($mappedDob !== null) {
+            if ($before['student_date_birth'] === '' && $mappedDob !== null) {
                 $oldYear = $this->extractYear($before['student_date_birth']);
                 $newYear = $this->extractYear($mappedDob);
                 if ($oldYear === null || $newYear === null || $oldYear !== $newYear) {
