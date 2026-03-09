@@ -5,7 +5,7 @@ use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 
 $this->title = 'Synchronize';
-$this->params['breadcrumbs'][] = ['label' => 'Student', 'url' => ['/students/student/index']];
+$this->params['breadcrumbs'][] = ['label' => 'Student', 'url' => ['/undergrad/student/index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 

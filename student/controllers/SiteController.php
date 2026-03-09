@@ -8,6 +8,7 @@ use student\models\LoginForm;
 use backend\modules\students\models\Student;
 use backend\modules\postgrad\models\Student as PostgradStudent;
 use backend\modules\postgrad\models\StudentRegister as PostgradStudentRegister;
+use backend\modules\postgrad\models\StudentStage as PostgradStudentStage;
 use student\models\forms\ForgotPasswordRequestForm;
 use student\models\forms\SetPasswordForm;
 use common\models\User;
@@ -32,7 +33,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['index', 'logout', 'member', 'error', 'semester-registration'],
+                        'actions' => ['index', 'logout', 'member', 'error', 'semester-registration', 'research-progress', 'research-progress-view'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -116,6 +117,68 @@ class SiteController extends Controller
             'student' => $student,
             'registrations' => $registrations,
             'latestRegistration' => $latestRegistration,
+        ]);
+    }
+	
+    public function actionResearchProgress()
+    {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['site/login']);
+        }
+
+        $user = Yii::$app->user->identity;
+        if (!$user || !$user->studentPostGrad) {
+            Yii::$app->session->addFlash('error', 'Research progress page is available for postgraduate students only.');
+            return $this->redirect(['index']);
+        }
+
+        $student = PostgradStudent::findOne($user->studentPostGrad->id);
+        if (!$student) {
+            Yii::$app->session->addFlash('error', 'Postgraduate student record not found.');
+            return $this->redirect(['index']);
+        }
+
+        $stages = PostgradStudentStage::find()
+            ->where(['student_id' => (int)$student->id])
+            ->orderBy(['semester_id' => SORT_ASC, 'id' => SORT_ASC])
+            ->all();
+
+        return $this->render('research-progress', [
+            'student' => $student,
+            'stages' => $stages,
+        ]);
+    }
+	
+    public function actionResearchProgressView($id)
+    {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['site/login']);
+        }
+
+        $user = Yii::$app->user->identity;
+        if (!$user || !$user->studentPostGrad) {
+            Yii::$app->session->addFlash('error', 'Research progress page is available for postgraduate students only.');
+            return $this->redirect(['index']);
+        }
+
+        $student = PostgradStudent::findOne($user->studentPostGrad->id);
+        if (!$student) {
+            Yii::$app->session->addFlash('error', 'Postgraduate student record not found.');
+            return $this->redirect(['index']);
+        }
+
+        $stage = PostgradStudentStage::find()
+            ->where(['id' => (int)$id, 'student_id' => (int)$student->id])
+            ->one();
+
+        if (!$stage) {
+            Yii::$app->session->addFlash('error', 'Research stage record not found.');
+            return $this->redirect(['research-progress']);
+        }
+
+        return $this->render('research-progress-view', [
+            'student' => $student,
+            'stage' => $stage,
         ]);
     }
 	

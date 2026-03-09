@@ -16,7 +16,7 @@ $menuItems = [
 if ($isPostgrad) {
     $menuItems[] = ['label' => 'ACADEMIC', 'level' => 0];
     $menuItems[] = ['label' => 'Semester Registration', 'level' => 1, 'url' => ['/site/semester-registration'], 'icon' => 'fas fa-calendar-check', 'children' => []];
-    $menuItems[] = ['label' => 'Research Progress', 'level' => 1, 'url' => ['/site/index#research-progress'], 'icon' => 'fas fa-flask', 'children' => []];
+    $menuItems[] = ['label' => 'Research Progress', 'level' => 1, 'url' => ['/site/research-progress'], 'icon' => 'fas fa-flask', 'children' => []];
 } else {
     $menuItems[] = ['label' => 'ACADEMIC', 'level' => 0];
     $menuItems[] = ['label' => 'Course Registration', 'level' => 1, 'url' => ['/kursus-peserta/index'], 'icon' => 'fas fa-book', 'children' => []];

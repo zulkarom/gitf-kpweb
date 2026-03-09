@@ -45,11 +45,12 @@ phpunit.phar
 
 # config
 /frontend/config
-/backend/config
+/backend/config/*
 /common/config
 frontend/config
-backend/config
 common/config
+!/backend/config/
+!/backend/config/main.php
 /confsite/config
 
 

@@ -115,7 +115,8 @@ class StudentController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        return $this->redirect('/projects/gitf-kpweb/student/web/index.php?r=site/login-as&token=' . urlencode($user->password_reset_token));
+        $studentLoginUrl = rtrim(Yii::$app->params['studentAppUrl'], '/') . '/index.php?r=site/login-as&token=' . urlencode($user->password_reset_token);
+        return $this->redirect($studentLoginUrl);
     }
 
     public function actionSynchronize(){
