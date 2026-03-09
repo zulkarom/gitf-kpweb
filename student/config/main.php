@@ -7,7 +7,7 @@ $params = array_merge(
 );
 
 return [
-    'id' => 'app-student',
+    'id' => 'FKP PORTAL',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'student\controllers',
     'bootstrap' => ['log'],

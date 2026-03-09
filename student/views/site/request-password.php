@@ -8,13 +8,11 @@ use yii\bootstrap\ActiveForm;
 $this->title = 'Account Recovery';
 ?>
 <div class="login-box-body">
-    <p class="login-box-msg">Verify your identity to set a new password</p>
+    <p class="login-box-msg">Enter your matric number to receive a password reset link</p>
 
     <?php $form = ActiveForm::begin(['id' => 'request-password-form']); ?>
 
         <?= $form->field($model, 'matric_no')->textInput(['maxlength' => true, 'placeholder' => 'Matric Number']) ?>
-
-        <?= $form->field($model, 'nric')->textInput(['maxlength' => true, 'placeholder' => 'I.C Number']) ?>
 
         <div class="row">
             <div class="col-xs-8">

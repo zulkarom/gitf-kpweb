@@ -6,15 +6,17 @@ use yii\base\Model;
 class ForgotPasswordRequestForm extends Model
 {
     public $matric_no;
-    public $nric;
 
     public function rules()
     {
         return [
-            [['matric_no', 'nric'], 'required'],
-            [['matric_no', 'nric'], 'trim'],
+            [['matric_no'], 'required'],
+            [['matric_no'], 'trim'],
+            [['matric_no'], 'filter', 'filter' => function ($value) {
+                return strtoupper((string)$value);
+            }],
             [['matric_no'], 'string', 'max' => 20],
-            [['nric'], 'string', 'max' => 20],
+            [['matric_no'], 'match', 'pattern' => '/^[A-Z]\d{2}[A-Z0-9].*$/', 'message' => 'Please enter a valid matric number.'],
         ];
     }
 
@@ -22,7 +24,6 @@ class ForgotPasswordRequestForm extends Model
     {
         return [
             'matric_no' => 'Matric Number',
-            'nric' => 'I.C Number',
         ];
     }
 }
