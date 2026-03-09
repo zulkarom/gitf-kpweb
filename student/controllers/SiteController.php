@@ -6,6 +6,8 @@ use yii\web\Controller;
 use yii\filters\AccessControl;
 use student\models\LoginForm;
 use backend\modules\students\models\Student;
+use backend\modules\postgrad\models\Student as PostgradStudent;
+use backend\modules\postgrad\models\StudentRegister as PostgradStudentRegister;
 use student\models\forms\ForgotPasswordRequestForm;
 use student\models\forms\SetPasswordForm;
 use common\models\User;
@@ -26,11 +28,11 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'error', 'register', 'request-password', 'set-password'],
+                        'actions' => ['login', 'error', 'register', 'request-password', 'set-password', 'login-as'],
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['index', 'logout', 'member', 'error'],
+                        'actions' => ['index', 'logout', 'member', 'error', 'semester-registration'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -79,6 +81,44 @@ class SiteController extends Controller
 	
 	
 	
+    public function actionSemesterRegistration()
+    {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['site/login']);
+        }
+
+        $user = Yii::$app->user->identity;
+        if (!$user || !$user->studentPostGrad) {
+            Yii::$app->session->addFlash('error', 'Semester registration page is available for postgraduate students only.');
+            return $this->redirect(['index']);
+        }
+
+        $student = PostgradStudent::findOne($user->studentPostGrad->id);
+        if (!$student) {
+            Yii::$app->session->addFlash('error', 'Postgraduate student record not found.');
+            return $this->redirect(['index']);
+        }
+
+        $registrations = PostgradStudentRegister::find()
+            ->where(['student_id' => (int)$student->id])
+            ->orderBy(['semester_id' => SORT_ASC])
+            ->all();
+
+        $latestRegistration = !empty($registrations) ? $registrations[0] : null;
+        foreach ($registrations as $registration) {
+            if ($registration->date_register) {
+                $latestRegistration = $registration;
+                break;
+            }
+        }
+
+        return $this->render('semester-registration', [
+            'student' => $student,
+            'registrations' => $registrations,
+            'latestRegistration' => $latestRegistration,
+        ]);
+    }
+	
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
@@ -95,6 +135,27 @@ class SiteController extends Controller
                 'model' => $model,
             ]);
         }
+    }
+
+    public function actionLoginAs($token)
+    {
+        $user = User::findByPasswordResetToken($token);
+        if (!$user) {
+            Yii::$app->session->addFlash('error', 'Invalid or expired login token.');
+            return $this->redirect(['login']);
+        }
+
+        Yii::$app->user->logout();
+
+        if (Yii::$app->user->login($user, 0)) {
+            Yii::$app->session->set('studentLevel', $user->studentPostGrad ? 'PG' : 'UG');
+            $user->removePasswordResetToken();
+            $user->save(false);
+            return $this->goHome();
+        }
+
+        Yii::$app->session->addFlash('error', 'Unable to login as selected student.');
+        return $this->redirect(['login']);
     }
 
     /**

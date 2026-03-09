@@ -1,7 +1,26 @@
 <?php 
+ 
+ use yii\helpers\Url;
+ use common\widgets\MenuAdminLte;
+ 
+$studentLevel = Yii::$app->session->get('studentLevel');
+$isPostgrad = $studentLevel === 'PG';
 
-use yii\helpers\Url;
-use common\widgets\MenuAdminLte;
+$menuItems = [
+        ['label' => 'Dashboard', 'level' => 1, 'url' => ['/site/index'], 'icon' => 'fas fa-tachometer-alt', 'children' => []],
+        ['label' => 'My Profile', 'level' => 1, 'url' => ['/profile/view'], 'icon' => 'fas fa-user', 'children' => []],
+        ['label' => 'Change Password', 'level' => 1, 'url' => ['/site/request-password'], 'icon' => 'fas fa-key', 'children' => []],
+        ['label' => 'Logout', 'level' => 1, 'url' => ['/site/logout'], 'icon' => 'fas fa-sign-out-alt', 'children' => []],
+];
+
+if ($isPostgrad) {
+    $menuItems[] = ['label' => 'ACADEMIC', 'level' => 0];
+    $menuItems[] = ['label' => 'Semester Registration', 'level' => 1, 'url' => ['/site/semester-registration'], 'icon' => 'fas fa-calendar-check', 'children' => []];
+    $menuItems[] = ['label' => 'Research Progress', 'level' => 1, 'url' => ['/site/index#research-progress'], 'icon' => 'fas fa-flask', 'children' => []];
+} else {
+    $menuItems[] = ['label' => 'ACADEMIC', 'level' => 0];
+    $menuItems[] = ['label' => 'Course Registration', 'level' => 1, 'url' => ['/kursus-peserta/index'], 'icon' => 'fas fa-book', 'children' => []];
+}
 
 ?> 
     <nav class="mt-2">
@@ -9,26 +28,9 @@ use common\widgets\MenuAdminLte;
                 
 
     <?=MenuAdminLte::widget(
-    [
-            
-            ['label' => 'Dashboard', 'level' => 1, 'url' => ['/site/index'], 'icon' => 'fas fa-tachometer-alt', 'children' => []],
-
-            ['label' => 'My Profile', 'level' => 1, 'url' => ['/profile/view'], 'icon' => 'fas fa-tachometer-alt', 'children' => []],
-
-            ['label' => 'Course Registration', 'level' => 1, 'url' => ['/kursus-peserta/index'], 'icon' => 'fas fa-tachometer-alt', 'children' => []],
-            
-            
-            ['label' => 'EXAMPLES', 'level' => 0],
-            
-            ['label' => 'Example', 'level' => 2 , 'icon' => 'fas fa-th', 'children' => [
-                ['label' => 'Example 1', 'url' => ['/account/invoice'], 'icon' => 'far fa-circle'],
-                ['label' => 'Example 2', 'url' => ['/account/receipt'], 'icon' => 'far fa-circle'],
-                
-            
-            ]],
-        ]
-    
-    )?>
+    $menuItems
+     
+     )?>
 
                     
                     

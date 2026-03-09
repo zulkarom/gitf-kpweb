@@ -1407,6 +1407,25 @@ class StudentController extends Controller
         ]);
     }
 
+    public function actionLoginAs($id)
+    {
+        $model = $this->findModel($id);
+        $user = User::findOne($model->user_id);
+
+        if (!$user) {
+            Yii::$app->session->addFlash('error', 'Unable to prepare student login account.');
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        $user->generatePasswordResetToken();
+        if (!$user->save(false)) {
+            Yii::$app->session->addFlash('error', 'Unable to generate login token for student account.');
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->redirect('/projects/gitf-kpweb/student/web/index.php?r=site/login-as&token=' . urlencode($user->password_reset_token));
+    }
+
     /**
      * Deletes an existing StudentPostGrad model.
      * If deletion is successful, the browser will be redirected to the 'index' page.

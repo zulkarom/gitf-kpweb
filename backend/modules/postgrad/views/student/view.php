@@ -141,6 +141,7 @@ Profile
     <?php if (!$readOnly) { ?>
     <div class="clearfix">
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Login As', ['login-as', 'id' => $model->id], ['class' => 'btn btn-warning', 'target' => '_blank', 'rel' => 'noopener noreferrer']) ?>
 
     </div>
     <?php } ?>

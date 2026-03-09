@@ -28,10 +28,9 @@ use backend\models\Menu;
 				
 				</p>
 
-                <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                <a href="#"><i class="fa fa-circle"></i> Online</a>
             </div>
         </div>
-		<br />
 
         <!-- sidebar search form removed -->
 		
