@@ -17,6 +17,8 @@ use backend\models\Semester;
  */
 class StudentStage extends \yii\db\ActiveRecord
 {
+    private $_stageTimeDisplayValue;
+
     /**
      * {@inheritdoc}
      */
@@ -45,6 +47,14 @@ class StudentStage extends \yii\db\ActiveRecord
     public function beforeValidate()
     {
         if (parent::beforeValidate()) {
+            if ($this->stage_time !== null && $this->stage_time !== '') {
+                $this->_stageTimeDisplayValue = (string)$this->stage_time;
+                $normalizedStageTime = $this->normalizeStageTimeValue($this->stage_time);
+                if ($normalizedStageTime !== null) {
+                    $this->stage_time = $normalizedStageTime;
+                }
+            }
+
             if (empty($this->stage_date) && !empty($this->semester_id)) {
                 $semester = Semester::findOne((int)$this->semester_id);
                 if ($semester) {
@@ -67,6 +77,50 @@ class StudentStage extends \yii\db\ActiveRecord
         }
 
         return false;
+    }
+
+    public function afterFind()
+    {
+        parent::afterFind();
+        $this->_stageTimeDisplayValue = (string)$this->stage_time;
+    }
+
+    public function afterValidate()
+    {
+        parent::afterValidate();
+
+        if ($this->hasErrors('stage_time') && $this->_stageTimeDisplayValue !== null) {
+            $this->stage_time = $this->_stageTimeDisplayValue;
+        }
+    }
+
+    private function normalizeStageTimeValue($value)
+    {
+        $value = trim((string)$value);
+        if ($value === '') {
+            return null;
+        }
+
+        $formats = [
+            'g:i A',
+            'g:i a',
+            'h:i A',
+            'h:i a',
+            'H:i:s',
+            'H:i',
+        ];
+
+        foreach ($formats as $format) {
+            $time = \DateTime::createFromFormat($format, $value);
+            if ($time instanceof \DateTime) {
+                $errors = \DateTime::getLastErrors();
+                if (($errors['warning_count'] ?? 0) === 0 && ($errors['error_count'] ?? 0) === 0) {
+                    return $time->format('H:i:s');
+                }
+            }
+        }
+
+        return null;
     }
 
     /**
