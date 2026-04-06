@@ -10,10 +10,18 @@ return [
     'timeZone' => 'Asia/Kuala_Lumpur',
     'components' => [
 		'urlManager' => [
-			'enablePrettyUrl' => true,
-			'showScriptName' => false,
-			'enableStrictParsing' => false,
-		],
+            'enablePrettyUrl' => true,
+             'showScriptName' => false,
+            'rules' => [
+			'l/<c:[A-Za-z0-9]{2,}>' => 'link/go',
+			'proceedings/download-image' => 'proceedings/download-image',
+			'proceedings/download-file' => 'proceedings/download-file',
+			'proceedings/<purl>' => 'proceedings/paper',
+			
+			'<controller>/<action>' => '<controller>/<action>', 
+			
+            ],
+        ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],

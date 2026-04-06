@@ -34,6 +34,8 @@ class Urlredirect extends \yii\db\ActiveRecord
             [['code'], 'string', 'min' => 2],
             [['code'], 'unique'],
             [['url_to'], 'string'],
+            [['hit_counter'], 'default', 'value' => 0],
+            [['latest_hit'], 'default', 'value' => 0],
             [['hit_counter'], 'integer'],
             [['latest_hit'], 'integer'],
         ];
@@ -51,5 +53,19 @@ class Urlredirect extends \yii\db\ActiveRecord
             'hit_counter' => 'Hit Counter',
             'latest_hit' => 'Latest Hit',
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if ($insert) {
+            if ($this->hit_counter === null) {
+                $this->hit_counter = 0;
+            }
+            if ($this->latest_hit === null) {
+                $this->latest_hit = 0;
+            }
+        }
+
+        return parent::beforeSave($insert);
     }
 }
