@@ -223,7 +223,7 @@ class Menu
                     'label' => 'Active Students',
                     'icon' => 'user',
                     'url' => [
-                        '/students/student'
+                        '/undergrad/student'
                     ],
                     'visible' => Yii::$app->user->can('students-manager')
                 ],
@@ -232,7 +232,7 @@ class Menu
                     'label' => 'Downloads',
                     'icon' => 'download',
                     'url' => [
-                        '/students/download'
+                        '/undergrad/download'
                     ],
                     'visible' => Yii::$app->user->can('students-manager')
                 ],

@@ -5,6 +5,7 @@ namespace backend\modules\students\controllers;
 use Yii;
 use backend\modules\students\models\Student;
 use backend\modules\students\models\StudentSearch;
+use common\models\User;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
@@ -96,6 +97,26 @@ class StudentController extends Controller
         return $this->render('update', [
             'model' => $model,
         ]);
+    }
+
+    public function actionLoginAs($id)
+    {
+        $model = $this->findModel($id);
+        $user = $this->ensureStudentUser($model);
+
+        if (!$user) {
+            Yii::$app->session->addFlash('error', 'Unable to prepare student login account.');
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        $user->generatePasswordResetToken();
+        if (!$user->save(false)) {
+            Yii::$app->session->addFlash('error', 'Unable to generate login token for student account.');
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        $studentLoginUrl = rtrim(Yii::$app->params['studentAppUrl'], '/') . '/index.php?r=site/login-as&token=' . urlencode($user->password_reset_token);
+        return $this->redirect($studentLoginUrl);
     }
 
     public function actionSynchronize(){
@@ -337,5 +358,36 @@ class StudentController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    protected function ensureStudentUser($student)
+    {
+        if (!empty($student->user_id)) {
+            $user = User::findOne($student->user_id);
+            if ($user) {
+                return $user;
+            }
+        }
+
+        $user = User::findByUsername($student->matric_no);
+        if (!$user) {
+            $user = new User();
+            $user->username = $student->matric_no;
+            $user->fullname = $student->st_name ?: $student->matric_no;
+            $user->email = null;
+            $user->status = User::STATUS_ACTIVE;
+            $user->generateAuthKey();
+            $user->setPassword(Yii::$app->security->generateRandomString(12));
+            if (!$user->save(false)) {
+                return null;
+            }
+        }
+
+        $student->user_id = $user->id;
+        if (!$student->save(false)) {
+            return null;
+        }
+
+        return $user;
     }
 }

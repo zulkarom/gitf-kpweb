@@ -8,7 +8,7 @@ use yii\grid\GridView;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Download Categories';
-$this->params['breadcrumbs'][] = ['label' => 'Downloads', 'url' => ['/students/download/index']];
+$this->params['breadcrumbs'][] = ['label' => 'Downloads', 'url' => ['/undergrad/download/index']];
 $this->params['breadcrumbs'][] = 'Categories';
 ?>
 <div class="download-category-index">
@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = 'Categories';
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-	<?= Html::a('Download List', ['/students/download'], ['class' => 'btn btn-info']) ?>
+	<?= Html::a('Download List', ['/undergrad/download'], ['class' => 'btn btn-info']) ?>
         <?= Html::a('Create Category', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 

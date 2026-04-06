@@ -141,6 +141,7 @@ Profile
     <?php if (!$readOnly) { ?>
     <div class="clearfix">
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Login As', ['login-as', 'id' => $model->id], ['class' => 'btn btn-warning', 'target' => '_blank', 'rel' => 'noopener noreferrer']) ?>
 
     </div>
     <?php } ?>
@@ -469,6 +470,7 @@ Pendaftaran Semester
     <tr>
       <th scope="col">#</th>
       <th scope="col">Senarai Rekod Pendaftaran Semester</th>
+      <th scope="col">Tarikh Daftar</th>
       <th scope="col">Status Daftar</th>
       <th scope="col"></th>
     </tr>
@@ -482,6 +484,7 @@ Pendaftaran Semester
            <tr>
       <th scope="row"><?=$i?></th>
       <td><a href="#" class="js-student-reg-modal" data-url="<?=Url::to(['student-register/modal', 'id' => $s->id])?>"><?=$s->semester->longFormat()?></a></td>
+      <td><?= $s->date_register ? Html::encode(date('d F Y', strtotime($s->date_register))) : '-' ?></td>
       <td><?= \backend\modules\postgrad\models\StudentRegister::statusDaftarOutlineLabel($s->status_daftar) ?></td>
       <td>
         <?php if (!$readOnly) { ?>

@@ -6,7 +6,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 $this->title = 'Bulk Update';
-$this->params['breadcrumbs'][] = ['label' => 'Student', 'url' => ['/students/student/index']];
+$this->params['breadcrumbs'][] = ['label' => 'Student', 'url' => ['/undergrad/student/index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 ExcelAsset::register($this); 

@@ -45,9 +45,15 @@ phpunit.phar
 
 # config
 /frontend/config
+<<<<<<< HEAD
+=======
+/backend/config/*
+>>>>>>> eb62ddfb2dc45c5bf4f640e7cc577a164f04fb07
 /common/config
 frontend/config
 common/config
+!/backend/config/
+!/backend/config/main.php
 /confsite/config
 
 

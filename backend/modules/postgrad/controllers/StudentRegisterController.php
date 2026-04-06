@@ -119,7 +119,7 @@ class StudentRegisterController extends Controller
         $student = $this->findStudent($s);
         $models = StudentRegister::find()
             ->where(['student_id' => (int)$s])
-            ->orderBy(['semester_id' => SORT_ASC])
+            ->orderBy(['semester_id' => SORT_DESC])
             ->all();
 
         if (empty($models)) {

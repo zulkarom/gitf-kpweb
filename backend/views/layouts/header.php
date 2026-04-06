@@ -9,7 +9,7 @@ use yii\helpers\Url;
 <header class="main-header">
 
     <?= Html::a(
-        Html::img(Url::to('@web/images/logo-fkp-portal-horizontal.png'), ['alt' => 'FKP PORTAL', 'style' => 'max-height:35px;width:auto;']),
+        Html::img(Url::to('@web/images/logo-fkp-portal.png'), ['alt' => 'FKP PORTAL', 'style' => 'max-height:44px;width:auto;display:block;']),
         Yii::$app->homeUrl,
         ['class' => 'logo']
     ) ?>
@@ -28,7 +28,7 @@ use yii\helpers\Url;
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
 
 			
-			<img src="<?= Url::to(['/staff/profile/image']) ?>" width="20" height="20" class="img-circle" alt="..." />  &nbsp;
+			<img src="<?= Url::to(['/staff/profile/image']) ?>" width="28" height="28" class="img-circle" alt="..." />
 			
 			<?php 
 			$user = Yii::$app->user->identity;
@@ -38,7 +38,7 @@ use yii\helpers\Url;
 			?>
              
               <span class="hidden-xs"><?=$name?></span>
-			      &nbsp;&nbsp;&nbsp;<i class="fa fa-chevron-down"></i>
+			      <i class="fa fa-chevron-down"></i>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->

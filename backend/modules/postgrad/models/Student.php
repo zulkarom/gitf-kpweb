@@ -285,7 +285,7 @@ class Student extends \yii\db\ActiveRecord
     
     public function getStudentSemesters()
     {
-        return $this->hasMany(StudentSemester::className(), ['student_id' => 'id'])->orderBy('semester_id ASC');
+        return $this->hasMany(StudentSemester::className(), ['student_id' => 'id'])->orderBy(['semester_id' => SORT_DESC]);
     }
     
     public function getSupervisors()

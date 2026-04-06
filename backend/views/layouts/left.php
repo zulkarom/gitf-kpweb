@@ -28,10 +28,9 @@ use backend\models\Menu;
 				
 				</p>
 
-                <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                <a href="#"><i class="fa fa-circle"></i> Online</a>
             </div>
         </div>
-		<br />
 
         <!-- sidebar search form removed -->
 		
@@ -71,7 +70,7 @@ use backend\models\Menu;
 			$admin_focus = Menu::adminCourseFiles();
 			break;
 			
-			case 'students':
+			case 'undergrad':
 			$admin_focus = Menu::adminStudents();
 			break;
 
@@ -154,15 +153,12 @@ $menuItems = [
     
     				['label' => 'Postgraduate', 'icon' => 'cube', 'url' => ['/postgrad/mystudent/stats']],
 
-
     
                    // ['label' => 'Program Management', 'icon' => 'mortar-board', 'url' => ['/esiap/program'],],
 					
 					//['label' => 'e-RPD', 'icon' => 'flask', 'url' => ['/erpd'],],	
     
-                  //  ['label' => 'Workshop', 'icon' => 'cube', 'url' => ['/workshop/kursus-anjur'], 'visible' => Yii::$app->user->can('workshop-manager')],
-    
-                    ['label' => 'Students', 'icon' => 'users', 'url' => ['/students/student'], 'visible' => Yii::$app->user->can('students-manager')],
+                    ['label' => 'Students', 'icon' => 'users', 'url' => ['/undergrad/student'], 'visible' => Yii::$app->user->can('students-manager')],
 					
 					['label' => 'Grant Management', 'icon' => 'money', 'url' => ['/grant']],
 					

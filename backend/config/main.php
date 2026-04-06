@@ -74,22 +74,28 @@ return [
 		'chapterinbook' => [
             'class' => 'backend\modules\chapterinbook\Module',
         ],
-		'internship' => [
+        'internship' => [
             'class' => 'backend\modules\internship\Modules',
         ],
-		'students' => [
+        'undergrad' => [
             'class' => 'backend\modules\students\Modules',
         ],
-		'aduan' => [
+        'aduan' => [
             'class' => 'backend\modules\aduan\Module',
         ],
-	    'conference' => [
-	        'class' => 'backend\modules\conference\Module',
+        'downloads' => [
+            'class' => 'backend\modules\downloads\Module',
+        ],
+        'conference' => [
+            'class' => 'backend\modules\conference\Module',
+        ],
+        'manual' => [
+	        'class' => 'backend\modules\manual\Module',
 	    ],
 	    'postgrad' => [
 	        'class' => 'backend\modules\postgrad\Module',
 	    ],
-	    'workshop' => [
+	    'workshop' => [ 
 	        'class' => 'backend\modules\workshop\Module',
 	    ],
 	    'manual' => [
@@ -156,20 +162,27 @@ return [
         'class' => 'mdm\admin\components\AccessControl',
         'allowActions' => [
             'site/*',
-			'user/*',
-			'gii/*',
-			'debug/*',
 			'user-setting/*',
 			'esiap/default/*',
 			'esiap/course/*',
-			'erpd/*',
+			'erpd/default/*',
+			'erpd/research/*',
+			'erpd/publication/*',
+			'erpd/award/*',
+			'erpd/membership/*',
+			'erpd/knowledge-transfer/*',
+			'erpd/consultation/*',
 			'website/default/*',
 			'staff/default/*',
 			'staff/profile/*',
-			'jeb/default/*',
-			'proceedings/*',
+			'jeb/*',
+			'user/*',
+			'teaching-load/default/*',
+			'teaching-load/appointment-letter/*',
+			'public-form/*',
+			'aduan/default/*',
 			'course-files/default/*',
-            'course-files/program/*',
+			'course-files/program/*',
 			'course-files/lecture-cancel-file/*',
 			'course-files/lecture-receipt-file/*',
 			'course-files/lecture-exempt-file/*',
@@ -177,20 +190,27 @@ return [
 			'course-files/tutorial-receipt-file/*',
 			'course-files/tutorial-exempt-file/*',
 			'course-files/appointment/*',
-            'course-files/auditor/*',
-            'course-files/staff/*','course-files/staff/*',
-			'teaching-load/default/*',
-			'moderasi/*',
-			'public-form/*',
-			'questbank/*',
-            'postgrad/mystudent/*',
-			'ticket/default/*',
-			'aduan/*',
-            'manual/*',
-            'user-manual/*',
-            'ecert/*',
+			'coordinator-assessment-material-file/*',
+			'course-files/coordinator-assessment-material-file/*',
+			'course-files/coordinator-rubrics-file/*',
+			'course-files/coordinator-summative-assessment-file/*',
+			'course-files/coordinator-assessment-script-file/*',
+			'course-files/coordinator-upload/*',
+			'course-files/coordinator-result-final-file/*',
+			'course-files/coordinator/*',
+			'course-files/staff/*',
+			'course-files/material/*',
+			'course-files/auditor/*',
+			'course-files/attendance-lecture-file/*',
+			'undergrad/*',
+			'user-manual/*',
+			'manual/default/*',
+			'ecert/*',
 			'sae/*',
+			'postgrad/mystudent/*',
+			'postgrad/mycommittee/*',
 			'firewall/*',
+			'ticket/default/*',
 			//'application/*',
             //'some-controller/some-action',
             // The actions listed here will be allowed to everyone including guests.
@@ -203,5 +223,3 @@ return [
 	
     'params' => $params,
 ];
-
-

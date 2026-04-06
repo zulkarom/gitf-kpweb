@@ -9,6 +9,11 @@ return [
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'timeZone' => 'Asia/Kuala_Lumpur',
     'components' => [
+		'urlManager' => [
+			'enablePrettyUrl' => true,
+			'showScriptName' => false,
+			'enableStrictParsing' => false,
+		],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],

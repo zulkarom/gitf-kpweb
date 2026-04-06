@@ -64,7 +64,7 @@ $this->title = 'Modules';
       </div>
 
       <div class="col-md-3 col-sm-6 col-xs-12">
-        <a href="<?= Url::to(['/students/default']) ?>">
+        <a href="<?= Url::to(['/undergrad/default']) ?>">
           <div class="tile theme-soft-rose">
             <div class="inner">
               <h4>Students</h4>
