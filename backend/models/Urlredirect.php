@@ -29,6 +29,7 @@ class Urlredirect extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['code', 'url_to'], 'required'],
             [['code'], 'string', 'max' => 16],
             [['code'], 'string', 'min' => 2],
             [['code'], 'unique'],

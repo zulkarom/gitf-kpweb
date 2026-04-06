@@ -196,6 +196,8 @@ $menuItems = [
                         'items' => [
 						
 							['label' => 'Semester', 'icon' => 'cog', 'url' => ['/semester'],],
+							
+							['label' => 'Shorten Url', 'icon' => 'link', 'url' => ['/urlredirect/index'],],
 						
 							['label' => 'User Assignment', 'icon' => 'user', 'url' => ['/admin'],],
 						
