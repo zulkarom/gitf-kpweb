@@ -185,7 +185,9 @@ $menuItems = [
 
 				['label' => 'Proceedings', 'icon' => 'microphone', 'url' => ['/proceedings'], 'visible' => Yii::$app->user->can('proceedings-manager')],
 
-					['label' => 'Course Files (old)', 'icon' => 'files-o', 'url' => ['/course-files/default/teaching-assignment']],
+				//['label' => 'Moderasi', 'icon' => 'check-square-o', 'url' => ['/moderasi/default/index']],
+
+				['label' => 'Course Files (old)', 'icon' => 'files-o', 'url' => ['/course-files/default/teaching-assignment']],
 
 
 					

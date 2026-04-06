@@ -8,6 +8,7 @@ use Yii;
  * This is the model class for table "urlredirect".
  *
  * @property int $id
+ * @property string $code
  * @property string $url_to
  * @property int $hit_counter
  * @property int $latest_hit
@@ -28,8 +29,12 @@ class Urlredirect extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['code'], 'string', 'max' => 16],
+            [['code'], 'string', 'min' => 2],
+            [['code'], 'unique'],
             [['url_to'], 'string'],
             [['hit_counter'], 'integer'],
+            [['latest_hit'], 'integer'],
         ];
     }
 
@@ -40,6 +45,7 @@ class Urlredirect extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'code' => 'Code',
             'url_to' => 'Url To',
             'hit_counter' => 'Hit Counter',
             'latest_hit' => 'Latest Hit',
