@@ -35,9 +35,8 @@ class Urlredirect extends \yii\db\ActiveRecord
             [['code'], 'unique'],
             [['url_to'], 'string'],
             [['hit_counter'], 'default', 'value' => 0],
-            [['latest_hit'], 'default', 'value' => 0],
             [['hit_counter'], 'integer'],
-            [['latest_hit'], 'integer'],
+            [['latest_hit'], 'safe'],
         ];
     }
 
@@ -60,9 +59,6 @@ class Urlredirect extends \yii\db\ActiveRecord
         if ($insert) {
             if ($this->hit_counter === null) {
                 $this->hit_counter = 0;
-            }
-            if ($this->latest_hit === null) {
-                $this->latest_hit = 0;
             }
         }
 

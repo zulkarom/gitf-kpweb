@@ -16,7 +16,7 @@ class LinkController extends Controller
         }
 
         $model->hit_counter = (int)$model->hit_counter + 1;
-        $model->latest_hit = time();
+        $model->latest_hit = date('Y-m-d H:i:s');
         $model->save(false, ['hit_counter', 'latest_hit']);
 
         return Yii::$app->response->redirect($model->url_to, 302);

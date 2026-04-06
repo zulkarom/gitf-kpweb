@@ -41,7 +41,7 @@ $this->title = 'Shorten Url';
                 'format' => 'ntext',
             ],
             'hit_counter',
-            'latest_hit:datetime',
+            'latest_hit',
             [
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{update} {delete}',
