@@ -23,6 +23,7 @@ use backend\modules\postgrad\models\Supervisor;
 use backend\modules\postgrad\models\StudentSupervisor;
 use backend\modules\postgrad\models\StageExaminer;
 use backend\modules\postgrad\models\StudentStage;
+use backend\modules\postgrad\models\ResearchStage;
 use backend\modules\postgrad\models\PgStudentThesis;
 use backend\modules\postgrad\models\PgSetting;
 use backend\models\Semester;
@@ -1242,6 +1243,31 @@ class StudentController extends Controller
     public function actionView($id)
     {
         $model = $this->findModel($id);
+
+        // Auto-create initial research stage record (if none)
+        if (strtolower((string)$model->study_mode_rc) === 'research') {
+            $hasStage = StudentStage::find()->where(['student_id' => (int)$model->id])->exists();
+            if (!$hasStage) {
+                $firstSemesterId = (int)StudentRegister::find()
+                    ->where(['student_id' => (int)$model->id])
+                    ->min('semester_id');
+
+                $firstStageId = (int)ResearchStage::find()
+                    ->select('id')
+                    ->orderBy(['id' => SORT_ASC])
+                    ->scalar();
+
+                if ($firstSemesterId && $firstStageId) {
+                    $stage = new StudentStage();
+                    $stage->student_id = (int)$model->id;
+                    $stage->semester_id = $firstSemesterId;
+                    $stage->stage_id = $firstStageId;
+                    if (!$stage->save()) {
+                        Yii::$app->session->addFlash('error', 'Failed to auto-create initial research stage.');
+                    }
+                }
+            }
+        }
 
         $semesterId = (int)Yii::$app->request->get('semester_id', 0);
         if (!$semesterId) {
