@@ -82,9 +82,9 @@ class Student extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'matric_no', 'program_id'], 'required' , 'on' => 'create'],
+            [['user_id', 'matric_no', 'program_id', 'study_mode'], 'required' , 'on' => 'create'],
             
-            [['user_id', 'matric_no', 'program_id'], 'required' , 'on' => 'student_update'],
+            [['user_id', 'matric_no', 'program_id', 'study_mode'], 'required' , 'on' => 'student_update'],
 
            // [['date_birth', 'gender', 'marital_status', 'nationality', 'citizenship', 'program_id', 'study_mode', 'address', 'city', 'phone_no', 'personal_email', 'religion', 'race', 'bachelor_name', 'bachelor_university', 'bachelor_cgpa', 'bachelor_year', 'admission_semester', 'admission_year', 'admission_date', 'sponsor', 'current_sem', 'campus_id', 'status'], 'required' , 'on' => 'student_update'],
 
