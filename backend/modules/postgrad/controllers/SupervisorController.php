@@ -9,6 +9,11 @@ use backend\models\Semester;
 use backend\modules\postgrad\models\StudentRegister;
 use backend\modules\staff\models\Staff;
 use backend\modules\postgrad\models\PgSetting;
+use backend\modules\postgrad\models\Student;
+use backend\modules\postgrad\models\StudentStage;
+use backend\modules\postgrad\models\StudentSupervisor;
+use backend\modules\postgrad\models\PgStudentThesis;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
@@ -230,45 +235,227 @@ class SupervisorController extends Controller
     public function actionView($id)
     {
         $semesterId = Yii::$app->request->get('semester_id');
-        if (empty($semesterId)) {
-            $currentSem = Semester::getCurrentSemester();
-            $semesterId = $currentSem ? $currentSem->id : null;
-        }
 
         $model = $this->findModel($id);
-        $supervisees = $model->getSupervisees()
-        ->joinWith(['student' => function($q){
-            $q->alias('st');
-        }])
-        ->innerJoin(['sr' => StudentRegister::tableName()], 'sr.student_id = st.id AND sr.semester_id = :sem', [':sem' => (int)$semesterId])
-        ->all();
 
-        $superviseeRegs = [];
-        if ($supervisees) {
-            $studentIds = [];
-            foreach ($supervisees as $sv) {
-                $studentIds[] = $sv->student_id;
+        $superviseeFilterModel = new class([
+            'sv_name' => null,
+            'sv_program_id' => null,
+            'sv_role' => null,
+            'sv_status_daftar' => null,
+        ]) extends \yii\base\DynamicModel {
+            public function formName()
+            {
+                return '';
             }
-            if (!empty($studentIds)) {
-                $regs = StudentRegister::find()
-                ->where(['semester_id' => (int)$semesterId])
-                ->andWhere(['student_id' => $studentIds])
-                ->all();
-                if ($regs) {
-                    foreach ($regs as $r) {
-                        $superviseeRegs[$r->student_id] = $r;
-                    }
-                }
-            }
+        };
+        $superviseeFilterModel->addRule(['sv_name', 'sv_program_id', 'sv_role', 'sv_status_daftar'], 'safe');
+        $superviseeFilterModel->load(Yii::$app->request->get(), '');
+
+        $superviseeQuery = $model->getSupervisees()->alias('ssv')
+            ->joinWith(['student' => function($q){
+                $q->alias('st');
+            }])
+            ->joinWith(['student.user u', 'student.program p']);
+
+        $statusExpr = new \yii\db\Expression('st.last_status_daftar');
+        if (!empty($semesterId)) {
+            $superviseeQuery->innerJoin(
+                ['sr' => StudentRegister::tableName()],
+                'sr.student_id = st.id AND sr.semester_id = :sem',
+                [':sem' => (int)$semesterId]
+            );
         }
 
-        $examinees = $model->getExamineesBySemester($semesterId);
+        if ($superviseeFilterModel->sv_name !== null && $superviseeFilterModel->sv_name !== '') {
+            $name = trim((string)$superviseeFilterModel->sv_name);
+            $superviseeQuery->andFilterWhere([
+                'or',
+                ['like', 'u.fullname', $name],
+                ['like', 'st.matric_no', $name],
+            ]);
+        }
+
+        if ($superviseeFilterModel->sv_program_id !== null && $superviseeFilterModel->sv_program_id !== '') {
+            $superviseeQuery->andFilterWhere(['st.program_id' => (int)$superviseeFilterModel->sv_program_id]);
+        }
+
+        if ($superviseeFilterModel->sv_role !== null && $superviseeFilterModel->sv_role !== '') {
+            $superviseeQuery->andFilterWhere(['ssv.sv_role' => (int)$superviseeFilterModel->sv_role]);
+        }
+
+        if ($superviseeFilterModel->sv_status_daftar !== null && $superviseeFilterModel->sv_status_daftar !== '') {
+            $superviseeQuery->andFilterWhere(['st.last_status_daftar' => (int)$superviseeFilterModel->sv_status_daftar]);
+        }
+
+        $statusRankExpr = new \yii\db\Expression(
+            'CASE WHEN ' . $statusExpr->expression . ' = :statusDaftar THEN 0 ELSE 1 END',
+            [':statusDaftar' => (int)StudentRegister::STATUS_DAFTAR_DAFTAR]
+        );
+
+        $superviseeQuery->select(['ssv.*'])->addSelect([
+            'status_code' => $statusExpr,
+            'status_rank' => $statusRankExpr,
+        ]);
+
+        $superviseeProvider = new ActiveDataProvider([
+            'query' => $superviseeQuery,
+            'pagination' => [
+                'pageSize' => 20,
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'status_rank' => SORT_ASC,
+                    'sv_role' => SORT_ASC,
+                ],
+                'attributes' => [
+                    'sv_role',
+                    'status_rank',
+                    'status_code',
+                ],
+            ],
+        ]);
+
+        $examineeFilterModel = new class([
+            'ex_name' => null,
+            'ex_stage_id' => null,
+            'ex_committee_role' => null,
+            'ex_result' => null,
+        ]) extends \yii\base\DynamicModel {
+            public function formName()
+            {
+                return '';
+            }
+        };
+        $examineeFilterModel->addRule(['ex_name', 'ex_stage_id', 'ex_committee_role', 'ex_result'], 'safe');
+        $examineeFilterModel->load(Yii::$app->request->get(), '');
+
+        $examineeQuery = \backend\modules\postgrad\models\Student::find()->alias('a')
+            ->select([
+                'id' => 'a.id',
+                'matric_no' => 'a.matric_no',
+                'fullname' => 'u.fullname',
+                'stage_id' => 's.stage_id',
+                'stage_name' => 'r.stage_name',
+                'stage_name_en' => 'r.stage_name_en',
+                'stage_status' => 's.status',
+                'committee_role' => 'e.committee_role',
+                'committee_role_label' => new \yii\db\Expression(
+                    "CASE e.committee_role "
+                    . "WHEN 1 THEN 'Chairman' "
+                    . "WHEN 2 THEN 'Deputy Chairman' "
+                    . "WHEN 3 THEN 'Examiner 1' "
+                    . "WHEN 4 THEN 'Examiner 2' "
+                    . "ELSE '' END"
+                ),
+            ])
+            ->joinWith(['user u']);
+
+        if (!empty($semesterId)) {
+            $examineeQuery->leftJoin('pg_student_stage s', 's.student_id = a.id AND s.semester_id = :sem', [':sem' => (int)$semesterId]);
+            $examineeQuery->leftJoin(StudentRegister::tableName() . ' sr', 'sr.student_id = a.id AND sr.semester_id = :sem', [':sem' => (int)$semesterId]);
+            $examineeQuery->addSelect(['status_daftar' => 'sr.status_daftar']);
+        } else {
+            $examineeQuery->leftJoin('pg_student_stage s', 's.student_id = a.id');
+            $examineeQuery->addSelect(['status_daftar' => 'a.last_status_daftar']);
+        }
+
+        $examineeQuery
+            ->innerJoin('pg_stage_examiner e', 'e.stage_id = s.id AND e.examiner_id = :examinerId', [':examinerId' => (int)$model->id])
+            ->leftJoin('pg_res_stage r', 'r.id = s.stage_id');
+
+        if ($examineeFilterModel->ex_name !== null && $examineeFilterModel->ex_name !== '') {
+            $name = trim((string)$examineeFilterModel->ex_name);
+            $examineeQuery->andFilterWhere([
+                'or',
+                ['like', 'u.fullname', $name],
+                ['like', 'a.matric_no', $name],
+            ]);
+        }
+
+        if ($examineeFilterModel->ex_stage_id !== null && $examineeFilterModel->ex_stage_id !== '') {
+            $examineeQuery->andFilterWhere(['s.stage_id' => (int)$examineeFilterModel->ex_stage_id]);
+        }
+
+        if ($examineeFilterModel->ex_committee_role !== null && $examineeFilterModel->ex_committee_role !== '') {
+            $examineeQuery->andFilterWhere(['e.committee_role' => (int)$examineeFilterModel->ex_committee_role]);
+        }
+
+        if ($examineeFilterModel->ex_result !== null && $examineeFilterModel->ex_result !== '') {
+            $examineeQuery->andFilterWhere(['s.status' => (int)$examineeFilterModel->ex_result]);
+        }
+
+        $examineeProvider = new ActiveDataProvider([
+            'query' => $examineeQuery,
+            'pagination' => [
+                'pageSize' => 20,
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'fullname' => SORT_ASC,
+                ],
+                'attributes' => [
+                    'fullname' => [
+                        'asc' => ['u.fullname' => SORT_ASC],
+                        'desc' => ['u.fullname' => SORT_DESC],
+                    ],
+                    'matric_no' => [
+                        'asc' => ['a.matric_no' => SORT_ASC],
+                        'desc' => ['a.matric_no' => SORT_DESC],
+                    ],
+                ],
+            ],
+        ]);
         
         return $this->render('view', [
             'model' => $model,
-            'supervisees' => $supervisees,
-            'superviseeRegs' => $superviseeRegs,
-            'examinees' => $examinees
+            'superviseeProvider' => $superviseeProvider,
+            'semesterId' => $semesterId,
+            'examineeProvider' => $examineeProvider,
+            'examineeFilterModel' => $examineeFilterModel,
+            'superviseeFilterModel' => $superviseeFilterModel,
+        ]);
+    }
+
+    public function actionStudentQuickView($student_id)
+    {
+        $semesterId = Yii::$app->request->get('semester_id');
+
+        $student = Student::find()->where(['id' => (int)$student_id])->one();
+        if (!$student) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+
+        $activeTitle = PgStudentThesis::find()
+            ->where(['student_id' => (int)$student->id, 'is_active' => 1])
+            ->orderBy(['id' => SORT_DESC])
+            ->one();
+
+        $stages = StudentStage::find()->alias('a')
+            ->where(['a.student_id' => (int)$student->id])
+            ->joinWith(['stage stg', 'semester sem'])
+            ->orderBy(['a.semester_id' => SORT_DESC, 'a.id' => SORT_DESC])
+            ->all();
+
+        $activeSupervisors = StudentSupervisor::find()->alias('ss')
+            ->where(['ss.student_id' => (int)$student->id, 'ss.is_active' => 1])
+            ->joinWith(['supervisor sv'])
+            ->orderBy(['ss.sv_role' => SORT_ASC, 'ss.id' => SORT_ASC])
+            ->all();
+
+        $registrations = StudentRegister::find()->alias('sr')
+            ->where(['sr.student_id' => (int)$student->id])
+            ->joinWith(['semester sem'])
+            ->orderBy(['sr.semester_id' => SORT_DESC, 'sr.id' => SORT_DESC])
+            ->all();
+
+        return $this->renderAjax('_student_quick_view', [
+            'student' => $student,
+            'semesterId' => $semesterId,
+            'activeTitle' => $activeTitle,
+            'stages' => $stages,
+            'activeSupervisors' => $activeSupervisors,
+            'registrations' => $registrations,
         ]);
     }
 

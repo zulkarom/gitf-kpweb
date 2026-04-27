@@ -35,26 +35,17 @@ $this->params['breadcrumbs'][] = $this->title;
         );
     ?>
 
-    <div class="box box-default">
-        <div class="box-body">
-            <?php $form = ActiveForm::begin(['method' => 'get', 'action' => ['index']]); ?>
-            <div class="row">
-                <div class="col-md-6">
-                    <?= Html::label('Semester', 'semester_id', ['class' => 'control-label']) ?>
-                    <?= Html::dropDownList('semester_id', $searchModel->semester_id, $semesterOptions, ['class' => 'form-control', 'prompt' => 'Choose', 'id' => 'semester_id']) ?>
-                </div>
-                <div class="col-md-6" style="padding-top:25px">
-                    <?= Html::submitButton('Filter', ['class' => 'btn btn-primary']) ?>
-                </div>
-            </div>
-            <?php ActiveForm::end(); ?>
-        </div>
-    </div>
-
-
 
 <div class="box">
-<div class="box-header"></div>
+<div class="box-header">
+    <?php $form = ActiveForm::begin(['method' => 'get', 'action' => ['index']]); ?>
+    <div class="row">
+        <div class="col-md-4">
+            <?= Html::label('Semester', 'semester_id', ['class' => 'control-label']) ?>
+            <?= Html::dropDownList('semester_id', $searchModel->semester_id, $semesterOptions, ['class' => 'form-control', 'prompt' => 'Choose', 'id' => 'semester_id', 'onchange' => '$(this).closest("form").submit()']) ?>
+        </div>
+    </div>
+</div>
 <div class="box-body">  
     <?php
     // Build country options from distinct countries present in pg_student
@@ -255,6 +246,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
+</div>
+<?php ActiveForm::end(); ?>
 </div>
 </div>
 </div>

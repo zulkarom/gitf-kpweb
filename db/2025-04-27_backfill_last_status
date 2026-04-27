@@ -1,0 +1,23 @@
+UPDATE pg_student s
+JOIN (
+  SELECT r.student_id, r.status_daftar
+  FROM pg_student_reg r
+  JOIN (
+    SELECT student_id, MAX(semester_id) AS max_semester_id
+    FROM pg_student_reg
+    GROUP BY student_id
+  ) m
+    ON m.student_id = r.student_id
+   AND m.max_semester_id = r.semester_id
+  JOIN (
+    SELECT student_id, semester_id, MAX(id) AS max_id
+    FROM pg_student_reg
+    GROUP BY student_id, semester_id
+  ) i
+    ON i.student_id = r.student_id
+   AND i.semester_id = r.semester_id
+   AND i.max_id = r.id
+) x
+  ON x.student_id = s.id
+SET s.last_status_daftar = x.status_daftar
+WHERE (s.last_status_daftar <> x.status_daftar OR s.last_status_daftar IS NULL);

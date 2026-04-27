@@ -157,6 +157,7 @@ class Supervisor extends \yii\db\ActiveRecord
             'id' => 'a.id',
             'matric_no' => 'a.matric_no',
             'fullname' => 'u.fullname',
+            'status_daftar' => 'a.last_status_daftar',
             'stage_name' => 'r.stage_name',
             'stage_name_en' => 'r.stage_name_en',
             'stage_status' => 's.status',
@@ -188,6 +189,7 @@ class Supervisor extends \yii\db\ActiveRecord
             'id' => 'a.id',
             'matric_no' => 'a.matric_no',
             'fullname' => 'u.fullname',
+            'status_daftar' => 'sr.status_daftar',
             'stage_name' => 'r.stage_name',
             'stage_name_en' => 'r.stage_name_en',
             'stage_status' => 's.status',
@@ -203,6 +205,7 @@ class Supervisor extends \yii\db\ActiveRecord
         ])
         ->joinWith(['user u'])
         ->leftJoin('pg_student_stage s', 's.student_id = a.id AND s.semester_id = :sem', [':sem' => (int)$semesterId])
+        ->leftJoin(StudentRegister::tableName() . ' sr', 'sr.student_id = a.id AND sr.semester_id = :sem', [':sem' => (int)$semesterId])
         ->innerJoin('pg_stage_examiner e', 'e.stage_id = s.id AND e.examiner_id = :examinerId', [':examinerId' => (int)$this->id])
         ->leftJoin('pg_res_stage r', 'r.id = s.stage_id')
         ->all();
