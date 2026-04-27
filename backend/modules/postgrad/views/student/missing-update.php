@@ -6,7 +6,6 @@ use backend\modules\postgrad\models\StudentRegister;
 
 /* @var $this yii\web\View */
 /* @var $semesterId int */
-/* @var $prevSemesterId int */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Students Missing Registration Update';
@@ -39,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Previous Status Daftar',
                 'format' => 'raw',
                 'value' => function($model) {
-                    return StudentRegister::statusDaftarOutlineLabel($model->prev_status_daftar);
+                    return StudentRegister::statusDaftarOutlineLabel($model->last_status_daftar);
                 }
             ],
             [

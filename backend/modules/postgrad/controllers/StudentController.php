@@ -163,34 +163,20 @@ class StudentController extends Controller
             throw new NotFoundHttpException('Semester not found.');
         }
 
-        $prevSemesterId = (int)Semester::find()
-            ->select('id')
-            ->where(['<', 'id', $semesterId])
-            ->orderBy(['id' => SORT_DESC])
-            ->scalar();
-
-        if (!$prevSemesterId) {
-            throw new NotFoundHttpException('Previous semester not found.');
-        }
+        $sem = Semester::findOne($semesterId);
+        $semText = $sem ? $sem->niceFormat() : '';
+        $semPart = $semText !== '' ? ' for the ' . $semText . ' semester' : '';
+        Yii::$app->session->addFlash('info', 'These students have no registration' . $semPart . '.');
 
         $query = Student::find()->alias('s')
-            ->select([
-                's.*',
-                'prev_status_daftar' => 'pr.status_daftar',
-            ])
-            ->innerJoin(
-                ['pr' => StudentRegister::tableName()],
-                'pr.student_id = s.id AND pr.semester_id = :prevSem',
-                [':prevSem' => $prevSemesterId]
-            )
             ->leftJoin(
                 ['cr' => StudentRegister::tableName()],
-                'cr.student_id = pr.student_id AND cr.semester_id = :curSem',
+                'cr.student_id = s.id AND cr.semester_id = :curSem',
                 [':curSem' => $semesterId]
             )
             ->joinWith(['user'])
             ->where([
-                'pr.status_daftar' => [
+                's.last_status_daftar' => [
                     StudentRegister::STATUS_DAFTAR_DAFTAR,
                     StudentRegister::STATUS_DAFTAR_TANGGUH,
                     StudentRegister::STATUS_DAFTAR_NOS,
@@ -209,7 +195,6 @@ class StudentController extends Controller
 
         return $this->render('missing-update', [
             'semesterId' => $semesterId,
-            'prevSemesterId' => $prevSemesterId,
             'dataProvider' => $dataProvider,
         ]);
     }
