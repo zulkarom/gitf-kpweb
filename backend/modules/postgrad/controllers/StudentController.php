@@ -28,6 +28,7 @@ use backend\modules\postgrad\models\PgSetting;
 use backend\models\Semester;
 use yii\db\Query;
 use backend\modules\staff\models\Staff;
+use yii\helpers\Html;
 
 /**
  * StudentPostGradController implements the CRUD actions for StudentPostGrad model.
@@ -80,6 +81,51 @@ class StudentController extends Controller
         $dataProvider->sort->params = $params;
 
         $semesterId = (int)$searchModel->semester_id;
+
+        // Flash: Students who must register this semester based on previous semester status
+        // (previous semester status_daftar in (daftar,tangguh,nos) but missing current semester registration row)
+        if ($semesterId) {
+            $prevSemesterId = (int)Semester::find()
+                ->select('id')
+                ->where(['<', 'id', $semesterId])
+                ->orderBy(['id' => SORT_DESC])
+                ->scalar();
+
+            if ($prevSemesterId) {
+                $missingUpdateCount = (int)(new Query())
+                    ->from(['pr' => StudentRegister::tableName()])
+                    ->innerJoin(['s' => Student::tableName()], 's.id = pr.student_id')
+                    ->leftJoin(
+                        ['cr' => StudentRegister::tableName()],
+                        'cr.student_id = pr.student_id AND cr.semester_id = :curSem',
+                        [':curSem' => $semesterId]
+                    )
+                    ->where([
+                        'pr.semester_id' => $prevSemesterId,
+                        'pr.status_daftar' => [
+                            StudentRegister::STATUS_DAFTAR_DAFTAR,
+                            StudentRegister::STATUS_DAFTAR_TANGGUH,
+                            StudentRegister::STATUS_DAFTAR_NOS,
+                        ],
+                    ])
+                    ->andWhere(['cr.id' => null])
+                    ->andWhere("LOWER(s.study_mode_rc) = 'research'")
+                    ->count('DISTINCT pr.student_id');
+
+                if ($missingUpdateCount > 0) {
+                    $url = ['missing-update', 'semester_id' => $semesterId];
+                    $link = Html::a('Click here to view the list of students with missing registration updates.', $url);
+                    $sem = Semester::findOne($semesterId);
+                    $semText = $sem ? $sem->niceFormat() : '';
+                    $semPart = $semText !== '' ? ' for the ' . $semText . ' semester' : '';
+                    Yii::$app->session->addFlash(
+                        'warning',
+                        'There are ' . $missingUpdateCount . ' student registrations' . $semPart . ' that have not been updated (previously marked as DAFTAR, TANGGUH, or NOS). ' . $link
+                    );
+                }
+            }
+        }
+
         $statusDaftarSummary = [];
         if ($semesterId) {
             $statusDaftarSummary = (new Query())
@@ -100,6 +146,71 @@ class StudentController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'statusDaftarSummary' => $statusDaftarSummary,
+        ]);
+    }
+
+    public function actionMissingUpdate($semester_id = null)
+    {
+        $semesterId = (int)$semester_id;
+        if (!$semesterId) {
+            $currentSem = Semester::getCurrentSemester();
+            if ($currentSem) {
+                $semesterId = (int)$currentSem->id;
+            }
+        }
+
+        if (!$semesterId) {
+            throw new NotFoundHttpException('Semester not found.');
+        }
+
+        $prevSemesterId = (int)Semester::find()
+            ->select('id')
+            ->where(['<', 'id', $semesterId])
+            ->orderBy(['id' => SORT_DESC])
+            ->scalar();
+
+        if (!$prevSemesterId) {
+            throw new NotFoundHttpException('Previous semester not found.');
+        }
+
+        $query = Student::find()->alias('s')
+            ->select([
+                's.*',
+                'prev_status_daftar' => 'pr.status_daftar',
+            ])
+            ->innerJoin(
+                ['pr' => StudentRegister::tableName()],
+                'pr.student_id = s.id AND pr.semester_id = :prevSem',
+                [':prevSem' => $prevSemesterId]
+            )
+            ->leftJoin(
+                ['cr' => StudentRegister::tableName()],
+                'cr.student_id = pr.student_id AND cr.semester_id = :curSem',
+                [':curSem' => $semesterId]
+            )
+            ->joinWith(['user'])
+            ->where([
+                'pr.status_daftar' => [
+                    StudentRegister::STATUS_DAFTAR_DAFTAR,
+                    StudentRegister::STATUS_DAFTAR_TANGGUH,
+                    StudentRegister::STATUS_DAFTAR_NOS,
+                ],
+            ])
+            ->andWhere(['cr.id' => null])
+            ->andWhere("LOWER(s.study_mode_rc) = 'research'")
+            ->orderBy(['user.fullname' => SORT_ASC, 's.id' => SORT_ASC]);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 100,
+            ],
+        ]);
+
+        return $this->render('missing-update', [
+            'semesterId' => $semesterId,
+            'prevSemesterId' => $prevSemesterId,
+            'dataProvider' => $dataProvider,
         ]);
     }
 

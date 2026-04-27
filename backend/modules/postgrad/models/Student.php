@@ -61,10 +61,11 @@ class Student extends \yii\db\ActiveRecord
     public $stage_status;
     public $committee_role;
     public $committee_role_label;
+    public $prev_status_daftar;
 
     public function attributes()
     {
-        return array_merge(parent::attributes(), ['status_daftar', 'status_aktif', 'latest_stage', 'latest_stage_semester', 'latest_stage_id']);
+        return array_merge(parent::attributes(), ['status_daftar', 'status_aktif', 'latest_stage', 'latest_stage_semester', 'latest_stage_id', 'prev_status_daftar']);
     }
 
     /**
