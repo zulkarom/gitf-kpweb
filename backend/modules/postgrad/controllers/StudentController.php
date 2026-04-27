@@ -5,6 +5,7 @@ namespace backend\modules\postgrad\controllers;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
+use yii\web\Response;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
 use yii\db\IntegrityException;
@@ -30,6 +31,9 @@ use backend\models\Semester;
 use yii\db\Query;
 use backend\modules\staff\models\Staff;
 use yii\helpers\Html;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
 
 /**
  * StudentPostGradController implements the CRUD actions for StudentPostGrad model.
@@ -148,6 +152,164 @@ class StudentController extends Controller
             'dataProvider' => $dataProvider,
             'statusDaftarSummary' => $statusDaftarSummary,
         ]);
+    }
+
+    public function actionExportExcel()
+    {
+        $params = Yii::$app->request->queryParams;
+        if (!isset($params['StudentPostGradSearch'])) {
+            $params['StudentPostGradSearch'] = [];
+        }
+        if (!array_key_exists('study_mode_rc', $params['StudentPostGradSearch'])) {
+            $params['StudentPostGradSearch']['study_mode_rc'] = 'research';
+        }
+
+        $searchModel = new StudentPostGradSearch();
+        $dataProvider = $searchModel->search($params);
+        $dataProvider->pagination = false;
+
+        $semesterId = (int)$searchModel->semester_id;
+        $semester = $semesterId ? Semester::findOne($semesterId) : null;
+
+        /** @var \yii\db\ActiveQuery $query */
+        $query = $dataProvider->query;
+
+        $svNameSubqueryTpl = "(SELECT CASE WHEN sp.is_internal = 1 THEN u.fullname ELSE ex.ex_name END "
+            . "FROM pg_student_sv sv "
+            . "INNER JOIN pg_supervisor sp ON sp.id = sv.supervisor_id "
+            . "LEFT JOIN staff st ON st.id = sp.staff_id "
+            . "LEFT JOIN `user` u ON u.id = st.user_id "
+            . "LEFT JOIN pg_external ex ON ex.id = sp.external_id "
+            . "WHERE sv.student_id = a.id AND sv.sv_role = %d AND sv.is_active = 1 "
+            . "ORDER BY sv.appoint_at DESC, sv.id DESC "
+            . "LIMIT 1)";
+
+        $query->addSelect([
+            'main_sv' => new \yii\db\Expression(sprintf($svNameSubqueryTpl, 1)),
+            'second_sv' => new \yii\db\Expression(sprintf($svNameSubqueryTpl, 2)),
+            'third_sv' => new \yii\db\Expression(sprintf($svNameSubqueryTpl, 3)),
+        ]);
+
+        $rows = $query->asArray()->all();
+
+        $baseColumns = [
+            'no' => 'No.',
+            'matric_no' => 'Matric No',
+            'fullname' => 'Student Name',
+            'email' => 'Email',
+            'program_id' => 'Program',
+            'study_mode' => 'Taraf Pengajian',
+            'study_mode_rc' => 'Study Mode (RC)',
+            'nationality' => 'Country',
+            'nric' => 'NRIC/Passport',
+            'status_daftar' => 'Status Daftar (Semester)',
+            'status_aktif' => 'Status Aktif (Semester)',
+            'latest_stage' => 'Latest Stage',
+            'main_sv' => 'Main Supervisor',
+            'second_sv' => 'Second Supervisor',
+            'third_sv' => 'Third Supervisor',
+        ];
+
+        $studentSchemaCols = array_keys(Student::getTableSchema()->columns);
+        $excludeStudentCols = [
+            'id',
+            'last_status_daftar',
+            'matric_no',
+            'program_id',
+            'study_mode',
+            'study_mode_rc',
+            'nationality',
+            'nric',
+        ];
+        $profileCols = array_values(array_diff($studentSchemaCols, $excludeStudentCols));
+        $studentModel = new Student();
+        $labels = $studentModel->attributeLabels();
+        $profileColumns = [];
+        foreach ($profileCols as $c) {
+            $profileColumns[$c] = array_key_exists($c, $labels) ? $labels[$c] : $c;
+        }
+
+        $columns = array_merge($baseColumns, $profileColumns);
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $colIndex = 1;
+        foreach ($columns as $label) {
+            $sheet->setCellValueByColumnAndRow($colIndex, 1, $label);
+            $colIndex++;
+        }
+
+        $rowIndex = 2;
+        $running = 1;
+        foreach ($rows as $r) {
+            $colIndex = 1;
+
+            $r['fullname'] = $r['user']['fullname'] ?? ($r['fullname'] ?? '');
+            $r['email'] = $r['user']['email'] ?? ($r['email'] ?? '');
+
+            $r['no'] = $running;
+
+            $r['program_id'] = isset($r['program_id']) ? (string)$r['program_id'] : '';
+            if ((int)($r['program_id'] ?? 0) === 85) {
+                $r['program_id'] = 'PhD';
+            } elseif (in_array((int)($r['program_id'] ?? 0), [81, 82, 84], true)) {
+                $r['program_id'] = 'Master';
+            }
+
+            $r['study_mode'] = (int)($r['study_mode'] ?? 0) === 1 ? 'Sepenuh Masa' : ((int)($r['study_mode'] ?? 0) === 2 ? 'Separuh Masa' : '');
+            $r['status_daftar'] = StudentRegister::statusDaftarText($r['status_daftar'] ?? null);
+            $r['status_aktif'] = StudentRegister::statusAktifText($r['status_aktif'] ?? null);
+
+            foreach (array_keys($columns) as $key) {
+                if ($key === 'nric') {
+                    $sheet->setCellValueExplicit(
+                        $sheet->getCellByColumnAndRow($colIndex, $rowIndex)->getCoordinate(),
+                        (string)($r[$key] ?? ''),
+                        DataType::TYPE_STRING
+                    );
+                } else {
+                    $sheet->setCellValueByColumnAndRow($colIndex, $rowIndex, $r[$key] ?? '');
+                }
+                $colIndex++;
+            }
+            $rowIndex++;
+            $running++;
+        }
+
+        $semPart = 'unknown_sem';
+        if ($semester) {
+            $session = strtolower($semester->sessionShort());
+            $y1 = substr((string)$semester->id, 0, 4);
+            $y2 = substr((string)$semester->id, 4, 4);
+            $semPart = 'sem_' . $session . '_' . $y1 . '_' . $y2;
+        }
+        $fileName = 'students_' . $semPart . '.xlsx';
+
+        $tmp = tempnam(Yii::getAlias('@runtime'), 'xlsx_');
+        if ($tmp === false) {
+            throw new \RuntimeException('Unable to create temporary file for export.');
+        }
+        // ensure xlsx extension
+        $tmpXlsx = $tmp . '.xlsx';
+        @rename($tmp, $tmpXlsx);
+
+        $writer = new Xlsx($spreadsheet);
+        $writer->save($tmpXlsx);
+
+        $response = Yii::$app->response;
+        $response->on(Response::EVENT_AFTER_SEND, function() use ($tmpXlsx) {
+            @unlink($tmpXlsx);
+        });
+
+        return $response->sendFile(
+            $tmpXlsx,
+            $fileName,
+            [
+                'mimeType' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'inline' => false,
+            ]
+        );
     }
 
     public function actionMissingUpdate($semester_id = null)

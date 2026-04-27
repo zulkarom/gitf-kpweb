@@ -96,6 +96,10 @@ class StudentPostGradSearch extends Student
             'r.student_id = a.id AND r.semester_id = :semesterId',
             [':semesterId' => (int)$semesterId]
         )
+        ->with([
+            'supervisors.supervisor.staff.user',
+            'supervisors.supervisor.external',
+        ])
         ->joinWith([
             'user',
             'program' => function($q) {
