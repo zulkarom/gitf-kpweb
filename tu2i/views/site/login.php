@@ -44,12 +44,12 @@ $this->title = 'UJIAN PSIKOMETRIK / PSYCHOMETRIC TEST';
 				    $batchName = \backend\modules\sae\models\Batch::defaultBatch();
 				}
 				?>
-				<?= Html::encode($batchName) ?><br />
+				(<?= Html::encode($batchName) ?>)<br />
 				IJAZAH SARJANA MUDA KEUSAHAWANAN<br />
 				FAKULTI KEUSAHAWANAN DAN PERNIAGAAN</h4>
 				<br />
 				<i><h4>ONLINE INTERVIEW <br />
-                <?= Html::encode($batchName) ?><br />
+                (<?= Html::encode($batchName) ?>)<br />
 				BACHELOR OF ENTREPRENEURSHIP<br />
 				FACULTY OF ENTREPRENEURSHIP AND BUSINESS</h4></i>
 
