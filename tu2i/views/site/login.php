@@ -83,7 +83,13 @@ $form = ActiveForm::begin([
 				 <?php
                 } else {
 
-                    echo '<h3>TUTUP / CLOSED</h3>';
+                    if ($batch->is_open == 1) {
+                        $start = date('d/m/Y', strtotime($batch->start_date));
+                        $end = date('d/m/Y', strtotime($batch->end_date));
+                        echo '<h4>Tarikh Dibuka / <i>Open Period</i>: ' . $start . ' - ' . $end . '</h4>';
+                    } else {
+                        echo '<h3>TUTUP / CLOSED</h3>';
+                    }
                 }
                 ?>
 
