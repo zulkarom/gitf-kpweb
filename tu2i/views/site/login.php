@@ -36,10 +36,20 @@ $this->title = 'UJIAN PSIKOMETRIK / PSYCHOMETRIC TEST';
 				<div class="col-md-1"></div>
 				<div class="col-md-10" align="center">
                 <h4>TEMUDUGA ATAS TALIAN <br />
+				<?php
+				$batchName = '';
+				if (isset($batch) && $batch && isset($batch->bat_text)) {
+				    $batchName = $batch->bat_text;
+				} else {
+				    $batchName = \backend\modules\sae\models\Batch::defaultBatch();
+				}
+				?>
+				<?= Html::encode($batchName) ?><br />
 				IJAZAH SARJANA MUDA KEUSAHAWANAN<br />
 				FAKULTI KEUSAHAWANAN DAN PERNIAGAAN</h4>
 				<br />
 				<i><h4>ONLINE INTERVIEW <br />
+                <?= Html::encode($batchName) ?><br />
 				BACHELOR OF ENTREPRENEURSHIP<br />
 				FACULTY OF ENTREPRENEURSHIP AND BUSINESS</h4></i>
 
